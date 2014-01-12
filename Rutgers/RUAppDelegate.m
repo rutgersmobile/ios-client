@@ -7,6 +7,8 @@
 //
 
 #import "RUAppDelegate.h"
+#import "JASidePanelController.h"
+#import "RUMenuViewController.h"
 
 @implementation RUAppDelegate
 
@@ -15,8 +17,37 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    JASidePanelController * mainViewController = [[JASidePanelController alloc] init];
+    
+    // TODO: motd, prefs, launch last used channel
+    mainViewController.centerPanel = [self makeDefaultScreen];
+    
+    RUMenuViewController * menu = [[RUMenuViewController alloc] init];
+    
+    mainViewController.leftPanel = menu;
+    
+    self.window.rootViewController = mainViewController;
+    
+    menu.sidepanel = mainViewController;
+    
     [self.window makeKeyAndVisible];
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [mainViewController showLeftPanelAnimated:YES];
+    });
     return YES;
+}
+
+- (id) makeDefaultScreen {
+    UIViewController * splashViewController = [[UIViewController alloc] init];
+    splashViewController.view.backgroundColor = [UIColor whiteColor];
+    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage-700"]];
+    imageView.frame = [[UIScreen mainScreen] bounds];
+    [splashViewController.view addSubview:imageView];
+    return splashViewController;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
