@@ -6,7 +6,7 @@ we're moving off of Appcelerator Titanium.
 This app uses CocoaPods for dependency management. To use it, you'll have to
 add our specs repository:
 
-  $ pod repo add arutgers git@github.com:rutgersmobile/specs
+    $ pod repo add arutgers git@github.com:rutgersmobile/specs
 
 The 'a' at the beginning is to force it to be used before the regular specs
 repo (in case we decide to maintain our own fork of any pods we use in the app.)
