@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "JASidePanelController.h"
 #import "RUInfoDelegate.h"
+#import "RUNewsDelegate.h"
 
-@interface RUMenuViewController : UIViewController <RUInfoDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RUMenuViewController : UIViewController <RUInfoDelegate, RUNewsDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) JASidePanelController * sidepanel;
 

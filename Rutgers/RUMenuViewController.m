@@ -6,10 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News"]
+
 #import "RUMenuViewController.h"
 #import "TSMiniWebBrowser.h"
 
 #import "RUInfoComponent.h"
+#import "RUNewsComponent.h"
 
 @interface RUMenuViewController ()
 
@@ -31,20 +34,24 @@
 }
 
 - (void) tableView:(UITableView *) tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 1 || indexPath.row == 2) {
-        NSString * url = @"http://google.com";
-        if (indexPath.row == 1) url = @"http://my.rutgers.edu";
-        else if (indexPath.row == 2) url = @"http://sakai.rutgers.edu";
-        
-        [tableview deselectRowAtIndexPath:indexPath animated:NO];
-        TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:url]];
-        [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:webBrowser];
-    } else {
+    if (indexPath.row == 0) {
         RUInfoComponent * info = [[RUInfoComponent alloc] initWithDelegate:self];
         info.view.backgroundColor = [UIColor whiteColor];
         [self.sidepanel showCenterPanelAnimated:YES];
         [self.sidepanel setCenterPanel:info];
+    } else if (indexPath.row == 1 || indexPath.row == 2) {
+        NSString * url = @"http://google.com";
+        if (indexPath.row == 1) url = @"http://my.rutgers.edu";
+        else if (indexPath.row == 2) url = @"http://sakai.rutgers.edu";
+        [tableview deselectRowAtIndexPath:indexPath animated:NO];
+        TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:url]];
+        [self.sidepanel showCenterPanelAnimated:YES];
+        [self.sidepanel setCenterPanel:webBrowser];
+    } else if (indexPath.row == 3) {
+        RUNewsComponent *news = [[RUNewsComponent alloc] initWithDelegate:self];
+        news.view.backgroundColor = [UIColor whiteColor];
+        [self.sidepanel showCenterPanelAnimated:YES];
+        [self.sidepanel setCenterPanel:news];
     }
 }
 
@@ -68,7 +75,7 @@
     NSString * title;
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
-    title = @[@"RU-info", @"myRutgers", @"Sakai"][indexPath.row];
+    title = TITLES[indexPath.row];
     
     cell.textLabel.text = title;
     
@@ -76,7 +83,7 @@
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return TITLES.count;
 }
 
 
