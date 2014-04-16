@@ -7,7 +7,7 @@
 //
 
 #import "AFURLResponseSerialization.h"
- 
+  
 @interface AFTBXMLResponseSerializer : AFHTTPResponseSerializer
 
 @end

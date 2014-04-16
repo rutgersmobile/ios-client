@@ -7,7 +7,7 @@
 //  Version 1.5
 //  
 //  Copyright 2012 71Squared All rights reserved.b
-//  
+//   
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
 //  in the Software without restriction, including without limitation the rights

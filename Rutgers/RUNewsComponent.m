@@ -13,7 +13,7 @@
 @end
 
 @implementation RUNewsComponent
-
+ 
 - (id)initWithDelegate:(id <RUNewsDelegate>)delegate {
     self = [super init];
     if (self) {

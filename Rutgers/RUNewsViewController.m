@@ -13,7 +13,7 @@
 @interface RUNewsViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) NSDictionary *news;
 @property (nonatomic) AFHTTPSessionManager *sessionManager;
-@end
+@end 
 
 @implementation RUNewsViewController
 

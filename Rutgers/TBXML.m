@@ -897,7 +897,7 @@
 			currentElementBuffer = 0;
 		}
 	}
-	
+	 
 	while (currentAttributeBuffer) {
 		if (currentAttributeBuffer->attributes)
 			free(currentAttributeBuffer->attributes);
