@@ -20,16 +20,27 @@
     self = [super initWithStyle:style];
     if (self) {
         self.child = child;
-        
     }
     return self;
 }
 -(NSString *)urlForChild:(NSDictionary *)child{
     return child[@"channel"][@"url"];
 }
+-(NSString *)titleForChild:(NSDictionary *)child{
+    id title = child[@"title"];
+    if ([title isKindOfClass:[NSString class]]) {
+        return title = title;
+    } else if ([title isKindOfClass:[NSDictionary class]]) {
+        id subtitle = title[@"homeTitle"];
+        if ([subtitle isKindOfClass:[NSString class]]) {
+            return subtitle;
+        }
+    }
+    return nil;
+}
 -(void)setChild:(NSDictionary *)child{
     _child = child;
-    self.title = child[@"title"];
+    self.title = [self titleForChild:child];;
     
     self.sessionManager = [[AFHTTPSessionManager alloc] init];//initWithBaseURL:[self urlForChild:child]];
     self.sessionManager.responseSerializer = [AFTBXMLResponseSerializer serializer];

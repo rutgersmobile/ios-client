@@ -7,7 +7,7 @@
 //
 
 #import "AFTBXMLResponseSerializer.h"
-#import "TBXML-Headers/TBXML.h"
+#import "TBXML.h"
   
 @implementation AFTBXMLResponseSerializer
 - (id)responseObjectForResponse:(NSHTTPURLResponse *)response
