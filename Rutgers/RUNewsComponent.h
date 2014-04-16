@@ -13,3 +13,4 @@
 - (id) initWithDelegate: (id <RUNewsDelegate>) delegate;
 
 @end
+ 

@@ -14,3 +14,4 @@
 @property (nonatomic) id <RUNewsDelegate> delegate;
 - (id) initWithDelegate: (id <RUNewsDelegate>) delegate;
 @end
+ 

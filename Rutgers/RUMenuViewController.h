@@ -16,3 +16,4 @@
 @property (nonatomic) JASidePanelController * sidepanel;
 
 @end
+ 

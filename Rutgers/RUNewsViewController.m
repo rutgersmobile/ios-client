@@ -17,7 +17,7 @@
 
 @implementation RUNewsViewController
 
-
+ 
 - (id)initWithDelegate: (id <RUNewsDelegate>) delegate {
     self = [super init];
     if (self) {
