@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News"]
 
 #import "RUMenuViewController.h"
 #import "TSMiniWebBrowser.h"
@@ -70,6 +69,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News"]
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString * title;

@@ -10,6 +10,7 @@
 #import <AFNetworking.h>
 #import "AFTBXMLResponseSerializer.h"
 #import "TBXML.h"
+#import "RUReaderTableViewCell.h"
 #import <TSMiniWebBrowser.h>
 
 @interface RUReaderController ()
@@ -18,14 +19,26 @@
 @end
 
 @implementation RUReaderController
--(id)initWithStyle:(UITableViewStyle)style child:(NSDictionary *)child{
+
+-(id)initWithStyle:(UITableViewStyle)style{
     self = [super initWithStyle:style];
     if (self) {
-        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-        self.child = child;
+        self.sessionManager = [[AFHTTPSessionManager alloc] init];//initWithBaseURL:[self urlForChild:child]];
+        self.sessionManager.responseSerializer = [AFTBXMLResponseSerializer serializer];
     }
     return self;
 }
+-(id)initWithStyle:(UITableViewStyle)style child:(NSDictionary *)child{
+    self = [self initWithStyle:style];
+    if (self) {
+        [self.tableView registerNib:[UINib nibWithNibName:@"RUReaderTableViewCell" bundle:nil] forCellReuseIdentifier:@"ReaderCell"];
+        self.child = child;
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self action:@selector(fetchDataForChild) forControlEvents:UIControlEventValueChanged];
+    }
+    return self;
+}
+
 -(NSString *)urlForChild:(NSDictionary *)child{
     return child[@"channel"][@"url"];
 }
@@ -41,17 +54,8 @@
     }
     return nil;
 }
--(void)setChild:(NSDictionary *)child{
-    _child = child;
-    
-    NSString *title = [self titleForChild:child];
-    if (title) {
-        self.title = title;
-    }
-    
-    self.sessionManager = [[AFHTTPSessionManager alloc] init];//initWithBaseURL:[self urlForChild:child]];
-    self.sessionManager.responseSerializer = [AFTBXMLResponseSerializer serializer];
-    [self.sessionManager GET:[self urlForChild:child] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+-(void)fetchDataForChild{
+    [self.sessionManager GET:[self urlForChild:self.child] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[TBXML class]]) {
             [self parseResponse:responseObject];
         } else {
@@ -60,14 +64,26 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self requestFailed];
     }];
+}
+-(void)setChild:(NSDictionary *)child{
+    _child = child;
     
+    NSString *title = [self titleForChild:child];
+    if (title) {
+        self.title = title;
+    }
+    
+    [self fetchDataForChild];
 }
 
 -(void)requestFailed{
-    
+    [self.refreshControl endRefreshing];
 }
 
 -(void)parseResponse:(TBXML *)response{
+    if (!self.view) return;
+    [self.refreshControl endRefreshing];
+
     TBXMLElement *rss = response.rootXMLElement;
     TBXMLElement *channel = [TBXML childElementNamed:@"channel" parentElement:rss];
     
@@ -113,14 +129,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return self.items.count;
 }
@@ -128,9 +142,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    RUReaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReaderCell" forIndexPath:indexPath];
     NSDictionary *item = self.items[indexPath.row];
-    cell.textLabel.text = item[@"title"];
+    cell.titleLable.text = item[@"title"];
+    cell.detailLabel.text = item[@"description"];
+    cell.timeLabel.text = item[@"pubDate"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -143,6 +159,23 @@
         TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:link]];
         [self.navigationController pushViewController:webBrowser animated:YES];
     }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *item = self.items[indexPath.row];
+    NSString *string = item[@"description"];
+    NSString *time = item[@"pubDate"];
+    
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey: NSFontAttributeName];
+    
+    CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(320-16-34, 9999)
+                                                  options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
+                                               attributes:stringAttributes context:nil].size;
+    
+    
+    CGFloat height = 38 + labelStringSize.height;
+    if (time) height += 22;
+    return height;
 }
 
 /*

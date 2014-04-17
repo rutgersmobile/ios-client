@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6862BA48665649378AC0462B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
+		A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A794EBE919005D91006E040C /* RUReaderTableViewCell.m */; };
+		A794EBEC19005D91006E040C /* RUReaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A794EBEA19005D91006E040C /* RUReaderTableViewCell.xib */; };
 		A79BBE1E18FF03A7007136B0 /* RUNewsComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE1D18FF03A7007136B0 /* RUNewsComponent.m */; };
 		A79BBE2418FF03DB007136B0 /* RUNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE2318FF03DB007136B0 /* RUNewsViewController.m */; };
 		A79BBE2718FF0B66007136B0 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE2618FF0B66007136B0 /* DynamicTableViewController.m */; };
@@ -42,6 +44,9 @@
 /* Begin PBXFileReference section */
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DB61C3F48194968B9D64C1C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		A794EBE819005D91006E040C /* RUReaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderTableViewCell.h; sourceTree = "<group>"; };
+		A794EBE919005D91006E040C /* RUReaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderTableViewCell.m; sourceTree = "<group>"; };
+		A794EBEA19005D91006E040C /* RUReaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUReaderTableViewCell.xib; sourceTree = "<group>"; };
 		A79BBE1C18FF03A7007136B0 /* RUNewsComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNewsComponent.h; sourceTree = "<group>"; };
 		A79BBE1D18FF03A7007136B0 /* RUNewsComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNewsComponent.m; sourceTree = "<group>"; };
 		A79BBE1F18FF03BB007136B0 /* RUNewsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNewsDelegate.h; sourceTree = "<group>"; };
@@ -103,6 +108,9 @@
 		A79BBE1B18FF038F007136B0 /* runews */ = {
 			isa = PBXGroup;
 			children = (
+				A794EBE819005D91006E040C /* RUReaderTableViewCell.h */,
+				A794EBE919005D91006E040C /* RUReaderTableViewCell.m */,
+				A794EBEA19005D91006E040C /* RUReaderTableViewCell.xib */,
 				A79BBE3118FF1085007136B0 /* RUReaderController.h */,
 				A79BBE3218FF1085007136B0 /* RUReaderController.m */,
 				A79BBE1C18FF03A7007136B0 /* RUNewsComponent.h */,
@@ -281,6 +289,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A794EBEC19005D91006E040C /* RUReaderTableViewCell.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 			);
@@ -339,6 +348,7 @@
 				A79BBE3318FF1085007136B0 /* RUReaderController.m in Sources */,
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				C262EFBC188345D10035C8F5 /* RUAppDelegate.m in Sources */,
+				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A79BBE2418FF03DB007136B0 /* RUNewsViewController.m in Sources */,
 				A79BBE3B18FF1622007136B0 /* AFTBXMLResponseSerializer.m in Sources */,
 				A79BBE1E18FF03A7007136B0 /* RUNewsComponent.m in Sources */,

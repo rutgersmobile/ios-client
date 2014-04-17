@@ -27,7 +27,7 @@
 //  THE SOFTWARE.
 // ================================================================================================
 #import "TBXML.h"
-#define STRING_ENCODING NSUTF8StringEncoding
+#define STRING_ENCODING NSASCIIStringEncoding//NSUTF8StringEncoding
 
 // ================================================================================================
 // Private methods
