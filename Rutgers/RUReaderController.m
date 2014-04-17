@@ -10,15 +10,18 @@
 #import <AFNetworking.h>
 #import "AFTBXMLResponseSerializer.h"
 #import "TBXML.h"
+#import <TSMiniWebBrowser.h>
 
 @interface RUReaderController ()
 @property (nonatomic) AFHTTPSessionManager *sessionManager;
+@property (nonatomic) NSArray *items;
 @end
 
 @implementation RUReaderController
 -(id)initWithStyle:(UITableViewStyle)style child:(NSDictionary *)child{
     self = [super initWithStyle:style];
     if (self) {
+        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
         self.child = child;
     }
     return self;
@@ -40,19 +43,55 @@
 }
 -(void)setChild:(NSDictionary *)child{
     _child = child;
-    self.title = [self titleForChild:child];;
+    
+    NSString *title = [self titleForChild:child];
+    if (title) {
+        self.title = title;
+    }
     
     self.sessionManager = [[AFHTTPSessionManager alloc] init];//initWithBaseURL:[self urlForChild:child]];
     self.sessionManager.responseSerializer = [AFTBXMLResponseSerializer serializer];
     [self.sessionManager GET:[self urlForChild:child] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[TBXML class]]) {
-            //self.news = responseObject;
+            [self parseResponse:responseObject];
+        } else {
+            [self requestFailed];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [self requestFailed];
     }];
-     
-} 
+    
+}
+
+-(void)requestFailed{
+    
+}
+
+-(void)parseResponse:(TBXML *)response{
+    TBXMLElement *rss = response.rootXMLElement;
+    TBXMLElement *channel = [TBXML childElementNamed:@"channel" parentElement:rss];
+    
+    NSMutableArray *items = [NSMutableArray array];
+    [TBXML iterateElementsForQuery:@"item" fromElement:channel withBlock:^(TBXMLElement *element) {
+        NSMutableDictionary *item = [NSMutableDictionary dictionary];
+        TBXMLElement *childElement = element->firstChild;
+        while (childElement) {
+            NSString *name = [TBXML elementName:childElement];
+            NSString *text = [TBXML textForElement:childElement];
+            if (name && text) {
+                item[name] = text;
+            }
+            childElement = childElement->nextSibling;
+        }
+        [items addObject:item];
+    }];
+    self.items = [items copy];
+
+}
+-(void)setItems:(NSArray *)items{
+    _items = items;
+    [self.tableView reloadData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -76,26 +115,35 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return self.items.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    NSDictionary *item = self.items[indexPath.row];
+    cell.textLabel.text = item[@"title"];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
-*/
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *item = self.items[indexPath.row];
+    NSString *link = item[@"link"];
+    if (link) {
+        TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:link]];
+        [self.navigationController pushViewController:webBrowser animated:YES];
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.

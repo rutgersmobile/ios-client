@@ -27,6 +27,7 @@
 //  THE SOFTWARE.
 // ================================================================================================
 #import "TBXML.h"
+#define STRING_ENCODING NSUTF8StringEncoding
 
 // ================================================================================================
 // Private methods
@@ -107,14 +108,14 @@
 		
         
         // allocate memory for byte array
-        int result = [self allocateBytesOfLength:[aXMLString lengthOfBytesUsingEncoding:NSUTF8StringEncoding] error:error];
+        int result = [self allocateBytesOfLength:[aXMLString lengthOfBytesUsingEncoding:STRING_ENCODING] error:error];
         
         // if an error occured, return
         if (result != D_TBXML_SUCCESS) 
             return self;
         
 		// copy string to byte array
-		[aXMLString getBytes:bytes maxLength:bytesLength usedLength:0 encoding:NSUTF8StringEncoding options:NSStringEncodingConversionAllowLossy range:NSMakeRange(0, bytesLength) remainingRange:nil];
+		[aXMLString getBytes:bytes maxLength:bytesLength usedLength:0 encoding:STRING_ENCODING options:NSStringEncodingConversionAllowLossy range:NSMakeRange(0, bytesLength) remainingRange:nil];
 		
 		// set null terminator at end of byte array
 		bytes[bytesLength] = 0;
@@ -257,7 +258,7 @@
 
 + (NSString*) elementName:(TBXMLElement*)aXMLElement {
 	if (nil == aXMLElement->name) return @"";
-	return [NSString stringWithCString:&aXMLElement->name[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLElement->name[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) elementName:(TBXMLElement*)aXMLElement error:(NSError **)error {
@@ -273,12 +274,12 @@
         return @"";
     }
     
-	return [NSString stringWithCString:&aXMLElement->name[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLElement->name[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) attributeName:(TBXMLAttribute*)aXMLAttribute {
 	if (nil == aXMLAttribute->name) return @"";
-	return [NSString stringWithCString:&aXMLAttribute->name[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLAttribute->name[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) attributeName:(TBXMLAttribute*)aXMLAttribute error:(NSError **)error {
@@ -294,13 +295,13 @@
         return @"";
     }
     
-	return [NSString stringWithCString:&aXMLAttribute->name[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLAttribute->name[0] encoding:STRING_ENCODING];
 }
 
 
 + (NSString*) attributeValue:(TBXMLAttribute*)aXMLAttribute {
 	if (nil == aXMLAttribute->value) return @"";
-	return [NSString stringWithCString:&aXMLAttribute->value[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLAttribute->value[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) attributeValue:(TBXMLAttribute*)aXMLAttribute error:(NSError **)error {
@@ -310,12 +311,12 @@
         return @"";
     }
     
-	return [NSString stringWithCString:&aXMLAttribute->value[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLAttribute->value[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) textForElement:(TBXMLElement*)aXMLElement {
 	if (nil == aXMLElement->text) return @"";
-	return [NSString stringWithCString:&aXMLElement->text[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLElement->text[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) textForElement:(TBXMLElement*)aXMLElement error:(NSError **)error {
@@ -331,16 +332,16 @@
         return @"";
     }
     
-	return [NSString stringWithCString:&aXMLElement->text[0] encoding:NSUTF8StringEncoding];
+	return [NSString stringWithCString:&aXMLElement->text[0] encoding:STRING_ENCODING];
 }
 
 + (NSString*) valueOfAttributeNamed:(NSString *)aName forElement:(TBXMLElement*)aXMLElement {
-	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char * name = [aName cStringUsingEncoding:STRING_ENCODING];
 	NSString * value = nil;
 	TBXMLAttribute * attribute = aXMLElement->firstAttribute;
 	while (attribute) {
 		if (strlen(attribute->name) == strlen(name) && memcmp(attribute->name,name,strlen(name)) == 0) {
-			value = [NSString stringWithCString:&attribute->value[0] encoding:NSUTF8StringEncoding];
+			value = [NSString stringWithCString:&attribute->value[0] encoding:STRING_ENCODING];
 			break;
 		}
 		attribute = attribute->next;
@@ -361,16 +362,16 @@
         return @"";
     }
     
-	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char * name = [aName cStringUsingEncoding:STRING_ENCODING];
 	NSString * value = nil;
     
 	TBXMLAttribute * attribute = aXMLElement->firstAttribute;
 	while (attribute) {
 		if (strlen(attribute->name) == strlen(name) && memcmp(attribute->name,name,strlen(name)) == 0) {
             if (attribute->value[0])
-                value = [NSString stringWithCString:&attribute->value[0] encoding:NSUTF8StringEncoding];
+                value = [NSString stringWithCString:&attribute->value[0] encoding:STRING_ENCODING];
             else
-                value = [NSString stringWithString:@""];
+                value = @"";
             
 			break;
 		}
@@ -389,7 +390,7 @@
 + (TBXMLElement*) childElementNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement{
     
 	TBXMLElement * xmlElement = aParentXMLElement->firstChild;
-	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char * name = [aName cStringUsingEncoding:STRING_ENCODING];
 	while (xmlElement) {
 		if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
 			return xmlElement;
@@ -413,7 +414,7 @@
     }
     
 	TBXMLElement * xmlElement = aParentXMLElement->firstChild;
-	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+	const char * name = [aName cStringUsingEncoding:STRING_ENCODING];
 	while (xmlElement) {
 		if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
 			return xmlElement;

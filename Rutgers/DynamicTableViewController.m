@@ -69,6 +69,13 @@
     if ([child isKindOfClass:[NSDictionary class]]) {
         cell.textLabel.text = [self titleForChild:child];
     }
+    if (child[@"channel"]) {
+        cell.accessoryType = UITableViewCellAccessoryDetailButton;
+    } else if (child[@"children"]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     return cell;
 }
 -(NSString *)titleForChild:(NSDictionary *)child{
@@ -93,7 +100,6 @@
         dtvc.title = [self titleForChild:child];
         [self.navigationController pushViewController:dtvc animated:YES];
     }
-    
 }
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

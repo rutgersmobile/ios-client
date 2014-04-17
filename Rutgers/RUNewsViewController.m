@@ -38,15 +38,19 @@
         [self.sessionManager GET:@"news.txt" parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 self.news = responseObject;
+            } else {
+                [self requestFailed];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            
+            [self requestFailed];
         }];
         
     }
     return self;
 }
-
+-(void)requestFailed{
+    
+}
 
 
 -(void)setNews:(NSDictionary *)news{
