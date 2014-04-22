@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		6862BA48665649378AC0462B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
+		A708106F1906E00A0087EB82 /* RUBusData.m in Sources */ = {isa = PBXBuildFile; fileRef = A708106E1906E00A0087EB82 /* RUBusData.m */; };
+		A70810721906E0260087EB82 /* RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = A70810711906E0260087EB82 /* RUBusStop.m */; };
+		A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A70810741906E02D0087EB82 /* RUBusRoute.m */; };
+		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
+		A73F485A1905AB7200978FD6 /* RUBusComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F48591905AB7200978FD6 /* RUBusComponent.m */; };
+		A73F485D1905AB8100978FD6 /* RUBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F485C1905AB8100978FD6 /* RUBusViewController.m */; };
 		A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A794EBE919005D91006E040C /* RUReaderTableViewCell.m */; };
 		A794EBEC19005D91006E040C /* RUReaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A794EBEA19005D91006E040C /* RUReaderTableViewCell.xib */; };
 		A79BBE1E18FF03A7007136B0 /* RUNewsComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE1D18FF03A7007136B0 /* RUNewsComponent.m */; };
@@ -44,6 +50,18 @@
 /* Begin PBXFileReference section */
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DB61C3F48194968B9D64C1C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		A708106D1906E00A0087EB82 /* RUBusData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusData.h; sourceTree = "<group>"; };
+		A708106E1906E00A0087EB82 /* RUBusData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusData.m; sourceTree = "<group>"; };
+		A70810701906E0260087EB82 /* RUBusStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusStop.h; sourceTree = "<group>"; };
+		A70810711906E0260087EB82 /* RUBusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusStop.m; sourceTree = "<group>"; };
+		A70810731906E02D0087EB82 /* RUBusRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusRoute.h; sourceTree = "<group>"; };
+		A70810741906E02D0087EB82 /* RUBusRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusRoute.m; sourceTree = "<group>"; };
+		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A73F48581905AB7200978FD6 /* RUBusComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusComponent.h; sourceTree = "<group>"; };
+		A73F48591905AB7200978FD6 /* RUBusComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusComponent.m; sourceTree = "<group>"; };
+		A73F485B1905AB8100978FD6 /* RUBusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusViewController.h; sourceTree = "<group>"; };
+		A73F485C1905AB8100978FD6 /* RUBusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusViewController.m; sourceTree = "<group>"; };
+		A73F485E1905ABDF00978FD6 /* RUBusDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusDelegate.h; sourceTree = "<group>"; };
 		A794EBE819005D91006E040C /* RUReaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderTableViewCell.h; sourceTree = "<group>"; };
 		A794EBE919005D91006E040C /* RUReaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderTableViewCell.m; sourceTree = "<group>"; };
 		A794EBEA19005D91006E040C /* RUReaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUReaderTableViewCell.xib; sourceTree = "<group>"; };
@@ -85,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */,
 				C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */,
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
 				C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */,
@@ -105,6 +124,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A70810781906F87C0087EB82 /* ruplaces */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ruplaces;
+			sourceTree = "<group>";
+		};
+		A73F48571905AAFE00978FD6 /* rubus */ = {
+			isa = PBXGroup;
+			children = (
+				A73F485E1905ABDF00978FD6 /* RUBusDelegate.h */,
+				A73F48581905AB7200978FD6 /* RUBusComponent.h */,
+				A73F48591905AB7200978FD6 /* RUBusComponent.m */,
+				A73F485B1905AB8100978FD6 /* RUBusViewController.h */,
+				A73F485C1905AB8100978FD6 /* RUBusViewController.m */,
+				A708106D1906E00A0087EB82 /* RUBusData.h */,
+				A708106E1906E00A0087EB82 /* RUBusData.m */,
+				A70810701906E0260087EB82 /* RUBusStop.h */,
+				A70810711906E0260087EB82 /* RUBusStop.m */,
+				A70810731906E02D0087EB82 /* RUBusRoute.h */,
+				A70810741906E02D0087EB82 /* RUBusRoute.m */,
+			);
+			name = rubus;
+			sourceTree = "<group>";
+		};
 		A79BBE1B18FF038F007136B0 /* runews */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +169,8 @@
 		A79BBE4018FF1825007136B0 /* TBXML */ = {
 			isa = PBXGroup;
 			children = (
+				A79BBE3918FF1622007136B0 /* AFTBXMLResponseSerializer.h */,
+				A79BBE3A18FF1622007136B0 /* AFTBXMLResponseSerializer.m */,
 				A79BBE5018FF1867007136B0 /* TBXML.h */,
 				A79BBE4A18FF185B007136B0 /* TBXML.m */,
 			);
@@ -154,6 +200,7 @@
 		C262EFAA188345D10035C8F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A70810761906EE6E0087EB82 /* MapKit.framework */,
 				C262EFAB188345D10035C8F5 /* Foundation.framework */,
 				C262EFAD188345D10035C8F5 /* CoreGraphics.framework */,
 				C262EFAF188345D10035C8F5 /* UIKit.framework */,
@@ -169,8 +216,8 @@
 				A79BBE4018FF1825007136B0 /* TBXML */,
 				A79BBE2518FF0B66007136B0 /* DynamicTableViewController.h */,
 				A79BBE2618FF0B66007136B0 /* DynamicTableViewController.m */,
-				A79BBE3918FF1622007136B0 /* AFTBXMLResponseSerializer.h */,
-				A79BBE3A18FF1622007136B0 /* AFTBXMLResponseSerializer.m */,
+				A70810781906F87C0087EB82 /* ruplaces */,
+				A73F48571905AAFE00978FD6 /* rubus */,
 				A79BBE1B18FF038F007136B0 /* runews */,
 				C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */,
 				C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */,
@@ -343,13 +390,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A73F485A1905AB7200978FD6 /* RUBusComponent.m in Sources */,
 				A79BBE4D18FF185B007136B0 /* TBXML.m in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
 				A79BBE3318FF1085007136B0 /* RUReaderController.m in Sources */,
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				C262EFBC188345D10035C8F5 /* RUAppDelegate.m in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
+				A70810721906E0260087EB82 /* RUBusStop.m in Sources */,
+				A708106F1906E00A0087EB82 /* RUBusData.m in Sources */,
+				A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */,
 				A79BBE2418FF03DB007136B0 /* RUNewsViewController.m in Sources */,
+				A73F485D1905AB8100978FD6 /* RUBusViewController.m in Sources */,
 				A79BBE3B18FF1622007136B0 /* AFTBXMLResponseSerializer.m in Sources */,
 				A79BBE1E18FF03A7007136B0 /* RUNewsComponent.m in Sources */,
 				A79BBE2718FF0B66007136B0 /* DynamicTableViewController.m in Sources */,

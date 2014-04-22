@@ -10,7 +10,7 @@
 
 #import <AFNetworking.h>
 
-@interface RUNewsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface RUNewsViewController ()
 @property (nonatomic) NSDictionary *news;
 @property (nonatomic) AFHTTPSessionManager *sessionManager;
 @end 

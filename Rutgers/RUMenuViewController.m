@@ -12,6 +12,7 @@
 
 #import "RUInfoComponent.h"
 #import "RUNewsComponent.h"
+#import "RUBusComponent.h"
 
 @interface RUMenuViewController ()
 
@@ -51,6 +52,11 @@
         news.view.backgroundColor = [UIColor whiteColor];
         [self.sidepanel showCenterPanelAnimated:YES];
         [self.sidepanel setCenterPanel:news];
+    } else if (indexPath.row == 4) {
+        RUBusComponent *bus = [[RUBusComponent alloc] initWithDelegate:self];
+        bus.view.backgroundColor = [UIColor whiteColor];
+        [self.sidepanel showCenterPanelAnimated:YES];
+        [self.sidepanel setCenterPanel:bus];
     }
 }
 
@@ -70,7 +76,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News"]
+#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News", @"Bus"]
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString * title;

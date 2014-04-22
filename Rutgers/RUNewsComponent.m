@@ -19,6 +19,7 @@
     if (self) {
         // Custom initialization
         RUNewsViewController * vc = [[RUNewsViewController alloc] initWithDelegate:delegate];
+        
         [self pushViewController:vc animated:NO];
     }
     return self;
