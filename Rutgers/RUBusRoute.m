@@ -18,5 +18,13 @@
     }
     return self;
 }
-
+-(NSArray *)stops{
+    if (!_stops) {
+        _stops = [NSArray array];
+    }
+    return _stops;
+}
+-(NSArray *)activeStops{
+    return [self.stops filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]];
+}
 @end

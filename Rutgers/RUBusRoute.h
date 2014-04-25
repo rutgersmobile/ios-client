@@ -17,5 +17,5 @@
 @property (nonatomic) NSArray *stops;
 @property (nonatomic) BOOL active;
 @property (nonatomic) NSArray *directions;
-@property (nonatomic) NSSet *activeStops;
+-(NSArray *)activeStops;
 @end

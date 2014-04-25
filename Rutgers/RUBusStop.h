@@ -15,10 +15,10 @@
 
 @property (nonatomic) NSString *tag;
 @property (nonatomic) NSString *title;
-@property (nonatomic) CLLocationCoordinate2D coordinate;
+@property (nonatomic) CLLocation *location;
 @property (nonatomic) NSInteger stopId;
-@property (nonatomic, getter = inRoutes) NSArray *routes;
-@property (nonatomic, readonly) NSSet *activeRoutes;
+@property (nonatomic) NSArray *routes;
+-(NSArray *)activeRoutes;
 @property (nonatomic) BOOL active;
 
 @end

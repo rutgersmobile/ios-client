@@ -15,9 +15,18 @@
         self.title = dictionary[@"title"];
         CLLocationDegrees lat = [dictionary[@"lat"] doubleValue];
         CLLocationDegrees lon = [dictionary[@"lon"] doubleValue];
-        self.coordinate = CLLocationCoordinate2DMake(lat, lon);
+        self.location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
         self.stopId = [dictionary[@"stopId"] integerValue];
     }
     return self;
+}
+-(NSArray *)routes{
+    if (!_routes) {
+        _routes = [NSArray array];
+    }
+    return _routes;
+}
+-(NSArray *)activeRoutes{
+    return [self.routes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]];
 }
 @end 
