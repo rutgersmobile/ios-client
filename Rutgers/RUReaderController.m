@@ -38,7 +38,16 @@
     }
     return self;
 }
-
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
 -(NSString *)urlForChild:(NSDictionary *)child{
     return child[@"channel"][@"url"];
 }
@@ -108,16 +117,7 @@
     _items = items;
     [self.tableView reloadData];
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -144,7 +144,7 @@
 {
     RUReaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReaderCell" forIndexPath:indexPath];
     NSDictionary *item = self.items[indexPath.row];
-    cell.titleLable.text = item[@"title"];
+    cell.titleLabel.text = item[@"title"];
     cell.detailLabel.text = item[@"description"];
     cell.timeLabel.text = item[@"pubDate"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -168,13 +168,13 @@
     
     NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey: NSFontAttributeName];
     
-    CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(320-16-34, 9999)
+    CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(320-49, 9999)
                                                   options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                attributes:stringAttributes context:nil].size;
     
     
-    CGFloat height = 38 + labelStringSize.height;
-    if (time) height += 22;
+    CGFloat height = 37 + labelStringSize.height;
+    if (time) height += 19;
     return height;
 }
 

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RUReaderTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *titleLable;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @end
