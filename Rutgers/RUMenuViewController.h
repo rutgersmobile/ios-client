@@ -11,8 +11,9 @@
 #import "RUInfoDelegate.h"
 #import "RUNewsDelegate.h"
 #import "RUBusDelegate.h"
+#import "RUPlacesDelegate.h"
 
-@interface RUMenuViewController : UIViewController <RUInfoDelegate, RUNewsDelegate, RUBusDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RUMenuViewController : UIViewController <RUInfoDelegate, RUNewsDelegate, RUBusDelegate, RUPlacesDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) JASidePanelController * sidepanel;
 

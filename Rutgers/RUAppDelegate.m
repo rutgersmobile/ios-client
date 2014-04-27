@@ -14,8 +14,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#define MEMORY_MEGS 4
-#define DISK_MEGS 8
+#define MEMORY_MEGS 10
+#define DISK_MEGS 20
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cachesFolder = paths[0];
@@ -55,7 +55,8 @@
     UIViewController * splashViewController = [[UIViewController alloc] init];
     splashViewController.view.backgroundColor = [UIColor whiteColor];
     UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage-700"]];
-    imageView.frame = [[UIScreen mainScreen] bounds];
+   // imageView.frame = [[UIScreen mainScreen] bounds];
+    imageView.center = splashViewController.view.center;
     [splashViewController.view addSubview:imageView];
     return splashViewController;
 }

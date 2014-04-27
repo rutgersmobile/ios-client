@@ -15,37 +15,36 @@
 
 @interface RUPredictionsViewController ()
 @property (nonatomic) NSArray *response;
+@property (nonatomic) NSTimer *updateTimer;
 @end
 
 
 @implementation RUPredictionsViewController
 
-- (instancetype)init
-{
-    self = [super initWithStyle:UITableViewStylePlain];
-    if (self) {
-        [self.tableView registerNib:[UINib nibWithNibName:@"RUPredictionTableViewCell" bundle:nil] forCellReuseIdentifier:@"PredictionCell"];
-    }
-    return self;
-}
 
 -(void)setStops:(NSArray *)stops{
     _stops = stops;
     self.title = [[stops firstObject] title];
-    self.tableView.rowHeight = 79.0;
-    [self.busData getPredictionsForStops:stops inAgency:self.agency withCompletion:^(NSArray *response) {
-        self.response = response;
-    }];
+    self.tableView.rowHeight = 78.0;
+    [self getPredictions];
 }
 -(void)setRoute:(RUBusRoute *)route{
     _route = route;
     self.title = route.title;
-    self.tableView.rowHeight = 59.0;
-    [self.busData getPredictionsForRoute:route inAgency:self.agency withCompletion:^(NSArray *response) {
-        self.response = response;
-    }];
+    self.tableView.rowHeight = 60.0;
+    [self getPredictions];
 }
-
+-(void)getPredictions{
+    if (self.stops) {
+        [self.busData getPredictionsForStops:self.stops inAgency:self.agency withCompletion:^(NSArray *response) {
+            self.response = response;
+        }];
+    } else if (self.route) {
+        [self.busData getPredictionsForRoute:self.route inAgency:self.agency withCompletion:^(NSArray *response) {
+            self.response = response;
+        }];
+    }
+}
 -(void)setResponse:(NSArray *)response{
     _response = response;
     [self.tableView reloadData];
@@ -53,21 +52,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    [self.tableView registerNib:[UINib nibWithNibName:@"RUPredictionTableViewCell" bundle:nil] forCellReuseIdentifier:@"PredictionCell"];
+    self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(getPredictions) userInfo:nil repeats:YES];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}/*
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
 }
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:NO animated:NO];
-}*/
+-(void)dealloc{
+    [self.updateTimer invalidate];
+}
 - (BOOL) hidesBottomBarWhenPushed {
     return YES;
 }

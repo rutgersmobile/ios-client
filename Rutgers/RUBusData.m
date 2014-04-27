@@ -61,6 +61,9 @@ const NSString *stop = @"stop";*/
 -(void)stopFindingNearbyStops{
     [self.locationManager stopUpdatingLocation];
 }
+-(void)dealloc{
+    [self stopFindingNearbyStops];
+}
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation* location = [locations lastObject];
     
@@ -70,7 +73,7 @@ const NSString *stop = @"stop";*/
     [self.delegate busData:self didUpdateNearbyStops:stops];
 }
 
-#define NEARBY_DISTANCE 350
+#define NEARBY_DISTANCE 500
 -(NSDictionary *)stopsNearLocation:(CLLocation *)location{
 
     NSMutableDictionary *nearbyStops = [NSMutableDictionary dictionary];
@@ -80,16 +83,48 @@ const NSString *stop = @"stop";*/
         
         NSDictionary *stops = self.stops[agency];
         [stops enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            RUBusStop *busStop = [obj firstObject];
-            if ([busStop.location distanceFromLocation:location] < NEARBY_DISTANCE) {
+            CLLocationDistance distance = [self distanceOfStops:obj fromLocation:location];
+            if (distance < NEARBY_DISTANCE) {
                 [nearbyStopsForAgency addObject:obj];
             }
+            /*
+            RUBusStop *busStop = [obj firstObject];
+            if (busStop.active) {
+                CLLocationDistance distance = [busStop.location distanceFromLocation:location];
+                if (distance < NEARBY_DISTANCE) {
+                    [nearbyStopsForAgency addObject:obj];
+                }
+            }*/
         }];
         
-        nearbyStops[agency] = nearbyStopsForAgency;
+        nearbyStops[agency] = [nearbyStopsForAgency sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            //RUBusStop *busStopOne = [obj1 firstObject];
+           // RUBusStop *busStopTwo = [obj2 firstObject];
+            
+        //    CLLocationDistance distanceOne = [busStopOne.location distanceFromLocation:location];
+         //   CLLocationDistance distanceTwo = [busStopTwo.location distanceFromLocation:location];
+            
+            CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
+            CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
+            
+            
+            if (distanceOne < distanceTwo) return NSOrderedAscending;
+            if (distanceOne > distanceTwo) return NSOrderedDescending;
+            return NSOrderedSame;
+        }];
     }
     
     return nearbyStops;
+}
+-(CLLocationDistance)distanceOfStops:(NSArray *)stops fromLocation:(CLLocation *)location{
+    CLLocationDistance minDistance = -1;
+    for (RUBusStop *stop in stops) {
+        CLLocationDistance distance = [stop.location distanceFromLocation:location];
+        if (minDistance == -1 || distance < minDistance) {
+            minDistance = distance;
+        }
+    }
+    return minDistance;
 }
 #pragma mark api convienience functions
 -(void)getAgencyConfigWithCompletion:(void (^)(void))completionBlock{
@@ -165,10 +200,6 @@ const NSString *stop = @"stop";*/
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         completionBlock(nil);
     }];
-}
-
--(void)busData:(RUBusData *)busData didUpdateNearbyStops:(NSArray *)nearbyStops{
-    
 }
 
 static NSString *const format = @"&stops=%@|null|%@";
@@ -303,6 +334,7 @@ static NSString *const format = @"&stops=%@|null|%@";
             subitem[@"arrivalTimes"] = [self arrivalTimeDescriptionForPredictions:predictions];
         } else {
             subitem[@"directionTitle"] = subitem[@"dirTitleBecauseNoPredictions"];
+            subitem[@"arrivalTimes"] = @"No predictions available.";
         }
         [array addObject:subitem];
     }];

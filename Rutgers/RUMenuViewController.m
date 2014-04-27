@@ -13,6 +13,7 @@
 #import "RUInfoComponent.h"
 #import "RUNewsComponent.h"
 #import "RUBusComponent.h"
+#import "RUPlacesComponent.h"
 
 @interface RUMenuViewController ()
 
@@ -26,6 +27,7 @@
     if (self) {
         // Custom initialization
         UITableView * table = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+        [table registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
         table.delegate = self;
         table.dataSource = self;
         [self.view addSubview:table];
@@ -57,6 +59,11 @@
         bus.view.backgroundColor = [UIColor whiteColor];
         [self.sidepanel showCenterPanelAnimated:YES];
         [self.sidepanel setCenterPanel:bus];
+    } else if (indexPath.row == 5) {
+        RUPlacesComponent *places = [[RUPlacesComponent alloc] initWithDelegate:self];
+        places.view.backgroundColor = [UIColor whiteColor];
+        [self.sidepanel showCenterPanelAnimated:YES];
+        [self.sidepanel setCenterPanel:places];
     }
 }
 
@@ -76,13 +83,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News", @"Bus"]
+#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News", @"Bus", @"Places"]
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString * title;
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
-    title = TITLES[indexPath.row];
+    NSString *title = TITLES[indexPath.row];
     
     cell.textLabel.text = title;
     
