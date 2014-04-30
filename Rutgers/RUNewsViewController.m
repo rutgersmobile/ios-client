@@ -35,23 +35,23 @@
         self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://rumobile.rutgers.edu/1/"]];
         self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
         self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-        [self.sessionManager GET:@"news.txt" parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
-            if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                self.news = responseObject;
-            } else {
-                [self requestFailed];
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [self requestFailed];
-        }];
+        [self requestNews];
         
     }
     return self;
 }
--(void)requestFailed{
-    
-}
 
+-(void)requestNews{
+    [self.sessionManager GET:@"news.txt" parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            self.news = responseObject;
+        } else {
+            [self requestNews];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self requestNews];
+    }];
+}
 
 -(void)setNews:(NSDictionary *)news{
     _news = news;

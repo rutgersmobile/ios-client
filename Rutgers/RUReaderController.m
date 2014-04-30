@@ -8,8 +8,9 @@
 
 #import "RUReaderController.h"
 #import <AFNetworking.h>
-#import "AFTBXMLResponseSerializer.h"
-#import "TBXML.h"
+//#import "AFTBXMLResponseSerializer.h"
+//#import "TBXML.h"
+#import "AFXMLResponseSerializer.h"
 #import "RUReaderTableViewCell.h"
 #import <TSMiniWebBrowser.h>
 
@@ -23,8 +24,9 @@
 -(id)initWithStyle:(UITableViewStyle)style{
     self = [super initWithStyle:style];
     if (self) {
+        self.tableView.rowHeight = 80.0;
         self.sessionManager = [[AFHTTPSessionManager alloc] init];//initWithBaseURL:[self urlForChild:child]];
-        self.sessionManager.responseSerializer = [AFTBXMLResponseSerializer serializer];
+        self.sessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
     }
     return self;
 }
@@ -65,13 +67,14 @@
 }
 -(void)fetchDataForChild{
     [self.sessionManager GET:[self urlForChild:self.child] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[TBXML class]]) {
-            [self parseResponse:responseObject];
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *channel = [responseObject[@"channel"] firstObject];
+            self.items = channel[@"item"];
         } else {
-            [self requestFailed];
+            [self fetchDataForChild];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self requestFailed];
+        [self fetchDataForChild];
     }];
 }
 -(void)setChild:(NSDictionary *)child{
@@ -85,34 +88,6 @@
     [self fetchDataForChild];
 }
 
--(void)requestFailed{
-    [self.refreshControl endRefreshing];
-}
-
--(void)parseResponse:(TBXML *)response{
-    if (!self.view) return;
-    [self.refreshControl endRefreshing];
-
-    TBXMLElement *rss = response.rootXMLElement;
-    TBXMLElement *channel = [TBXML childElementNamed:@"channel" parentElement:rss];
-    
-    NSMutableArray *items = [NSMutableArray array];
-    [TBXML iterateElementsForQuery:@"item" fromElement:channel withBlock:^(TBXMLElement *element) {
-        NSMutableDictionary *item = [NSMutableDictionary dictionary];
-        TBXMLElement *childElement = element->firstChild;
-        while (childElement) {
-            NSString *name = [TBXML elementName:childElement];
-            NSString *text = [TBXML textForElement:childElement];
-            if (name && text) {
-                item[name] = text;
-            }
-            childElement = childElement->nextSibling;
-        }
-        [items addObject:item];
-    }];
-    self.items = [items copy];
-
-}
 -(void)setItems:(NSArray *)items{
     _items = items;
     [self.tableView reloadData];
@@ -144,9 +119,9 @@
 {
     RUReaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReaderCell" forIndexPath:indexPath];
     NSDictionary *item = self.items[indexPath.row];
-    cell.titleLabel.text = item[@"title"];
-    cell.detailLabel.text = item[@"description"];
-    cell.timeLabel.text = item[@"pubDate"];
+    cell.titleLabel.text = [item[@"title"] firstObject];
+    cell.detailLabel.text = [item[@"description"] firstObject];
+    cell.timeLabel.text = [item[@"pubDate"] firstObject];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
@@ -154,27 +129,27 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *item = self.items[indexPath.row];
-    NSString *link = item[@"link"];
+    NSString *link = [item[@"link"] firstObject];
     if (link) {
         TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:link]];
+        
         [self.navigationController pushViewController:webBrowser animated:YES];
     }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *item = self.items[indexPath.row];
-    NSString *string = item[@"description"];
-    NSString *time = item[@"pubDate"];
+    NSString *string = [item[@"description"] firstObject];
+    NSString *time = [item[@"pubDate"] firstObject];
     
     NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14] forKey: NSFontAttributeName];
     
-    CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(320-49, 9999)
+    CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(320-41-15, 9999)
                                                   options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                attributes:stringAttributes context:nil].size;
     
-    
-    CGFloat height = 37 + labelStringSize.height;
-    if (time) height += 19;
+    CGFloat height = 36 + labelStringSize.height;
+    if (time) height += 20;
     return height;
 }
 

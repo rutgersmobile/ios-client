@@ -8,11 +8,12 @@
 
 #import "RUPlacesTableViewController.h"
 #import "RUPlacesData.h"
+#import "RUPlaceDetailTableViewController.h"
 
 @interface RUPlacesTableViewController () <UISearchBarDelegate>
 @property (nonatomic) RUPlacesData *placesData;
 @property (nonatomic) UISearchBar *searchBar;
-@property (nonatomic) NSArray *results;
+@property NSArray *results;
 @end
 
 @implementation RUPlacesTableViewController
@@ -20,7 +21,7 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.delegate = delegate;
-        self.placesData = [[RUPlacesData alloc] init];
+        self.placesData = [RUPlacesData sharedInstance];
         self.navigationItem.title = @"Places";
         
         // Custom initialization
@@ -43,17 +44,32 @@
     self.searchBar.showsCancelButton = YES;
     self.searchBar.delegate = self;
     self.tableView.tableHeaderView = self.searchBar;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelWillShowLeftPanel" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelDidBeginPanning" object:nil];
+
+    
     
     [self.placesData getPlacesWithCompletion:^{
     
     }];
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
+-(void)clearResponders{
+    [self.searchBar resignFirstResponder];
+}
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+-(void)resignFirstResponders{
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -62,15 +78,16 @@
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     [self.placesData queryPlacesWithString:searchText completion:^(NSArray *results) {
         self.results = results;
+        [self.tableView reloadData];
     }];
 }
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     [searchBar resignFirstResponder];
 }
--(void)setResults:(NSArray *)results{
-    _results = results;
-    [self.tableView reloadData];
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self.searchBar resignFirstResponder];
 }
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -97,6 +114,12 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *itemForCell = self.results[indexPath.row];
+    
+    RUPlaceDetailTableViewController *detailVC = [[RUPlaceDetailTableViewController alloc] initWithPlace:itemForCell];
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
 
 /*
 // Override to support conditional editing of the table view.

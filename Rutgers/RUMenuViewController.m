@@ -14,6 +14,10 @@
 #import "RUNewsComponent.h"
 #import "RUBusComponent.h"
 #import "RUPlacesComponent.h"
+#import "RUWebComponent.h"
+
+#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News", @"Bus", @"Places"]
+
 
 @interface RUMenuViewController ()
 
@@ -46,9 +50,10 @@
         if (indexPath.row == 1) url = @"http://my.rutgers.edu";
         else if (indexPath.row == 2) url = @"http://sakai.rutgers.edu";
         [tableview deselectRowAtIndexPath:indexPath animated:NO];
-        TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:[NSURL URLWithString:url]];
+        RUWebComponent *webComponent = [[RUWebComponent alloc] initWithURL:[NSURL URLWithString:url] delegate:self];
+        webComponent.title = TITLES[indexPath.row];
         [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:webBrowser];
+        [self.sidepanel setCenterPanel:webComponent];
     } else if (indexPath.row == 3) {
         RUNewsComponent *news = [[RUNewsComponent alloc] initWithDelegate:self];
         news.view.backgroundColor = [UIColor whiteColor];
@@ -83,7 +88,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News", @"Bus", @"Places"]
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];

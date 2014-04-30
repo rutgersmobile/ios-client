@@ -8,7 +8,9 @@
 
 #import "RUAppDelegate.h"
 #import "JASidePanelController.h"
+#import "XMLDictionary.h"
 #import "RUMenuViewController.h"
+#import <NUISettings.h>
 
 @implementation RUAppDelegate
 
@@ -22,6 +24,8 @@
     NSString *fullPath = [cachesFolder stringByAppendingPathComponent:@"RUNetCache"];
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
     [NSURLCache setSharedURLCache:URLCache];
+
+   // [NUISettings init];
 
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

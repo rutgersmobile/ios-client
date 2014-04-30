@@ -27,14 +27,14 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail Label 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="buQ-aV-Isf">
-                        <rect key="frame" x="15" y="49" width="290" height="18"/>
+                        <rect key="frame" x="15" y="51" width="290" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="buQ-aV-Isf" firstAttribute="top" secondItem="HDs-lo-bxi" secondAttribute="bottom" id="3c7-xN-25N"/>
+                    <constraint firstItem="buQ-aV-Isf" firstAttribute="top" secondItem="HDs-lo-bxi" secondAttribute="bottom" constant="2" id="3c7-xN-25N"/>
                     <constraint firstItem="PT6-WB-XD6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="FI6-Kd-FVO"/>
                     <constraint firstItem="HDs-lo-bxi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="FqG-pe-u8U"/>
                     <constraint firstItem="HDs-lo-bxi" firstAttribute="top" secondItem="PT6-WB-XD6" secondAttribute="bottom" id="JHy-Ar-qlf"/>

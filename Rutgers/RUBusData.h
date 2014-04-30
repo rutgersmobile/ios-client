@@ -24,18 +24,19 @@ const NSString *newarkAgency;
 -(void)startFindingNearbyStops;
 -(void)stopFindingNearbyStops;
 
--(void)getAgencyConfigWithCompletion:(void (^)(void))completionBlock;
 -(void)updateActiveStopsAndRoutesWithCompletion:(void (^)(void))completionBlock;
 
 -(void)getPredictionsForStops:(NSArray *)stops inAgency:(NSString *)agency withCompletion:(void (^)(NSArray *response))completionBlock;
 -(void)getPredictionsForRoute:(RUBusRoute *)route inAgency:(NSString *)agency withCompletion:(void (^)(NSArray *response))completionBlock;
 
-@property (nonatomic) id<RUBusDataDelegate> delegate;
+@property (weak) id<RUBusDataDelegate> delegate;
 
-@property (nonatomic) NSMutableDictionary *stops;
-@property (nonatomic) NSMutableDictionary *routes;
-@property (nonatomic) NSMutableDictionary *activeStops;
-@property (nonatomic) NSMutableDictionary *activeRoutes;
-@property (nonatomic) NSDictionary *nearbyStops;
+@property NSMutableDictionary *stops;
+@property NSMutableDictionary *routes;
+@property NSMutableDictionary *activeStops;
+@property NSMutableDictionary *activeRoutes;
+@property NSDictionary *nearbyStops;
+
++(RUBusData *)sharedInstance;
 
 @end

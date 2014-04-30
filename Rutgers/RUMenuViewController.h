@@ -12,8 +12,9 @@
 #import "RUNewsDelegate.h"
 #import "RUBusDelegate.h"
 #import "RUPlacesDelegate.h"
+#import "RUWebDelegate.h"
 
-@interface RUMenuViewController : UIViewController <RUInfoDelegate, RUNewsDelegate, RUBusDelegate, RUPlacesDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RUMenuViewController : UIViewController <RUInfoDelegate, RUNewsDelegate, RUBusDelegate, RUPlacesDelegate, RUWebDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) JASidePanelController * sidepanel;
 

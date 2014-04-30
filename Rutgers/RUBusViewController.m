@@ -24,7 +24,7 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.navigationItem.title = @"Bus";
-        self.busData = [[RUBusData alloc] init];
+        self.busData = [RUBusData sharedInstance];
         self.busData.delegate = self;
         // Custom initialization
         self.delegate = delegate;
@@ -56,22 +56,29 @@
     
     [self setToolbarItems:barArray];
     
-    [self.busData getAgencyConfigWithCompletion:^{
+    [self.busData updateActiveStopsAndRoutesWithCompletion:^{
         [self.tableView reloadData];
         [self.busData startFindingNearbyStops];
     }];
     
-    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60*20 target:self selector:@selector(reloadActiveStopsAndRoutes) userInfo:nil repeats:YES];
+    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:2*60 target:self selector:@selector(reloadActiveStopsAndRoutes) userInfo:nil repeats:YES];
 
     // Do any additional setup after loading the view.
 }
+-(void)dealloc{
+    [self.busData stopFindingNearbyStops];
+}
 -(void)reloadActiveStopsAndRoutes{
     [self.busData updateActiveStopsAndRoutesWithCompletion:^{
-        [self.tableView reloadData];
+        if (self.view.window) {
+            [self.tableView reloadData];
+        }
     }];
 }
 -(void)busData:(RUBusData *)busData didUpdateNearbyStops:(NSDictionary *)nearbyStops{
-    [self.tableView reloadData];
+    if (self.view.window) {
+        [self.tableView reloadData];
+    }
 }
 -(void)segmentedControlButtonChanged:(UISegmentedControl *)segmentedControl{
     [self.tableView reloadData];

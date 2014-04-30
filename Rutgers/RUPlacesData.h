@@ -11,5 +11,7 @@
 @interface RUPlacesData : NSObject
 -(void)getPlacesWithCompletion:(void (^)(void))completionBlock;
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
-@property (nonatomic) NSArray *places;
+@property NSArray *places;
+@property BOOL placesLoaded;
++(RUPlacesData *)sharedInstance;
 @end

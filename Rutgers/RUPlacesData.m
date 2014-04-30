@@ -15,6 +15,14 @@
 @end
 
 @implementation RUPlacesData
++(RUPlacesData *)sharedInstance{
+    static RUPlacesData *placesData = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        placesData = [[RUPlacesData alloc] init];
+    });
+    return placesData;
+}
 - (instancetype)init
 {
     self = [super init];
@@ -30,14 +38,29 @@
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSArray *places = [responseObject[@"all"] allValues];
             self.places = places;
+            self.placesLoaded = YES;
             completionBlock();
+        } else {
+            [self getPlacesWithCompletion:completionBlock];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [self getPlacesWithCompletion:completionBlock];
     }];
 }
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock{
     NSArray *results = [self.places filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@",query]];
+    
+    NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"title beginswith[cd] %@",query];
+    results = [results sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        BOOL one = [beginsWithPredicate evaluateWithObject:obj1];
+        BOOL two = [beginsWithPredicate evaluateWithObject:obj2];
+        if (one && !two) {
+            return NSOrderedAscending;
+        } else if (!one && two) {
+            return NSOrderedDescending;
+        }
+        return NSOrderedSame;
+    }];
     completionBlock(results);
 }
 @end

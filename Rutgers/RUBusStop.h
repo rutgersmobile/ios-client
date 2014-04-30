@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TBXML.h"
 #import <MapKit/MapKit.h>
 
 @interface RUBusStop : NSObject
