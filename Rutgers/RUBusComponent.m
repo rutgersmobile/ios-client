@@ -14,11 +14,12 @@
 
 @implementation RUBusComponent
 
-- (id)initWithDelegate:(id <RUBusDelegate>)delegate {
+- (id)initWithDelegate:(id <RUComponentDelegate>)delegate {
     self = [super init];
     if (self) {
         // Custom initialization
-        RUBusViewController * vc = [[RUBusViewController alloc] initWithDelegate:delegate];
+        RUBusViewController * vc = [[RUBusViewController alloc] initWithNibName:@"RUBusViewController" bundle:nil];
+        vc.delegate = delegate;
         [self pushViewController:vc animated:NO];
     }
     return self;

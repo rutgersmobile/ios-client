@@ -14,5 +14,4 @@
 @property (nonatomic) NSArray *stops;
 @property (nonatomic) RUBusRoute *route;
 @property (nonatomic) RUBusData *busData;
-@property (nonatomic) NSString *agency;
 @end

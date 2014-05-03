@@ -12,208 +12,428 @@
 #import "RUBusRoute.h"
 #import "RUPredictionsViewController.h"
 
-@interface RUBusViewController () <RUBusDataDelegate>
+#define ACTIVE_TIMER_INTERVAL 60.0*3
+
+//NSString *const busSavedSearchTextKey = @"busSavedSearchTextKey";
+NSString *const busLastPaneKey = @"busLastPaneKey";
+
+
+typedef enum : NSUInteger {
+    RUBusVCRoutesPane = 0,
+    RUBusVCStopsPane = 1,
+    RUBusVCMapPane = 2,
+} RUBusVCPane;
+
+
+@interface RUBusViewController () <RUBusDataDelegate, UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 @property (nonatomic) RUBusData *busData;
-@property (nonatomic) NSTimer *refreshTimer;
-@property (nonatomic) UISegmentedControl *segmentedControl;
+
+@property NSDictionary *activeStops;
+@property NSDictionary *activeRoutes;
+
+@property RUBusVCPane currentPane;
+@property (nonatomic) UISearchBar *searchBar;
+@property (nonatomic) UISearchDisplayController *searchController;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+@property NSArray *searchResults;
 @end
 
 @implementation RUBusViewController
-
-- (id)initWithDelegate:(id <RUBusDelegate>)delegate {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.navigationItem.title = @"Bus";
         self.busData = [RUBusData sharedInstance];
         self.busData.delegate = self;
-        // Custom initialization
-        self.delegate = delegate;
-        if ([self.delegate respondsToSelector:@selector(onMenuButtonTapped)]) {
-            // delegate expects menu button notification, so let's create and add a menu button
-            UIBarButtonItem * btn = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.delegate action:@selector(onMenuButtonTapped)];
-            self.navigationItem.leftBarButtonItem = btn;
-        }
+        
     }
     return self;
 }
-
+-(void)setDelegate:(id<RUComponentDelegate>)delegate{
+    _delegate = delegate;
+    if ([delegate respondsToSelector:@selector(onMenuButtonTapped)]) {
+        // delegate expects menu button notification, so let's create and add a menu button
+        UIBarButtonItem * btn = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.delegate action:@selector(onMenuButtonTapped)];
+        self.navigationItem.leftBarButtonItem = btn;
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+ //   self.mapView.delegate = self;
+    
+    [self reloadActiveStopsAndRoutes];
+
     [self.navigationController setToolbarHidden:NO animated:NO];
 
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 
-    NSArray *segItemsArray = @[@"Routes",@"Stops",@"Search"];
+    /// segmented bar setup
+    NSArray *segItemsArray = @[@"Routes",@"Stops",@"Map"];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segItemsArray];
-    self.segmentedControl = segmentedControl;
     [segmentedControl addTarget:self action:@selector(segmentedControlButtonChanged:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.frame = CGRectMake(0, 0, 260, 30);
-    segmentedControl.selectedSegmentIndex = 1;
+    
     UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:(UIView *)segmentedControl];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = [NSArray arrayWithObjects: flexibleSpace, segmentedControlButtonItem, flexibleSpace, nil];
     
     [self setToolbarItems:barArray];
     
-    [self.busData updateActiveStopsAndRoutesWithCompletion:^{
-        [self.tableView reloadData];
-        [self.busData startFindingNearbyStops];
-    }];
-    
-    self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:2*60 target:self selector:@selector(reloadActiveStopsAndRoutes) userInfo:nil repeats:YES];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.searchBar.showsCancelButton = YES;
 
-    // Do any additional setup after loading the view.
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchController.delegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.searchResultsDelegate = self;
+    
+    self.tableView.tableHeaderView = self.searchBar;
+    [self.searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults registerDefaults:@{busLastPaneKey: @(1)}];
+    
+    RUBusVCPane lastPane = [userDefaults integerForKey:busLastPaneKey];
+    
+    segmentedControl.selectedSegmentIndex = lastPane;
+    [self segmentedControlButtonChanged:segmentedControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelWillShowLeftPanel" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelDidBeginPanning" object:nil];
+    
+
 }
+
 -(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.busData startFindingNearbyStops];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
     [self.busData stopFindingNearbyStops];
 }
+
 -(void)reloadActiveStopsAndRoutes{
-    [self.busData updateActiveStopsAndRoutesWithCompletion:^{
-        if (self.view.window) {
-            [self.tableView reloadData];
+    __weak typeof(self) weakSelf = self;
+    [self.busData updateActiveStopsAndRoutesWithCompletion:^(NSDictionary *activeStops, NSDictionary *activeRoutes) {
+        self.activeRoutes = activeRoutes;
+        self.activeStops = activeStops;
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            case RUBusVCStopsPane:
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            default:
+                break;
         }
+
+        double delayInSeconds = ACTIVE_TIMER_INTERVAL;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [weakSelf reloadActiveStopsAndRoutes];
+        });
     }];
 }
+
 -(void)busData:(RUBusData *)busData didUpdateNearbyStops:(NSDictionary *)nearbyStops{
-    if (self.view.window) {
-        [self.tableView reloadData];
+    if (self.currentPane == RUBusVCStopsPane) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
--(void)segmentedControlButtonChanged:(UISegmentedControl *)segmentedControl{
-    [self.tableView reloadData];
-}
-
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - segmented control
+
+-(void)segmentedControlButtonChanged:(UISegmentedControl *)segmentedControl{
+ 
+    if (segmentedControl.selectedSegmentIndex == RUBusVCMapPane) {
+        self.tableView.hidden = YES;
+        self.mapView.hidden = NO;
+    } else {
+        self.tableView.hidden = NO;
+        self.mapView.hidden = YES;
+    }
+    
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    self.currentPane = segmentedControl.selectedSegmentIndex;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:self.currentPane forKey:busLastPaneKey];
+    
+    [self.tableView reloadData];
+}
+
+#pragma mark - search bar
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+    [self.busData queryStopsAndRoutesWithString:searchString completion:^(NSArray *results) {
+        self.searchResults = results;
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }];
+    return NO;
+}
+-(void)clearResponders{
+    [self.searchBar resignFirstResponder];
+}
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [self clearResponders];
+}
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self clearResponders];
+}
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger index = self.segmentedControl.selectedSegmentIndex;
-    if (index == 0) {
-        return 2;
-    } else if (index == 1) {
-        return 3;
+    if (tableView == self.tableView) {
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                return 2;
+                break;
+            case RUBusVCStopsPane:
+                return 3;
+                break;
+            default:
+                return 0;
+                break;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return 1;
     }
     return 0;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger index = self.segmentedControl.selectedSegmentIndex;
-    if (index == 0) {
-        if (section == 0) {
-            return [self.busData.activeRoutes[newBrunswickAgency] count];
-        } else if (section == 1) {
-            return [self.busData.activeRoutes[newarkAgency] count];
+    if (tableView == self.tableView) {
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                switch (section) {
+                    case 0:
+                        return [self.activeRoutes[newBrunswickAgency] count];
+                        break;
+                    case 1:
+                        return [self.activeRoutes[newarkAgency] count];
+                        break;
+                    default:
+                        return 0;
+                        break;
+                }
+                break;
+            case RUBusVCStopsPane:
+                switch (section) {
+                    case 0:
+                        return MAX([self.busData.nearbyStops[newBrunswickAgency] count], [self.busData.nearbyStops[newarkAgency] count]);
+                        break;
+                    case 1:
+                        return [self.activeStops[newBrunswickAgency] count];
+                        break;
+                    case 2:
+                        return [self.activeStops[newarkAgency] count];
+                        break;
+                    default:
+                        return 0;
+                        break;
+                }
+                break;
+            default:
+                return 0;
+                break;
         }
-    } else if (index == 1) {
-        if (section == 0) {
-            return MAX([self.busData.nearbyStops[newBrunswickAgency] count], [self.busData.nearbyStops[newarkAgency] count]);
-        } else if (section == 1) {
-            return [self.busData.activeStops[newBrunswickAgency] count];
-        } else if (section == 2) {
-            return [self.busData.activeStops[newarkAgency] count];
-        }
+
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return self.searchResults.count;
     }
     return 0;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    cell.accessoryType = UITableViewCellAccessoryDetailButton;
-    NSInteger index = self.segmentedControl.selectedSegmentIndex;
-    if (index == 0) {
-        if (indexPath.section == 0) {
-            RUBusRoute *route = self.busData.activeRoutes[newBrunswickAgency][indexPath.row];
-            cell.textLabel.text = route.title;
-        } else if (indexPath.section == 1) {
-            RUBusRoute *route = self.busData.activeRoutes[newarkAgency][indexPath.row];
-            cell.textLabel.text = route.title;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (tableView == self.tableView) {
+        
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                switch (indexPath.section) {
+                    case 0:
+                    {
+                        RUBusRoute *route = self.activeRoutes[newBrunswickAgency][indexPath.row];
+                        cell.textLabel.text = route.title;
+                    }
+                        break;
+                    case 1:
+                    {
+                        RUBusRoute *route = self.activeRoutes[newarkAgency][indexPath.row];
+                        cell.textLabel.text = route.title;
+                    }
+                        break;
+                    default:
+                        return 0;
+                        break;
+                }
+                break;
+            case RUBusVCStopsPane:
+                switch (indexPath.section) {
+                    case 0:
+                        if ([self.busData.nearbyStops[newBrunswickAgency] count] > [self.busData.nearbyStops[newarkAgency] count]) {
+                            RUBusStop *stop = [self.busData.nearbyStops[newBrunswickAgency][indexPath.row] firstObject];
+                            cell.textLabel.text = stop.title;
+                        } else {
+                            RUBusStop *stop = [self.busData.nearbyStops[newarkAgency][indexPath.row] firstObject];
+                            cell.textLabel.text = stop.title;
+                        }
+                        break;
+                    case 1:
+                    {
+                        RUBusStop *stop = [self.activeStops[newBrunswickAgency][indexPath.row] firstObject];
+                        cell.textLabel.text = stop.title;
+                    }
+                        break;
+                    case 2:
+                    {
+                        RUBusStop *stop = [self.activeStops[newarkAgency][indexPath.row] firstObject];
+                        cell.textLabel.text = stop.title;
+                    }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
         }
-    } else if (index == 1) {
-        if (indexPath.section == 0) {
-            if ([self.busData.nearbyStops[newBrunswickAgency] count] > [self.busData.nearbyStops[newarkAgency] count]) {
-                RUBusStop *stop = [self.busData.nearbyStops[newBrunswickAgency][indexPath.row] firstObject];
-                cell.textLabel.text = stop.title;
-            } else {
-                RUBusStop *stop = [self.busData.nearbyStops[newarkAgency][indexPath.row] firstObject];
-                cell.textLabel.text = stop.title;
-            }
-        } else if (indexPath.section == 1) {
-            RUBusStop *stop = [self.busData.activeStops[newBrunswickAgency][indexPath.row] firstObject];
-            cell.textLabel.text = stop.title;
-        } else if (indexPath.section == 2) {
-            RUBusStop *stop = [self.busData.activeStops[newarkAgency][indexPath.row] firstObject];
-            cell.textLabel.text = stop.title;
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        id itemForCell = self.searchResults[indexPath.row];
+        if ([itemForCell isKindOfClass:[RUBusRoute class]]){
+            cell.textLabel.text = [itemForCell title];
+        } else {
+            cell.textLabel.text = [[itemForCell firstObject] title];
         }
     }
-    
     return cell;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    NSInteger index = self.segmentedControl.selectedSegmentIndex;
-    if (index == 0) {
-        if (section == 0) {
-            return @"New Brunswick Active Routes";
-        } else if (section == 1) {
-            return @"Newark Active Routes";
+    if (tableView == self.tableView) {
+        
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                switch (section) {
+                    case 0:
+                        return @"New Brunswick Active Routes";
+                        break;
+                    case 1:
+                        return @"Newark Active Routes";
+                        break;
+                    default:
+                        return nil;
+                        break;
+                }
+                break;
+            case RUBusVCStopsPane:
+                switch (section) {
+                    case 0:
+                        return @"Nearby Active Stops";
+                        break;
+                    case 1:
+                        return @"New Brunswick Active Stops";
+                        break;
+                    case 2:
+                        return @"Newark Active Stops";
+                        break;
+                    default:
+                        return nil;
+                        break;
+                }
+                break;
+            default:
+                return nil;
+                break;
         }
-    } else if (index == 1) {
-        if (section == 0){
-            return @"Nearby Active Stops";
-        } else if (section == 1) {
-            return @"New Brunswick Active Stops";
-        } else if (section == 2) {
-            return @"Newark Active Stops";
-        }
+
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return @"Search Results";
     }
     return nil;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSInteger index = self.segmentedControl.selectedSegmentIndex;
     RUPredictionsViewController *predictionsVC = [[RUPredictionsViewController alloc] init];
     predictionsVC.busData = self.busData;
-    if (index == 0) {
-        if (indexPath.section == 0) {
-            predictionsVC.agency = newBrunswickAgency;
-            RUBusRoute *route = self.busData.activeRoutes[newBrunswickAgency][indexPath.row];
-            predictionsVC.route = route;
-            [self.navigationController pushViewController:predictionsVC animated:YES];
-        } else if (indexPath.section == 1) {
-            predictionsVC.agency = newarkAgency;
-            RUBusRoute *route = self.busData.activeRoutes[newarkAgency][indexPath.row];
-            predictionsVC.route = route;
-            [self.navigationController pushViewController:predictionsVC animated:YES];
+    if (tableView == self.tableView) {
+        
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                switch (indexPath.section) {
+                    case 0:
+                    {
+                        RUBusRoute *route = self.activeRoutes[newBrunswickAgency][indexPath.row];
+                        predictionsVC.route = route;
+                    }
+                        break;
+                    case 1:
+                    {
+                        RUBusRoute *route = self.activeRoutes[newarkAgency][indexPath.row];
+                        predictionsVC.route = route;
+                    }
+                        break;
+                    default:
+                        return;
+                }
+                break;
+            case RUBusVCStopsPane:
+                switch (indexPath.section) {
+                    case 0:
+                        if ([self.busData.nearbyStops[newBrunswickAgency] count] > [self.busData.nearbyStops[newarkAgency] count]) {
+                            NSArray *stops = self.busData.nearbyStops[newBrunswickAgency][indexPath.row];
+                            predictionsVC.stops = stops;
+                        } else {
+                            NSArray *stops = self.busData.nearbyStops[newarkAgency][indexPath.row];
+                            predictionsVC.stops = stops;
+                        }
+                        break;
+                    case 1:
+                    {
+                        NSArray *stops = self.activeStops[newBrunswickAgency][indexPath.row];
+                        predictionsVC.stops = stops;
+                    }
+                        break;
+                    case 2:
+                    {
+                        NSArray *stops = self.activeStops[newarkAgency][indexPath.row];
+                        predictionsVC.stops = stops;
+                    }
+                        break;
+                    default:
+                        return;
+                }
+                break;
+            default:
+                return;
         }
-    } else if (index == 1) {
-        if (indexPath.section == 0) {
-            if ([self.busData.nearbyStops[newBrunswickAgency] count] > [self.busData.nearbyStops[newarkAgency] count]) {
-                predictionsVC.agency = newBrunswickAgency;
-                NSArray *stops = self.busData.nearbyStops[newBrunswickAgency][indexPath.row];
-                predictionsVC.stops = stops;
-                [self.navigationController pushViewController:predictionsVC animated:YES];
-            } else {
-                predictionsVC.agency = newarkAgency;
-                NSArray *stops = self.busData.nearbyStops[newarkAgency][indexPath.row];
-                predictionsVC.stops = stops;
-                [self.navigationController pushViewController:predictionsVC animated:YES];
-            }
-        } else if (indexPath.section == 1) {
-            predictionsVC.agency = newBrunswickAgency;
-            NSArray *stops = self.busData.activeStops[newBrunswickAgency][indexPath.row];
-            predictionsVC.stops = stops;
-            [self.navigationController pushViewController:predictionsVC animated:YES];
-        } else if (indexPath.section == 2) {
-            predictionsVC.agency = newarkAgency;
-            NSArray *stops = self.busData.activeStops[newarkAgency][indexPath.row];
-            predictionsVC.stops = stops;
-            [self.navigationController pushViewController:predictionsVC animated:YES];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        id itemForCell = self.searchResults[indexPath.row];
+        if ([itemForCell isKindOfClass:[RUBusRoute class]]){
+            predictionsVC.route = itemForCell;
+        } else {
+            predictionsVC.stops = itemForCell;
         }
     }
+    [self.navigationController pushViewController:predictionsVC animated:YES];
 }
 
 /*

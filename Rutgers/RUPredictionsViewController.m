@@ -17,15 +17,11 @@
 
 @interface RUPredictionsViewController ()
 @property NSArray *response;
-@property (nonatomic) NSTimer *updateTimer;
 @end
 
 
 @implementation RUPredictionsViewController
 
--(void)setAgency:(NSString *)agency{
-    _agency = [agency copy];
-}
 -(void)setStops:(NSArray *)stops{
     _stops = stops;
     self.title = [[stops firstObject] title];
@@ -37,25 +33,23 @@
     self.tableView.rowHeight = 60.0;
 }
 -(void)getPredictions{
-
     __weak typeof(self) weakSelf = self;
 
     void (^completion)(NSArray *response) = ^(NSArray *response) {
         self.response = response;
-        if (self.view.window) {
-            [self.tableView reloadData];
-            double delayInSeconds = PREDICTION_TIMER_INTERVAL;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [weakSelf getPredictions];
-            });
-        }
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+     
+        double delayInSeconds = PREDICTION_TIMER_INTERVAL;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [weakSelf getPredictions];
+        });
     };
     
     if (self.stops) {
-        [self.busData getPredictionsForStops:self.stops inAgency:self.agency withCompletion:completion];
+        [self.busData getPredictionsForStops:self.stops withCompletion:completion];
     } else if (self.route) {
-        [self.busData getPredictionsForRoute:self.route inAgency:self.agency withCompletion:completion];
+        [self.busData getPredictionsForRoute:self.route withCompletion:completion];
     }
 }
 
@@ -105,15 +99,17 @@
     // Configure the cell...
     if (self.stops) {
         cell.titleLabel.text = itemForCell[@"_routeTitle"];
-        if (itemForCell[@"direction"]) {
+        if (predictionsForCell) {
             cell.detailLabelOne.text = [itemForCell[@"direction"] firstObject][@"_title"];
             cell.detailLabelTwo.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
+            
             cell.titleLabel.textColor = [UIColor blackColor];
             cell.detailLabelOne.textColor = [UIColor blackColor];
             cell.detailLabelTwo.textColor = [UIColor blackColor];
         } else {
             cell.detailLabelOne.text = itemForCell[@"_dirTitleBecauseNoPredictions"];
             cell.detailLabelTwo.text =  @"No predictions available.";
+            
             cell.titleLabel.textColor = [UIColor grayColor];
             cell.detailLabelOne.textColor = [UIColor lightGrayColor];
             cell.detailLabelTwo.textColor = [UIColor lightGrayColor];
@@ -122,10 +118,12 @@
         cell.titleLabel.text = itemForCell[@"_stopTitle"];
         if (predictionsForCell) {
             cell.detailLabelOne.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
+            
             cell.titleLabel.textColor = [UIColor blackColor];
             cell.detailLabelOne.textColor = [UIColor blackColor];
         } else {
             cell.detailLabelOne.text =  @"No predictions available.";
+            
             cell.titleLabel.textColor = [UIColor grayColor];
             cell.detailLabelOne.textColor = [UIColor lightGrayColor];
         }

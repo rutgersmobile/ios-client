@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUBusDelegate.h"
+#import "RUComponentDelegate.h"
 
 @interface RUBusComponent : UINavigationController
-- (id)initWithDelegate:(id <RUBusDelegate>)delegate;
+- (id)initWithDelegate:(id <RUComponentDelegate>)delegate;
 @end

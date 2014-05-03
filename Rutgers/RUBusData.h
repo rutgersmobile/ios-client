@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-const NSString *newBrunswickAgency;
-const NSString *newarkAgency;
+NSString const* newBrunswickAgency;
+NSString const* newarkAgency;
 
 @class RUBusData;
 
@@ -24,18 +24,20 @@ const NSString *newarkAgency;
 -(void)startFindingNearbyStops;
 -(void)stopFindingNearbyStops;
 
--(void)updateActiveStopsAndRoutesWithCompletion:(void (^)(void))completionBlock;
+-(void)updateActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock;
 
--(void)getPredictionsForStops:(NSArray *)stops inAgency:(NSString *)agency withCompletion:(void (^)(NSArray *response))completionBlock;
--(void)getPredictionsForRoute:(RUBusRoute *)route inAgency:(NSString *)agency withCompletion:(void (^)(NSArray *response))completionBlock;
+-(void)getPredictionsForStops:(NSArray *)stops withCompletion:(void (^)(NSArray *response))completionBlock;
+-(void)getPredictionsForRoute:(RUBusRoute *)route withCompletion:(void (^)(NSArray *response))completionBlock;
+
+
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
 
 @property (weak) id<RUBusDataDelegate> delegate;
 
-@property NSMutableDictionary *stops;
-@property NSMutableDictionary *routes;
-@property NSMutableDictionary *activeStops;
-@property NSMutableDictionary *activeRoutes;
+
+
 @property NSDictionary *nearbyStops;
+
 
 +(RUBusData *)sharedInstance;
 
