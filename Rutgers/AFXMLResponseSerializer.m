@@ -20,7 +20,6 @@
     }
     XMLDictionaryParser *parser = [[XMLDictionaryParser alloc] init];
     parser.alwaysUseArrays = YES;
-    parser.trimWhiteSpace = NO;
     parser.stripEmptyNodes = NO;
     
     return [parser dictionaryWithData:data];
