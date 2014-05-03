@@ -30,7 +30,9 @@
 }
 -(void)setChildren:(NSArray *)children{
     _children = children;
-    [self.tableView reloadData];
+  //  [self.tableView reloadData];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+
 }
 
 
@@ -69,7 +71,7 @@
         cell.textLabel.text = [self titleForChild:child];
     }
     if (child[@"channel"]) {
-        cell.accessoryType = UITableViewCellAccessoryDetailButton;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (child[@"children"]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {

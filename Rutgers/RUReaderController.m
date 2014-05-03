@@ -90,7 +90,7 @@
 
 -(void)setItems:(NSArray *)items{
     _items = items;
-    [self.tableView reloadData];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 
