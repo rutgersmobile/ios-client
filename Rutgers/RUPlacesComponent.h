@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUPlacesDelegate.h"
+#import "RUComponentDelegate.h"
 
 @interface RUPlacesComponent : UINavigationController
-- (id) initWithDelegate: (id <RUPlacesDelegate>) delegate;
+- (id) initWithDelegate: (id <RUComponentDelegate>) delegate;
 
 @end

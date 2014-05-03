@@ -14,7 +14,7 @@
 
 @implementation RUPlacesComponent
 
--(id)initWithDelegate:(id<RUPlacesDelegate>)delegate{
+-(id)initWithDelegate:(id<RUComponentDelegate>)delegate{
     self = [super init];
     if (self) {
         // Custom initialization

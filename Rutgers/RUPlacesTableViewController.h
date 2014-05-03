@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUPlacesDelegate.h"
+#import "RUComponentDelegate.h"
 
 @interface RUPlacesTableViewController : UITableViewController
-@property (nonatomic) id <RUPlacesDelegate> delegate;
-- (id) initWithDelegate: (id <RUPlacesDelegate>) delegate;
+@property (nonatomic) id <RUComponentDelegate> delegate;
+- (id) initWithDelegate: (id <RUComponentDelegate>) delegate;
 @end

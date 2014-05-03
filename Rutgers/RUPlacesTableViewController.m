@@ -10,22 +10,26 @@
 #import "RUPlacesData.h"
 #import "RUPlaceDetailTableViewController.h"
 
-@interface RUPlacesTableViewController () <UISearchBarDelegate>
+
+NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
+
+@interface RUPlacesTableViewController () <UISearchDisplayDelegate>
 @property (nonatomic) RUPlacesData *placesData;
 @property (nonatomic) UISearchBar *searchBar;
-@property NSArray *results;
+@property (nonatomic) UISearchDisplayController *searchController;
+@property NSArray *searchResults;
+@property NSArray *recentSearches;
 @end
 
 @implementation RUPlacesTableViewController
--(id)initWithDelegate:(id<RUPlacesDelegate>)delegate{
-    self = [super initWithStyle:UITableViewStylePlain];
+-(id)initWithDelegate:(id<RUComponentDelegate>)delegate{
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.delegate = delegate;
         self.placesData = [RUPlacesData sharedInstance];
         self.navigationItem.title = @"Places";
         
         // Custom initialization
-        self.delegate = delegate;
         if ([self.delegate respondsToSelector:@selector(onMenuButtonTapped)]) {
             // delegate expects menu button notification, so let's create and add a menu button
             UIBarButtonItem * btn = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.delegate action:@selector(onMenuButtonTapped)];
@@ -39,21 +43,34 @@
 {
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-
+    
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     self.searchBar.showsCancelButton = YES;
-    self.searchBar.delegate = self;
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchDisplayController.searchResultsDelegate = self;
+    self.searchDisplayController.searchResultsDataSource = self;
+    self.searchDisplayController.delegate = self;
+    
+    [self.searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+
+    
     self.tableView.tableHeaderView = self.searchBar;
+    
+    [self.placesData getRecentPlacesWithCompletion:^(NSArray *recents) {
+        self.recentSearches = recents;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    /*
+    NSString *searchText = [[NSUserDefaults standardUserDefaults] stringForKey:placesSavedSearchTextKey];
+    self.searchBar.text = searchText;
+    [self queryText:searchText];
+    */
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelWillShowLeftPanel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelDidBeginPanning" object:nil];
-
     
-    
-    [self.placesData getPlacesWithCompletion:^{
-    
-    }];
-    
+  
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -61,31 +78,33 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
--(void)clearResponders{
-    [self.searchBar resignFirstResponder];
+-(void)viewWillAppear:(BOOL)animated{
+
 }
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
--(void)resignFirstResponders{
-    
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    [self.placesData queryPlacesWithString:searchText completion:^(NSArray *results) {
-        self.results = results;
-        [self.tableView reloadData];
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+    [self.placesData queryPlacesWithString:searchString completion:^(NSArray *results) {
+        self.searchResults = results;
+        [self.searchDisplayController.searchResultsTableView reloadData];
     }];
+    return NO;
+}
+-(void)clearResponders{
+    [self.searchBar resignFirstResponder];
 }
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
-    [searchBar resignFirstResponder];
+    [self clearResponders];
 }
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    [self.searchBar resignFirstResponder];
+    [self clearResponders];
 }
 
 #pragma mark - Table view data source
@@ -98,29 +117,60 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return self.results.count;
+    if (tableView == self.tableView) {
+        return self.recentSearches.count;
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return self.searchResults.count;
+    }
+    return 0;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
-    NSDictionary *itemForCell = self.results[indexPath.row];
-    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    NSDictionary *itemForCell;
+
+    if (tableView == self.tableView) {
+        itemForCell = self.recentSearches[indexPath.row];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        itemForCell = self.searchResults[indexPath.row];
+
+    }
     cell.textLabel.text = itemForCell[@"title"];
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *itemForCell = self.results[indexPath.row];
-    
+    NSDictionary *itemForCell;
+
+    if (tableView == self.tableView) {
+        itemForCell = self.recentSearches[indexPath.row];
+
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        itemForCell = self.searchResults[indexPath.row];
+        [self.placesData userDidSelectPlace:itemForCell];
+        [self.placesData getRecentPlacesWithCompletion:^(NSArray *recents) {
+            self.recentSearches = recents;
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+    }
+
     RUPlaceDetailTableViewController *detailVC = [[RUPlaceDetailTableViewController alloc] initWithPlace:itemForCell];
     [self.navigationController pushViewController:detailVC animated:YES];
 }
-
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    
+    if (tableView == self.tableView) {
+        return @"Recent Places";
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return @"Search Results";
+    }
+    return nil;
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

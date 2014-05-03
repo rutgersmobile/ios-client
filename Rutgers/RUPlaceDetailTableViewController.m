@@ -27,6 +27,7 @@ const NSString *DESCRIPTION = @"description";
 @interface RUPlaceDetailTableViewCell : UITableViewCell
 
 @end
+
 @implementation RUPlaceDetailTableViewCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -92,7 +93,7 @@ const NSString *DESCRIPTION = @"description";
     return _address;
 }
 -(NSString *)stringForKeyPath:(const NSString *)keypath{
-    NSString *string = [self.place valueForKeyPath:keypath];
+    NSString *string = [self.place valueForKeyPath:[keypath copy]];
     if ([string isKindOfClass:[NSString class]] && ![string isEqualToString:@""]) {
         return string;
     }

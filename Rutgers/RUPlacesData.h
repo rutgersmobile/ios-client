@@ -9,9 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface RUPlacesData : NSObject
--(void)getPlacesWithCompletion:(void (^)(void))completionBlock;
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
-@property NSArray *places;
-@property BOOL placesLoaded;
+-(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock;
+-(void)userDidSelectPlace:(NSDictionary *)place;
 +(RUPlacesData *)sharedInstance;
 @end
