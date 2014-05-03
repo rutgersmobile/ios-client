@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUWebDelegate.h"
+#import "RUComponentDelegate.h"
 
 @interface RUWebComponent : UINavigationController
-- (id) initWithURL:(NSURL *)url delegate: (id <RUWebDelegate>) delegate;
+- (id) initWithURL:(NSURL *)url title:(NSString *)title delegate: (id <RUComponentDelegate>) delegate;
 
 @end

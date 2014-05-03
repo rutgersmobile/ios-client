@@ -10,18 +10,18 @@
 #import <TSMiniWebBrowser.h>
 
 @interface RUWebComponent ()
-@property id<RUWebDelegate> delegate;
+@property id<RUComponentDelegate> delegate;
 @end
 
 @implementation RUWebComponent
 
-- (id)initWithURL:(NSURL *)url delegate: (id <RUWebDelegate>) delegate{
+- (id) initWithURL:(NSURL *)url title:(NSString *)title delegate:(id <RUComponentDelegate>) delegate{
     self = [super init];
     if (self) {
         // Custom initialization
         self.delegate = delegate;
         TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
-
+        webBrowser.title = title;
         if ([self.delegate respondsToSelector:@selector(onMenuButtonTapped)]) {
             // delegate expects menu button notification, so let's create and add a menu button
             UIBarButtonItem * btn = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.delegate action:@selector(onMenuButtonTapped)];
