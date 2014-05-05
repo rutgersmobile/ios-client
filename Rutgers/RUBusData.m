@@ -8,20 +8,19 @@
 
 #import "RUBusData.h"
 #import <AFNetworking.h>
-
+#import "NSArray+RUBusStop.h"
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
 #import "AFXMLResponseSerializer.h"
+#import "RULocationManager.h"
 
 NSString const *newBrunswickAgency = @"rutgers";
 NSString const *newarkAgency = @"rutgers-newark";
 
-#define NEARBY_DISTANCE 300
 
-@interface RUBusData () <CLLocationManagerDelegate>
+@interface RUBusData ()
 @property (nonatomic) AFHTTPSessionManager *jsonSessionManager;
 @property (nonatomic) AFHTTPSessionManager *xmlSessionManager;
-@property (nonatomic) CLLocationManager *locationManager;
 
 @property NSMutableDictionary *stops;
 @property NSMutableDictionary *routes;
@@ -30,6 +29,7 @@ NSString const *newarkAgency = @"rutgers-newark";
 @property NSMutableDictionary *activeStops;
 @property NSMutableDictionary *activeRoutes;
 
+@property NSDate *lastActiveStopsAndRoutesUpdateDate;
 @property dispatch_group_t agencyGroup;
 @property dispatch_group_t activeGroup;
 //@property NSDate *fetchDate;
@@ -62,65 +62,41 @@ NSString const *newarkAgency = @"rutgers-newark";
         self.xmlSessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
         self.xmlSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",nil];
         
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.distanceFilter = 25; // whenever we move 25 m
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
-        self.locationManager.delegate = self;
-        
         [self getAgencyConfig];
     }
     return self;
 }
 #pragma mark - nearby api
--(void)startFindingNearbyStops{
-    //NSAssert(!self.activeGroup, @"The call to update stops and routes must be made first");
-    [self.locationManager startUpdatingLocation];
-}
--(void)stopFindingNearbyStops{
-    [self.locationManager stopUpdatingLocation];
-}
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
-    CLLocation* location = [locations lastObject];
-    dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
-        NSDictionary *nearbyStops = [self stopsNearLocation:location];
-        self.nearbyStops = nearbyStops;
-        [self.delegate busData:self didUpdateNearbyStops:nearbyStops];
-    });
-}
 
--(NSDictionary *)stopsNearLocation:(CLLocation *)location{
-    NSMutableDictionary *nearbyStops = [NSMutableDictionary dictionary];
-    
-    for (NSString *agency in @[newBrunswickAgency,newarkAgency]) {
-        NSMutableArray *nearbyStopsForAgency = [NSMutableArray array];
+-(void)stopsNearLocation:(CLLocation *)location completion:(void (^)(NSDictionary *results))completionBlock{
+    dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
         
-        NSDictionary *stops = self.stops[agency];
-        [stops enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            BOOL active = NO;
-            for (RUBusStop *busStop in obj) {
-                if (busStop.active) {
-                    active = YES;
-                    break;
-                }
-            }
-            if (active) {
-                CLLocationDistance distance = [self distanceOfStops:obj fromLocation:location];
-                if (distance < NEARBY_DISTANCE) {
-                    [nearbyStopsForAgency addObject:obj];
-                }
-            }
-        }];
+        NSMutableDictionary *nearbyStops = [NSMutableDictionary dictionary];
         
-        nearbyStops[agency] = [nearbyStopsForAgency sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
-            CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
+        for (NSString *agency in @[newBrunswickAgency,newarkAgency]) {
+            NSMutableArray *nearbyStopsForAgency = [NSMutableArray array];
             
-            if (distanceOne < distanceTwo) return NSOrderedAscending;
-            if (distanceOne > distanceTwo) return NSOrderedDescending;
-            return NSOrderedSame;
-        }];
-    }
-    return nearbyStops;
+            NSDictionary *stops = self.stops[agency];
+            [stops enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                if ([obj active]) {
+                    CLLocationDistance distance = [self distanceOfStops:obj fromLocation:location];
+                    if (distance < NEARBY_DISTANCE) {
+                        [nearbyStopsForAgency addObject:obj];
+                    }
+                }
+            }];
+            
+            nearbyStops[agency] = [nearbyStopsForAgency sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
+                CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
+                
+                if (distanceOne < distanceTwo) return NSOrderedAscending;
+                else if (distanceOne > distanceTwo) return NSOrderedDescending;
+                return NSOrderedSame;
+            }];
+        }
+        completionBlock([nearbyStops copy]);
+    });
  }
 
 -(CLLocationDistance)distanceOfStops:(NSArray *)stops fromLocation:(CLLocation *)location{
@@ -161,8 +137,13 @@ NSString const *newarkAgency = @"rutgers-newark";
     
 }
 
--(void)updateActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock{
-
+-(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock{
+ 
+    if (self.lastActiveStopsAndRoutesUpdateDate && [[NSDate date] timeIntervalSinceDate:self.lastActiveStopsAndRoutesUpdateDate] < 2*60) {
+        completionBlock([self.activeStops copy], [self.activeRoutes copy]);
+        return;
+    }
+    
     dispatch_group_t group = dispatch_group_create();
     self.activeGroup = group;
     
@@ -178,10 +159,12 @@ NSString const *newarkAgency = @"rutgers-newark";
         
         //end blocking the group, pairs with the call above
         dispatch_group_leave(group);
-
+        
         dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            self.lastActiveStopsAndRoutesUpdateDate = [NSDate date];
             completionBlock([self.activeStops copy], [self.activeRoutes copy]);
         });
+
     });
 }
 
@@ -225,7 +208,7 @@ static NSString *const format = @"&stops=%@|null|%@";
 
     if ([item isKindOfClass:[NSArray class]]) {
         NSArray *stops = item;
-        NSString *agency = [(RUBusStop *)[stops firstObject] agency];
+        NSString *agency = [stops agency];
 
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",agency];
         
@@ -240,7 +223,7 @@ static NSString *const format = @"&stops=%@|null|%@";
         NSArray *sortedDescriptors = [descriptors sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSString *routeTagOne = [obj1 firstObject];
             NSString *routeTagTwo = [obj2 firstObject];
-            return [[self.routes[agency][routeTagOne] title] compare:[self.routes[agency][routeTagTwo] title]];
+            return [[self.routes[agency][routeTagOne] title] caseInsensitiveCompare:[self.routes[agency][routeTagTwo] title]];
         }];
         
         for (NSArray *descriptor in sortedDescriptors) {
@@ -276,36 +259,40 @@ static NSString *const format = @"&stops=%@|null|%@";
                 return [containsPredicate evaluateWithObject:[evaluatedObject firstObject]];
             }
         }]];
-        
+
         results = [results sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            BOOL one;
-            NSString *titleOne;
+           
+            BOOL oneBeginsWithString;
             if ([obj1 isKindOfClass:[RUBusRoute class]]) {
-                one = [beginsWithPredicate evaluateWithObject:obj1];
-                titleOne = [obj1 title];
+                oneBeginsWithString = [beginsWithPredicate evaluateWithObject:obj1];
             } else {
                 RUBusStop *stop = [obj1 firstObject];
-                one = [beginsWithPredicate evaluateWithObject:stop];
-                titleOne = stop.title;
+                oneBeginsWithString = [beginsWithPredicate evaluateWithObject:stop];
             }
             
-            BOOL two;
-            NSString *titleTwo;
+            BOOL twoBeginsWithString;
             if ([obj2 isKindOfClass:[RUBusRoute class]]) {
-                two = [beginsWithPredicate evaluateWithObject:obj2];
-                titleTwo = [obj2 title];
+                twoBeginsWithString = [beginsWithPredicate evaluateWithObject:obj2];
             } else {
                 RUBusStop *stop = [obj2 firstObject];
-                two = [beginsWithPredicate evaluateWithObject:stop];
-                titleTwo = stop.title;
+                twoBeginsWithString = [beginsWithPredicate evaluateWithObject:stop];
             }
             
-            if (one && !two) {
+            if (oneBeginsWithString && !twoBeginsWithString) {
                 return NSOrderedAscending;
-            } else if (!one && two) {
+            } else if (!oneBeginsWithString && twoBeginsWithString) {
                 return NSOrderedDescending;
             }
-            return [titleOne compare:titleTwo];
+            
+            if ([obj1 active] && ![obj2 active]) {
+                return NSOrderedAscending;
+            } else if (![obj1 active] && [obj2 active]) {
+                return NSOrderedDescending;
+            }
+            
+            NSString *titleOne = [obj1 title];
+            NSString *titleTwo = [obj2 title];
+            return [titleOne caseInsensitiveCompare:titleTwo];
         }];
         
         completionBlock(results);
@@ -403,13 +390,7 @@ static NSString *const format = @"&stops=%@|null|%@";
     }
     
     NSArray *intermediate = [[self.stops[agency] allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        NSArray *array = evaluatedObject;
-        for (RUBusStop *stop in array) {
-            if (stop.active) {
-                return true;
-            }
-        }
-        return false;
+        return [evaluatedObject active];
     }]];
     
     self.activeStops[agency] = [intermediate sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {

@@ -36,6 +36,7 @@
     
     // TODO: motd, prefs, launch last used channel
     mainViewController.centerPanel = [self makeDefaultScreen];
+    mainViewController.leftGapPercentage = 0.55f;
     
     RUMenuViewController * menu = [[RUMenuViewController alloc] init];
     

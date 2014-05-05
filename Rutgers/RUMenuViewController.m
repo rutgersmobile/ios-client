@@ -15,12 +15,15 @@
 #import "RUBusComponent.h"
 #import "RUPlacesComponent.h"
 #import "RUWebComponent.h"
+#import "RUFoodComponent.h"
+#import "RUWebChannelManager.h"
 
-#define TITLES @[@"RU-info", @"myRutgers", @"Sakai", @"News", @"Bus", @"Places"]
-
+#define CHANNEL_TITLES @[@"RU-Info", @"News", @"Bus", @"Places", @"Food", ]
+#define WEB_TITLES @[@"myRutgers", @"Sakai"]
+#define WEB_URLS @[@"http://my.rutgers.edu", @"http://sakai.rutgers.edu"]
 
 @interface RUMenuViewController ()
-
+@property (nonatomic) NSIndexPath *currentChannel;
 @end
 
 @implementation RUMenuViewController
@@ -40,35 +43,62 @@
 }
 
 - (void) tableView:(UITableView *) tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        RUInfoComponent * info = [[RUInfoComponent alloc] initWithDelegate:self];
-        info.view.backgroundColor = [UIColor whiteColor];
-        [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:info];
-    } else if (indexPath.row == 1 || indexPath.row == 2) {
-        NSString * url = @"http://google.com";
-        if (indexPath.row == 1) url = @"http://my.rutgers.edu";
-        else if (indexPath.row == 2) url = @"http://sakai.rutgers.edu";
-        [tableview deselectRowAtIndexPath:indexPath animated:NO];
-        RUWebComponent *webComponent = [[RUWebComponent alloc] initWithURL:[NSURL URLWithString:url] delegate:self];
-        webComponent.title = TITLES[indexPath.row];
-        [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:webComponent];
-    } else if (indexPath.row == 3) {
-        RUNewsComponent *news = [[RUNewsComponent alloc] initWithDelegate:self];
-        news.view.backgroundColor = [UIColor whiteColor];
-        [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:news];
-    } else if (indexPath.row == 4) {
-        RUBusComponent *bus = [[RUBusComponent alloc] initWithDelegate:self];
-        bus.view.backgroundColor = [UIColor whiteColor];
-        [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:bus];
-    } else if (indexPath.row == 5) {
-        RUPlacesComponent *places = [[RUPlacesComponent alloc] initWithDelegate:self];
-        places.view.backgroundColor = [UIColor whiteColor];
-        [self.sidepanel showCenterPanelAnimated:YES];
-        [self.sidepanel setCenterPanel:places];
+    [self.sidepanel showCenterPanelAnimated:YES];
+    if ([self.currentChannel isEqual:indexPath]) {
+        return;
+    }
+    self.currentChannel = indexPath;
+    switch (indexPath.section) {
+        case 0:
+            switch (indexPath.row) {
+                case 0:
+                {
+                    RUInfoComponent * info = [[RUInfoComponent alloc] initWithDelegate:self];
+                    info.view.backgroundColor = [UIColor whiteColor];
+                    [self.sidepanel setCenterPanel:info];
+                }
+                    break;
+                case 1:
+                {
+                    RUNewsComponent *news = [[RUNewsComponent alloc] initWithDelegate:self];
+                    news.view.backgroundColor = [UIColor whiteColor];
+                    [self.sidepanel setCenterPanel:news];
+                }
+                    break;
+                case 2:
+                {
+                    RUBusComponent *bus = [[RUBusComponent alloc] initWithDelegate:self];
+                    bus.view.backgroundColor = [UIColor whiteColor];
+                    [self.sidepanel setCenterPanel:bus];
+                }
+                    break;
+                case 3:
+                {
+                    RUPlacesComponent *places = [[RUPlacesComponent alloc] initWithDelegate:self];
+                    places.view.backgroundColor = [UIColor whiteColor];
+                    [self.sidepanel setCenterPanel:places];
+                }
+                    break;
+                case 4:
+                {
+                    RUFoodComponent *food = [[RUFoodComponent alloc] initWithDelegate:self];
+                    food.view.backgroundColor = [UIColor whiteColor];
+                    [self.sidepanel setCenterPanel:food];
+                }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 1:
+        {
+            RUWebComponent *webComponent = [[RUWebChannelManager sharedInstance] webComponentWithURL:[NSURL URLWithString:WEB_URLS[indexPath.row]] title:WEB_TITLES[indexPath.row] delegate:self];
+            [self.sidepanel setCenterPanel:webComponent];
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -92,24 +122,60 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     
-    NSString *title = TITLES[indexPath.row];
-    
-    cell.textLabel.text = title;
+    switch (indexPath.section) {
+        case 0:
+        {
+            NSString *title = CHANNEL_TITLES[indexPath.row];
+            cell.textLabel.text = title;
+        }
+            break;
+        case 1:
+        {
+            NSString *title = WEB_TITLES[indexPath.row];
+            cell.textLabel.text = title;
+        }
+            break;
+            
+        default:
+            break;
+    }
+   
     
     return cell;
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return TITLES.count;
+    switch (section) {
+        case 0:
+            return [CHANNEL_TITLES count];
+            break;
+        case 1:
+            return [WEB_TITLES count];
+            break;
+        default:
+            return 0;
+            break;
+    }
 }
 
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Channels";
+    switch (section) {
+        case 0:
+            return @"Channels";
+            break;
+        case 1:
+            return @"Web Links";
+            break;
+            
+        default:
+            return nil;
+            break;
+    }
 }
 
 @end

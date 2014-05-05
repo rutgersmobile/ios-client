@@ -10,33 +10,28 @@
 
 NSString const* newBrunswickAgency;
 NSString const* newarkAgency;
-
+/*
 @class RUBusData;
 
 @protocol RUBusDataDelegate <NSObject>
 @required
 -(void)busData:(RUBusData *)busData didUpdateNearbyStops:(NSDictionary *)nearbyStops;
 @end
-
-@class RUBusRoute;
+*/
+@class RUBusRoute, CLLocation;
 
 @interface RUBusData : NSObject
--(void)startFindingNearbyStops;
--(void)stopFindingNearbyStops;
-
--(void)updateActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock;
+-(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock;
 
 -(void)getPredictionsForStops:(NSArray *)stops withCompletion:(void (^)(NSArray *response))completionBlock;
 -(void)getPredictionsForRoute:(RUBusRoute *)route withCompletion:(void (^)(NSArray *response))completionBlock;
 
-
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
+-(void)stopsNearLocation:(CLLocation *)location completion:(void (^)(NSDictionary *nearbyStops))completionBlock;
+//@property (weak) id<RUBusDataDelegate> delegate;
 
-@property (weak) id<RUBusDataDelegate> delegate;
 
 
-
-@property NSDictionary *nearbyStops;
 
 
 +(RUBusData *)sharedInstance;

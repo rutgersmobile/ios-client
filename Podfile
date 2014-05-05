@@ -6,4 +6,3 @@ pod 'TSMiniWebBrowser', '~> 1.0.1'
 pod 'XMLDictionary', '~> 1.4.0'
 
 
-pod 'ruinfo', '~> 1.0.0'

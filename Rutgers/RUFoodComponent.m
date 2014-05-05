@@ -1,34 +1,31 @@
 //
-//  RUNewsComponent.m
+//  RUFoodComponent.m
 //  Rutgers
 //
-//  Created by Kyle Bailey on 4/16/14.
+//  Created by Kyle Bailey on 5/1/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUNewsComponent.h"
-#import "RUNewsViewController.h"
-@interface RUNewsComponent ()
+#import "RUFoodComponent.h"
+#import "RUFoodViewController.h"
 
-@end
+@implementation RUFoodComponent
 
-@implementation RUNewsComponent
- 
-- (id)initWithDelegate:(id <RUComponentDelegate>)delegate {
+-(id)initWithDelegate:(id<RUComponentDelegate>)delegate{
     self = [super init];
     if (self) {
         // Custom initialization
-        RUNewsViewController * vc = [[RUNewsViewController alloc] initWithDelegate:delegate];
+        RUFoodViewController * vc = [[RUFoodViewController alloc] initWithDelegate:delegate];
         
         [self pushViewController:vc animated:NO];
     }
     return self;
 }
- 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning

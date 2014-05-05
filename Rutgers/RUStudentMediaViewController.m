@@ -1,25 +1,24 @@
 //
-//  RUBusComponent.m
+//  RUStudentMediaViewController.m
 //  Rutgers
 //
-//  Created by Kyle Bailey on 4/21/14.
+//  Created by Kyle Bailey on 5/2/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUBusComponent.h"
-#import "RUBusViewController.h"
-@interface RUBusComponent ()
+#import "RUStudentMediaViewController.h"
+
+@interface RUStudentMediaViewController ()
 
 @end
 
-@implementation RUBusComponent
+@implementation RUStudentMediaViewController
 
-- (id)initWithDelegate:(id <RUComponentDelegate>)delegate {
-    self = [super init];
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        RUBusViewController * vc = [[RUBusViewController alloc] initWithDelegate:delegate];
-        [self pushViewController:vc animated:NO];
     }
     return self;
 }

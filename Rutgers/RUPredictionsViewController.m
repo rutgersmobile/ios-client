@@ -11,6 +11,7 @@
 #import "RUBusStop.h"
 #import <AFNetworking.h>
 #import "RUBusData.h"
+#import "NSArray+RUBusStop.h"
 #import "RUPredictionTableViewCell.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
@@ -24,7 +25,7 @@
 
 -(void)setStops:(NSArray *)stops{
     _stops = stops;
-    self.title = [[stops firstObject] title];
+    self.title = [stops title];
     self.tableView.rowHeight = 80.0;
 }
 -(void)setRoute:(RUBusRoute *)route{
@@ -36,9 +37,12 @@
     __weak typeof(self) weakSelf = self;
 
     void (^completion)(NSArray *response) = ^(NSArray *response) {
-        self.response = response;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-     
+        [weakSelf.tableView beginUpdates];
+        weakSelf.response = response;
+        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [weakSelf.tableView endUpdates];
+
+        
         double delayInSeconds = PREDICTION_TIMER_INTERVAL;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

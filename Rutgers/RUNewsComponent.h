@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUNewsDelegate.h"
+#import "RUComponentDelegate.h"
 
 @interface RUNewsComponent : UINavigationController
-- (id) initWithDelegate: (id <RUNewsDelegate>) delegate;
+- (id) initWithDelegate: (id <RUComponentDelegate>) delegate;
 
 @end
   

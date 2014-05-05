@@ -9,6 +9,7 @@
 #import "RUWebChannelManager.h"
 @interface RUWebChannelManager ()
 @property NSMutableDictionary *storedChannels;
+@property NSURL *mostRecentUrl;
 @end
 @implementation RUWebChannelManager
 +(RUWebChannelManager *)sharedInstance{
@@ -26,7 +27,15 @@
     if (self) {
         self.storedChannels = [NSMutableDictionary dictionary];
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            RUWebComponent *mostRecentComponent = self.storedChannels[self.mostRecentUrl];
+            NSInteger numberOfCachedViewControllers = self.storedChannels.count;
             self.storedChannels = [NSMutableDictionary dictionary];
+            
+            //if our cache is bigger than just one view controller, lets only clear all but the newest
+            if (numberOfCachedViewControllers > 1) {
+                self.storedChannels[self.mostRecentUrl] = mostRecentComponent;
+            }
+            
         }];
     }
     return self;

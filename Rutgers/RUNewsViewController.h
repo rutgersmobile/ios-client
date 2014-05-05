@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUNewsDelegate.h"
+#import "RUComponentDelegate.h"
 #import "DynamicTableViewController.h"
 
 @interface RUNewsViewController : DynamicTableViewController
-@property (nonatomic) id <RUNewsDelegate> delegate;
-- (id) initWithDelegate: (id <RUNewsDelegate>) delegate;
+@property (nonatomic) id <RUComponentDelegate> delegate;
+- (id) initWithDelegate: (id <RUComponentDelegate>) delegate;
 @end
   

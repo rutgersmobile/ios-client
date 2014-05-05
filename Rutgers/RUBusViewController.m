@@ -11,6 +11,8 @@
 #import "RUBusStop.h"
 #import "RUBusRoute.h"
 #import "RUPredictionsViewController.h"
+#import "NSArray+RUBusStop.h"
+#import "RULocationManager.h"
 
 #define ACTIVE_TIMER_INTERVAL 60.0*3
 
@@ -20,34 +22,35 @@ NSString *const busLastPaneKey = @"busLastPaneKey";
 
 typedef enum : NSUInteger {
     RUBusVCRoutesPane = 0,
-    RUBusVCStopsPane = 1,
-    RUBusVCMapPane = 2,
+    RUBusVCStopsPane = 1
 } RUBusVCPane;
 
 
-@interface RUBusViewController () <RUBusDataDelegate, UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+@interface RUBusViewController () <UISearchDisplayDelegate, RULocationManagerDelegate>
 @property (nonatomic) RUBusData *busData;
 
 @property NSDictionary *activeStops;
 @property NSDictionary *activeRoutes;
+@property NSDictionary *nearbyStops;
 
 @property RUBusVCPane currentPane;
+
 @property (nonatomic) UISearchBar *searchBar;
 @property (nonatomic) UISearchDisplayController *searchController;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property NSArray *searchResults;
+@property dispatch_group_t searchingGroup;
+
 @end
 
 @implementation RUBusViewController
--(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+-(instancetype)initWithDelegate:(id<RUComponentDelegate>)delegate{
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.navigationItem.title = @"Bus";
         self.busData = [RUBusData sharedInstance];
-        self.busData.delegate = self;
-        
+        self.searchingGroup = dispatch_group_create();
+        self.delegate = delegate;
     }
     return self;
 }
@@ -62,19 +65,29 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
- //   self.mapView.delegate = self;
-    
+        
     [self reloadActiveStopsAndRoutes];
 
     [self.navigationController setToolbarHidden:NO animated:NO];
 
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.searchBar.showsCancelButton = YES;
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.delegate = self;
+    
+    [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    self.tableView.tableHeaderView = self.searchBar;
 
     /// segmented bar setup
-    NSArray *segItemsArray = @[@"Routes",@"Stops",@"Map"];
+    NSArray *segItemsArray = @[@"Routes",@"Stops"];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segItemsArray];
     [segmentedControl addTarget:self action:@selector(segmentedControlButtonChanged:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.frame = CGRectMake(0, 0, 260, 30);
@@ -84,19 +97,6 @@ typedef enum : NSUInteger {
     NSArray *barArray = [NSArray arrayWithObjects: flexibleSpace, segmentedControlButtonItem, flexibleSpace, nil];
     
     [self setToolbarItems:barArray];
-    
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    self.searchBar.showsCancelButton = YES;
-
-    
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    self.searchController.delegate = self;
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.searchResultsDelegate = self;
-    
-    self.tableView.tableHeaderView = self.searchBar;
-    [self.searchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:@{busLastPaneKey: @(1)}];
@@ -108,53 +108,63 @@ typedef enum : NSUInteger {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelWillShowLeftPanel" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(clearResponders) name:@"JASidePanelDidBeginPanning" object:nil];
-    
-
 }
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+-(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location{
+    [self.busData stopsNearLocation:location completion:^(NSDictionary *nearbyStops) {
+        dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
+            self.nearbyStops = nearbyStops;
+            if (self.currentPane == RUBusVCStopsPane) {
+                [self.tableView beginUpdates];
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
+            }
+        });
+    }];
+}
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self.busData startFindingNearbyStops];
+    [[RULocationManager sharedLocationManager] addDelegatesObject:self];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.busData stopFindingNearbyStops];
+    [[RULocationManager sharedLocationManager] removeDelegatesObject:self];
 }
+
 
 -(void)reloadActiveStopsAndRoutes{
     __weak typeof(self) weakSelf = self;
-    [self.busData updateActiveStopsAndRoutesWithCompletion:^(NSDictionary *activeStops, NSDictionary *activeRoutes) {
-        self.activeRoutes = activeRoutes;
-        self.activeStops = activeStops;
-        switch (self.currentPane) {
-            case RUBusVCRoutesPane:
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
-                break;
-            case RUBusVCStopsPane:
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationAutomatic];
-                break;
-            default:
-                break;
-        }
+    [self.busData getActiveStopsAndRoutesWithCompletion:^(NSDictionary *activeStops, NSDictionary *activeRoutes) {
+        dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
+            [weakSelf.tableView beginUpdates];
 
-        double delayInSeconds = ACTIVE_TIMER_INTERVAL;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [weakSelf reloadActiveStopsAndRoutes];
+            weakSelf.activeRoutes = activeRoutes;
+            weakSelf.activeStops = activeStops;
+            switch (weakSelf.currentPane) {
+                case RUBusVCRoutesPane:
+                    [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    break;
+                case RUBusVCStopsPane:
+                    [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    break;
+                default:
+                    break;
+            }
+            [weakSelf.tableView endUpdates];
+
+            double delayInSeconds = ACTIVE_TIMER_INTERVAL;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [weakSelf reloadActiveStopsAndRoutes];
+            });
+
         });
     }];
 }
-
--(void)busData:(RUBusData *)busData didUpdateNearbyStops:(NSDictionary *)nearbyStops{
-    if (self.currentPane == RUBusVCStopsPane) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -162,35 +172,31 @@ typedef enum : NSUInteger {
 }
 #pragma mark - segmented control
 
--(void)segmentedControlButtonChanged:(UISegmentedControl *)segmentedControl{
- 
-    if (segmentedControl.selectedSegmentIndex == RUBusVCMapPane) {
-        self.tableView.hidden = YES;
-        self.mapView.hidden = NO;
-    } else {
-        self.tableView.hidden = NO;
-        self.mapView.hidden = YES;
-    }
-    
+-(void)segmentedControlButtonChanged:(UISegmentedControl *)segmentedControl{    
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     self.currentPane = segmentedControl.selectedSegmentIndex;
-    
-    [[NSUserDefaults standardUserDefaults] setInteger:self.currentPane forKey:busLastPaneKey];
-    
     [self.tableView reloadData];
+    [[NSUserDefaults standardUserDefaults] setInteger:self.currentPane forKey:busLastPaneKey];
 }
 
 #pragma mark - search bar
-
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+    dispatch_group_enter(self.searchingGroup);
+    [self.navigationController setToolbarHidden:YES animated:NO];
+}
+-(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller{
+    [self.navigationController setToolbarHidden:NO animated:YES];
+    dispatch_group_leave(self.searchingGroup);
+}
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
     [self.busData queryStopsAndRoutesWithString:searchString completion:^(NSArray *results) {
         self.searchResults = results;
-        [self.searchDisplayController.searchResultsTableView reloadData];
+        [self.searchController.searchResultsTableView reloadData];
     }];
     return NO;
 }
 -(void)clearResponders{
-    [self.searchBar resignFirstResponder];
+    [self.searchController.searchBar resignFirstResponder];
 }
 -(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     [self clearResponders];
@@ -240,7 +246,7 @@ typedef enum : NSUInteger {
             case RUBusVCStopsPane:
                 switch (section) {
                     case 0:
-                        return MAX([self.busData.nearbyStops[newBrunswickAgency] count], [self.busData.nearbyStops[newarkAgency] count]);
+                        return MAX([self.nearbyStops[newBrunswickAgency] count], [self.nearbyStops[newarkAgency] count]);
                         break;
                     case 1:
                         return [self.activeStops[newBrunswickAgency] count];
@@ -263,11 +269,13 @@ typedef enum : NSUInteger {
     }
     return 0;
 }
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     if (tableView == self.tableView) {
-        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.userInteractionEnabled = YES;
+        cell.textLabel.textColor = [UIColor blackColor];
         switch (self.currentPane) {
             case RUBusVCRoutesPane:
                 switch (indexPath.section) {
@@ -291,11 +299,11 @@ typedef enum : NSUInteger {
             case RUBusVCStopsPane:
                 switch (indexPath.section) {
                     case 0:
-                        if ([self.busData.nearbyStops[newBrunswickAgency] count] > [self.busData.nearbyStops[newarkAgency] count]) {
-                            RUBusStop *stop = [self.busData.nearbyStops[newBrunswickAgency][indexPath.row] firstObject];
+                        if ([self.nearbyStops[newBrunswickAgency] count] > [self.nearbyStops[newarkAgency] count]) {
+                            RUBusStop *stop = [self.nearbyStops[newBrunswickAgency][indexPath.row] firstObject];
                             cell.textLabel.text = stop.title;
                         } else {
-                            RUBusStop *stop = [self.busData.nearbyStops[newarkAgency][indexPath.row] firstObject];
+                            RUBusStop *stop = [self.nearbyStops[newarkAgency][indexPath.row] firstObject];
                             cell.textLabel.text = stop.title;
                         }
                         break;
@@ -320,10 +328,15 @@ typedef enum : NSUInteger {
         }
     } else if (tableView == self.searchController.searchResultsTableView) {
         id itemForCell = self.searchResults[indexPath.row];
-        if ([itemForCell isKindOfClass:[RUBusRoute class]]){
-            cell.textLabel.text = [itemForCell title];
+        cell.textLabel.text = [itemForCell title];
+        if ([itemForCell active]) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.userInteractionEnabled = YES;
+            cell.textLabel.textColor = [UIColor blackColor];
         } else {
-            cell.textLabel.text = [[itemForCell firstObject] title];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.userInteractionEnabled = NO;
+            cell.textLabel.textColor = [UIColor grayColor];
         }
     }
     return cell;
@@ -398,11 +411,11 @@ typedef enum : NSUInteger {
             case RUBusVCStopsPane:
                 switch (indexPath.section) {
                     case 0:
-                        if ([self.busData.nearbyStops[newBrunswickAgency] count] > [self.busData.nearbyStops[newarkAgency] count]) {
-                            NSArray *stops = self.busData.nearbyStops[newBrunswickAgency][indexPath.row];
+                        if ([self.nearbyStops[newBrunswickAgency] count] > [self.nearbyStops[newarkAgency] count]) {
+                            NSArray *stops = self.nearbyStops[newBrunswickAgency][indexPath.row];
                             predictionsVC.stops = stops;
                         } else {
-                            NSArray *stops = self.busData.nearbyStops[newarkAgency][indexPath.row];
+                            NSArray *stops = self.nearbyStops[newarkAgency][indexPath.row];
                             predictionsVC.stops = stops;
                         }
                         break;
