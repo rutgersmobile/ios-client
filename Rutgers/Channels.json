@@ -1,0 +1,27 @@
+[
+ {
+ "handle" : "RUInfoTableViewController",
+ "title": "RU-Info"
+ },
+ {
+ "handle" : "RUNewsViewController",
+ "title": "News"
+ },
+ {
+ "handle" : "RUBusViewController",
+ "title": "Bus"
+ },
+ {
+ "handle" : "RUPlacesTableViewController",
+ "title": "Places"
+ },
+ {
+ "handle" : "RUFoodViewController",
+ "title": "Food"
+ }
+ ,
+ {
+ "handle" : "RUMapsViewController",
+ "title": "RU-Maps"
+ }
+]
