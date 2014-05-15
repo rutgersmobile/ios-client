@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RUMealViewController : UITableViewController
+-(id)initWithMeal:(NSDictionary *)meal;
 
 @end

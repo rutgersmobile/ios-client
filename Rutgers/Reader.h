@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
   
-@interface RUReaderController : UITableViewController
--(id)initWithStyle:(UITableViewStyle)style child:(NSDictionary *)child;
-@property (nonatomic) NSDictionary *child;
+@interface Reader : UITableViewController
++(instancetype)componentForChannel:(NSDictionary *)channel;
+
 @end

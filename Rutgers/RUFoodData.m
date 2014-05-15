@@ -31,7 +31,7 @@
     if (self) {
         self.sessionManager = [[AFHTTPSessionManager alloc] init];
         self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-        self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+        self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",nil];
         
         dispatch_group_t group = dispatch_group_create();
         dispatch_group_enter(group);
@@ -41,9 +41,12 @@
     }
     return self;
 }
+//
 
 -(void)requestFood{
-    [self.sessionManager GET:@"https://rumobile.rutgers.edu/1/rutgers-dining.txt" parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+   // NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
+    NSString *url = @"http://vps.rsopher.com/nutrition.json";
+    [self.sessionManager GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.food = responseObject;
             dispatch_group_leave(self.foodGroup);

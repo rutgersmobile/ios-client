@@ -9,18 +9,19 @@
 #import "RULocationManager.h"
 @interface RULocationManager () <CLLocationManagerDelegate>
 @property CLLocationManager *locationManager;
+@property NSMutableSet *delegates;
+//@property NSHashTable *delegates
 @end
 @implementation RULocationManager
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.distanceFilter = 25; // whenever we move 25 m
         self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
         self.locationManager.delegate = self;
-
+        self.delegates = [NSMutableSet set];
     }
     return self;
 }
@@ -33,26 +34,30 @@
     return locationManager;
 }
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate{
-    if (self.delegates.count == 0) {
-        self.delegates = [NSSet setWithObject:delegate];
-        [self.locationManager startUpdatingLocation];
-    } else {
-        self.delegates = [self.delegates setByAddingObject:delegate];
-        [delegate locationManager:self didUpdateLocation:self.locationManager.location];
+    @synchronized(self.delegates) {
+        if (self.delegates.count == 0) {
+            [self.delegates addObject:delegate];
+            [self.locationManager startUpdatingLocation];
+        } else {
+            [self.delegates addObject:delegate];
+            [delegate locationManager:self didUpdateLocation:self.locationManager.location];
+        }
     }
 }
 -(void)removeDelegatesObject:(id<RULocationManagerDelegate>)delegate{
-    NSMutableSet *delegates = [self.delegates mutableCopy];
-    [delegates removeObject:delegate];
-    self.delegates = [delegates copy];
-    if (self.delegates.count == 0) {
-        [self.locationManager stopUpdatingLocation];
+    @synchronized(self.delegates) {
+        [self.delegates removeObject:delegate];
+        if (self.delegates.count == 0) {
+            [self.locationManager stopUpdatingLocation];
+        }
     }
 }
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation *location = [locations lastObject];
-    for (id <RULocationManagerDelegate> delegate in self.delegates) {
-        [delegate locationManager:self didUpdateLocation:location];
+    @synchronized(self.delegates) {
+        for (id <RULocationManagerDelegate> delegate in self.delegates) {
+            [delegate locationManager:self didUpdateLocation:location];
+        }
     }
 }
 @end

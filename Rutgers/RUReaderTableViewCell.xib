@@ -21,13 +21,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wdS-X4-PzQ">
-                        <rect key="frame" x="15" y="28" width="297" height="17"/>
+                        <rect key="frame" x="15" y="30" width="297" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wL6-ri-jKf">
-                        <rect key="frame" x="15" y="47" width="297" height="18"/>
+                        <rect key="frame" x="15" y="49" width="297" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.32408558450000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -43,7 +43,7 @@
                     <constraint firstAttribute="trailing" secondItem="wdS-X4-PzQ" secondAttribute="trailing" constant="8" id="DxP-oy-KNP"/>
                     <constraint firstItem="E2E-mf-3E3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="K9n-Zn-fiu"/>
                     <constraint firstItem="wdS-X4-PzQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="XvM-Hf-a0H"/>
-                    <constraint firstItem="wdS-X4-PzQ" firstAttribute="top" secondItem="E2E-mf-3E3" secondAttribute="bottom" id="qHY-Oa-SXy"/>
+                    <constraint firstItem="wdS-X4-PzQ" firstAttribute="top" secondItem="E2E-mf-3E3" secondAttribute="bottom" constant="2" id="qHY-Oa-SXy"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

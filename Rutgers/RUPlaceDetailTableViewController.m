@@ -58,6 +58,7 @@ const NSString *DESCRIPTION = @"description";
     [self.tableView registerClass:[RUPlaceDetailTableViewCell class] forCellReuseIdentifier:@"Cell"];
     self.title = [self stringForKeyPath:TITLE];
     self.navigationItem.rightBarButtonItem = nil;
+    
     /*
      if (!self.showsDeleteButton) {
      }*/
@@ -101,39 +102,37 @@ const NSString *DESCRIPTION = @"description";
 }
 
 #pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+-(void)iterateSectionsWithBlock:(void(^)(BuildingDetailSectionType sectionType, NSInteger index))block{
     BOOL info = ([self stringForKeyPath:TITLE] ||[self stringForKeyPath:BUILDING_NUMBER] || [self stringForKeyPath:CAMPUS] || [self stringForKeyPath:BUILDING_CODE]);
     BOOL address = [self address] ? YES:NO;
     BOOL offices = self.place[OFFICES] ? YES:NO;
     BOOL description = [self stringForKeyPath:DESCRIPTION] ? YES:NO;
     NSArray *sectionsOn = @[@(address),@(info),@(offices),@(description)];
-    NSInteger number = 0;
-    for (NSNumber *sectionOn in sectionsOn) {
+    NSInteger index = 0;
+    for (int section = 0; section < [sectionsOn count];  section++) {
+        NSNumber *sectionOn = sectionsOn[section];
         if ([sectionOn boolValue]) {
-            number++;
+            block(section,index);
+            index++;
         }
     }
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    __block NSInteger number = 0;
+    [self iterateSectionsWithBlock:^(BuildingDetailSectionType sectionType, NSInteger index) {
+        number++;
+    }];
     return number;
 }
 -(BuildingDetailSectionType)sectionTypeForSection:(NSInteger)section{
-    BOOL info = ([self stringForKeyPath:TITLE] ||[self stringForKeyPath:BUILDING_NUMBER] || [self stringForKeyPath:CAMPUS] || [self stringForKeyPath:BUILDING_CODE]);
-    BOOL address = [self address] ? YES:NO;
-    BOOL offices = self.place[OFFICES] ? YES:NO;
-    BOOL description = [self stringForKeyPath:DESCRIPTION] ? YES:NO;
-    NSArray *sectionsOn = @[@(address),@(info),@(offices),@(description)];
-    NSInteger counted = 0;
-    for (int i = 0; i < [sectionsOn count];  i++) {
-        NSNumber *sectionOn = sectionsOn[i];
-        if ([sectionOn boolValue]) {
-            if (counted == section) {
-                return i;
-            }
-            counted++;
+    __block BuildingDetailSectionType typeForSection = 0;
+    [self iterateSectionsWithBlock:^(BuildingDetailSectionType sectionType, NSInteger index) {
+        if (index == section) {
+            typeForSection = sectionType;
         }
-    }
-    return 0;
+    }];
+    return typeForSection;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -308,56 +307,5 @@ const NSString *DESCRIPTION = @"description";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a story board-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- 
- */
 
 @end

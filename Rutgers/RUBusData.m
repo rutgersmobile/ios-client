@@ -7,20 +7,17 @@
 //
 
 #import "RUBusData.h"
-#import <AFNetworking.h>
 #import "NSArray+RUBusStop.h"
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
-#import "AFXMLResponseSerializer.h"
 #import "RULocationManager.h"
+#import "RUNetworkManager.h"
 
 NSString const *newBrunswickAgency = @"rutgers";
 NSString const *newarkAgency = @"rutgers-newark";
 
 
 @interface RUBusData ()
-@property (nonatomic) AFHTTPSessionManager *jsonSessionManager;
-@property (nonatomic) AFHTTPSessionManager *xmlSessionManager;
 
 @property NSMutableDictionary *stops;
 @property NSMutableDictionary *routes;
@@ -53,49 +50,39 @@ NSString const *newarkAgency = @"rutgers-newark";
         self.activeRoutes = [NSMutableDictionary dictionary];
         self.allStopsAndRoutes = [NSMutableDictionary dictionary];
         
-        self.jsonSessionManager = [AFHTTPSessionManager manager];
-
-        self.jsonSessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-        self.jsonSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",nil];
-        
-        self.xmlSessionManager = [AFHTTPSessionManager manager];
-        self.xmlSessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
-        self.xmlSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",nil];
-        
         [self getAgencyConfig];
     }
     return self;
 }
 #pragma mark - nearby api
 
--(void)stopsNearLocation:(CLLocation *)location completion:(void (^)(NSDictionary *results))completionBlock{
+-(void)stopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock{
     dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
-        
-        NSMutableDictionary *nearbyStops = [NSMutableDictionary dictionary];
-        
         for (NSString *agency in @[newBrunswickAgency,newarkAgency]) {
-            NSMutableArray *nearbyStopsForAgency = [NSMutableArray array];
+            NSMutableArray *nearbyStops = [NSMutableArray array];
             
             NSDictionary *stops = self.stops[agency];
             [stops enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([obj active]) {
                     CLLocationDistance distance = [self distanceOfStops:obj fromLocation:location];
                     if (distance < NEARBY_DISTANCE) {
-                        [nearbyStopsForAgency addObject:obj];
+                        [nearbyStops addObject:obj];
                     }
                 }
             }];
-            
-            nearbyStops[agency] = [nearbyStopsForAgency sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
-                CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
-                
-                if (distanceOne < distanceTwo) return NSOrderedAscending;
-                else if (distanceOne > distanceTwo) return NSOrderedDescending;
-                return NSOrderedSame;
-            }];
+            if ([nearbyStops count]) {
+                NSArray *sortedNearbyStops = [nearbyStops sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                    CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
+                    CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
+                    
+                    if (distanceOne < distanceTwo) return NSOrderedAscending;
+                    else if (distanceOne > distanceTwo) return NSOrderedDescending;
+                    return NSOrderedSame;
+                }];
+                completionBlock(sortedNearbyStops);
+                break;
+            }
         }
-        completionBlock([nearbyStops copy]);
     });
  }
 
@@ -123,8 +110,8 @@ NSString const *newarkAgency = @"rutgers-newark";
 }
 
 -(void)getAgencyConfigForAgency:(const NSString *)agency inCompletionGroup:(dispatch_group_t)group{
-    NSDictionary *urls = @{newBrunswickAgency: @"https://rumobile.rutgers.edu/1/rutgersrouteconfig.txt", newarkAgency: @"https://rumobile.rutgers.edu/1/rutgers-newarkrouteconfig.txt"};
-    [self.jsonSessionManager GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSDictionary *urls = @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"};
+    [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parseRouteConfig:responseObject forAgency:agency];
             dispatch_group_leave(group);
@@ -169,8 +156,8 @@ NSString const *newarkAgency = @"rutgers-newark";
 }
 
 -(void)updateActiveStopsAndRoutesForAgency:(const NSString *)agency inCompletionGroup:(dispatch_group_t)group{
-    NSDictionary *urls = @{newBrunswickAgency: @"https://rumobile.rutgers.edu/1/nbactivestops.txt", newarkAgency: @"https://rumobile.rutgers.edu/1/nwkactivestops.txt"};
-    [self.jsonSessionManager GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSDictionary *urls = @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"};
+    [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parseActiveStops:responseObject forAgency:agency];
             dispatch_group_leave(group);
@@ -182,15 +169,10 @@ NSString const *newarkAgency = @"rutgers-newark";
     }];
 }
 #pragma mark - predictions api
--(void)getPredictionsForStops:(NSArray *)stops withCompletion:(void (^)(NSArray *response))completionBlock{
-    [self getPredictionsForItem:stops withCompletion:completionBlock];
-}
-
--(void)getPredictionsForRoute:(RUBusRoute *)route withCompletion:(void (^)(NSArray *response))completionBlock{
-    [self getPredictionsForItem:route withCompletion:completionBlock];
-}
 -(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock{
-    [self.xmlSessionManager GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    if (!([item isKindOfClass:[RUBusRoute class]] || ([item isKindOfClass:[NSArray class]] && [item isArrayOfBusStops]))) return;
+    
+    [[RUNetworkManager xmlSessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
             completionBlock(predictions);

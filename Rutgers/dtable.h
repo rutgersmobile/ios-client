@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
  
-@interface DynamicTableViewController : UITableViewController
-@property (nonatomic) NSArray *children;
--(id)initWithStyle:(UITableViewStyle)style children:(NSArray *)children;
+@interface dtable : UITableViewController
++(instancetype)componentForChannel:(NSDictionary *)channel;
 @end

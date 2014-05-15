@@ -9,12 +9,11 @@
 #import "RUPlacesData.h"
 #import <AFNetworking.h>
 #import "RULocationManager.h"
+#import "RUNetworkManager.h"
 #import "NSDictionary+FilterDictionary.h"
 NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 
 @interface RUPlacesData ()
-@property (nonatomic) AFHTTPSessionManager *sessionManager;
-
 @property NSDictionary *places;
 @property dispatch_group_t placesGroup;
 
@@ -35,9 +34,6 @@ NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 {
     self = [super init];
     if (self) {
-        self.sessionManager = [AFHTTPSessionManager manager];
-        self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-        self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",nil];
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{placesRecentPlacesKey: @[]}];
 
         dispatch_group_t group = dispatch_group_create();
@@ -50,7 +46,7 @@ NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 }
 
 -(void)getPlaces{
-    [self.sessionManager GET:@"https://rumobile.rutgers.edu/1/places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager jsonSessionManager] GET:@"https://rumobile.rutgers.edu/1/places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
             dispatch_group_leave(self.placesGroup);
@@ -62,7 +58,7 @@ NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
     }];
 }
 -(void)parsePlaces:(NSDictionary *)response{
-    NSArray *excludedCampuses = @[[NSNull null],@"Off-campus",@"Off-Campus"];
+    NSArray *excludedCampuses = @[[NSNull null],@"off-campus",@"Off-Campus"];
     
     self.places = [response[@"all"] filteredDictionaryUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         id campusName = evaluatedObject[@"campus_name"];

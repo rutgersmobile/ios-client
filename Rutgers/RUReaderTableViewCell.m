@@ -13,14 +13,13 @@
 - (void)awakeFromNib
 {
     self.detailLabel.numberOfLines = 0;
-    // Initialization code
+    self.titleLabel.numberOfLines = 0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
 }
 
 @end

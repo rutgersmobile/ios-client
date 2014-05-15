@@ -1,24 +1,39 @@
 //
-//  RUStudentMediaViewController.m
+//  text.m
 //  Rutgers
 //
-//  Created by Kyle Bailey on 5/2/14.
+//  Created by Kyle Bailey on 5/15/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUStudentMediaViewController.h"
+#import "text.h"
 
-@interface RUStudentMediaViewController ()
-
+@interface text ()
+@property (nonatomic) UITextView *textView;
 @end
 
-@implementation RUStudentMediaViewController
-
+@implementation text
++(instancetype)componentForChannel:(NSDictionary *)channel{
+    return [[text alloc] initWithChannel:channel];
+}
+-(id)initWithChannel:(NSDictionary *)channel{
+    self = [self initWithNibName:nil bundle:nil];
+    if (self) {
+        self.title = channel[@"title"];
+        self.textView.text = channel[@"data"];
+    }
+    return self;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+        self.textView.editable = NO;
+        self.textView.selectable = NO;
+        self.textView.font = [UIFont systemFontOfSize:16];
+        [self.view addSubview:self.textView];
+        [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     }
     return self;
 }

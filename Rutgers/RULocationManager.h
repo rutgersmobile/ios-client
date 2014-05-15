@@ -16,7 +16,6 @@
 
 
 @interface RULocationManager : NSObject
-@property NSSet *delegates;
 +(RULocationManager *)sharedLocationManager;
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate;
 -(void)removeDelegatesObject:(id<RULocationManagerDelegate>)delegate;

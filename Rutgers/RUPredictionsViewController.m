@@ -22,39 +22,30 @@
 
 
 @implementation RUPredictionsViewController
-
--(void)setStops:(NSArray *)stops{
-    _stops = stops;
-    self.title = [stops title];
-    self.tableView.rowHeight = 80.0;
-}
--(void)setRoute:(RUBusRoute *)route{
-    _route = route;
-    self.title = route.title;
-    self.tableView.rowHeight = 60.0;
+-(void)setItem:(id)item{
+    _item = item;
+    if ([item isKindOfClass:[RUBusRoute class]]) {
+        self.tableView.rowHeight = 60.0;
+    } else {
+        self.tableView.rowHeight = 80.0;
+    }
+    self.title = [item title];
 }
 -(void)getPredictions{
     __weak typeof(self) weakSelf = self;
 
-    void (^completion)(NSArray *response) = ^(NSArray *response) {
+    [[RUBusData sharedInstance] getPredictionsForItem:self.item withCompletion:^(NSArray *response) {
         [weakSelf.tableView beginUpdates];
         weakSelf.response = response;
         [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         [weakSelf.tableView endUpdates];
-
         
         double delayInSeconds = PREDICTION_TIMER_INTERVAL;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [weakSelf getPredictions];
         });
-    };
-    
-    if (self.stops) {
-        [self.busData getPredictionsForStops:self.stops withCompletion:completion];
-    } else if (self.route) {
-        [self.busData getPredictionsForRoute:self.route withCompletion:completion];
-    }
+    }];
 }
 
 - (void)viewDidLoad
@@ -63,11 +54,6 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"RUPredictionTableViewCell" bundle:nil] forCellReuseIdentifier:@"PredictionCell"];
     [self getPredictions];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 - (BOOL) hidesBottomBarWhenPushed {
     return YES;
@@ -101,39 +87,35 @@
     NSDictionary *itemForCell = self.response[indexPath.row];
     NSArray *predictionsForCell = [itemForCell[@"direction"] firstObject][@"prediction"];
     // Configure the cell...
-    if (self.stops) {
+    
+    if ([self.item isKindOfClass:[RUBusRoute class]]) {
+        cell.titleLabel.text = itemForCell[@"_stopTitle"];
+        if (predictionsForCell) {
+            cell.detailLabelOne.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
+            cell.titleLabel.textColor = [UIColor blackColor];
+            cell.detailLabelOne.textColor = [UIColor blackColor];
+        } else {
+            cell.detailLabelOne.text =  @"No predictions available.";
+            cell.titleLabel.textColor = [UIColor grayColor];
+            cell.detailLabelOne.textColor = [UIColor lightGrayColor];
+        }
+        cell.detailLabelTwo.text = nil;
+    } else {
         cell.titleLabel.text = itemForCell[@"_routeTitle"];
         if (predictionsForCell) {
             cell.detailLabelOne.text = [itemForCell[@"direction"] firstObject][@"_title"];
             cell.detailLabelTwo.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
-            
             cell.titleLabel.textColor = [UIColor blackColor];
             cell.detailLabelOne.textColor = [UIColor blackColor];
             cell.detailLabelTwo.textColor = [UIColor blackColor];
         } else {
             cell.detailLabelOne.text = itemForCell[@"_dirTitleBecauseNoPredictions"];
             cell.detailLabelTwo.text =  @"No predictions available.";
-            
             cell.titleLabel.textColor = [UIColor grayColor];
             cell.detailLabelOne.textColor = [UIColor lightGrayColor];
             cell.detailLabelTwo.textColor = [UIColor lightGrayColor];
         }
-    } else if (self.route) {
-        cell.titleLabel.text = itemForCell[@"_stopTitle"];
-        if (predictionsForCell) {
-            cell.detailLabelOne.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
-            
-            cell.titleLabel.textColor = [UIColor blackColor];
-            cell.detailLabelOne.textColor = [UIColor blackColor];
-        } else {
-            cell.detailLabelOne.text =  @"No predictions available.";
-            
-            cell.titleLabel.textColor = [UIColor grayColor];
-            cell.detailLabelOne.textColor = [UIColor lightGrayColor];
-        }
-        cell.detailLabelTwo.text = nil;
     }
- 
     return cell;
 }
 
@@ -152,54 +134,5 @@
     [string appendString:@" minutes"];
     return string;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

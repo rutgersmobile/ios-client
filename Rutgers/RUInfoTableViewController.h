@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@protocol RUComponentDelegate;
+#import "RUComponentProtocol.h"
 
-@interface RUInfoTableViewController : UITableViewController
-
-@property (nonatomic) id <RUComponentDelegate> delegate;
-
+@interface RUInfoTableViewController : UITableViewController <RUComponentProtocol>
++(instancetype)component;
 @end

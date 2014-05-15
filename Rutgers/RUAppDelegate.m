@@ -12,55 +12,68 @@
 #import "RUMenuViewController.h"
 #import <NUISettings.h>
 
+#define MEMORY_MEGS 10
+#define DISK_MEGS 25
+
 @implementation RUAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#define MEMORY_MEGS 10
-#define DISK_MEGS 20
+    [self initCache];
     
+   //  [NUISettings init];
+    
+    [self initAppearance];
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    [self.window makeKeyAndVisible];
+
+    [self initDrawer];
+
+
+    return YES;
+}
+
+-(void)initAppearance{
+
+
+}
+
+-(void)initCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cachesFolder = paths[0];
     NSString *fullPath = [cachesFolder stringByAppendingPathComponent:@"RUNetCache"];
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
     [NSURLCache setSharedURLCache:URLCache];
 
-   // [NUISettings init];
+}
+-(void)initDrawer{
+    RUMenuViewController * menu = [[RUMenuViewController alloc] init];
 
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    
     JASidePanelController * mainViewController = [[JASidePanelController alloc] init];
     
     // TODO: motd, prefs, launch last used channel
     mainViewController.centerPanel = [self makeDefaultScreen];
-    mainViewController.leftGapPercentage = 0.55f;
-    
-    RUMenuViewController * menu = [[RUMenuViewController alloc] init];
-    
+    mainViewController.leftGapPercentage = 0.75f;
     mainViewController.leftPanel = menu;
     
     self.window.rootViewController = mainViewController;
     
     menu.sidepanel = mainViewController;
     
-    [self.window makeKeyAndVisible];
-    
-    double delayInSeconds = 0.5;
+    double delayInSeconds = 0.15;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [mainViewController showLeftPanelAnimated:YES];
     });
-    return YES;
 }
-
-- (id) makeDefaultScreen {
+- (UIViewController *)makeDefaultScreen {
     UIViewController * splashViewController = [[UIViewController alloc] init];
     splashViewController.view.backgroundColor = [UIColor whiteColor];
     UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage-700"]];
-   // imageView.frame = [[UIScreen mainScreen] bounds];
     imageView.center = splashViewController.view.center;
     [splashViewController.view addSubview:imageView];
     return splashViewController;

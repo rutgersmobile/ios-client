@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@class RUBusRoute;
-@class RUBusData;
+
 
 @interface RUPredictionsViewController : UITableViewController
-@property (nonatomic) NSArray *stops;
-@property (nonatomic) RUBusRoute *route;
-@property (nonatomic) RUBusData *busData;
+@property (nonatomic) id item;
 @end

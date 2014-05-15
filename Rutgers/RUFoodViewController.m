@@ -16,22 +16,13 @@
 @end
 
 @implementation RUFoodViewController
-
-- (instancetype)initWithDelegate:(id<RUComponentDelegate>)delegate
-{
++(instancetype)component{
+    return [[RUFoodViewController alloc] init];
+}
+- (instancetype)init{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.delegate = delegate;
         self.foodData = [RUFoodData sharedInstance];
-        self.navigationItem.title = @"Food";
-        
-        // Custom initialization
-        self.delegate = delegate;
-        if ([self.delegate respondsToSelector:@selector(onMenuButtonTapped)]) {
-            // delegate expects menu button notification, so let's create and add a menu button
-            UIBarButtonItem * btn = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self.delegate action:@selector(onMenuButtonTapped)];
-            self.navigationItem.leftBarButtonItem = btn;
-        }
     }
     return self;
 }
@@ -48,25 +39,17 @@
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     }];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 3;
 }
 
@@ -97,10 +80,15 @@
             cell.textLabel.text = diningHall[@"location_name"];
         }
             break;
+        case 1:
+            cell.textLabel.text = @"Gateway Cafe";
+            break;
+        case 2:
+            cell.textLabel.text = @"Stonsby Commons & Eatery";
+            break;
         default:
             break;
     }
-    // Configure the cell...
     
     return cell;
 }
@@ -137,54 +125,5 @@
             break;
     }
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
