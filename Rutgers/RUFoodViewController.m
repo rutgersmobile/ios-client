@@ -9,10 +9,12 @@
 #import "RUFoodViewController.h"
 #import "RUFoodData.h"
 #import "RUDiningHallViewController.h"
+#import "RUChannelManager.h"
 
 @interface RUFoodViewController ()
 @property (nonatomic) RUFoodData *foodData;
-@property (nonatomic) NSArray *diningHalls;
+@property (nonatomic) NSArray *nbDiningHalls;
+@property (nonatomic) NSArray *staticDiningHalls;
 @end
 
 @implementation RUFoodViewController
@@ -32,10 +34,10 @@
     [super viewDidLoad];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-
+    self.staticDiningHalls = self.foodData.staticDiningHalls;
     [self.foodData getFoodWithCompletion:^(NSArray *response) {
         [self.tableView beginUpdates];
-        self.diningHalls = response;
+        self.nbDiningHalls = response;
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     }];
@@ -50,15 +52,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 1+[self.staticDiningHalls count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.diningHalls) {
+    if (self.nbDiningHalls) {
         switch (section) {
             case 0:
-                return self.diningHalls.count;
+                return self.nbDiningHalls.count;
                 break;
             default:
                 return 1;
@@ -76,17 +78,12 @@
     switch (indexPath.section) {
         case 0:
         {
-            NSDictionary *diningHall = self.diningHalls[indexPath.row];
+            NSDictionary *diningHall = self.nbDiningHalls[indexPath.row];
             cell.textLabel.text = diningHall[@"location_name"];
         }
             break;
-        case 1:
-            cell.textLabel.text = @"Gateway Cafe";
-            break;
-        case 2:
-            cell.textLabel.text = @"Stonsby Commons & Eatery";
-            break;
         default:
+            cell.textLabel.text = self.staticDiningHalls[indexPath.section-1][@"title"];
             break;
     }
     
@@ -97,14 +94,8 @@
         case 0:
             return @"New Brunswick";
             break;
-        case 1:
-            return @"Camden";
-            break;
-        case 2:
-            return @"Newark";
-            break;
         default:
-            return nil;
+            return self.staticDiningHalls[section-1][@"header"];
             break;
     }
 }
@@ -112,16 +103,16 @@
     switch (indexPath.section) {
         case 0:
         {
-            NSDictionary *diningHall = self.diningHalls[indexPath.row];
+            NSDictionary *diningHall = self.nbDiningHalls[indexPath.row];
             RUDiningHallViewController *diningVC = [[RUDiningHallViewController alloc] initWithDiningHall:diningHall];
             [self.navigationController pushViewController:diningVC animated:YES];
         }
             break;
-        case 1:
-            break;
-        case 2:
-            break;
         default:
+        {
+            NSDictionary *channel = self.staticDiningHalls[indexPath.section-1];
+            [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
+        }
             break;
     }
 }

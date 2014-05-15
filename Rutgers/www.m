@@ -39,7 +39,7 @@
     else {
         PBWebViewController *webBrowser = [[PBWebViewController alloc] init];
         webBrowser.URL = url;
-        webBrowser.title = [[RUChannelManager sharedInstance] titleForChannel:channel];
+        webBrowser.title = [channel titleForChannel];
         [self.storedChannels setObject:webBrowser forKey:url];
         return webBrowser;
     }

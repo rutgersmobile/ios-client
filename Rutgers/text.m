@@ -31,7 +31,8 @@
         self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
         self.textView.editable = NO;
         self.textView.selectable = NO;
-        self.textView.font = [UIFont systemFontOfSize:16];
+        self.textView.font = [UIFont systemFontOfSize:17];
+        self.textView.textContainerInset = UIEdgeInsetsMake(8, 8, 8, 8);
         [self.view addSubview:self.textView];
         [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     }

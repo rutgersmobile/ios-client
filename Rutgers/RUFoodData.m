@@ -32,6 +32,18 @@
         self.sessionManager = [[AFHTTPSessionManager alloc] init];
         self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
         self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",nil];
+      
+        self.staticDiningHalls = @[@{@"title" : @"Gateway Cafe",
+                                  @"header" : @"Camden",
+                                  @"data" : @"The Camden Dining Hall, the Gateway Cafe, is located at the Camden Campus Center.\n\nIt offers a variety of eateries in one convenient location.",
+                                  @"view" : @"text"
+                                  },
+                                @{@"title" : @"Stonsby Commons & Eatery",
+                                  @"header" : @"Newark",
+                                  @"data" : @"Students enjoy all-you-care-to-eat dining in a contemporary setting. This exciting location offers fresh made menu items, cutting-edge American entrees, ethnically-inspired foods, vegetarian selections and lots more... \n\nThe Commons also features upscale Premium entrees and fresh baked goods from our in house bakery or local vendors.",
+                                  @"view" : @"text"
+                                  }
+                                ];
         
         dispatch_group_t group = dispatch_group_create();
         dispatch_group_enter(group);

@@ -5,7 +5,6 @@
 //  Created by Kyle Bailey on 5/12/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
-#import "RUComponentDelegate.h"
 
 #import "Reader.h"
 #import "www.h"
@@ -17,6 +16,7 @@
 #import "RUPlacesTableViewController.h"
 #import "RUFoodViewController.h"
 #import "RUMapsViewController.h"
+#import "RURootViewController.h"
 
 
 @interface RUChannelManager ()
@@ -35,7 +35,7 @@
     });
     return manager;
 }
--(UIViewController *)viewControllerForChannel:(NSDictionary *)channel delegate:(id)delegate{
+-(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
     UIViewController * vc;
     NSString *view = channel[@"view"];
     //everthing from shortcuts.txt will get a view of www
@@ -49,12 +49,7 @@
             vc.title = channel[@"title"];
         }
     } else {
-        NSLog(@"No way to handle view type %@, \n %@",view,channel);
-    }
-    if ([delegate respondsToSelector:@selector(onMenuButtonTapped)]) {
-        // delegate expects menu button notification, so let's create and add a menu button
-        UIBarButtonItem * btn = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:delegate action:@selector(onMenuButtonTapped)];
-        vc.navigationItem.leftBarButtonItem = btn;
+        NSLog(@"No way to handle view type %@, \n%@",view,channel);
     }
     return vc;
 }
@@ -101,21 +96,7 @@
     });
 }
 
--(NSString *)identifierForChannel:(NSDictionary *)channel{
-    return channel[@"handle"];
-}
--(NSString *)titleForChannel:(NSDictionary *)channel{
-    id title = channel[@"title"];
-    if ([title isKindOfClass:[NSString class]]) {
-        return title = title;
-    } else if ([title isKindOfClass:[NSDictionary class]]) {
-        id subtitle = title[@"homeTitle"];
-        if ([subtitle isKindOfClass:[NSString class]]) {
-            return subtitle;
-        }
-    }
-    return nil;
-}
+
 
 
 @end

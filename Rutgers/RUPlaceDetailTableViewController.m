@@ -262,12 +262,12 @@ const NSString *DESCRIPTION = @"description";
         
         NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:17] forKey: NSFontAttributeName];
         
-        CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(290, 9999)
+        CGSize labelStringSize = [string boundingRectWithSize:CGSizeMake(self.view.bounds.size.width-30, 9999)
                                                       options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                    attributes:stringAttributes context:nil].size;
         
         
-        return  labelStringSize.height+24.0;
+        return  round(labelStringSize.height+24.0);
         
     } return 44.0;
 }

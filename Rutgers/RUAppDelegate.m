@@ -1,3 +1,4 @@
+
 //
 //  RUAppDelegate.m
 //  Rutgers
@@ -7,9 +8,8 @@
 //
 
 #import "RUAppDelegate.h"
-#import "JASidePanelController.h"
 #import "XMLDictionary.h"
-#import "RUMenuViewController.h"
+#import "RURootViewController.h"
 #import <NUISettings.h>
 
 #define MEMORY_MEGS 10
@@ -27,12 +27,11 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor blackColor];
     
     [self.window makeKeyAndVisible];
 
-    [self initDrawer];
-
+    self.window.rootViewController = [[RURootViewController alloc] init];
 
     return YES;
 }
@@ -49,34 +48,6 @@
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
     [NSURLCache setSharedURLCache:URLCache];
 
-}
--(void)initDrawer{
-    RUMenuViewController * menu = [[RUMenuViewController alloc] init];
-
-    JASidePanelController * mainViewController = [[JASidePanelController alloc] init];
-    
-    // TODO: motd, prefs, launch last used channel
-    mainViewController.centerPanel = [self makeDefaultScreen];
-    mainViewController.leftGapPercentage = 0.75f;
-    mainViewController.leftPanel = menu;
-    
-    self.window.rootViewController = mainViewController;
-    
-    menu.sidepanel = mainViewController;
-    
-    double delayInSeconds = 0.15;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [mainViewController showLeftPanelAnimated:YES];
-    });
-}
-- (UIViewController *)makeDefaultScreen {
-    UIViewController * splashViewController = [[UIViewController alloc] init];
-    splashViewController.view.backgroundColor = [UIColor whiteColor];
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage-700"]];
-    imageView.center = splashViewController.view.center;
-    [splashViewController.view addSubview:imageView];
-    return splashViewController;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

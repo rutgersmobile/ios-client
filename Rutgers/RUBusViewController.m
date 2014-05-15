@@ -66,7 +66,7 @@ typedef enum : NSUInteger {
     [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
     
     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     self.searchController.searchResultsDelegate = self;
@@ -76,6 +76,8 @@ typedef enum : NSUInteger {
     [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     self.tableView.tableHeaderView = searchBar;
+    [searchBar autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+    [searchBar autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
     /// segmented bar setup
     NSArray *segItemsArray = @[@"Routes",@"Stops"];

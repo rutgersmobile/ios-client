@@ -9,10 +9,10 @@
 
 #import "RUMenuViewController.h"
 #import "RUChannelManager.h"
+#import <JASidePanelController.h>
 
 @interface RUMenuViewController ()
 @property RUChannelManager *componentManager;
-@property NSIndexPath *currentChannel;
 @property NSArray *channels;
 @end
 
@@ -28,12 +28,14 @@
         table.delegate = self;
         table.dataSource = self;
         [self.view addSubview:table];
-        
+        self.title = @"Channels";
         self.componentManager = [RUChannelManager sharedInstance];
         
         [self.componentManager loadChannelsWithUpdateBlock:^(NSArray *channels) {
+            [table beginUpdates];
             self.channels = channels;
             [table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [table endUpdates];
         }];
     }
     return self;
@@ -42,20 +44,10 @@
     return self.channels[indexPath.row];
 }
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.currentChannel isEqual:indexPath]) {
-        [self.sidepanel showCenterPanelAnimated:YES];
-        return;
-    }
-    self.currentChannel = indexPath;
-    UIViewController * channel = [[UINavigationController alloc] initWithRootViewController:[self.componentManager viewControllerForChannel:[self channelForIndexPath:indexPath] delegate:self]];
-    
-    [self.sidepanel showCenterPanelAnimated:YES];
-    [self.sidepanel setCenterPanel:channel];
+    NSDictionary *channel = [self channelForIndexPath:indexPath];
+    [self.delegate menu:self didSelectChannel:channel];
+  
 }
-- (void) onMenuButtonTapped {
-    [self.sidepanel showLeftPanelAnimated:YES];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -71,8 +63,8 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    
-    cell.textLabel.text = [self.componentManager titleForChannel:[self channelForIndexPath:indexPath]];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = [[self channelForIndexPath:indexPath] titleForChannel];
     return cell;
 }
 
@@ -83,10 +75,6 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
-}
-
-- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @"Channels";
 }
 
 @end

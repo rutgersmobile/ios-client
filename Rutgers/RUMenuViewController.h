@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JASidePanelController.h"
-#import "RUComponentDelegate.h"
+#import "RURootViewController.h"
 
-
-@interface RUMenuViewController : UIViewController <RUComponentDelegate, UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic) JASidePanelController * sidepanel;
-
+@interface RUMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@property id <RUMenuDelegate> delegate;
 @end
-  
+
+

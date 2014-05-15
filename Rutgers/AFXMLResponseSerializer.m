@@ -20,7 +20,7 @@
     }
     XMLDictionaryParser *parser = [[XMLDictionaryParser alloc] init];
     parser.alwaysUseArrays = YES;
-    parser.stripEmptyNodes = NO;
+    parser.stripEmptyNodes = YES;
     
     return [parser dictionaryWithData:data];
     //    return [[TBXML alloc] initWithData:data];

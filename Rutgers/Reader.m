@@ -11,6 +11,7 @@
 #import "RUReaderTableViewCell.h"
 #import <PBWebViewController.h>
 #import "RUNetworkManager.h"
+#import "RUChannelManager.h"
 
 @interface Reader ()
 @property (nonatomic) NSArray *items;
@@ -31,10 +32,7 @@
 }
 -(void)setChannel:(NSDictionary *)channel{
     _channel = channel;
-    NSString *title = [self titleForChannel:channel];
-    if (title) {
-        self.title = title;
-    }
+    self.title = [channel titleForChannel];
     [self fetchDataForChannel];
 }
 
@@ -54,18 +52,6 @@
     [self.refreshControl beginRefreshing];
     [self.refreshControl addTarget:self action:@selector(fetchDataForChannel) forControlEvents:UIControlEventValueChanged];
     
-}
--(NSString *)titleForChannel:(NSDictionary *)channel{
-    id title = channel[@"title"];
-    if ([title isKindOfClass:[NSString class]]) {
-        return title = title;
-    } else if ([title isKindOfClass:[NSDictionary class]]) {
-        id subtitle = title[@"homeTitle"];
-        if ([subtitle isKindOfClass:[NSString class]]) {
-            return subtitle;
-        }
-    }
-    return nil;
 }
 -(void)fetchDataForChannel{
     [[RUNetworkManager xmlSessionManager] GET:self.channel[@"url"] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -122,12 +108,14 @@
     if (link) {
         PBWebViewController *webBrowser = [[PBWebViewController alloc] init];
         webBrowser.URL = [NSURL URLWithString:link];
+        webBrowser.title = [item[@"title"] firstObject];
         [self.navigationController pushViewController:webBrowser animated:YES];
     }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *item = self.items[indexPath.row];
+    
     NSString *title = [item[@"title"] firstObject];
     NSString *description = [item[@"description"] firstObject];
     NSString *time = [item[@"pubDate"] firstObject];
@@ -140,7 +128,7 @@
         descriptionStringAttributes = @{ NSFontAttributeName : [UIFont systemFontOfSize:14] };
     });
     
-    static CGFloat width = 320-41-15;
+    CGFloat width = self.view.bounds.size.width-41-15;
     CGSize titleStringSize = [title boundingRectWithSize:CGSizeMake(width, 9999)
                                                        options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                     attributes:titleStringAttributes context:nil].size;
@@ -151,7 +139,7 @@
     
 
     
-    CGFloat height = 20 + descriptionStringSize.height + titleStringSize.height;
+    CGFloat height = round(20 + descriptionStringSize.height + titleStringSize.height);
     if (time) height += 20;
     return height;
 }

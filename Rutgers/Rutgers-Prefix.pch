@@ -14,5 +14,6 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <UIView+AutoLayout.h>
-
+    #import "NSDictionary+Channel.h"
+    #import "UIColor+RutgersColors.h"
 #endif

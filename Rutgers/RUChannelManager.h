@@ -12,10 +12,7 @@
 @interface RUChannelManager : NSObject
 +(RUChannelManager *)sharedInstance;
 
--(UIViewController *)viewControllerForChannel:(NSDictionary *)channel delegate:(id)delegate;
+-(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
 -(void)loadChannelsWithUpdateBlock:(void (^)(NSArray *channels))updateBlock;
-
--(NSString *)identifierForChannel:(NSDictionary *)channel;
--(NSString *)titleForChannel:(NSDictionary *)channel;
 
 @end

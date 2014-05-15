@@ -109,7 +109,7 @@
         dtvc.title = [self titleForChild:child];
         [self.navigationController pushViewController:dtvc animated:YES];
     } else if (child[@"channel"]) {
-        UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"] delegate:nil];
+        UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
