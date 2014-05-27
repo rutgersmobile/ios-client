@@ -13,8 +13,19 @@
 @end
 
 @implementation RUSidePanelController
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.leftFixedWidth = 280;
+        self.shouldResizeLeftPanel = YES;
+        self.allowLeftOverpan = NO;
+        self.allowRightOverpan = NO;
+    }
+    return self;
+}
 -(UIBarButtonItem *)leftButtonForCenterPanel{
-    return [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    return [[UIBarButtonItem alloc] initWithTitle:@"Channels" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
 }
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration {
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:container.bounds cornerRadius:0.0f];
@@ -25,10 +36,11 @@
         animation.duration = duration;
         [container.layer addAnimation:animation forKey:@"shadowPath"];
     }
+    
     container.layer.shadowPath = shadowPath.CGPath;
     container.layer.shadowColor = [UIColor blackColor].CGColor;
-    container.layer.shadowRadius = 8.0f;
-    container.layer.shadowOpacity = 0.75f;
+    container.layer.shadowRadius = 5.0f;
+    container.layer.shadowOpacity = 0.65f;
     container.clipsToBounds = NO;
 }
 

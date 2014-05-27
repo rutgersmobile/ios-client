@@ -9,6 +9,7 @@
 #import "dtable.h"
 #import "Reader.h"
 #import "RUNetworkManager.h"
+#import "NSDictionary+Channel.h"
 #import "RUChannelManager.h"
 
 @interface dtable ()
@@ -79,34 +80,20 @@
     cell.textLabel.text = nil;
     id child = self.children[indexPath.row];
     if ([child isKindOfClass:[NSDictionary class]]) {
-        cell.textLabel.text = [self titleForChild:child];
+        cell.textLabel.text = [child titleForChannel];
     }
-    if (child[@"channel"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (child[@"children"]) {
+    if (child[@"channel"] || child[@"children"]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     return cell;
 }
--(NSString *)titleForChild:(NSDictionary *)child{
-    id title = child[@"title"];
-    if ([title isKindOfClass:[NSString class]]) {
-        return title = title;
-    } else if ([title isKindOfClass:[NSDictionary class]]) {
-        id subtitle = title[@"homeTitle"];
-        if ([subtitle isKindOfClass:[NSString class]]) {
-            return subtitle;
-        }
-    }
-    return nil;
-}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *child = self.children[indexPath.row];
     if (child[@"children"]) {
         dtable *dtvc = [[dtable alloc] initWithChildren:child[@"children"]];
-        dtvc.title = [self titleForChild:child];
+        dtvc.title = [child titleForChannel];
         [self.navigationController pushViewController:dtvc animated:YES];
     } else if (child[@"channel"]) {
         UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]];

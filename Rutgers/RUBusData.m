@@ -50,6 +50,9 @@ NSString const *newarkAgency = @"rutgers-newark";
         self.activeRoutes = [NSMutableDictionary dictionary];
         self.allStopsAndRoutes = [NSMutableDictionary dictionary];
         
+        self.agencyGroup = dispatch_group_create();
+        self.activeGroup = dispatch_group_create();
+        
         [self getAgencyConfig];
     }
     return self;
@@ -70,6 +73,7 @@ NSString const *newarkAgency = @"rutgers-newark";
                     }
                 }
             }];
+            
             if ([nearbyStops count]) {
                 NSArray *sortedNearbyStops = [nearbyStops sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                     CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
@@ -98,30 +102,27 @@ NSString const *newarkAgency = @"rutgers-newark";
 }
 #pragma mark - network api functions
 -(void)getAgencyConfig{
-    dispatch_group_t group = dispatch_group_create();
-    self.agencyGroup = group;
     
-    dispatch_group_enter(group);
-    [self getAgencyConfigForAgency:newBrunswickAgency inCompletionGroup:group];
+    dispatch_group_enter(self.agencyGroup);
+    [self getAgencyConfigForAgency:newBrunswickAgency];
     
-    dispatch_group_enter(group);
-    [self getAgencyConfigForAgency:newarkAgency inCompletionGroup:group];
+    dispatch_group_enter(self.agencyGroup);
+    [self getAgencyConfigForAgency:newarkAgency];
     
 }
 
--(void)getAgencyConfigForAgency:(const NSString *)agency inCompletionGroup:(dispatch_group_t)group{
+-(void)getAgencyConfigForAgency:(const NSString *)agency{
     NSDictionary *urls = @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"};
     [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parseRouteConfig:responseObject forAgency:agency];
-            dispatch_group_leave(group);
+            dispatch_group_leave(self.agencyGroup);
         } else {
-            [self getAgencyConfigForAgency:agency inCompletionGroup:group];
+            [self getAgencyConfigForAgency:agency];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self getAgencyConfigForAgency:agency inCompletionGroup:group];
+        [self getAgencyConfigForAgency:agency];
     }];
-    
 }
 
 -(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock{
@@ -131,23 +132,20 @@ NSString const *newarkAgency = @"rutgers-newark";
         return;
     }
     
-    dispatch_group_t group = dispatch_group_create();
-    self.activeGroup = group;
-    
     //start blocking the group
-    dispatch_group_enter(group);
+    dispatch_group_enter(self.activeGroup);
     
     dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
-        dispatch_group_enter(group);
-        [self updateActiveStopsAndRoutesForAgency:newBrunswickAgency inCompletionGroup:group];
+        dispatch_group_enter(self.activeGroup);
+        [self updateActiveStopsAndRoutesForAgency:newBrunswickAgency];
         
-        dispatch_group_enter(group);
-        [self updateActiveStopsAndRoutesForAgency:newarkAgency inCompletionGroup:group];
+        dispatch_group_enter(self.activeGroup);
+        [self updateActiveStopsAndRoutesForAgency:newarkAgency];
         
         //end blocking the group, pairs with the call above
-        dispatch_group_leave(group);
+        dispatch_group_leave(self.activeGroup);
         
-        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
             self.lastActiveStopsAndRoutesUpdateDate = [NSDate date];
             completionBlock([self.activeStops copy], [self.activeRoutes copy]);
         });
@@ -155,17 +153,17 @@ NSString const *newarkAgency = @"rutgers-newark";
     });
 }
 
--(void)updateActiveStopsAndRoutesForAgency:(const NSString *)agency inCompletionGroup:(dispatch_group_t)group{
+-(void)updateActiveStopsAndRoutesForAgency:(const NSString *)agency{
     NSDictionary *urls = @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"};
     [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parseActiveStops:responseObject forAgency:agency];
-            dispatch_group_leave(group);
+            dispatch_group_leave(self.activeGroup);
         } else {
-            [self updateActiveStopsAndRoutesForAgency:agency inCompletionGroup:group];
+            [self updateActiveStopsAndRoutesForAgency:agency];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self updateActiveStopsAndRoutesForAgency:agency inCompletionGroup:group];
+        [self updateActiveStopsAndRoutesForAgency:agency];
     }];
 }
 #pragma mark - predictions api

@@ -38,7 +38,7 @@
     [self.foodData getFoodWithCompletion:^(NSArray *response) {
         [self.tableView beginUpdates];
         self.nbDiningHalls = response;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     }];
 }
@@ -52,22 +52,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1+[self.staticDiningHalls count];
+    if (!self.nbDiningHalls) return 0;
+    return [self.staticDiningHalls count]+1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.nbDiningHalls) {
-        switch (section) {
-            case 0:
-                return self.nbDiningHalls.count;
-                break;
-            default:
-                return 1;
-                break;
-        }
+    switch (section) {
+        case 0:
+            return self.nbDiningHalls.count;
+            break;
+        default:
+            return 1;
+            break;
     }
-    return 0;
 }
 
 

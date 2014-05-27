@@ -16,7 +16,7 @@
 #import "RUPlacesTableViewController.h"
 #import "RUFoodViewController.h"
 #import "RUMapsViewController.h"
-#import "RURootViewController.h"
+#import "RUMenuController.h"
 
 
 @interface RUChannelManager ()

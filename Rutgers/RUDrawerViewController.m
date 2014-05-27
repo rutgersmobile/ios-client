@@ -7,16 +7,16 @@
 //
 
 
-#import "RUMenuViewController.h"
+#import "RUDrawerViewController.h"
 #import "RUChannelManager.h"
 #import <JASidePanelController.h>
 
-@interface RUMenuViewController ()
+@interface RUDrawerViewController ()
 @property RUChannelManager *componentManager;
 @property NSArray *channels;
 @end
 
-@implementation RUMenuViewController
+@implementation RUDrawerViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,6 +28,10 @@
         table.delegate = self;
         table.dataSource = self;
         [self.view addSubview:table];
+        
+        table.autoresizesSubviews = YES;
+        table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
         self.title = @"Channels";
         self.componentManager = [RUChannelManager sharedInstance];
         
@@ -46,7 +50,7 @@
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *channel = [self channelForIndexPath:indexPath];
     [self.delegate menu:self didSelectChannel:channel];
-    
+  
 }
 - (void)viewDidLoad
 {

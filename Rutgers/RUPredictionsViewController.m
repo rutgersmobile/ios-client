@@ -32,19 +32,11 @@
     self.title = [item title];
 }
 -(void)getPredictions{
-    __weak typeof(self) weakSelf = self;
-
     [[RUBusData sharedInstance] getPredictionsForItem:self.item withCompletion:^(NSArray *response) {
-        [weakSelf.tableView beginUpdates];
-        weakSelf.response = response;
-        [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [weakSelf.tableView endUpdates];
-        
-        double delayInSeconds = PREDICTION_TIMER_INTERVAL;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [weakSelf getPredictions];
-        });
+        [self.tableView beginUpdates];
+        self.response = response;
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
     }];
 }
 
@@ -53,6 +45,16 @@
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"RUPredictionTableViewCell" bundle:nil] forCellReuseIdentifier:@"PredictionCell"];
     [self getPredictions];
+    
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, PREDICTION_TIMER_INTERVAL * NSEC_PER_SEC, 1 * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(timer, ^{
+        [self getPredictions];
+    });
+    
+    dispatch_resume(timer);
+}
+-(void)dealloc{
     
 }
 - (BOOL) hidesBottomBarWhenPushed {

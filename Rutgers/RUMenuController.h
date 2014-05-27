@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-@class RUMenuViewController;
+@class RUDrawerViewController;
 
 @protocol RUMenuDelegate <NSObject>
 @required
--(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel;
+-(void)menu:(RUDrawerViewController *)menu didSelectChannel:(NSDictionary *)channel;
 //- (void)menuButtonTapped;
 @end
 
-@interface RURootViewController : UIViewController
-
+@interface RUMenuController : NSObject
+-(UIViewController *)makeMenu;
 @end

@@ -51,8 +51,6 @@ NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
     [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     self.tableView.tableHeaderView = searchBar;
-    [searchBar autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
-    [searchBar autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
 }
 -(void)viewDidAppear:(BOOL)animated{
@@ -99,9 +97,11 @@ NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
     dispatch_group_enter(self.searchingGroup);
 }
+
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
     dispatch_group_leave(self.searchingGroup);
 }
+
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
     [self.placesData queryPlacesWithString:searchString completion:^(NSArray *results) {
         self.searchResults = results;

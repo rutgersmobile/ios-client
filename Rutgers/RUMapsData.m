@@ -23,6 +23,7 @@
     });
     return mapsData;
 }
+
 - (instancetype)init
 {
     self = [super init];
@@ -55,10 +56,12 @@
     if (cachedData) {
         result(cachedData, nil);
     } else {
-        
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if ([responseObject isKindOfClass:[NSData class]]) {
+            
+            if (!error &&
+                [responseObject isKindOfClass:[NSData class]] &&
+                [[response MIMEType] isEqualToString:@"image/png"]) {
                 [self.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
             }
             result(responseObject, error);

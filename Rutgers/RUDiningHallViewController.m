@@ -63,7 +63,7 @@
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.userInteractionEnabled = NO;
-        cell.textLabel.textColor = [UIColor grayColor];
+        cell.textLabel.textColor = [UIColor lightGrayColor];
     }
     return cell;
 }

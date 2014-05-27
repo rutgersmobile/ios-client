@@ -32,7 +32,8 @@
         self.textView.editable = NO;
         self.textView.selectable = NO;
         self.textView.font = [UIFont systemFontOfSize:17];
-        self.textView.textContainerInset = UIEdgeInsetsMake(8, 8, 8, 8);
+        self.textView.textContainerInset = UIEdgeInsetsMake(15, 8, 15, 8);
+     //   self.textView.dataDetectorTypes = UIDataDetectorTypePhoneNumber;
         [self.view addSubview:self.textView];
         [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     }

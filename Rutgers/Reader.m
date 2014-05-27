@@ -9,7 +9,7 @@
 #import "Reader.h"
 #import <AFNetworking.h>
 #import "RUReaderTableViewCell.h"
-#import <PBWebViewController.h>
+#import <TOWebViewController.h>
 #import "RUNetworkManager.h"
 #import "RUChannelManager.h"
 
@@ -30,16 +30,13 @@
     }
     return self;
 }
--(void)setChannel:(NSDictionary *)channel{
-    _channel = channel;
-    self.title = [channel titleForChannel];
-    [self fetchDataForChannel];
-}
 
 -(id)initWithChannel:(NSDictionary *)channel{
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
         self.channel = channel;
+        self.title = [channel titleForChannel];
+        [self fetchDataForChannel];
     }
     return self;
 }
@@ -52,6 +49,10 @@
     [self.refreshControl beginRefreshing];
     [self.refreshControl addTarget:self action:@selector(fetchDataForChannel) forControlEvents:UIControlEventValueChanged];
     
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:NO];
 }
 -(void)fetchDataForChannel{
     [[RUNetworkManager xmlSessionManager] GET:self.channel[@"url"] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -89,7 +90,6 @@
     return self.items.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RUReaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReaderCell" forIndexPath:indexPath];
@@ -106,8 +106,7 @@
     NSDictionary *item = self.items[indexPath.row];
     NSString *link = [item[@"link"] firstObject];
     if (link) {
-        PBWebViewController *webBrowser = [[PBWebViewController alloc] init];
-        webBrowser.URL = [NSURL URLWithString:link];
+        TOWebViewController *webBrowser = [[TOWebViewController alloc] initWithURLString:link];
         webBrowser.title = [item[@"title"] firstObject];
         [self.navigationController pushViewController:webBrowser animated:YES];
     }
@@ -128,7 +127,7 @@
         descriptionStringAttributes = @{ NSFontAttributeName : [UIFont systemFontOfSize:14] };
     });
     
-    CGFloat width = self.view.bounds.size.width-41-15;
+    CGFloat width = self.view.bounds.size.width-30-26;
     CGSize titleStringSize = [title boundingRectWithSize:CGSizeMake(width, 9999)
                                                        options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                     attributes:titleStringAttributes context:nil].size;

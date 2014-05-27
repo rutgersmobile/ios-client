@@ -12,8 +12,12 @@
 #import "RURootViewController.h"
 #import <NUISettings.h>
 
+
 #define MEMORY_MEGS 10
 #define DISK_MEGS 25
+
+@interface RUAppDelegate ()
+@end
 
 @implementation RUAppDelegate
 

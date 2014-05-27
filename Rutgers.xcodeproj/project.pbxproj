@@ -20,6 +20,19 @@
 		A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */; };
 		A75B0AAB1909A0D200A57149 /* RUPredictionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B0AA91909A0D200A57149 /* RUPredictionTableViewCell.m */; };
 		A75B0AAC1909A0D200A57149 /* RUPredictionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75B0AAA1909A0D200A57149 /* RUPredictionTableViewCell.xib */; };
+		A76992C71934E63D008C64EE /* EZTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992BD1934E63D008C64EE /* EZTableViewSection.m */; };
+		A76992C81934E63D008C64EE /* EZTableViewRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992BF1934E63D008C64EE /* EZTableViewRow.m */; };
+		A76992C91934E63D008C64EE /* EZTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992C11934E63D008C64EE /* EZTableViewController.m */; };
+		A76992CA1934E63D008C64EE /* EZTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992C31934E63D008C64EE /* EZTableViewCell.m */; };
+		A76992CB1934E63D008C64EE /* EZTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992C51934E63D008C64EE /* EZTableViewAbstractCell.m */; };
+		A76992DD1934E874008C64EE /* RURecCenterHoursHeaderRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992DC1934E874008C64EE /* RURecCenterHoursHeaderRow.m */; };
+		A76992E01934E91E008C64EE /* RURecCenterMeetingAreaRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992DF1934E91E008C64EE /* RURecCenterMeetingAreaRow.m */; };
+		A769930B1934E9C1008C64EE /* RURecCenterHoursHeaderRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993001934E9C1008C64EE /* RURecCenterHoursHeaderRow.m */; };
+		A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993021934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m */; };
+		A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993041934E9C1008C64EE /* RURecCenterHoursSection.m */; };
+		A769930E1934E9C1008C64EE /* RURecCenterMeetingAreaRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993061934E9C1008C64EE /* RURecCenterMeetingAreaRow.m */; };
+		A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993081934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m */; };
+		A76993101934E9C1008C64EE /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769930A1934E9C1008C64EE /* RURecCenterViewController.m */; };
 		A77028B4191EC2BA003F5D28 /* RUNutritionLabelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77028B3191EC2BA003F5D28 /* RUNutritionLabelViewController.m */; };
 		A777C2AD190AF0DA00F978D7 /* RUPlacesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A777C2AC190AF0DA00F978D7 /* RUPlacesTableViewController.m */; };
 		A777C2B0190B35C400F978D7 /* RUPlacesData.m in Sources */ = {isa = PBXBuildFile; fileRef = A777C2AF190B35C400F978D7 /* RUPlacesData.m */; };
@@ -37,7 +50,6 @@
 		A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435F11912EB29001FE8B6 /* RUDiningHallViewController.m */; };
 		A7B435F51912EB4E001FE8B6 /* RUMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435F41912EB4E001FE8B6 /* RUMealViewController.m */; };
 		A7B436681914C0F2001FE8B6 /* NSArray+RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B436671914C0F2001FE8B6 /* NSArray+RUBusStop.m */; };
-		A7B970BE192075CA0070A414 /* RUInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970BD192075CA0070A414 /* RUInfoTableViewController.m */; };
 		A7B970C8192075F40070A414 /* RUMapsData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C2192075F40070A414 /* RUMapsData.m */; };
 		A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C4192075F40070A414 /* RUMapsTileOverlay.m */; };
 		A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C6192075F40070A414 /* RUMapsViewController.m */; };
@@ -100,6 +112,32 @@
 		A75B0AA81909A0D200A57149 /* RUPredictionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionTableViewCell.h; sourceTree = "<group>"; };
 		A75B0AA91909A0D200A57149 /* RUPredictionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionTableViewCell.m; sourceTree = "<group>"; };
 		A75B0AAA1909A0D200A57149 /* RUPredictionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUPredictionTableViewCell.xib; sourceTree = "<group>"; };
+		A76992BD1934E63D008C64EE /* EZTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewSection.m; sourceTree = "<group>"; };
+		A76992BE1934E63D008C64EE /* EZTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewSection.h; sourceTree = "<group>"; };
+		A76992BF1934E63D008C64EE /* EZTableViewRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewRow.m; sourceTree = "<group>"; };
+		A76992C01934E63D008C64EE /* EZTableViewRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewRow.h; sourceTree = "<group>"; };
+		A76992C11934E63D008C64EE /* EZTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewController.m; sourceTree = "<group>"; };
+		A76992C21934E63D008C64EE /* EZTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewController.h; sourceTree = "<group>"; };
+		A76992C31934E63D008C64EE /* EZTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewCell.m; sourceTree = "<group>"; };
+		A76992C41934E63D008C64EE /* EZTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewCell.h; sourceTree = "<group>"; };
+		A76992C51934E63D008C64EE /* EZTableViewAbstractCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewAbstractCell.m; sourceTree = "<group>"; };
+		A76992C61934E63D008C64EE /* EZTableViewAbstractCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewAbstractCell.h; sourceTree = "<group>"; };
+		A76992DB1934E874008C64EE /* RURecCenterHoursHeaderRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterHoursHeaderRow.h; path = Rutgers/RURecCenterHoursHeaderRow.h; sourceTree = SOURCE_ROOT; };
+		A76992DC1934E874008C64EE /* RURecCenterHoursHeaderRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterHoursHeaderRow.m; path = Rutgers/RURecCenterHoursHeaderRow.m; sourceTree = SOURCE_ROOT; };
+		A76992DE1934E91E008C64EE /* RURecCenterMeetingAreaRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterMeetingAreaRow.h; path = Rutgers/RURecCenterMeetingAreaRow.h; sourceTree = SOURCE_ROOT; };
+		A76992DF1934E91E008C64EE /* RURecCenterMeetingAreaRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterMeetingAreaRow.m; path = Rutgers/RURecCenterMeetingAreaRow.m; sourceTree = SOURCE_ROOT; };
+		A76992FF1934E9C1008C64EE /* RURecCenterHoursHeaderRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterHoursHeaderRow.h; path = Rutgers/RURecCenterHoursHeaderRow.h; sourceTree = SOURCE_ROOT; };
+		A76993001934E9C1008C64EE /* RURecCenterHoursHeaderRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterHoursHeaderRow.m; path = Rutgers/RURecCenterHoursHeaderRow.m; sourceTree = SOURCE_ROOT; };
+		A76993011934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterHoursHeaderTableViewCell.h; path = Rutgers/RURecCenterHoursHeaderTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		A76993021934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterHoursHeaderTableViewCell.m; path = Rutgers/RURecCenterHoursHeaderTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		A76993031934E9C1008C64EE /* RURecCenterHoursSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterHoursSection.h; path = Rutgers/RURecCenterHoursSection.h; sourceTree = SOURCE_ROOT; };
+		A76993041934E9C1008C64EE /* RURecCenterHoursSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterHoursSection.m; path = Rutgers/RURecCenterHoursSection.m; sourceTree = SOURCE_ROOT; };
+		A76993051934E9C1008C64EE /* RURecCenterMeetingAreaRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterMeetingAreaRow.h; path = Rutgers/RURecCenterMeetingAreaRow.h; sourceTree = SOURCE_ROOT; };
+		A76993061934E9C1008C64EE /* RURecCenterMeetingAreaRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterMeetingAreaRow.m; path = Rutgers/RURecCenterMeetingAreaRow.m; sourceTree = SOURCE_ROOT; };
+		A76993071934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterMeetingAreaTableViewCell.h; path = Rutgers/RURecCenterMeetingAreaTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		A76993081934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterMeetingAreaTableViewCell.m; path = Rutgers/RURecCenterMeetingAreaTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		A76993091934E9C1008C64EE /* RURecCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterViewController.h; path = Rutgers/RURecCenterViewController.h; sourceTree = SOURCE_ROOT; };
+		A769930A1934E9C1008C64EE /* RURecCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterViewController.m; path = Rutgers/RURecCenterViewController.m; sourceTree = SOURCE_ROOT; };
 		A77028B2191EC2BA003F5D28 /* RUNutritionLabelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNutritionLabelViewController.h; sourceTree = "<group>"; };
 		A77028B3191EC2BA003F5D28 /* RUNutritionLabelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNutritionLabelViewController.m; sourceTree = "<group>"; };
 		A777C2AB190AF0DA00F978D7 /* RUPlacesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPlacesTableViewController.h; sourceTree = "<group>"; };
@@ -130,8 +168,6 @@
 		A7B435F41912EB4E001FE8B6 /* RUMealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMealViewController.m; sourceTree = "<group>"; };
 		A7B436661914C0F2001FE8B6 /* NSArray+RUBusStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RUBusStop.h"; sourceTree = "<group>"; };
 		A7B436671914C0F2001FE8B6 /* NSArray+RUBusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RUBusStop.m"; sourceTree = "<group>"; };
-		A7B970BC192075CA0070A414 /* RUInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUInfoTableViewController.h; path = Rutgers/RUInfoTableViewController.h; sourceTree = SOURCE_ROOT; };
-		A7B970BD192075CA0070A414 /* RUInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUInfoTableViewController.m; path = Rutgers/RUInfoTableViewController.m; sourceTree = SOURCE_ROOT; };
 		A7B970C1192075F40070A414 /* RUMapsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsData.h; path = Rutgers/RUMapsData.h; sourceTree = SOURCE_ROOT; };
 		A7B970C2192075F40070A414 /* RUMapsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsData.m; path = Rutgers/RUMapsData.m; sourceTree = SOURCE_ROOT; };
 		A7B970C3192075F40070A414 /* RUMapsTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsTileOverlay.h; path = Rutgers/RUMapsTileOverlay.h; sourceTree = SOURCE_ROOT; };
@@ -215,16 +251,6 @@
 			name = ruplaces;
 			sourceTree = "<group>";
 		};
-		A736B3C11914D60600559488 /* ruinfo */ = {
-			isa = PBXGroup;
-			children = (
-				A7B970BC192075CA0070A414 /* RUInfoTableViewController.h */,
-				A7B970BD192075CA0070A414 /* RUInfoTableViewController.m */,
-			);
-			name = ruinfo;
-			path = ../Pods/ruinfo;
-			sourceTree = "<group>";
-		};
 		A73F48571905AAFE00978FD6 /* rubus */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,6 +276,7 @@
 		A75B0AAD1909A3EA00A57149 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				A76992BC1934E624008C64EE /* Eztableview */,
 				A7E8E12D192464970089F166 /* Utils */,
 				A7B970D3192161B10070A414 /* Components */,
 				A7B970CF1921601E0070A414 /* dtable */,
@@ -265,6 +292,23 @@
 				A704C7851922AF7F00ED9E36 /* Channels.json */,
 			);
 			name = common;
+			sourceTree = "<group>";
+		};
+		A76992BC1934E624008C64EE /* Eztableview */ = {
+			isa = PBXGroup;
+			children = (
+				A76992BD1934E63D008C64EE /* EZTableViewSection.m */,
+				A76992BE1934E63D008C64EE /* EZTableViewSection.h */,
+				A76992BF1934E63D008C64EE /* EZTableViewRow.m */,
+				A76992C01934E63D008C64EE /* EZTableViewRow.h */,
+				A76992C11934E63D008C64EE /* EZTableViewController.m */,
+				A76992C21934E63D008C64EE /* EZTableViewController.h */,
+				A76992C31934E63D008C64EE /* EZTableViewCell.m */,
+				A76992C41934E63D008C64EE /* EZTableViewCell.h */,
+				A76992C51934E63D008C64EE /* EZTableViewAbstractCell.m */,
+				A76992C61934E63D008C64EE /* EZTableViewAbstractCell.h */,
+			);
+			name = Eztableview;
 			sourceTree = "<group>";
 		};
 		A77028A5191C8880003F5D28 /* rumaps */ = {
@@ -284,6 +328,22 @@
 		A7910E5919182008002DA45F /* rurecreation */ = {
 			isa = PBXGroup;
 			children = (
+				A76992FF1934E9C1008C64EE /* RURecCenterHoursHeaderRow.h */,
+				A76993001934E9C1008C64EE /* RURecCenterHoursHeaderRow.m */,
+				A76993011934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.h */,
+				A76993021934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m */,
+				A76993031934E9C1008C64EE /* RURecCenterHoursSection.h */,
+				A76993041934E9C1008C64EE /* RURecCenterHoursSection.m */,
+				A76993051934E9C1008C64EE /* RURecCenterMeetingAreaRow.h */,
+				A76993061934E9C1008C64EE /* RURecCenterMeetingAreaRow.m */,
+				A76993071934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.h */,
+				A76993081934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m */,
+				A76993091934E9C1008C64EE /* RURecCenterViewController.h */,
+				A769930A1934E9C1008C64EE /* RURecCenterViewController.m */,
+				A76992DB1934E874008C64EE /* RURecCenterHoursHeaderRow.h */,
+				A76992DC1934E874008C64EE /* RURecCenterHoursHeaderRow.m */,
+				A76992DE1934E91E008C64EE /* RURecCenterMeetingAreaRow.h */,
+				A76992DF1934E91E008C64EE /* RURecCenterMeetingAreaRow.m */,
 			);
 			name = rurecreation;
 			path = ../Pods/ruinfo;
@@ -427,7 +487,6 @@
 				A7B2D98F190ED654003ABEA3 /* rufood */,
 				A70810781906F87C0087EB82 /* ruplaces */,
 				A73F48571905AAFE00978FD6 /* rubus */,
-				A736B3C11914D60600559488 /* ruinfo */,
 				A7910E5919182008002DA45F /* rurecreation */,
 				A77028A5191C8880003F5D28 /* rumaps */,
 				A7E8E14319255E580089F166 /* initial view */,
@@ -515,7 +574,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = RU;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Rutgers;
 				TargetAttributes = {
 					C262EFA7188345D10035C8F5 = {
@@ -609,29 +668,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */,
+				A76992DD1934E874008C64EE /* RURecCenterHoursHeaderRow.m in Sources */,
 				A7E8E133192480A60089F166 /* www.m in Sources */,
-				A7B970BE192075CA0070A414 /* RUInfoTableViewController.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
 				A79BBE3318FF1085007136B0 /* Reader.m in Sources */,
+				A76992C71934E63D008C64EE /* EZTableViewSection.m in Sources */,
+				A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */,
 				A7E8E14619255E710089F166 /* RUSidePanelController.m in Sources */,
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				C262EFBC188345D10035C8F5 /* RUAppDelegate.m in Sources */,
+				A76992CB1934E63D008C64EE /* EZTableViewAbstractCell.m in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A7E8E137192484B00089F166 /* text.m in Sources */,
 				A7B435EF1912E286001FE8B6 /* RUFoodViewController.m in Sources */,
 				A7B970D21921603E0070A414 /* RUChannelManager.m in Sources */,
+				A76992C81934E63D008C64EE /* EZTableViewRow.m in Sources */,
 				A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */,
 				A77028B4191EC2BA003F5D28 /* RUNutritionLabelViewController.m in Sources */,
+				A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */,
 				A777C2B0190B35C400F978D7 /* RUPlacesData.m in Sources */,
 				A7E8E13C192547190089F166 /* RURootViewController.m in Sources */,
+				A76992C91934E63D008C64EE /* EZTableViewController.m in Sources */,
 				A70810721906E0260087EB82 /* RUBusStop.m in Sources */,
+				A769930B1934E9C1008C64EE /* RURecCenterHoursHeaderRow.m in Sources */,
+				A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */,
 				A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */,
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
 				A708106F1906E00A0087EB82 /* RUBusData.m in Sources */,
 				A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */,
 				A7B435E91912DFBB001FE8B6 /* RUFoodData.m in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesTableViewController.m in Sources */,
+				A76993101934E9C1008C64EE /* RURecCenterViewController.m in Sources */,
 				A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */,
 				A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */,
 				A748ECEA1915D78F00CB91FF /* NSDictionary+FilterDictionary.m in Sources */,
@@ -639,11 +707,14 @@
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,
 				A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */,
 				A73F485D1905AB8100978FD6 /* RUBusViewController.m in Sources */,
+				A76992E01934E91E008C64EE /* RURecCenterMeetingAreaRow.m in Sources */,
+				A769930E1934E9C1008C64EE /* RURecCenterMeetingAreaRow.m in Sources */,
 				A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */,
 				A79BBE2718FF0B66007136B0 /* dtable.m in Sources */,
 				A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailTableViewController.m in Sources */,
 				A7B435F51912EB4E001FE8B6 /* RUMealViewController.m in Sources */,
 				A7B970C8192075F40070A414 /* RUMapsData.m in Sources */,
+				A76992CA1934E63D008C64EE /* EZTableViewCell.m in Sources */,
 				A7B436681914C0F2001FE8B6 /* NSArray+RUBusStop.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,7 +761,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -730,7 +800,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -797,7 +866,6 @@
 		C262EFD8188345D10035C8F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Rutgers.app/Rutgers";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -820,7 +888,6 @@
 		C262EFD9188345D10035C8F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Rutgers.app/Rutgers";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

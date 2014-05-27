@@ -7,7 +7,7 @@
 //
 
 #import "www.h"
-#import <PBWebViewController.h>
+#import <TOWebViewController.h>
 #import "RUChannelManager.h"
 
 @interface www ()
@@ -37,8 +37,7 @@
     NSURL *url = [self urlForChannel:channel];
     if ([self.storedChannels objectForKey:url]) return [self.storedChannels objectForKey:url];
     else {
-        PBWebViewController *webBrowser = [[PBWebViewController alloc] init];
-        webBrowser.URL = url;
+        TOWebViewController *webBrowser = [[TOWebViewController alloc] initWithURL:url];
         webBrowser.title = [channel titleForChannel];
         [self.storedChannels setObject:webBrowser forKey:url];
         return webBrowser;

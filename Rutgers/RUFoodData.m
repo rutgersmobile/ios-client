@@ -60,7 +60,14 @@
     NSString *url = @"http://vps.rsopher.com/nutrition.json";
     [self.sessionManager GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.food = responseObject;
+            self.food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                for (NSDictionary *meal in evaluatedObject[@"meals"]) {
+                    if ([meal[@"genres"] count] > 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }]];
             dispatch_group_leave(self.foodGroup);
         } else {
             [self requestFood];

@@ -39,6 +39,7 @@ typedef enum : NSUInteger {
 
 @property NSArray *searchResults;
 @property dispatch_group_t searchingGroup;
+@property CLLocation *lastLocation;
 
 @end
 
@@ -57,14 +58,19 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     [self reloadActiveStopsAndRoutes];
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, ACTIVE_TIMER_INTERVAL * NSEC_PER_SEC, 1 * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(timer, ^{
+        [self reloadActiveStopsAndRoutes];
+    });
+    dispatch_resume(timer);
 
     [self.navigationController setToolbarHidden:NO animated:NO];
 
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    
     
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
     
@@ -76,14 +82,12 @@ typedef enum : NSUInteger {
     [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     self.tableView.tableHeaderView = searchBar;
-    [searchBar autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
-    [searchBar autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
     /// segmented bar setup
     NSArray *segItemsArray = @[@"Routes",@"Stops"];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segItemsArray];
     [segmentedControl addTarget:self action:@selector(segmentedControlButtonChanged:) forControlEvents:UIControlEventValueChanged];
-    segmentedControl.frame = CGRectMake(0, 0, 260, 30);
+    segmentedControl.frame = CGRectMake(0, 0, 250, 30);
     
     UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:(UIView *)segmentedControl];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -103,6 +107,11 @@ typedef enum : NSUInteger {
 -(void)dealloc{
 }
 -(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location{
+    self.lastLocation = location;
+    [self updateNearbyStopsWithLocation:location];
+}
+-(void)updateNearbyStopsWithLocation:(CLLocation *)location{
+    if (!location) return;
     [self.busData stopsNearLocation:location completion:^(NSArray *nearbyStops) {
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
             self.nearbyStops = nearbyStops;
@@ -126,29 +135,23 @@ typedef enum : NSUInteger {
 
 
 -(void)reloadActiveStopsAndRoutes{
-    __weak typeof(self) weakSelf = self;
     [self.busData getActiveStopsAndRoutesWithCompletion:^(NSDictionary *activeStops, NSDictionary *activeRoutes) {
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
-            [weakSelf.tableView beginUpdates];
-            weakSelf.activeRoutes = activeRoutes;
-            weakSelf.activeStops = activeStops;
-            switch (weakSelf.currentPane) {
+            [self.tableView beginUpdates];
+            self.activeRoutes = activeRoutes;
+            self.activeStops = activeStops;
+            switch (self.currentPane) {
                 case RUBusVCRoutesPane:
-                    [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
                     break;
                 case RUBusVCStopsPane:
-                    [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self updateNearbyStopsWithLocation:self.lastLocation];
                     break;
                 default:
                     break;
             }
-            [weakSelf.tableView endUpdates];
-
-            double delayInSeconds = ACTIVE_TIMER_INTERVAL;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [weakSelf reloadActiveStopsAndRoutes];
-            });
+            [self.tableView endUpdates];
         });
     }];
 }
@@ -271,7 +274,7 @@ typedef enum : NSUInteger {
         } else {
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.userInteractionEnabled = NO;
-            cell.textLabel.textColor = [UIColor grayColor];
+            cell.textLabel.textColor = [UIColor lightGrayColor];
         }
     }
     return cell;
