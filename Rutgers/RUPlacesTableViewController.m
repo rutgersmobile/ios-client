@@ -77,7 +77,7 @@ NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
     dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
         [self.tableView beginUpdates];
         self.recentPlaces = recentPlaces;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     });
 }
@@ -86,7 +86,7 @@ NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
             [self.tableView beginUpdates];
             self.nearbyPlaces = nearbyPlaces;
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView endUpdates];
         });
     }];

@@ -17,6 +17,7 @@
 
 -(void)addRow:(EZTableViewRow *)row;
 -(void)addRows:(NSArray *)rows;
+-(void)removeAllRows;
 
 -(NSInteger)numberOfRows;
 -(EZTableViewRow *)rowAtIndex:(NSInteger)index;

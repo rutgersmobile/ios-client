@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "EZTableViewAbstractCell.h"
 
-#define kLabelHorizontalInsets      15.0f
-#define kLabelVerticalInsets        11.0f
 
 @interface EZTableViewCell : EZTableViewAbstractCell
 -(UILabel *)textLabel;

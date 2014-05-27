@@ -35,7 +35,7 @@
     [[RUBusData sharedInstance] getPredictionsForItem:self.item withCompletion:^(NSArray *response) {
         [self.tableView beginUpdates];
         self.response = response;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     }];
 }

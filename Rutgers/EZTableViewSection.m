@@ -39,6 +39,9 @@
 -(void)addRows:(NSArray *)rows{
     [self.rows addObjectsFromArray:rows];
 }
+-(void)removeAllRows{
+    [self.rows removeAllObjects];
+}
 -(NSInteger)numberOfRows{
     return self.rows.count;
 }

@@ -41,17 +41,24 @@
     }
     return self;
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
- //   [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-  //  [self.tableView registerNib:[UINib nibWithNibName:@"RUReaderTableViewCell" bundle:nil] forCellReuseIdentifier:@"ReaderCell"];
-}
 -(void)makeSection{
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
     for (NSDictionary *child in self.children) {
         NSString *title = [child titleForChannel];
         EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:title];
+        
+        if (child[@"children"]) {
+            row.didSelectRowBlock = ^{
+                dtable *dtvc = [[dtable alloc] initWithChildren:child[@"children"]];
+                dtvc.title = [child titleForChannel];
+                [self.navigationController pushViewController:dtvc animated:YES];
+            };
+        } else if (child[@"channel"]) {
+            row.didSelectRowBlock = ^{
+                UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]];
+                [self.navigationController pushViewController:vc animated:YES];
+            };
+        }
         [section addRow:row];
     }
     [self addSection:section];
@@ -69,47 +76,13 @@
         [self fetchData];
     }];
 }
-
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 44.0; 
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
-/*
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-} 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.children.count;
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    cell.textLabel.text = nil;
-    id child = self.children[indexPath.row];
-    if ([child isKindOfClass:[NSDictionary class]]) {
-        cell.textLabel.text = [child titleForChannel];
-    }
-    if (child[@"channel"] || child[@"children"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    return cell;
-}
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *child = self.children[indexPath.row];
-    if (child[@"children"]) {
-        dtable *dtvc = [[dtable alloc] initWithChildren:child[@"children"]];
-        dtvc.title = [child titleForChannel];
-        [self.navigationController pushViewController:dtvc animated:YES];
-    } else if (child[@"channel"]) {
-        UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-*/
 
 @end

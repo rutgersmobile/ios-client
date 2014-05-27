@@ -12,4 +12,5 @@
 @interface EZTableViewController : UITableViewController
 -(void)addSection:(EZTableViewSection *)section;
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index;
+-(void)removeAllSections;
 @end

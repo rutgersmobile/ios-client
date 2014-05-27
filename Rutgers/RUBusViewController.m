@@ -117,7 +117,7 @@ typedef enum : NSUInteger {
             self.nearbyStops = nearbyStops;
             if (self.currentPane == RUBusVCStopsPane) {
                 [self.tableView beginUpdates];
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
                 [self.tableView endUpdates];
             }
         });
@@ -142,10 +142,10 @@ typedef enum : NSUInteger {
             self.activeStops = activeStops;
             switch (self.currentPane) {
                 case RUBusVCRoutesPane:
-                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationFade];
                     break;
                 case RUBusVCStopsPane:
-                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
                     [self updateNearbyStopsWithLocation:self.lastLocation];
                     break;
                 default:

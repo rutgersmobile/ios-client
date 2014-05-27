@@ -26,20 +26,28 @@
     }
     return self;
 }
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.tableView registerClass:[EZTableViewCell class] forCellReuseIdentifier:@"EZTableViewCell"];
 }
+
 - (EZTableViewRow *)rowForIndexPath:(NSIndexPath *)indexPath{
     EZTableViewSection *ezSection = self.sections[indexPath.section];
     return [ezSection rowAtIndex:indexPath.row];
 }
+
 -(void)addSection:(EZTableViewSection *)section{
     [self.sections addObject:section];
 }
+
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index{
     [self.sections insertObject:self atIndex:index];
+}
+
+-(void)removeAllSections{
+    [self.sections removeAllObjects];
 }
 
 #pragma mark - TableView Data source
@@ -89,7 +97,9 @@
     height += 1;
     
     return height;
-    
+}
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 500*320.0/CGRectGetWidth(tableView.bounds);
 }
 -(UITableViewCell *)layoutCellWithIdentifier:(NSString *)identifier{
     UITableViewCell *cell = self.layoutCells[identifier];

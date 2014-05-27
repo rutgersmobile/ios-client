@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#define kLabelHorizontalInsets      15.0f
+#define kLabelVerticalInsets        11.0f
+
 @interface EZTableViewAbstractCell : UITableViewCell
 @property (nonatomic, assign) BOOL didSetupConstraints;
 -(void)makeSubviews;

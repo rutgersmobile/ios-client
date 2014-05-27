@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EZTableViewAbstractCell.h"
 
-@interface RUReaderTableViewCell : UITableViewCell
+@interface RUReaderTableViewCell : EZTableViewAbstractCell
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *detailLabel;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;

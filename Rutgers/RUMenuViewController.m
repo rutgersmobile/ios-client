@@ -17,12 +17,9 @@
 @end
 
 @implementation RUMenuViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+-(id)initWithStyle:(UITableViewStyle)style{
+    self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
         
         self.title = @"Channels";
@@ -30,7 +27,7 @@
         [self.componentManager loadChannelsWithUpdateBlock:^(NSArray *channels) {
             [self.tableView beginUpdates];
             self.channels = channels;
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView endUpdates];
         }];
     }

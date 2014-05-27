@@ -21,7 +21,7 @@
 @implementation RURootController
 
 -(UIViewController *)makeRootViewController{
-    RUMenuViewController * menu = [[RUMenuViewController alloc] init];
+    RUMenuViewController * menu = [[RUMenuViewController alloc] initWithStyle:UITableViewStyleGrouped];
     menu.delegate = self;
     
     UINavigationController *menuNav = [[UINavigationController alloc] initWithRootViewController:menu];
@@ -77,7 +77,9 @@
     UIViewController * splashViewController = [[UIViewController alloc] init];
     splashViewController.view.backgroundColor = [UIColor whiteColor];
     UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage-700"]];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [splashViewController.view addSubview:imageView];
+    [imageView autoCenterInSuperview];
 
     return splashViewController;
 }
