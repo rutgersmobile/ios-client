@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EZTableViewController.h"
  
-@interface dtable : UITableViewController
+@interface dtable : EZTableViewController
 +(instancetype)componentForChannel:(NSDictionary *)channel;
 @end

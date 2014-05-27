@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RURootViewController.h"
+#import "RURootController.h"
 
-@interface RUMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface RUMenuViewController : UITableViewController
 @property id <RUMenuDelegate> delegate;
 @end

@@ -8,9 +8,11 @@
 
 #import "dtable.h"
 #import "Reader.h"
+#import "RUChannelManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
-#import "RUChannelManager.h"
+#import "EZTableViewSection.h"
+#import "EZTableViewRow.h"
 
 @interface dtable ()
 @property NSArray *children;
@@ -35,23 +37,31 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.children = children;
+        [self makeSection];
     }
     return self;
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"RUReaderTableViewCell" bundle:nil] forCellReuseIdentifier:@"ReaderCell"];
-   
+ //   [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+  //  [self.tableView registerNib:[UINib nibWithNibName:@"RUReaderTableViewCell" bundle:nil] forCellReuseIdentifier:@"ReaderCell"];
 }
-
+-(void)makeSection{
+    EZTableViewSection *section = [[EZTableViewSection alloc] init];
+    for (NSDictionary *child in self.children) {
+        NSString *title = [child titleForChannel];
+        EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:title];
+        [section addRow:row];
+    }
+    [self addSection:section];
+}
 -(void)fetchData{
     [[RUNetworkManager jsonSessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             self.children = responseObject[@"children"];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self makeSection];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         } else {
             [self fetchData];
         }
@@ -65,7 +75,7 @@
 {
     [super didReceiveMemoryWarning];
 }
-
+/*
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -100,6 +110,6 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
-
+*/
 
 @end

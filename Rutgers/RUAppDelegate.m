@@ -9,7 +9,7 @@
 
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
-#import "RURootViewController.h"
+#import "RURootController.h"
 #import <NUISettings.h>
 
 
@@ -17,6 +17,7 @@
 #define DISK_MEGS 25
 
 @interface RUAppDelegate ()
+@property RURootController *rootController;
 @end
 
 @implementation RUAppDelegate
@@ -35,7 +36,8 @@
     
     [self.window makeKeyAndVisible];
 
-    self.window.rootViewController = [[RURootViewController alloc] init];
+    self.rootController = [[RURootController alloc] init];
+    self.window.rootViewController = [self.rootController makeRootViewController];
 
     return YES;
 }

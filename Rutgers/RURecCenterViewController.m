@@ -31,6 +31,35 @@
             [self addSection:hoursSection];
             self.hoursSection = hoursSection;
         }
+        
+        NSString *address = recCenter[@"FacilityAddress"];
+        if (address.length) {
+            EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
+            [addressSection addRow:[[EZTableViewRow alloc] initWithText:address]];
+            [self addSection:addressSection];
+        }
+        
+        NSString *information = recCenter[@"FacilityInformation"];
+        if (information.length) {
+            EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
+            [informationSection addRow:[[EZTableViewRow alloc] initWithText:information]];
+            [self addSection:informationSection];
+        }
+        
+        NSString *business = recCenter[@"FacilityBusiness"];
+        if (business.length) {
+            EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
+            [buisnessSection addRow:[[EZTableViewRow alloc] initWithText:business]];
+            [self addSection:buisnessSection];
+        }
+        
+        NSString *description = recCenter[@"FacilityBody"];
+        if (description.length) {
+            EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
+            [descriptionSection addRow:[[EZTableViewRow alloc] initWithText:description]];
+            [self addSection:descriptionSection];
+        }
+        
     }
     return self;
 }

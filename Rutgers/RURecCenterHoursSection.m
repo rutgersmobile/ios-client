@@ -44,10 +44,11 @@
         header.date = NSStringFromDateComponents(self.currentDateComponents);
         [self addRow:header];
         self.headerRow = header;
+        [self updateDate];
         
         for (NSString *meetingArea in areaLabels) {
             NSDictionary *datesForArea = meetingAreas[meetingArea];
-            RURecCenterMeetingAreaRow *row = [[RURecCenterMeetingAreaRow alloc] initWithArea:meetingArea dates:datesForArea];
+            RURecCenterMeetingAreaRow *row = [[RURecCenterMeetingAreaRow alloc] initWithArea:meetingArea times:datesForArea];
             [self addRow:row];
         }
         
@@ -59,26 +60,22 @@
 
 -(void)goLeft{
     self.currentDateIndex--;
-    
-    self.headerRow.rightButtonEnabled = YES;
-    self.headerRow.leftButtonEnabled = !(self.currentDateIndex == 0);
-    
     [self updateDate];
 }
 -(void)goRight{
     self.currentDateIndex++;
-    
-    self.headerRow.leftButtonEnabled = YES;
-    self.headerRow.rightButtonEnabled = !(self.currentDateIndex == self.allDateComponents.count - 1);
-    
     [self updateDate];
 }
 -(void)updateDate{
     NSString *date = NSStringFromDateComponents(self.allDateComponents[self.currentDateIndex]);
     [self.rows makeObjectsPerformSelector:@selector(setDate:) withObject:date];
+    
+    self.headerRow.leftButtonEnabled = !(self.currentDateIndex == 0);
+    self.headerRow.rightButtonEnabled = !(self.currentDateIndex == self.allDateComponents.count - 1);
+
 }
 NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
-    return [NSString stringWithFormat:@"%d/%d/%d",dateComponents.month,dateComponents.day,dateComponents.year];
+    return [NSString stringWithFormat:@"%ld/%ld/%ld",(long)dateComponents.month,(long)dateComponents.day,(long)dateComponents.year];
 }
 -(NSArray *)componentsForDateStrings:(NSArray *)timeStrings{
     NSMutableArray *timeComponents = [NSMutableArray array];

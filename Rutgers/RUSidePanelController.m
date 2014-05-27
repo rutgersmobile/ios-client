@@ -24,9 +24,11 @@
     }
     return self;
 }
+
 -(UIBarButtonItem *)leftButtonForCenterPanel{
     return [[UIBarButtonItem alloc] initWithTitle:@"Channels" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
 }
+
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration {
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:container.bounds cornerRadius:0.0f];
     if (animate) {

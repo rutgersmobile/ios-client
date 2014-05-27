@@ -23,19 +23,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        UITableView * table = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-        [table registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-        table.delegate = self;
-        table.dataSource = self;
-        [self.view addSubview:table];
+        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+        
         self.title = @"Channels";
         self.componentManager = [RUChannelManager sharedInstance];
-        
         [self.componentManager loadChannelsWithUpdateBlock:^(NSArray *channels) {
-            [table beginUpdates];
+            [self.tableView beginUpdates];
             self.channels = channels;
-            [table reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [table endUpdates];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView endUpdates];
         }];
     }
     return self;

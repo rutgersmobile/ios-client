@@ -10,5 +10,5 @@
 
 @interface RURecCenterMeetingAreaRow : EZTableViewRow
 -(void)setDate:(NSString *)date;
--(id)initWithArea:(NSString *)area dates:(NSDictionary *)dates;
+-(instancetype)initWithArea:(NSString *)area times:(NSDictionary *)dates;
 @end

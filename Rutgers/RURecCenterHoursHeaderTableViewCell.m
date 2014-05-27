@@ -43,10 +43,8 @@
     [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
     [self.dateLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
     [self.dateLabel autoAlignAxisToSuperviewAxis:ALAxisVertical];
-}/*
--(void)didLayoutSubviews{
-    
-}*/
+}
+
 - (IBAction)goLeft:(id)sender {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"RecCenterHeaderLeft" object:nil];
 }

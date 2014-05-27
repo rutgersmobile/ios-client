@@ -6,18 +6,25 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RURecCenterMeetingAreaRow.h"
+#import "RURecCenterMeetingAreaRow.h" 
+#import "RURecCenterMeetingAreaTableViewCell.h"
 @interface RURecCenterMeetingAreaRow ()
 @property NSString *date;
+@property NSString *area;
+@property NSDictionary *times;
 @end
 
 @implementation RURecCenterMeetingAreaRow
--(id)initWithArea:(NSString *)area dates:(NSDictionary *)dates{
-    self = [super initWithIdentifier:@"RURecCenterHoursHeaderTableViewCell"];
+-(id)initWithArea:(NSString *)area times:(NSDictionary *)times{
+    self = [super initWithIdentifier:@"RURecCenterMeetingAreaTableViewCell"];
     if (self) {
-        
+        self.area = area;
+        self.times = times;
     }
     return self;
 }
-
+-(void)setupCell:(RURecCenterMeetingAreaTableViewCell *)cell{
+    cell.areaLabel.text = self.area;
+    cell.timesLabel.text = [self.times[self.date] stringByReplacingOccurrencesOfString:@"," withString:@",\n"];
+}
 @end

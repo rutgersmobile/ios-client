@@ -7,6 +7,8 @@
 //
 
 #import "RURecCenterHoursHeaderRow.h"
+#import "RURecCenterHoursHeaderTableViewCell.h"
+
 @interface RURecCenterHoursHeaderRow ()
 @property NSString *date;
 @end
@@ -18,5 +20,9 @@
     }
     return self;
 }
-
+-(void)setupCell:(RURecCenterHoursHeaderTableViewCell *)cell{
+    cell.dateLabel.text = self.date;
+    cell.leftButton.enabled = self.leftButtonEnabled;
+    cell.rightButton.enabled = self.rightButtonEnabled;
+}
 @end

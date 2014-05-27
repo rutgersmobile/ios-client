@@ -13,7 +13,6 @@
 
 #define INFO_TAGS @[TITLE,CAMPUS,BUILDING_CODE,BUILDING_NUMBER]
 
-
 const NSString *TITLE = @"title";
 const NSString *BUILDING_NUMBER = @"building_number";
 const NSString *CAMPUS = @"campus_name";

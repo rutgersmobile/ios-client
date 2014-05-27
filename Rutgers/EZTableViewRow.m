@@ -23,9 +23,9 @@
 }
 - (instancetype)init
 {
-    self = [super init];
+    self = [self initWithIdentifier:@"EZTableViewCell"];
     if (self) {
-        _identifier = @"EZTableViewCell";
+
     }
     return self;
 }
