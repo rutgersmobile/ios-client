@@ -7,10 +7,7 @@
 //
 
 #import "RUMapsViewController.h"
-#import <MapKit/MapKit.h>
-#import "RUMapsTileOverlay.h"
-#import "RUMapsData.h"
-#import "NSUserDefaults+MKMapRect.h"
+#import <MBXMapKit.h>
 
 NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
@@ -25,20 +22,15 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
-    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+    
+    self.mapView = [[MBXMapView alloc] initWithFrame:self.view.bounds mapID:@"examples.map-pgygbwdm"];
     self.mapView.delegate = self;
     
     self.view = self.mapView;
     
     [self.navigationController setToolbarHidden:NO animated:NO];
-
-    //make sure nothing gets rendered under the osm tiles
-    self.mapView.showsBuildings = NO;
-    self.mapView.showsPointsOfInterest = NO;
-    
-    //this looks weird so disable it
-    self.mapView.pitchEnabled = NO;
 
     self.mapView.showsUserLocation = YES;
     
@@ -49,36 +41,20 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
     [self setToolbarItems:barArray];
     
     //load last map rect, or world rect
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{mapsRecentRegionKey : MKStringFromMapRect(MKMapRectWorld)}];
-    MKMapRect mapRect = [[NSUserDefaults standardUserDefaults] mapRectForKey:mapsRecentRegionKey];
-    [self.mapView setVisibleMapRect:mapRect];
-
     
-    //add our overlay
-    RUMapsTileOverlay *overlay = [[RUMapsTileOverlay alloc] init];
-    overlay.canReplaceMapContent = YES;
-    [self.mapView addOverlay:overlay
-                       level:MKOverlayLevelAboveLabels];
-}
-
-#pragma mark - MKMapViewDelegate
--(MKOverlayRenderer *)mapView:(MKMapView *)mapView
-            rendererForOverlay:(id <MKOverlay>)overlay
-{
-    if ([overlay isKindOfClass:[MKTileOverlay class]]) {
-        return [[MKTileOverlayRenderer alloc] initWithTileOverlay:overlay];
+    NSArray *array = [[NSUserDefaults standardUserDefaults] arrayForKey:mapsRecentRegionKey];
+    if (array) {
+        self.mapView.camera.altitude = [array[0] doubleValue],
+        self.mapView.camera.centerCoordinate = CLLocationCoordinate2DMake([array[1] doubleValue],[array[2] doubleValue]);
     }
     
-    return nil;
-}
--(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-    [[NSUserDefaults standardUserDefaults] setMapRect:mapView.visibleMapRect forKey:mapsRecentRegionKey];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - MKMapViewDelegate protocol implementation
+-(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+    CLLocationCoordinate2D coordinate = mapView.centerCoordinate;
+    NSArray *array = @[@(mapView.camera.altitude),@(coordinate.latitude),@(coordinate.longitude)];
+    [[NSUserDefaults standardUserDefaults] setObject:array forKey:mapsRecentRegionKey];
 }
 
 @end

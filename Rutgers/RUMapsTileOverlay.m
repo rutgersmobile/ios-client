@@ -15,5 +15,4 @@
 -(void)loadTileAtPath:(MKTileOverlayPath)path result:(void (^)(NSData *, NSError *))result{
     [[RUMapsData sharedInstance] loadTileAtPath:path result:result];
 }
-
 @end

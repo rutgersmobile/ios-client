@@ -38,6 +38,7 @@
     }
     return self;
 }
+
 - (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
     static NSString * const template = @"http://tile.openstreetmap.org/%ld/%ld/%ld.png";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:template, (long)path.z, (long)path.x, (long)path.y]];
@@ -58,7 +59,6 @@
     } else {
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            
             if (!error &&
                 [responseObject isKindOfClass:[NSData class]] &&
                 [[response MIMEType] isEqualToString:@"image/png"]) {
