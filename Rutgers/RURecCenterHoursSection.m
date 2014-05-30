@@ -30,7 +30,12 @@
         self.meetingAreas = meetingAreas;
         
         NSArray *areaLabels = [[meetingAreas allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-        NSArray *dates = [meetingAreas[[areaLabels firstObject]] allKeys];
+        NSMutableSet *dates = [NSMutableSet set];
+        
+        [meetingAreas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [dates addObjectsFromArray:[obj allKeys]];
+        }];
+        
         self.allDateComponents = [self componentsForDateStrings:dates];
         
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -77,19 +82,19 @@
 NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
     return [NSString stringWithFormat:@"%ld/%ld/%ld",(long)dateComponents.month,(long)dateComponents.day,(long)dateComponents.year];
 }
--(NSArray *)componentsForDateStrings:(NSArray *)timeStrings{
-    NSMutableArray *timeComponents = [NSMutableArray array];
-    for (NSString *timeString in timeStrings) {
-        NSArray *components = [timeString componentsSeparatedByString:@"/"];
+-(NSArray *)componentsForDateStrings:(NSSet *)dateStrings{
+    NSMutableArray *allDateComponents = [NSMutableArray array];
+    for (NSString *dateString in dateStrings) {
+        NSArray *components = [dateString componentsSeparatedByString:@"/"];
         NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
         
         [dateComponents setDay:[components[1] integerValue]];
         [dateComponents setMonth:[components[0] integerValue]];
         [dateComponents setYear:[components[2] integerValue]];
         
-        [timeComponents addObject:dateComponents];
+        [allDateComponents addObject:dateComponents];
     }
-    return [timeComponents sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    return [allDateComponents sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [self compareComponents:obj1 withComponents:obj2];
     }];
 }

@@ -21,7 +21,7 @@
 @property RURecCenterHoursSection *hoursSection;
 @end
 @implementation RURecCenterViewController
-- (instancetype)initWithRecCenter:(NSDictionary *)recCenter
+- (instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -35,31 +35,30 @@
         NSString *address = recCenter[@"FacilityAddress"];
         if (address.length) {
             EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
-            [addressSection addRow:[[EZTableViewRow alloc] initWithText:address]];
+            [addressSection addRow:[[EZTableViewRow alloc] initWithText:address detailText:nil]];
             [self addSection:addressSection];
         }
         
         NSString *information = recCenter[@"FacilityInformation"];
         if (information.length) {
             EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
-            [informationSection addRow:[[EZTableViewRow alloc] initWithText:information]];
+            [informationSection addRow:[[EZTableViewRow alloc] initWithText:information detailText:nil]];
             [self addSection:informationSection];
         }
         
         NSString *business = recCenter[@"FacilityBusiness"];
         if (business.length) {
             EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
-            [buisnessSection addRow:[[EZTableViewRow alloc] initWithText:business]];
+            [buisnessSection addRow:[[EZTableViewRow alloc] initWithText:business detailText:nil]];
             [self addSection:buisnessSection];
         }
         
         NSString *description = recCenter[@"FacilityBody"];
         if (description.length) {
             EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
-            [descriptionSection addRow:[[EZTableViewRow alloc] initWithText:description]];
+            [descriptionSection addRow:[[EZTableViewRow alloc] initWithText:description detailText:nil]];
             [self addSection:descriptionSection];
         }
-        
     }
     return self;
 }

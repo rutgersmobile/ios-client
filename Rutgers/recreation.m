@@ -44,8 +44,7 @@
 
             EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:recCenter];
             row.didSelectRowBlock = ^(){
-                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithRecCenter:self.data[campus][recCenter]];
-                recVC.title = recCenter;
+                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:responseObject recCenter:self.data[campus][recCenter]];
                 [self.navigationController pushViewController:recVC animated:YES];
             };
             [section addRow:row];

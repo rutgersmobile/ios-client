@@ -9,5 +9,5 @@
 #import "EZTableViewController.h"
 
 @interface RURecCenterViewController : EZTableViewController
-- (instancetype)initWithRecCenter:(NSDictionary *)recCenter;
+- (instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter;
 @end
