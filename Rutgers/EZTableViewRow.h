@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-@class EZTableViewCell;
+@class ALTableViewRightDetailCell;
+@class ALTableViewAbstractCell;
 
 @interface EZTableViewRow : NSObject
 -(instancetype)initWithIdentifier:(NSString *)identifier;
 -(instancetype)initWithText:(NSString *)text;
 -(instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText;
 
--(void)setupCell:(UITableViewCell *)cell;
+-(void)setupCell:(ALTableViewAbstractCell *)cell;
 
 @property (readonly, nonatomic) NSString *identifier;
 @property (nonatomic) UIFont *textFont;

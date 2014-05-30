@@ -7,7 +7,7 @@
 //
 
 #import "EZTableViewRow.h"
-#import "EZTableViewCell.h"
+#import "ALTableViewRightDetailCell.h"
 
 @interface EZTableViewRow ()
 @end
@@ -24,7 +24,7 @@
 
 - (instancetype)init
 {
-    self = [self initWithIdentifier:@"EZTableViewCell"];
+    self = [self initWithIdentifier:@"ALTableViewRightDetailCell"];
     if (self) {
         
     }
