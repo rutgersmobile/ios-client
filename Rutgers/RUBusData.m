@@ -157,7 +157,7 @@ NSString const *newarkAgency = @"rutgers-newark";
     NSDictionary *urls = @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"};
     [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self parseActiveStops:responseObject forAgency:agency];
+            [self parseActiveStopsAndRoutes:responseObject forAgency:agency];
             dispatch_group_leave(self.activeGroup);
         } else {
             [self updateActiveStopsAndRoutesForAgency:agency];
@@ -169,7 +169,6 @@ NSString const *newarkAgency = @"rutgers-newark";
 #pragma mark - predictions api
 -(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock{
     if (!([item isKindOfClass:[RUBusRoute class]] || ([item isKindOfClass:[NSArray class]] && [item isArrayOfBusStops]))) return;
-    
     [[RUNetworkManager xmlSessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
@@ -329,7 +328,6 @@ static NSString *const format = @"&stops=%@|null|%@";
             RUBusStop *stop = stopsByTag[stopTag];
             [stops addObject:stop];
             stop.routes = [stop.routes arrayByAddingObject:route];
-            
         }
         route.stops = stops;
     }
@@ -338,8 +336,8 @@ static NSString *const format = @"&stops=%@|null|%@";
     self.routes[agency] = routesByTag;
 }
 
--(void)parseActiveStops:(NSDictionary *)routeConfig forAgency:(const NSString *)agency{
-    NSArray *activeRoutes = routeConfig[@"routes"];
+-(void)parseActiveStopsAndRoutes:(NSDictionary *)activeConfig forAgency:(const NSString *)agency{
+    NSArray *activeRoutes = activeConfig[@"routes"];
     NSArray *routes = [self.routes[agency] allValues];
     
     for (RUBusRoute *route in routes) {
@@ -353,7 +351,7 @@ static NSString *const format = @"&stops=%@|null|%@";
     
     self.activeRoutes[agency] = [[[self.routes[agency] allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
     
-    NSArray *activeStops = routeConfig[@"stops"];
+    NSArray *activeStops = activeConfig[@"stops"];
     NSArray *allStops = [self.stops[agency] allValues];
     
     for (NSArray *stops in allStops) {

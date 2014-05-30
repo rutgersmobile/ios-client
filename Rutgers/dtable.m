@@ -55,8 +55,7 @@
             };
         } else if (child[@"channel"]) {
             row.didSelectRowBlock = ^{
-                UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]];
-                [self.navigationController pushViewController:vc animated:YES];
+                [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]] animated:YES];
             };
         }
         [section addRow:row];
@@ -77,12 +76,7 @@
     }];
 }
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 44.0; 
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+    return 44.0;
 }
 
 @end

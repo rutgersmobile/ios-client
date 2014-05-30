@@ -29,11 +29,9 @@
     self = [super init];
     if (self) {
         self.cache = [[NSCache alloc] init];
-        
-        self.sessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
+        self.sessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
         AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
         serializer.acceptableContentTypes = [NSSet setWithObject:@"image/png"];
-        
         self.sessionManager.responseSerializer = serializer;
     }
     return self;
@@ -59,16 +57,18 @@
     } else {
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (!error &&
-                [responseObject isKindOfClass:[NSData class]] &&
-                [[response MIMEType] isEqualToString:@"image/png"]) {
+            if (!error && [responseObject isKindOfClass:[NSData class]] && [[response MIMEType] isEqualToString:@"image/png"]) {
                 [self.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
+                result(responseObject,error);
+            } else {
+                [self loadTileAtPath:path result:result];
             }
-            result(responseObject, error);
         }];
         [dataTask resume];
     }
 }
-
+-(void)cancelAllTasks{
+    [self.sessionManager.tasks makeObjectsPerformSelector:@selector(cancel)];
+}
 @end
 

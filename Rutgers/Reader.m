@@ -46,6 +46,7 @@
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,10 +57,12 @@
     [self.refreshControl addTarget:self action:@selector(fetchDataForChannel) forControlEvents:UIControlEventValueChanged];
     
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES animated:NO];
 }
+
 -(void)fetchDataForChannel{
     [[RUNetworkManager xmlSessionManager] GET:self.channel[@"url"] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -75,6 +78,7 @@
         [self fetchDataForChannel];
     }];
 }
+
 -(void)makeSection{
     [self.section removeAllRows];
     for (NSDictionary *item in self.items) {
@@ -90,9 +94,7 @@
         [self.section addRow:row];
     }
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 200*320/CGRectGetWidth(tableView.bounds);
 }
 @end

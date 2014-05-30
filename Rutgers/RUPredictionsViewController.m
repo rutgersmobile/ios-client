@@ -18,6 +18,7 @@
 
 @interface RUPredictionsViewController ()
 @property NSArray *response;
+@property NSTimer *timer;
 @end
 
 
@@ -44,18 +45,14 @@
 {
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"RUPredictionTableViewCell" bundle:nil] forCellReuseIdentifier:@"PredictionCell"];
+ 
+    
     [self getPredictions];
-    
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, PREDICTION_TIMER_INTERVAL * NSEC_PER_SEC, 1 * NSEC_PER_SEC);
-    dispatch_source_set_event_handler(timer, ^{
-        [self getPredictions];
-    });
-    
-    dispatch_resume(timer);
+    [self startTimer];
 }
--(void)dealloc{
-    
+-(void)startTimer{
+    __weak typeof(self) weakSelf = self;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:weakSelf selector:@selector(getPredictions) userInfo:nil repeats:YES];
 }
 - (BOOL) hidesBottomBarWhenPushed {
     return YES;

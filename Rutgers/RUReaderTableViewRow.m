@@ -21,6 +21,7 @@
     }
     return self;
 }
+
 -(void)setupCell:(RUReaderTableViewCell *)cell{
     cell.titleLabel.text = [self.item[@"title"] firstObject];
     cell.detailLabel.text = [self.item[@"description"] firstObject];

@@ -14,10 +14,10 @@
 #import "NSArray+RUBusStop.h"
 #import "RULocationManager.h"
 
-#define ACTIVE_TIMER_INTERVAL 60.0*3
+#define ACTIVE_TIMER_INTERVAL 60.0
 
-//NSString *const busSavedSearchTextKey = @"busSavedSearchTextKey";
-NSString *const busLastPaneKey = @"busLastPaneKey";
+//static NSString *const busSavedSearchTextKey = @"busSavedSearchTextKey";
+static NSString *const busLastPaneKey = @"busLastPaneKey";
 
 
 typedef enum : NSUInteger {
@@ -34,7 +34,7 @@ typedef enum : NSUInteger {
 @property NSArray *nearbyStops;
 
 @property RUBusVCPane currentPane;
-
+@property NSTimer *timer;
 @property (nonatomic) UISearchDisplayController *searchController;
 
 @property NSArray *searchResults;
@@ -60,18 +60,19 @@ typedef enum : NSUInteger {
     [super viewDidLoad];
     
     [self reloadActiveStopsAndRoutes];
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, ACTIVE_TIMER_INTERVAL * NSEC_PER_SEC, 1 * NSEC_PER_SEC);
-    dispatch_source_set_event_handler(timer, ^{
-        [self reloadActiveStopsAndRoutes];
-    });
-    dispatch_resume(timer);
+    [self startTimer];
 
     [self.navigationController setToolbarHidden:NO animated:NO];
-
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
+    [self setupSearchController];
+    [self setupBottomBar];
+}
+-(void)startTimer{
+    __weak typeof(self) weakSelf = self;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:ACTIVE_TIMER_INTERVAL target:weakSelf selector:@selector(reloadActiveStopsAndRoutes) userInfo:nil repeats:YES];
+}
+-(void)setupSearchController{
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
     
     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
@@ -83,6 +84,8 @@ typedef enum : NSUInteger {
     
     self.tableView.tableHeaderView = searchBar;
 
+}
+-(void)setupBottomBar{
     /// segmented bar setup
     NSArray *segItemsArray = @[@"Routes",@"Stops"];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segItemsArray];
@@ -258,24 +261,23 @@ typedef enum : NSUInteger {
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    id itemForCell = [self itemForIndexPath:indexPath];
+    
     if (tableView == self.tableView) {
+        itemForCell = [self itemForIndexPath:indexPath];
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        itemForCell = self.searchResults[indexPath.row];
+    }
+    
+    cell.textLabel.text = [itemForCell title];
+    if ([itemForCell active]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.userInteractionEnabled = YES;
         cell.textLabel.textColor = [UIColor blackColor];
-        cell.textLabel.text = [[self itemForIndexPath:indexPath] title];
-
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        id itemForCell = self.searchResults[indexPath.row];
-        cell.textLabel.text = [itemForCell title];
-        if ([itemForCell active]) {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.userInteractionEnabled = YES;
-            cell.textLabel.textColor = [UIColor blackColor];
-        } else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.userInteractionEnabled = NO;
-            cell.textLabel.textColor = [UIColor lightGrayColor];
-        }
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.userInteractionEnabled = NO;
+        cell.textLabel.textColor = [UIColor lightGrayColor];
     }
     return cell;
 }
