@@ -18,7 +18,7 @@
   {
   "handle" : "places",
   "title": "Places",
-  "view" : "RUPlacesTableViewController"
+  "view" : "RUPlacesViewController"
   },
   {
   "handle" : "food",
@@ -47,5 +47,10 @@
   "title": "Recreation",
   "url": "https://rumobile.rutgers.edu/1/rec.txt",
   "view" : "dtable"
+  },
+  {
+  "handle" : "soc",
+  "title": "Schedule of Classes",
+  "view" : "RUSOCViewController"
   }
 ]
