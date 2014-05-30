@@ -11,7 +11,7 @@
 #import "RULocationManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+FilterDictionary.h"
-NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
+static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 
 @interface RUPlacesData ()
 @property NSDictionary *places;
