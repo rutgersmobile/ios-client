@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EZTableViewCell.h"
+#import "ALTableViewRightDetailCell.h"
 
-@interface RURecCenterMeetingAreaTableViewCell : EZTableViewAbstractCell
+@interface RURecCenterMeetingAreaTableViewCell : ALTableViewAbstractCell
 @property (nonatomic) UILabel *areaLabel;
 @property (nonatomic) UILabel *timesLabel;
 @end

@@ -12,17 +12,17 @@
 -(void)makeSubviews{
     self.areaLabel = [UILabel newAutoLayoutView];
     self.areaLabel.numberOfLines = 0;
-    self.areaLabel.font = [UIFont systemFontOfSize:17];
+    self.areaLabel.font = [UIFont boldSystemFontOfSize:14];
 
     self.timesLabel = [UILabel newAutoLayoutView];
     self.timesLabel.numberOfLines = 0;
-    self.timesLabel.font = [UIFont systemFontOfSize:17];
+    self.timesLabel.font = [UIFont systemFontOfSize:14];
     
     [self.contentView addSubview:self.areaLabel];
     [self.contentView addSubview:self.timesLabel];
 }
 -(void)makeConstraints{
-    [@[self.areaLabel,self.timesLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:20 alignment:NSLayoutFormatAlignAllTop];
+    [@[self.areaLabel,self.timesLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllTop];
     
     [self.areaLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     

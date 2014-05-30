@@ -17,12 +17,15 @@
                        
     [self.leftButton setTitle:@"<=" forState:UIControlStateNormal];
     [self.leftButton addTarget:self action:@selector(goLeft:) forControlEvents:UIControlEventTouchUpInside];
+    self.leftButton.titleLabel.font = [UIFont systemFontOfSize:20];
+
     
     self.rightButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.rightButton.translatesAutoresizingMaskIntoConstraints = NO;
    
     [self.rightButton setTitle:@"=>" forState:UIControlStateNormal];
     [self.rightButton addTarget:self action:@selector(goRight:) forControlEvents:UIControlEventTouchUpInside];
+    self.rightButton.titleLabel.font = [UIFont systemFontOfSize:20];
     
     self.dateLabel = [UILabel newAutoLayoutView];
     self.dateLabel.font = [UIFont systemFontOfSize:17];
