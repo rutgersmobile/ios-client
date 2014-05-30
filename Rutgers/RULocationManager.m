@@ -10,7 +10,6 @@
 @interface RULocationManager () <CLLocationManagerDelegate>
 @property CLLocationManager *locationManager;
 @property NSMutableSet *delegates;
-//@property NSHashTable *delegates
 @end
 @implementation RULocationManager
 - (instancetype)init
@@ -19,7 +18,8 @@
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.distanceFilter = 25; // whenever we move 25 m
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters; // 100 m
+        self.locationManager.activityType = CLActivityTypeFitness;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         self.locationManager.delegate = self;
         self.delegates = [NSMutableSet set];
     }
@@ -33,6 +33,7 @@
     });
     return locationManager;
 }
+
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate{
     @synchronized(self.delegates) {
         if (self.delegates.count == 0) {
@@ -44,6 +45,7 @@
         }
     }
 }
+
 -(void)removeDelegatesObject:(id<RULocationManagerDelegate>)delegate{
     @synchronized(self.delegates) {
         [self.delegates removeObject:delegate];
@@ -52,6 +54,7 @@
         }
     }
 }
+
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation *location = [locations lastObject];
     @synchronized(self.delegates) {
