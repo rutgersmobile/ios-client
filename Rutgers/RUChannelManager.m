@@ -13,7 +13,7 @@
 #import "RUInfoTableViewController.h"
 #import "dtable.h"
 #import "RUBusViewController.h"
-#import "RUPlacesTableViewController.h"
+#import "RUPlacesViewController.h"
 #import "RUFoodViewController.h"
 #import "RUMapsViewController.h"
 #import "RUMenuController.h"
@@ -22,7 +22,6 @@
 @interface RUChannelManager ()
 @property NSArray *webChannels;
 @property NSArray *channels;
-@property dispatch_group_t shortcutsGroup;
 @end
 
 @implementation RUChannelManager
@@ -53,49 +52,30 @@
     }
     return vc;
 }
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        
-        dispatch_group_t group = dispatch_group_create();
-        dispatch_group_enter(group);
-        self.shortcutsGroup = group;
-        
-        NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
-   
-        NSError *error;
-        if (error && !data) {
-            //NSException raise:<#(NSString *)#> format:<#(NSString *), ...#>
-        }
-        self.channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-        
-        [self getShortcuts];
-    }
-    return self;
-}
-
--(void)getShortcuts{
+-(void)loadShortcuts{
     [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.channels = [self.channels arrayByAddingObjectsFromArray:responseObject];
+         //   self.channels = [self.channels arrayByAddingObjectsFromArray:responseObject];
             self.webChannels = responseObject;
-            dispatch_group_leave(self.shortcutsGroup);
+            [self.delegate loadedNewChannels:self.webChannels];
         } else {
-            [self getShortcuts];
+            [self loadShortcuts];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self getShortcuts];
+        [self loadShortcuts];
     }];
 }
--(void)loadChannelsWithUpdateBlock:(void (^)(NSArray *channels))updateBlock{
-    updateBlock([self.channels copy]);
-    dispatch_group_notify(self.shortcutsGroup, dispatch_get_main_queue(), ^{
-        updateBlock([self.channels copy]);
-    });
+-(void)loadChannels{
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
+    NSError *error;
+    if (error && !data) {
+    } else {
+        self.channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        [self.delegate loadedNewChannels:self.channels];
+    }
+    
+    [self loadShortcuts];
 }
-
 
 
 

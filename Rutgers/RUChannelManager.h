@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-@protocol RUComponentDelegate;
+
+@protocol RUChannelManagerDelegate <NSObject>
+-(void)loadedNewChannels:(NSArray *)newChannels;
+@end
 
 @interface RUChannelManager : NSObject
 +(RUChannelManager *)sharedInstance;
-
+@property (weak) id<RUChannelManagerDelegate> delegate;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
--(void)loadChannelsWithUpdateBlock:(void (^)(NSArray *channels))updateBlock;
-
+-(void)loadChannels;
 @end
