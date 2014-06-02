@@ -9,6 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @protocol RUComponentProtocol <NSObject>
-@required
-+(instancetype)component;
++(instancetype)componentForChannel:(NSDictionary *)channel;
 @end

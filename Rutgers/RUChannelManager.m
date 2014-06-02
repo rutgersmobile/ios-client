@@ -5,11 +5,12 @@
 //  Created by Kyle Bailey on 5/12/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
+#import "RUChannelManager.h"
+#import "RUNetworkManager.h"
 
+/*
 #import "Reader.h"
 #import "www.h"
-#import "RUNetworkManager.h"
-#import "RUChannelManager.h"
 #import "RUInfoTableViewController.h"
 #import "dtable.h"
 #import "RUBusViewController.h"
@@ -17,7 +18,8 @@
 #import "RUFoodViewController.h"
 #import "RUMapsViewController.h"
 #import "RUMenuController.h"
-
+*/
+#import "RUComponentProtocol.h"
 
 @interface RUChannelManager ()
 @property NSArray *webChannels;
@@ -35,22 +37,18 @@
     return manager;
 }
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
-    UIViewController * vc;
     NSString *view = channel[@"view"];
     //everthing from shortcuts.txt will get a view of www
     if ([self.webChannels containsObject:channel]) view = @"www";
     Class class = NSClassFromString(view);
-    if (class) {
-        if ([class respondsToSelector:@selector(componentForChannel:)]) {
-            vc = [class componentForChannel:channel];
-        } else {
-            vc = [class component];
-            vc.title = channel[@"title"];
-        }
+    if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
+        UIViewController * vc = [class componentForChannel:channel];
+        vc.title = [channel titleForChannel];
+        return vc;
     } else {
         NSLog(@"No way to handle view type %@, \n%@",view,channel);
     }
-    return vc;
+    return nil;
 }
 -(void)loadShortcuts{
     [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
