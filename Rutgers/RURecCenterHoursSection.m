@@ -11,15 +11,15 @@
 #import "RURecCenterMeetingAreaRow.h"
 
 @interface RURecCenterHoursSection ()
-@property NSDictionary *meetingAreas;
+@property (nonatomic) NSDictionary *meetingAreas;
 
-@property NSDateComponents *currentDateComponents;
-@property NSArray *allDateComponents;
-@property NSInteger currentDateIndex;
+@property (nonatomic) NSDateComponents *currentDateComponents;
+@property (nonatomic) NSArray *allDateComponents;
+@property (nonatomic) NSInteger currentDateIndex;
 
-@property NSMutableArray *rows;
+@property (nonatomic) NSMutableArray *rows;
 
-@property RURecCenterHoursHeaderRow *headerRow;
+@property (nonatomic) RURecCenterHoursHeaderRow *headerRow;
 @end
 
 @implementation RURecCenterHoursSection

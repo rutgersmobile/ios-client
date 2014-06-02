@@ -9,9 +9,9 @@
 #import "RURecCenterMeetingAreaRow.h" 
 #import "RURecCenterMeetingAreaTableViewCell.h"
 @interface RURecCenterMeetingAreaRow ()
-@property NSString *date;
-@property NSString *area;
-@property NSDictionary *times;
+@property (nonatomic) NSString *date;
+@property (nonatomic) NSString *area;
+@property (nonatomic) NSDictionary *times;
 @end
 
 @implementation RURecCenterMeetingAreaRow

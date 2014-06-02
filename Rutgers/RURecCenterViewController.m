@@ -18,7 +18,7 @@
 #import "RURecCenterMeetingAreaTableViewCell.h"
 
 @interface RURecCenterViewController ()
-@property RURecCenterHoursSection *hoursSection;
+@property (nonatomic) RURecCenterHoursSection *hoursSection;
 @end
 @implementation RURecCenterViewController
 - (instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter

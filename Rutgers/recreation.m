@@ -13,11 +13,11 @@
 #import "EZTableViewRow.h"
 
 @interface recreation ()
-@property NSDictionary *data;
+@property (nonatomic) NSDictionary *recData;
 @end
 
 @implementation recreation
-+(instancetype)component{
++(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[recreation alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -32,19 +32,19 @@
     }];
 }
 -(void)parseResponse:(id)responseObject{
-    self.data = responseObject;
+    self.recData = responseObject;
     NSArray *campuses = [responseObject allKeys];
     campuses = [campuses sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     
     for (NSString *campus in campuses) {
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:campus];
         
-        NSArray *recCenters = [[self.data[campus] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+        NSArray *recCenters = [[self.recData[campus] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
         for (NSString *recCenter in recCenters) {
 
             EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:recCenter];
             row.didSelectRowBlock = ^(){
-                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:responseObject recCenter:self.data[campus][recCenter]];
+                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:responseObject recCenter:self.recData[campus][recCenter]];
                 [self.navigationController pushViewController:recVC animated:YES];
             };
             [section addRow:row];

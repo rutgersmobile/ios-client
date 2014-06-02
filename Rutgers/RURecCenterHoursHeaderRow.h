@@ -11,6 +11,6 @@
 @interface RURecCenterHoursHeaderRow : EZTableViewRow
 -(void)setDate:(NSString *)date;
 
-@property BOOL leftButtonEnabled;
-@property BOOL rightButtonEnabled;
+@property (nonatomic) BOOL leftButtonEnabled;
+@property (nonatomic) BOOL rightButtonEnabled;
 @end

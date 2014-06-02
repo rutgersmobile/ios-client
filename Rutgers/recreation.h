@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EZTableViewController.h"
+#import "RUComponentProtocol.h"
 
-@interface recreation : EZTableViewController
-+(instancetype)component;
+@interface recreation : EZTableViewController <RUComponentProtocol>
 @end
