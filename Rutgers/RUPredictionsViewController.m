@@ -31,6 +31,7 @@
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl beginRefreshing];
 
     [self.tableView registerClass:[RUPredictionsTableViewCell class] forCellReuseIdentifier:@"RUPredictionsTableViewCell"];
     [self.tableView registerClass:[RUPredictionsBodyTableViewCell class] forCellReuseIdentifier:@"RUPredictionsBodyTableViewCell"];
@@ -60,6 +61,7 @@
     }];
 }
 -(void)parseResponse:(NSArray *)response{
+    [self.refreshControl endRefreshing];
     [self.tableView beginUpdates];
     if ([self numberOfSections] == 0) {
         for (NSDictionary *predictions in response) {
