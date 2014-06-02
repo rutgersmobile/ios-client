@@ -61,7 +61,6 @@
     }];
 }
 -(void)parseResponse:(NSArray *)response{
-    [self.refreshControl endRefreshing];
     [self.tableView beginUpdates];
     if ([self numberOfSections] == 0) {
         for (NSDictionary *predictions in response) {
@@ -75,6 +74,7 @@
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfSections])] withRowAnimation:UITableViewRowAnimationFade];
     }
     [self.tableView endUpdates];
+    [self.refreshControl endRefreshing];
 }
 -(void)startTimer{
     __weak typeof(self) weakSelf = self;
