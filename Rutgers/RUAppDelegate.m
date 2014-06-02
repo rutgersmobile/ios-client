@@ -10,7 +10,7 @@
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
 #import "RURootController.h"
-#import <NUISettings.h>
+#import "RUAppearance.h"
 
 
 #define MEMORY_MEGS 10
@@ -26,8 +26,7 @@
 {
     [self initCache];
     
-    
-    [self initAppearance];
+    [RUAppearance applyAppearance];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -41,10 +40,6 @@
     return YES;
 }
 
--(void)initAppearance{
-
-
-}
 
 -(void)initCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
