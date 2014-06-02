@@ -38,7 +38,6 @@
     if ([self.storedChannels objectForKey:url]) return [self.storedChannels objectForKey:url];
     else {
         TOWebViewController *webBrowser = [[TOWebViewController alloc] initWithURL:url];
-        webBrowser.title = [channel titleForChannel];
         [self.storedChannels setObject:webBrowser forKey:url];
         return webBrowser;
     }

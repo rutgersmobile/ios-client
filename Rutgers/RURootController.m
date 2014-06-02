@@ -10,12 +10,13 @@
 #import "RUMenuViewController.h"
 #import "RUSidePanelController.h"
 #import "RUChannelManager.h"
+#import "RUUserInfoManager.h"
 
 @interface RURootController () <RUMenuDelegate, UISplitViewControllerDelegate>
 @property NSDictionary *currentChannel;
-@property RUSidePanelController *sidePanel;
-@property UISplitViewController *splitViewController;
-@property UIPopoverController *popOver;
+@property (nonatomic) RUSidePanelController *sidePanel;
+@property (nonatomic) UISplitViewController *splitViewController;
+@property (nonatomic) UIPopoverController *popOver;
 @end
 
 @implementation RURootController
@@ -25,26 +26,35 @@
     menu.delegate = self;
     
     UINavigationController *menuNav = [[UINavigationController alloc] initWithRootViewController:menu];
-
+    
     UIViewController *defaultVC = [self makeDefaultScreen];
     
-   // if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        RUSidePanelController * sidePanel = [[RUSidePanelController alloc] init];
-        sidePanel.view.backgroundColor = [UIColor whiteColor];
-        // TODO: motd, prefs, launch last used channel
-        
-        sidePanel.centerPanel = defaultVC;
-        sidePanel.leftPanel = menuNav;
-
-        self.sidePanel = sidePanel;
-        
+    RUSidePanelController * sidePanel = [[RUSidePanelController alloc] init];
+    sidePanel.view.backgroundColor = [UIColor whiteColor];
+    // TODO: motd, prefs, launch last used channel
+    
+    sidePanel.centerPanel = defaultVC;
+    sidePanel.leftPanel = menuNav;
+    
+    self.sidePanel = sidePanel;
+    
+    void(^openPanel)() = ^{
         double delayInSeconds = 0.15;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [sidePanel showLeftPanelAnimated:YES];
         });
-        
-        return sidePanel;/*
+    };
+    openPanel();
+/*
+    RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
+    if (!infoManager.hasUserInformation) {
+        [infoManager getUserInformationCompletion:openPanel];
+    } else {
+    }*/
+    return sidePanel;
+    // if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+    /*
     } else {
         UISplitViewController *splitView = [[UISplitViewController alloc] init];
         splitView.viewControllers = @[menuNav,defaultVC];

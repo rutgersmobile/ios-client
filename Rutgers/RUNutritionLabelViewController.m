@@ -25,7 +25,7 @@
 
 
 @interface RUNutritionLabelViewController ()
-@property NSDictionary *foodItem;
+@property (nonatomic) NSDictionary *foodItem;
 @end
 
 @implementation RUNutritionLabelViewController

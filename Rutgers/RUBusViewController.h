@@ -10,5 +10,4 @@
 #import "RUComponentProtocol.h"
 
 @interface RUBusViewController : UITableViewController <RUComponentProtocol>
-+(instancetype)component;
 @end

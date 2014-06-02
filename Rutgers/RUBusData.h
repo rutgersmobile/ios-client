@@ -19,7 +19,7 @@ NSString const* newarkAgency;
 -(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock;
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
--(void)stopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock;
+-(void)getStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock;
 
 +(RUBusData *)sharedInstance;
 

@@ -7,9 +7,14 @@
 //
 
 #import "RUPlaceDetailViewController.h"
+#import "RUPredictionsViewController.h"
 #import "TTTAddressFormatter.h"
 #import "EZTableViewSection.h"
 #import "EZTableViewRow.h"
+#import "RUBusData.h"
+#import "RULocationManager.h"
+#import <MapKit/MapKit.h>
+#import "NSArray+RUBusStop.h"
 
 #define INFO_TAGS @[TITLE,CAMPUS,BUILDING_CODE,BUILDING_NUMBER]
 
@@ -33,12 +38,18 @@ const NSString *DESCRIPTION = @"description";
         self.place = place;
         self.title = [self stringForTag:@"title"];
 
-        NSDictionary *location = self.place[@"location"];
+        NSDictionary *locationDetails = self.place[@"location"];
+        CLLocation *location;
         
-        if ([location isKindOfClass:[NSDictionary class]]) {
-            if (![location[@"street"] isEqualToString:@""] || ![location[@"city"] isEqualToString:@""] || ![location[@"state"] isEqualToString:@""]) {
-                NSString *address = [[[self class] sharedFormatter] stringFromAddressWithStreet:location[@"street"] locality:location[@"city"] region:location[@"state"] postalCode:location[@"postal_code"] country:location[@"country"]];
-                [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Address" rows:@[[[EZTableViewRow alloc] initWithText:address detailText:nil]]]];
+        if ([locationDetails isKindOfClass:[NSDictionary class]]) {
+            if (locationDetails[@"latitude"] && locationDetails[@"longitude"]) {
+                location = [[CLLocation alloc] initWithLatitude:[locationDetails[@"latitude"] doubleValue] longitude:[locationDetails[@"longitude"] doubleValue]];
+            }
+            if (![locationDetails[@"street"] isEqualToString:@""] || ![locationDetails[@"city"] isEqualToString:@""] || ![locationDetails[@"state"] isEqualToString:@""]) {
+                NSString *address = [[[self class] sharedFormatter] stringFromAddressWithStreet:locationDetails[@"street"] locality:locationDetails[@"city"] region:locationDetails[@"state"] postalCode:locationDetails[@"postal_code"] country:locationDetails[@"country"]];
+                EZTableViewRow *addressRow = [[EZTableViewRow alloc] initWithText:address detailText:nil];
+                addressRow.shouldHighlight = NO;
+                [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Address" rows:@[addressRow]]];
             }
         }
         
@@ -48,24 +59,50 @@ const NSString *DESCRIPTION = @"description";
             for (NSString *tag in INFO_TAGS) {
                 NSString *string = [self stringForTag:tag];
                 if (string) {
-                    [infoSection addRow:[[EZTableViewRow alloc] initWithText:string detailText:detailTexts[tag]]];
+                    EZTableViewRow *infoRow = [[EZTableViewRow alloc] initWithText:string detailText:detailTexts[tag]];
+                    infoRow.shouldHighlight = NO;
+                    [infoSection addRow:infoRow];
                 }
             }
             [self addSection:infoSection];
         }
         
+        if (location) {
+            NSInteger index = [self numberOfSectionsInTableView:self.tableView];
+            [[RUBusData sharedInstance] getStopsNearLocation:location completion:^(NSArray *results) {
+                EZTableViewSection *nearbySection = [[EZTableViewSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
+                for (NSArray *stops in results) {
+                   // CLLocationDistance distance = [location distanceFromLocation:[stops location]];
+                   // NSString *distanceString = [[RULocationManager sharedLocationManager] formatDistance:distance];
+                    EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:[stops title] detailText:nil];
+                    row.didSelectRowBlock = ^{
+                        [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:stops] animated:YES];
+                    };
+                    [nearbySection addRow:row];
+                }
+                [self.tableView beginUpdates];
+                [self insertSection:nearbySection atIndex:index];
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+                [self.tableView endUpdates];
+            }];
+        }
+     
         NSArray *offices = self.place[@"offices"];
         if (offices) {
             EZTableViewSection *officeSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Offices"];
             for (NSString *office in offices) {
-                [officeSection addRow:[[EZTableViewRow alloc] initWithText:office detailText:nil]];
+                EZTableViewRow *officeRow = [[EZTableViewRow alloc] initWithText:office detailText:nil];
+                officeRow.shouldHighlight = NO;
+                [officeSection addRow:officeRow];
             }
             [self addSection:officeSection];
         }
         
         NSString *description = [self stringForTag:DESCRIPTION];
         if (description) {
-            [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Description" rows:@[[[EZTableViewRow alloc] initWithText:description detailText:nil]]]];
+            EZTableViewRow *descriptionRow = [[EZTableViewRow alloc] initWithText:description detailText:nil];
+            descriptionRow.shouldHighlight = NO;
+            [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Description" rows:@[descriptionRow]]];
         }
     }
     return self;
@@ -111,8 +148,5 @@ const NSString *DESCRIPTION = @"description";
 }
 -(BOOL)tableView:(UITableView*)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath*)indexPath{
     return YES;
-}
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
 }
 @end

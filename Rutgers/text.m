@@ -19,7 +19,6 @@
 -(id)initWithChannel:(NSDictionary *)channel{
     self = [self initWithNibName:nil bundle:nil];
     if (self) {
-        self.title = channel[@"title"];
         self.textView.text = channel[@"data"];
     }
     return self;
@@ -29,6 +28,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+        self.textView.translatesAutoresizingMaskIntoConstraints = NO;
         self.textView.editable = NO;
         self.textView.selectable = NO;
         self.textView.font = [UIFont systemFontOfSize:17];

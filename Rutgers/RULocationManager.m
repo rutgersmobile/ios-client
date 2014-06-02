@@ -7,9 +7,12 @@
 //
 
 #import "RULocationManager.h"
+#import <MapKit/MapKit.h>
+
 @interface RULocationManager () <CLLocationManagerDelegate>
 @property CLLocationManager *locationManager;
 @property NSMutableSet *delegates;
+@property MKDistanceFormatter *distanceFormatter;
 @end
 @implementation RULocationManager
 - (instancetype)init
@@ -22,6 +25,8 @@
         self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         self.locationManager.delegate = self;
         self.delegates = [NSMutableSet set];
+        self.distanceFormatter = [[MKDistanceFormatter alloc] init];
+        self.distanceFormatter.unitStyle = MKDistanceFormatterUnitStyleFull;
     }
     return self;
 }
@@ -33,7 +38,9 @@
     });
     return locationManager;
 }
-
+-(NSString *)formatDistance:(CLLocationDistance)distance{
+   return [self.distanceFormatter stringFromDistance:distance];
+}
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate{
     @synchronized(self.delegates) {
         if (self.delegates.count == 0) {

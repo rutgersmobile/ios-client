@@ -51,4 +51,11 @@
     panel.clipsToBounds = YES;
 }
 
+-(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    BOOL shouldBegin = [super gestureRecognizerShouldBegin:gestureRecognizer];
+    if (shouldBegin && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+    }
+    return shouldBegin;
+}
 @end

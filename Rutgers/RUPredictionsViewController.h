@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ExpandingTableViewController.h"
 
 
-@interface RUPredictionsViewController : UITableViewController
-@property (nonatomic) id item;
+@interface RUPredictionsViewController : ExpandingTableViewController
+-(instancetype)initWithItem:(id)item;
 @end

@@ -14,7 +14,7 @@
 static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 
 @interface RUPlacesData ()
-@property NSDictionary *places;
+@property (nonatomic) NSDictionary *places;
 @property dispatch_group_t placesGroup;
 
 @end
@@ -135,7 +135,6 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
             nearbyPlaces = [nearbyPlaces subarrayWithRange:NSMakeRange(0, MAX_NEARBY_PLACES)];
         }
         completionBlock([nearbyPlaces copy]);
-
     });
 }
 

@@ -11,6 +11,5 @@
 #import "ALTableViewController.h"
 
 @interface RUPlacesViewController : ALTableViewController <RUComponentProtocol>
-+(instancetype)component;
 
 @end

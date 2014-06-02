@@ -25,7 +25,7 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 @end
 
 @implementation RUPlacesViewController
-+(instancetype)component{
++(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[RUPlacesViewController alloc] init];
 }
 -(id)init{

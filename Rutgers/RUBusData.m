@@ -54,12 +54,13 @@ NSString const *newarkAgency = @"rutgers-newark";
         self.activeGroup = dispatch_group_create();
         
         [self getAgencyConfig];
+        [self getActiveStopsAndRoutesIfNeeded];
     }
     return self;
 }
 #pragma mark - nearby api
 
--(void)stopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock{
+-(void)getStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock{
     dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
         for (NSString *agency in @[newBrunswickAgency,newarkAgency]) {
             NSMutableArray *nearbyStops = [NSMutableArray array];
@@ -124,11 +125,8 @@ NSString const *newarkAgency = @"rutgers-newark";
         [self getAgencyConfigForAgency:agency];
     }];
 }
-
--(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock{
- 
+-(void)getActiveStopsAndRoutesIfNeeded{
     if (self.lastActiveStopsAndRoutesUpdateDate && [[NSDate date] timeIntervalSinceDate:self.lastActiveStopsAndRoutesUpdateDate] < 2*60) {
-        completionBlock([self.activeStops copy], [self.activeRoutes copy]);
         return;
     }
     
@@ -144,12 +142,16 @@ NSString const *newarkAgency = @"rutgers-newark";
         
         //end blocking the group, pairs with the call above
         dispatch_group_leave(self.activeGroup);
-        
+
         dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
             self.lastActiveStopsAndRoutesUpdateDate = [NSDate date];
-            completionBlock([self.activeStops copy], [self.activeRoutes copy]);
         });
-
+    });
+}
+-(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock{
+    [self getActiveStopsAndRoutesIfNeeded];
+    dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
+        completionBlock([self.activeStops copy], [self.activeRoutes copy]);
     });
 }
 

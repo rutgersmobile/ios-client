@@ -16,9 +16,7 @@
 
 #define ACTIVE_TIMER_INTERVAL 60.0
 
-//static NSString *const busSavedSearchTextKey = @"busSavedSearchTextKey";
 static NSString *const busLastPaneKey = @"busLastPaneKey";
-
 
 typedef enum : NSUInteger {
     RUBusVCRoutesPane = 0,
@@ -44,7 +42,7 @@ typedef enum : NSUInteger {
 @end
 
 @implementation RUBusViewController
-+(instancetype)component{
++(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[RUBusViewController alloc] init];
 }
 -(instancetype)init{
@@ -115,7 +113,7 @@ typedef enum : NSUInteger {
 }
 -(void)updateNearbyStopsWithLocation:(CLLocation *)location{
     if (!location) return;
-    [self.busData stopsNearLocation:location completion:^(NSArray *nearbyStops) {
+    [self.busData getStopsNearLocation:location completion:^(NSArray *nearbyStops) {
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
             self.nearbyStops = nearbyStops;
             if (self.currentPane == RUBusVCStopsPane) {
@@ -191,45 +189,54 @@ typedef enum : NSUInteger {
 
 
 #pragma mark - Table view data source
--(id)itemForSection:(NSInteger)section{
-    switch (self.currentPane) {
-        case RUBusVCRoutesPane:
-            switch (section) {
-                case 0:
-                    return self.activeRoutes[newBrunswickAgency];
-                    break;
-                case 1:
-                    return self.activeRoutes[newarkAgency];
-                    break;
-                default:
-                    return nil;
-                    break;
-            }
-            break;
-        case RUBusVCStopsPane:
-            switch (section) {
-                case 0:
-                    return self.nearbyStops;
-                    break;
-                case 1:
-                    return self.activeStops[newBrunswickAgency];
-                    break;
-                case 2:
-                    return self.activeStops[newarkAgency];
-                    break;
-                default:
-                    return nil;
-                    break;
-            }
-            break;
-        default:
+-(id)itemForSection:(NSInteger)section inTableView:(UITableView *)tableView{
+    if (tableView == self.tableView) {
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                switch (section) {
+                    case 0:
+                        return self.activeRoutes[newBrunswickAgency];
+                        break;
+                    case 1:
+                        return self.activeRoutes[newarkAgency];
+                        break;
+                    default:
+                        return nil;
+                        break;
+                }
+                break;
+            case RUBusVCStopsPane:
+                switch (section) {
+                    case 0:
+                        return self.nearbyStops;
+                        break;
+                    case 1:
+                        return self.activeStops[newBrunswickAgency];
+                        break;
+                    case 2:
+                        return self.activeStops[newarkAgency];
+                        break;
+                    default:
+                        return nil;
+                        break;
+                }
+                break;
+            default:
+                return nil;
+                break;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        if (section == 0) {
+            return self.searchResults;
+        } else {
             return nil;
-            break;
+        }
     }
+    return nil;
 }
 
--(id)itemForIndexPath:(NSIndexPath *)indexPath{
-    return [self itemForSection:indexPath.section][indexPath.row];
+-(id)itemForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView{
+    return [self itemForSection:indexPath.section inTableView:tableView][indexPath.row];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -251,23 +258,12 @@ typedef enum : NSUInteger {
     return 0;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (tableView == self.tableView) {
-        return [[self itemForSection:section] count];
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        return self.searchResults.count;
-    }
-    return 0;
+    return [[self itemForSection:section inTableView:tableView] count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    id itemForCell = [self itemForIndexPath:indexPath];
-    
-    if (tableView == self.tableView) {
-        itemForCell = [self itemForIndexPath:indexPath];
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        itemForCell = self.searchResults[indexPath.row];
-    }
+    id itemForCell = [self itemForIndexPath:indexPath inTableView:tableView];
     
     cell.textLabel.text = [itemForCell title];
     if ([itemForCell active]) {
@@ -325,12 +321,6 @@ typedef enum : NSUInteger {
     return nil;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUPredictionsViewController *predictionsVC = [[RUPredictionsViewController alloc] init];
-    if (tableView == self.tableView) {
-        predictionsVC.item = [self itemForIndexPath:indexPath];
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        predictionsVC.item = self.searchResults[indexPath.row];
-    }
-    [self.navigationController pushViewController:predictionsVC animated:YES];
+    [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:[self itemForIndexPath:indexPath inTableView:tableView]] animated:YES];
 }
 @end

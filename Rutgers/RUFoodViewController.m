@@ -18,7 +18,7 @@
 @end
 
 @implementation RUFoodViewController
-+(instancetype)component{
++(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[RUFoodViewController alloc] init];
 }
 - (instancetype)init{

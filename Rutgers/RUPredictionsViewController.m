@@ -12,17 +12,39 @@
 #import <AFNetworking.h>
 #import "RUBusData.h"
 #import "NSArray+RUBusStop.h"
-#import "RUPredictionTableViewCell.h"
+#import "RUPredictionsTableViewCell.h"
+#import "RUPredictionsExpandingSection.h"
+#import "RUPredictionsBodyTableViewCell.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
 @interface RUPredictionsViewController ()
-@property NSArray *response;
 @property NSTimer *timer;
+@property (nonatomic) id item;
 @end
 
 
 @implementation RUPredictionsViewController
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
+
+    [self.tableView registerClass:[RUPredictionsTableViewCell class] forCellReuseIdentifier:@"RUPredictionsTableViewCell"];
+    [self.tableView registerClass:[RUPredictionsBodyTableViewCell class] forCellReuseIdentifier:@"RUPredictionsBodyTableViewCell"];
+
+    [self getPredictions];
+    [self startTimer];
+}
+-(instancetype)initWithItem:(id)item{
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        self.item = item;
+    }
+    return self;
+}
 -(void)setItem:(id)item{
     _item = item;
     if ([item isKindOfClass:[RUBusRoute class]]) {
@@ -34,21 +56,23 @@
 }
 -(void)getPredictions{
     [[RUBusData sharedInstance] getPredictionsForItem:self.item withCompletion:^(NSArray *response) {
-        [self.tableView beginUpdates];
-        self.response = response;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
+        [self parseResponse:response];
     }];
 }
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self.tableView registerNib:[UINib nibWithNibName:@"RUPredictionTableViewCell" bundle:nil] forCellReuseIdentifier:@"PredictionCell"];
- 
-    
-    [self getPredictions];
-    [self startTimer];
+-(void)parseResponse:(NSArray *)response{
+    [self.tableView beginUpdates];
+    if ([self numberOfSections] == 0) {
+        for (NSDictionary *predictions in response) {
+            [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
+        }
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfSections])] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        [response enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [((RUPredictionsExpandingSection *)[self sectionAtIndex:idx]) updateWithPredictions:obj];
+        }];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfSections])] withRowAnimation:UITableViewRowAnimationFade];
+    }
+    [self.tableView endUpdates];
 }
 -(void)startTimer{
     __weak typeof(self) weakSelf = self;
@@ -57,81 +81,15 @@
 - (BOOL) hidesBottomBarWhenPushed {
     return YES;
 }
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    RUPredictionsExpandingSection *section = (RUPredictionsExpandingSection *)[self sectionAtIndex:indexPath.section];
+    if (!section.active) return NO;
+    return [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return self.response.count;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    RUPredictionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PredictionCell" forIndexPath:indexPath];
-    cell.userInteractionEnabled = NO;
-    
-    NSDictionary *itemForCell = self.response[indexPath.row];
-    NSArray *predictionsForCell = [itemForCell[@"direction"] firstObject][@"prediction"];
-    // Configure the cell...
-    
-    if ([self.item isKindOfClass:[RUBusRoute class]]) {
-        cell.titleLabel.text = itemForCell[@"_stopTitle"];
-        if (predictionsForCell) {
-            cell.detailLabelOne.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
-            cell.titleLabel.textColor = [UIColor blackColor];
-            cell.detailLabelOne.textColor = [UIColor blackColor];
-        } else {
-            cell.detailLabelOne.text =  @"No predictions available.";
-            cell.titleLabel.textColor = [UIColor grayColor];
-            cell.detailLabelOne.textColor = [UIColor lightGrayColor];
-        }
-        cell.detailLabelTwo.text = nil;
-    } else {
-        cell.titleLabel.text = itemForCell[@"_routeTitle"];
-        if (predictionsForCell) {
-            cell.detailLabelOne.text = [itemForCell[@"direction"] firstObject][@"_title"];
-            cell.detailLabelTwo.text = [self arrivalTimeDescriptionForPredictions:predictionsForCell];
-            cell.titleLabel.textColor = [UIColor blackColor];
-            cell.detailLabelOne.textColor = [UIColor blackColor];
-            cell.detailLabelTwo.textColor = [UIColor blackColor];
-        } else {
-            cell.detailLabelOne.text = itemForCell[@"_dirTitleBecauseNoPredictions"];
-            cell.detailLabelTwo.text =  @"No predictions available.";
-            cell.titleLabel.textColor = [UIColor grayColor];
-            cell.detailLabelOne.textColor = [UIColor lightGrayColor];
-            cell.detailLabelTwo.textColor = [UIColor lightGrayColor];
-        }
-    }
-    return cell;
-}
-
--(NSString *)arrivalTimeDescriptionForPredictions:(NSArray *)predictions{
-    NSMutableString *string = [[NSMutableString alloc] init];
-    [predictions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSDictionary *prediction = obj;
-        NSString *minutes = prediction[@"_minutes"];
-        if ([string isEqualToString:@""]) {
-            [string appendString:minutes];
-        } else {
-            [string appendFormat:@", %@",minutes,nil];
-        }
-        if (idx == 2) *stop = YES;
-    }];
-    [string appendString:@" minutes"];
-    return string;
 }
 
 @end

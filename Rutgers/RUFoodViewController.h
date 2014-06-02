@@ -10,5 +10,4 @@
 #import "RUComponentProtocol.h"
 
 @interface RUFoodViewController : UITableViewController <RUComponentProtocol>
-+(instancetype)component;
 @end

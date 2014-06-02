@@ -25,4 +25,15 @@
 -(BOOL)isArrayOfBusStops{
     return [[self firstObject] isKindOfClass:[RUBusStop class]];
 }
+-(CLLocation *)location{
+    CLLocationDegrees lat = 0;
+    CLLocationDegrees lon = 0;
+    for (RUBusStop *stop in self) {
+        CLLocationCoordinate2D coordinate = stop.location.coordinate;
+        lat += coordinate.latitude;
+        lon += coordinate.longitude;
+    }
+    double count = self.count;
+    return [[CLLocation alloc] initWithLatitude:lat/count longitude:lon/count];
+}
 @end

@@ -26,7 +26,6 @@
 {
     [self initCache];
     
-   //  [NUISettings init];
     
     [self initAppearance];
 
@@ -38,7 +37,7 @@
 
     self.rootController = [[RURootController alloc] init];
     self.window.rootViewController = [self.rootController makeRootViewController];
-
+    
     return YES;
 }
 

@@ -12,7 +12,7 @@
 #import <JASidePanelController.h>
 
 @interface RUMenuViewController () <UISearchDisplayDelegate, RUChannelManagerDelegate>
-@property UISearchDisplayController *searchController;
+@property (nonatomic) UISearchDisplayController *searchController;
 @property NSMutableArray *channels;
 @end
 
