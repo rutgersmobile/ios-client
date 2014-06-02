@@ -15,8 +15,9 @@
 #import "EZTableViewRow.h"
 
 @interface dtable ()
-@property NSArray *children;
-@property NSString *url;
+@property (nonatomic) NSArray *children;
+//@property NSString *url;
+@property (nonatomic) NSDictionary *channel;
 @end
 
 @implementation dtable
@@ -27,8 +28,7 @@
 -(instancetype)initWithChannel:(NSDictionary *)channel{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.url = channel[@"url"];
-        self.title = channel[@"title"];
+        self.channel = channel;
         [self fetchData];
     }
     return self;
@@ -63,7 +63,7 @@
     [self addSection:section];
 }
 -(void)fetchData{
-    [[RUNetworkManager jsonSessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             self.children = responseObject[@"children"];
             [self makeSection];
@@ -76,6 +76,10 @@
     }];
 }
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+   // if (self.updating) {
+      //  return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+   // }
     return 44.0;
 }
 
