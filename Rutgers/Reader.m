@@ -18,10 +18,9 @@
 @interface Reader ()
 @property (nonatomic) NSArray *items;
 @property (nonatomic) NSDictionary *channel;
+@property (nonatomic) EZTableViewSection *section;
 @end
-@interface Reader ()
-@property EZTableViewSection *section;
-@end
+
 @implementation Reader
 +(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[Reader alloc] initWithChannel:channel];
@@ -41,7 +40,6 @@
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
         self.channel = channel;
-        self.title = [channel titleForChannel];
         [self fetchDataForChannel];
     }
     return self;
@@ -95,6 +93,10 @@
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+  //  if (self.updating != 0) {
+   //    return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+  //  }
     return 200*320/CGRectGetWidth(tableView.bounds);
 }
 @end

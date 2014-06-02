@@ -10,7 +10,7 @@
 #import "ALTableViewAbstractCell.h"
 
 @interface RUReaderTableViewCell : ALTableViewAbstractCell
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *detailLabel;
-@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
+-(void)setTitle:(NSString *)title;
+-(void)setDetail:(NSString *)detail;
+-(void)setTime:(NSString *)time;
 @end

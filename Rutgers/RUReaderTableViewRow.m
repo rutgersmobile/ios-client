@@ -11,7 +11,7 @@
 #import <TOWebViewController.h>
 
 @interface RUReaderTableViewRow ()
-@property NSDictionary *item;
+@property (nonatomic) NSDictionary *item;
 @end
 @implementation RUReaderTableViewRow
 -(instancetype)initWithItem:(NSDictionary *)item{
@@ -23,9 +23,9 @@
 }
 
 -(void)setupCell:(RUReaderTableViewCell *)cell{
-    cell.titleLabel.text = [self.item[@"title"] firstObject];
-    cell.detailLabel.text = [self.item[@"description"] firstObject];
-    cell.timeLabel.text = [self.item[@"pubDate"] firstObject];
+    [cell setTitle:[self.item[@"title"] firstObject]];
+    [cell setDetail:[self.item[@"description"] firstObject]];
+    [cell setTime:[self.item[@"pubDate"] firstObject]];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 @end
