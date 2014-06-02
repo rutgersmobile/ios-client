@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
 		6862BA48665649378AC0462B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
 		A704C7861922AF7F00ED9E36 /* Channels.json in Resources */ = {isa = PBXBuildFile; fileRef = A704C7851922AF7F00ED9E36 /* Channels.json */; };
 		A708106F1906E00A0087EB82 /* RUBusData.m in Sources */ = {isa = PBXBuildFile; fileRef = A708106E1906E00A0087EB82 /* RUBusData.m */; };
@@ -103,6 +104,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
+		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DB61C3F48194968B9D64C1C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A704C7821921E9EE00ED9E36 /* RUComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUComponentProtocol.h; sourceTree = "<group>"; };
@@ -401,6 +404,8 @@
 				A777C2B1190C243100F978D7 /* rockoff.gpx */,
 				A777C2B3190C248500F978D7 /* barr.gpx */,
 				A704C7851922AF7F00ED9E36 /* Channels.json */,
+				041AE337193D2E32002ED85C /* RUAppearance.h */,
+				041AE338193D2E32002ED85C /* RUAppearance.m */,
 			);
 			name = common;
 			sourceTree = "<group>";
@@ -830,6 +835,7 @@
 				A76992C81934E63D008C64EE /* EZTableViewRow.m in Sources */,
 				A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */,
 				A77028B4191EC2BA003F5D28 /* RUNutritionLabelViewController.m in Sources */,
+				041AE339193D2E32002ED85C /* RUAppearance.m in Sources */,
 				A72FFFAF1937C3E100016C89 /* RUSOCViewController.m in Sources */,
 				A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */,
 				A777C2B0190B35C400F978D7 /* RUPlacesData.m in Sources */,

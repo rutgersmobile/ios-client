@@ -134,7 +134,6 @@ typedef enum : NSUInteger {
     [[RULocationManager sharedLocationManager] removeDelegatesObject:self];
 }
 
-
 -(void)reloadActiveStopsAndRoutes{
     [self.busData getActiveStopsAndRoutesWithCompletion:^(NSDictionary *activeStops, NSDictionary *activeRoutes) {
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{

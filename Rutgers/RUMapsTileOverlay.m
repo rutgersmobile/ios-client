@@ -41,6 +41,7 @@
         NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
             if (!error && [responseObject isKindOfClass:[NSData class]] && [[response MIMEType] isEqualToString:@"image/png"]) {
                 [self.mapsData.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
+                if (!self.validSession) return;
                 result(responseObject,error);
             } else {
                 [self loadTileAtPath:path result:result];
