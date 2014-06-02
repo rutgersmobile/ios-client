@@ -15,7 +15,7 @@
 #import "RUSOCCourseViewController.h"
 
 @interface RUSOCSubjectViewController ()
-@property NSString *code;
+@property (nonatomic) NSString *code;
 @end
 
 @implementation RUSOCSubjectViewController
@@ -31,7 +31,7 @@
 {
     [super viewDidLoad];
     [self.tableView registerClass:[RUSOCCourseCell class] forCellReuseIdentifier:@"RUSOCCourseCell"];
-    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code inCurrentSemesterWithCompletion:^(NSArray *courses) {
+    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code forCurrentConfigurationWithCompletion:^(NSArray *courses) {
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Subjects"];
         for (NSDictionary *course in courses) {
             RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];

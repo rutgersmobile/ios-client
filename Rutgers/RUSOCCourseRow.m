@@ -9,7 +9,7 @@
 #import "RUSOCCourseRow.h"
 #import "RUSOCCourseCell.h"
 @interface RUSOCCourseRow ()
-@property NSDictionary *course;
+@property (nonatomic) NSDictionary *course;
 @end
 @implementation RUSOCCourseRow
 -(instancetype)initWithCourse:(NSDictionary *)course{
@@ -28,7 +28,7 @@
         cell.creditsLabel.text = nil;
     }
     
-    cell.sectionsLabel.text = nil;//[self.item[@"pubDate"] firstObject];
+    cell.sectionsLabel.text = nil;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 

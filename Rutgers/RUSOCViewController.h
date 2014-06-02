@@ -7,7 +7,7 @@
 //
 
 #import "EZTableViewController.h"
+#import "RUComponentProtocol.h"
 
-@interface RUSOCViewController : EZTableViewController
-+(instancetype)component;
+@interface RUSOCViewController : EZTableViewController <RUComponentProtocol>
 @end

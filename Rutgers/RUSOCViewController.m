@@ -13,11 +13,11 @@
 #import "RUSOCSubjectViewController.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate>
-@property UISearchDisplayController *searchController;
+@property (nonatomic) UISearchDisplayController *searchController;
 @end
 
 @implementation RUSOCViewController
-+(instancetype)component{
++(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[RUSOCViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -25,7 +25,7 @@
 {
     [super viewDidLoad];
     [self setupSearchController];
-    [[RUSOCData sharedInstance] getSubjectsForCurrentSemesterWithCompletion:^(NSArray *subjects) {
+    [[RUSOCData sharedInstance] getSubjectsForCurrentConfigurationWithCompletion:^(NSArray *subjects) {
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Subjects"];
         for (NSDictionary *subject in subjects) {
             NSString *subjectTitle = [NSString stringWithFormat:@"%@ (%@)",[subject[@"description"] capitalizedString],subject[@"code"]];

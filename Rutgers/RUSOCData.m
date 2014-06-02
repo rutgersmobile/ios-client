@@ -47,36 +47,38 @@
         NSArray *semesters = responseObject[@"semesters"];
         self.semesters = semesters;
         NSString *semester = semesters[[responseObject[@"defaultSemester"] integerValue]];
-        [self setSemester:semester campus:@"NB" level:@"U"];
+        [self setConfigWithSemester:semester campus:@"NB" level:@"U"];
         dispatch_group_leave(self.semesterGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [self getSemesters];
     }];
 }
 
--(void)setSemester:(NSString *)semester campus:(NSString *)campus level:(NSString *)level{
+-(void)setConfigWithSemester:(NSString *)semester campus:(NSString *)campus level:(NSString *)level{
     self.currentSemester = semester;
     self.campus = campus;
     self.level = level;
 }
 
--(void)getSubjectsForCurrentSemesterWithCompletion:(void (^)(NSArray *subjects))completionBlock{
+-(void)getSubjectsForCurrentConfigurationWithCompletion:(void (^)(NSArray *subjects))completionBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
         NSString *getString = [NSString stringWithFormat:@"subjects.json?semester=%@&campus=%@&level=%@",self.currentSemester,self.campus,self.level];
         [self.socNetworkManager GET:getString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             completionBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            
+            [self getSubjectsForCurrentConfigurationWithCompletion:completionBlock];
         }];
     });
 }
 
--(void)getCoursesForSubjectCode:(NSString *)subject inCurrentSemesterWithCompletion:(void (^)(NSArray *courses))completionBlock{
-    NSString *getString = [NSString stringWithFormat:@"courses.json?subject=%@&semester=%@&campus=%@&level=%@",subject,self.currentSemester,self.campus,self.level];
-    [self.socNetworkManager GET:getString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        completionBlock(responseObject);
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-    }];
+-(void)getCoursesForSubjectCode:(NSString *)subject forCurrentConfigurationWithCompletion:(void (^)(NSArray *courses))completionBlock{
+    dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
+        NSString *getString = [NSString stringWithFormat:@"courses.json?subject=%@&semester=%@&campus=%@&level=%@",subject,self.currentSemester,self.campus,self.level];
+        [self.socNetworkManager GET:getString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            completionBlock(responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [self getCoursesForSubjectCode:subject forCurrentConfigurationWithCompletion:completionBlock];
+        }];
+    });
 }
 @end
