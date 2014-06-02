@@ -11,7 +11,5 @@
 
 @interface RUMapsData : NSObject
 +(RUMapsData *)sharedInstance;
-
--(void)loadTileAtPath:(MKTileOverlayPath)path result:(void (^)(NSData *data, NSError *error))result;
--(void)cancelAllTasks;
+@property NSCache *cache;
 @end

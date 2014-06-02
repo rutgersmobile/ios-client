@@ -7,11 +7,8 @@
 //
 
 #import "RUMapsData.h"
-#import <AFNetworking.h>
-#import <AFURLResponseSerialization.h>
+
 @interface RUMapsData ()
-@property NSCache *cache;
-@property AFURLSessionManager *sessionManager;
 @end
 
 @implementation RUMapsData
@@ -29,46 +26,9 @@
     self = [super init];
     if (self) {
         self.cache = [[NSCache alloc] init];
-        self.sessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
-        AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
-        serializer.acceptableContentTypes = [NSSet setWithObject:@"image/png"];
-        self.sessionManager.responseSerializer = serializer;
     }
     return self;
 }
 
-- (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
-    static NSString * const template = @"http://tile.openstreetmap.org/%ld/%ld/%ld.png";
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:template, (long)path.z, (long)path.x, (long)path.y]];
-    return url;
-}
-
-- (void)loadTileAtPath:(MKTileOverlayPath)path
-                result:(void (^)(NSData *data, NSError *error))result
-{
-    if (!result) {
-        return;
-    }
-    
-    NSURL *url = [self URLForTilePath:path];
-    NSData *cachedData = [self.cache objectForKey:url];
-    if (cachedData) {
-        result(cachedData, nil);
-    } else {
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (!error && [responseObject isKindOfClass:[NSData class]] && [[response MIMEType] isEqualToString:@"image/png"]) {
-                [self.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
-                result(responseObject,error);
-            } else {
-                [self loadTileAtPath:path result:result];
-            }
-        }];
-        [dataTask resume];
-    }
-}
--(void)cancelAllTasks{
-    [self.sessionManager.tasks makeObjectsPerformSelector:@selector(cancel)];
-}
 @end
 

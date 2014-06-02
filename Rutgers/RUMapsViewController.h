@@ -11,5 +11,4 @@
 
 @interface RUMapsViewController : UIViewController <RUComponentProtocol>
 
-+(instancetype)component;
 @end
