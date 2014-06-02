@@ -17,6 +17,7 @@
     self = [super init];
     if (self) {
         self.textFont = [UIFont systemFontOfSize:17];
+        self.shouldHighlight = YES;
         _identifier = identifier;
     }
     return self;

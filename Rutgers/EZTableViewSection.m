@@ -8,7 +8,7 @@
 
 #import "EZTableViewSection.h"
 @interface EZTableViewSection ()
-@property NSMutableArray *rows;
+@property (nonatomic) NSMutableArray *rows;
 @end
 @implementation EZTableViewSection
 - (instancetype)init

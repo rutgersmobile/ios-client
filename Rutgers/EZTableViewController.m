@@ -12,7 +12,7 @@
 #import "ALTableViewRightDetailCell.h"
 
 @interface EZTableViewController ()
-@property NSMutableArray *sections;
+@property (nonatomic) NSMutableArray *sections;
 @end
 
 @implementation EZTableViewController
@@ -27,12 +27,14 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-   // self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+}
+
+- (EZTableViewSection *)sectionAtIndex:(NSInteger)section{
+    return self.sections[section];
 }
 
 - (EZTableViewRow *)rowForIndexPath:(NSIndexPath *)indexPath{
-    EZTableViewSection *ezSection = self.sections[indexPath.section];
-    return [ezSection rowAtIndex:indexPath.row];
+    return [[self sectionAtIndex:indexPath.section] rowAtIndex:indexPath.row];
 }
 
 -(void)addSection:(EZTableViewSection *)section{
@@ -40,7 +42,7 @@
 }
 
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index{
-    [self.sections insertObject:self atIndex:index];
+    [self.sections insertObject:section atIndex:index];
 }
 
 -(void)removeAllSections{
@@ -51,23 +53,24 @@
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     return [self rowForIndexPath:indexPath].identifier;
 }
+
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
-    EZTableViewRow *row = [self rowForIndexPath:indexPath];
-    [row setupCell:cell];
+    [[self rowForIndexPath:indexPath] setupCell:cell];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    EZTableViewSection *ezSection = self.sections[section];
-    return ezSection.numberOfRows;
+    return [self sectionAtIndex:section].numberOfRows;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [self.sections count];
+    if (tableView == self.tableView) {
+        return [self.sections count];
+    }
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    EZTableViewSection *ezSection = self.sections[section];
-    return ezSection.title;
+    return [self sectionAtIndex:section].title;
 }
 
 #pragma mark - TableView Delegate
@@ -76,5 +79,8 @@
     if (row.didSelectRowBlock) {
         row.didSelectRowBlock();
     }
+}
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self rowForIndexPath:indexPath].shouldHighlight;
 }
 @end

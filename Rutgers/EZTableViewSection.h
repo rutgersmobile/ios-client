@@ -11,7 +11,7 @@
 @class EZTableViewRow;
 
 @interface EZTableViewSection : NSObject
-@property NSString *title;
+@property (nonatomic) NSString *title;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle rows:(NSArray *)rows;
 

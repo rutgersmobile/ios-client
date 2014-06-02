@@ -23,6 +23,6 @@
 
 @property (nonatomic) NSString *text;
 @property (nonatomic) NSString *detailText;
-
+@property (nonatomic) BOOL shouldHighlight;
 @property (copy) void (^didSelectRowBlock)(void);
 @end
