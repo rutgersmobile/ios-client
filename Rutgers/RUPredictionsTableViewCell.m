@@ -39,7 +39,7 @@
     self.titleLabel.numberOfLines = 0;
     
     self.titleLabel.font = [UIFont boldSystemFontOfSize:19];
-    self.directionLabel.font = [UIFont boldSystemFontOfSize:16];
+    self.directionLabel.font = [UIFont systemFontOfSize:16];
     self.timeLabel.font = [UIFont boldSystemFontOfSize:17];
 
     [self.contentView addSubview:self.titleLabel];
