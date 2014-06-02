@@ -10,7 +10,7 @@
 #import "ALTableViewRightDetailCell.h"
 
 @interface ALTableViewController ()
-@property NSMutableDictionary *layoutCells;
+@property (nonatomic) NSMutableDictionary *layoutCells;
 @end
 
 @implementation ALTableViewController
@@ -30,6 +30,7 @@
 }
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+    [NSException raise:@"Must override abstract methods in ALTableview" format:nil];
     return nil;
 }
 
@@ -72,7 +73,12 @@
 }
 
 #pragma mark - Table view data source
+
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    /*
+    if (self.updating) {
+        return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    }*/
     return 60.0;
 }
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -89,5 +95,16 @@
     // Return the number of rows in the section.
     return 0;
 }
-
+-(NSInteger)numberOfSections{
+    return [self numberOfSectionsInTableView:self.tableView];
+}
+/*
+-(void)beginUpdates{
+    [self.tableView beginUpdates];
+    self.updating++;
+}
+-(void)endUpdates{
+    self.updating--;
+    [self.tableView endUpdates];
+}*/
 @end
