@@ -9,5 +9,5 @@
 #import "EZTableViewController.h"
 
 @interface RUSOCCourseViewController : EZTableViewController
-
+-(id)initWithCourse:(NSDictionary *)course;
 @end

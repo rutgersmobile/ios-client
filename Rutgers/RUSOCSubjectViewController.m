@@ -36,13 +36,11 @@
         for (NSDictionary *course in courses) {
             RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
             row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[RUSOCCourseViewController alloc] animated:YES];
+                [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:course] animated:YES];
             };
             [section addRow:row];
         }
         [self addSection:section];
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-
     }];
 }
 

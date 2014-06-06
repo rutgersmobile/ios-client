@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
-@interface RUSOCCourseRow : EZTableViewRow
+@interface RUSOCCourseRow : EZTableViewRightDetailRow
 -(instancetype)initWithCourse:(NSDictionary *)course;
 @end
