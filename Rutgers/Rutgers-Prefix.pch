@@ -16,4 +16,5 @@
     #import <UIView+AutoLayout.h>
     #import "NSDictionary+Channel.h"
     #import "UIColor+RutgersColors.h"
+    #import "RUAppearance.h"
 #endif

@@ -2,55 +2,65 @@
   {
   "handle" : "ruinfo",
   "title": "RU-Info",
-  "view" : "RUInfoTableViewController"
+  "view" : "RUInfoTableViewController",
+  "icon" : "ruinfo"
   },
   {
   "handle" : "news",
   "title": "News",
   "url": "https://rumobile.rutgers.edu/1/news.txt",
-  "view" : "dtable"
+ "view" : "dtable",
+ "icon" : "news"
   },
   {
   "handle" : "bus",
   "title": "Bus",
-  "view" : "RUBusViewController"
+ "view" : "RUBusViewController",
+ "icon" : "bus"
   },
   {
   "handle" : "places",
   "title": "Places",
-  "view" : "RUPlacesViewController"
+ "view" : "RUPlacesViewController",
+ "icon" : "places"
   },
   {
   "handle" : "food",
   "title": "Food",
-  "view" : "RUFoodViewController"
+ "view" : "RUFoodViewController",
+ "icon" : "food"
   },
   {
   "handle" : "calendar",
   "title": "Events",
   "url": "https://rumobile.rutgers.edu/1/events.txt",
-  "view" : "dtable"
+ "view" : "dtable",
+ "icon" : "events"
   },
   {
   "handle" : "career_services",
   "title": "Career Services",
   "url": "https://rumobile.rutgers.edu/1/csfaq.txt",
-  "view" : "dtable"
+ "view" : "dtable",
+ "icon" : "careers"
   },
   {
   "handle" : "maps",
   "title": "Maps",
-  "view" : "RUMapsViewController"
+ "view" : "RUMapsComponent",
+ "icon" : "maps"
   },
   {
   "handle" : "recreation_index",
   "title": "Recreation",
   "url": "https://rumobile.rutgers.edu/1/rec.txt",
-  "view" : "dtable"
+ "view" : "dtable",
+ "icon" : "recreation"
   },
   {
   "handle" : "soc",
   "title": "Schedule of Classes",
-  "view" : "RUSOCViewController"
+ "view" : "RUSOCViewController",
+ "icon" : "soc"
   }
 ]
