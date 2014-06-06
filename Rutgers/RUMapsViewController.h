@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUComponentProtocol.h"
+#import <MapKit/MapKit.h>
 
-@interface RUMapsViewController : UIViewController <RUComponentProtocol>
-
+@interface RUMapsViewController : UIViewController 
+@property MKMapView *mapView;
 @end

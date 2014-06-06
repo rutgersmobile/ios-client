@@ -8,6 +8,10 @@
 
 #import <MapKit/MapKit.h>
 
-@interface RUMapsTileOverlay : MKTileOverlay
+@protocol RUMapsTileOverlayDelegate <NSObject>
+-(void)loadTileAtPath:(MKTileOverlayPath)path result:(void (^)(NSData *, NSError *))result;
+@end
 
+@interface RUMapsTileOverlay : MKTileOverlay
+@property id <RUMapsTileOverlayDelegate> delegate;
 @end

@@ -8,50 +8,87 @@
 
 #import "RUMapsViewController.h"
 #import <MapKit/MapKit.h>
-#import "RUMapView.h"
 #import "RUMapsTileOverlay.h"
 #import "RUMapsData.h"
-#import "NSUserDefaults+MKMapRect.h"
+#import <AFNetworking.h>
+#import <AFURLResponseSerialization.h>
 
-NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
-@interface RUMapsViewController () <MKMapViewDelegate>
-@property (nonatomic) RUMapView *mapView;
+@interface RUMapsViewController () <MKMapViewDelegate, RUMapsTileOverlayDelegate>
+@property RUMapsData *mapsData;
+@property AFURLSessionManager *sessionManager;
 @end
 
 @implementation RUMapsViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
-    return [[RUMapsViewController alloc] init];
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-    RUMapView *mapView = [[RUMapView alloc] initForAutoLayout];
-    mapView.delegate = self;
-    self.mapView = mapView;
+    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+    self.mapView.delegate = self;
+    self.mapsData = [RUMapsData sharedInstance];
     
-    [self.view addSubview:mapView];
-    [mapView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    self.view = self.mapView;
     
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    //add our overlay
+    RUMapsTileOverlay *overlay = [[RUMapsTileOverlay alloc] init];
+    overlay.delegate = self;
+    [self.mapView addOverlay:overlay
+               level:MKOverlayLevelAboveLabels];
+    
+    
+    self.sessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
+    AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
+    serializer.acceptableContentTypes = [NSSet setWithObject:@"image/png"];
+    self.sessionManager.responseSerializer = serializer;
+    
+    //make sure nothing gets rendered under the osm tiles
+    self.mapView.showsBuildings = NO;
+    self.mapView.showsPointsOfInterest = NO;
+    
+    //this looks weird so disable it
+    self.mapView.pitchEnabled = NO;
+    
+}
+- (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
+    static NSString * const template = @"http://tile.openstreetmap.org/%ld/%ld/%ld.png";
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:template, (long)path.z, (long)path.x, (long)path.y]];
+    return url;
+}
 
-    //setup tracking toolbar
-    UIBarButtonItem *trackingButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+- (void)loadTileAtPath:(MKTileOverlayPath)path
+                result:(void (^)(NSData *data, NSError *error))result
+{
+    if (!result) {
+        return;
+    }
     
-    NSArray *barArray = @[flexibleSpace, trackingButton,flexibleSpace];
-    [self setToolbarItems:barArray];
-    
-    //load last map rect, or world rect
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{mapsRecentRegionKey : MKStringFromMapRect(MKMapRectWorld)}];
-    MKMapRect mapRect = [[NSUserDefaults standardUserDefaults] mapRectForKey:mapsRecentRegionKey];
-    [mapView setVisibleMapRect:mapRect];
+    NSURL *url = [self URLForTilePath:path];
+    NSData *cachedData = [self.mapsData.cache objectForKey:url];
+    if (cachedData) {
+        result(cachedData, nil);
+    } else {
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (!error && [responseObject isKindOfClass:[NSData class]] && [[response MIMEType] isEqualToString:@"image/png"]) {
+                [self.mapsData.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
+                result(responseObject,error);
+            } else {
+                [self loadTileAtPath:path result:result];
+            }
+        }];
+        [dataTask resume];
+    }
+}
+
+-(void)cancelAllTasks{
+    [self.sessionManager.tasks makeObjectsPerformSelector:@selector(cancel)];
 }
 -(void)dealloc{
     self.mapView.delegate = nil;
 }
+
 #pragma mark - MKMapViewDelegate
 -(MKOverlayRenderer *)mapView:(MKMapView *)mapView
             rendererForOverlay:(id <MKOverlay>)overlay
@@ -62,12 +99,6 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
     
     return nil;
 }
-
-#pragma mark - MKMapViewDelegate protocol implementation
--(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-    [[NSUserDefaults standardUserDefaults] setMapRect:mapView.visibleMapRect forKey:mapsRecentRegionKey];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
