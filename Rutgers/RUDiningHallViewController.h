@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EZTableViewController.h"
 
-@interface RUDiningHallViewController : UITableViewController
+@interface RUDiningHallViewController : EZTableViewController
 -(id)initWithDiningHall:(NSDictionary *)diningHall;
 @end

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EZTableViewController.h"
 
-@interface RUMealViewController : UITableViewController
+@interface RUMealViewController : EZTableViewController
 -(id)initWithMeal:(NSDictionary *)meal;
 
 @end

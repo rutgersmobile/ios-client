@@ -8,6 +8,8 @@
 
 #import "RUMealViewController.h"
 #import "RUNutritionLabelViewController.h"
+#import "EZTableViewSection.h"
+#import "EZTableViewRightDetailRow.h"
 
 @interface RUMealViewController ()
 @property (nonatomic) NSDictionary *meal;
@@ -19,65 +21,27 @@
     if (self) {
         self.meal = meal;
         self.title = meal[@"meal_name"];
+        
+        for (NSDictionary *genre in self.meal[@"genres"]) {
+            EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:[genre[@"genre_name"] capitalizedString]];
+            for (NSDictionary *item in genre[@"items"]) {
+                EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[item[@"name"] capitalizedString]];
+                if ([self shouldShowInfoForItem:item]) {
+                    row.didSelectRowBlock = ^{
+                        [self.navigationController pushViewController:[[RUNutritionLabelViewController alloc] initWithFoodItem:item] animated:YES];
+                    };
+                }
+                [section addRow:row];
+            }
+            [self addSection:section];
+        }
+        
+        [self enableSearch];
+
     }
     return self;
 }
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Table view data source
--(id)itemForIndexPath:(NSIndexPath *)indexPath{
-    return self.meal[@"genres"][indexPath.section][@"items"][indexPath.row];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [self.meal[@"genres"] count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [self.meal[@"genres"][section][@"items"] count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    NSDictionary *itemForCell = [self itemForIndexPath:indexPath];
-    if ([self showInfoForItem:itemForCell]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    cell.textLabel.text = [itemForCell[@"name"] capitalizedString];
-    return cell;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return [self.meal[@"genres"][section][@"genre_name"] capitalizedString];
-}
--(BOOL)showInfoForItem:(NSDictionary *)item{
+-(BOOL)shouldShowInfoForItem:(NSDictionary *)item{
     return ([item count] > 1);
 }
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([self showInfoForItem:[self itemForIndexPath:indexPath]]) {
-        RUNutritionLabelViewController *nutritionVC = [[RUNutritionLabelViewController alloc] initWithFoodItem:[self itemForIndexPath:indexPath]];
-        [self.navigationController pushViewController:nutritionVC animated:YES];
-    } else {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
-}
-
 @end

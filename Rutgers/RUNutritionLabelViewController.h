@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EZTableViewController.h"
 
-@interface RUNutritionLabelViewController : UITableViewController
+@interface RUNutritionLabelViewController : EZTableViewController
 -(id)initWithFoodItem:(NSDictionary *)foodItem;
 @end
