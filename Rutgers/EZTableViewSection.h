@@ -8,17 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@class EZTableViewRow;
+@class EZTableViewAbstractRow;
 
 @interface EZTableViewSection : NSObject
 @property (nonatomic) NSString *title;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle rows:(NSArray *)rows;
 
--(void)addRow:(EZTableViewRow *)row;
+@property (nonatomic) NSString *emptyItemFormat;
+
+-(void)addRow:(EZTableViewAbstractRow *)row;
 -(void)addRows:(NSArray *)rows;
 -(void)removeAllRows;
+-(NSArray *)allRows;
+
 
 -(NSInteger)numberOfRows;
--(EZTableViewRow *)rowAtIndex:(NSInteger)index;
+-(EZTableViewAbstractRow *)rowAtIndex:(NSInteger)index;
 @end

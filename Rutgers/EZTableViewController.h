@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "ALTableViewController.h"
 @class EZTableViewSection;
-@class EZTableViewRow;
+@class EZTableViewAbstractRow;
 
 @interface EZTableViewController : ALTableViewController
+-(void)enableSearch;
+
 -(void)addSection:(EZTableViewSection *)section;
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
-- (EZTableViewSection *)sectionAtIndex:(NSInteger)section;
-- (EZTableViewRow *)rowForIndexPath:(NSIndexPath *)indexPath;
+
+- (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section ;
+- (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath;
 @end

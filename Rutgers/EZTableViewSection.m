@@ -7,9 +7,13 @@
 //
 
 #import "EZTableViewSection.h"
+#import "EZTableViewRightDetailRow.h"
+
 @interface EZTableViewSection ()
 @property (nonatomic) NSMutableArray *rows;
+@property (nonatomic) EZTableViewRightDetailRow *emptyItem;
 @end
+
 @implementation EZTableViewSection
 - (instancetype)init
 {
@@ -33,19 +37,55 @@
     }
     return self;
 }
--(void)addRow:(EZTableViewRow *)row{
+
+-(void)addRow:(EZTableViewRightDetailRow *)row{
     [self.rows addObject:row];
 }
+
 -(void)addRows:(NSArray *)rows{
     [self.rows addObjectsFromArray:rows];
 }
+
 -(void)removeAllRows{
     [self.rows removeAllObjects];
 }
--(NSInteger)numberOfRows{
-    return self.rows.count;
+
+-(NSArray *)allRows{
+    return self.rows;
 }
--(EZTableViewRow *)rowAtIndex:(NSInteger)index{
+/*
+-(NSInteger)numberOfRows{
+    return self.rows.count ;
+}
+-(EZTableViewRightDetailRow *)rowAtIndex:(NSInteger)index{
     return self.rows[index];
+}*/
+
+-(NSInteger)numberOfRows{
+    return self.rows.count ? self.rows.count : 1;
+}
+
+-(EZTableViewRightDetailRow *)rowAtIndex:(NSInteger)index{
+    return self.rows.count ? self.rows[index] : self.emptyItem;
+}
+
+-(NSString *)emptyItemFormat{
+    if (!_emptyItemFormat) {
+        _emptyItemFormat = @"No %@";
+    }
+    return _emptyItemFormat;
+}
+
+-(EZTableViewRightDetailRow *)emptyItem{
+    if (!_emptyItem) {
+        NSString *text;
+        if (self.title) {
+            text = [NSString stringWithFormat:self.emptyItemFormat,self.title];
+        } else {
+            text = @"No Items";
+        }
+        _emptyItem = [[EZTableViewRightDetailRow alloc] initWithText:text];
+    }
+    return _emptyItem;
 }
 @end
