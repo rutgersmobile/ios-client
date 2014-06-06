@@ -12,11 +12,9 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 #import "EZTableViewSection.h"
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
 @interface dtable ()
-@property (nonatomic) NSArray *children;
-//@property NSString *url;
 @property (nonatomic) NSDictionary *channel;
 @end
 
@@ -36,16 +34,19 @@
 -(instancetype)initWithChildren:(NSArray *)children{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.children = children;
-        [self makeSection];
+        [self parseResponse:children];
     }
     return self;
 }
--(void)makeSection{
+-(void)parseResponse:(id)responseObject{
+    [self.tableView beginUpdates];
+    if (self.numberOfSections) {
+        [self removeAllSections];
+    }
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
-    for (NSDictionary *child in self.children) {
+    for (NSDictionary *child in responseObject) {
         NSString *title = [child titleForChannel];
-        EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:title];
+        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:title];
         
         if (child[@"children"]) {
             row.didSelectRowBlock = ^{
@@ -61,13 +62,12 @@
         [section addRow:row];
     }
     [self addSection:section];
+    [self.tableView endUpdates];
 }
 -(void)fetchData{
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            self.children = responseObject[@"children"];
-            [self makeSection];
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            [self parseResponse:responseObject[@"children"]];
         } else {
             [self fetchData];
         }
