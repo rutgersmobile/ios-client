@@ -25,12 +25,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self initCache];
+    [application setStatusBarHidden:NO];
     
     [RUAppearance applyAppearance];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor blackColor];
+    self.window.backgroundColor = [UIColor grey2Color];
     
     [self.window makeKeyAndVisible];
 
