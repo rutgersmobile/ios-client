@@ -8,10 +8,10 @@
 
 #import "ExpandingTableViewSection.h"
 @interface ExpandingTableViewSection ()
-@property (nonatomic) EZTableViewRow *headerRow;
+@property (nonatomic) EZTableViewAbstractRow *headerRow;
 @end
 @implementation ExpandingTableViewSection
--(instancetype)initWithHeaderRow:(EZTableViewRow *)headerRow bodyRows:(NSArray *)bodyRows{
+-(instancetype)initWithHeaderRow:(EZTableViewAbstractRow *)headerRow bodyRows:(NSArray *)bodyRows{
     self = [super initWithSectionTitle:nil rows:bodyRows];
     if (self) {
         self.headerRow = headerRow;
@@ -25,7 +25,7 @@
         return 1;
     }
 }
--(EZTableViewRow *)rowAtIndex:(NSInteger)index{
+-(EZTableViewAbstractRow *)rowAtIndex:(NSInteger)index{
     if (index == 0) {
         return self.headerRow;
     } else {

@@ -17,7 +17,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row != 0) return;
-    ExpandingTableViewSection *section = (ExpandingTableViewSection *)[self sectionAtIndex:indexPath.section];
+    ExpandingTableViewSection *section = (ExpandingTableViewSection *)[self sectionInTableView:tableView atIndex:indexPath.section];
+    
     section.expanded = !section.expanded;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
 }

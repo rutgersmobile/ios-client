@@ -8,7 +8,8 @@
 
 #import "EZTableViewSection.h"
 
+
 @interface ExpandingTableViewSection : EZTableViewSection
--(instancetype)initWithHeaderRow:(EZTableViewRow *)headerRow bodyRows:(NSArray *)bodyRows;
+-(instancetype)initWithHeaderRow:(EZTableViewAbstractRow *)headerRow bodyRows:(NSArray *)bodyRows;
 @property (nonatomic) BOOL expanded;
 @end
