@@ -40,6 +40,7 @@
     NSString *view = channel[@"view"];
     //everthing from shortcuts.txt will get a view of www
     if ([self.webChannels containsObject:channel]) view = @"www";
+    if ([view isEqualToString:@"dtable"]) view = @"DynamicCollectionView";
     Class class = NSClassFromString(view);
     if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
         UIViewController * vc = [class componentForChannel:channel];
@@ -53,7 +54,6 @@
 -(void)loadShortcuts{
     [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-         //   self.channels = [self.channels arrayByAddingObjectsFromArray:responseObject];
             self.webChannels = responseObject;
             [self.delegate loadedNewChannels:self.webChannels];
         } else {
