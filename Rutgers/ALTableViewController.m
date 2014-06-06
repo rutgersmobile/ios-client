@@ -8,6 +8,7 @@
 
 #import "ALTableViewController.h"
 #import "ALTableViewRightDetailCell.h"
+#import "ALTableViewTextCell.h"
 
 @interface ALTableViewController ()
 @property (nonatomic) NSMutableDictionary *layoutCells;
@@ -27,6 +28,8 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self.tableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
+    [self.tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:@"ALTableViewTextCell"];
+
 }
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
@@ -75,10 +78,6 @@
 #pragma mark - Table view data source
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    /*
-    if (self.updating) {
-        return [self tableView:tableView heightForRowAtIndexPath:indexPath];
-    }*/
     return 60.0;
 }
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{

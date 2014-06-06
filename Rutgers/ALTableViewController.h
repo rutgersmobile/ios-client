@@ -14,7 +14,4 @@
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 -(NSInteger)numberOfSections;
-//-(void)beginUpdates;
-//-(void)endUpdates;
-//@property NSInteger updating;
 @end
