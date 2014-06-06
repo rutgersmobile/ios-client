@@ -12,14 +12,12 @@
 #import <AFNetworking.h>
 #import "RUBusData.h"
 #import "NSArray+RUBusStop.h"
-#import "RUPredictionsTableViewCell.h"
 #import "RUPredictionsExpandingSection.h"
-#import "RUPredictionsBodyTableViewCell.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
 @interface RUPredictionsViewController ()
-@property NSTimer *timer;
+//@property NSTimer *timer;
 @property (nonatomic) id item;
 @end
 
@@ -33,10 +31,6 @@
     [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
 
-    [self.tableView registerClass:[RUPredictionsTableViewCell class] forCellReuseIdentifier:@"RUPredictionsTableViewCell"];
-    [self.tableView registerClass:[RUPredictionsBodyTableViewCell class] forCellReuseIdentifier:@"RUPredictionsBodyTableViewCell"];
-
-    [self getPredictions];
     [self startTimer];
 }
 -(instancetype)initWithItem:(id)item{
@@ -61,30 +55,33 @@
     }];
 }
 -(void)parseResponse:(NSArray *)response{
-    [self.tableView beginUpdates];
-    if ([self numberOfSections] == 0) {
+     if ([self numberOfSections] == 0) {
         for (NSDictionary *predictions in response) {
             [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
         }
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfSections])] withRowAnimation:UITableViewRowAnimationFade];
     } else {
         [response enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [((RUPredictionsExpandingSection *)[self sectionAtIndex:idx]) updateWithPredictions:obj];
+            [((RUPredictionsExpandingSection *)[self sectionInTableView:self.tableView atIndex:idx]) updateWithPredictions:obj];
         }];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfSections])] withRowAnimation:UITableViewRowAnimationFade];
     }
-    [self.tableView endUpdates];
     [self.refreshControl endRefreshing];
 }
 -(void)startTimer{
     __weak typeof(self) weakSelf = self;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:weakSelf selector:@selector(getPredictions) userInfo:nil repeats:YES];
+    [weakSelf getPredictions];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(PREDICTION_TIMER_INTERVAL * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakSelf startTimer];
+    });
+}
+-(void)dealloc{
+
 }
 - (BOOL) hidesBottomBarWhenPushed {
     return YES;
 }
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUPredictionsExpandingSection *section = (RUPredictionsExpandingSection *)[self sectionAtIndex:indexPath.section];
+    RUPredictionsExpandingSection *section = (RUPredictionsExpandingSection *)[self sectionInTableView:self.tableView atIndex:indexPath.section];
     if (!section.active) return NO;
     return [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
 }

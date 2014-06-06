@@ -20,19 +20,23 @@ static NSString *const busLastPaneKey = @"busLastPaneKey";
 
 typedef enum : NSUInteger {
     RUBusVCRoutesPane = 0,
-    RUBusVCStopsPane = 1
+    RUBusVCStopsPane = 1,
+    RUBusVCAllPane = 2
 } RUBusVCPane;
 
 
 @interface RUBusViewController () <UISearchDisplayDelegate, RULocationManagerDelegate>
 @property (nonatomic) RUBusData *busData;
 
+@property NSDictionary *allStops;
+@property NSDictionary *allRoutes;
+
 @property NSDictionary *activeStops;
 @property NSDictionary *activeRoutes;
 @property NSArray *nearbyStops;
 
 @property RUBusVCPane currentPane;
-@property NSTimer *timer;
+//@property NSTimer *timer;
 @property (nonatomic) UISearchDisplayController *searchController;
 
 @property NSArray *searchResults;
@@ -57,7 +61,8 @@ typedef enum : NSUInteger {
 {
     [super viewDidLoad];
     
-    [self reloadActiveStopsAndRoutes];
+
+    [self loadAgency];
     [self startTimer];
 
     [self.navigationController setToolbarHidden:NO animated:NO];
@@ -68,7 +73,10 @@ typedef enum : NSUInteger {
 }
 -(void)startTimer{
     __weak typeof(self) weakSelf = self;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:ACTIVE_TIMER_INTERVAL target:weakSelf selector:@selector(reloadActiveStopsAndRoutes) userInfo:nil repeats:YES];
+    [weakSelf reloadActiveStopsAndRoutes];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ACTIVE_TIMER_INTERVAL * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakSelf startTimer];
+    });
 }
 -(void)setupSearchController{
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
@@ -85,10 +93,10 @@ typedef enum : NSUInteger {
 }
 -(void)setupBottomBar{
     /// segmented bar setup
-    NSArray *segItemsArray = @[@"Routes",@"Stops"];
+    NSArray *segItemsArray = @[@"Routes",@"Stops",@"All"];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:segItemsArray];
     [segmentedControl addTarget:self action:@selector(segmentedControlButtonChanged:) forControlEvents:UIControlEventValueChanged];
-    segmentedControl.frame = CGRectMake(0, 0, 250, 30);
+    segmentedControl.frame = CGRectMake(0, 0, 290, 30);
     
     UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:(UIView *)segmentedControl];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -106,6 +114,7 @@ typedef enum : NSUInteger {
 }
 
 -(void)dealloc{
+   // [self.timer invalidate];
 }
 -(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location{
     self.lastLocation = location;
@@ -133,7 +142,25 @@ typedef enum : NSUInteger {
     [super viewWillDisappear:animated];
     [[RULocationManager sharedLocationManager] removeDelegatesObject:self];
 }
-
+-(void)loadAgency{
+    [self.busData getAgencyConfigWithCompletion:^(NSDictionary *allStops, NSDictionary *allRoutes) {
+       // self.allStops = allStops;
+     //   self.allRoutes = allRoutes;
+ 
+        [self.tableView beginUpdates];
+        self.allStops = allStops;
+        self.allRoutes = allRoutes;
+        switch (self.currentPane) {
+            case RUBusVCAllPane:
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+            default:
+                break;
+        }
+        [self.tableView endUpdates];
+  
+    }];
+}
 -(void)reloadActiveStopsAndRoutes{
     [self.busData getActiveStopsAndRoutesWithCompletion:^(NSDictionary *activeStops, NSDictionary *activeRoutes) {
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
@@ -147,6 +174,9 @@ typedef enum : NSUInteger {
                 case RUBusVCStopsPane:
                     [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
                     [self updateNearbyStopsWithLocation:self.lastLocation];
+                    break;
+                case RUBusVCAllPane:
+                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)] withRowAnimation:UITableViewRowAnimationFade];
                     break;
                 default:
                     break;
@@ -185,9 +215,26 @@ typedef enum : NSUInteger {
     }];
     return NO;
 }
-
-
 #pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView == self.tableView) {
+        switch (self.currentPane) {
+            case RUBusVCRoutesPane:
+                return 2;
+                break;
+            case RUBusVCStopsPane:
+                return 3;
+                break;
+            default:
+                return 4;
+                break;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return 1;
+    }
+    return 0;
+}
 -(id)itemForSection:(NSInteger)section inTableView:(UITableView *)tableView{
     if (tableView == self.tableView) {
         switch (self.currentPane) {
@@ -220,6 +267,25 @@ typedef enum : NSUInteger {
                         break;
                 }
                 break;
+            case RUBusVCAllPane:
+                switch (section) {
+                    case 0:
+                        return self.allRoutes[newBrunswickAgency];
+                        break;
+                    case 1:
+                        return self.allStops[newBrunswickAgency];
+                        break;
+                    case 2:
+                        return self.allRoutes[newarkAgency];
+                        break;
+                    case 3:
+                        return self.allStops[newarkAgency];
+                        break;
+                    default:
+                        return nil;
+                        break;
+                }
+                break;
             default:
                 return nil;
                 break;
@@ -232,49 +298,6 @@ typedef enum : NSUInteger {
         }
     }
     return nil;
-}
-
--(id)itemForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView{
-    return [self itemForSection:indexPath.section inTableView:tableView][indexPath.row];
-}
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if (tableView == self.tableView) {
-        switch (self.currentPane) {
-            case RUBusVCRoutesPane:
-                return 2;
-                break;
-            case RUBusVCStopsPane:
-                return 3;
-                break;
-            default:
-                return 0;
-                break;
-        }
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        return 1;
-    }
-    return 0;
-}
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[self itemForSection:section inTableView:tableView] count];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    id itemForCell = [self itemForIndexPath:indexPath inTableView:tableView];
-    
-    cell.textLabel.text = [itemForCell title];
-    if ([itemForCell active]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.userInteractionEnabled = YES;
-        cell.textLabel.textColor = [UIColor blackColor];
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.userInteractionEnabled = NO;
-        cell.textLabel.textColor = [UIColor lightGrayColor];
-    }
-    return cell;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (tableView == self.tableView) {
@@ -309,16 +332,60 @@ typedef enum : NSUInteger {
                         break;
                 }
                 break;
+            case RUBusVCAllPane:
+                switch (section) {
+                    case 0:
+                        return @"All New Brunswick Routes";
+                        break;
+                    case 1:
+                        return @"All New Brunswick Stops";
+                        break;
+                    case 2:
+                        return @"All Newark Routes";
+                        break;
+                    case 3:
+                        return @"All Newark Stops";
+                        break;
+                    default:
+                        return nil;
+                        break;
+                }
+                break;
             default:
                 return nil;
                 break;
         }
-
+        
     } else if (tableView == self.searchController.searchResultsTableView) {
-        return @"Search Results";
+        return nil;//@"Search Results";
     }
     return nil;
 }
+-(id)itemForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView{
+    return [self itemForSection:indexPath.section inTableView:tableView][indexPath.row];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [[self itemForSection:section inTableView:tableView] count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    id itemForCell = [self itemForIndexPath:indexPath inTableView:tableView];
+    
+    cell.textLabel.text = [itemForCell title];
+    if ([itemForCell active]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.userInteractionEnabled = YES;
+        cell.textLabel.textColor = [UIColor blackColor];
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.userInteractionEnabled = NO;
+        cell.textLabel.textColor = [UIColor lightGrayColor];
+    }
+    return cell;
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:[self itemForIndexPath:indexPath inTableView:tableView]] animated:YES];
 }

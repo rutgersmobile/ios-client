@@ -7,25 +7,41 @@
 //
 
 #import "RUPredictionsBodyRow.h"
-#import "RUPredictionsBodyTableViewCell.h"
 
 @interface RUPredictionsBodyRow ()
 @end
 
 @implementation RUPredictionsBodyRow
 -(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes{
-    self = [super initWithIdentifier:@"RUPredictionsBodyTableViewCell"];
+    self = [super init];
     if (self) {
         self.predictionTimes = predictionTimes;
     }
     return self;
 }
+-(void)setPredictionTimes:(NSArray *)predictionTimes{
+    _predictionTimes = predictionTimes;
 
--(void)setupCell:(RUPredictionsBodyTableViewCell *)cell{
+    self.attributedText = [[NSAttributedString alloc] initWithString:[self labelString] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:16]}];
+}
+-(NSString *)formatDate:(NSDate *)date{
+    static NSDateFormatter *dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterNoStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    });
+    return [dateFormatter stringFromDate:date];
+}
+-(NSString *)labelString{
     NSMutableString *labelString = [[NSMutableString alloc] init];
     for (NSDictionary *prediction in self.predictionTimes) {
-        [labelString appendFormat:@"%@ minutes \n",prediction[@"_minutes"]];
+        NSString *minutes = prediction[@"_minutes"];
+        NSInteger seconds = [prediction[@"_seconds"] integerValue];
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:seconds];
+        [labelString appendFormat:@"%@ minutes at %@ \n",minutes,[self formatDate:date]];
     }
-    cell.label.text = labelString;
+    return labelString;
 }
 @end

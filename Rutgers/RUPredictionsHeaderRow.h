@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRow.h"
+#import "EZTableViewTextRow.h"
 
-@interface RUPredictionsHeaderRow : EZTableViewRow
+@interface RUPredictionsHeaderRow : EZTableViewTextRow
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item;
 @property (nonatomic) NSDictionary *predictions;
 -(BOOL)active;

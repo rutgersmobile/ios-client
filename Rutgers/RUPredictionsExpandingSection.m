@@ -35,4 +35,7 @@
 -(BOOL)active{
     return self.headerRow.active;
 }
+-(BOOL)expanded{
+    return [super expanded] && [self active];
+}
 @end
