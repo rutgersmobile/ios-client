@@ -22,10 +22,8 @@
 @implementation RURootController
 
 -(UIViewController *)makeRootViewController{
-    RUMenuViewController * menu = [[RUMenuViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    RUMenuViewController * menu = [[RUMenuViewController alloc] init];
     menu.delegate = self;
-    
-    UINavigationController *menuNav = [[UINavigationController alloc] initWithRootViewController:menu];
     
     UIViewController *defaultVC = [self makeDefaultScreen];
     
@@ -34,7 +32,7 @@
     // TODO: motd, prefs, launch last used channel
     
     sidePanel.centerPanel = defaultVC;
-    sidePanel.leftPanel = menuNav;
+    sidePanel.leftPanel = menu;
     
     self.sidePanel = sidePanel;
     
@@ -67,8 +65,13 @@
     [self selectionMade];
     if (![channel isEqual:self.currentChannel]) {
         self.currentChannel = channel;
-        UIViewController * vc = [[UINavigationController alloc] initWithRootViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel]];
-        [self updateCenterWithViewController:vc];
+        
+        UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        
+        [RUAppearance applyAppearanceToNavigationController:navController];
+        
+        [self updateCenterWithViewController:navController];
     }
 }
 -(void)selectionMade{

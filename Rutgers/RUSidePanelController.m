@@ -17,7 +17,7 @@
 {
     self = [super init];
     if (self) {
-        self.leftFixedWidth = 280;
+        self.leftFixedWidth = 275;
         self.shouldResizeLeftPanel = YES;
         self.allowLeftOverpan = NO;
         self.allowRightOverpan = NO;
@@ -25,10 +25,14 @@
     return self;
 }
 
+/*
 -(UIBarButtonItem *)leftButtonForCenterPanel{
     return [[UIBarButtonItem alloc] initWithTitle:@"Channels" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}*/
+-(void)toggleLeftPanel:(id)sender{
+    [super toggleLeftPanel:sender];
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
-
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration {
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:container.bounds cornerRadius:0.0f];
     if (animate) {
