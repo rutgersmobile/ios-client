@@ -26,6 +26,7 @@ NSString const *newarkAgency = @"rutgers-newark";
 @property NSMutableDictionary *activeStops;
 @property NSMutableDictionary *activeRoutes;
 
+@property BOOL agencyConfigLoaded;
 @property NSDate *lastActiveStopsAndRoutesUpdateDate;
 @property dispatch_group_t agencyGroup;
 @property dispatch_group_t activeGroup;
@@ -53,7 +54,7 @@ NSString const *newarkAgency = @"rutgers-newark";
         self.agencyGroup = dispatch_group_create();
         self.activeGroup = dispatch_group_create();
         
-        [self getAgencyConfig];
+        [self getAgencyConfigIfNeeded];
         [self getActiveStopsAndRoutesIfNeeded];
     }
     return self;
@@ -102,7 +103,8 @@ NSString const *newarkAgency = @"rutgers-newark";
     return minDistance;
 }
 #pragma mark - network api functions
--(void)getAgencyConfig{
+-(void)getAgencyConfigIfNeeded{
+    if (self.agencyConfigLoaded) return;
     
     dispatch_group_enter(self.agencyGroup);
     [self getAgencyConfigForAgency:newBrunswickAgency];
@@ -110,6 +112,25 @@ NSString const *newarkAgency = @"rutgers-newark";
     dispatch_group_enter(self.agencyGroup);
     [self getAgencyConfigForAgency:newarkAgency];
     
+    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
+        self.agencyConfigLoaded = YES;
+    });
+}
+-(void)getAgencyConfigWithCompletion:(void (^)(NSDictionary *allStops, NSDictionary *allRoutes))completionBlock{
+    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
+        [self getAgencyConfigIfNeeded];
+    });
+    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
+        NSMutableDictionary *stops = [NSMutableDictionary dictionary];
+        for (id key in self.stops) {
+            stops[key] = [self sortArrayByTitle:[self.stops[key] allValues]];
+        }
+        NSMutableDictionary *routes = [NSMutableDictionary dictionary];
+        for (id key in self.routes) {
+            routes[key] = [self sortArrayByTitle:[self.routes[key] allValues]];
+        }
+        completionBlock([stops copy],[routes copy]);
+    });
 }
 
 -(void)getAgencyConfigForAgency:(const NSString *)agency{
@@ -351,7 +372,7 @@ static NSString *const format = @"&stops=%@|null|%@";
         route.active = YES;
     }
     
-    self.activeRoutes[agency] = [[[self.routes[agency] allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]]];
+    self.activeRoutes[agency] = [self sortArrayByTitle:[[self.routes[agency] allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]]];
     
     NSArray *activeStops = activeConfig[@"stops"];
     NSArray *allStops = [self.stops[agency] allValues];
@@ -373,9 +394,11 @@ static NSString *const format = @"&stops=%@|null|%@";
         return [evaluatedObject active];
     }]];
     
-    self.activeStops[agency] = [intermediate sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return [[[obj1 firstObject] title] compare:[[obj2 firstObject] title]];
+    self.activeStops[agency] = [self sortArrayByTitle:intermediate];
+}
+-(NSArray *)sortArrayByTitle:(NSArray *)array{
+    return [array sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [[obj1 title] compare:[obj2 title]];
     }];
 }
-
 @end
