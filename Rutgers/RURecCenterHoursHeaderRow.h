@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
-@interface RURecCenterHoursHeaderRow : EZTableViewRow
+@interface RURecCenterHoursHeaderRow : EZTableViewRightDetailRow
 -(void)setDate:(NSString *)date;
 
 @property (nonatomic) BOOL leftButtonEnabled;

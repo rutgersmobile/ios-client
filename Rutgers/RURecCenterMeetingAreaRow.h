@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
-@interface RURecCenterMeetingAreaRow : EZTableViewRow
+@interface RURecCenterMeetingAreaRow : EZTableViewRightDetailRow
 -(void)setDate:(NSString *)date;
 -(instancetype)initWithArea:(NSString *)area times:(NSDictionary *)dates;
 @end

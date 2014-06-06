@@ -10,7 +10,7 @@
 #import "RUNetworkManager.h"
 #import "RURecCenterViewController.h"
 #import "EZTableViewSection.h"
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
 @interface recreation ()
 @property (nonatomic) NSDictionary *recData;
@@ -42,19 +42,15 @@
         NSArray *recCenters = [[self.recData[campus] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
         for (NSString *recCenter in recCenters) {
 
-            EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:recCenter];
+            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:recCenter];
             row.didSelectRowBlock = ^(){
-                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:responseObject recCenter:self.recData[campus][recCenter]];
+                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:recCenter recCenter:self.recData[campus][recCenter]];
                 [self.navigationController pushViewController:recVC animated:YES];
             };
             [section addRow:row];
-            
         }
-        
         [self addSection:section];
     }
-    
-    [self.tableView insertSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, campuses.count)] withRowAnimation:UITableViewRowAnimationFade];
 }
 - (void)didReceiveMemoryWarning
 {

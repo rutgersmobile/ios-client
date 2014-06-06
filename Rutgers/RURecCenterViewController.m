@@ -8,7 +8,7 @@
 
 #import "RURecCenterViewController.h"
 #import "EZTableViewSection.h"
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
 #import "RURecCenterHoursSection.h"
 #import "RURecCenterHoursHeaderRow.h"
@@ -25,6 +25,7 @@
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        self.title = title;
         NSDictionary *meetingAreas = recCenter[@"meetingareas"];
         if (meetingAreas.count) {
             RURecCenterHoursSection *hoursSection = [[RURecCenterHoursSection alloc] initWithMeetingAreas:meetingAreas];
@@ -35,28 +36,28 @@
         NSString *address = recCenter[@"FacilityAddress"];
         if (address.length) {
             EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
-            [addressSection addRow:[[EZTableViewRow alloc] initWithText:address detailText:nil]];
+            [addressSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil]];
             [self addSection:addressSection];
         }
         
         NSString *information = recCenter[@"FacilityInformation"];
         if (information.length) {
             EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
-            [informationSection addRow:[[EZTableViewRow alloc] initWithText:information detailText:nil]];
+            [informationSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil]];
             [self addSection:informationSection];
         }
         
         NSString *business = recCenter[@"FacilityBusiness"];
         if (business.length) {
             EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
-            [buisnessSection addRow:[[EZTableViewRow alloc] initWithText:business detailText:nil]];
+            [buisnessSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil]];
             [self addSection:buisnessSection];
         }
         
         NSString *description = recCenter[@"FacilityBody"];
         if (description.length) {
             EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
-            [descriptionSection addRow:[[EZTableViewRow alloc] initWithText:description detailText:nil]];
+            [descriptionSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil]];
             [self addSection:descriptionSection];
         }
     }
@@ -69,6 +70,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
+}
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 -(void)headerLeftTapped {
     [self.hoursSection goLeft];
