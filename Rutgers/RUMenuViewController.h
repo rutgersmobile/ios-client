@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "RURootController.h"
 
-@interface RUMenuViewController : UITableViewController
+@interface RUMenuViewController : UIViewController
 @property id <RUMenuDelegate> delegate;
 @end
