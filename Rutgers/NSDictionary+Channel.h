@@ -11,4 +11,5 @@
 @interface NSDictionary (Channel)
 -(NSString *)identifierForChannel;
 -(NSString *)titleForChannel;
+-(UIImage *)iconForChannel;
 @end

@@ -24,4 +24,9 @@
     }
     return nil;
 }
+-(UIImage *)iconForChannel{
+    NSString *iconName = self[@"icon"];
+    UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    return image;
+}
 @end
