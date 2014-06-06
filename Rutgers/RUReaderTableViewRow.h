@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 
-@interface RUReaderTableViewRow : EZTableViewRow
+@interface RUReaderTableViewRow : EZTableViewRightDetailRow
 -(instancetype)initWithItem:(NSDictionary *)item;
 @end

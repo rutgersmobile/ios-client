@@ -16,9 +16,7 @@
 #import "RUReaderTableViewRow.h"
 
 @interface Reader ()
-@property (nonatomic) NSArray *items;
 @property (nonatomic) NSDictionary *channel;
-@property (nonatomic) EZTableViewSection *section;
 @end
 
 @implementation Reader
@@ -26,21 +24,11 @@
     return [[Reader alloc] initWithChannel:channel];
 }
 
--(id)initWithStyle:(UITableViewStyle)style{
-    self = [super initWithStyle:style];
-    if (self) {
-        self.tableView.rowHeight = 80.0;
-        self.section = [[EZTableViewSection alloc] init];
-        [self addSection:self.section];
-    }
-    return self;
-}
 
 -(id)initWithChannel:(NSDictionary *)channel{
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
         self.channel = channel;
-        [self fetchDataForChannel];
     }
     return self;
 }
@@ -48,10 +36,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.rowHeight = 80.0;
     [self.tableView registerClass:[RUReaderTableViewCell class] forCellReuseIdentifier:@"RUReaderTableViewCell"];
 
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl beginRefreshing];
+    [self fetchDataForChannel];
     [self.refreshControl addTarget:self action:@selector(fetchDataForChannel) forControlEvents:UIControlEventValueChanged];
     
 }
@@ -64,10 +54,7 @@
 -(void)fetchDataForChannel{
     [[RUNetworkManager xmlSessionManager] GET:self.channel[@"url"] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *channel = [responseObject[@"channel"] firstObject];
-            self.items = channel[@"item"];
-            [self makeSection];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+            [self parseResponse:[responseObject[@"channel"] firstObject][@"item"]];
             [self.refreshControl endRefreshing];
         } else {
             [self fetchDataForChannel];
@@ -76,10 +63,24 @@
         [self fetchDataForChannel];
     }];
 }
+/*
++(NSMutableSet *)allKeysSet{
+    static NSMutableSet *set = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        set = [NSMutableSet set];
+    });
+    return set;
+}*/
 
--(void)makeSection{
-    [self.section removeAllRows];
-    for (NSDictionary *item in self.items) {
+-(void)parseResponse:(id)responseObject{
+    [self.tableView beginUpdates];
+    if (self.numberOfSections) {
+        [self removeAllSections];
+    }
+    EZTableViewSection *section = [[EZTableViewSection alloc] init];
+    for (NSDictionary *item in responseObject) {
+        //[[[self class] allKeysSet] addObjectsFromArray:[item allKeys]];
         RUReaderTableViewRow *row = [[RUReaderTableViewRow alloc] initWithItem:item];
         NSString *link = [item[@"link"] firstObject];
         if (link) {
@@ -89,8 +90,11 @@
                 [self.navigationController pushViewController:webBrowser animated:YES];
             };
         }
-        [self.section addRow:row];
+        [section addRow:row];
     }
+    [self addSection:section];
+ //   NSLog(@"%@",[[[self class]allKeysSet] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES]]]);
+    [self.tableView endUpdates];
 }
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
