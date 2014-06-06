@@ -10,7 +10,7 @@
 #import "RUPredictionsViewController.h"
 #import "TTTAddressFormatter.h"
 #import "EZTableViewSection.h"
-#import "EZTableViewRow.h"
+#import "EZTableViewRightDetailRow.h"
 #import "RUBusData.h"
 #import "RULocationManager.h"
 #import <MapKit/MapKit.h>
@@ -37,8 +37,9 @@ const NSString *DESCRIPTION = @"description";
     if (self) {
         self.place = place;
         self.title = [self stringForTag:@"title"];
-
-        NSDictionary *locationDetails = self.place[@"location"];
+        
+        [self.tableView beginUpdates];
+        NSDictionary *locationDetails = place[@"location"];
         CLLocation *location;
         
         if ([locationDetails isKindOfClass:[NSDictionary class]]) {
@@ -47,7 +48,7 @@ const NSString *DESCRIPTION = @"description";
             }
             if (![locationDetails[@"street"] isEqualToString:@""] || ![locationDetails[@"city"] isEqualToString:@""] || ![locationDetails[@"state"] isEqualToString:@""]) {
                 NSString *address = [[[self class] sharedFormatter] stringFromAddressWithStreet:locationDetails[@"street"] locality:locationDetails[@"city"] region:locationDetails[@"state"] postalCode:locationDetails[@"postal_code"] country:locationDetails[@"country"]];
-                EZTableViewRow *addressRow = [[EZTableViewRow alloc] initWithText:address detailText:nil];
+                EZTableViewRightDetailRow *addressRow = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
                 addressRow.shouldHighlight = NO;
                 [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Address" rows:@[addressRow]]];
             }
@@ -59,7 +60,7 @@ const NSString *DESCRIPTION = @"description";
             for (NSString *tag in INFO_TAGS) {
                 NSString *string = [self stringForTag:tag];
                 if (string) {
-                    EZTableViewRow *infoRow = [[EZTableViewRow alloc] initWithText:string detailText:detailTexts[tag]];
+                    EZTableViewRightDetailRow *infoRow = [[EZTableViewRightDetailRow alloc] initWithText:string detailText:detailTexts[tag]];
                     infoRow.shouldHighlight = NO;
                     [infoSection addRow:infoRow];
                 }
@@ -74,24 +75,21 @@ const NSString *DESCRIPTION = @"description";
                 for (NSArray *stops in results) {
                    // CLLocationDistance distance = [location distanceFromLocation:[stops location]];
                    // NSString *distanceString = [[RULocationManager sharedLocationManager] formatDistance:distance];
-                    EZTableViewRow *row = [[EZTableViewRow alloc] initWithText:[stops title] detailText:nil];
+                    EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[stops title] detailText:nil];
                     row.didSelectRowBlock = ^{
                         [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:stops] animated:YES];
                     };
                     [nearbySection addRow:row];
                 }
-                [self.tableView beginUpdates];
                 [self insertSection:nearbySection atIndex:index];
-                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView endUpdates];
             }];
         }
      
-        NSArray *offices = self.place[@"offices"];
+        NSArray *offices = place[@"offices"];
         if (offices) {
             EZTableViewSection *officeSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Offices"];
             for (NSString *office in offices) {
-                EZTableViewRow *officeRow = [[EZTableViewRow alloc] initWithText:office detailText:nil];
+                EZTableViewRightDetailRow *officeRow = [[EZTableViewRightDetailRow alloc] initWithText:office detailText:nil];
                 officeRow.shouldHighlight = NO;
                 [officeSection addRow:officeRow];
             }
@@ -100,10 +98,11 @@ const NSString *DESCRIPTION = @"description";
         
         NSString *description = [self stringForTag:DESCRIPTION];
         if (description) {
-            EZTableViewRow *descriptionRow = [[EZTableViewRow alloc] initWithText:description detailText:nil];
+            EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
             descriptionRow.shouldHighlight = NO;
             [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Description" rows:@[descriptionRow]]];
         }
+        [self.tableView endUpdates];
     }
     return self;
 }

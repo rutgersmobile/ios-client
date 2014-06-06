@@ -178,8 +178,8 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
     RUPlaceDetailViewController *detailVC = [[RUPlaceDetailViewController alloc] initWithPlace:itemForCell];
     [self.navigationController pushViewController:detailVC animated:YES];
 }
+
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    
     if (tableView == self.tableView) {
         switch (section) {
             case 0:
