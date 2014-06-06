@@ -36,10 +36,10 @@
 
 }
 -(void)makeConstraints{
-    [self.leftButton autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
+    [self.leftButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.leftButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     
-    [self.rightButton autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
+    [self.rightButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
     [self.rightButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     
     [self.dateLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
