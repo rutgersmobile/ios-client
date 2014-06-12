@@ -6,9 +6,14 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZCollectionViewItem.h"
+#import "EZCollectionViewAbstractItem.h"
 
-@interface TileCollectionViewItem : EZCollectionViewItem
-+(NSInteger)seedNumber;
-+(void)setSeedNumber:(NSInteger)seedNumber;
+@interface TileCollectionViewItem : EZCollectionViewAbstractItem
+-(instancetype)initWithText:(NSString *)text;
+@property (nonatomic) NSString *text;
+
+@property (nonatomic) BOOL showsEllipses;
+
+@property (nonatomic) UIFont *textFont;
+
 @end
