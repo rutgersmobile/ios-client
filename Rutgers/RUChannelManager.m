@@ -36,6 +36,29 @@
     });
     return manager;
 }
+
+-(NSArray *)loadChannels{
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
+    NSError *error;
+    if (error && !data) {
+    } else {
+        self.channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+    }
+    return self.channels;
+}
+-(void)loadWebLinksWithCompletion:(void(^)(NSArray *webLinks))completion{
+    [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject isKindOfClass:[NSArray class]]) {
+            self.webChannels = responseObject;
+            completion(responseObject);
+        } else {
+            [self loadWebLinksWithCompletion:completion];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self loadWebLinksWithCompletion:completion];
+    }];
+}
+
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
     NSString *view = channel[@"view"];
     //everthing from shortcuts.txt will get a view of www
@@ -51,30 +74,6 @@
     }
     return nil;
 }
--(void)loadShortcuts{
-    [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.webChannels = responseObject;
-            [self.delegate loadedNewChannels:self.webChannels];
-        } else {
-            [self loadShortcuts];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self loadShortcuts];
-    }];
-}
--(void)loadChannels{
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
-    NSError *error;
-    if (error && !data) {
-    } else {
-        self.channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-        [self.delegate loadedNewChannels:self.channels];
-    }
-    
-    [self loadShortcuts];
-}
-
 
 
 @end

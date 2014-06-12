@@ -8,13 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol RUChannelManagerDelegate <NSObject>
--(void)loadedNewChannels:(NSArray *)newChannels;
-@end
-
 @interface RUChannelManager : NSObject
 +(RUChannelManager *)sharedInstance;
-@property (weak) id<RUChannelManagerDelegate> delegate;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
--(void)loadChannels;
+-(NSArray *)loadChannels;
+-(void)loadWebLinksWithCompletion:(void(^)(NSArray *webLinks))completion;
 @end

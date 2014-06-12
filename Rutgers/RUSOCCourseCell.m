@@ -28,7 +28,7 @@
     [self.contentView addSubview:self.sectionsLabel];
     
 }
--(void)makeConstraints{
+-(void)initializeConstraints{
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
 
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];

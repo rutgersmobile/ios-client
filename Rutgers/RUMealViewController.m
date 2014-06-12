@@ -16,12 +16,12 @@
 @end
 
 @implementation RUMealViewController
+
 -(id)initWithMeal:(NSDictionary *)meal{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.meal = meal;
         self.title = meal[@"meal_name"];
-        
         for (NSDictionary *genre in self.meal[@"genres"]) {
             EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:[genre[@"genre_name"] capitalizedString]];
             for (NSDictionary *item in genre[@"items"]) {
@@ -35,12 +35,10 @@
             }
             [self addSection:section];
         }
-        
-        [self enableSearch];
-
     }
     return self;
 }
+
 -(BOOL)shouldShowInfoForItem:(NSDictionary *)item{
     return ([item count] > 1);
 }

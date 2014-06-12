@@ -261,7 +261,7 @@ static NSString *const format = @"&stops=%@|null|%@";
                 return [containsPredicate evaluateWithObject:[evaluatedObject firstObject]];
             }
         }]];
-
+        
         results = [results sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
            
             BOOL oneBeginsWithString;
@@ -294,7 +294,7 @@ static NSString *const format = @"&stops=%@|null|%@";
             
             NSString *titleOne = [obj1 title];
             NSString *titleTwo = [obj2 title];
-            return [titleOne caseInsensitiveCompare:titleTwo];
+            return [titleOne compare:titleTwo options:NSNumericSearch|NSCaseInsensitiveSearch];
         }];
         
         completionBlock(results);

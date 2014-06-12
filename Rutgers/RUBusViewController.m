@@ -357,7 +357,7 @@ typedef enum : NSUInteger {
         }
         
     } else if (tableView == self.searchController.searchResultsTableView) {
-        return nil;//@"Search Results";
+        return @"All Stops and Routes";
     }
     return nil;
 }
