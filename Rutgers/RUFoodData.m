@@ -8,11 +8,11 @@
 
 #import "RUFoodData.h"
 #import <AFNetworking.h>
+#import "RUNetworkManager.h"
 
 @interface RUFoodData ()
 @property dispatch_group_t foodGroup;
 @property NSArray *food;
-@property (nonatomic) AFHTTPSessionManager *sessionManager;
 @end
 
 @implementation RUFoodData
@@ -29,10 +29,6 @@
 {
     self = [super init];
     if (self) {
-        self.sessionManager = [[AFHTTPSessionManager alloc] init];
-        self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-        self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",nil];
-      
         self.staticDiningHalls = @[@{@"title" : @"Gateway Cafe",
                                   @"header" : @"Camden",
                                   @"data" : @"The Camden Dining Hall, the Gateway Cafe, is located at the Camden Campus Center.\n\nIt offers a variety of eateries in one convenient location.",
@@ -58,7 +54,7 @@
 -(void)requestFood{
    // NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
     NSString *url = @"http://vps.rsopher.com/nutrition.json";
-    [self.sessionManager GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager jsonSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
                 for (NSDictionary *meal in evaluatedObject[@"meals"]) {
@@ -78,7 +74,6 @@
 }
 
 -(void)getFoodWithCompletion:(void (^)(NSArray *response))completionBlock{
-   
     dispatch_group_notify(self.foodGroup, dispatch_get_main_queue(), ^{
         completionBlock([self.food copy]);
     });

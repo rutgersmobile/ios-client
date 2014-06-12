@@ -16,8 +16,6 @@
 
 @interface RUFoodViewController ()
 @property (nonatomic) RUFoodData *foodData;
-//@property (nonatomic) NSArray *nbDiningHalls;
-//@property (nonatomic) NSArray *staticDiningHalls;
 @end
 
 @implementation RUFoodViewController
