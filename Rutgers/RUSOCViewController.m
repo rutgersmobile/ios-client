@@ -10,6 +10,7 @@
 #import "RUSOCData.h"
 #import "EZTableViewSection.h"
 #import "EZTableViewRightDetailRow.h"
+#import "ALTableViewRightDetailCell.h"
 #import "RUSOCSubjectViewController.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate>
@@ -41,7 +42,19 @@
     }];
     // Do any additional setup after loading the view.
 }
-
+-(void)enableSearch{
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.delegate = self;
+    
+    [self.searchController.searchResultsTableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
+    
+    self.tableView.tableHeaderView = searchBar;
+    
+}
 
 
 @end

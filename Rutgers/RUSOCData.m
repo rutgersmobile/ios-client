@@ -10,8 +10,9 @@
 #import <AFNetworking.h>
 #import "RUNetworkManager.h"
 
+static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
+
 @interface RUSOCData ()
-@property AFHTTPSessionManager *socNetworkManager;
 @property NSArray *semesters;
 @property NSString *currentSemester;
 @property NSString *campus;
@@ -29,12 +30,13 @@
     });
     return socData;
 }
-
+-(NSString *)stringWithStringRelativeToBase:(NSString *)string{
+    return [NSString stringWithFormat:@"%@%@",baseString,string];
+}
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.socNetworkManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://sis.rutgers.edu/soc/"]];
         self.semesterGroup = dispatch_group_create();
         [self getSemesters];
     }
@@ -62,8 +64,8 @@
 
 -(void)getSubjectsForCurrentConfigurationWithCompletion:(void (^)(NSArray *subjects))completionBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        NSString *getString = [NSString stringWithFormat:@"subjects.json?semester=%@&campus=%@&level=%@",self.currentSemester,self.campus,self.level];
-        [self.socNetworkManager GET:getString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+       // NSString *getString = [NSString stringWithFormat:@"?semester=%@&campus=%@&level=%@",self.currentSemester,self.campus,self.level];
+        [[RUNetworkManager jsonSessionManager] GET:[self stringWithStringRelativeToBase:@"subjects.json"] parameters:@{@"semester" : self.currentSemester, @"campus" : self.campus, @"level" : self.level} success:^(NSURLSessionDataTask *task, id responseObject) {
             completionBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [self getSubjectsForCurrentConfigurationWithCompletion:completionBlock];
@@ -73,8 +75,8 @@
 
 -(void)getCoursesForSubjectCode:(NSString *)subject forCurrentConfigurationWithCompletion:(void (^)(NSArray *courses))completionBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        NSString *getString = [NSString stringWithFormat:@"courses.json?subject=%@&semester=%@&campus=%@&level=%@",subject,self.currentSemester,self.campus,self.level];
-        [self.socNetworkManager GET:getString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        //NSString *getString = [NSString stringWithFormat:@"courses.json?subject=%@&semester=%@&campus=%@&level=%@",subject,self.currentSemester,self.campus,self.level];
+        [[RUNetworkManager jsonSessionManager] GET:[self stringWithStringRelativeToBase:@"courses.json"] parameters:@{@"subject" : subject, @"semester" : self.currentSemester, @"campus" : self.campus, @"level" : self.level} success:^(NSURLSessionDataTask *task, id responseObject) {
             completionBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [self getCoursesForSubjectCode:subject forCurrentConfigurationWithCompletion:completionBlock];
