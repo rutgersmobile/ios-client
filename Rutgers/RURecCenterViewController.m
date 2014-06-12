@@ -1,4 +1,4 @@
-//
+ //
 //  RURecCenterViewController.m
 //  Rutgers
 //
@@ -17,9 +17,13 @@
 #import "RURecCenterMeetingAreaRow.h"
 #import "RURecCenterMeetingAreaTableViewCell.h"
 
+#import "RUPlace.h"
+#import "RUMapsViewController.h"
+
 @interface RURecCenterViewController ()
 @property (nonatomic) RURecCenterHoursSection *hoursSection;
 @end
+
 @implementation RURecCenterViewController
 - (instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter
 {
@@ -35,34 +39,47 @@
         
         NSString *address = recCenter[@"FacilityAddress"];
         if (address.length) {
+            RUPlace *place = [[RUPlace alloc] initWithTitle:title addressString:address];
             EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
-            [addressSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil]];
+            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
+            row.didSelectRowBlock = ^{
+                [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
+            };
+            [addressSection addRow:row];
+            
             [self addSection:addressSection];
         }
         
         NSString *information = recCenter[@"FacilityInformation"];
         if (information.length) {
             EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
-            [informationSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil]];
+            EZTableViewRightDetailRow *infoRow = [[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil];
+            infoRow.shouldHighlight = NO;
+            [informationSection addRow:infoRow];
             [self addSection:informationSection];
         }
         
         NSString *business = recCenter[@"FacilityBusiness"];
         if (business.length) {
             EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
-            [buisnessSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil]];
+            EZTableViewRightDetailRow *buisnessRow = [[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil];
+            buisnessRow.shouldHighlight = NO;
+            [buisnessSection addRow:buisnessRow];
             [self addSection:buisnessSection];
         }
         
         NSString *description = recCenter[@"FacilityBody"];
         if (description.length) {
             EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
-            [descriptionSection addRow:[[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil]];
+            EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
+            descriptionRow.shouldHighlight = NO;
+            [descriptionSection addRow:descriptionRow];
             [self addSection:descriptionSection];
         }
     }
     return self;
 }
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self.tableView registerClass:[RURecCenterHoursHeaderTableViewCell class] forCellReuseIdentifier:@"RURecCenterHoursHeaderTableViewCell"];
@@ -71,18 +88,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
 }
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 -(void)headerLeftTapped {
     [self.hoursSection goLeft];
     [self.tableView reloadData];
 }
+
 -(void)headerRightTapped {
     [self.hoursSection goRight];
     [self.tableView reloadData];
-}
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
 }
 @end

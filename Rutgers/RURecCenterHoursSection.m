@@ -15,7 +15,7 @@
 
 @property (nonatomic) NSDateComponents *currentDateComponents;
 @property (nonatomic) NSArray *allDateComponents;
-@property (nonatomic) NSInteger currentDateIndex;
+@property NSInteger currentDateIndex;
 
 @property (nonatomic) NSMutableArray *rows;
 
@@ -35,17 +35,20 @@
         [meetingAreas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             [dates addObjectsFromArray:[obj allKeys]];
         }];
-        
-        self.allDateComponents = [self componentsForDateStrings:dates];
-        
+
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         self.currentDateComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+        
+        self.allDateComponents = [self componentsForDateStrings:dates];
+        if (!self.allDateComponents.count) self.allDateComponents = @[self.currentDateComponents];
+        
 
         self.currentDateIndex = [self.allDateComponents indexOfObject:self.currentDateComponents inSortedRange:NSMakeRange(0, self.allDateComponents.count) options:NSBinarySearchingFirstEqual usingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [self compareComponents:obj1 withComponents:obj2];
         }];
         
         RURecCenterHoursHeaderRow *header = [[RURecCenterHoursHeaderRow alloc] init];
+        header.shouldHighlight = NO;
         header.date = NSStringFromDateComponents(self.currentDateComponents);
         [self addRow:header];
         self.headerRow = header;
@@ -54,6 +57,7 @@
         for (NSString *meetingArea in areaLabels) {
             NSDictionary *datesForArea = meetingAreas[meetingArea];
             RURecCenterMeetingAreaRow *row = [[RURecCenterMeetingAreaRow alloc] initWithArea:meetingArea times:datesForArea];
+            row.shouldHighlight = NO;
             [self addRow:row];
         }
         

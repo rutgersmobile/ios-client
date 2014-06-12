@@ -35,7 +35,7 @@
     [self.contentView addSubview:self.rightButton];
 
 }
--(void)makeConstraints{
+-(void)initializeConstraints{
     [self.leftButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.leftButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     

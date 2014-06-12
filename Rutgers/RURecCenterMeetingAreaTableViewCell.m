@@ -21,7 +21,7 @@
     [self.contentView addSubview:self.areaLabel];
     [self.contentView addSubview:self.timesLabel];
 }
--(void)makeConstraints{
+-(void)initializeConstraints{
     [@[self.areaLabel,self.timesLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllTop];
     
     [self.areaLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
