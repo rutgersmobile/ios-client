@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "RUPlace.h"
 
 @interface RUMapsViewController : UIViewController 
-@property MKMapView *mapView;
+@property (nonatomic) MKMapView *mapView;
+
+-(id)initWithPlace:(RUPlace *)place;
+
 @end

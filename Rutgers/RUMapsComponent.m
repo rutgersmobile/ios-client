@@ -7,8 +7,10 @@
 //
 
 #import "RUMapsComponent.h"
-NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 #import "NSUserDefaults+MKMapRect.h"
+
+NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
+
 
 @interface RUMapsComponent ()
 
@@ -24,19 +26,11 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
     self.mapView.showsUserLocation = YES;
     
-    [self.navigationController setToolbarHidden:NO animated:NO];
-    
-    //setup tracking toolbar
-    UIBarButtonItem *trackingButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    NSArray *barArray = @[flexibleSpace, trackingButton,flexibleSpace];
-    [self setToolbarItems:barArray];
-    
     //load last map rect, or world rect
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{mapsRecentRegionKey : MKStringFromMapRect(MKMapRectWorld)}];
     MKMapRect mapRect = [[NSUserDefaults standardUserDefaults] mapRectForKey:mapsRecentRegionKey];
     [self.mapView setVisibleMapRect:mapRect];
+
 }
 
 #pragma mark - MKMapViewDelegate protocol implementation
