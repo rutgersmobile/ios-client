@@ -26,14 +26,22 @@
 {
     [super updateConstraints];
     
-    if (self.didSetupConstraints) return; // If constraints have been set, don't do anything.
     
-    [self makeConstraints];
-    
+    // If constraints have been set, don't do anything.
+
+    if (!self.didSetupConstraints) {
+        
+        [self initializeConstraints];
+
+    }
+    [self makeConstraintChanges];
     self.didSetupConstraints = YES;
 }
--(void)makeConstraints{
-    [NSException raise:@"You need to subclass EZTableViewAbstractCell and override the makeConstraints method" format:nil];
+-(void)initializeConstraints{
+
+}
+-(void)makeConstraintChanges{
+    
 }
 - (void)layoutSubviews
 {

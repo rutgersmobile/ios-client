@@ -10,6 +10,7 @@
 
 @interface ALTableViewTextCell ()
 @property (strong, nonatomic) IBOutlet UILabel *attributedTextLabel;
+@property (nonatomic) NSLayoutConstraint *rightConstraint;
 @end
 
 @implementation ALTableViewTextCell
@@ -23,19 +24,17 @@
     self.attributedTextLabel.numberOfLines = 0;
     [self.contentView addSubview:self.attributedTextLabel];
 }
--(void)makeConstraints{
-    UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
-    [self.attributedTextLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets];
+-(void)initializeConstraints{
+    [self.attributedTextLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeRight];
+    self.rightConstraint = [self.attributedTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
 }
 
 -(void)didLayoutSubviews{
     self.attributedTextLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.attributedTextLabel.frame);
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
+-(void)makeConstraintChanges{
+    self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? 0 : -kLabelHorizontalInsets;
 }
 
 @end

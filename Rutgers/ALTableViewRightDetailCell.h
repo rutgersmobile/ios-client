@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ALTableViewAbstractCell.h"
 
-@interface ALTableViewRightDetailCell : ALTableViewAbstractCell 
+@interface ALTableViewRightDetailCell : ALTableViewAbstractCell
+
 -(UILabel *)textLabel;
 -(UILabel *)detailTextLabel;
+ 
 @end

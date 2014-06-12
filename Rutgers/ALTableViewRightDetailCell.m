@@ -9,8 +9,10 @@
 #import "ALTableViewRightDetailCell.h"
 
 @interface ALTableViewRightDetailCell ()
+
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *detailLabel;
+ 
 @end
 
 @implementation ALTableViewRightDetailCell
@@ -22,6 +24,7 @@
 }
 
 -(void)makeSubviews{
+ 
     self.titleLabel = [UILabel newAutoLayoutView];
     self.detailLabel = [UILabel newAutoLayoutView];
     
@@ -32,8 +35,10 @@
     
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];
+ 
 }
--(void)makeConstraints{
+-(void)initializeConstraints{
+    
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets);
 
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
@@ -45,16 +50,13 @@
     [self.detailLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.detailLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.detailLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeLeft];
+    
 }
-
+-(void)makeConstraintChanges{
+    
+}
 -(void)didLayoutSubviews{
     self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
 }
 
 @end
