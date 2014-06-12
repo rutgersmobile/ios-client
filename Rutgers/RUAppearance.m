@@ -17,13 +17,15 @@
 +(void)applyAppearanceToNavigationController:(UINavigationController *)navigationController{
     navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    navigationController.navigationBar.barTintColor = [self modifiedRed];
     
-    CGFloat hue, sat, bright, alpha;
-    
-    [[UIColor rutgersRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
-    
-    navigationController.navigationBar.barTintColor = [UIColor colorWithHue:hue saturation:1.0 brightness:bright*0.93 alpha:alpha];
- //   navigationController.navigationBar.translucent = NO;
+    navigationController.toolbar.tintColor = [UIColor whiteColor];
+    navigationController.toolbar.barTintColor = [self modifiedRed];
 }
 
++(UIColor *)modifiedRed{
+    CGFloat hue, sat, bright, alpha;
+    [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
+    return [UIColor colorWithHue:hue saturation:1.0 brightness:bright*0.9 alpha:alpha];
+}
 @end
