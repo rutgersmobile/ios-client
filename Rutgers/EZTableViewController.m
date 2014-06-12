@@ -51,6 +51,7 @@
 
     self.searchEnabled = YES;
 }
+
 -(NSArray *)sectionsForTableView:(UITableView *)tableView{
     if (tableView == self.tableView) {
         return self.sections;
@@ -59,6 +60,7 @@
     }
     return nil;
 }
+
 - (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section {
     return [self sectionsForTableView:tableView][section];
 }
@@ -125,22 +127,17 @@
 }
 
 -(void)filterForSearchString:(NSString *)string{
-    [self.searchResultSections removeAllObjects];
-    for (EZTableViewSection *section in self.sections) {
-        NSArray *filteredRows = [section.allRows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            NSString *text;
-            if ([evaluatedObject respondsToSelector:@selector(text)]) {
-                text = [evaluatedObject text];
-            } else if ([evaluatedObject respondsToSelector:@selector(attributedText)]) {
-                text = [[evaluatedObject attributedText] string];
-            } else {
-                return NO;
+    @synchronized (self.searchResultSections) {
+        [self.searchResultSections removeAllObjects];
+        for (EZTableViewSection *section in self.sections) {
+            NSArray *filteredRows = [section.allRows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                NSString *text = [evaluatedObject stringForTextSearch];
+                return ([text rangeOfString:string options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch].location != NSNotFound);
+            }]];
+            if (filteredRows.count) {
+                EZTableViewSection *filteredSection = [[EZTableViewSection alloc] initWithSectionTitle:section.title rows:filteredRows];
+                [self.searchResultSections addObject:filteredSection];
             }
-            return ([text rangeOfString:string options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch].location != NSNotFound);
-        }]];
-        if (filteredRows.count) {
-            EZTableViewSection *filteredSection = [[EZTableViewSection alloc] initWithSectionTitle:section.title rows:filteredRows];
-            [self.searchResultSections addObject:filteredSection];
         }
     }
 }

@@ -18,8 +18,18 @@
     }
     return self;
 }
+-(instancetype)initWithAttributedString:(NSAttributedString *)attributedString{
+    self = [self init];
+    if (self) {
+        self.attributedString = attributedString;
+    }
+    return self;
+}
+-(NSString *)stringForTextSearch{
+    return self.attributedString.string;
+}
 -(void)setupCell:(ALTableViewAbstractCell *)cell{
     [super setupCell:cell];
-    cell.textLabel.attributedText = self.attributedText;
+    cell.textLabel.attributedText = self.attributedString;
 }
 @end

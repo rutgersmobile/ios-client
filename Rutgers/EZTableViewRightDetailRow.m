@@ -32,21 +32,10 @@
     }
     return self;
 }
-/*
--(void)setText:(NSString *)text{
-    _text = text;
-    if ([_text isEqualToString:@""]) {
-        _text = nil;
-    }
+-(NSString *)stringForTextSearch{
+    return self.text;
 }
 
--(void)setDetailText:(NSString *)detailText{
-    _detailText = detailText;
-    if ([_detailText isEqualToString:@""]) {
-        _detailText = nil;
-    }
-}
-*/
 -(void)setupCell:(ALTableViewRightDetailCell *)cell{
     [super setupCell:cell];
     if (self.detailText) {

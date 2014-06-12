@@ -9,5 +9,6 @@
 #import "EZTableViewAbstractRow.h"
 
 @interface EZTableViewTextRow : EZTableViewAbstractRow
-@property (nonatomic) NSAttributedString *attributedText;
+-(instancetype)initWithAttributedString:(NSAttributedString *)attributedString;
+@property (nonatomic) NSAttributedString *attributedString;
 @end

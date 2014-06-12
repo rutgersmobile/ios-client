@@ -13,6 +13,7 @@
 -(instancetype)initWithIdentifier:(NSString *)identifier;
 
 -(void)setupCell:(ALTableViewAbstractCell *)cell;
+-(NSString *)stringForTextSearch;
 @property (readonly, nonatomic) NSString *identifier;
 @property (nonatomic) BOOL shouldHighlight;
 @property (copy) void (^didSelectRowBlock)(void);
