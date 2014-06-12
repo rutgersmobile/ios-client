@@ -18,7 +18,7 @@
         self.opaque = YES;
         self.contentView.opaque = YES;
 
-        self.sectionTitleLabel = [[UILabel alloc] initForAutoLayout];
+        self.sectionTitleLabel = [UILabel newAutoLayoutView];
         [self.contentView addSubview:self.sectionTitleLabel];
 
         self.sectionTitleLabel.font = [UIFont systemFontOfSize:14];

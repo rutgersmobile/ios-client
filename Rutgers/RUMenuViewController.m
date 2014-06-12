@@ -14,12 +14,17 @@
 #import "RUMenuSectionHeaderView.h"
 #import "RUMenuTableViewCell.h"
 
-@interface RUMenuViewController () <UISearchDisplayDelegate, RUChannelManagerDelegate, UITableViewDataSource, UITableViewDelegate>
+
+@interface RUMenuViewController () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) UISearchBar *searchBar;
 @property (nonatomic) UITableView *tableView;
+@property (nonatomic) UIView *paddingView;
+@property (nonatomic) NSLayoutConstraint *paddingHeightContstraint;
 
-@property NSMutableArray *channels;
+@property NSArray *channels;
+@property NSArray *webLinks;
+
 @end
 
 @implementation RUMenuViewController
@@ -31,17 +36,13 @@
         
         //self.title = @"Channels";
         RUChannelManager *manager = [RUChannelManager sharedInstance];
-        manager.delegate = self;
-        [manager loadChannels];
-
-        /*
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillDisappear:)
-                                                     name:UIKeyboardWillHideNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillAppear:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];*/
+        self.channels = [manager loadChannels];
+        [manager loadWebLinksWithCompletion:^(NSArray *webLinks) {
+            [self.tableView beginUpdates];
+            self.webLinks = webLinks;
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView endUpdates];
+        }];
     }
     
     return self;
@@ -63,13 +64,12 @@
 }
 
 -(void)makeSubviews{
-   // CGFloat statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
     
-    UIView *paddingView = [[UIView alloc] initForAutoLayout];
+    UIView *paddingView = [UIView newAutoLayoutView];
     [self.view addSubview:paddingView];
-    [paddingView autoSetDimension:ALDimensionHeight toSize:37.0];
+    self.paddingView = paddingView;
+    self.paddingHeightContstraint = [paddingView autoSetDimension:ALDimensionHeight toSize:37.0];
     [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -81,58 +81,6 @@
     [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
     [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:paddingView];
     
-}/*
--(void)makeSearchbar{
-    self.searchBar = [[UISearchBar alloc] initForAutoLayout];
-    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    [self.searchBar setTintColor:[UIColor whiteColor]];
-    
-    [self.view addSubview:self.searchBar];
-    
-    [self.searchBar autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]), 0, 0, 0) excludingEdge:ALEdgeBottom];
-    self.searchBar.translucent = NO;
-    self.searchBar.clipsToBounds = YES;
-    
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    self.searchController.searchResultsDelegate = self;
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.delegate = self;
-}
--(void)makeHeader{
-    
-     RUMenuTableHeaderView *headerView = [[RUMenuTableHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), MENU_HEADER_IMAGE_HEIGHT+16)];
-     headerView.backgroundColor = [UIColor grey1Color];
-     headerView.imageView.image = [UIImage imageNamed:@"IMG_3713.jpg"];
-     headerView.nameLabel.text = @"John Smith";
-     headerView.detailLabel.text = @"Undergraduate Class of '14";
-     
-     self.tableView.tableHeaderView = headerView;
-}*/
-  
-/*
-- (void)keyboardWillAppear:(NSNotification *)note
-{
-    [self.sidePanelController setCenterPanelHidden:YES
-                                          animated:YES
-                                          duration:[[note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-    [self.searchBar setShowsCancelButton:YES animated:NO];
-}
-
-- (void)keyboardWillDisappear:(NSNotification *)note
-{
-    [self.searchBar setShowsCancelButton:NO animated:NO];
-    
-    [self.sidePanelController setCenterPanelHidden:NO
-                                          animated:YES
-                                          duration:[[note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
-}
-*/
-
--(void)loadedNewChannels:(NSArray *)newChannels{
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:[self indexPathsForRange:NSMakeRange(self.channels.count, newChannels.count) inSection:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.channels addObjectsFromArray:newChannels];
-    [self.tableView endUpdates];
 }
 
 -(NSArray *)indexPathsForRange:(NSRange)range inSection:(NSInteger)section{
@@ -141,10 +89,6 @@
         [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:section]];
     }
     return indexPaths;
-}
-
--(NSDictionary *)channelForIndexPath:(NSIndexPath *)indexPath{
-    return self.channels[indexPath.row];
 }
 
 - (void)didReceiveMemoryWarning
@@ -161,7 +105,7 @@
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     RUMenuSectionHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
-    header.sectionTitleLabel.text = [self titleForHeaderInSection:section];
+    header.sectionTitleLabel.text = [[self titleForHeaderInSection:section] uppercaseString];
     return header;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -169,25 +113,30 @@
 }
 -(NSString *)titleForHeaderInSection:(NSInteger)section{
     if (section == 0) {
-        return @"CHANNELS";
-    }
-    return nil;
-}/*
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
         return @"Channels";
+    } else {
+        return @"Web Links";
     }
     return nil;
-}*/
+}
+
+-(NSDictionary *)channelForIndexPath:(NSIndexPath *)indexPath{
+    return [self channelsForSection:indexPath.section][indexPath.row];
+}
+-(NSArray *)channelsForSection:(NSInteger)section{
+    if (section == 0) {
+        return self.channels;
+    } else if (section == 1) {
+        return self.webLinks;
+    }
+    return nil;
+}
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.channels.count;
+    return [self channelsForSection:section].count;
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView == self.tableView) {
-        return 1;
-    }
-    return 0;
+    return self.webLinks ? 2 : 1;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -196,6 +145,16 @@
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *channel = [self channelForIndexPath:indexPath];
     [self.delegate menu:self didSelectChannel:channel];
+}
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.paddingHeightContstraint.constant = 25.0;
+    } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
+        self.paddingHeightContstraint.constant = 37.0;
+    }
+    [self.paddingView setNeedsUpdateConstraints];
+   // [self.view layoutIfNeeded];
 }
 @end

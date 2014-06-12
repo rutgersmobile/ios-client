@@ -15,7 +15,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.imageView = [[UIImageView alloc] initForAutoLayout];
+        self.imageView = [UIImageView newAutoLayoutView];
         self.imageView.contentMode = UIViewContentModeScaleToFill;
         self.imageView.layer.masksToBounds = YES;
         
@@ -30,11 +30,11 @@
         [self.imageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:8];
         [self.imageView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:8 relation:NSLayoutRelationGreaterThanOrEqual];
         
-        self.nameLabel = [[UILabel alloc] initForAutoLayout];
+        self.nameLabel = [UILabel newAutoLayoutView];
         self.nameLabel.textColor = [UIColor whiteColor];
         self.nameLabel.font = [UIFont systemFontOfSize:16];
      
-        self.detailLabel = [[UILabel alloc] initForAutoLayout];
+        self.detailLabel = [UILabel newAutoLayoutView];
         self.detailLabel.textColor = [UIColor whiteColor];
         self.detailLabel.font = [UIFont systemFontOfSize:13];
     

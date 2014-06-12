@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FBShimmeringView.h>
 
 @interface RUMenuTableViewCell : UITableViewCell
 @property (nonatomic) UILabel *channelTitleLabel;
 @property (nonatomic) UIImageView *channelImage;
-@property (nonatomic) FBShimmeringView *shimmeringView;
 @end
