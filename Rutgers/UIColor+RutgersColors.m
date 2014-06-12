@@ -9,7 +9,7 @@
 #import "UIColor+RutgersColors.h"
 
 @implementation UIColor (RutgersColors)
-+(UIColor *)rutgersRedColor{
++(UIColor *)scarletRedColor{
     return [UIColor colorWithRed:206/255.0 green:17/255.0 blue:38/255.0 alpha:1];
 }
 +(UIColor *)rutgersGreyColor{
@@ -30,4 +30,9 @@
 +(UIColor *)selectedRedColor{
     return [UIColor colorWithRed:221/255.0 green:44/255.0 blue:58/255.0 alpha:1];
 }
++(UIColor *)menuDeselectedColor{
+    return [UIColor colorWithWhite:0.8 alpha:1.0];
+}
+
+
 @end

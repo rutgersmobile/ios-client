@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface UIColor (RutgersColors)
-+(UIColor *)rutgersRedColor;
++(UIColor *)scarletRedColor;
 +(UIColor *)rutgersGreyColor;
 +(UIColor *)grey1Color;
 +(UIColor *)grey2Color;
 +(UIColor *)grey3Color;
 +(UIColor *)grey4Color;
 +(UIColor *)selectedRedColor;
++(UIColor *)menuDeselectedColor;
 @end
