@@ -45,7 +45,7 @@
     
     [string addAttributes:@{NSParagraphStyleAttributeName : paragraphStyle} range:NSMakeRange(0, string.length)];
     
-    self.attributedText = string;
+    self.attributedString = string;
 }
 
 -(BOOL)active{

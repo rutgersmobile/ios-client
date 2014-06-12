@@ -22,7 +22,7 @@
 -(void)setPredictionTimes:(NSArray *)predictionTimes{
     _predictionTimes = predictionTimes;
 
-    self.attributedText = [[NSAttributedString alloc] initWithString:[self labelString] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:16]}];
+    self.attributedString = [[NSAttributedString alloc] initWithString:[self labelString] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:16]}];
 }
 -(NSString *)formatDate:(NSDate *)date{
     static NSDateFormatter *dateFormatter = nil;
