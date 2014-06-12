@@ -11,6 +11,8 @@
 #import "RULocationManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+FilterDictionary.h"
+#import "RUPlace.h"
+
 static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 
 @interface RUPlacesData ()
@@ -58,14 +60,38 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
     }];
 }
 -(void)parsePlaces:(NSDictionary *)response{
-    NSArray *excludedCampuses = @[[NSNull null],@"off-campus",@"Off-Campus"];
+   // NSArray *excludedCampuses = @[[NSNull null],@"off-campus",@"Off-Campus"];
+    NSMutableDictionary *parsedPlaces = [NSMutableDictionary dictionary];
+  //  NSMutableDictionary *sortedByLocation = [NSMutableDictionary dictionary];
     
-    self.places = [response[@"all"] filteredDictionaryUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        id campusName = evaluatedObject[@"campus_name"];
-        if ([excludedCampuses containsObject:campusName]) return NO;
-        return YES;
-    }]];
+    [response[@"all"] enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
+   //     if ([excludedCampuses containsObject:obj[@"campus_name"]]) return;
+        RUPlace *place = [[RUPlace alloc] initWithDictionary:obj];
+        parsedPlaces[place.uniqueID] = place;
+        
+        /*
+
+        NSString *locationString = [NSString stringWithFormat:@"%f,%f",place.location.coordinate.latitude,place.location.coordinate.longitude];
+        NSMutableArray *placesWithLocation = sortedByLocation[locationString];
+        if (!placesWithLocation) {
+            placesWithLocation = [NSMutableArray array];
+            sortedByLocation[locationString] = placesWithLocation;
+        }
+        [placesWithLocation addObject:place];
+        */
+    }];
+    /*
+    NSArray *sortedArraysOfLocations = [[sortedByLocation allValues] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSInteger count1 = [obj1 count];
+        NSInteger count2 = [obj2 count];
+        if (count1 > count2) return NSOrderedAscending;
+        if (count2 > count1) return NSOrderedDescending;
+        return NSOrderedSame;
+    }];*/
+    
+    self.places = parsedPlaces;
 }
+
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock{
     dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
         NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@",query]];
@@ -79,7 +105,7 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
             } else if (!one && two) {
                 return NSOrderedDescending;
             }
-            return [obj1[@"title"] caseInsensitiveCompare:obj2[@"title"]];
+            return [[obj1 title] compare:[obj2 title] options:NSNumericSearch|NSCaseInsensitiveSearch];
         }];
         completionBlock(results);
     });
@@ -99,10 +125,10 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
     });
 }
 
--(void)addPlaceToRecentPlacesList:(NSDictionary *)place{
+-(void)addPlaceToRecentPlacesList:(RUPlace *)place{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *recentPlaces = [[userDefaults arrayForKey:placesRecentPlacesKey] mutableCopy];
-    NSString *ID = place[@"id"];
+    NSString *ID = place.uniqueID;
     if ([recentPlaces containsObject:ID]){
         [recentPlaces removeObject:ID];
     }
@@ -119,12 +145,17 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 -(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces))completionBlock{
     dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
         NSArray *nearbyPlaces = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            return ([locationOfPlace(evaluatedObject) distanceFromLocation:location] < NEARBY_DISTANCE);
+            RUPlace *place = evaluatedObject;
+            if (!place.location) return NO;
+            return ([place.location distanceFromLocation:location] < NEARBY_DISTANCE);
         }]];
         
         nearbyPlaces = [nearbyPlaces sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CLLocationDistance distanceOne = [locationOfPlace(obj1) distanceFromLocation:location];
-            CLLocationDistance distanceTwo = [locationOfPlace(obj2) distanceFromLocation:location];
+            RUPlace *placeOne = obj1;
+            RUPlace *placeTwo = obj2;
+
+            CLLocationDistance distanceOne = [placeOne.location distanceFromLocation:location];
+            CLLocationDistance distanceTwo = [placeTwo.location distanceFromLocation:location];
             
             if (distanceOne < distanceTwo) return NSOrderedAscending;
             else if (distanceOne > distanceTwo) return NSOrderedDescending;
@@ -136,30 +167,5 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
         }
         completionBlock([nearbyPlaces copy]);
     });
-}
-
-CLLocation *locationOfPlace(NSDictionary * place){
-    static NSMutableDictionary *locations = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        locations = [NSMutableDictionary dictionary];
-    });
-    
-    NSString *ID = place[@"id"];
-    CLLocation *location;
-    if (locations[ID]){
-        location = locations[ID];
-    } else {
-        location = [[CLLocation alloc] initWithLatitude:[place[@"location"][@"latitude"] doubleValue] longitude:[place[@"location"][@"longitude"] doubleValue]];
-        if (location) {
-            locations[ID] = location;
-        } else {
-            locations[ID] = [NSNull null];
-        }
-    }
-    if (![location isEqual:[NSNull null]]) {
-        return location;
-    }
-    return nil;
 }
 @end

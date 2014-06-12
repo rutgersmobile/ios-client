@@ -10,12 +10,13 @@
 #define MAX_RECENT_PLACES 7
 #define MAX_NEARBY_PLACES 7
 @class CLLocation;
-@interface RUPlacesData : NSObject
+@class RUPlace;
 
+@interface RUPlacesData : NSObject
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock;
--(void)addPlaceToRecentPlacesList:(NSDictionary *)place;
+-(void)addPlaceToRecentPlacesList:(RUPlace *)place;
 -(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces))completionBlock;
 
 +(RUPlacesData *)sharedInstance;

@@ -11,6 +11,7 @@
 #import "RUPlaceDetailViewController.h"
 #import "RULocationManager.h"
 #import "ALTableViewRightDetailCell.h"
+#import "RUPlace.h"
 
 static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 
@@ -51,7 +52,7 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
     self.searchController.searchResultsDataSource = self;
     self.searchController.delegate = self;
     
-    [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
+    [self.searchController.searchResultsTableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
     
     self.tableView.tableHeaderView = searchBar;
 }
@@ -108,21 +109,26 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 }
 
 #pragma mark - Table view data source
--(NSArray *)itemForSection:(NSInteger)section{
-    switch (section) {
-        case 0:
-            return self.nearbyPlaces;
-            break;
-        case 1:
-            return self.recentPlaces;
-            break;
-        default:
-            return nil;
-            break;
+-(NSArray *)itemForSection:(NSInteger)section inTableView:(UITableView *)tableView{
+    if (tableView == self.tableView) {
+        switch (section) {
+            case 0:
+                return self.nearbyPlaces;
+                break;
+            case 1:
+                return self.recentPlaces;
+                break;
+            default:
+                return nil;
+                break;
+        }
+    } else if (tableView == self.searchController.searchResultsTableView) {
+        return self.searchResults;
     }
+    return nil;
 }
--(id)itemForIndexPath:(NSIndexPath *)indexPath{
-    return [self itemForSection:indexPath.section][indexPath.row];
+-(RUPlace *)itemForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView{
+    return [self itemForSection:indexPath.section inTableView:tableView][indexPath.row];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -136,45 +142,29 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.tableView) {
-        return [[self itemForSection:section] count];
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        #define MAX_SEARCH_RESULTS 40
-        return self.searchResults.count <= MAX_SEARCH_RESULTS ? self.searchResults.count : MAX_SEARCH_RESULTS;
-    }
-    return 0;
+    return [[self itemForSection:section inTableView:tableView] count];
 }
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     return @"ALTableViewRightDetailCell";
 }
+
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
-    cell.textLabel.font = [UIFont systemFontOfSize:18];
+    cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.numberOfLines = 0;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    NSDictionary *itemForCell;
+    RUPlace *itemForCell = [self itemForIndexPath:indexPath inTableView:tableView];
     
-    if (tableView == self.tableView) {
-        itemForCell = [self itemForIndexPath:indexPath];
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        itemForCell = self.searchResults[indexPath.row];
-    }
-    cell.textLabel.text = itemForCell[@"title"];
+    cell.textLabel.text = itemForCell.title;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *itemForCell;
+    RUPlace *itemForCell = [self itemForIndexPath:indexPath inTableView:tableView];
 
-    if (tableView == self.tableView) {
-        itemForCell = [self itemForIndexPath:indexPath];
-        if (indexPath.section == 0) {
-            [self.placesData addPlaceToRecentPlacesList:itemForCell];
-        }
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        itemForCell = self.searchResults[indexPath.row];
+    if (!(tableView == self.tableView && indexPath.section == 1)) {
         [self.placesData addPlaceToRecentPlacesList:itemForCell];
     }
-
+    
     RUPlaceDetailViewController *detailVC = [[RUPlaceDetailViewController alloc] initWithPlace:itemForCell];
     [self.navigationController pushViewController:detailVC animated:YES];
 }

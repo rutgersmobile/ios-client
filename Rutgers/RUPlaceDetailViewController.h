@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "EZTableViewController.h"
+@class RUPlace;
 
 @interface RUPlaceDetailViewController : EZTableViewController
--(id)initWithPlace:(NSDictionary *)place;
+-(id)initWithPlace:(RUPlace *)place;
 
 @end
