@@ -12,6 +12,7 @@
 #import "NSDictionary+Channel.h"
 #import "DynamicCollectionView.h"
 #import "TileCollectionViewItem.h"
+#import "TileCollectionViewCell.h"
 #import "EZCollectionViewSection.h"
 
 @interface DynamicCollectionView ()
@@ -24,30 +25,7 @@
 +(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[DynamicCollectionView alloc] initWithChannel:channel];
 }
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {/*
-        self.slider = [[UISlider alloc] init];
-        self.slider.minimumValue = 300;
-        self.slider.maximumValue = 500;
-        self.navigationItem.titleView = self.slider;
-        [self.slider addTarget:self action:@selector(sliderChanged:) forControlEvents:UIControlEventValueChanged];*/
-    }
-    return self;
-}
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    self.slider.value = [TileCollectionViewItem seedNumber];
-}
--(void)sliderChanged:(UISlider *)sender{
-    NSInteger value = sender.value;
-    sender.value = value;
-    [TileCollectionViewItem setSeedNumber:value];
-    NSLog(@"%ld",(long)value);
-    [self.collectionView reloadData];
-}
 -(instancetype)initWithChannel:(NSDictionary *)channel{
     self = [self init];
     if (self) {
@@ -70,13 +48,13 @@
         TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:title];
         if (child[@"children"]) {
             item.showsEllipses = YES;
-            item.didSelectRowBlock = ^{
+            item.didSelectItemBlock = ^{
                 DynamicCollectionView *dcvc = [[DynamicCollectionView alloc] initWithChildren:child[@"children"]];
                 dcvc.title = [child titleForChannel];
                 [self.navigationController pushViewController:dcvc animated:YES];
             };
         } else if (child[@"channel"]) {
-            item.didSelectRowBlock = ^{
+            item.didSelectItemBlock = ^{
                 [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]] animated:YES];
             };
         }

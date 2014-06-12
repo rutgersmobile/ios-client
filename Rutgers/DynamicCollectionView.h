@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZCollectionViewController.h"
+#import "TileCollectionViewController.h"
 
-@interface DynamicCollectionView : EZCollectionViewController <RUComponentProtocol>
+@interface DynamicCollectionView : TileCollectionViewController <RUComponentProtocol>
 
 @end
