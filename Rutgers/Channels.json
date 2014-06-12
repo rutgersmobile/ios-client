@@ -1,4 +1,4 @@
-[
+ [
   {
   "handle" : "ruinfo",
   "title": "RU-Info",
@@ -9,58 +9,64 @@
   "handle" : "news",
   "title": "News",
   "url": "https://rumobile.rutgers.edu/1/news.txt",
- "view" : "dtable",
- "icon" : "news"
+  "view" : "dtable",
+  "icon" : "news"
   },
   {
   "handle" : "bus",
   "title": "Bus",
- "view" : "RUBusViewController",
- "icon" : "bus"
-  },
-  {
-  "handle" : "places",
-  "title": "Places",
- "view" : "RUPlacesViewController",
- "icon" : "places"
+  "view" : "RUBusViewController",
+  "icon" : "bus"
   },
   {
   "handle" : "food",
   "title": "Food",
- "view" : "RUFoodViewController",
- "icon" : "food"
-  },
-  {
-  "handle" : "calendar",
-  "title": "Events",
-  "url": "https://rumobile.rutgers.edu/1/events.txt",
- "view" : "dtable",
- "icon" : "events"
-  },
-  {
-  "handle" : "career_services",
-  "title": "Career Services",
-  "url": "https://rumobile.rutgers.edu/1/csfaq.txt",
- "view" : "dtable",
- "icon" : "careers"
+  "view" : "RUFoodViewController",
+  "icon" : "food"
   },
   {
   "handle" : "maps",
   "title": "Maps",
- "view" : "RUMapsComponent",
- "icon" : "maps"
+  "view" : "RUMapsComponent",
+  "icon" : "maps"
   },
   {
   "handle" : "recreation_index",
   "title": "Recreation",
   "url": "https://rumobile.rutgers.edu/1/rec.txt",
- "view" : "dtable",
- "icon" : "recreation"
+  "view" : "dtable",
+  "icon" : "recreation"
+  },
+  {
+  "handle" : "places",
+  "title": "Places",
+  "view" : "RUPlacesViewController",
+  "icon" : "places"
+  },
+  {
+  "handle" : "calendar",
+  "title": "Events",
+  "url": "https://rumobile.rutgers.edu/1/events.txt",
+  "view" : "dtable",
+  "icon" : "events"
+  },
+  {
+  "handle" : "career_services",
+  "title": "Career Services",
+  "url": "https://rumobile.rutgers.edu/1/csfaq.txt",
+  "view" : "dtable",
+  "icon" : "careers"
   },
   {
   "handle" : "soc",
   "title": "Schedule of Classes",
- "view" : "RUSOCViewController",
- "icon" : "soc"
+  "view" : "RUSOCViewController",
+  "icon" : "soc"
+  },
+  {
+  "handle" : "sports",
+  "title": "Athletics",
+  "view" : "RUSportsViewController",
+  "icon" : "sports"
   }
-]
+  ]
