@@ -8,62 +8,67 @@
 
 #import "RUReaderTableViewCell.h"
 @interface RUReaderTableViewCell ()
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *detailLabel;
-@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
-@property (nonatomic) NSLayoutConstraint *topTimeConstraint;
+//@property NSLayoutConstraint *imageBottomConstraint;
 @end
 
 @implementation RUReaderTableViewCell
--(void)setTitle:(NSString *)title{
-    self.titleLabel.text = title;
-}
--(void)setDetail:(NSString *)detail{
-    self.detailLabel.text = detail;
-}
--(void)setTime:(NSString *)time{
-    self.timeLabel.text = time;
-  //  self.topTimeConstraint.constant = (time) ? 2 : 0;
-}
+
 -(void)makeSubviews{
     
     self.titleLabel = [UILabel newAutoLayoutView];
-    self.detailLabel = [UILabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
+    self.imageDisplayView = [UIImageView newAutoLayoutView];
     
-    self.detailLabel.numberOfLines = 0;
-    self.titleLabel.numberOfLines = 0;
+    self.imageDisplayView.clipsToBounds = YES;
     
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    self.detailLabel.font = [UIFont systemFontOfSize:15];
-    self.timeLabel.font = [UIFont boldSystemFontOfSize:16];
+    self.imageDisplayView.contentMode = UIViewContentModeScaleAspectFill;
 
-    self.timeLabel.textColor = self.tintColor;
+    self.titleLabel.numberOfLines = 0;
+    self.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.titleLabel.minimumScaleFactor = 0.7;
+    
+    self.titleLabel.font = [UIFont systemFontOfSize:24];
+    
+    self.timeLabel.font = [UIFont italicSystemFontOfSize:16];
+
+    self.timeLabel.textColor = [UIColor scarletRedColor];
     
     [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.detailLabel];
     [self.contentView addSubview:self.timeLabel];
+    [self.contentView addSubview:self.imageDisplayView];
 
 }
--(void)makeConstraints{
+
+-(void)initializeConstraints{
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
+
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeBottom];
     
-    [self.detailLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [self.detailLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:2];
-    [self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
-    [self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-    [self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
+    [self.titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.imageDisplayView withOffset:0 relation:NSLayoutRelationLessThanOrEqual];
+    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     
+    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
+    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:IMAGE_WIDTH+8];
+    
+    [self.imageDisplayView autoSetDimensionsToSize:CGSizeMake(IMAGE_WIDTH, IMAGE_HEIGHT)];
+    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
+    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+
+//    self.imageBottomConstraint = [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:IMAGE_BOTTOM_PADDING];
+
     [self.timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    self.topTimeConstraint = [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.detailLabel withOffset:2];
     [self.timeLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeTop];
 }
-
+-(void)makeConstraintChanges{
+    /*
+    if (!self.timeLabel.text.length) {
+        self.imageBottomConstraint.constant = 0;
+    } else {
+        self.imageBottomConstraint.constant = -IMAGE_BOTTOM_PADDING;
+    }*/
+}
 -(void)didLayoutSubviews{
     self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
-    self.detailLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.detailLabel.frame);
-
 }
 @end

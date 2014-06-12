@@ -10,4 +10,7 @@
 
 @interface RUReaderTableViewRow : EZTableViewRightDetailRow
 -(instancetype)initWithItem:(NSDictionary *)item;
+@property (nonatomic) NSString *title;
+@property (nonatomic) NSString *date;
+@property (nonatomic) NSURL *url;
 @end

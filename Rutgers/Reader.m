@@ -17,6 +17,7 @@
 
 @interface Reader ()
 @property (nonatomic) NSDictionary *channel;
+@property AFHTTPSessionManager *sessionManager;
 @end
 
 @implementation Reader
@@ -39,6 +40,9 @@
     self.tableView.rowHeight = 80.0;
     [self.tableView registerClass:[RUReaderTableViewCell class] forCellReuseIdentifier:@"RUReaderTableViewCell"];
 
+    self.sessionManager = [[AFHTTPSessionManager alloc] init];
+    self.sessionManager.responseSerializer = [AFImageResponseSerializer serializer];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl beginRefreshing];
     [self fetchDataForChannel];
@@ -46,16 +50,11 @@
     
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
-}
-
 -(void)fetchDataForChannel{
     [[RUNetworkManager xmlSessionManager] GET:self.channel[@"url"] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self parseResponse:[responseObject[@"channel"] firstObject][@"item"]];
             [self.refreshControl endRefreshing];
+            [self parseResponse:[responseObject[@"channel"] firstObject][@"item"]];
         } else {
             [self fetchDataForChannel];
         }
@@ -63,15 +62,6 @@
         [self fetchDataForChannel];
     }];
 }
-/*
-+(NSMutableSet *)allKeysSet{
-    static NSMutableSet *set = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        set = [NSMutableSet set];
-    });
-    return set;
-}*/
 
 -(void)parseResponse:(id)responseObject{
     [self.tableView beginUpdates];
@@ -93,14 +83,26 @@
         [section addRow:row];
     }
     [self addSection:section];
- //   NSLog(@"%@",[[[self class]allKeysSet] sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES]]]);
+
     [self.tableView endUpdates];
 }
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-  //  if (self.updating != 0) {
-   //    return [self tableView:tableView heightForRowAtIndexPath:indexPath];
-  //  }
-    return 200*320/CGRectGetWidth(tableView.bounds);
+-(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
+    RUReaderTableViewRow *row = (RUReaderTableViewRow *)[self rowInTableView:tableView forIndexPath:indexPath];
+    RUReaderTableViewCell *readerCell = (RUReaderTableViewCell *)cell;
+    [row setupCell:readerCell];
 }
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    RUReaderTableViewRow *row = (RUReaderTableViewRow *)[self rowInTableView:tableView forIndexPath:indexPath];
+    if (row.date) {
+        return IMAGE_HEIGHT + IMAGE_BOTTOM_PADDING;
+    } else {
+        return IMAGE_HEIGHT;
+    }
+}
+ /*
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return 200*320/CGRectGetWidth(tableView.bounds);
+}*/
 @end

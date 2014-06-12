@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "ALTableViewAbstractCell.h"
 
+#define IMAGE_WIDTH 62
+#define IMAGE_HEIGHT 62
+#define IMAGE_BOTTOM_PADDING 32
+
 @interface RUReaderTableViewCell : ALTableViewAbstractCell
--(void)setTitle:(NSString *)title;
--(void)setDetail:(NSString *)detail;
--(void)setTime:(NSString *)time;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *imageDisplayView;
 @end

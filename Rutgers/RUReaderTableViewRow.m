@@ -7,25 +7,37 @@
 //
 
 #import "RUReaderTableViewRow.h"
+#import <NSString+HTML.h>
 #import "RUReaderTableViewCell.h"
 #import <TOWebViewController.h>
+#import <AFNetworking.h>
+#import <UIKit+AFNetworking.h>
+#import <NSDate+InternetDateTime.h>
 
 @interface RUReaderTableViewRow ()
-@property (nonatomic) NSDictionary *item;
+
 @end
 @implementation RUReaderTableViewRow
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super initWithIdentifier:@"RUReaderTableViewCell"];
     if (self) {
-        self.item = item;
+        self.title = [[item[@"title"] firstObject] stringByDecodingHTMLEntities];
+        self.date = [item[@"pubDate"] firstObject];
+        self.url = [NSURL URLWithString:[item[@"enclosure"] firstObject][@"_url"]];
     }
     return self;
 }
 
 -(void)setupCell:(RUReaderTableViewCell *)cell{
-    [cell setTitle:[self.item[@"title"] firstObject]];
-    [cell setDetail:[self.item[@"description"] firstObject]];
-    [cell setTime:[self.item[@"pubDate"] firstObject]];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.titleLabel.text =  self.title;
+    cell.timeLabel.text = self.date;
+    
+    UIImage *placeHolder = [UIImage imageNamed:@"ABPicturePerson"];
+    if (self.url) {
+        [cell.imageDisplayView setImageWithURL:self.url placeholderImage:placeHolder];
+    } else {
+        cell.imageDisplayView.image = placeHolder;
+    }
 }
+
 @end
