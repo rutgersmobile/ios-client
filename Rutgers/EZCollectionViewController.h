@@ -7,17 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-@class EZCollectionViewSection;
-@class EZCollectionViewItem;
-@class EZCollectionViewCell;
 
-@interface EZCollectionViewController : UICollectionViewController
+
+
+@class EZCollectionViewSection;
+@class EZCollectionViewAbstractItem;
+
+@interface EZCollectionViewController : UIViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
+@property (nonatomic) UICollectionView *collectionView;
+@property (nonatomic) UICollectionViewFlowLayout *flowLayout;
+
 -(void)addSection:(EZCollectionViewSection *)section;
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
 
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section;
-- (EZCollectionViewItem *)itemForIndexPath:(NSIndexPath *)indexPath;
+- (EZCollectionViewAbstractItem *)itemForIndexPath:(NSIndexPath *)indexPath;
 
--(void)setupCell:(EZCollectionViewCell *)cell inCollectionView:(UICollectionView *)collectionView forItemAtIndexPath:(NSIndexPath *)indexPath;
 @end

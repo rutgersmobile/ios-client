@@ -8,18 +8,18 @@
 
 #import "EZCollectionViewController.h"
 #import "EZCollectionViewSection.h"
-#import "EZCollectionViewItem.h"
-#import "EZCollectionViewCell.h"
+#import "EZCollectionViewAbstractItem.h"
+#import "TileCollectionViewCell.h"
 
 @interface EZCollectionViewController () <UICollectionViewDelegateFlowLayout>
 @property (nonatomic) NSMutableArray *sections;
+
 @end
 
 @implementation EZCollectionViewController
-
 - (instancetype)init
 {
-    self = [super initWithCollectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    self = [super init];
     if (self) {
         self.sections = [NSMutableArray array];
     }
@@ -29,9 +29,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    self.flowLayout = flowLayout;
+    // Set up the collection view with no scrollbars, paging enabled
+    // and the delegate and data source set to this view controller
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:flowLayout];
+    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    [self.view addSubview:self.collectionView];
+    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    
     self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [self.collectionView registerClass:[EZCollectionViewCell class] forCellWithReuseIdentifier:@"EZCollectionViewCell"];
-    // Do any additional setup after loading the view.
+    self.collectionView.opaque = YES;
+
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,7 +73,7 @@
     return self.sections[section];
 }
 
-- (EZCollectionViewItem *)itemForIndexPath:(NSIndexPath *)indexPath{
+- (EZCollectionViewAbstractItem *)itemForIndexPath:(NSIndexPath *)indexPath{
     return [[self sectionAtIndex:indexPath.section] itemAtIndex:indexPath.row];
 }
 
@@ -67,60 +82,9 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    EZCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self itemForIndexPath:indexPath].identifier forIndexPath:indexPath];
-    [self setupCell:cell inCollectionView:collectionView forItemAtIndexPath:indexPath];
-    return cell;
-    
-}
-
-BOOL iPad() {
-    static bool iPad = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-    });
-    return iPad;
-}
-
-#define iPad iPad()
-
-#define TILE_PADDING 4
-#define TILE_SPACING 3
-
-#define MAX_TILE_WIDTH  (iPad ? 180.0 : 120.0)
-#define FONT_SIZE  (iPad ? 20 : 16.0)
-
--(void)setupCell:(EZCollectionViewCell *)cell inCollectionView:(UICollectionView *)collectionView forItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self itemForIndexPath:indexPath].identifier forIndexPath:indexPath];
     [[self itemForIndexPath:indexPath] setupCell:cell];
-    cell.textLabel.font = [UIFont systemFontOfSize:FONT_SIZE];
-}
-
-#pragma mark - CollectionViewFlowLayout Delegate
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat layoutWidth = CGRectGetWidth(collectionView.bounds)-TILE_PADDING*2;
-    NSInteger number = 0;
-    CGFloat width = 0;
-    
-    while (width < layoutWidth) {
-        number++;
-        width += MAX_TILE_WIDTH + TILE_SPACING;
-    }
-    
-    CGFloat tileWidth = (layoutWidth - (number-1)*TILE_SPACING) / number;
-    return CGSizeMake(floorf(tileWidth), floorf(tileWidth*170.0/203.0));
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(TILE_PADDING, TILE_PADDING, TILE_PADDING, TILE_PADDING);
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-    return TILE_SPACING;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
-    return TILE_SPACING;
+    return cell;
 }
 
 #pragma mark - CollectionView Delegate
@@ -130,9 +94,9 @@ BOOL iPad() {
 
 }
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    EZCollectionViewItem *item = [self itemForIndexPath:indexPath];
-    if (item.didSelectRowBlock) {
-        item.didSelectRowBlock();
+    EZCollectionViewAbstractItem *item = [self itemForIndexPath:indexPath];
+    if (item.didSelectItemBlock) {
+        item.didSelectItemBlock();
     }
 }
 
@@ -140,13 +104,4 @@ BOOL iPad() {
     return self.sections.count;
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.collectionViewLayout invalidateLayout];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.collectionViewLayout invalidateLayout];
-}
 @end

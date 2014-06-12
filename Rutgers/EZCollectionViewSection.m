@@ -35,7 +35,7 @@
     return self;
 }
 
--(void)addItem:(EZCollectionViewItem *)item{
+-(void)addItem:(EZCollectionViewAbstractItem *)item{
     [self.items addObject:item];
 }
 
@@ -51,7 +51,7 @@
     return self.items.count;
 }
 
--(EZCollectionViewItem *)itemAtIndex:(NSInteger)index{
+-(EZCollectionViewAbstractItem *)itemAtIndex:(NSInteger)index{
     return self.items[index];
 }
 @end

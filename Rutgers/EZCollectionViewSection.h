@@ -8,17 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@class EZCollectionViewItem;
+@class EZCollectionViewAbstractItem;
 
 @interface EZCollectionViewSection : NSObject
 @property (nonatomic) NSString *title;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle items:(NSArray *)items;
 
--(void)addItem:(EZCollectionViewItem *)item;
+-(void)addItem:(EZCollectionViewAbstractItem *)item;
 -(void)addItems:(NSArray *)items;
 -(void)removeAllItems;
 
 -(NSInteger)numberOfItems;
--(EZCollectionViewItem *)itemAtIndex:(NSInteger)index;
+-(EZCollectionViewAbstractItem *)itemAtIndex:(NSInteger)index;
 @end
