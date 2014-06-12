@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUComponentProtocol.h"
+#import "EZTableViewController.h"
 
-@interface RUInfoTableViewController : UITableViewController <RUComponentProtocol>
-+(instancetype)component;
+@interface RUInfoTableViewController : EZTableViewController
++(instancetype)componentForChannel:(NSDictionary *)channel;
 @end
