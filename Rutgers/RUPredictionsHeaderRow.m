@@ -8,50 +8,42 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUBusRoute.h"
-#import "NSString+TimeColor.h"
 #import "NSArray+RUBusStop.h"
+#import <HexColor.h>
+#import "RUPredictionsTableViewCell.h"
 
 @interface RUPredictionsHeaderRow ()
-@property (nonatomic) id item;
+@property id item;
 @end
 
 @implementation RUPredictionsHeaderRow
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item{
-    self = [super init];
+    self = [super initWithIdentifier:@"RUPredictionsTableViewCell"];
     if (self) {
         self.item = item;
         self.predictions = predictions;
     }
     return self;
 }
--(void)setPredictions:(NSDictionary *)predictions{
-    _predictions = predictions;
-    NSAttributedString *newLine = [[NSAttributedString alloc] initWithString:@"\n"];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
-    
-    [string appendAttributedString:[self attributedTitle]];
-    [string appendAttributedString:newLine];
-    
-    
-    if ([self.item isKindOfClass:[NSArray class]]) {
-        [string appendAttributedString:[self attributedDirectionTitle]];
-        [string appendAttributedString:newLine];
+
+-(void)setupCell:(RUPredictionsTableViewCell *)cell{
+    cell.titleLabel.text = [self title];
+    cell.directionLabel.text = [self.item isKindOfClass:[NSArray class]] ? [self directionTitle] : nil;
+    cell.timeLabel.text = [self arrivalTimeDescription];
+    if ([self active]) {
+        cell.titleLabel.textColor = [UIColor blackColor];
+        cell.directionLabel.textColor = [UIColor blackColor];
+        cell.timeLabel.textColor = [self timeLabelColor];
+    } else {
+        cell.titleLabel.textColor = [UIColor grayColor];
+        cell.directionLabel.textColor = [UIColor lightGrayColor];
+        cell.timeLabel.textColor = [UIColor lightGrayColor];
     }
-    
-    [string appendAttributedString:[self attributedArrivalTimeDescription]];
-    
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
-    [paragraphStyle setLineSpacing:1.0];
-    
-    [string addAttributes:@{NSParagraphStyleAttributeName : paragraphStyle} range:NSMakeRange(0, string.length)];
-    
-    self.attributedString = string;
 }
 
 -(BOOL)active{
     return [self.predictions[@"direction"] firstObject] ? YES : NO;
 }
-
 -(NSString *)title{
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
         return self.predictions[@"_stopTitle"];
@@ -59,21 +51,17 @@
         return self.predictions[@"_routeTitle"];
     }
 }
--(NSAttributedString *)attributedTitle{
-    return [[NSAttributedString alloc] initWithString:[self title] attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:19]}];
-}
+
 -(NSString *)directionTitle{
     if ([self.item isKindOfClass:[RUBusRoute class]]) return nil;
     NSString *title = [self.predictions[@"direction"] firstObject][@"_title"];
     if (title) return title;
     return self.predictions[@"_dirTitleBecauseNoPredictions"];
 }
--(NSAttributedString *)attributedDirectionTitle{
-    return [[NSAttributedString alloc] initWithString:[self directionTitle] attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16]}];
-}
+
 -(NSString *)arrivalTimeDescription{
+    if (![self active]) return @"No predictions available.";
     NSArray *predictions = [self.predictions[@"direction"] firstObject][@"prediction"];
-    if (!predictions) return @"No predictions available.";
     NSMutableString *string = [[NSMutableString alloc] init];
     [predictions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary *prediction = obj;
@@ -88,10 +76,17 @@
     [string appendString:@" minutes"];
     return string;
 }
--(NSAttributedString *)attributedArrivalTimeDescription{
-    return [[NSAttributedString alloc] initWithString:[self arrivalTimeDescription] attributes:@{NSForegroundColorAttributeName: [self timeLabelColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:17]}];
-}
+
 -(UIColor *)timeLabelColor{
-    return [[[self.predictions[@"direction"] firstObject][@"prediction"] firstObject][@"_minutes"] colorForMinutesString];
+    NSString *string = [[self.predictions[@"direction"] firstObject][@"prediction"] firstObject][@"_minutes"];
+    NSInteger minutes = [string integerValue];
+    if (minutes < 2) {
+        return [UIColor colorWithHexString:@"#CC0000"];
+    } else if (minutes < 6) {
+        return [UIColor colorWithHexString:@"#FF6600"];
+    } else {
+        return [UIColor colorWithHexString:@"#000099"];
+    }
 }
+
 @end

@@ -19,10 +19,18 @@
     }
     return self;
 }
--(void)setPredictionTimes:(NSArray *)predictionTimes{
-    _predictionTimes = predictionTimes;
 
-    self.attributedString = [[NSAttributedString alloc] initWithString:[self labelString] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:16]}];
+@synthesize predictionTimes = _predictionTimes;
+
+-(void)setPredictionTimes:(NSArray *)predictionTimes{
+    @synchronized(_predictionTimes) {
+        _predictionTimes = predictionTimes;
+        self.attributedString = [self labelString];
+    }
+}
+
+-(NSArray *)predictionTimes{
+    return _predictionTimes;
 }
 -(NSString *)formatDate:(NSDate *)date{
     static NSDateFormatter *dateFormatter = nil;
@@ -34,13 +42,21 @@
     });
     return [dateFormatter stringFromDate:date];
 }
--(NSString *)labelString{
-    NSMutableString *labelString = [[NSMutableString alloc] init];
+-(NSAttributedString *)labelString{
+    NSDictionary *attributes = @{NSFontAttributeName : [UIFont systemFontOfSize:16]};
+    NSDictionary *boldAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:16]};
+    
+    NSMutableAttributedString *labelString = [[NSMutableAttributedString alloc] init];
     for (NSDictionary *prediction in self.predictionTimes) {
         NSString *minutes = prediction[@"_minutes"];
         NSInteger seconds = [prediction[@"_seconds"] integerValue];
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:seconds];
-        [labelString appendFormat:@"%@ minutes at %@ \n",minutes,[self formatDate:date]];
+  
+        NSString *minutesString = [NSString stringWithFormat:@"%@ minutes at ",minutes];
+        NSString *timeString = [NSString stringWithFormat:@"%@ \n",[self formatDate:date]];
+        
+        [labelString appendAttributedString:[[NSAttributedString alloc] initWithString:minutesString attributes:attributes]];
+        [labelString appendAttributedString:[[NSAttributedString alloc] initWithString:timeString attributes:boldAttributes]];
     }
     return labelString;
 }

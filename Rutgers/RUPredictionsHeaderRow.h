@@ -10,6 +10,6 @@
 
 @interface RUPredictionsHeaderRow : EZTableViewTextRow
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item;
-@property (nonatomic) NSDictionary *predictions;
+@property NSDictionary *predictions;
 -(BOOL)active;
 @end

@@ -11,8 +11,8 @@
 #import "RUPredictionsBodyRow.h"
 
 @interface RUPredictionsExpandingSection ()
-@property (nonatomic) RUPredictionsHeaderRow *headerRow;
-@property (nonatomic) RUPredictionsBodyRow *bodyRow;
+@property RUPredictionsHeaderRow *headerRow;
+@property RUPredictionsBodyRow *bodyRow;
 @end
 
 @implementation RUPredictionsExpandingSection

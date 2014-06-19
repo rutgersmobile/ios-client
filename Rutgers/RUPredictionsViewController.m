@@ -21,18 +21,8 @@
 @property (nonatomic) id item;
 @end
 
-
 @implementation RUPredictionsViewController
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
-    [self.refreshControl beginRefreshing];
 
-    [self startTimer];
-}
 -(instancetype)initWithItem:(id)item{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
@@ -40,6 +30,7 @@
     }
     return self;
 }
+
 -(void)setItem:(id)item{
     _item = item;
     if ([item isKindOfClass:[RUBusRoute class]]) {
@@ -49,42 +40,65 @@
     }
     self.title = [item title];
 }
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+
+    [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl beginRefreshing];
+
+    [self getPredictions];
+    [self startTimer];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:NO];
+}
+
 -(void)getPredictions{
     [[RUBusData sharedInstance] getPredictionsForItem:self.item withCompletion:^(NSArray *response) {
         [self parseResponse:response];
     }];
 }
+
 -(void)parseResponse:(NSArray *)response{
-     if ([self numberOfSections] == 0) {
+
+     if (self.sections.count == 0) {
         for (NSDictionary *predictions in response) {
             [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
         }
     } else {
         [response enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [((RUPredictionsExpandingSection *)[self sectionInTableView:self.tableView atIndex:idx]) updateWithPredictions:obj];
         }];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfSections])] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadData];
     }
     [self.refreshControl endRefreshing];
 }
+
 -(void)startTimer{
     __weak typeof(self) weakSelf = self;
-    [weakSelf getPredictions];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(PREDICTION_TIMER_INTERVAL * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakSelf getPredictions];
         [weakSelf startTimer];
     });
 }
+
 -(void)dealloc{
 
 }
-- (BOOL) hidesBottomBarWhenPushed {
-    return YES;
-}
+
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUPredictionsExpandingSection *section = (RUPredictionsExpandingSection *)[self sectionInTableView:self.tableView atIndex:indexPath.section];
+    RUPredictionsExpandingSection *section = (RUPredictionsExpandingSection *)[self sectionInTableView:tableView atIndex:indexPath.section];
     if (!section.active) return NO;
     return [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
