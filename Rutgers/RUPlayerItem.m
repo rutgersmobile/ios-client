@@ -7,36 +7,36 @@
 //
 
 #import "RUPlayerItem.h"
+#import "RUSportsPlayer.h"
 #import "RUPlayerCell.h"
 #import <UIKit+AFNetworking.h>
 
 @interface RUPlayerItem ()
-@property NSDictionary *playerInfo;
+@property (nonatomic) RUSportsPlayer *player;
 @end
 
 @implementation RUPlayerItem
 - (instancetype)init
 {
-    self = [super initWithIdentifier:@"RUPlayerCardCell"];
-    if (self) {
-        
-    }
-    return self;
+    return [super initWithIdentifier:@"RUPlayerCardCell"];
 }
--(instancetype)initWithDictionary:(NSDictionary *)dictionary{
+
+-(instancetype)initWithSportsPlayer:(RUSportsPlayer *)player{
     self = [self init];
     if (self) {
-        self.playerInfo = dictionary;
+        self.player = player;
     }
     return self;
 }
 
 -(void)setupCell:(RUPlayerCell *)cell{
-    cell.playerLabel.text = [self.playerInfo[@"fullName"] firstObject];
-    [cell.playerImageView setImageWithURL:[self imageURL] placeholderImage:[UIImage imageNamed:@"ABPicturePerson"]];
+    cell.nameLabel.text = self.player.name;
+    cell.initialsLabel.text = self.player.initials;
+    cell.playerImageView.image = nil;
     
+    if (self.player.imageUrl) {
+        [cell.playerImageView setImageWithURL:self.player.imageUrl];
+    }
 }
--(NSURL *)imageURL{
-    return [NSURL URLWithString:[self.playerInfo[@"image"] firstObject]];
-}
+
 @end

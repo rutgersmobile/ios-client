@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RUPlayerCell : UICollectionViewCell
+
 @property (nonatomic) UIImageView *playerImageView;
-@property (nonatomic) UILabel *playerLabel;
+@property (nonatomic) UILabel *nameLabel;
+@property (nonatomic) UILabel *initialsLabel;
+
 @end

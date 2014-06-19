@@ -7,7 +7,8 @@
 //
 
 #import "EZCollectionViewAbstractItem.h"
+@class RUSportsPlayer;
 
 @interface RUPlayerItem : EZCollectionViewAbstractItem
--(instancetype)initWithDictionary:(NSDictionary *)dictionary;
+-(instancetype)initWithSportsPlayer:(RUSportsPlayer *)player;
 @end

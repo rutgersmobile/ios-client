@@ -24,6 +24,13 @@
         self.backgroundColor = [UIColor groupTableViewBackgroundColor];
         self.opaque = YES;
         
+        self.initialsLabel = [UILabel newAutoLayoutView];
+        self.initialsLabel.textAlignment = NSTextAlignmentCenter;
+        self.initialsLabel.font = [UIFont boldSystemFontOfSize:60];
+        [self.contentView addSubview:self.initialsLabel];
+        [self.initialsLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+        [self.initialsLabel autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.contentView withMultiplier:0.9];
+
         self.playerImageView = [UIImageView newAutoLayoutView];
         self.playerImageView.clipsToBounds = YES;
         self.playerImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -31,14 +38,14 @@
 
         [self.playerImageView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
         
-        self.playerLabel = [UILabel newAutoLayoutView];
-        self.playerLabel.backgroundColor = [UIColor colorWithWhite:0.85 alpha:0.9];
-        self.playerLabel.adjustsFontSizeToFitWidth = YES;
-        self.playerLabel.textAlignment = NSTextAlignmentCenter;
+        self.nameLabel = [UILabel newAutoLayoutView];
+        self.nameLabel.backgroundColor = [UIColor colorWithWhite:0.85 alpha:0.9];
+        self.nameLabel.adjustsFontSizeToFitWidth = YES;
+        self.nameLabel.textAlignment = NSTextAlignmentCenter;
         
-        [self.playerImageView addSubview:self.playerLabel];
-        [self.playerLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-        [self.playerLabel autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.playerImageView withMultiplier:0.1];
+        [self.contentView addSubview:self.nameLabel];
+        [self.nameLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+        [self.nameLabel autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.contentView withMultiplier:0.1];
         
     }
     return self;
