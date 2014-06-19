@@ -9,7 +9,7 @@
 #import "RUSportsViewController.h"
 #import "RUSportsData.h"
 #import "EZCollectionViewSection.h"
-#import "TileCollectionViewItem.h"
+#import "ColoredTileCollectionViewItem.h"
 #import "RUSportsRosterViewController.h"
 
 @interface RUSportsViewController ()
@@ -25,24 +25,32 @@
 {
     self = [super init];
     if (self) {
-        self.sportsData = [[RUSportsData alloc] init];
-        
-        NSDictionary *allSports = [RUSportsData allSports];
-        
-        EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
-        NSArray *sports = [[allSports allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-        for (NSString *sport in sports) {
-            TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:sport];
-            item.didSelectItemBlock = ^ {
-                RUSportsRosterViewController *rosterVC = [[RUSportsRosterViewController alloc] initWithSportID:allSports[sport]];
-                rosterVC.title = sport;
-                [self.navigationController pushViewController:rosterVC animated:YES];
-            };
-            [section addItem:item];
-        }
-        [self addSection:section];
+
     }
     return self;
 }
 
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self makeSections];
+}
+
+-(void)makeSections{
+    self.sportsData = [[RUSportsData alloc] init];
+    
+    NSDictionary *allSports = [RUSportsData allSports];
+    
+    EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
+    NSArray *sports = [[allSports allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    for (NSString *sport in sports) {
+        ColoredTileCollectionViewItem *item = [[ColoredTileCollectionViewItem alloc] initWithText:sport];
+        item.didSelectItemBlock = ^ {
+            RUSportsRosterViewController *rosterVC = [[RUSportsRosterViewController alloc] initWithSportID:allSports[sport]];
+            rosterVC.title = sport;
+            [self.navigationController pushViewController:rosterVC animated:YES];
+        };
+        [section addItem:item];
+    }
+    [self addSection:section];
+}
 @end

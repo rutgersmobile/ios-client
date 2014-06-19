@@ -37,18 +37,15 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
     self = [super init];
     if (self) {
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{placesRecentPlacesKey: @[]}];
-
-        dispatch_group_t group = dispatch_group_create();
-        dispatch_group_enter(group);
-        self.placesGroup = group;
-        
+        self.placesGroup =  dispatch_group_create();
         [self getPlaces];
     }
     return self;
 }
 
 -(void)getPlaces{
-    [[RUNetworkManager jsonSessionManager] GET:@"https://rumobile.rutgers.edu/1/places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    dispatch_group_enter(self.placesGroup);
+    [[RUNetworkManager jsonSessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
             dispatch_group_leave(self.placesGroup);
@@ -107,6 +104,7 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
             }
             return [[obj1 title] compare:[obj2 title] options:NSNumericSearch|NSCaseInsensitiveSearch];
         }];
+        
         completionBlock(results);
     });
 }

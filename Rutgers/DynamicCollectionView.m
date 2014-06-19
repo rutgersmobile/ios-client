@@ -11,12 +11,13 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 #import "DynamicCollectionView.h"
-#import "TileCollectionViewItem.h"
-#import "TileCollectionViewCell.h"
+#import "ColoredTileCollectionViewItem.h"
+#import "ColoredTileCollectionViewCell.h"
 #import "EZCollectionViewSection.h"
 
 @interface DynamicCollectionView ()
 @property (nonatomic) NSDictionary *channel;
+@property (nonatomic) NSArray *children;
 @property (nonatomic) UISlider *slider;
 @end
 
@@ -30,22 +31,31 @@
     self = [self init];
     if (self) {
         self.channel = channel;
-        [self fetchData];
     }
     return self;
 }
 -(instancetype)initWithChildren:(NSArray *)children{
     self = [self init];
     if (self) {
-        [self parseResponse:children];
+        self.children = children;
     }
     return self;
 }
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    
+    if (self.children) {
+        [self parseResponse:self.children];
+    } else {
+        [self fetchData];
+    }
+}
+
 -(void)parseResponse:(id)responseObject{
     EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
     for (NSDictionary *child in responseObject) {
         NSString *title = [child titleForChannel];
-        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:title];
+        ColoredTileCollectionViewItem *item = [[ColoredTileCollectionViewItem alloc] initWithText:title];
         if (child[@"children"]) {
             item.showsEllipses = YES;
             item.didSelectItemBlock = ^{
@@ -75,4 +85,5 @@
         [self fetchData];
     }];
 }
+
 @end

@@ -22,6 +22,7 @@
 
 @interface RURecCenterViewController ()
 @property (nonatomic) RURecCenterHoursSection *hoursSection;
+@property (nonatomic) NSDictionary *recCenter;
 @end
 
 @implementation RURecCenterViewController
@@ -30,65 +31,66 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = title;
-        NSDictionary *meetingAreas = recCenter[@"meetingareas"];
-        if (meetingAreas.count) {
-            RURecCenterHoursSection *hoursSection = [[RURecCenterHoursSection alloc] initWithMeetingAreas:meetingAreas];
-            [self addSection:hoursSection];
-            self.hoursSection = hoursSection;
-        }
-        
-        NSString *address = recCenter[@"FacilityAddress"];
-        if (address.length) {
-            RUPlace *place = [[RUPlace alloc] initWithTitle:title addressString:address];
-            EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
-            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
-            row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
-            };
-            [addressSection addRow:row];
-            
-            [self addSection:addressSection];
-        }
-        
-        NSString *information = recCenter[@"FacilityInformation"];
-        if (information.length) {
-            EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
-            EZTableViewRightDetailRow *infoRow = [[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil];
-            infoRow.shouldHighlight = NO;
-            [informationSection addRow:infoRow];
-            [self addSection:informationSection];
-        }
-        
-        NSString *business = recCenter[@"FacilityBusiness"];
-        if (business.length) {
-            EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
-            EZTableViewRightDetailRow *buisnessRow = [[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil];
-            buisnessRow.shouldHighlight = NO;
-            [buisnessSection addRow:buisnessRow];
-            [self addSection:buisnessSection];
-        }
-        
-        NSString *description = recCenter[@"FacilityBody"];
-        if (description.length) {
-            EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
-            EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
-            descriptionRow.shouldHighlight = NO;
-            [descriptionSection addRow:descriptionRow];
-            [self addSection:descriptionSection];
-        }
+        self.recCenter = recCenter;
     }
     return self;
 }
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    [self.tableView registerClass:[RURecCenterHoursHeaderTableViewCell class] forCellReuseIdentifier:@"RURecCenterHoursHeaderTableViewCell"];
-    [self.tableView registerClass:[RURecCenterMeetingAreaTableViewCell class] forCellReuseIdentifier:@"RURecCenterMeetingAreaTableViewCell"];
-    
+    [self makeSections];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
 }
+-(void)makeSections{
+    NSDictionary *meetingAreas = self.recCenter[@"meetingareas"];
+    if (meetingAreas.count) {
+        RURecCenterHoursSection *hoursSection = [[RURecCenterHoursSection alloc] initWithMeetingAreas:meetingAreas];
+        [self addSection:hoursSection];
+        self.hoursSection = hoursSection;
+    }
+    
+    NSString *address = self.recCenter[@"FacilityAddress"];
+    if (address.length) {
+        RUPlace *place = [[RUPlace alloc] initWithTitle:self.title addressString:address];
+        EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
+        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
+        row.didSelectRowBlock = ^{
+            [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
+        };
+        [addressSection addRow:row];
+        
+        [self addSection:addressSection];
+    }
+    
+    NSString *information = self.recCenter[@"FacilityInformation"];
+    if (information.length) {
+        EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
+        EZTableViewRightDetailRow *infoRow = [[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil];
+        infoRow.shouldHighlight = NO;
+        [informationSection addRow:infoRow];
+        [self addSection:informationSection];
+    }
+    
+    NSString *business = self.recCenter[@"FacilityBusiness"];
+    if (business.length) {
+        EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
+        EZTableViewRightDetailRow *buisnessRow = [[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil];
+        buisnessRow.shouldHighlight = NO;
+        [buisnessSection addRow:buisnessRow];
+        [self addSection:buisnessSection];
+    }
+    
+    NSString *description = self.recCenter[@"FacilityBody"];
+    if (description.length) {
+        EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
+        EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
+        descriptionRow.shouldHighlight = NO;
+        [descriptionSection addRow:descriptionRow];
+        [self addSection:descriptionSection];
+    }
 
+}
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

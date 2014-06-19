@@ -22,24 +22,29 @@
     if (self) {
         self.foodItem = foodItem;
         self.title = [foodItem[@"name"] capitalizedString];
-        
-        EZTableViewRightDetailRow *calories = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"calories"] stringValue] detailText:@"Calories"];
-        EZTableViewRightDetailRow *serving = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"serving"] capitalizedString] detailText:@"Serving"];
-        
-        [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:nil rows:@[calories,serving]]];
-         
-        if ([self.foodItem[@"ingredients"] count]) {
-            EZTableViewSection *ingredients = [[EZTableViewSection alloc] initWithSectionTitle:@"Ingredients"];
-            
-            for (NSString *ingredient in self.foodItem[@"ingredients"]) {
-                EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[ingredient capitalizedString] detailText:nil];
-                [ingredients addRow:row];
-            }
-            
-            [self addSection:ingredients];
-        }
+ 
     }
     return self;
 }
-
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self makeSections];
+}
+-(void)makeSections{
+    EZTableViewRightDetailRow *calories = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"calories"] stringValue] detailText:@"Calories"];
+    EZTableViewRightDetailRow *serving = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"serving"] capitalizedString] detailText:@"Serving"];
+    
+    [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:nil rows:@[calories,serving]]];
+    
+    if ([self.foodItem[@"ingredients"] count]) {
+        EZTableViewSection *ingredients = [[EZTableViewSection alloc] initWithSectionTitle:@"Ingredients"];
+        
+        for (NSString *ingredient in self.foodItem[@"ingredients"]) {
+            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[ingredient capitalizedString] detailText:nil];
+            [ingredients addRow:row];
+        }
+        
+        [self addSection:ingredients];
+    }
+}
 @end

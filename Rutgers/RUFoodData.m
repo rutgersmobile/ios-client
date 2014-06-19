@@ -41,17 +41,16 @@
                                   }
                                 ];
         
-        dispatch_group_t group = dispatch_group_create();
-        dispatch_group_enter(group);
-        
-        self.foodGroup = group;
+        self.foodGroup = dispatch_group_create();
+
         [self requestFood];
     }
     return self;
 }
-//
+
 
 -(void)requestFood{
+    dispatch_group_enter(self.foodGroup);
    // NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
     NSString *url = @"http://vps.rsopher.com/nutrition.json";
     [[RUNetworkManager jsonSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {

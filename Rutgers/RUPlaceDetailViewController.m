@@ -16,6 +16,7 @@
 #import "NSArray+RUBusStop.h"
 #import "RUPlace.h"
 #import "RUMapsViewController.h"
+#import "EZTableViewMapsSection.h"
 
 #import <AddressBookUI/AddressBookUI.h>
 
@@ -32,41 +33,48 @@
         self.place = place;
         self.title = place.title;
         
-        [self.tableView beginUpdates];
         
         if (place.address) {
         
             NSString *addressString = ABCreateStringWithAddressDictionary(place.address, NO);
-
             EZTableViewRightDetailRow *addressRow = [[EZTableViewRightDetailRow alloc] initWithText:addressString detailText:nil];
-            
-            addressRow.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
-            };
-            
+            addressRow.shouldHighlight = NO;
+            addressRow.shouldCopy = YES;
             [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Address" rows:@[addressRow]]];
         }
 
+        if (place.address || place.location) {
+            EZTableViewMapsSection *mapsSection = [[EZTableViewMapsSection alloc] initWithSectionTitle:@"Maps" place:self.place];
+            [self addSection:mapsSection];
+            [mapsSection rowAtIndex:0].didSelectRowBlock = ^{
+                [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
+            };
+        }
+        
         if (place.title || place.campus || place.buildingCode || place.buildingNumber) {
             EZTableViewSection *infoSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Info"];
             if (place.title) {
                 EZTableViewRightDetailRow *titleRow = [[EZTableViewRightDetailRow alloc] initWithText:place.title detailText:nil];
                 titleRow.shouldHighlight = NO;
+                titleRow.shouldCopy = YES;
                 [infoSection addRow:titleRow];
             }
             if (place.campus) {
                 EZTableViewRightDetailRow *campusRow = [[EZTableViewRightDetailRow alloc] initWithText:place.campus detailText:@"Campus"];
                 campusRow.shouldHighlight = NO;
+                campusRow.shouldCopy = YES;
                 [infoSection addRow:campusRow];
             }
             if (place.buildingCode) {
                 EZTableViewRightDetailRow *buildingCodeRow = [[EZTableViewRightDetailRow alloc] initWithText:place.buildingCode detailText:@"Building Code"];
                 buildingCodeRow.shouldHighlight = NO;
+                buildingCodeRow.shouldCopy = YES;
                 [infoSection addRow:buildingCodeRow];
             }
             if (place.buildingNumber) {
                 EZTableViewRightDetailRow *buildingNumberRow = [[EZTableViewRightDetailRow alloc] initWithText:place.buildingNumber detailText:@"Building Number"];
                 buildingNumberRow.shouldHighlight = NO;
+                buildingNumberRow.shouldCopy = YES;
                 [infoSection addRow:buildingNumberRow];
             }
             [self addSection:infoSection];
@@ -75,7 +83,7 @@
         
         if (place.location) {
             NSInteger index = [self numberOfSectionsInTableView:self.tableView];
-            [[RUBusData sharedInstance] getStopsNearLocation:place.location completion:^(NSArray *results) {
+            [[RUBusData sharedInstance] getActiveStopsNearLocation:place.location completion:^(NSArray *results) {
                 EZTableViewSection *nearbySection = [[EZTableViewSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
                 for (NSArray *stops in results) {
                     EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[stops title] detailText:nil];
@@ -85,6 +93,7 @@
                     [nearbySection addRow:row];
                 }
                 [self insertSection:nearbySection atIndex:index];
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
             }];
         }
         
@@ -94,6 +103,7 @@
             for (NSString *office in offices) {
                 EZTableViewRightDetailRow *officeRow = [[EZTableViewRightDetailRow alloc] initWithText:office detailText:nil];
                 officeRow.shouldHighlight = NO;
+                officeRow.shouldCopy = YES;
                 [officeSection addRow:officeRow];
             }
             [self addSection:officeSection];
@@ -103,10 +113,10 @@
         if (description) {
             EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
             descriptionRow.shouldHighlight = NO;
+            descriptionRow.shouldCopy = YES;
             [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Description" rows:@[descriptionRow]]];
         }
         
-        [self.tableView endUpdates];
     }
     return self;
 }
@@ -115,21 +125,5 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)tableView:(UITableView*)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
-    if (action == @selector(copy:)){
-        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        [pasteboard setString:[self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-    }
-}
-
--(BOOL)tableView:(UITableView*)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
-    if (action == @selector(copy:)) return YES;
-    return NO;
-}
-
--(BOOL)tableView:(UITableView*)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath*)indexPath{
-    return YES;
 }
 @end

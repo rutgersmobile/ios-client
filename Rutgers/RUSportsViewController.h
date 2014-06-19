@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RUComponentProtocol.h"
-#import "TileCollectionViewController.h"
+#import "ColoredTileCollectionViewController.h"
 
-@interface RUSportsViewController : TileCollectionViewController <RUComponentProtocol>
+@interface RUSportsViewController : ColoredTileCollectionViewController <RUComponentProtocol>
 
 @end

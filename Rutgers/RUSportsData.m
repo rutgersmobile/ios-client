@@ -37,15 +37,8 @@
                      @"Wrestling"               : @"18"};
     });
     return allSpots;
-}/*
-+(RUSportsData *)sharedInstance{
-    static RUSportsData *sharedData = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedData = [[RUSportsData alloc] init];
-    });
-    return sharedData;
-}*/
+}
+
 +(void)getRosterForSportID:(NSString *)sportID withCompletion:(void (^)(NSArray *))completionBlock{
     [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-roster.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
         completionBlock(responseObject[@"row"]);

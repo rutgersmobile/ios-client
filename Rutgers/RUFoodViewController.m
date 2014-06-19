@@ -46,6 +46,7 @@
             [newBrunswickDining addRow:row];
         }
         [self addSection:newBrunswickDining];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
         
         for (NSDictionary *staticDiningHall in self.foodData.staticDiningHalls) {
             EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:staticDiningHall[@"header"]];
@@ -55,6 +56,7 @@
             };
             [section addRow:row];
             [self addSection:section];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
         }
 
         [self.tableView endUpdates];

@@ -22,21 +22,30 @@
     if (self) {
         self.meal = meal;
         self.title = meal[@"meal_name"];
-        for (NSDictionary *genre in self.meal[@"genres"]) {
-            EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:[genre[@"genre_name"] capitalizedString]];
-            for (NSDictionary *item in genre[@"items"]) {
-                EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[item[@"name"] capitalizedString]];
-                if ([self shouldShowInfoForItem:item]) {
-                    row.didSelectRowBlock = ^{
-                        [self.navigationController pushViewController:[[RUNutritionLabelViewController alloc] initWithFoodItem:item] animated:YES];
-                    };
-                }
-                [section addRow:row];
-            }
-            [self addSection:section];
-        }
     }
     return self;
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self enableSearch];
+    [self makeSections];
+}
+
+-(void)makeSections{
+    for (NSDictionary *genre in self.meal[@"genres"]) {
+        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:[genre[@"genre_name"] capitalizedString]];
+        for (NSDictionary *item in genre[@"items"]) {
+            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[item[@"name"] capitalizedString]];
+            if ([self shouldShowInfoForItem:item]) {
+                row.didSelectRowBlock = ^{
+                    [self.navigationController pushViewController:[[RUNutritionLabelViewController alloc] initWithFoodItem:item] animated:YES];
+                };
+            }
+            [section addRow:row];
+        }
+        [self addSection:section];
+    }
 }
 
 -(BOOL)shouldShowInfoForItem:(NSDictionary *)item{

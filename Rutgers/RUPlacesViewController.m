@@ -22,18 +22,16 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 @property NSArray *nearbyPlaces;
 @property NSArray *searchResults;
 @property NSArray *recentPlaces;
-
 @end
 
 @implementation RUPlacesViewController
 +(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[RUPlacesViewController alloc] init];
 }
+
 -(id)init{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.placesData = [RUPlacesData sharedInstance];
-        self.searchingGroup = dispatch_group_create();
     }
     return self;
 }
@@ -41,18 +39,18 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setupSearchController];
+    self.placesData = [RUPlacesData sharedInstance];
+    self.searchingGroup = dispatch_group_create();
+    [self enableSearch];
 }
 
--(void)setupSearchController{
+-(void)enableSearch{
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
     
     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     self.searchController.searchResultsDelegate = self;
     self.searchController.searchResultsDataSource = self;
     self.searchController.delegate = self;
-    
-    [self.searchController.searchResultsTableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
     
     self.tableView.tableHeaderView = searchBar;
 }

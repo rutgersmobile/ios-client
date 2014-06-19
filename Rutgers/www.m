@@ -11,29 +11,26 @@
 #import "RUChannelManager.h"
 
 @interface www ()
-@property NSCache *storedChannels;
 
 @end
 
 @implementation www
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.storedChannels = [[NSCache alloc] init];
-        self.storedChannels.countLimit = 6;
-    }
-    return self;
-}
-+(instancetype)sharedInstance{
-    static www * shared = nil;
+
++(NSCache *)storedChannels{
+    static NSCache * storedChannels = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shared = [[www alloc] init];
+        storedChannels = [[NSCache alloc] init];
+        storedChannels.countLimit = 6;
     });
-    return shared;
+    return storedChannels;
 }
--(UIViewController *)webComponentForChannel:(NSDictionary *)channel{
+
++(NSURL *)urlForChannel:(NSDictionary *)shortcut{
+    return [NSURL URLWithString:shortcut[@"url"]];
+}
+
++(UIViewController *)componentForChannel:(NSDictionary *)channel{
     NSURL *url = [self urlForChannel:channel];
     if ([self.storedChannels objectForKey:url]) return [self.storedChannels objectForKey:url];
     else {
@@ -41,12 +38,5 @@
         [self.storedChannels setObject:webBrowser forKey:url];
         return webBrowser;
     }
-}
--(NSURL *)urlForChannel:(NSDictionary *)shortcut{
-    return [NSURL URLWithString:shortcut[@"url"]];
-}
-
-+(UIViewController *)componentForChannel:(NSDictionary *)channel{
-    return [[self sharedInstance] webComponentForChannel:channel];
 }
 @end

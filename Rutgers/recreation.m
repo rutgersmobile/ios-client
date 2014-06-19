@@ -36,6 +36,7 @@
     NSArray *campuses = [responseObject allKeys];
     campuses = [campuses sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     
+    [self.tableView beginUpdates];
     for (NSString *campus in campuses) {
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:campus];
         
@@ -50,7 +51,9 @@
             [section addRow:row];
         }
         [self addSection:section];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
     }
+    [self.tableView endUpdates];
 }
 - (void)didReceiveMemoryWarning
 {

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "TileCollectionViewController.h"
+#import "ColoredTileCollectionViewController.h"
 
-@interface DynamicCollectionView : TileCollectionViewController <RUComponentProtocol>
+@interface DynamicCollectionView : ColoredTileCollectionViewController <RUComponentProtocol>
 
 @end

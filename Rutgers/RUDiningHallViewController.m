@@ -22,19 +22,26 @@
     if (self) {
         self.diningHall = diningHall;
         self.title = diningHall[@"location_name"];
-        
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Meals"];
-        for (NSDictionary *meal in diningHall[@"meals"]) {
-            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:meal[@"meal_name"]];
-            row.active = [meal[@"genres"] count];
-            
-            row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUMealViewController alloc] initWithMeal:meal] animated:YES];
-            };
-            [section addRow:row];
-        }
-        [self addSection:section];
     }
     return self;
 }
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self makeSections];
+}
+
+-(void)makeSections{
+    EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Meals"];
+    for (NSDictionary *meal in self.diningHall[@"meals"]) {
+        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:meal[@"meal_name"]];
+        row.active = [meal[@"genres"] count];
+        row.didSelectRowBlock = ^{
+            [self.navigationController pushViewController:[[RUMealViewController alloc] initWithMeal:meal] animated:YES];
+        };
+        [section addRow:row];
+    }
+    [self addSection:section];
+}
+
 @end

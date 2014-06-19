@@ -16,6 +16,7 @@
 
 @interface dtable ()
 @property (nonatomic) NSDictionary *channel;
+@property (nonatomic) NSArray *children;
 @end
 
 @implementation dtable
@@ -23,25 +24,36 @@
     return [[dtable alloc] initWithChannel:channel];
 }
 
+
 -(instancetype)initWithChannel:(NSDictionary *)channel{
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [self init];
     if (self) {
         self.channel = channel;
-        [self fetchData];
     }
     return self;
 }
 -(instancetype)initWithChildren:(NSArray *)children{
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [self init];
     if (self) {
-        [self parseResponse:children];
+        self.children = children;
     }
     return self;
 }
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    
+    if (self.children) {
+        [self parseResponse:self.children];
+    } else {
+        [self fetchData];
+    }
+}
+
 -(void)parseResponse:(id)responseObject{
     [self.tableView beginUpdates];
-    if (self.numberOfSections) {
+    if (self.sections.count) {
         [self removeAllSections];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)] withRowAnimation:UITableViewRowAnimationFade];
     }
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
     for (NSDictionary *child in responseObject) {
@@ -62,6 +74,7 @@
         [section addRow:row];
     }
     [self addSection:section];
+    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
 }
 -(void)fetchData{
