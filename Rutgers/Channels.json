@@ -1,18 +1,5 @@
  [
   {
-  "handle" : "ruinfo",
-  "title": "RU-Info",
-  "view" : "RUInfoTableViewController",
-  "icon" : "ruinfo"
-  },
-  {
-  "handle" : "news",
-  "title": "News",
-  "url": "https://rumobile.rutgers.edu/1/news.txt",
-  "view" : "dtable",
-  "icon" : "news"
-  },
-  {
   "handle" : "bus",
   "title": "Bus",
   "view" : "RUBusViewController",
@@ -29,6 +16,19 @@
   "title": "Maps",
   "view" : "RUMapsComponent",
   "icon" : "maps"
+  },
+  {
+  "handle" : "news",
+  "title": "News",
+  "url": "https://rumobile.rutgers.edu/1/news.txt",
+  "view" : "dtable",
+  "icon" : "news"
+  },
+  {
+  "handle" : "ruinfo",
+  "title": "RU-Info",
+  "view" : "RUInfoTableViewController",
+  "icon" : "ruinfo"
   },
   {
   "handle" : "recreation_index",

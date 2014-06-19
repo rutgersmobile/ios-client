@@ -12,12 +12,18 @@
 #import "RURootController.h"
 #import "RUAppearance.h"
 
+#import "ARTabBarController.h"
 
-#define MEMORY_MEGS 10
-#define DISK_MEGS 25
+#import "RUChannelManager.h"
+
+
+#define MEMORY_MEGS 20
+#define DISK_MEGS 50
 
 @interface RUAppDelegate ()
-@property RURootController *rootController;
+//@property RURootController *rootController;
+@property UITabBarController *tabBarController;
+@property RUChannelManager *channelManager;
 @end
 
 @implementation RUAppDelegate
@@ -31,16 +37,46 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor grey2Color];
     
-    [self.window makeKeyAndVisible];
-
+    self.tabBarController = [[UITabBarController alloc] init];
+    
+    self.channelManager = [RUChannelManager sharedInstance];
+    
+    NSArray *channels = [self.channelManager loadChannels];
+    
+    self.tabBarController.viewControllers = [self viewControllerForChannels:channels];
+    
+    [self.channelManager loadWebLinksWithCompletion:^(NSArray *webLinks) {
+        NSArray *viewControllers = [self viewControllerForChannels:webLinks];
+        self.tabBarController.viewControllers = [self.tabBarController.viewControllers arrayByAddingObjectsFromArray:viewControllers];
+    }];
+    
+    [RUAppearance applyAppearance];
+    /*
+    [RUAppearance applyAppearanceToTabBarController:self.tabBarController];
+    [RUAppearance applyAppearanceToNavigationController:self.tabBarController.moreNavigationController];
+    */
+   // [self.tabBarController.moreNavigationController setViewControllers:@[]];
+    
+    self.window.rootViewController = self.tabBarController;
+    /*
     self.rootController = [[RURootController alloc] init];
-    self.window.rootViewController = [self.rootController makeRootViewController];
+    self.window.rootViewController = [self.rootController makeRootViewController];//[[ARTabBarController alloc] init];//
+    */
+    [self.window makeKeyAndVisible];
     
     return YES;
 }
 
+-(NSArray *)viewControllerForChannels:(NSArray *)channels{
+    NSMutableArray *viewControllers = [NSMutableArray array];
+    for (NSDictionary *channel in channels) {
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[self.channelManager viewControllerForChannel:channel]];
+        //[RUAppearance applyAppearanceToNavigationController:navigationController];
+        [viewControllers addObject:navigationController];
+    }
+    return viewControllers;
+}
 
 -(void)initCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
@@ -48,7 +84,6 @@
     NSString *fullPath = [cachesFolder stringByAppendingPathComponent:@"RUNetCache"];
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
     [NSURLCache setSharedURLCache:URLCache];
-
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

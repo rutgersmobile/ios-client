@@ -11,6 +11,7 @@
 #import <TOWebViewController.h>
 #import "EZTableViewSection.h"
 #import "EZTableViewTextRow.h"
+#import "RUChannelManager.h"
 
 
 @interface RUInfoTableViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
@@ -25,10 +26,19 @@
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        NSArray *infoData = @[@{@"header" :@"Call RU-Info",
-                                @"body" : @[@{@"type" : @"text" , @"text" : @"Contact a helpful Information Assistant at RU-info with your Rutgers questions by calling, texting, or email."},
-                                            @{@"type" : @"callButton", @"text" : @"Call (732-445-INFO)", @"number" : @"732-445-INFO"}]},
-                    
+        
+    }
+    return self;
+}
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self makeSections];
+}
+-(void)makeSections{
+    NSArray *infoData = @[@{@"header" :@"Call RU-Info",
+                            @"body" : @[@{@"type" : @"text" , @"text" : @"Contact a helpful Information Assistant at RU-info with your Rutgers questions by calling, texting, or email."},
+                                        @{@"type" : @"callButton", @"text" : @"Call (732-445-INFO)", @"number" : @"732-445-INFO"}]},
+                          
                           @{@"header" :@"Text RU-Info",
                             @"body" : @[@{@"type" : @"text" , @"text" : @"Text RU-info with your question. To sign up for RU-info TEXT:"},
                                         @{@"type" : @"textButton", @"text" : @"Text 'Rutgers' to 66746", @"number" : @"66746", @"body" : @"Rutgers"},
@@ -45,54 +55,50 @@
                             @"body" : @[@{@"type" : @"text" , @"text" : @"For hours and additional info, visit us online:"},
                                         @{@"type" : @"webButton", @"text" : @"Visit Website", @"url" : @"http://m.rutgers.edu/ruinfo.html"}]
                             }];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.alignment = NSTextAlignmentCenter;
-        
-        NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle};
-        NSDictionary *buttonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : self.view.tintColor};
-         NSDictionary *disabledButtonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : [UIColor darkGrayColor]};
-
-        for (NSDictionary *sectionDictionary in infoData) {
-            EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:sectionDictionary[@"header"]];
-            for (NSDictionary *rowDictionary in sectionDictionary[@"body"]) {
-                NSString *string = rowDictionary[@"text"];
-                NSString *type = rowDictionary[@"type"];
-                EZTableViewTextRow *row = [[EZTableViewTextRow alloc] init];
-                if ([type isEqualToString:@"text"]) {
-                    row.shouldHighlight = NO;
-                    row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
-                } else {
-                    if ([self typeEnabled:type]) {
-                        row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
-                        if ([type isEqualToString:@"callButton"]) {
-                            row.didSelectRowBlock = ^{
-                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:rowDictionary[@"number"]]];
-                            };
-                        } else if ([type isEqualToString:@"textButton"]) {
-                            row.didSelectRowBlock = ^{
-                                [self presentMessageComposeViewControllerWithRecipients:@[rowDictionary[@"number"]] body:rowDictionary[@"body"]];
-                            };
-                        } else if ([type isEqualToString:@"emailButton"]) {
-                            row.didSelectRowBlock = ^{
-                                [self presentMailCompseViewControllerWithRecipients:@[rowDictionary[@"email"]] body:rowDictionary[@"body"]];
-                            };
-                        } else if ([type isEqualToString:@"webButton"]) {
-                            row.didSelectRowBlock = ^{
-                                TOWebViewController *webBrowser = [[TOWebViewController alloc] initWithURLString:rowDictionary[@"url"]];
-                                webBrowser.title = self.title;
-                                [self.navigationController pushViewController:webBrowser animated:YES];
-                            };
-                        }
-                    } else {
-                        row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    
+    NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle};
+    NSDictionary *buttonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : self.view.tintColor};
+    NSDictionary *disabledButtonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : [UIColor darkGrayColor]};
+    
+    for (NSDictionary *sectionDictionary in infoData) {
+        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:sectionDictionary[@"header"]];
+        for (NSDictionary *rowDictionary in sectionDictionary[@"body"]) {
+            NSString *string = rowDictionary[@"text"];
+            NSString *type = rowDictionary[@"type"];
+            EZTableViewTextRow *row = [[EZTableViewTextRow alloc] init];
+            if ([type isEqualToString:@"text"]) {
+                row.shouldHighlight = NO;
+                row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
+            } else {
+                if ([self typeEnabled:type]) {
+                    row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
+                    if ([type isEqualToString:@"callButton"]) {
+                        row.didSelectRowBlock = ^{
+                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:rowDictionary[@"number"]]];
+                        };
+                    } else if ([type isEqualToString:@"textButton"]) {
+                        row.didSelectRowBlock = ^{
+                            [self presentMessageComposeViewControllerWithRecipients:@[rowDictionary[@"number"]] body:rowDictionary[@"body"]];
+                        };
+                    } else if ([type isEqualToString:@"emailButton"]) {
+                        row.didSelectRowBlock = ^{
+                            [self presentMailCompseViewControllerWithRecipients:@[rowDictionary[@"email"]] body:rowDictionary[@"body"]];
+                        };
+                    } else if ([type isEqualToString:@"webButton"]) {
+                        row.didSelectRowBlock = ^{
+                            [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : self.title, @"view" : @"www", @"url" : rowDictionary[@"url"]}] animated:YES];
+                        };
                     }
+                } else {
+                    row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
                 }
-                [section addRow:row];
             }
-            [self addSection:section];
+            [section addRow:row];
         }
+        [self addSection:section];
     }
-    return self;
 }
 -(BOOL)typeEnabled:(NSString *)type{
      if ([type isEqualToString:@"callButton"]) {

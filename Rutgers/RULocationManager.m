@@ -14,6 +14,7 @@
 @property NSMutableSet *delegates;
 @property MKDistanceFormatter *distanceFormatter;
 @end
+
 @implementation RULocationManager
 - (instancetype)init
 {
@@ -30,6 +31,7 @@
     }
     return self;
 }
+
 +(RULocationManager *)sharedLocationManager{
     static RULocationManager *locationManager = nil;
     static dispatch_once_t onceToken;
@@ -38,9 +40,11 @@
     });
     return locationManager;
 }
+
 -(NSString *)formatDistance:(CLLocationDistance)distance{
    return [self.distanceFormatter stringFromDistance:distance];
 }
+
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate{
     @synchronized(self.delegates) {
         if (self.delegates.count == 0) {

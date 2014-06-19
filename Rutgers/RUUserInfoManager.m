@@ -26,6 +26,7 @@ static NSString *const RUInfoHasUserInfoKey = @"RUInfoHasUserInfoKey";
     });
     return infoManager;
 }
+
 - (instancetype)init
 {
     self = [super init];
@@ -34,9 +35,11 @@ static NSString *const RUInfoHasUserInfoKey = @"RUInfoHasUserInfoKey";
     }
     return self;
 }
+
 -(BOOL)hasUserInformation{
     return [[NSUserDefaults standardUserDefaults] boolForKey:RUInfoHasUserInfoKey];
 }
+
 -(void)getUserInformationCompletion:(void(^)())completion{
     self.campusActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please select your campus" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"Busch",@"Livi", nil];
     self.roleActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please select your role" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"Student",@"Parent", nil];
@@ -44,6 +47,7 @@ static NSString *const RUInfoHasUserInfoKey = @"RUInfoHasUserInfoKey";
     [self.campusActionSheet showInView:[[[UIApplication sharedApplication] delegate] window]];
     self.completion = completion;
 }
+
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (actionSheet == self.campusActionSheet) {
         [self.roleActionSheet showInView:[[[UIApplication sharedApplication] delegate] window]];

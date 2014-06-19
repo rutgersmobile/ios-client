@@ -18,8 +18,8 @@
 		A70810721906E0260087EB82 /* RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = A70810711906E0260087EB82 /* RUBusStop.m */; };
 		A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A70810741906E02D0087EB82 /* RUBusRoute.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
+		A72CF0DE1951F5920024F950 /* RUSOCSectionRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */; };
 		A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */; };
-		A72F0022193D091500016C89 /* NSString+TimeColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F0021193D091500016C89 /* NSString+TimeColor.m */; };
 		A72FFFAB1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFAA1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m */; };
 		A72FFFAF1937C3E100016C89 /* RUSOCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFAE1937C3E100016C89 /* RUSOCViewController.m */; };
 		A72FFFB21937C55F00016C89 /* RUSOCData.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFB11937C55F00016C89 /* RUSOCData.m */; };
@@ -60,12 +60,16 @@
 		A73F659C193E6F8000E26449 /* EZCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F659B193E6F8000E26449 /* EZCollectionViewController.m */; };
 		A73F659F193E6F9700E26449 /* EZCollectionViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F659E193E6F9700E26449 /* EZCollectionViewSection.m */; };
 		A73F65A2193E6FB200E26449 /* EZCollectionViewAbstractItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A1193E6FB200E26449 /* EZCollectionViewAbstractItem.m */; };
-		A73F65A5193E754100E26449 /* TileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A4193E754100E26449 /* TileCollectionViewCell.m */; };
+		A73F65A5193E754100E26449 /* ColoredTileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A4193E754100E26449 /* ColoredTileCollectionViewCell.m */; };
 		A73F65A9193E778F00E26449 /* DynamicCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A8193E778F00E26449 /* DynamicCollectionView.m */; };
-		A73F65B0193E941E00E26449 /* TileCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65AF193E941E00E26449 /* TileCollectionViewItem.m */; };
+		A73F65B0193E941E00E26449 /* ColoredTileCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65AF193E941E00E26449 /* ColoredTileCollectionViewItem.m */; };
+		A741577D194B713000F396B5 /* EZTableViewMapsRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A741577A194B713000F396B5 /* EZTableViewMapsRow.m */; };
+		A741577E194B713000F396B5 /* EZTableViewMapsSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A741577C194B713000F396B5 /* EZTableViewMapsSection.m */; };
+		A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7415780194B714200F396B5 /* RUMapsTableViewCell.m */; };
 		A748ECEA1915D78F00CB91FF /* NSDictionary+FilterDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A748ECE91915D78F00CB91FF /* NSDictionary+FilterDictionary.m */; };
 		A748ECED191602C400CB91FF /* RULocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A748ECEC191602C400CB91FF /* RULocationManager.m */; };
 		A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */; };
+		A7600E371950E752008DA667 /* RUSOCSectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7600E361950E752008DA667 /* RUSOCSectionCell.m */; };
 		A76992C71934E63D008C64EE /* EZTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992BD1934E63D008C64EE /* EZTableViewSection.m */; };
 		A76992C81934E63D008C64EE /* EZTableViewRightDetailRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992BF1934E63D008C64EE /* EZTableViewRightDetailRow.m */; };
 		A76992C91934E63D008C64EE /* EZTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76992C11934E63D008C64EE /* EZTableViewController.m */; };
@@ -87,12 +91,18 @@
 		A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A777C2B1190C243100F978D7 /* rockoff.gpx */; };
 		A777C2B4190C248500F978D7 /* barr.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A777C2B3190C248500F978D7 /* barr.gpx */; };
 		A780907319422B39003F062C /* events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A780907219422B39003F062C /* events@2x.png */; };
+		A790C3E4194F47E100D27B5F /* ALCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C3E3194F47E100D27B5F /* ALCollectionViewController.m */; };
+		A790C3E7194F492C00D27B5F /* ALCollectionViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C3E6194F492C00D27B5F /* ALCollectionViewAbstractCell.m */; };
+		A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C3E9194F651000D27B5F /* NSIndexPath+RowExtensions.m */; };
 		A7910E5819181847002DA45F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7910E5719181847002DA45F /* MessageUI.framework */; };
 		A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A794EBE919005D91006E040C /* RUReaderTableViewCell.m */; };
 		A79BBE2718FF0B66007136B0 /* dtable.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE2618FF0B66007136B0 /* dtable.m */; };
 		A79BBE3318FF1085007136B0 /* Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE3218FF1085007136B0 /* Reader.m */; };
 		A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B2D994190EDBAC003ABEA3 /* RUPlaceDetailViewController.m */; };
 		A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */; };
+		A7B3F7A91953384800458B19 /* ARTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7A81953384800458B19 /* ARTabBarController.m */; };
+		A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7AB1953527A00458B19 /* UIColor+Utilities.m */; };
+		A7B3F7AF1953595A00458B19 /* RUPredictionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7AE1953595A00458B19 /* RUPredictionsTableViewCell.m */; };
 		A7B435E91912DFBB001FE8B6 /* RUFoodData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435E81912DFBB001FE8B6 /* RUFoodData.m */; };
 		A7B435EF1912E286001FE8B6 /* RUFoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435EE1912E286001FE8B6 /* RUFoodViewController.m */; };
 		A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435F11912EB29001FE8B6 /* RUDiningHallViewController.m */; };
@@ -110,15 +120,16 @@
 		A7C92C9C19462BA300609549 /* RUPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92C9B19462BA300609549 /* RUPlace.m */; };
 		A7C92C9F1946477D00609549 /* iPadCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92C9E1946477D00609549 /* iPadCheck.m */; };
 		A7C92CA31947534000609549 /* CardCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92CA21947534000609549 /* CardCollectionViewController.m */; };
-		A7D8C878194A426900A9B99B /* EZTableViewMapsSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8C877194A426900A9B99B /* EZTableViewMapsSection.m */; };
-		A7D8C87C194A44BC00A9B99B /* MKTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8C87B194A44BC00A9B99B /* MKTableViewCell.m */; };
-		A7D8C87F194A4C2000A9B99B /* EZTableViewMapsRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8C87E194A4C2000A9B99B /* EZTableViewMapsRow.m */; };
+		A7D8C886194B680F00A9B99B /* ColoredTileCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8C885194B680F00A9B99B /* ColoredTileCollectionViewController.m */; };
+		A7D8C889194B6A6900A9B99B /* RUSportsPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8C888194B6A6900A9B99B /* RUSportsPlayerViewController.m */; };
+		A7D8C88C194B6BBE00A9B99B /* RUSportsPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8C88B194B6BBE00A9B99B /* RUSportsPlayer.m */; };
 		A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E12B192464870089F166 /* UIColor+RutgersColors.m */; };
 		A7E8E133192480A60089F166 /* www.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E132192480A60089F166 /* www.m */; };
 		A7E8E137192484B00089F166 /* text.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E136192484B00089F166 /* text.m */; };
 		A7E8E13C192547190089F166 /* RURootController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E13B192547190089F166 /* RURootController.m */; };
 		A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E13E192554260089F166 /* NSDictionary+Channel.m */; };
 		A7E8E14619255E710089F166 /* RUSidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E14519255E710089F166 /* RUSidePanelController.m */; };
+		A7FCC3FA194B7088005FE994 /* RUEmbeddedMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -166,10 +177,10 @@
 		A70810731906E02D0087EB82 /* RUBusRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusRoute.h; sourceTree = "<group>"; };
 		A70810741906E02D0087EB82 /* RUBusRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusRoute.m; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A72CF0DC1951F5920024F950 /* RUSOCSectionRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSectionRow.h; sourceTree = "<group>"; };
+		A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSectionRow.m; sourceTree = "<group>"; };
 		A72F001A193A5D8A00016C89 /* RUUserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUserInfoManager.h; sourceTree = "<group>"; };
 		A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUserInfoManager.m; sourceTree = "<group>"; };
-		A72F0020193D091500016C89 /* NSString+TimeColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TimeColor.h"; sourceTree = "<group>"; };
-		A72F0021193D091500016C89 /* NSString+TimeColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TimeColor.m"; sourceTree = "<group>"; };
 		A72FFFA91937A2AC00016C89 /* NSUserDefaults+MKMapRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+MKMapRect.h"; path = "Rutgers/NSUserDefaults+MKMapRect.h"; sourceTree = SOURCE_ROOT; };
 		A72FFFAA1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+MKMapRect.m"; path = "Rutgers/NSUserDefaults+MKMapRect.m"; sourceTree = SOURCE_ROOT; };
 		A72FFFAD1937C3E100016C89 /* RUSOCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCViewController.h; sourceTree = "<group>"; };
@@ -235,18 +246,26 @@
 		A73F659E193E6F9700E26449 /* EZCollectionViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZCollectionViewSection.m; sourceTree = "<group>"; };
 		A73F65A0193E6FB200E26449 /* EZCollectionViewAbstractItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZCollectionViewAbstractItem.h; sourceTree = "<group>"; };
 		A73F65A1193E6FB200E26449 /* EZCollectionViewAbstractItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZCollectionViewAbstractItem.m; sourceTree = "<group>"; };
-		A73F65A3193E754100E26449 /* TileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileCollectionViewCell.h; sourceTree = "<group>"; };
-		A73F65A4193E754100E26449 /* TileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileCollectionViewCell.m; sourceTree = "<group>"; };
+		A73F65A3193E754100E26449 /* ColoredTileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColoredTileCollectionViewCell.h; sourceTree = "<group>"; };
+		A73F65A4193E754100E26449 /* ColoredTileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColoredTileCollectionViewCell.m; sourceTree = "<group>"; };
 		A73F65A7193E778F00E26449 /* DynamicCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicCollectionView.h; sourceTree = "<group>"; };
 		A73F65A8193E778F00E26449 /* DynamicCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicCollectionView.m; sourceTree = "<group>"; };
-		A73F65AE193E941E00E26449 /* TileCollectionViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileCollectionViewItem.h; sourceTree = "<group>"; };
-		A73F65AF193E941E00E26449 /* TileCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileCollectionViewItem.m; sourceTree = "<group>"; };
+		A73F65AE193E941E00E26449 /* ColoredTileCollectionViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColoredTileCollectionViewItem.h; sourceTree = "<group>"; };
+		A73F65AF193E941E00E26449 /* ColoredTileCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColoredTileCollectionViewItem.m; sourceTree = "<group>"; };
+		A7415779194B713000F396B5 /* EZTableViewMapsRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewMapsRow.h; sourceTree = "<group>"; };
+		A741577A194B713000F396B5 /* EZTableViewMapsRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewMapsRow.m; sourceTree = "<group>"; };
+		A741577B194B713000F396B5 /* EZTableViewMapsSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewMapsSection.h; sourceTree = "<group>"; };
+		A741577C194B713000F396B5 /* EZTableViewMapsSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewMapsSection.m; sourceTree = "<group>"; };
+		A741577F194B714200F396B5 /* RUMapsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMapsTableViewCell.h; sourceTree = "<group>"; };
+		A7415780194B714200F396B5 /* RUMapsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMapsTableViewCell.m; sourceTree = "<group>"; };
 		A748ECE81915D78F00CB91FF /* NSDictionary+FilterDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+FilterDictionary.h"; sourceTree = "<group>"; };
 		A748ECE91915D78F00CB91FF /* NSDictionary+FilterDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+FilterDictionary.m"; sourceTree = "<group>"; };
 		A748ECEB191602C400CB91FF /* RULocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RULocationManager.h; sourceTree = "<group>"; };
 		A748ECEC191602C400CB91FF /* RULocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RULocationManager.m; sourceTree = "<group>"; };
 		A75B0AA519098DD900A57149 /* RUPredictionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsViewController.h; sourceTree = "<group>"; };
 		A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsViewController.m; sourceTree = "<group>"; };
+		A7600E351950E752008DA667 /* RUSOCSectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSectionCell.h; sourceTree = "<group>"; };
+		A7600E361950E752008DA667 /* RUSOCSectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSectionCell.m; sourceTree = "<group>"; };
 		A76992BD1934E63D008C64EE /* EZTableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewSection.m; sourceTree = "<group>"; };
 		A76992BE1934E63D008C64EE /* EZTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewSection.h; sourceTree = "<group>"; };
 		A76992BF1934E63D008C64EE /* EZTableViewRightDetailRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewRightDetailRow.m; sourceTree = "<group>"; };
@@ -286,6 +305,12 @@
 		A777C2B1190C243100F978D7 /* rockoff.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = rockoff.gpx; sourceTree = "<group>"; };
 		A777C2B3190C248500F978D7 /* barr.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = barr.gpx; sourceTree = "<group>"; };
 		A780907219422B39003F062C /* events@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "events@2x.png"; sourceTree = "<group>"; };
+		A790C3E2194F47E100D27B5F /* ALCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALCollectionViewController.h; sourceTree = "<group>"; };
+		A790C3E3194F47E100D27B5F /* ALCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALCollectionViewController.m; sourceTree = "<group>"; };
+		A790C3E5194F492C00D27B5F /* ALCollectionViewAbstractCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALCollectionViewAbstractCell.h; sourceTree = "<group>"; };
+		A790C3E6194F492C00D27B5F /* ALCollectionViewAbstractCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALCollectionViewAbstractCell.m; sourceTree = "<group>"; };
+		A790C3E8194F651000D27B5F /* NSIndexPath+RowExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+RowExtensions.h"; sourceTree = "<group>"; };
+		A790C3E9194F651000D27B5F /* NSIndexPath+RowExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+RowExtensions.m"; sourceTree = "<group>"; };
 		A7910E5719181847002DA45F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A794EBE819005D91006E040C /* RUReaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderTableViewCell.h; sourceTree = "<group>"; };
 		A794EBE919005D91006E040C /* RUReaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderTableViewCell.m; sourceTree = "<group>"; };
@@ -297,6 +322,12 @@
 		A7B2D994190EDBAC003ABEA3 /* RUPlaceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPlaceDetailViewController.m; sourceTree = "<group>"; };
 		A7B2D996190EE7DF003ABEA3 /* TTTAddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAddressFormatter.h; sourceTree = "<group>"; };
 		A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAddressFormatter.m; sourceTree = "<group>"; };
+		A7B3F7A71953384800458B19 /* ARTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTabBarController.h; sourceTree = "<group>"; };
+		A7B3F7A81953384800458B19 /* ARTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTabBarController.m; sourceTree = "<group>"; };
+		A7B3F7AA1953527A00458B19 /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
+		A7B3F7AB1953527A00458B19 /* UIColor+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Utilities.m"; sourceTree = "<group>"; };
+		A7B3F7AD1953595A00458B19 /* RUPredictionsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsTableViewCell.h; sourceTree = "<group>"; };
+		A7B3F7AE1953595A00458B19 /* RUPredictionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsTableViewCell.m; sourceTree = "<group>"; };
 		A7B435E71912DFBB001FE8B6 /* RUFoodData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFoodData.h; sourceTree = "<group>"; };
 		A7B435E81912DFBB001FE8B6 /* RUFoodData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFoodData.m; sourceTree = "<group>"; };
 		A7B435ED1912E286001FE8B6 /* RUFoodViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFoodViewController.h; sourceTree = "<group>"; };
@@ -329,12 +360,12 @@
 		A7C92C9E1946477D00609549 /* iPadCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPadCheck.m; sourceTree = "<group>"; };
 		A7C92CA11947534000609549 /* CardCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardCollectionViewController.h; sourceTree = "<group>"; };
 		A7C92CA21947534000609549 /* CardCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardCollectionViewController.m; sourceTree = "<group>"; };
-		A7D8C876194A426900A9B99B /* EZTableViewMapsSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewMapsSection.h; sourceTree = "<group>"; };
-		A7D8C877194A426900A9B99B /* EZTableViewMapsSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewMapsSection.m; sourceTree = "<group>"; };
-		A7D8C87A194A44BC00A9B99B /* MKTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKTableViewCell.h; sourceTree = "<group>"; };
-		A7D8C87B194A44BC00A9B99B /* MKTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKTableViewCell.m; sourceTree = "<group>"; };
-		A7D8C87D194A4C1F00A9B99B /* EZTableViewMapsRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewMapsRow.h; sourceTree = "<group>"; };
-		A7D8C87E194A4C2000A9B99B /* EZTableViewMapsRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewMapsRow.m; sourceTree = "<group>"; };
+		A7D8C884194B680F00A9B99B /* ColoredTileCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColoredTileCollectionViewController.h; sourceTree = "<group>"; };
+		A7D8C885194B680F00A9B99B /* ColoredTileCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColoredTileCollectionViewController.m; sourceTree = "<group>"; };
+		A7D8C887194B6A6900A9B99B /* RUSportsPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsPlayerViewController.h; sourceTree = "<group>"; };
+		A7D8C888194B6A6900A9B99B /* RUSportsPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSportsPlayerViewController.m; sourceTree = "<group>"; };
+		A7D8C88A194B6BBE00A9B99B /* RUSportsPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsPlayer.h; sourceTree = "<group>"; };
+		A7D8C88B194B6BBE00A9B99B /* RUSportsPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSportsPlayer.m; sourceTree = "<group>"; };
 		A7E8E12A192464870089F166 /* UIColor+RutgersColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+RutgersColors.h"; sourceTree = "<group>"; };
 		A7E8E12B192464870089F166 /* UIColor+RutgersColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RutgersColors.m"; sourceTree = "<group>"; };
 		A7E8E131192480A60089F166 /* www.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = www.h; sourceTree = "<group>"; };
@@ -347,6 +378,8 @@
 		A7E8E13E192554260089F166 /* NSDictionary+Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Channel.m"; sourceTree = "<group>"; };
 		A7E8E14419255E710089F166 /* RUSidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSidePanelController.h; sourceTree = "<group>"; };
 		A7E8E14519255E710089F166 /* RUSidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSidePanelController.m; sourceTree = "<group>"; };
+		A7FCC3F8194B7088005FE994 /* RUEmbeddedMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUEmbeddedMapsViewController.h; path = Rutgers/RUEmbeddedMapsViewController.h; sourceTree = SOURCE_ROOT; };
+		A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUEmbeddedMapsViewController.m; path = Rutgers/RUEmbeddedMapsViewController.m; sourceTree = SOURCE_ROOT; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -400,10 +433,8 @@
 		A704909B194781BE003B99DC /* Tilecollectionview */ = {
 			isa = PBXGroup;
 			children = (
-				A73F65A3193E754100E26449 /* TileCollectionViewCell.h */,
-				A73F65A4193E754100E26449 /* TileCollectionViewCell.m */,
-				A73F65AE193E941E00E26449 /* TileCollectionViewItem.h */,
-				A73F65AF193E941E00E26449 /* TileCollectionViewItem.m */,
+				A7C92CA0194752AE00609549 /* cardcollection */,
+				A7D8C883194B679100A9B99B /* Coloredtilecollectionview */,
 				A704909C194781F5003B99DC /* TileCollectionViewController.h */,
 				A704909D194781F5003B99DC /* TileCollectionViewController.m */,
 			);
@@ -437,6 +468,8 @@
 				A72FFFB41937D8E500016C89 /* RUSOCSubjectViewController.m */,
 				A72FFFB71937DDDE00016C89 /* RUSOCCourseRow.h */,
 				A72FFFB81937DDDE00016C89 /* RUSOCCourseRow.m */,
+				A72CF0DC1951F5920024F950 /* RUSOCSectionRow.h */,
+				A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */,
 				A72FFFB01937C55F00016C89 /* RUSOCData.h */,
 				A72FFFB11937C55F00016C89 /* RUSOCData.m */,
 			);
@@ -448,6 +481,8 @@
 			children = (
 				A72FFFBA1937DF9000016C89 /* RUSOCCourseCell.h */,
 				A72FFFBB1937DF9000016C89 /* RUSOCCourseCell.m */,
+				A7600E351950E752008DA667 /* RUSOCSectionCell.h */,
+				A7600E361950E752008DA667 /* RUSOCSectionCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -489,8 +524,6 @@
 				A73F485C1905AB8100978FD6 /* RUBusViewController.m */,
 				A72FFFC71938EF9D00016C89 /* RUPredictionsExpandingSection.h */,
 				A72FFFC81938EF9D00016C89 /* RUPredictionsExpandingSection.m */,
-				A72F0020193D091500016C89 /* NSString+TimeColor.h */,
-				A72F0021193D091500016C89 /* NSString+TimeColor.m */,
 				A75B0AA519098DD900A57149 /* RUPredictionsViewController.h */,
 				A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */,
 			);
@@ -500,9 +533,9 @@
 		A731C38C193FBC0D00E9E7E0 /* View controller superclasses */ = {
 			isa = PBXGroup;
 			children = (
-				A7C92CA0194752AE00609549 /* cardcollection */,
-				A704909B194781BE003B99DC /* Tilecollectionview */,
+				A790C3E1194F47A500D27B5F /* AutolayoutCollectionView */,
 				A73F65AA193E93E400E26449 /* Ezcollecttionview */,
+				A704909B194781BE003B99DC /* Tilecollectionview */,
 				A76993211936355E008C64EE /* AutolayoutTableView */,
 				A76992BC1934E624008C64EE /* Eztableview */,
 				A72FFFC01938DF0B00016C89 /* ExpandingTableView */,
@@ -665,6 +698,8 @@
 		A769932519365A77008C64EE /* view */ = {
 			isa = PBXGroup;
 			children = (
+				A7B3F7AD1953595A00458B19 /* RUPredictionsTableViewCell.h */,
+				A7B3F7AE1953595A00458B19 /* RUPredictionsTableViewCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -694,6 +729,17 @@
 				A770EDC61948AC0F00DD5866 /* RUInfoTableViewController.m */,
 			);
 			name = ruinfo;
+			sourceTree = "<group>";
+		};
+		A790C3E1194F47A500D27B5F /* AutolayoutCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				A790C3E2194F47E100D27B5F /* ALCollectionViewController.h */,
+				A790C3E3194F47E100D27B5F /* ALCollectionViewController.m */,
+				A790C3E5194F492C00D27B5F /* ALCollectionViewAbstractCell.h */,
+				A790C3E6194F492C00D27B5F /* ALCollectionViewAbstractCell.m */,
+			);
+			name = AutolayoutCollectionView;
 			sourceTree = "<group>";
 		};
 		A7910E5919182008002DA45F /* rurecreation */ = {
@@ -730,6 +776,15 @@
 				A7B435E81912DFBB001FE8B6 /* RUFoodData.m */,
 			);
 			name = rufood;
+			sourceTree = "<group>";
+		};
+		A7B3F7A6195337BF00458B19 /* tab bar */ = {
+			isa = PBXGroup;
+			children = (
+				A7B3F7A71953384800458B19 /* ARTabBarController.h */,
+				A7B3F7A81953384800458B19 /* ARTabBarController.m */,
+			);
+			name = "tab bar";
 			sourceTree = "<group>";
 		};
 		A7B970CE192160180070A414 /* Reader */ = {
@@ -778,6 +833,10 @@
 				A7C92C941946108200609549 /* RUSportsData.m */,
 				A704909F19478CB2003B99DC /* RUSportsRosterViewController.h */,
 				A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */,
+				A7D8C887194B6A6900A9B99B /* RUSportsPlayerViewController.h */,
+				A7D8C888194B6A6900A9B99B /* RUSportsPlayerViewController.m */,
+				A7D8C88A194B6BBE00A9B99B /* RUSportsPlayer.h */,
+				A7D8C88B194B6BBE00A9B99B /* RUSportsPlayer.m */,
 				A70490A519478D47003B99DC /* RUPlayerItem.h */,
 				A70490A619478D47003B99DC /* RUPlayerItem.m */,
 				A70490A219478D1C003B99DC /* RUPlayerCell.h */,
@@ -798,19 +857,36 @@
 		A7D8C879194A427200A9B99B /* maps */ = {
 			isa = PBXGroup;
 			children = (
-				A7D8C876194A426900A9B99B /* EZTableViewMapsSection.h */,
-				A7D8C877194A426900A9B99B /* EZTableViewMapsSection.m */,
-				A7D8C87D194A4C1F00A9B99B /* EZTableViewMapsRow.h */,
-				A7D8C87E194A4C2000A9B99B /* EZTableViewMapsRow.m */,
-				A7D8C87A194A44BC00A9B99B /* MKTableViewCell.h */,
-				A7D8C87B194A44BC00A9B99B /* MKTableViewCell.m */,
+				A741577F194B714200F396B5 /* RUMapsTableViewCell.h */,
+				A7415780194B714200F396B5 /* RUMapsTableViewCell.m */,
+				A7415779194B713000F396B5 /* EZTableViewMapsRow.h */,
+				A741577A194B713000F396B5 /* EZTableViewMapsRow.m */,
+				A741577B194B713000F396B5 /* EZTableViewMapsSection.h */,
+				A741577C194B713000F396B5 /* EZTableViewMapsSection.m */,
+				A7FCC3F8194B7088005FE994 /* RUEmbeddedMapsViewController.h */,
+				A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */,
 			);
 			name = maps;
+			sourceTree = "<group>";
+		};
+		A7D8C883194B679100A9B99B /* Coloredtilecollectionview */ = {
+			isa = PBXGroup;
+			children = (
+				A7D8C884194B680F00A9B99B /* ColoredTileCollectionViewController.h */,
+				A7D8C885194B680F00A9B99B /* ColoredTileCollectionViewController.m */,
+				A73F65A3193E754100E26449 /* ColoredTileCollectionViewCell.h */,
+				A73F65A4193E754100E26449 /* ColoredTileCollectionViewCell.m */,
+				A73F65AE193E941E00E26449 /* ColoredTileCollectionViewItem.h */,
+				A73F65AF193E941E00E26449 /* ColoredTileCollectionViewItem.m */,
+			);
+			name = Coloredtilecollectionview;
 			sourceTree = "<group>";
 		};
 		A7E8E12D192464970089F166 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A7B3F7AA1953527A00458B19 /* UIColor+Utilities.h */,
+				A7B3F7AB1953527A00458B19 /* UIColor+Utilities.m */,
 				A731C389193FAC5F00E9E7E0 /* NSString+SHA1.h */,
 				A731C38A193FAC5F00E9E7E0 /* NSString+SHA1.m */,
 				A7E8E13D192554260089F166 /* NSDictionary+Channel.h */,
@@ -825,6 +901,8 @@
 				A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */,
 				A7C92C9D1946477D00609549 /* iPadCheck.h */,
 				A7C92C9E1946477D00609549 /* iPadCheck.m */,
+				A790C3E8194F651000D27B5F /* NSIndexPath+RowExtensions.h */,
+				A790C3E9194F651000D27B5F /* NSIndexPath+RowExtensions.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -850,6 +928,7 @@
 		A7E8E14319255E580089F166 /* initial view */ = {
 			isa = PBXGroup;
 			children = (
+				A7B3F7A6195337BF00458B19 /* tab bar */,
 				A73F6580193E549F00E26449 /* menu */,
 				A7E8E13A192547190089F166 /* RURootController.h */,
 				A7E8E13B192547190089F166 /* RURootController.m */,
@@ -906,12 +985,12 @@
 				A73F48571905AAFE00978FD6 /* rubus */,
 				A7910E5919182008002DA45F /* rurecreation */,
 				A77028A5191C8880003F5D28 /* rumaps */,
-				A7E8E14319255E580089F166 /* initial view */,
 				A72FFFAC1937C32000016C89 /* rusoc */,
 				A7C92C8F19460F1C00609549 /* rusports */,
 				A770EDC41948AC0100DD5866 /* ruinfo */,
 				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
 				C262EFBB188345D10035C8F5 /* RUAppDelegate.m */,
+				A7E8E14319255E580089F166 /* initial view */,
 				C262EFBD188345D10035C8F5 /* Images.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 			);
@@ -1110,10 +1189,10 @@
 				A72FFFAB1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
+				A7B3F7AF1953595A00458B19 /* RUPredictionsTableViewCell.m in Sources */,
 				A7C92C951946108200609549 /* RUSportsData.m in Sources */,
 				A79BBE3318FF1085007136B0 /* Reader.m in Sources */,
 				A76992C71934E63D008C64EE /* EZTableViewSection.m in Sources */,
-				A7D8C87F194A4C2000A9B99B /* EZTableViewMapsRow.m in Sources */,
 				A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */,
 				A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */,
 				A72FFFBF1937E6C800016C89 /* RUSOCCourseViewController.m in Sources */,
@@ -1123,15 +1202,19 @@
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				C262EFBC188345D10035C8F5 /* RUAppDelegate.m in Sources */,
 				A76992CB1934E63D008C64EE /* ALTableViewAbstractCell.m in Sources */,
+				A790C3E4194F47E100D27B5F /* ALCollectionViewController.m in Sources */,
 				A7C92C9C19462BA300609549 /* RUPlace.m in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A7E8E137192484B00089F166 /* text.m in Sources */,
 				A7B435EF1912E286001FE8B6 /* RUFoodViewController.m in Sources */,
 				A7B970D21921603E0070A414 /* RUChannelManager.m in Sources */,
 				A76992C81934E63D008C64EE /* EZTableViewRightDetailRow.m in Sources */,
+				A7D8C88C194B6BBE00A9B99B /* RUSportsPlayer.m in Sources */,
+				A72CF0DE1951F5920024F950 /* RUSOCSectionRow.m in Sources */,
 				A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */,
 				A770EDC71948AC0F00DD5866 /* RUInfoTableViewController.m in Sources */,
 				A77028B4191EC2BA003F5D28 /* RUNutritionLabelViewController.m in Sources */,
+				A741577D194B713000F396B5 /* EZTableViewMapsRow.m in Sources */,
 				A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */,
 				041AE339193D2E32002ED85C /* RUAppearance.m in Sources */,
 				A73F6574193E422E00E26449 /* RUMapsComponent.m in Sources */,
@@ -1139,6 +1222,7 @@
 				A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */,
 				A777C2B0190B35C400F978D7 /* RUPlacesData.m in Sources */,
 				A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */,
+				A7FCC3FA194B7088005FE994 /* RUEmbeddedMapsViewController.m in Sources */,
 				A7E8E13C192547190089F166 /* RURootController.m in Sources */,
 				A76992C91934E63D008C64EE /* EZTableViewController.m in Sources */,
 				A731C392193FBDEC00E9E7E0 /* RUPredictionsBodyRow.m in Sources */,
@@ -1151,49 +1235,55 @@
 				A72FFFB21937C55F00016C89 /* RUSOCData.m in Sources */,
 				A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */,
 				A731C393193FBDEC00E9E7E0 /* RUPredictionsHeaderRow.m in Sources */,
-				A7D8C87C194A44BC00A9B99B /* MKTableViewCell.m in Sources */,
 				A708106F1906E00A0087EB82 /* RUBusData.m in Sources */,
 				A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */,
 				A731C382193F986500E9E7E0 /* ALTableViewTextCell.m in Sources */,
 				A7B435E91912DFBB001FE8B6 /* RUFoodData.m in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
+				A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */,
 				A731C399193FBF0000E9E7E0 /* EZTableViewTextRow.m in Sources */,
 				A73F6588193E553200E26449 /* RUMenuTableHeaderView.m in Sources */,
+				A7600E371950E752008DA667 /* RUSOCSectionCell.m in Sources */,
 				A769932019352B43008C64EE /* RUReaderTableViewRow.m in Sources */,
 				A769931A1934F10E008C64EE /* RURecCenterViewController.m in Sources */,
 				A70490A419478D1C003B99DC /* RUPlayerCell.m in Sources */,
 				A73F659C193E6F8000E26449 /* EZCollectionViewController.m in Sources */,
+				A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */,
 				A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */,
 				A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */,
+				A7B3F7A91953384800458B19 /* ARTabBarController.m in Sources */,
 				A748ECEA1915D78F00CB91FF /* NSDictionary+FilterDictionary.m in Sources */,
 				A731C38B193FAC5F00E9E7E0 /* NSString+SHA1.m in Sources */,
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,
-				A72F0022193D091500016C89 /* NSString+TimeColor.m in Sources */,
 				A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */,
 				A73F485D1905AB8100978FD6 /* RUBusViewController.m in Sources */,
 				A7C92CA31947534000609549 /* CardCollectionViewController.m in Sources */,
-				A7D8C878194A426900A9B99B /* EZTableViewMapsSection.m in Sources */,
 				A769930E1934E9C1008C64EE /* RURecCenterMeetingAreaRow.m in Sources */,
 				A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */,
 				A7C92C9219460F6800609549 /* RUSportsViewController.m in Sources */,
-				A73F65B0193E941E00E26449 /* TileCollectionViewItem.m in Sources */,
+				A73F65B0193E941E00E26449 /* ColoredTileCollectionViewItem.m in Sources */,
 				A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */,
 				A79BBE2718FF0B66007136B0 /* dtable.m in Sources */,
 				A72FFFC91938EF9D00016C89 /* RUPredictionsExpandingSection.m in Sources */,
 				A76993241936357E008C64EE /* ALTableViewController.m in Sources */,
 				A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailViewController.m in Sources */,
 				A73F65A9193E778F00E26449 /* DynamicCollectionView.m in Sources */,
-				A73F65A5193E754100E26449 /* TileCollectionViewCell.m in Sources */,
+				A73F65A5193E754100E26449 /* ColoredTileCollectionViewCell.m in Sources */,
 				A73F65A2193E6FB200E26449 /* EZCollectionViewAbstractItem.m in Sources */,
 				A7B435F51912EB4E001FE8B6 /* RUMealViewController.m in Sources */,
 				A7B970C8192075F40070A414 /* RUMapsData.m in Sources */,
 				A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */,
 				A76993141934F08C008C64EE /* recreation.m in Sources */,
+				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				A704909E194781F5003B99DC /* TileCollectionViewController.m in Sources */,
 				A70490A719478D47003B99DC /* RUPlayerItem.m in Sources */,
 				A76992CA1934E63D008C64EE /* ALTableViewRightDetailCell.m in Sources */,
 				A7C92C9F1946477D00609549 /* iPadCheck.m in Sources */,
+				A7D8C889194B6A6900A9B99B /* RUSportsPlayerViewController.m in Sources */,
+				A741577E194B713000F396B5 /* EZTableViewMapsSection.m in Sources */,
+				A7D8C886194B680F00A9B99B /* ColoredTileCollectionViewController.m in Sources */,
 				A7B436681914C0F2001FE8B6 /* NSArray+RUBusStop.m in Sources */,
+				A790C3E7194F492C00D27B5F /* ALCollectionViewAbstractCell.m in Sources */,
 				A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */,
 				A73F659F193E6F9700E26449 /* EZCollectionViewSection.m in Sources */,
 			);
