@@ -38,23 +38,31 @@
 {
     [super viewDidLoad];
     self.tableView.rowHeight = 80.0;
-    [self.tableView registerClass:[RUReaderTableViewCell class] forCellReuseIdentifier:@"RUReaderTableViewCell"];
+    self.tableView.estimatedRowHeight = 80.0;
 
     self.sessionManager = [[AFHTTPSessionManager alloc] init];
     self.sessionManager.responseSerializer = [AFImageResponseSerializer serializer];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(fetchDataForChannel) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
     [self fetchDataForChannel];
-    [self.refreshControl addTarget:self action:@selector(fetchDataForChannel) forControlEvents:UIControlEventValueChanged];
     
 }
 
 -(void)fetchDataForChannel{
-    [[RUNetworkManager xmlSessionManager] GET:self.channel[@"url"] parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+    [self getURL:self.channel[@"url"]];
+}
+
+-(void)getURL:(NSString *)url{
+    [[RUNetworkManager xmlSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self.refreshControl endRefreshing];
-            [self parseResponse:[responseObject[@"channel"] firstObject][@"item"]];
+            NSDictionary *channel = [responseObject[@"channel"] firstObject];
+            if (channel[@"item"]) {
+                [self parseResponse:channel[@"item"]];
+            } /*else if (channel[@"link"]) {
+                [self getURL:[channel[@"link"] firstObject]];
+            }*/
         } else {
             [self fetchDataForChannel];
         }
@@ -65,9 +73,12 @@
 
 -(void)parseResponse:(id)responseObject{
     [self.tableView beginUpdates];
-    if (self.numberOfSections) {
+   
+    if ([self numberOfSectionsInTableView:self.tableView]) {
         [self removeAllSections];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)] withRowAnimation:UITableViewRowAnimationFade];
     }
+    
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
     for (NSDictionary *item in responseObject) {
         //[[[self class] allKeysSet] addObjectsFromArray:[item allKeys]];
@@ -75,16 +86,20 @@
         NSString *link = [item[@"link"] firstObject];
         if (link) {
             row.didSelectRowBlock = ^{
-                TOWebViewController *webBrowser = [[TOWebViewController alloc] initWithURLString:link];
-                webBrowser.title = [item[@"title"] firstObject];
-                [self.navigationController pushViewController:webBrowser animated:YES];
+                [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : [item[@"title"] firstObject], @"view" : @"www", @"url" : link}] animated:YES];
             };
         }
         [section addRow:row];
     }
     [self addSection:section];
+    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
 
     [self.tableView endUpdates];
+    [self.refreshControl endRefreshing];
+    /*
+    for (NSDictionary *item in responseObject) {
+        NSLog(@"title: %@ \n description: %@ \n date: %@",item[@"title"],item[@"description"],item[@"pubDate"]);
+    }*/
 }
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
     RUReaderTableViewRow *row = (RUReaderTableViewRow *)[self rowInTableView:tableView forIndexPath:indexPath];
@@ -92,6 +107,7 @@
     [row setupCell:readerCell];
 }
 
+/*
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     RUReaderTableViewRow *row = (RUReaderTableViewRow *)[self rowInTableView:tableView forIndexPath:indexPath];
     if (row.date) {
@@ -99,7 +115,7 @@
     } else {
         return IMAGE_HEIGHT;
     }
-}
+}*/
  /*
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
 

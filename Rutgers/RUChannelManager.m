@@ -68,6 +68,7 @@
     if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
         UIViewController * vc = [class componentForChannel:channel];
         vc.title = [channel titleForChannel];
+        vc.tabBarItem.image = [channel iconForChannel];;
         return vc;
     } else {
         NSLog(@"No way to handle view type %@, \n%@",view,channel);

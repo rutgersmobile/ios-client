@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ALTableViewAbstractCell.h"
 
-#define IMAGE_WIDTH 62
-#define IMAGE_HEIGHT 62
-#define IMAGE_BOTTOM_PADDING 32
+
 
 @interface RUReaderTableViewCell : ALTableViewAbstractCell
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;

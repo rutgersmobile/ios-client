@@ -7,6 +7,8 @@
 //
 
 #import "RUReaderTableViewCell.h"
+#import "iPadCheck.h"
+
 @interface RUReaderTableViewCell ()
 //@property NSLayoutConstraint *imageBottomConstraint;
 @end
@@ -23,11 +25,9 @@
     
     self.imageDisplayView.contentMode = UIViewContentModeScaleAspectFill;
 
-    self.titleLabel.numberOfLines = 0;
-    self.titleLabel.adjustsFontSizeToFitWidth = YES;
-    self.titleLabel.minimumScaleFactor = 0.7;
+    self.titleLabel.numberOfLines = 3;
     
-    self.titleLabel.font = [UIFont systemFontOfSize:24];
+    self.titleLabel.font = [UIFont systemFontOfSize:18];
     
     self.timeLabel.font = [UIFont italicSystemFontOfSize:16];
 
@@ -40,25 +40,26 @@
 }
 
 -(void)initializeConstraints{
+#define IMAGE_SIZE 68
+    
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
 
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
-    [self.titleLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.imageDisplayView withOffset:0 relation:NSLayoutRelationLessThanOrEqual];
-    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-    
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
-    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:IMAGE_WIDTH+8];
+    [self.titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.imageDisplayView withOffset:-kLabelHorizontalInsets];
     
-    [self.imageDisplayView autoSetDimensionsToSize:CGSizeMake(IMAGE_WIDTH, IMAGE_HEIGHT)];
+    [self.imageDisplayView autoSetDimensionsToSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE)];
     [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
     [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
-//    self.imageBottomConstraint = [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:IMAGE_BOTTOM_PADDING];
-
     [self.timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.timeLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeTop];
+    
+    [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.imageDisplayView withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    
 }
 -(void)makeConstraintChanges{
     /*
