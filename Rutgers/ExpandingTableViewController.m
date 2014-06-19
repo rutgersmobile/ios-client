@@ -16,11 +16,6 @@
 
 @implementation ExpandingTableViewController
 
--(void)viewDidLoad{
-    [super viewDidLoad];
-    self.tableView.estimatedRowHeight = 0;
-}
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row != 0) return;
     
@@ -35,10 +30,10 @@
     BOOL nowExpanded = section.expanded;
     if (nowExpanded) {
         NSArray *insertedIndexPaths = [NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:indexPath.section];
-        [tableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:animationType];
         NSArray *visibleIndexPaths = [tableView indexPathsForVisibleRows];
         NSInteger index = [visibleIndexPaths indexOfObject:indexPath];
-        if (index > visibleIndexPaths.count - 4) {
+        [tableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:animationType];
+        if (index > visibleIndexPaths.count - 3) {
             [tableView scrollToRowAtIndexPath:[insertedIndexPaths lastObject] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
     } else {

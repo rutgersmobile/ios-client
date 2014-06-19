@@ -34,17 +34,16 @@
 -(void)setItem:(id)item{
     _item = item;
     if ([item isKindOfClass:[RUBusRoute class]]) {
-        self.tableView.rowHeight = 60.0;
+        self.tableView.rowHeight = 68.0;
     } else {
-        self.tableView.rowHeight = 80.0;
+        self.tableView.rowHeight = 90.0;
     }
     self.title = [item title];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.tableView.estimatedRowHeight = 0;
     self.refreshControl = [[UIRefreshControl alloc] init];
 
     [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
@@ -66,6 +65,7 @@
 }
 
 -(void)parseResponse:(NSArray *)response{
+    [self.refreshControl endRefreshing];
 
      if (self.sections.count == 0) {
         for (NSDictionary *predictions in response) {
@@ -78,7 +78,6 @@
         }];
         [self.tableView reloadData];
     }
-    [self.refreshControl endRefreshing];
 }
 
 -(void)startTimer{
@@ -99,6 +98,13 @@
     return [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        return self.tableView.rowHeight;
+    } else {
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
