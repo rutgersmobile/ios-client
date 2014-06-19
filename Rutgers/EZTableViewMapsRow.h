@@ -7,7 +7,10 @@
 //
 
 #import "EZTableViewAbstractRow.h"
+#import <MapKit/MapKit.h> 
+@class RUPlace;
 
 @interface EZTableViewMapsRow : EZTableViewAbstractRow
+-(instancetype)initWithPlace:(RUPlace *)place;
 
 @end

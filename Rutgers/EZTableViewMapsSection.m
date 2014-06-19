@@ -7,13 +7,15 @@
 //
 
 #import "EZTableViewMapsSection.h"
+#import "EZTableViewMapsRow.h"
 
 @implementation EZTableViewMapsSection
--(instancetype)initWithSectionTitle:(NSString *)sectionTitle annotation:(id<MKAnnotation>)annotation{
+-(instancetype)initWithSectionTitle:(NSString *)sectionTitle place:(RUPlace *)place{
     self = [super initWithSectionTitle:sectionTitle];
     if (self) {
-        
+        [self addRow:[[EZTableViewMapsRow alloc] initWithPlace:place]];
     }
     return self;
 }
+
 @end

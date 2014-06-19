@@ -10,5 +10,8 @@
 
 @interface EZTableViewTextRow : EZTableViewAbstractRow
 -(instancetype)initWithAttributedString:(NSAttributedString *)attributedString;
+-(instancetype)initWithString:(NSString *)string;
+
 @property (nonatomic) NSAttributedString *attributedString;
+@property (nonatomic) NSString *string;
 @end

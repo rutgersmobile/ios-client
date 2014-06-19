@@ -32,20 +32,18 @@
     }
     return self;
 }
--(NSString *)stringForTextSearch{
+-(NSString *)textString{
     return self.text;
 }
 
 -(void)setupCell:(ALTableViewRightDetailCell *)cell{
     [super setupCell:cell];
-    if (self.detailText) {
-        cell.textLabel.numberOfLines = 1;
-        cell.detailTextLabel.text = self.detailText;
-        cell.detailTextLabel.font = self.detailTextFont;
-    } else {
-        cell.textLabel.numberOfLines = 0;
-        cell.detailTextLabel.text = nil;
-    }
+    
+    cell.textLabel.font = self.textFont;
+    cell.textLabel.text = self.text;
+    cell.detailTextLabel.text = self.detailText;
+    cell.detailTextLabel.font = self.detailTextFont;
+    
     
     if (self.active) {
         cell.textLabel.textColor = [UIColor blackColor];
@@ -55,7 +53,5 @@
         cell.textLabel.textColor = [UIColor lightGrayColor];
     }
 
-    cell.textLabel.font = self.textFont;
-    cell.textLabel.text = self.text;
 }
 @end

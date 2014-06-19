@@ -7,7 +7,29 @@
 //
 
 #import "EZTableViewMapsRow.h"
+#import "RUMapsTableViewCell.h"
+#import "RUPlace.h"
 
+@interface EZTableViewMapsRow ()
+@property (nonatomic) RUPlace *place;
+@end
 @implementation EZTableViewMapsRow
+-(id)init{
+    self = [super initWithIdentifier:@"RUMapsTableViewCell"];
+    if (self) {
+    }
+    return self;
+}
+-(instancetype)initWithPlace:(RUPlace *)place{
+    self = [self init];
+    if (self) {
+        self.place = place;
+    }
+    return self;
+}
+
+-(void)setupCell:(RUMapsTableViewCell *)cell{
+    cell.place = self.place;
+}
 
 @end

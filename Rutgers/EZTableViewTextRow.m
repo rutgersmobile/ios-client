@@ -25,8 +25,22 @@
     }
     return self;
 }
--(NSString *)stringForTextSearch{
+-(instancetype)initWithString:(NSString *)string{
+    self = [self init];
+    if (self) {
+        self.string = string;
+    }
+    return self;
+}
+-(NSString *)string{
     return self.attributedString.string;
+}
+-(NSString *)textString{
+    return self.string;
+}
+-(void)setString:(NSString *)string{
+    NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17]};
+    self.attributedString = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
 }
 -(void)setupCell:(ALTableViewAbstractCell *)cell{
     [super setupCell:cell];

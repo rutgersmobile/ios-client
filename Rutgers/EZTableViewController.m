@@ -13,7 +13,6 @@
 #import "ALTableViewTextCell.h"
 
 @interface EZTableViewController () <UISearchDisplayDelegate>
-@property (nonatomic) NSMutableArray *sections;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) NSMutableArray *searchResultSections;
 @property (nonatomic) BOOL searchEnabled;
@@ -44,9 +43,6 @@
     self.searchController.searchResultsDataSource = self;
     self.searchController.delegate = self;
     
-    [self.searchController.searchResultsTableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
-    [self.searchController.searchResultsTableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:@"ALTableViewTextCell"];
-
     self.tableView.tableHeaderView = searchBar;
 
     self.searchEnabled = YES;
@@ -71,18 +67,18 @@
 
 -(void)addSection:(EZTableViewSection *)section{
     [self.sections addObject:section];
-    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
+    //[self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index{
     [self.sections insertObject:section atIndex:index];
-    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+  //      [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)removeAllSections{
-    NSInteger count = self.sections.count;
+   // NSInteger count = self.sections.count;
     [self.sections removeAllObjects];
-    [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)] withRowAnimation:UITableViewRowAnimationFade];
+  //  [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - TableView Data source
@@ -120,6 +116,22 @@
     return [self rowInTableView:tableView forIndexPath:indexPath].shouldHighlight;
 }
 
+-(void)tableView:(UITableView*)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
+    if (action == @selector(copy:)){
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        [pasteboard setString:[self rowInTableView:tableView forIndexPath:indexPath].textString];
+    }
+}
+
+-(BOOL)tableView:(UITableView*)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
+    if (action == @selector(copy:)) return YES;
+    return NO;
+}
+
+-(BOOL)tableView:(UITableView*)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath*)indexPath{
+    return [self rowInTableView:tableView forIndexPath:indexPath].shouldCopy;
+}
+
 #pragma mark - SearchDisplayController Delegate
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
     [self filterForSearchString:searchString];
@@ -131,7 +143,7 @@
         [self.searchResultSections removeAllObjects];
         for (EZTableViewSection *section in self.sections) {
             NSArray *filteredRows = [section.allRows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                NSString *text = [evaluatedObject stringForTextSearch];
+                NSString *text = [evaluatedObject textString];
                 return ([text rangeOfString:string options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch].location != NSNotFound);
             }]];
             if (filteredRows.count) {

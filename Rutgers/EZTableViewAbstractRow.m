@@ -32,7 +32,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 }
--(NSString *)stringForTextSearch{
+-(NSString *)textString{
     return nil;
 }
 @end

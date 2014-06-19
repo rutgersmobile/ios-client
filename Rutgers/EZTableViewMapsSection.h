@@ -9,6 +9,8 @@
 #import "EZTableViewSection.h"
 #import <MapKit/MapKit.h>
 
+@class RUPlace;
+
 @interface EZTableViewMapsSection : EZTableViewSection
--(instancetype)initWithSectionTitle:(NSString *)sectionTitle annotation:(id<MKAnnotation>)annotation;
+-(instancetype)initWithSectionTitle:(NSString *)sectionTitle place:(RUPlace *)place;
 @end

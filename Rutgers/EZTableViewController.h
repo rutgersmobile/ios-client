@@ -18,6 +18,8 @@
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
 
+@property (nonatomic) NSMutableArray *sections;
+
 - (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section ;
 - (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath;
 
