@@ -26,8 +26,11 @@ NSString const *newarkAgency = @"rutgers-newark";
 @property NSMutableDictionary *activeStops;
 @property NSMutableDictionary *activeRoutes;
 
-@property BOOL agencyConfigLoaded;
 @property NSDate *lastActiveStopsAndRoutesUpdateDate;
+
+@property NSMutableDictionary *agencyTasks;
+@property NSMutableDictionary *activeStopsAndRoutesTasks;
+
 @property dispatch_group_t agencyGroup;
 @property dispatch_group_t activeGroup;
 //@property NSDate *fetchDate;
@@ -42,6 +45,7 @@ NSString const *newarkAgency = @"rutgers-newark";
     });
     return busData;
 }
+
 -(id)init{
     self = [super init];
     if (self) {
@@ -51,45 +55,44 @@ NSString const *newarkAgency = @"rutgers-newark";
         self.activeRoutes = [NSMutableDictionary dictionary];
         self.allStopsAndRoutes = [NSMutableDictionary dictionary];
         
+        self.agencyTasks = [NSMutableDictionary dictionary];
+        self.activeStopsAndRoutesTasks = [NSMutableDictionary dictionary];
+        
         self.agencyGroup = dispatch_group_create();
         self.activeGroup = dispatch_group_create();
-        
-        [self getAgencyConfigIfNeeded];
-        [self getActiveStopsAndRoutesIfNeeded];
     }
     return self;
 }
+
 #pragma mark - nearby api
 
--(void)getStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock{
-    dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
-        for (NSString *agency in @[newBrunswickAgency,newarkAgency]) {
-            NSMutableArray *nearbyStops = [NSMutableArray array];
-            
-            NSDictionary *stops = self.stops[agency];
-            [stops enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                if ([obj active]) {
-                    CLLocationDistance distance = [self distanceOfStops:obj fromLocation:location];
-                    if (distance < NEARBY_DISTANCE) {
-                        [nearbyStops addObject:obj];
-                    }
+-(void)getActiveStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock{
+    for (NSString *agency in @[newBrunswickAgency,newarkAgency]) {
+        NSMutableArray *nearbyStops = [NSMutableArray array];
+        
+        NSDictionary *stops = self.stops[agency];
+        [stops enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if ([obj active]) {
+                CLLocationDistance distance = [self distanceOfStops:obj fromLocation:location];
+                if (distance < NEARBY_DISTANCE) {
+                    [nearbyStops addObject:obj];
                 }
-            }];
-            
-            if ([nearbyStops count]) {
-                NSArray *sortedNearbyStops = [nearbyStops sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-                    CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
-                    CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
-                    
-                    if (distanceOne < distanceTwo) return NSOrderedAscending;
-                    else if (distanceOne > distanceTwo) return NSOrderedDescending;
-                    return NSOrderedSame;
-                }];
-                completionBlock(sortedNearbyStops);
-                break;
             }
+        }];
+        
+        if ([nearbyStops count]) {
+            NSArray *sortedNearbyStops = [nearbyStops sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                CLLocationDistance distanceOne = [self distanceOfStops:obj1 fromLocation:location];
+                CLLocationDistance distanceTwo = [self distanceOfStops:obj2 fromLocation:location];
+                
+                if (distanceOne < distanceTwo) return NSOrderedAscending;
+                else if (distanceOne > distanceTwo) return NSOrderedDescending;
+                return NSOrderedSame;
+            }];
+            completionBlock(sortedNearbyStops);
+            break;
         }
-    });
+    }
  }
 
 -(CLLocationDistance)distanceOfStops:(NSArray *)stops fromLocation:(CLLocation *)location{
@@ -102,24 +105,10 @@ NSString const *newarkAgency = @"rutgers-newark";
     }
     return minDistance;
 }
+
 #pragma mark - network api functions
--(void)getAgencyConfigIfNeeded{
-    if (self.agencyConfigLoaded) return;
-    
-    dispatch_group_enter(self.agencyGroup);
-    [self getAgencyConfigForAgency:newBrunswickAgency];
-    
-    dispatch_group_enter(self.agencyGroup);
-    [self getAgencyConfigForAgency:newarkAgency];
-    
-    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
-        self.agencyConfigLoaded = YES;
-    });
-}
 -(void)getAgencyConfigWithCompletion:(void (^)(NSDictionary *allStops, NSDictionary *allRoutes))completionBlock{
-    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
-        [self getAgencyConfigIfNeeded];
-    });
+    [self getAgencyConfigIfNeeded];
     dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
         NSMutableDictionary *stops = [NSMutableDictionary dictionary];
         for (id key in self.stops) {
@@ -133,9 +122,17 @@ NSString const *newarkAgency = @"rutgers-newark";
     });
 }
 
+-(void)getAgencyConfigIfNeeded{
+    if (self.agencyTasks[newarkAgency] && self.agencyTasks[newBrunswickAgency]) return;
+    
+    [self getAgencyConfigForAgency:newBrunswickAgency];
+    [self getAgencyConfigForAgency:newarkAgency];
+}
+
 -(void)getAgencyConfigForAgency:(const NSString *)agency{
+    dispatch_group_enter(self.agencyGroup);
     NSDictionary *urls = @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"};
-    [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    self.agencyTasks[agency] = [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parseRouteConfig:responseObject forAgency:agency];
             dispatch_group_leave(self.agencyGroup);
@@ -146,42 +143,42 @@ NSString const *newarkAgency = @"rutgers-newark";
         [self getAgencyConfigForAgency:agency];
     }];
 }
--(void)getActiveStopsAndRoutesIfNeeded{
-    if (self.lastActiveStopsAndRoutesUpdateDate && [[NSDate date] timeIntervalSinceDate:self.lastActiveStopsAndRoutesUpdateDate] < 2*60) {
-        return;
-    }
-    
-    //start blocking the group
-    dispatch_group_enter(self.activeGroup);
-    
-    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
-        dispatch_group_enter(self.activeGroup);
-        [self updateActiveStopsAndRoutesForAgency:newBrunswickAgency];
-        
-        dispatch_group_enter(self.activeGroup);
-        [self updateActiveStopsAndRoutesForAgency:newarkAgency];
-        
-        //end blocking the group, pairs with the call above
-        dispatch_group_leave(self.activeGroup);
 
-        dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
-            self.lastActiveStopsAndRoutesUpdateDate = [NSDate date];
+-(void)getActiveStopsAndRoutesIfNeeded{
+    [self getAgencyConfigIfNeeded];
+
+    if (self.activeStopsAndRoutesTasks[newarkAgency] && self.activeStopsAndRoutesTasks[newBrunswickAgency]) return;
+    
+    [self updateActiveStopsAndRoutesForAgency:newBrunswickAgency];
+    [self updateActiveStopsAndRoutesForAgency:newarkAgency];
+    
+    dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2*60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.activeStopsAndRoutesTasks removeAllObjects];
         });
     });
+
 }
+
 -(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock{
     [self getActiveStopsAndRoutesIfNeeded];
+    
     dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
         completionBlock([self.activeStops copy], [self.activeRoutes copy]);
     });
 }
 
 -(void)updateActiveStopsAndRoutesForAgency:(const NSString *)agency{
+    dispatch_group_enter(self.activeGroup);
     NSDictionary *urls = @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"};
     [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self parseActiveStopsAndRoutes:responseObject forAgency:agency];
-            dispatch_group_leave(self.activeGroup);
+            
+            dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
+                [self parseActiveStopsAndRoutes:responseObject forAgency:agency];
+                dispatch_group_leave(self.activeGroup);
+            });
+            
         } else {
             [self updateActiveStopsAndRoutesForAgency:agency];
         }
@@ -189,16 +186,20 @@ NSString const *newarkAgency = @"rutgers-newark";
         [self updateActiveStopsAndRoutesForAgency:agency];
     }];
 }
+
 #pragma mark - predictions api
 -(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock{
     if (!([item isKindOfClass:[RUBusRoute class]] || ([item isKindOfClass:[NSArray class]] && [item isArrayOfBusStops]))) return;
+    
     [[RUNetworkManager xmlSessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+       
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
             completionBlock(predictions);
         } else {
             [self getPredictionsForItem:item withCompletion:completionBlock];
         }
+        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self getPredictionsForItem:item withCompletion:completionBlock];
     }];
@@ -207,7 +208,6 @@ NSString const *newarkAgency = @"rutgers-newark";
 static NSString *const format = @"&stops=%@|null|%@";
 
 -(NSString *)urlStringForItem:(id)item{
-
     if ([item isKindOfClass:[NSArray class]]) {
         NSArray *stops = item;
         NSString *agency = [stops agency];
@@ -247,6 +247,7 @@ static NSString *const format = @"&stops=%@|null|%@";
     }
     return nil;
 }
+
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *))completionBlock{
     dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
@@ -396,6 +397,7 @@ static NSString *const format = @"&stops=%@|null|%@";
     
     self.activeStops[agency] = [self sortArrayByTitle:intermediate];
 }
+
 -(NSArray *)sortArrayByTitle:(NSArray *)array{
     return [array sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [[obj1 title] compare:[obj2 title]];

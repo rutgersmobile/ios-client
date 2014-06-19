@@ -14,13 +14,14 @@ NSString const* newarkAgency;
 @class RUBusRoute, CLLocation;
 
 @interface RUBusData : NSObject
+
 -(void)getAgencyConfigWithCompletion:(void (^)(NSDictionary *allStops, NSDictionary *allRoutes))completionBlock;
 -(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock;
 
 -(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock;
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
--(void)getStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock;
+-(void)getActiveStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock;
 
 +(RUBusData *)sharedInstance;
 
