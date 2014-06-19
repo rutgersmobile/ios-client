@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-#import "RUPlace.h"
 
-@interface RUMapsViewController : UIViewController 
+@class RUPlace;
+
+@interface RUMapsViewController : UIViewController <MKMapViewDelegate>;
+
 @property (nonatomic) MKMapView *mapView;
 
 -(id)initWithPlace:(RUPlace *)place;
-
+@property (nonatomic) RUPlace *place;
+-(void)zoomToPlace;
 @end

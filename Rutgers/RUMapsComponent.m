@@ -37,6 +37,7 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     [[NSUserDefaults standardUserDefaults] setMapRect:mapView.visibleMapRect forKey:mapsRecentRegionKey];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
