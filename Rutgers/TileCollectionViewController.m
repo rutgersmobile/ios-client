@@ -10,7 +10,7 @@
 #define TILE_SPACING 3
 
 #import "TileCollectionViewController.h"
-#import "TileCollectionViewCell.h"
+#import "ColoredTileCollectionViewCell.h"
 #import "iPadCheck.h"
 
 @interface TileCollectionViewController ()
@@ -24,11 +24,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.collectionView registerClass:[TileCollectionViewCell class] forCellWithReuseIdentifier:@"DynamicCollectionViewCell"];
+    [self.collectionView registerClass:[ColoredTileCollectionViewCell class] forCellWithReuseIdentifier:@"DynamicCollectionViewCell"];
     self.tileSpacing = TILE_SPACING;
     self.tilePadding = TILE_PADDING;
     self.tileAspectRatio = 203.0/170.0;
-    self.maxTileWidth = iPad() ? 180.0 : 120.0;
+    self.maxTileWidth = iPad() ? 180.0 : 130;
 }
 
 -(void)setTileSpacing:(CGFloat)tileSpacing{
@@ -63,10 +63,7 @@
     NSIndexPath *selectedIndexPath = self.collectionView.indexPathsForSelectedItems.lastObject;
     [self.collectionView deselectItemAtIndexPath:selectedIndexPath animated:YES];
 }
-
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
     CGFloat layoutWidth = CGRectGetWidth(collectionView.bounds)-self.tilePadding*2;
     NSInteger number = 0;
     CGFloat width = 0;

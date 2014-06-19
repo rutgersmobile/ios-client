@@ -7,19 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ALCollectionViewController.h"
 
 
 @class EZCollectionViewSection;
 @class EZCollectionViewAbstractItem;
 
-@interface EZCollectionViewController : UIViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
-@property (nonatomic) UICollectionView *collectionView;
-@property (nonatomic) UICollectionViewFlowLayout *flowLayout;
+@interface EZCollectionViewController : ALCollectionViewController
 
 -(void)addSection:(EZCollectionViewSection *)section;
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
+
+@property (nonatomic) NSMutableArray *sections;
 
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section;
 - (EZCollectionViewAbstractItem *)itemForIndexPath:(NSIndexPath *)indexPath;

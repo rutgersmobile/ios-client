@@ -9,11 +9,10 @@
 #import "EZCollectionViewController.h"
 #import "EZCollectionViewSection.h"
 #import "EZCollectionViewAbstractItem.h"
-#import "TileCollectionViewCell.h"
+#import "ColoredTileCollectionViewCell.h"
 
 @interface EZCollectionViewController () <UICollectionViewDelegateFlowLayout>
-@property (nonatomic) NSMutableArray *sections;
-
+@property (nonatomic) NSMutableDictionary *layoutCells;
 @end
 
 @implementation EZCollectionViewController
@@ -30,22 +29,6 @@
 {
     [super viewDidLoad];
     
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    self.flowLayout = flowLayout;
-    // Set up the collection view with no scrollbars, paging enabled
-    // and the delegate and data source set to this view controller
-    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:flowLayout];
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    [self.view addSubview:self.collectionView];
-    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    
-    self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.collectionView.opaque = YES;
-
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
 
