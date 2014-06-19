@@ -19,8 +19,9 @@
     }
     return self;
 }
+
 -(void)setupCell:(RUSOCCourseCell *)cell{
-    cell.titleLabel.text =  [NSString stringWithFormat:@"%@: %@",self.course[@"courseNumber"],[self.course[@"title"] capitalizedString]];
+    cell.titleLabel.text = [NSString stringWithFormat:@"%@: %@",self.course[@"courseNumber"],[self.course[@"title"] capitalizedString]];
     id credits = self.course[@"credits"];
     if ([credits isKindOfClass:[NSNumber class]]) {
         cell.creditsLabel.text = [NSString stringWithFormat:@"Credits: %@",credits];

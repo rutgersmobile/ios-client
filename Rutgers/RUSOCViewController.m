@@ -39,6 +39,7 @@
             [section addRow:row];
         }
         [self addSection:section];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
     }];
     // Do any additional setup after loading the view.
 }
@@ -49,8 +50,6 @@
     self.searchController.searchResultsDelegate = self;
     self.searchController.searchResultsDataSource = self;
     self.searchController.delegate = self;
-    
-    [self.searchController.searchResultsTableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
     
     self.tableView.tableHeaderView = searchBar;
     

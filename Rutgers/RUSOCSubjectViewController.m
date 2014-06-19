@@ -27,12 +27,12 @@
     }
     return self;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.tableView registerClass:[RUSOCCourseCell class] forCellReuseIdentifier:@"RUSOCCourseCell"];
     [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code forCurrentConfigurationWithCompletion:^(NSArray *courses) {
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Subjects"];
+        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Courses"];
         for (NSDictionary *course in courses) {
             RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
             row.didSelectRowBlock = ^{
@@ -41,6 +41,7 @@
             [section addRow:row];
         }
         [self addSection:section];
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
 
