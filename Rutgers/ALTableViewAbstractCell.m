@@ -14,6 +14,9 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        self.opaque = YES;
+        self.contentView.opaque = YES;
         [self makeSubviews];
     }
     return self;
@@ -32,10 +35,10 @@
     if (!self.didSetupConstraints) {
         
         [self initializeConstraints];
-
+        self.didSetupConstraints = YES;
     }
+    
     [self makeConstraintChanges];
-    self.didSetupConstraints = YES;
 }
 -(void)initializeConstraints{
 

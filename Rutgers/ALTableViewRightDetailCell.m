@@ -27,6 +27,8 @@
  
     self.titleLabel = [UILabel newAutoLayoutView];
     self.detailLabel = [UILabel newAutoLayoutView];
+    self.titleLabel.numberOfLines = 0;
+
     
     self.titleLabel.font = [UIFont systemFontOfSize:17];
     self.detailLabel.font = [UIFont systemFontOfSize:17];
@@ -40,7 +42,7 @@
 -(void)initializeConstraints{
     
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets);
-
+   
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeRight];
    

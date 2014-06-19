@@ -25,11 +25,10 @@
     }
     return self;
 }
+
 -(void)viewDidLoad{
     [super viewDidLoad];
-    [self.tableView registerClass:[ALTableViewRightDetailCell class] forCellReuseIdentifier:@"ALTableViewRightDetailCell"];
-    [self.tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:@"ALTableViewTextCell"];
-
+    self.tableView.estimatedRowHeight = 44.0;
 }
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
@@ -38,10 +37,16 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:[self identifierForRowInTableView:tableView atIndexPath:indexPath]];
+    NSString *identifier = [self identifierForRowInTableView:tableView atIndexPath:indexPath];
+    ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        [tableView registerClass:NSClassFromString(identifier) forCellReuseIdentifier:identifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    }
     [self setupCell:cell inTableView:tableView forRowAtIndexPath:indexPath];
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
+    
     return cell;
 }
 
@@ -71,18 +76,16 @@
     if (!cell) {
         cell = [[NSClassFromString(identifier) alloc] init];
         self.layoutCells[identifier] = cell;
+        cell.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return cell;
 }
 
 #pragma mark - Table view data source
-
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 60.0;
-}
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
     [NSException raise:@"Must override abstract methods in ALTableview" format:nil];
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -94,16 +97,5 @@
     // Return the number of rows in the section.
     return 0;
 }
--(NSInteger)numberOfSections{
-    return [self numberOfSectionsInTableView:self.tableView];
-}
-/*
--(void)beginUpdates{
-    [self.tableView beginUpdates];
-    self.updating++;
-}
--(void)endUpdates{
-    self.updating--;
-    [self.tableView endUpdates];
-}*/
+
 @end

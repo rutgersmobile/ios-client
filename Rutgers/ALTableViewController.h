@@ -13,5 +13,4 @@
 -(ALTableViewAbstractCell *)layoutCellWithIdentifier:(NSString *)identifier;
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
--(NSInteger)numberOfSections;
 @end
