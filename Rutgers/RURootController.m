@@ -36,49 +36,47 @@
     
     self.sidePanel = sidePanel;
     
-    void(^openPanel)() = ^{
-        double delayInSeconds = 0.15;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [sidePanel showLeftPanelAnimated:YES];
-        });
-    };
-    openPanel();
-/*
-    RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
-    if (!infoManager.hasUserInformation) {
-        [infoManager getUserInformationCompletion:openPanel];
-    } else {
-    }*/
+    double delayInSeconds = 0.15;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self openDrawer];
+    });
+    /*
+     RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
+     if (!infoManager.hasUserInformation) {
+     [infoManager getUserInformationCompletion:openPanel];
+     } else {
+     }*/
     return sidePanel;
     // if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
     /*
-    } else {
-        UISplitViewController *splitView = [[UISplitViewController alloc] init];
-        splitView.viewControllers = @[menuNav,defaultVC];
-        splitView.delegate = self;
-        self.splitViewController = splitView;
-        return splitView;
-    }*/
+     } else {
+     UISplitViewController *splitView = [[UISplitViewController alloc] init];
+     splitView.viewControllers = @[menuNav,defaultVC];
+     splitView.delegate = self;
+     self.splitViewController = splitView;
+     return splitView;
+     }*/
 }
+
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
-    [self selectionMade];
-    if (![channel isEqual:self.currentChannel]) {
-        self.currentChannel = channel;
+    dispatch_async(dispatch_get_main_queue(), ^{
         
-        UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-        
-        [RUAppearance applyAppearanceToNavigationController:navController];
-        
-        [self updateCenterWithViewController:navController];
-    }
+        [self closeDrawer];
+        if (![channel isEqual:self.currentChannel]) {
+            self.currentChannel = channel;
+            
+            UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+            
+            [RUAppearance applyAppearanceToNavigationController:navController];
+            
+            [self updateCenterWithViewController:navController];
+        }
+    });
 }
--(void)selectionMade{
-    if (self.sidePanel) {
-        [self.sidePanel showCenterPanelAnimated:YES];
-    }
-}
+
+
 -(void)updateCenterWithViewController:(UIViewController *)viewController{
     if (self.sidePanel) {
         [self.sidePanel setCenterPanel:viewController];
@@ -86,6 +84,17 @@
         self.splitViewController.viewControllers = @[[self.splitViewController.viewControllers firstObject],viewController];
     }
 }
+
+-(void)closeDrawer{
+    if (self.sidePanel) {
+        [self.sidePanel showCenterPanelAnimated:YES];
+    }
+}
+
+-(void)openDrawer{
+    [self.sidePanel showLeftPanelAnimated:YES];
+}
+
 - (UIViewController *)makeDefaultScreen {
     UIViewController * splashViewController = [[UIViewController alloc] init];
     splashViewController.view.backgroundColor = [UIColor whiteColor];
@@ -93,7 +102,7 @@
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [splashViewController.view addSubview:imageView];
     [imageView autoCenterInSuperview];
-
+    
     return splashViewController;
 }
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation{

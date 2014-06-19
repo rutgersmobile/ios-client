@@ -33,17 +33,8 @@
     self = [super init];
     if (self) {
         self.channels = [NSMutableArray array];
-        
-        //self.title = @"Channels";
-        RUChannelManager *manager = [RUChannelManager sharedInstance];
-        self.channels = [manager loadChannels];
-        [manager loadWebLinksWithCompletion:^(NSArray *webLinks) {
-            [self.tableView beginUpdates];
-            self.webLinks = webLinks;
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView endUpdates];
-        }];
-    }
+        self.title = @"Menu";
+        }
     
     return self;
 }
@@ -52,6 +43,16 @@
     [super viewDidLoad];
     [self makeSubviews];
     
+    RUChannelManager *manager = [RUChannelManager sharedInstance];
+    self.channels = [manager loadChannels];
+    
+    [manager loadWebLinksWithCompletion:^(NSArray *webLinks) {
+        [self.tableView beginUpdates];
+        self.webLinks = webLinks;
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    }];
+
     
     self.view.backgroundColor = [UIColor grey2Color];
     self.tableView.backgroundColor = [UIColor grey2Color];
@@ -77,20 +78,19 @@
     self.tableView.delegate = self;
     self.tableView.opaque = YES;
     
+    [self setLayoutForOrientation:self.interfaceOrientation];
+    
     [self.view addSubview:self.tableView];
     [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
     [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:paddingView];
-    
 }
 
--(NSArray *)indexPathsForRange:(NSRange)range inSection:(NSInteger)section{
-    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:range.length];
-    for (NSUInteger i = range.location; i < (range.location + range.length); i++) {
-        [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:section]];
-    }
-    return indexPaths;
+-(void)setLayoutForOrientation:(UIInterfaceOrientation)orientation{
+    self.tableView.rowHeight = UIInterfaceOrientationIsPortrait(orientation) ? 56.0 : 48.0;
+    self.paddingHeightContstraint.constant = UIInterfaceOrientationIsPortrait(orientation) ? 37.0 : 25.0;
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -139,22 +139,16 @@
     return self.webLinks ? 2 : 1;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 56;
-}
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *channel = [self channelForIndexPath:indexPath];
     [self.delegate menu:self didSelectChannel:channel];
 }
+
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        self.paddingHeightContstraint.constant = 25.0;
-    } else if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
-        self.paddingHeightContstraint.constant = 37.0;
-    }
+    self.paddingHeightContstraint.constant = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 37.0 : 25.0;
+    [self setLayoutForOrientation:toInterfaceOrientation];
     [self.paddingView setNeedsUpdateConstraints];
-   // [self.view layoutIfNeeded];
 }
 @end

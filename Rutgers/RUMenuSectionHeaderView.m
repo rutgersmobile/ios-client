@@ -26,7 +26,6 @@
         
         [self.sectionTitleLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         [self.sectionTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:16.0];
-        [self.sectionTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:16.0];
 
         self.layer.borderColor = [UIColor grey4Color].CGColor;
         self.layer.borderWidth = 0.5;
