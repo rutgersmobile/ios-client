@@ -11,4 +11,5 @@
 @interface RUAppearance : NSObject
 +(void)applyAppearance;
 +(void)applyAppearanceToNavigationController:(UINavigationController *)navigationController;
++(void)applyAppearanceToTabBarController:(UITabBarController *)tabBarController;
 @end

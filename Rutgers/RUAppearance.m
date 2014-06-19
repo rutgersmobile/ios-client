@@ -12,15 +12,34 @@
 
 +(void)applyAppearance{
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [self applyAppearanceToNavigationBar:[UINavigationBar appearance]];
+    [self applyAppearanceToToolbar:[UIToolbar appearance]];
+    [self applyAppearanceToTabBar:[UITabBar appearance]];
 }
 
 +(void)applyAppearanceToNavigationController:(UINavigationController *)navigationController{
-    navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    navigationController.navigationBar.barTintColor = [self modifiedRed];
-    
-    navigationController.toolbar.tintColor = [UIColor whiteColor];
-    navigationController.toolbar.barTintColor = [self modifiedRed];
+    [self applyAppearanceToNavigationBar:navigationController.navigationBar];
+    [self applyAppearanceToToolbar:navigationController.toolbar];
+}
+
++(void)applyAppearanceToTabBarController:(UITabBarController *)tabBarController{
+    [self applyAppearanceToTabBar:tabBarController.tabBar];
+}
+
++(void)applyAppearanceToTabBar:(UITabBar *)tabBar{
+    tabBar.barTintColor = [UIColor grey1Color];
+    tabBar.tintColor = [UIColor whiteColor];
+}
+
++(void)applyAppearanceToNavigationBar:(UINavigationBar *)navigationBar{
+    navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    navigationBar.tintColor = [UIColor whiteColor];
+    navigationBar.barTintColor = [self modifiedRed];
+}
+
++(void)applyAppearanceToToolbar:(UIToolbar *)toolbar{
+    toolbar.tintColor = [UIColor whiteColor];
+    toolbar.barTintColor = [self modifiedRed];
 }
 
 +(UIColor *)modifiedRed{
