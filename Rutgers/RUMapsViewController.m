@@ -44,6 +44,9 @@
 
     self.view = self.mapView;
     
+    [self setupSession];
+    [self setupOverlay];
+    
     self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
     
     if (self.place) {
@@ -77,6 +80,13 @@
     [self.mapView showAnnotations:@[self.place] animated:YES];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
 -(void)setupOverlay{
     //add our overlay
     RUMapsTileOverlay *overlay = [[RUMapsTileOverlay alloc] init];
@@ -98,11 +108,12 @@
     AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
     serializer.acceptableContentTypes = [NSSet setWithObject:@"image/png"];
     self.sessionManager.responseSerializer = serializer;
+    self.sessionManager.operationQueue.maxConcurrentOperationCount = 20;
 }
 
 
 - (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
-    static NSString * const template = @"http://tile.openstreetmap.org/%ld/%ld/%ld.png";
+    static NSString * const template = @"http://sauron.rutgers.edu/maps/%ld/%ld/%ld.png";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:template, (long)path.z, (long)path.x, (long)path.y]];
     return url;
 }
@@ -125,7 +136,9 @@
                 [self.mapsData.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
                 result(responseObject,error);
             } else {
-                [self loadTileAtPath:path result:result];
+                //[self loadTileAtPath:path result:result];
+                NSLog(@"Error loading tile: %@",[self URLForTilePath:path]);
+                result(nil,error);
             }
         }];
         [dataTask resume];
@@ -152,10 +165,6 @@
     return nil;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 @end

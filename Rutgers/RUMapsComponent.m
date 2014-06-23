@@ -13,7 +13,7 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
 
 @interface RUMapsComponent ()
-
+@property (nonatomic) BOOL startedTracking;
 @end
 
 @implementation RUMapsComponent
@@ -30,14 +30,18 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{mapsRecentRegionKey : MKStringFromMapRect(MKMapRectWorld)}];
     MKMapRect mapRect = [[NSUserDefaults standardUserDefaults] mapRectForKey:mapsRecentRegionKey];
     [self.mapView setVisibleMapRect:mapRect];
-
 }
 
 #pragma mark - MKMapViewDelegate protocol implementation
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     [[NSUserDefaults standardUserDefaults] setMapRect:mapView.visibleMapRect forKey:mapsRecentRegionKey];
 }
-
+-(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
+    if (!self.startedTracking) {
+        [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+        self.startedTracking = YES;
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
