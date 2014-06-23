@@ -8,17 +8,6 @@
 #import "RUChannelManager.h"
 #import "RUNetworkManager.h"
 
-/*
-#import "Reader.h"
-#import "www.h"
-#import "RUInfoTableViewController.h"
-#import "dtable.h"
-#import "RUBusViewController.h"
-#import "RUPlacesViewController.h"
-#import "RUFoodViewController.h"
-#import "RUMapsViewController.h"
-#import "RUMenuController.h"
-*/
 #import "RUComponentProtocol.h"
 
 @interface RUChannelManager ()
@@ -46,10 +35,20 @@
     }
     return self.channels;
 }
+
 -(void)loadWebLinksWithCompletion:(void(^)(NSArray *webLinks))completion{
     [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.webChannels = responseObject;
+            NSArray *webChannels = responseObject;
+            self.webChannels = [webChannels filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                NSString *handle = evaluatedObject[@"handle"];
+                for (NSDictionary *channel in self.channels) {
+                    if ([channel[@"handle"] isEqualToString:handle]) {
+                        return false;
+                    }
+                }
+                return true;
+            }]];
             completion(responseObject);
         } else {
             [self loadWebLinksWithCompletion:completion];
@@ -61,14 +60,15 @@
 
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
     NSString *view = channel[@"view"];
+    if (!view) view = @"www";
     //everthing from shortcuts.txt will get a view of www
-    if ([self.webChannels containsObject:channel]) view = @"www";
+  //  if ([self.webChannels containsObject:channel])
     if ([view isEqualToString:@"dtable"]) view = @"DynamicCollectionView";
     Class class = NSClassFromString(view);
     if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
         UIViewController * vc = [class componentForChannel:channel];
         vc.title = [channel titleForChannel];
-        vc.tabBarItem.image = [channel iconForChannel];;
+        vc.tabBarItem.image = [channel iconForChannel];
         return vc;
     } else {
         NSLog(@"No way to handle view type %@, \n%@",view,channel);
