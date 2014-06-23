@@ -75,8 +75,8 @@
     [self.tableView beginUpdates];
    
     if ([self numberOfSectionsInTableView:self.tableView]) {
-        [self removeAllSections];
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)] withRowAnimation:UITableViewRowAnimationFade];
+        [self removeAllSections];
     }
     
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
