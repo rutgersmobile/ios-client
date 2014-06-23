@@ -59,15 +59,11 @@
     
     if (numberOfColors == numberOfItems) {
         return colorWithIndex(itemIndex);
-    } else if (itemIndex == 0) {
-        return colorWithIndex(0);
-    } else if (itemIndex == numberOfItems-1) {
-        return colorWithIndex(numberOfColors-1);
-    } else if (numberOfColors*itemIndex % numberOfItems == 0) {
-        return colorWithIndex(numberOfColors*itemIndex/numberOfItems);
+    } else if ((numberOfColors-1)*itemIndex % (numberOfItems-1) == 0) {
+        return colorWithIndex((numberOfColors-1)*itemIndex/(numberOfItems-1));
     }
     
-    CGFloat number = ((numberOfColors-1)*itemIndex/(CGFloat)numberOfItems);
+    CGFloat number = ((numberOfColors-1)*(itemIndex)/((CGFloat)numberOfItems-1));
     NSInteger lowBound = floor(number);
     NSInteger highBound = ceil(number);
     
