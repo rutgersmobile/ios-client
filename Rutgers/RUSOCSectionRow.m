@@ -40,6 +40,11 @@
     cell.dayLabel.text = self.dayText;
     cell.timeLabel.text = self.timeText;
     cell.locationLabel.text = self.locationText;
+    if ([self.section[@"openStatus"] boolValue]) {
+        cell.backgroundColor = [UIColor colorWithRed:244/255.0 green:201/255.0 blue:181/255.0 alpha:1];
+    } else {
+        cell.backgroundColor = [UIColor colorWithRed:217/255.0 green:242/255.0 blue:213/255.0 alpha:1];
+    }
 }
 
 -(NSString *)stringForKeypath:(NSString *)keypath{
