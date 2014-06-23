@@ -15,12 +15,13 @@
 #import "ARTabBarController.h"
 
 #import "RUChannelManager.h"
+#import "RUUserInfoManager.h"
 
 
 #define MEMORY_MEGS 20
 #define DISK_MEGS 50
 
-@interface RUAppDelegate ()
+@interface RUAppDelegate () <UITabBarControllerDelegate>
 //@property RURootController *rootController;
 @property UITabBarController *tabBarController;
 @property RUChannelManager *channelManager;
@@ -39,6 +40,7 @@
     // Override point for customization after application launch.
     
     self.tabBarController = [[UITabBarController alloc] init];
+    self.tabBarController.delegate = self;
     
     self.channelManager = [RUChannelManager sharedInstance];
     
@@ -59,11 +61,20 @@
    // [self.tabBarController.moreNavigationController setViewControllers:@[]];
     
     self.window.rootViewController = self.tabBarController;
+    
     /*
     self.rootController = [[RURootController alloc] init];
     self.window.rootViewController = [self.rootController makeRootViewController];//[[ARTabBarController alloc] init];//
     */
     [self.window makeKeyAndVisible];
+    
+    RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
+   
+    if (!userInfoManager.hasUserInformation) {
+        [userInfoManager getUserInformationCompletion:^{
+            
+        }];
+    }
     
     return YES;
 }
@@ -71,13 +82,19 @@
 -(NSArray *)viewControllerForChannels:(NSArray *)channels{
     NSMutableArray *viewControllers = [NSMutableArray array];
     for (NSDictionary *channel in channels) {
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[self.channelManager viewControllerForChannel:channel]];
+        UIViewController *viewController = [self.channelManager viewControllerForChannel:channel];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        navigationController.tabBarItem = viewController.tabBarItem;
+        
         //[RUAppearance applyAppearanceToNavigationController:navigationController];
         [viewControllers addObject:navigationController];
     }
     return viewControllers;
 }
-
+-(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    CGFloat ratio = [tabBarController.viewControllers indexOfObject:viewController]/((CGFloat)tabBarController.viewControllers.count);
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithHue:ratio saturation:1 brightness:1 alpha:1];
+}
 -(void)initCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cachesFolder = paths[0];
