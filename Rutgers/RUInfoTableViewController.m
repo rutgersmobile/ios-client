@@ -94,6 +94,7 @@
                 } else {
                     row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
                 }
+                row.showsDisclosureIndicator = NO;
             }
             [section addRow:row];
         }
