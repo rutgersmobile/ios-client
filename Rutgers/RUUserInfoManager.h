@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString *const userInfoManagerHasInfoKey = @"userInfoManagerHasInfoKey";
+static NSString *const userInfoManagerCampusTagKey = @"userInfoManagerCampusTagKey";
+static NSString *const userInfoManagerUserTypeKey = @"userInfoManagerUserTypeKey";
+
+
 @interface RUUserInfoManager : NSObject
 -(BOOL)hasUserInformation;
 +(instancetype)sharedInstance;
