@@ -43,7 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.estimatedRowHeight = 0;
+   // self.tableView.estimatedRowHeight = 0;
     self.refreshControl = [[UIRefreshControl alloc] init];
 
     [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
@@ -97,14 +97,15 @@
     if (!section.active) return NO;
     return [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
 }
-
+/*
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         return self.tableView.rowHeight;
     } else {
         return [super tableView:tableView heightForRowAtIndexPath:indexPath];
     }
-}
+}*/
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

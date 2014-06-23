@@ -77,6 +77,7 @@
     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
 }
+
 -(void)fetchData{
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -88,12 +89,4 @@
         [self fetchData];
     }];
 }
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-   // if (self.updating) {
-      //  return [self tableView:tableView heightForRowAtIndexPath:indexPath];
-   // }
-    return 44.0;
-}
-
 @end

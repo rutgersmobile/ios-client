@@ -20,6 +20,7 @@
     self.directionLabel = [UILabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
 
+    
     self.titleLabel.font = [UIFont boldSystemFontOfSize:19];
     self.directionLabel.font = [UIFont systemFontOfSize:16];
     self.timeLabel.font = [UIFont boldSystemFontOfSize:16];
