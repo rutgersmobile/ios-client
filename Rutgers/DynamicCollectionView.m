@@ -14,6 +14,14 @@
 #import "ColoredTileCollectionViewItem.h"
 #import "ColoredTileCollectionViewCell.h"
 #import "EZCollectionViewSection.h"
+#import "FAQViewController.h"
+
+typedef enum : NSUInteger {
+    kChildTypeChannel,
+    kChildTypeList,
+    kChildTypeFaq,
+    kChildTypeUnknown
+} kChildType;
 
 @interface DynamicCollectionView ()
 @property (nonatomic) NSDictionary *channel;
@@ -56,16 +64,23 @@
     for (NSDictionary *child in responseObject) {
         NSString *title = [child titleForChannel];
         ColoredTileCollectionViewItem *item = [[ColoredTileCollectionViewItem alloc] initWithText:title];
-        if (child[@"children"]) {
-            item.showsEllipses = YES;
-            item.didSelectItemBlock = ^{
-                DynamicCollectionView *dcvc = [[DynamicCollectionView alloc] initWithChildren:child[@"children"]];
-                dcvc.title = [child titleForChannel];
-                [self.navigationController pushViewController:dcvc animated:YES];
-            };
-        } else if (child[@"channel"]) {
+        kChildType type = [self typeOfChild:child];
+        if (type == kChildTypeChannel) {
             item.didSelectItemBlock = ^{
                 [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]] animated:YES];
+            };
+        } else if (type == kChildTypeList) {
+            item.showsEllipses = YES;
+            item.didSelectItemBlock = ^{
+                DynamicCollectionView *dcVC = [[DynamicCollectionView alloc] initWithChildren:child[@"children"]];
+                dcVC.title = [child titleForChannel];
+                [self.navigationController pushViewController:dcVC animated:YES];
+            };
+        } else if (type == kChildTypeFaq) {
+            item.didSelectItemBlock = ^{
+                FAQViewController *faqVC = [[FAQViewController alloc] initWithChildren:child[@"children"]];
+                faqVC.title = [child titleForChannel];
+                [self.navigationController pushViewController:faqVC animated:YES];
             };
         }
         [section addItem:item];
@@ -86,4 +101,19 @@
     }];
 }
 
+-(kChildType)typeOfChild:(NSDictionary *)child{
+    NSDictionary *channel = child[@"channel"];
+    if (channel) {
+        return kChildTypeChannel;
+    } else {
+        if (child[@"answer"]) return kChildTypeFaq;
+        NSArray *children = child[@"children"];
+        for (NSDictionary *child in children) {
+            kChildType type = [self typeOfChild:child];
+            if (type == kChildTypeFaq) return type;
+        }
+        return kChildTypeList;
+    }
+    return kChildTypeUnknown;
+}
 @end

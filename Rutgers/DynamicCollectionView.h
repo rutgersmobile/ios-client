@@ -9,5 +9,5 @@
 #import "ColoredTileCollectionViewController.h"
 
 @interface DynamicCollectionView : ColoredTileCollectionViewController <RUComponentProtocol>
-
+-(instancetype)initWithChildren:(NSArray *)children;
 @end
