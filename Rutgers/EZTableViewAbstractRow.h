@@ -19,4 +19,5 @@
 @property (nonatomic) BOOL shouldCopy;
 @property (copy) void (^didSelectRowBlock)(void);
 @property (nonatomic) BOOL active;
+@property (nonatomic) BOOL showsDisclosureIndicator;
 @end

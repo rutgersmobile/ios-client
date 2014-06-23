@@ -13,7 +13,6 @@
 {
     self = [self initWithIdentifier:@"ALTableViewRightDetailCell"];
     if (self) {
-        self.active = YES;
     }
     return self;
 }
@@ -21,12 +20,14 @@
     self = [super init];
     if (self) {
         self.shouldHighlight = YES;
+        self.active = YES;
+        self.showsDisclosureIndicator = YES;
         _identifier = identifier;
     }
     return self;
 }
 -(void)setupCell:(UITableViewCell *)cell{
-    if (self.didSelectRowBlock && self.active) {
+    if (self.didSelectRowBlock && self.active && self.showsDisclosureIndicator) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;

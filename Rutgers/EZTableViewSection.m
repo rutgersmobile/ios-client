@@ -62,13 +62,13 @@
 }*/
 
 -(NSInteger)numberOfRows{
-    return self.rows.count ? self.rows.count : 1;
+    return self.rows.count;// ? self.rows.count : 1;
 }
 
 -(EZTableViewRightDetailRow *)rowAtIndex:(NSInteger)index{
-    return self.rows.count ? self.rows[index] : self.emptyItem;
+    return self.rows[index];// : self.emptyItem;
 }
-
+/*
 -(NSString *)emptyItemFormat{
     if (!_emptyItemFormat) {
         _emptyItemFormat = @"No %@";
@@ -87,5 +87,5 @@
         _emptyItem = [[EZTableViewRightDetailRow alloc] initWithText:text];
     }
     return _emptyItem;
-}
+}*/
 @end
