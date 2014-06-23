@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface www : NSObject
+@interface www : UIViewController
 +(UIViewController *)componentForChannel:(NSDictionary *)channel;
 @end
