@@ -15,4 +15,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *imageDisplayView;
+@property (nonatomic) BOOL hasImage;
 @end

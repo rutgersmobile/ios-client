@@ -11,7 +11,11 @@
 
 @interface RUReaderTableViewCell ()
 //@property NSLayoutConstraint *imageBottomConstraint;
+@property (nonatomic) NSArray *imageSizeConstraints;
+@property (nonatomic) NSLayoutConstraint *timeBottomConstraint;
 @end
+
+#define IMAGE_SIZE 68
 
 @implementation RUReaderTableViewCell
 
@@ -40,9 +44,8 @@
 }
 
 -(void)initializeConstraints{
-#define IMAGE_SIZE 68
     
-    UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
+ //   UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
 
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     
@@ -50,24 +53,22 @@
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.titleLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.imageDisplayView withOffset:-kLabelHorizontalInsets];
     
-    [self.imageDisplayView autoSetDimensionsToSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE)];
+    self.imageSizeConstraints = [self.imageDisplayView autoSetDimensionsToSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE)];
     [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
     [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
     [self.timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [self.timeLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeTop];
-    
     [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.imageDisplayView withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-    
+    [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
+    [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
+    self.timeBottomConstraint = [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
 }
 -(void)makeConstraintChanges{
-    /*
-    if (!self.timeLabel.text.length) {
-        self.imageBottomConstraint.constant = 0;
-    } else {
-        self.imageBottomConstraint.constant = -IMAGE_BOTTOM_PADDING;
-    }*/
+    for (NSLayoutConstraint *constraint in self.imageSizeConstraints) {
+        constraint.constant = self.hasImage ? IMAGE_SIZE : 0;
+    }
+    self.timeBottomConstraint.constant = self.timeLabel.text ? -kLabelVerticalInsets : 0;
 }
 -(void)didLayoutSubviews{
     self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
