@@ -38,13 +38,13 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
     if (self) {
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{placesRecentPlacesKey: @[]}];
         self.placesGroup =  dispatch_group_create();
+        dispatch_group_enter(self.placesGroup);
         [self getPlaces];
     }
     return self;
 }
 
 -(void)getPlaces{
-    dispatch_group_enter(self.placesGroup);
     [[RUNetworkManager jsonSessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];

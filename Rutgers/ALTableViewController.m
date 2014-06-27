@@ -48,7 +48,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     ALTableViewAbstractCell *layoutCell = [self layoutCellWithIdentifier:[self identifierForRowInTableView:tableView atIndexPath:indexPath]];
-   // NSLog(@"made height");
     [self setupCell:layoutCell inTableView:tableView forRowAtIndexPath:indexPath];
     [layoutCell setNeedsUpdateConstraints];
     [layoutCell updateConstraintsIfNeeded];
@@ -69,9 +68,8 @@
 -(ALTableViewAbstractCell *)layoutCellWithIdentifier:(NSString *)identifier{
     ALTableViewAbstractCell *cell = self.layoutCells[identifier];
     if (!cell) {
-        cell = [[NSClassFromString(identifier) alloc] init];
+        cell = [[NSClassFromString(identifier) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         self.layoutCells[identifier] = cell;
-        cell.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return cell;
 }

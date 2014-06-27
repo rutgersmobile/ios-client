@@ -12,7 +12,6 @@
 #import "EZTableViewRightDetailRow.h"
 
 @interface RUMealViewController ()
-@property (nonatomic) NSDictionary *meal;
 @end
 
 @implementation RUMealViewController

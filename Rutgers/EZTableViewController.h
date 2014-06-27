@@ -23,4 +23,7 @@
 - (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section ;
 - (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath;
 
+-(void)startNetworkLoad;
+-(void)networkLoadSucceeded;
+-(void)networkLoadFailed;
 @end

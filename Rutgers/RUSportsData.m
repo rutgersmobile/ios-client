@@ -38,12 +38,11 @@
     });
     return allSpots;
 }
-
-+(void)getRosterForSportID:(NSString *)sportID withCompletion:(void (^)(NSArray *))completionBlock{
++(void)getRosterForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-roster.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
-        completionBlock(responseObject[@"row"]);
+        successBlock(responseObject[@"row"]);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self getRosterForSportID:sportID withCompletion:completionBlock];
+        failureBlock();
     }];
 }
 @end

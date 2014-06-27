@@ -13,7 +13,7 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
 
 @interface RUMapsComponent ()
-@property (nonatomic) BOOL startedTracking;
+@property (nonatomic) BOOL shouldStartTrackingOnLocationUpdate;
 @end
 
 @implementation RUMapsComponent
@@ -23,8 +23,8 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.mapView.showsUserLocation = YES;
+    
+    self.shouldStartTrackingOnLocationUpdate = YES;
     
     //load last map rect, or world rect
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{mapsRecentRegionKey : MKStringFromMapRect(MKMapRectWorld)}];
@@ -32,14 +32,30 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
     [self.mapView setVisibleMapRect:mapRect];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.mapView.showsUserLocation = YES;
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if (self.mapView.userTrackingMode != MKUserTrackingModeNone) {
+        self.shouldStartTrackingOnLocationUpdate = YES;
+    }
+    self.mapView.showsUserLocation = NO;
+
+}
+
 #pragma mark - MKMapViewDelegate protocol implementation
 -(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+   // [super mapView:mapView regionDidChangeAnimated:animated];
     [[NSUserDefaults standardUserDefaults] setMapRect:mapView.visibleMapRect forKey:mapsRecentRegionKey];
 }
+
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    if (!self.startedTracking) {
+    if (self.shouldStartTrackingOnLocationUpdate) {
         [mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
-        self.startedTracking = YES;
+        self.shouldStartTrackingOnLocationUpdate = NO;
     }
 }
 - (void)didReceiveMemoryWarning

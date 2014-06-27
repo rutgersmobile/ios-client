@@ -33,7 +33,7 @@
     
     NSString *courseDescription = self.course[@"courseDescription"];
     if ([courseDescription isKindOfClass:[NSString class]]) {
-        EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}]];
+        EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]}]];
         [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:nil rows:@[row]]];
     }
     

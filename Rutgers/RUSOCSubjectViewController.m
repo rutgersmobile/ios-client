@@ -31,18 +31,35 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code forCurrentConfigurationWithCompletion:^(NSArray *courses) {
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Courses"];
-        for (NSDictionary *course in courses) {
-            RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
-            row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:course] animated:YES];
-            };
-            [section addRow:row];
+    [self startNetworkLoad];
+}
+
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
+    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code forCurrentConfigurationWithSuccess:^(NSArray *courses) {
+        if (self.sections.count) {
+            [self removeAllSections];
+            [self makeSectionsForResponse:courses];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [self makeSectionsForResponse:courses];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         }
-        [self addSection:section];
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
+        [self networkLoadSucceeded];
+    } failure:^{
+        [self networkLoadFailed];
     }];
 }
 
+-(void)makeSectionsForResponse:(NSArray *)response{
+    EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Courses"];
+    for (NSDictionary *course in response) {
+        RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
+        row.didSelectRowBlock = ^{
+            [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:course] animated:YES];
+        };
+        [section addRow:row];
+    }
+    [self addSection:section];
+}
 @end

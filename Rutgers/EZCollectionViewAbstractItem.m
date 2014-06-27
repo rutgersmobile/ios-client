@@ -7,7 +7,7 @@
 //
 
 #import "EZCollectionViewAbstractItem.h"
-#import "ColoredTileCollectionViewCell.h"
+#import "TileCollectionViewCell.h"
 
 @implementation EZCollectionViewAbstractItem
 

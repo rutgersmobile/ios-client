@@ -9,7 +9,7 @@
 #import "EZCollectionViewController.h"
 #import "EZCollectionViewSection.h"
 #import "EZCollectionViewAbstractItem.h"
-#import "ColoredTileCollectionViewCell.h"
+#import "TileCollectionViewCell.h"
 
 @interface EZCollectionViewController () <UICollectionViewDelegateFlowLayout>
 @property (nonatomic) NSMutableDictionary *layoutCells;
@@ -31,6 +31,18 @@
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
+
+
+-(void)startNetworkLoad{
+ 
+}
+
+-(void)networkLoadSucceeded{
+}
+
+-(void)networkLoadFailed{
+}
+
 
 - (void)didReceiveMemoryWarning
 {

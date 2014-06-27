@@ -8,6 +8,7 @@
 
 #import "RUMapsTableViewCell.h"
 #import "RUEmbeddedMapsViewController.h"
+#import "iPadCheck.h"
 @interface RUMapsTableViewCell ()
 @property (nonatomic) UIView *controllerView;
 @property (nonatomic) RUEmbeddedMapsViewController *mapsViewController;
@@ -23,11 +24,7 @@
 
 -(void)initializeConstraints{
     [self.controllerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    
-    [UIView autoSetPriority:UILayoutPriorityDefaultHigh forConstraints:^{
-        [self.controllerView autoSetDimension:ALDimensionHeight toSize:180 relation:NSLayoutRelationGreaterThanOrEqual];
-    }];
-
+    [self.controllerView autoSetDimension:ALDimensionHeight toSize:iPad() ? 260 : 180 relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
 -(void)setPlace:(RUPlace *)place{

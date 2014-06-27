@@ -11,8 +11,6 @@
 #import "RUNetworkManager.h"
 
 @interface RUFoodData ()
-@property dispatch_group_t foodGroup;
-@property NSArray *food;
 @end
 
 @implementation RUFoodData
@@ -40,22 +38,16 @@
                                   @"view" : @"text"
                                   }
                                 ];
-        
-        self.foodGroup = dispatch_group_create();
-
-        [self requestFood];
     }
     return self;
 }
 
-
--(void)requestFood{
-    dispatch_group_enter(self.foodGroup);
-   // NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
+-(void)getFoodWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
+    // NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
     NSString *url = @"http://vps.rsopher.com/nutrition.json";
     [[RUNetworkManager jsonSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            NSArray *food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
                 for (NSDictionary *meal in evaluatedObject[@"meals"]) {
                     if ([meal[@"genres"] count] > 0) {
                         return true;
@@ -63,19 +55,13 @@
                 }
                 return false;
             }]];
-            dispatch_group_leave(self.foodGroup);
+            successBlock(food);
         } else {
-            [self requestFood];
+            failureBlock();
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self requestFood];
+        failureBlock();
     }];
-}
-
--(void)getFoodWithCompletion:(void (^)(NSArray *response))completionBlock{
-    dispatch_group_notify(self.foodGroup, dispatch_get_main_queue(), ^{
-        completionBlock([self.food copy]);
-    });
 }
 
 @end

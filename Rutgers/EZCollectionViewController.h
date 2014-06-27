@@ -19,6 +19,10 @@
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
 
+-(void)startNetworkLoad;
+-(void)networkLoadSucceeded;
+-(void)networkLoadFailed;
+
 @property (nonatomic) NSMutableArray *sections;
 
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section;

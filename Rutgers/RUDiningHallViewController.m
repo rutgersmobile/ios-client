@@ -13,7 +13,6 @@
 
 
 @interface RUDiningHallViewController ()
-@property (nonatomic) NSDictionary *diningHall;
 @end
 
 @implementation RUDiningHallViewController

@@ -142,9 +142,7 @@ typedef enum : NSUInteger {
     }];
 }
 
-
 #pragma mark - location
-
 -(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location{
     self.lastLocation = location;
     [self updateNearbyStopsWithLocation:location];
@@ -210,12 +208,10 @@ typedef enum : NSUInteger {
 #pragma mark - search bar
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
     dispatch_group_enter(self.searchingGroup);
-    [self.navigationController setToolbarHidden:YES animated:NO];
 }
 
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
     dispatch_group_leave(self.searchingGroup);
-    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{

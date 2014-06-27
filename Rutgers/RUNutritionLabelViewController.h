@@ -11,4 +11,6 @@
 
 @interface RUNutritionLabelViewController : EZTableViewController
 -(id)initWithFoodItem:(NSDictionary *)foodItem;
+@property (nonatomic) NSDictionary *foodItem;
+
 @end

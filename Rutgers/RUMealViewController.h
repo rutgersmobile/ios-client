@@ -11,5 +11,5 @@
 
 @interface RUMealViewController : EZTableViewController
 -(id)initWithMeal:(NSDictionary *)meal;
-
+@property (nonatomic) NSDictionary *meal;
 @end

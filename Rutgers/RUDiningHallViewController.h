@@ -11,4 +11,5 @@
 
 @interface RUDiningHallViewController : EZTableViewController
 -(id)initWithDiningHall:(NSDictionary *)diningHall;
+@property (nonatomic) NSDictionary *diningHall;
 @end

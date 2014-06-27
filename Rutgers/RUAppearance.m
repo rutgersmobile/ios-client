@@ -22,6 +22,11 @@
     [self applyAppearanceToToolbar:navigationController.toolbar];
 }
 
++(void)restoreAppearanceToNavigationController:(UINavigationController *)navigationController{
+    [self restoreAppearanceToNavigationBar:navigationController.navigationBar];
+    [self restoreAppearanceToToolbar:navigationController.toolbar];
+}
+
 +(void)applyAppearanceToTabBarController:(UITabBarController *)tabBarController{
     [self applyAppearanceToTabBar:tabBarController.tabBar];
 }
@@ -40,6 +45,20 @@
 +(void)applyAppearanceToToolbar:(UIToolbar *)toolbar{
     toolbar.tintColor = [UIColor whiteColor];
     toolbar.barTintColor = [self modifiedRed];
+}
+
++(void)restoreAppearanceToNavigationBar:(UINavigationBar *)navigationBar{
+    
+    navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         nil, NSForegroundColorAttributeName,
+                                         nil];
+    navigationBar.tintColor = nil;
+    navigationBar.barTintColor = nil;
+}
+
++(void)restoreAppearanceToToolbar:(UIToolbar *)toolbar{
+    toolbar.tintColor = nil;
+    toolbar.barTintColor = nil;
 }
 
 +(UIColor *)modifiedRed{

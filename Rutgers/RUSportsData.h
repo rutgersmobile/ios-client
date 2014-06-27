@@ -11,5 +11,5 @@
 @interface RUSportsData : NSObject
 //+(RUSportsData *)sharedInstance;
 +(NSDictionary *)allSports;
-+(void)getRosterForSportID:(NSString *)sportID withCompletion:(void (^)(NSArray *response))completionBlock;
++(void)getRosterForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
 @end

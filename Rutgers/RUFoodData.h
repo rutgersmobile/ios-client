@@ -10,6 +10,6 @@
 
 @interface RUFoodData : NSObject
 +(RUFoodData *)sharedInstance;
--(void)getFoodWithCompletion:(void (^)(NSArray *response))completionBlock;
+-(void)getFoodWithSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
 @property NSArray *staticDiningHalls;
 @end

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TOWebViewController.h>
 
-@interface www : UIViewController
+@interface www : TOWebViewController
 +(UIViewController *)componentForChannel:(NSDictionary *)channel;
 @end

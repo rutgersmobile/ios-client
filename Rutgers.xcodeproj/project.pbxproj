@@ -18,6 +18,10 @@
 		A70810721906E0260087EB82 /* RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = A70810711906E0260087EB82 /* RUBusStop.m */; };
 		A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A70810741906E02D0087EB82 /* RUBusRoute.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
+		A727959A195B3F1700C21165 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7279599195B3F1700C21165 /* MKMapView+ZoomLevel.m */; };
+		A72795E4195B576F00C21165 /* UITabBarItem+Copy.m in Sources */ = {isa = PBXBuildFile; fileRef = A72795E3195B576F00C21165 /* UITabBarItem+Copy.m */; };
+		A72795E8195B5ECD00C21165 /* RUEmergencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72795E7195B5ECD00C21165 /* RUEmergencyViewController.m */; };
+		A72795EB195B5FD900C21165 /* RUFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */; };
 		A72CF0DE1951F5920024F950 /* RUSOCSectionRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */; };
 		A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */; };
 		A72FFFAB1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFAA1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m */; };
@@ -60,9 +64,9 @@
 		A73F659C193E6F8000E26449 /* EZCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F659B193E6F8000E26449 /* EZCollectionViewController.m */; };
 		A73F659F193E6F9700E26449 /* EZCollectionViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F659E193E6F9700E26449 /* EZCollectionViewSection.m */; };
 		A73F65A2193E6FB200E26449 /* EZCollectionViewAbstractItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A1193E6FB200E26449 /* EZCollectionViewAbstractItem.m */; };
-		A73F65A5193E754100E26449 /* ColoredTileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A4193E754100E26449 /* ColoredTileCollectionViewCell.m */; };
+		A73F65A5193E754100E26449 /* TileCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A4193E754100E26449 /* TileCollectionViewCell.m */; };
 		A73F65A9193E778F00E26449 /* DynamicCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65A8193E778F00E26449 /* DynamicCollectionView.m */; };
-		A73F65B0193E941E00E26449 /* ColoredTileCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65AF193E941E00E26449 /* ColoredTileCollectionViewItem.m */; };
+		A73F65B0193E941E00E26449 /* TileCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F65AF193E941E00E26449 /* TileCollectionViewItem.m */; };
 		A741577D194B713000F396B5 /* EZTableViewMapsRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A741577A194B713000F396B5 /* EZTableViewMapsRow.m */; };
 		A741577E194B713000F396B5 /* EZTableViewMapsSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A741577C194B713000F396B5 /* EZTableViewMapsSection.m */; };
 		A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7415780194B714200F396B5 /* RUMapsTableViewCell.m */; };
@@ -99,17 +103,19 @@
 		A79A420D1958936B00CF81BD /* UIImage+Icons.m in Sources */ = {isa = PBXBuildFile; fileRef = A79A420C1958936B00CF81BD /* UIImage+Icons.m */; };
 		A79BBE2718FF0B66007136B0 /* dtable.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE2618FF0B66007136B0 /* dtable.m */; };
 		A79BBE3318FF1085007136B0 /* Reader.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE3218FF1085007136B0 /* Reader.m */; };
+		A79C0033195C6CF4001FED30 /* RUTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79C0032195C6CF4001FED30 /* RUTabBarController.m */; };
+		A79C0038195CA62F001FED30 /* RUPredictionsBodyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A79C0037195CA62F001FED30 /* RUPredictionsBodyTableViewCell.m */; };
 		A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B2D994190EDBAC003ABEA3 /* RUPlaceDetailViewController.m */; };
 		A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */; };
-		A7B3F7A91953384800458B19 /* ARTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7A81953384800458B19 /* ARTabBarController.m */; };
 		A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7AB1953527A00458B19 /* UIColor+Utilities.m */; };
-		A7B3F7AF1953595A00458B19 /* RUPredictionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7AE1953595A00458B19 /* RUPredictionsTableViewCell.m */; };
+		A7B3F7AF1953595A00458B19 /* RUPredictionsHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7AE1953595A00458B19 /* RUPredictionsHeaderTableViewCell.m */; };
 		A7B3F7B41954A06B00458B19 /* FAQViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B3F7B31954A06B00458B19 /* FAQViewController.m */; };
 		A7B435E91912DFBB001FE8B6 /* RUFoodData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435E81912DFBB001FE8B6 /* RUFoodData.m */; };
 		A7B435EF1912E286001FE8B6 /* RUFoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435EE1912E286001FE8B6 /* RUFoodViewController.m */; };
 		A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435F11912EB29001FE8B6 /* RUDiningHallViewController.m */; };
 		A7B435F51912EB4E001FE8B6 /* RUMealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B435F41912EB4E001FE8B6 /* RUMealViewController.m */; };
 		A7B436681914C0F2001FE8B6 /* NSArray+RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B436671914C0F2001FE8B6 /* NSArray+RUBusStop.m */; };
+		A7B8CD4F195B692C00DBA4A9 /* RUOperatingStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B8CD4E195B692C00DBA4A9 /* RUOperatingStatusViewController.m */; };
 		A7B970C8192075F40070A414 /* RUMapsData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C2192075F40070A414 /* RUMapsData.m */; };
 		A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C4192075F40070A414 /* RUMapsTileOverlay.m */; };
 		A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C6192075F40070A414 /* RUMapsViewController.m */; };
@@ -179,6 +185,14 @@
 		A70810731906E02D0087EB82 /* RUBusRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusRoute.h; sourceTree = "<group>"; };
 		A70810741906E02D0087EB82 /* RUBusRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusRoute.m; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A7279598195B3F1700C21165 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "Rutgers/MKMapView+ZoomLevel.h"; sourceTree = SOURCE_ROOT; };
+		A7279599195B3F1700C21165 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MKMapView+ZoomLevel.m"; path = "Rutgers/MKMapView+ZoomLevel.m"; sourceTree = SOURCE_ROOT; };
+		A72795E2195B576F00C21165 /* UITabBarItem+Copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarItem+Copy.h"; sourceTree = "<group>"; };
+		A72795E3195B576F00C21165 /* UITabBarItem+Copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarItem+Copy.m"; sourceTree = "<group>"; };
+		A72795E6195B5ECC00C21165 /* RUEmergencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUEmergencyViewController.h; sourceTree = "<group>"; };
+		A72795E7195B5ECD00C21165 /* RUEmergencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUEmergencyViewController.m; sourceTree = "<group>"; };
+		A72795E9195B5FD900C21165 /* RUFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFeedbackViewController.h; sourceTree = "<group>"; };
+		A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFeedbackViewController.m; sourceTree = "<group>"; };
 		A72CF0DC1951F5920024F950 /* RUSOCSectionRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSectionRow.h; sourceTree = "<group>"; };
 		A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSectionRow.m; sourceTree = "<group>"; };
 		A72F001A193A5D8A00016C89 /* RUUserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUserInfoManager.h; sourceTree = "<group>"; };
@@ -248,12 +262,12 @@
 		A73F659E193E6F9700E26449 /* EZCollectionViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZCollectionViewSection.m; sourceTree = "<group>"; };
 		A73F65A0193E6FB200E26449 /* EZCollectionViewAbstractItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZCollectionViewAbstractItem.h; sourceTree = "<group>"; };
 		A73F65A1193E6FB200E26449 /* EZCollectionViewAbstractItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZCollectionViewAbstractItem.m; sourceTree = "<group>"; };
-		A73F65A3193E754100E26449 /* ColoredTileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColoredTileCollectionViewCell.h; sourceTree = "<group>"; };
-		A73F65A4193E754100E26449 /* ColoredTileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColoredTileCollectionViewCell.m; sourceTree = "<group>"; };
+		A73F65A3193E754100E26449 /* TileCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileCollectionViewCell.h; sourceTree = "<group>"; };
+		A73F65A4193E754100E26449 /* TileCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileCollectionViewCell.m; sourceTree = "<group>"; };
 		A73F65A7193E778F00E26449 /* DynamicCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicCollectionView.h; sourceTree = "<group>"; };
 		A73F65A8193E778F00E26449 /* DynamicCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicCollectionView.m; sourceTree = "<group>"; };
-		A73F65AE193E941E00E26449 /* ColoredTileCollectionViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColoredTileCollectionViewItem.h; sourceTree = "<group>"; };
-		A73F65AF193E941E00E26449 /* ColoredTileCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColoredTileCollectionViewItem.m; sourceTree = "<group>"; };
+		A73F65AE193E941E00E26449 /* TileCollectionViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileCollectionViewItem.h; sourceTree = "<group>"; };
+		A73F65AF193E941E00E26449 /* TileCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileCollectionViewItem.m; sourceTree = "<group>"; };
 		A7415779194B713000F396B5 /* EZTableViewMapsRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewMapsRow.h; sourceTree = "<group>"; };
 		A741577A194B713000F396B5 /* EZTableViewMapsRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZTableViewMapsRow.m; sourceTree = "<group>"; };
 		A741577B194B713000F396B5 /* EZTableViewMapsSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZTableViewMapsSection.h; sourceTree = "<group>"; };
@@ -322,16 +336,18 @@
 		A79BBE2618FF0B66007136B0 /* dtable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dtable.m; sourceTree = "<group>"; };
 		A79BBE3118FF1085007136B0 /* Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reader.h; sourceTree = "<group>"; };
 		A79BBE3218FF1085007136B0 /* Reader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reader.m; sourceTree = "<group>"; };
+		A79C0031195C6CF4001FED30 /* RUTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUTabBarController.h; sourceTree = "<group>"; };
+		A79C0032195C6CF4001FED30 /* RUTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUTabBarController.m; sourceTree = "<group>"; };
+		A79C0036195CA62F001FED30 /* RUPredictionsBodyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyTableViewCell.h; sourceTree = "<group>"; };
+		A79C0037195CA62F001FED30 /* RUPredictionsBodyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsBodyTableViewCell.m; sourceTree = "<group>"; };
 		A7B2D993190EDBAC003ABEA3 /* RUPlaceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPlaceDetailViewController.h; sourceTree = "<group>"; };
 		A7B2D994190EDBAC003ABEA3 /* RUPlaceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPlaceDetailViewController.m; sourceTree = "<group>"; };
 		A7B2D996190EE7DF003ABEA3 /* TTTAddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAddressFormatter.h; sourceTree = "<group>"; };
 		A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAddressFormatter.m; sourceTree = "<group>"; };
-		A7B3F7A71953384800458B19 /* ARTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTabBarController.h; sourceTree = "<group>"; };
-		A7B3F7A81953384800458B19 /* ARTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTabBarController.m; sourceTree = "<group>"; };
 		A7B3F7AA1953527A00458B19 /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
 		A7B3F7AB1953527A00458B19 /* UIColor+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Utilities.m"; sourceTree = "<group>"; };
-		A7B3F7AD1953595A00458B19 /* RUPredictionsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsTableViewCell.h; sourceTree = "<group>"; };
-		A7B3F7AE1953595A00458B19 /* RUPredictionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsTableViewCell.m; sourceTree = "<group>"; };
+		A7B3F7AD1953595A00458B19 /* RUPredictionsHeaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsHeaderTableViewCell.h; sourceTree = "<group>"; };
+		A7B3F7AE1953595A00458B19 /* RUPredictionsHeaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsHeaderTableViewCell.m; sourceTree = "<group>"; };
 		A7B3F7B21954A06B00458B19 /* FAQViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAQViewController.h; sourceTree = "<group>"; };
 		A7B3F7B31954A06B00458B19 /* FAQViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAQViewController.m; sourceTree = "<group>"; };
 		A7B435E71912DFBB001FE8B6 /* RUFoodData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFoodData.h; sourceTree = "<group>"; };
@@ -344,6 +360,8 @@
 		A7B435F41912EB4E001FE8B6 /* RUMealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMealViewController.m; sourceTree = "<group>"; };
 		A7B436661914C0F2001FE8B6 /* NSArray+RUBusStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+RUBusStop.h"; sourceTree = "<group>"; };
 		A7B436671914C0F2001FE8B6 /* NSArray+RUBusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+RUBusStop.m"; sourceTree = "<group>"; };
+		A7B8CD4D195B692C00DBA4A9 /* RUOperatingStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUOperatingStatusViewController.h; sourceTree = "<group>"; };
+		A7B8CD4E195B692C00DBA4A9 /* RUOperatingStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUOperatingStatusViewController.m; sourceTree = "<group>"; };
 		A7B970C1192075F40070A414 /* RUMapsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsData.h; path = Rutgers/RUMapsData.h; sourceTree = SOURCE_ROOT; };
 		A7B970C2192075F40070A414 /* RUMapsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsData.m; path = Rutgers/RUMapsData.m; sourceTree = SOURCE_ROOT; };
 		A7B970C3192075F40070A414 /* RUMapsTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsTileOverlay.h; path = Rutgers/RUMapsTileOverlay.h; sourceTree = SOURCE_ROOT; };
@@ -443,6 +461,10 @@
 				A7D8C883194B679100A9B99B /* Coloredtilecollectionview */,
 				A704909C194781F5003B99DC /* TileCollectionViewController.h */,
 				A704909D194781F5003B99DC /* TileCollectionViewController.m */,
+				A73F65A3193E754100E26449 /* TileCollectionViewCell.h */,
+				A73F65A4193E754100E26449 /* TileCollectionViewCell.m */,
+				A73F65AE193E941E00E26449 /* TileCollectionViewItem.h */,
+				A73F65AF193E941E00E26449 /* TileCollectionViewItem.m */,
 			);
 			name = Tilecollectionview;
 			sourceTree = "<group>";
@@ -460,6 +482,17 @@
 				A7C92C9B19462BA300609549 /* RUPlace.m */,
 			);
 			name = ruplaces;
+			sourceTree = "<group>";
+		};
+		A72795E5195B5E9300C21165 /* ruemergency */ = {
+			isa = PBXGroup;
+			children = (
+				A72795E6195B5ECC00C21165 /* RUEmergencyViewController.h */,
+				A72795E7195B5ECD00C21165 /* RUEmergencyViewController.m */,
+				A7B8CD4D195B692C00DBA4A9 /* RUOperatingStatusViewController.h */,
+				A7B8CD4E195B692C00DBA4A9 /* RUOperatingStatusViewController.m */,
+			);
+			name = ruemergency;
 			sourceTree = "<group>";
 		};
 		A72FFFAC1937C32000016C89 /* rusoc */ = {
@@ -648,6 +681,8 @@
 		A75B0AAD1909A3EA00A57149 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
+				C262EFBB188345D10035C8F5 /* RUAppDelegate.m */,
 				A731C38D193FBC5600E9E7E0 /* objects */,
 				A731C38C193FBC0D00E9E7E0 /* View controller superclasses */,
 				A7E8E12D192464970089F166 /* Utils */,
@@ -704,8 +739,10 @@
 		A769932519365A77008C64EE /* view */ = {
 			isa = PBXGroup;
 			children = (
-				A7B3F7AD1953595A00458B19 /* RUPredictionsTableViewCell.h */,
-				A7B3F7AE1953595A00458B19 /* RUPredictionsTableViewCell.m */,
+				A7B3F7AD1953595A00458B19 /* RUPredictionsHeaderTableViewCell.h */,
+				A7B3F7AE1953595A00458B19 /* RUPredictionsHeaderTableViewCell.m */,
+				A79C0036195CA62F001FED30 /* RUPredictionsBodyTableViewCell.h */,
+				A79C0037195CA62F001FED30 /* RUPredictionsBodyTableViewCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -771,10 +808,10 @@
 				A77028B3191EC2BA003F5D28 /* RUNutritionLabelViewController.m */,
 				A7B435F31912EB4E001FE8B6 /* RUMealViewController.h */,
 				A7B435F41912EB4E001FE8B6 /* RUMealViewController.m */,
-				A7B435ED1912E286001FE8B6 /* RUFoodViewController.h */,
-				A7B435EE1912E286001FE8B6 /* RUFoodViewController.m */,
 				A7B435F01912EB29001FE8B6 /* RUDiningHallViewController.h */,
 				A7B435F11912EB29001FE8B6 /* RUDiningHallViewController.m */,
+				A7B435ED1912E286001FE8B6 /* RUFoodViewController.h */,
+				A7B435EE1912E286001FE8B6 /* RUFoodViewController.m */,
 				A7B435E71912DFBB001FE8B6 /* RUFoodData.h */,
 				A7B435E81912DFBB001FE8B6 /* RUFoodData.m */,
 			);
@@ -784,8 +821,8 @@
 		A7B3F7A6195337BF00458B19 /* tab bar */ = {
 			isa = PBXGroup;
 			children = (
-				A7B3F7A71953384800458B19 /* ARTabBarController.h */,
-				A7B3F7A81953384800458B19 /* ARTabBarController.m */,
+				A79C0031195C6CF4001FED30 /* RUTabBarController.h */,
+				A79C0032195C6CF4001FED30 /* RUTabBarController.m */,
 			);
 			name = "tab bar";
 			sourceTree = "<group>";
@@ -797,6 +834,8 @@
 				A7B970C2192075F40070A414 /* RUMapsData.m */,
 				A7B970C3192075F40070A414 /* RUMapsTileOverlay.h */,
 				A7B970C4192075F40070A414 /* RUMapsTileOverlay.m */,
+				A7279598195B3F1700C21165 /* MKMapView+ZoomLevel.h */,
+				A7279599195B3F1700C21165 /* MKMapView+ZoomLevel.m */,
 			);
 			name = osm;
 			sourceTree = "<group>";
@@ -813,6 +852,8 @@
 		A7B3F7B51954A66500458B19 /* rufeedback */ = {
 			isa = PBXGroup;
 			children = (
+				A72795E9195B5FD900C21165 /* RUFeedbackViewController.h */,
+				A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */,
 			);
 			name = rufeedback;
 			sourceTree = "<group>";
@@ -905,10 +946,6 @@
 			children = (
 				A7D8C884194B680F00A9B99B /* ColoredTileCollectionViewController.h */,
 				A7D8C885194B680F00A9B99B /* ColoredTileCollectionViewController.m */,
-				A73F65A3193E754100E26449 /* ColoredTileCollectionViewCell.h */,
-				A73F65A4193E754100E26449 /* ColoredTileCollectionViewCell.m */,
-				A73F65AE193E941E00E26449 /* ColoredTileCollectionViewItem.h */,
-				A73F65AF193E941E00E26449 /* ColoredTileCollectionViewItem.m */,
 			);
 			name = Coloredtilecollectionview;
 			sourceTree = "<group>";
@@ -934,6 +971,8 @@
 				A7C92C9E1946477D00609549 /* iPadCheck.m */,
 				A790C3E8194F651000D27B5F /* NSIndexPath+RowExtensions.h */,
 				A790C3E9194F651000D27B5F /* NSIndexPath+RowExtensions.m */,
+				A72795E2195B576F00C21165 /* UITabBarItem+Copy.h */,
+				A72795E3195B576F00C21165 /* UITabBarItem+Copy.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1022,8 +1061,7 @@
 				A7C92C8F19460F1C00609549 /* rusports */,
 				A770EDC41948AC0100DD5866 /* ruinfo */,
 				A7B3F7B51954A66500458B19 /* rufeedback */,
-				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
-				C262EFBB188345D10035C8F5 /* RUAppDelegate.m */,
+				A72795E5195B5E9300C21165 /* ruemergency */,
 				A7E8E14319255E580089F166 /* initial view */,
 				C262EFBD188345D10035C8F5 /* Images.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
@@ -1220,10 +1258,12 @@
 			files = (
 				A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */,
 				A7E8E133192480A60089F166 /* www.m in Sources */,
+				A7B8CD4F195B692C00DBA4A9 /* RUOperatingStatusViewController.m in Sources */,
 				A72FFFAB1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
-				A7B3F7AF1953595A00458B19 /* RUPredictionsTableViewCell.m in Sources */,
+				A79C0033195C6CF4001FED30 /* RUTabBarController.m in Sources */,
+				A7B3F7AF1953595A00458B19 /* RUPredictionsHeaderTableViewCell.m in Sources */,
 				A7C92C951946108200609549 /* RUSportsData.m in Sources */,
 				A79BBE3318FF1085007136B0 /* Reader.m in Sources */,
 				A76992C71934E63D008C64EE /* EZTableViewSection.m in Sources */,
@@ -1282,12 +1322,13 @@
 				A769931A1934F10E008C64EE /* RURecCenterViewController.m in Sources */,
 				A70490A419478D1C003B99DC /* RUPlayerCell.m in Sources */,
 				A73F659C193E6F8000E26449 /* EZCollectionViewController.m in Sources */,
+				A72795EB195B5FD900C21165 /* RUFeedbackViewController.m in Sources */,
 				A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */,
 				A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */,
 				A70810751906E02D0087EB82 /* RUBusRoute.m in Sources */,
-				A7B3F7A91953384800458B19 /* ARTabBarController.m in Sources */,
 				A748ECEA1915D78F00CB91FF /* NSDictionary+FilterDictionary.m in Sources */,
 				A731C38B193FAC5F00E9E7E0 /* NSString+SHA1.m in Sources */,
+				A727959A195B3F1700C21165 /* MKMapView+ZoomLevel.m in Sources */,
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,
 				A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */,
 				A73F485D1905AB8100978FD6 /* RUBusViewController.m in Sources */,
@@ -1295,7 +1336,8 @@
 				A769930E1934E9C1008C64EE /* RURecCenterMeetingAreaRow.m in Sources */,
 				A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */,
 				A7C92C9219460F6800609549 /* RUSportsViewController.m in Sources */,
-				A73F65B0193E941E00E26449 /* ColoredTileCollectionViewItem.m in Sources */,
+				A72795E8195B5ECD00C21165 /* RUEmergencyViewController.m in Sources */,
+				A73F65B0193E941E00E26449 /* TileCollectionViewItem.m in Sources */,
 				A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */,
 				A79BBE2718FF0B66007136B0 /* dtable.m in Sources */,
 				A72FFFC91938EF9D00016C89 /* RUPredictionsExpandingSection.m in Sources */,
@@ -1303,17 +1345,19 @@
 				A79A420D1958936B00CF81BD /* UIImage+Icons.m in Sources */,
 				A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailViewController.m in Sources */,
 				A73F65A9193E778F00E26449 /* DynamicCollectionView.m in Sources */,
-				A73F65A5193E754100E26449 /* ColoredTileCollectionViewCell.m in Sources */,
+				A73F65A5193E754100E26449 /* TileCollectionViewCell.m in Sources */,
 				A7B3F7B41954A06B00458B19 /* FAQViewController.m in Sources */,
 				A73F65A2193E6FB200E26449 /* EZCollectionViewAbstractItem.m in Sources */,
 				A7B435F51912EB4E001FE8B6 /* RUMealViewController.m in Sources */,
 				A7B970C8192075F40070A414 /* RUMapsData.m in Sources */,
 				A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */,
 				A76993141934F08C008C64EE /* recreation.m in Sources */,
+				A79C0038195CA62F001FED30 /* RUPredictionsBodyTableViewCell.m in Sources */,
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				A704909E194781F5003B99DC /* TileCollectionViewController.m in Sources */,
 				A70490A719478D47003B99DC /* RUPlayerItem.m in Sources */,
 				A76992CA1934E63D008C64EE /* ALTableViewRightDetailCell.m in Sources */,
+				A72795E4195B576F00C21165 /* UITabBarItem+Copy.m in Sources */,
 				A7C92C9F1946477D00609549 /* iPadCheck.m in Sources */,
 				A7D8C889194B6A6900A9B99B /* RUSportsPlayerViewController.m in Sources */,
 				A741577E194B713000F396B5 /* EZTableViewMapsSection.m in Sources */,

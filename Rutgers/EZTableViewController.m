@@ -20,7 +20,6 @@
 @end
 
 @implementation EZTableViewController
-
 -(id)initWithStyle:(UITableViewStyle)style{
     self = [super initWithStyle:style];
     if (self) {
@@ -33,6 +32,23 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
 }
+
+-(void)startNetworkLoad{
+    if (!self.refreshControl) {
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self action:@selector(startNetworkLoad) forControlEvents:UIControlEventValueChanged];
+    }
+    [self.refreshControl beginRefreshing];
+}
+
+-(void)networkLoadSucceeded{
+    [self.refreshControl endRefreshing];
+}
+
+-(void)networkLoadFailed{
+    [self.refreshControl endRefreshing];
+}
+
 -(void)enableSearch{
     if (self.searchEnabled) return;
     

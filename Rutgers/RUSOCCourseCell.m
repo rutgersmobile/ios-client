@@ -26,7 +26,6 @@
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.creditsLabel];
     [self.contentView addSubview:self.sectionsLabel];
-    
 }
 -(void)initializeConstraints{
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
@@ -44,6 +43,5 @@
 
 -(void)didLayoutSubviews{
     self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
-    
 }
 @end

@@ -11,8 +11,8 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 #import "DynamicCollectionView.h"
-#import "ColoredTileCollectionViewItem.h"
-#import "ColoredTileCollectionViewCell.h"
+#import "TileCollectionViewItem.h"
+#import "TileCollectionViewCell.h"
 #import "EZCollectionViewSection.h"
 #import "FAQViewController.h"
 
@@ -42,6 +42,7 @@ typedef enum : NSUInteger {
     }
     return self;
 }
+
 -(instancetype)initWithChildren:(NSArray *)children{
     self = [self init];
     if (self) {
@@ -49,12 +50,13 @@ typedef enum : NSUInteger {
     }
     return self;
 }
+
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
     if (self.children) {
         [self parseResponse:self.children];
     } else {
+        [super startNetworkLoad];
         [self fetchData];
     }
 }
@@ -63,7 +65,7 @@ typedef enum : NSUInteger {
     EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
     for (NSDictionary *child in responseObject) {
         NSString *title = [child titleForChannel];
-        ColoredTileCollectionViewItem *item = [[ColoredTileCollectionViewItem alloc] initWithText:title];
+        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:title];
         kChildType type = [self typeOfChild:child];
         if (type == kChildTypeChannel) {
             item.didSelectItemBlock = ^{
@@ -91,13 +93,22 @@ typedef enum : NSUInteger {
 -(void)fetchData{
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self parseResponse:responseObject[@"children"]];
-            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:0]];
+            [self.collectionView performBatchUpdates:^{
+                if (self.sections.count) {
+                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)]];
+                    [self removeAllSections];
+                }
+                [self parseResponse:responseObject[@"children"]];
+                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:0]];
+            } completion:^(BOOL finished) {
+                
+            }];
+            [self networkLoadSucceeded];
         } else {
-            [self fetchData];
+            [self networkLoadFailed];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self fetchData];
+        [self networkLoadFailed];
     }];
 }
 

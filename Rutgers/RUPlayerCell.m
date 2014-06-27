@@ -23,7 +23,7 @@
         // Initialization code
         self.backgroundColor = [UIColor groupTableViewBackgroundColor];
         self.opaque = YES;
-        
+
         self.initialsLabel = [UILabel newAutoLayoutView];
         self.initialsLabel.textAlignment = NSTextAlignmentCenter;
         self.initialsLabel.font = [UIFont boldSystemFontOfSize:60];

@@ -33,9 +33,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.foodData getFoodWithCompletion:^(NSArray *response) {
+    [self startNetworkLoad];
+}
+
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
+    [self.foodData getFoodWithSuccess:^(NSArray *response) {
         [self.tableView beginUpdates];
+ 
+        if (self.sections.count) {
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)] withRowAnimation:UITableViewRowAnimationFade];
+            [self removeAllSections];
+        }
         
         EZTableViewSection *newBrunswickDining = [[EZTableViewSection alloc] initWithSectionTitle:@"New Brunswick"];
         for (NSDictionary *diningHall in response) {
@@ -58,8 +67,11 @@
             [self addSection:section];
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
         }
-
+        
         [self.tableView endUpdates];
+        [self networkLoadSucceeded];
+    } failure:^{
+        [self networkLoadFailed];
     }];
 }
 

@@ -13,12 +13,13 @@
 #import "RUMapsData.h"
 #import <AFNetworking.h>
 #import <AFURLResponseSerialization.h>
+#import "MKMapView+ZoomLevel.h"
 
 @interface RUMapsViewController () <RUMapsTileOverlayDelegate>
 
 @property RUMapsData *mapsData;
 @property AFHTTPSessionManager *sessionManager;
-
+@property BOOL usesOSM;
 @end
 
 
@@ -31,21 +32,29 @@
     }
     return self;
 }
-
+-(void)loadView{
+    [super loadView];
+    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+    self.mapView.delegate = self;
+    self.mapView.opaque = YES;
+    
+    self.view = self.mapView;
+    [self.mapView setVisibleMapRect:MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
-    self.mapView.delegate = self;
-    self.mapView.opaque = YES;
-    self.mapsData = [RUMapsData sharedInstance];
-
-    self.view = self.mapView;
+   
+   // self.usesOSM = YES;
     
-    [self setupSession];
-    [self setupOverlay];
+    if (self.usesOSM) {
+        self.mapsData = [RUMapsData sharedInstance];
+        
+        [self setupSession];
+        [self setupOverlay];
+    }
     
     self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
     
@@ -63,8 +72,10 @@
         
         void(^completion)(NSArray *placemarks, NSError *error) = ^(NSArray *placemarks, NSError *error){
             MKPlacemark *placeMark = [placemarks firstObject];
-            self.place.location = placeMark.location;
-            [self zoomToPlace];
+            if (placeMark) {
+                self.place.location = placeMark.location;
+                [self zoomToPlace];
+            }
         };
         
         if (self.place.address) {
@@ -136,7 +147,6 @@
                 [self.mapsData.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
                 result(responseObject,error);
             } else {
-                //[self loadTileAtPath:path result:result];
                 NSLog(@"Error loading tile: %@",[self URLForTilePath:path]);
                 result(nil,error);
             }
@@ -164,7 +174,18 @@
     
     return nil;
 }
+/*
+-(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+    NSUInteger maxZoomLevel = 16;
+    NSUInteger minZoomLevel = 12;
+    
+    NSUInteger zoomLevel = mapView.zoomLevel;
+    if (zoomLevel > maxZoomLevel || zoomLevel < minZoomLevel) {
+        NSUInteger newZoomLevel = MIN(maxZoomLevel, MAX(minZoomLevel, zoomLevel));
+        [mapView setCenterCoordinate:mapView.centerCoordinate zoomLevel:newZoomLevel animated:YES];
+    }
 
-
+}
+*/
 
 @end

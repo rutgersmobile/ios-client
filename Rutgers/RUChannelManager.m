@@ -7,15 +7,24 @@
 //
 #import "RUChannelManager.h"
 #import "RUNetworkManager.h"
+#import "NSDictionary+Channel.h"
 
 #import "RUComponentProtocol.h"
 
 @interface RUChannelManager ()
-@property NSArray *webChannels;
-@property NSArray *channels;
+@property NSArray *channelTags;
+@property NSMutableDictionary *channels;
 @end
 
 @implementation RUChannelManager
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.channels = [NSMutableDictionary dictionary];
+    }
+    return self;
+}
 
 +(RUChannelManager *)sharedInstance{
     static RUChannelManager *manager = nil;
@@ -31,43 +40,50 @@
     NSError *error;
     if (error && !data) {
     } else {
-        self.channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        for (NSDictionary *channel in channels) {
+            NSString *handle = [channel handle];
+            self.channels[handle] = channel;
+        }
+        return channels;
     }
-    return self.channels;
+    return nil;
 }
 
 -(void)loadWebLinksWithCompletion:(void(^)(NSArray *webLinks))completion{
     [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             NSArray *webChannels = responseObject;
-            self.webChannels = [webChannels filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                NSString *handle = evaluatedObject[@"handle"];
-                for (NSDictionary *channel in self.channels) {
-                    if ([channel[@"handle"] isEqualToString:handle]) {
-                        return false;
-                    }
+            webChannels = [webChannels filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                NSString *handle = [evaluatedObject handle];
+                if (self.channels[handle]) {
+                    return false;
+                } else {
+                    self.channels[handle] = evaluatedObject;
+                    return true;
                 }
-                return true;
             }]];
-            completion(responseObject);
+            completion(webChannels);
         } else {
-            [self loadWebLinksWithCompletion:completion];
+
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self loadWebLinksWithCompletion:completion];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self loadWebLinksWithCompletion:completion];
+        });
     }];
 }
 
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
     NSString *view = channel[@"view"];
     if (!view) view = @"www";
-    //everthing from shortcuts.txt will get a view of www
-  //  if ([self.webChannels containsObject:channel])
     if ([view isEqualToString:@"dtable"]) view = @"DynamicCollectionView";
     Class class = NSClassFromString(view);
     if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
         UIViewController * vc = [class componentForChannel:channel];
-        vc.title = [channel titleForChannel];
+        NSString *title = [channel titleForChannel];
+        vc.title = title;
+        vc.tabBarItem.title = title;
         vc.tabBarItem.image = [channel iconForChannel];
         return vc;
     } else {

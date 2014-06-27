@@ -12,4 +12,5 @@
 -(NSString *)identifierForChannel;
 -(NSString *)titleForChannel;
 -(UIImage *)iconForChannel;
+-(NSString *)handle;
 @end

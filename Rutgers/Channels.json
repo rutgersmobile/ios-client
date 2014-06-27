@@ -68,5 +68,17 @@
   "title": "Athletics",
   "view" : "RUSportsViewController",
   "icon" : "sports"
+  },
+  {
+  "handle" : "campus_status",
+  "title": "Emergency Alerts",
+  "view" : "RUEmergencyViewController",
+  "icon" : "emergency4"
+  },
+  {
+  "handle" : "feedback",
+  "title": "Feedback",
+  "view" : "RUFeedbackViewController",
+  "icon" : "feedback"
   }
-  ]
+]

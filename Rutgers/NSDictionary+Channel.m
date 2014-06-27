@@ -29,4 +29,7 @@
     UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     return image;
 }
+-(NSString *)handle{
+    return self[@"handle"];
+}
 @end

@@ -11,7 +11,7 @@
 #import "NSIndexPath+RowExtensions.h"
 
 @interface ExpandingTableViewController ()
-@property BOOL insertingRows;
+@property NSArray *insertingIndexPaths;
 @end
 
 @implementation ExpandingTableViewController
@@ -39,21 +39,15 @@
         UITableViewRowAnimation animationType = UITableViewRowAnimationFade;
         
         BOOL nowExpanded = section.expanded;
-        self.insertingRows = YES;
         
         if (nowExpanded) {
-            NSArray *insertedIndexPaths = [NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:indexPath.section];
-            /*
-            NSArray *visibleIndexPaths = [tableView indexPathsForVisibleRows];
-            NSInteger index = [visibleIndexPaths indexOfObject:indexPath];*/
-            [tableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:animationType];
-          /*  if (index > visibleIndexPaths.count - 3) {
-                [tableView scrollToRowAtIndexPath:[insertedIndexPaths lastObject] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-            }*/
+            self.insertingIndexPaths = [NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:indexPath.section];
+            [tableView insertRowsAtIndexPaths:self.insertingIndexPaths  withRowAnimation:animationType];
+            self.insertingIndexPaths = nil;
+
         } else {
             [tableView deleteRowsAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newCount, oldCount-newCount) inSection:indexPath.section] withRowAnimation:animationType];
         }
-        self.insertingRows = NO;
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -68,7 +62,7 @@
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.insertingRows) {
+    if ([self.insertingIndexPaths containsObject:indexPath]) {
         return [self tableView:tableView heightForRowAtIndexPath:indexPath];
     } else {
         return [super tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];

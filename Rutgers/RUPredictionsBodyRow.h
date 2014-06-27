@@ -10,5 +10,5 @@
 
 @interface RUPredictionsBodyRow : EZTableViewTextRow
 -(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes;
-@property NSArray *predictionTimes;
+@property (nonatomic) NSArray *predictionTimes;
 @end

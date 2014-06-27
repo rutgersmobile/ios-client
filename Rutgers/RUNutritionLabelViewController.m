@@ -12,7 +12,6 @@
 #import "EZTableViewRightDetailRow.h"
 
 @interface RUNutritionLabelViewController ()
-@property (nonatomic) NSDictionary *foodItem;
 @end
 
 @implementation RUNutritionLabelViewController

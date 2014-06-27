@@ -7,12 +7,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+#import "UITabBarItem+Copy.h"
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
 #import "RURootController.h"
 #import "RUAppearance.h"
 
-#import "ARTabBarController.h"
+#import "RUTabBarController.h"
 
 #import "RUChannelManager.h"
 #import "RUUserInfoManager.h"
@@ -23,7 +24,7 @@
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 //@property RURootController *rootController;
-@property UITabBarController *tabBarController;
+@property RUTabBarController *tabBarController;
 @property RUChannelManager *channelManager;
 @end
 
@@ -38,8 +39,8 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    
-    self.tabBarController = [[UITabBarController alloc] init];
+        
+    self.tabBarController = [[RUTabBarController alloc] init];
     self.tabBarController.delegate = self;
     
     self.channelManager = [RUChannelManager sharedInstance];
@@ -54,6 +55,7 @@
     }];
     
     [RUAppearance applyAppearance];
+    
     /*
     [RUAppearance applyAppearanceToTabBarController:self.tabBarController];
     [RUAppearance applyAppearanceToNavigationController:self.tabBarController.moreNavigationController];
@@ -66,6 +68,7 @@
     self.rootController = [[RURootController alloc] init];
     self.window.rootViewController = [self.rootController makeRootViewController];//[[ARTabBarController alloc] init];//
     */
+    
     [self.window makeKeyAndVisible];
     
     RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
@@ -83,11 +86,11 @@
     NSMutableArray *viewControllers = [NSMutableArray array];
     for (NSDictionary *channel in channels) {
         UIViewController *viewController = [self.channelManager viewControllerForChannel:channel];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-        navigationController.tabBarItem = viewController.tabBarItem;
-        
-        //[RUAppearance applyAppearanceToNavigationController:navigationController];
-        [viewControllers addObject:navigationController];
+        if (viewController) {
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+            navigationController.tabBarItem = viewController.tabBarItem;
+            [viewControllers addObject:navigationController];
+        }
     }
     return viewControllers;
 }

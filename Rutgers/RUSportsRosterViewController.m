@@ -32,8 +32,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [RUSportsData getRosterForSportID:self.sportID withCompletion:^(NSArray *response) {
+    
+    self.maxTileWidth = iPad() ? 180.0 : 130;
+    self.tileAspectRatio = 2.0/3.0;
+    self.tileSpacing = 4;
+    self.tilePadding = 4;
+    [self.collectionView registerClass:[RUPlayerCell class] forCellWithReuseIdentifier:@"RUPlayerCardCell"];
+    
+    [self startNetworkLoad];
+}
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
+    [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
         EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
         for (NSDictionary *playerDictionary in response) {
             RUSportsPlayer *player = [[RUSportsPlayer alloc] initWithDictionary:playerDictionary];
@@ -45,15 +55,11 @@
         }
         [self addSection:section];
         [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:0]];
+        [self networkLoadSucceeded];
+    } failure:^{
+        [self networkLoadFailed];
     }];
-    
-    self.maxTileWidth = iPad() ? 220.0 : 168;
-    self.tileAspectRatio = 2.0/3.0;
-    self.tileSpacing = 4;
-    self.tilePadding = 4;
-    [self.collectionView registerClass:[RUPlayerCell class] forCellWithReuseIdentifier:@"RUPlayerCardCell"];
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

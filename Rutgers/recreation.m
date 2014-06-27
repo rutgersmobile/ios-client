@@ -24,13 +24,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    [self startNetworkLoad];
+}
+
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
     [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [self parseResponse:responseObject];
+        [self networkLoadSucceeded];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        [self networkLoadFailed];
     }];
 }
+
 -(void)parseResponse:(id)responseObject{
     self.recData = responseObject;
     NSArray *campuses = [responseObject allKeys];
@@ -55,6 +61,7 @@
     }
     [self.tableView endUpdates];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

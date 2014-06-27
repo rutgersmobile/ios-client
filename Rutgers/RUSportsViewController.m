@@ -9,7 +9,7 @@
 #import "RUSportsViewController.h"
 #import "RUSportsData.h"
 #import "EZCollectionViewSection.h"
-#import "ColoredTileCollectionViewItem.h"
+#import "TileCollectionViewItem.h"
 #import "RUSportsRosterViewController.h"
 
 @interface RUSportsViewController ()
@@ -43,7 +43,7 @@
     EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
     NSArray *sports = [[allSports allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     for (NSString *sport in sports) {
-        ColoredTileCollectionViewItem *item = [[ColoredTileCollectionViewItem alloc] initWithText:sport];
+        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:sport];
         item.didSelectItemBlock = ^ {
             RUSportsRosterViewController *rosterVC = [[RUSportsRosterViewController alloc] initWithSportID:allSports[sport]];
             rosterVC.title = sport;

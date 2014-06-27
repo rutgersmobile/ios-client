@@ -20,6 +20,8 @@
 #import "RUPlace.h"
 #import "RUMapsViewController.h"
 
+#import <NSString+HTML.h>
+
 @interface RURecCenterViewController ()
 @property (nonatomic) RURecCenterHoursSection *hoursSection;
 @property (nonatomic) NSDictionary *recCenter;
@@ -42,6 +44,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
 }
+
 -(void)makeSections{
     NSDictionary *meetingAreas = self.recCenter[@"meetingareas"];
     if (meetingAreas.count) {
@@ -84,7 +87,7 @@
     NSString *description = self.recCenter[@"FacilityBody"];
     if (description.length) {
         EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
-        EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
+        EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:[description stringByDecodingHTMLEntities] detailText:nil];
         descriptionRow.shouldHighlight = NO;
         [descriptionSection addRow:descriptionRow];
         [self addSection:descriptionSection];

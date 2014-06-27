@@ -10,7 +10,7 @@
 #import "RUBusRoute.h"
 #import "NSArray+RUBusStop.h"
 #import <HexColor.h>
-#import "RUPredictionsTableViewCell.h"
+#import "RUPredictionsHeaderTableViewCell.h"
 
 @interface RUPredictionsHeaderRow ()
 @property id item;
@@ -18,7 +18,7 @@
 
 @implementation RUPredictionsHeaderRow
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item{
-    self = [super initWithIdentifier:@"RUPredictionsTableViewCell"];
+    self = [super initWithIdentifier:@"RUPredictionsHeaderTableViewCell"];
     if (self) {
         self.item = item;
         self.predictions = predictions;
@@ -26,7 +26,7 @@
     return self;
 }
 
--(void)setupCell:(RUPredictionsTableViewCell *)cell{
+-(void)setupCell:(RUPredictionsHeaderTableViewCell *)cell{
     cell.titleLabel.text = [self title];
     cell.directionLabel.text = [self.item isKindOfClass:[NSArray class]] ? [self directionTitle] : nil;
     cell.timeLabel.text = [self arrivalTimeDescription];
@@ -44,6 +44,7 @@
 -(BOOL)active{
     return [self.predictions[@"direction"] firstObject] ? YES : NO;
 }
+
 -(NSString *)title{
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
         return self.predictions[@"_stopTitle"];
@@ -63,17 +64,26 @@
     if (![self active]) return @"No predictions available.";
     NSArray *predictions = [self.predictions[@"direction"] firstObject][@"prediction"];
     NSMutableString *string = [[NSMutableString alloc] init];
+    __block NSString *lastMinutes = nil;
+    
     [predictions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary *prediction = obj;
         NSString *minutes = prediction[@"_minutes"];
+        if ([minutes isEqualToString:@"0"]) minutes = @"<1";
         if ([string isEqualToString:@""]) {
-            [string appendString:minutes];
+            [string appendFormat:@"Arriving in %@",minutes];
         } else {
             [string appendFormat:@", %@",minutes,nil];
         }
+        lastMinutes = minutes;
         if (idx == 2) *stop = YES;
     }];
-    [string appendString:@" minutes"];
+    
+    if ([lastMinutes integerValue] > 1) {
+        [string appendString:@" minutes."];
+    } else {
+        [string appendString:@" minute."];
+    }
     return string;
 }
 

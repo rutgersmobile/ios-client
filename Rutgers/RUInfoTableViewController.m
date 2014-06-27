@@ -8,7 +8,6 @@
 
 #import "RUInfoTableViewController.h"
 #import <MessageUI/MessageUI.h>
-#import <TOWebViewController.h>
 #import "EZTableViewSection.h"
 #import "EZTableViewTextRow.h"
 #import "RUChannelManager.h"
@@ -20,16 +19,9 @@
 
 @implementation RUInfoTableViewController
 +(instancetype)componentForChannel:(NSDictionary *)channel{
-    return [[RUInfoTableViewController alloc] init];
+    return [[RUInfoTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
-- (instancetype)init
-{
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-        
-    }
-    return self;
-}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self makeSections];
@@ -37,7 +29,7 @@
 -(void)makeSections{
     NSArray *infoData = @[@{@"header" :@"Call RU-Info",
                             @"body" : @[@{@"type" : @"text" , @"text" : @"Contact a helpful Information Assistant at RU-info with your Rutgers questions by calling, texting, or email."},
-                                        @{@"type" : @"callButton", @"text" : @"Call (732-445-INFO)", @"number" : @"732-445-INFO"}]},
+                                        @{@"type" : @"callButton", @"text" : @"Call (732-445-INFO)", @"number" : @"telprompt://732-445-INFO"}]},
                           
                           @{@"header" :@"Text RU-Info",
                             @"body" : @[@{@"type" : @"text" , @"text" : @"Text RU-info with your question. To sign up for RU-info TEXT:"},
@@ -55,6 +47,7 @@
                             @"body" : @[@{@"type" : @"text" , @"text" : @"For hours and additional info, visit us online:"},
                                         @{@"type" : @"webButton", @"text" : @"Visit Website", @"url" : @"http://m.rutgers.edu/ruinfo.html"}]
                             }];
+    
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     
@@ -101,6 +94,7 @@
         [self addSection:section];
     }
 }
+
 -(BOOL)typeEnabled:(NSString *)type{
      if ([type isEqualToString:@"callButton"]) {
          return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"telprompt://732-445-INFO"]];
@@ -119,6 +113,7 @@
         messageVC.body = body;
         messageVC.recipients = recipients;
         messageVC.messageComposeDelegate = self;
+        messageVC.navigationBar.tintColor = [UIColor whiteColor];
         [self presentViewController:messageVC animated:YES completion:^{
             
         }];
@@ -130,8 +125,9 @@
     [mailVC setMessageBody:body isHTML:NO];
     [mailVC setToRecipients:recipients];
     mailVC.mailComposeDelegate = self;
+    mailVC.navigationBar.tintColor = [UIColor whiteColor];
     [self presentViewController:mailVC animated:YES completion:^{
-        
+
     }];
 }
 

@@ -27,22 +27,39 @@
     [super viewDidLoad];
     
     [self enableSearch];
-    
-    [[RUSOCData sharedInstance] getSubjectsForCurrentConfigurationWithCompletion:^(NSArray *subjects) {
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Subjects"];
-        for (NSDictionary *subject in subjects) {
-            NSString *subjectTitle = [NSString stringWithFormat:@"%@ (%@)",[subject[@"description"] capitalizedString],subject[@"code"]];
-            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:subjectTitle];
-            row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUSOCSubjectViewController alloc] initWithSubject:subjectTitle code:subject[@"code"]] animated:YES];
-            };
-            [section addRow:row];
-        }
-        [self addSection:section];
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
-    }];
-    // Do any additional setup after loading the view.
+    [self startNetworkLoad];
+       // Do any additional setup after loading the view.
 }
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
+    [[RUSOCData sharedInstance] getSubjectsForCurrentConfigurationWithSuccess:^(NSArray *subjects) {
+        if (self.sections.count) {
+            [self removeAllSections];
+            [self makeSectionsForResponse:subjects];
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [self makeSectionsForResponse:subjects];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        [self networkLoadSucceeded];
+    } failure:^{
+        [self networkLoadFailed];
+    }];
+}
+
+-(void)makeSectionsForResponse:(NSArray *)response{
+    EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Subjects"];
+    for (NSDictionary *subject in response) {
+        NSString *subjectTitle = [NSString stringWithFormat:@"%@ (%@)",[subject[@"description"] capitalizedString],subject[@"code"]];
+        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:subjectTitle];
+        row.didSelectRowBlock = ^{
+            [self.navigationController pushViewController:[[RUSOCSubjectViewController alloc] initWithSubject:subjectTitle code:subject[@"code"]] animated:YES];
+        };
+        [section addRow:row];
+    }
+    [self addSection:section];
+}
+
 -(void)enableSearch{
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
     

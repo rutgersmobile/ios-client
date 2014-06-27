@@ -10,7 +10,7 @@
 #define TILE_SPACING 3
 
 #import "TileCollectionViewController.h"
-#import "ColoredTileCollectionViewCell.h"
+#import "TileCollectionViewCell.h"
 #import "iPadCheck.h"
 
 @interface TileCollectionViewController ()
@@ -24,7 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.collectionView registerClass:[ColoredTileCollectionViewCell class] forCellWithReuseIdentifier:@"DynamicCollectionViewCell"];
+    [self.collectionView registerClass:[TileCollectionViewCell class] forCellWithReuseIdentifier:@"DynamicCollectionViewCell"];
     self.tileSpacing = TILE_SPACING;
     self.tilePadding = TILE_PADDING;
     self.tileAspectRatio = 203.0/170.0;

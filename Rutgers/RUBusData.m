@@ -125,12 +125,14 @@ NSString const *newarkAgency = @"rutgers-newark";
 -(void)getAgencyConfigIfNeeded{
     if (self.agencyTasks[newarkAgency] && self.agencyTasks[newBrunswickAgency]) return;
     
+    dispatch_group_enter(self.agencyGroup);
     [self getAgencyConfigForAgency:newBrunswickAgency];
+  
+    dispatch_group_enter(self.agencyGroup);
     [self getAgencyConfigForAgency:newarkAgency];
 }
 
 -(void)getAgencyConfigForAgency:(const NSString *)agency{
-    dispatch_group_enter(self.agencyGroup);
     NSDictionary *urls = @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"};
     self.agencyTasks[agency] = [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -140,6 +142,7 @@ NSString const *newarkAgency = @"rutgers-newark";
             [self getAgencyConfigForAgency:agency];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
         [self getAgencyConfigForAgency:agency];
     }];
 }
@@ -149,7 +152,10 @@ NSString const *newarkAgency = @"rutgers-newark";
 
     if (self.activeStopsAndRoutesTasks[newarkAgency] && self.activeStopsAndRoutesTasks[newBrunswickAgency]) return;
     
+    dispatch_group_enter(self.activeGroup);
     [self updateActiveStopsAndRoutesForAgency:newBrunswickAgency];
+    
+    dispatch_group_enter(self.activeGroup);
     [self updateActiveStopsAndRoutesForAgency:newarkAgency];
     
     dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
@@ -169,7 +175,6 @@ NSString const *newarkAgency = @"rutgers-newark";
 }
 
 -(void)updateActiveStopsAndRoutesForAgency:(const NSString *)agency{
-    dispatch_group_enter(self.activeGroup);
     NSDictionary *urls = @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"};
     [[RUNetworkManager jsonSessionManager] GET:urls[agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -188,20 +193,20 @@ NSString const *newarkAgency = @"rutgers-newark";
 }
 
 #pragma mark - predictions api
--(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock{
+-(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     if (!([item isKindOfClass:[RUBusRoute class]] || ([item isKindOfClass:[NSArray class]] && [item isArrayOfBusStops]))) return;
     
     [[RUNetworkManager xmlSessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-       
+        
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
-            completionBlock(predictions);
+            successBlock(predictions);
         } else {
-            [self getPredictionsForItem:item withCompletion:completionBlock];
+            failureBlock();
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self getPredictionsForItem:item withCompletion:completionBlock];
+        failureBlock();
     }];
 }
 

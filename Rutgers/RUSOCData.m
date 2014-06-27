@@ -33,6 +33,7 @@ static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
 -(NSString *)stringWithStringRelativeToBase:(NSString *)string{
     return [NSString stringWithFormat:@"%@%@",baseString,string];
 }
+
 - (instancetype)init
 {
     self = [super init];
@@ -62,24 +63,23 @@ static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
     self.level = level;
 }
 
--(void)getSubjectsForCurrentConfigurationWithCompletion:(void (^)(NSArray *subjects))completionBlock{
+-(void)getSubjectsForCurrentConfigurationWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-       // NSString *getString = [NSString stringWithFormat:@"?semester=%@&campus=%@&level=%@",self.currentSemester,self.campus,self.level];
         [[RUNetworkManager jsonSessionManager] GET:[self stringWithStringRelativeToBase:@"subjects.json"] parameters:@{@"semester" : self.currentSemester, @"campus" : self.campus, @"level" : self.level} success:^(NSURLSessionDataTask *task, id responseObject) {
-            completionBlock(responseObject);
+            successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [self getSubjectsForCurrentConfigurationWithCompletion:completionBlock];
+            failureBlock();
         }];
     });
 }
 
--(void)getCoursesForSubjectCode:(NSString *)subject forCurrentConfigurationWithCompletion:(void (^)(NSArray *courses))completionBlock{
+-(void)getCoursesForSubjectCode:(NSString *)subject forCurrentConfigurationWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
         //NSString *getString = [NSString stringWithFormat:@"courses.json?subject=%@&semester=%@&campus=%@&level=%@",subject,self.currentSemester,self.campus,self.level];
         [[RUNetworkManager jsonSessionManager] GET:[self stringWithStringRelativeToBase:@"courses.json"] parameters:@{@"subject" : subject, @"semester" : self.currentSemester, @"campus" : self.campus, @"level" : self.level} success:^(NSURLSessionDataTask *task, id responseObject) {
-            completionBlock(responseObject);
+            successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [self getCoursesForSubjectCode:subject forCurrentConfigurationWithCompletion:completionBlock];
+            failureBlock();
         }];
     });
 }

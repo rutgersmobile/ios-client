@@ -43,30 +43,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   // self.tableView.estimatedRowHeight = 0;
-    self.refreshControl = [[UIRefreshControl alloc] init];
 
-    [self.refreshControl addTarget:self action:@selector(getPredictions) forControlEvents:UIControlEventValueChanged];
-    [self.refreshControl beginRefreshing];
-
-    [self getPredictions];
+    [self startNetworkLoad];
     [self startTimer];
+}
+
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
+    [[RUBusData sharedInstance] getPredictionsForItem:self.item withSuccess:^(NSArray *response) {
+        [self parseResponse:response];
+        [self networkLoadSucceeded];
+    } failure:^{
+        [self networkLoadFailed];
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:NO];
-}
-
--(void)getPredictions{
-    [[RUBusData sharedInstance] getPredictionsForItem:self.item withCompletion:^(NSArray *response) {
-        [self parseResponse:response];
-    }];
 }
 
 -(void)parseResponse:(NSArray *)response{
-    [self.refreshControl endRefreshing];
-
      if (self.sections.count == 0) {
         for (NSDictionary *predictions in response) {
             [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
@@ -83,7 +79,7 @@
 -(void)startTimer{
     __weak typeof(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(PREDICTION_TIMER_INTERVAL * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf getPredictions];
+        [weakSelf startNetworkLoad];
         [weakSelf startTimer];
     });
 }

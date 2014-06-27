@@ -18,8 +18,7 @@ NSString const* newarkAgency;
 -(void)getAgencyConfigWithCompletion:(void (^)(NSDictionary *allStops, NSDictionary *allRoutes))completionBlock;
 -(void)getActiveStopsAndRoutesWithCompletion:(void (^)(NSDictionary *activeStops, NSDictionary *activeRoutes))completionBlock;
 
--(void)getPredictionsForItem:(id)item withCompletion:(void (^)(NSArray *response))completionBlock;
-
+-(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
 -(void)getActiveStopsNearLocation:(CLLocation *)location completion:(void (^)(NSArray *results))completionBlock;
 
