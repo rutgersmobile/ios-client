@@ -68,13 +68,17 @@
 }
 
 -(void)goLeft{
+    if (self.currentDateIndex == 0) return;
     self.currentDateIndex--;
     [self updateDate];
 }
+
 -(void)goRight{
+    if (self.currentDateIndex == self.allDateComponents.count - 1) return;
     self.currentDateIndex++;
     [self updateDate];
 }
+
 -(void)updateDate{
     NSString *date = NSStringFromDateComponents(self.allDateComponents[self.currentDateIndex]);
     [self.rows makeObjectsPerformSelector:@selector(setDate:) withObject:date];
@@ -83,9 +87,11 @@
     self.headerRow.rightButtonEnabled = !(self.currentDateIndex == self.allDateComponents.count - 1);
 
 }
+
 NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
     return [NSString stringWithFormat:@"%ld/%ld/%ld",(long)dateComponents.month,(long)dateComponents.day,(long)dateComponents.year];
 }
+
 -(NSArray *)componentsForDateStrings:(NSSet *)dateStrings{
     NSMutableArray *allDateComponents = [NSMutableArray array];
     for (NSString *dateString in dateStrings) {
