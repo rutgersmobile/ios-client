@@ -17,7 +17,7 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewCell *cell = [super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
-    UIColor *color = [self colorForCollectionView:collectionView cell:cell itemAtIndexPath:indexPath];
+    UIColor *color = [self colorForCollectionView:collectionView cell:cell atIndexPath:indexPath];
     
     cell.backgroundColor = color;
     
@@ -31,7 +31,7 @@
     return cell;
 }
 
--(UIColor *)colorForCollectionView:(UICollectionView *)collectionView cell:(UICollectionViewCell *)cell itemAtIndexPath:(NSIndexPath *)indexPath{
+-(UIColor *)colorForCollectionView:(UICollectionView *)collectionView cell:(UICollectionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath{
     static NSArray *colorData = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
