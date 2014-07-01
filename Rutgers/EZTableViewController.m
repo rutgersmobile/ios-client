@@ -16,7 +16,6 @@
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) NSMutableArray *searchResultSections;
 @property (nonatomic) BOOL searchEnabled;
-//@property (nonatomic) BOOL updating;
 @end
 
 @implementation EZTableViewController

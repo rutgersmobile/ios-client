@@ -20,7 +20,7 @@
 
 @property (nonatomic) NSMutableArray *sections;
 
-- (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section ;
+- (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section;
 - (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath;
 
 -(void)startNetworkLoad;
