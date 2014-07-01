@@ -9,7 +9,7 @@
 #import "EZTableViewRightDetailRow.h"
 
 @interface RURecCenterHoursHeaderRow : EZTableViewRightDetailRow
--(void)setDate:(NSString *)date;
+@property (nonatomic) NSString *date;
 
 @property (nonatomic) BOOL leftButtonEnabled;
 @property (nonatomic) BOOL rightButtonEnabled;

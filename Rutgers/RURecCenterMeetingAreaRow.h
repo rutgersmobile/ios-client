@@ -9,6 +9,6 @@
 #import "EZTableViewRightDetailRow.h"
 
 @interface RURecCenterMeetingAreaRow : EZTableViewRightDetailRow
--(void)setDate:(NSString *)date;
+@property (nonatomic) NSString *date;
 -(instancetype)initWithArea:(NSString *)area times:(NSDictionary *)dates;
 @end

@@ -10,7 +10,6 @@
 #import "RURecCenterHoursHeaderTableViewCell.h"
 
 @interface RURecCenterHoursHeaderRow ()
-@property (nonatomic) NSString *date;
 @end
 @implementation RURecCenterHoursHeaderRow
 -(id)init{

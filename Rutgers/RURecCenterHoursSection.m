@@ -15,7 +15,8 @@
 
 @property (nonatomic) NSDateComponents *currentDateComponents;
 @property (nonatomic) NSArray *allDateComponents;
-@property NSInteger currentDateIndex;
+@property (nonatomic) NSInteger todaysDateIndex;
+@property (nonatomic) NSInteger selectedDateIndex;
 
 @property (nonatomic) NSMutableArray *rows;
 
@@ -42,10 +43,10 @@
         self.allDateComponents = [self componentsForDateStrings:dates];
         if (!self.allDateComponents.count) self.allDateComponents = @[self.currentDateComponents];
         
-
-        self.currentDateIndex = [self.allDateComponents indexOfObject:self.currentDateComponents inSortedRange:NSMakeRange(0, self.allDateComponents.count) options:NSBinarySearchingFirstEqual usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        self.todaysDateIndex = [self.allDateComponents indexOfObject:self.currentDateComponents inSortedRange:NSMakeRange(0, self.allDateComponents.count) options:NSBinarySearchingFirstEqual usingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [self compareComponents:obj1 withComponents:obj2];
         }];
+        self.selectedDateIndex = self.todaysDateIndex;
         
         RURecCenterHoursHeaderRow *header = [[RURecCenterHoursHeaderRow alloc] init];
         header.shouldHighlight = NO;
@@ -68,23 +69,27 @@
 }
 
 -(void)goLeft{
-    if (self.currentDateIndex == 0) return;
-    self.currentDateIndex--;
+    if (self.selectedDateIndex == 0) return;
+    self.selectedDateIndex--;
     [self updateDate];
 }
 
 -(void)goRight{
-    if (self.currentDateIndex == self.allDateComponents.count - 1) return;
-    self.currentDateIndex++;
+    if (self.selectedDateIndex == self.allDateComponents.count - 1) return;
+    self.selectedDateIndex++;
     [self updateDate];
 }
 
 -(void)updateDate{
-    NSString *date = NSStringFromDateComponents(self.allDateComponents[self.currentDateIndex]);
+    NSString *date = NSStringFromDateComponents(self.allDateComponents[self.selectedDateIndex]);
     [self.rows makeObjectsPerformSelector:@selector(setDate:) withObject:date];
     
-    self.headerRow.leftButtonEnabled = !(self.currentDateIndex == 0);
-    self.headerRow.rightButtonEnabled = !(self.currentDateIndex == self.allDateComponents.count - 1);
+    if (self.selectedDateIndex == self.todaysDateIndex) {
+        self.headerRow.date = @"Today";
+    }
+    
+    self.headerRow.leftButtonEnabled = !(self.selectedDateIndex == 0);
+    self.headerRow.rightButtonEnabled = !(self.selectedDateIndex == self.allDateComponents.count - 1);
 
 }
 

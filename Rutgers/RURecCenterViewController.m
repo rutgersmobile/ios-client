@@ -61,6 +61,7 @@
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
         };
+        row.shouldCopy = YES;
         [addressSection addRow:row];
         
         [self addSection:addressSection];
@@ -71,6 +72,7 @@
         EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
         EZTableViewRightDetailRow *infoRow = [[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil];
         infoRow.shouldHighlight = NO;
+        infoRow.shouldCopy = YES;
         [informationSection addRow:infoRow];
         [self addSection:informationSection];
     }
@@ -80,6 +82,7 @@
         EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
         EZTableViewRightDetailRow *buisnessRow = [[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil];
         buisnessRow.shouldHighlight = NO;
+        buisnessRow.shouldCopy = YES;
         [buisnessSection addRow:buisnessRow];
         [self addSection:buisnessSection];
     }
@@ -89,11 +92,12 @@
         EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
         EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:[description stringByDecodingHTMLEntities] detailText:nil];
         descriptionRow.shouldHighlight = NO;
+        descriptionRow.shouldCopy = YES;
         [descriptionSection addRow:descriptionRow];
         [self addSection:descriptionSection];
     }
-
 }
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
