@@ -26,6 +26,9 @@
     [super viewDidLoad];
     [self makeSections];
 }
+/**
+ *  Build the data structure containing all the information pertinent to the ru-info channel
+ */
 -(void)makeSections{
     NSArray *infoData = @[@{@"header" :@"Call RU-Info",
                             @"body" : @[@{@"type" : @"text" , @"text" : @"Contact a helpful Information Assistant at RU-info with your Rutgers questions by calling, texting, or email."},
@@ -48,24 +51,36 @@
                                         @{@"type" : @"webButton", @"text" : @"Visit Website", @"url" : @"http://m.rutgers.edu/ruinfo.html"}]
                             }];
     
+    //Create centered paragraph style for use below
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
     
+    //These attributes will be applied to all the text onscreen that is not a button
     NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle};
+   
+    //These attributes will be applied to all buttons
     NSDictionary *buttonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : self.view.tintColor};
     NSDictionary *disabledButtonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : [UIColor darkGrayColor]};
     
+    //Loop through the sections in infoData
     for (NSDictionary *sectionDictionary in infoData) {
+        
+        //Make a new section
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:sectionDictionary[@"header"]];
+        
+        //Loop through all the body rows
         for (NSDictionary *rowDictionary in sectionDictionary[@"body"]) {
             NSString *string = rowDictionary[@"text"];
             NSString *type = rowDictionary[@"type"];
             EZTableViewTextRow *row = [[EZTableViewTextRow alloc] init];
             if ([type isEqualToString:@"text"]) {
+                //Configure for static text
                 row.shouldHighlight = NO;
                 row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
             } else {
+                //Configure button
                 if ([self typeEnabled:type]) {
+                    //If the buttons action can be handled, figure out its type and set up the action
                     row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
                     if ([type isEqualToString:@"callButton"]) {
                         row.didSelectRowBlock = ^{
@@ -85,6 +100,7 @@
                         };
                     }
                 } else {
+                    //Otherwise grey out the button
                     row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
                 }
                 row.showsDisclosureIndicator = NO;
@@ -95,6 +111,13 @@
     }
 }
 
+/**
+ *  Checks if a specified button action type can be handled
+ *
+ *  @param type callButton, textButton, emailButton, webButton
+ *
+ *  @return YES if the action can be handled, no otherwise
+ */
 -(BOOL)typeEnabled:(NSString *)type{
      if ([type isEqualToString:@"callButton"]) {
          return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"telprompt://732-445-INFO"]];
@@ -107,6 +130,13 @@
     }
     return NO;
 }
+
+/**
+ *  Present the user a view controller to send a text message
+ *
+ *  @param recipients An array of text message recipients
+ *  @param body       The body of the text message
+ */
 -(void)presentMessageComposeViewControllerWithRecipients:(NSArray *)recipients body:(NSString *)body{
     if ([MFMessageComposeViewController canSendText]) {
         MFMessageComposeViewController *messageVC = [[MFMessageComposeViewController alloc] init];
@@ -114,18 +144,26 @@
         messageVC.recipients = recipients;
         messageVC.messageComposeDelegate = self;
         messageVC.navigationBar.tintColor = [UIColor whiteColor];
+        messageVC.toolbar.tintColor = [UIColor whiteColor];
         [self presentViewController:messageVC animated:YES completion:^{
             
         }];
     }
 }
 
+/**
+ *  Present the user a view controller to send a email
+ *
+ *  @param recipients An array of mail recipients
+ *  @param body       The body of the mail message
+ */
 -(void)presentMailCompseViewControllerWithRecipients:(NSArray *)recipients body:(NSString *)body{
     MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
     [mailVC setMessageBody:body isHTML:NO];
     [mailVC setToRecipients:recipients];
     mailVC.mailComposeDelegate = self;
     mailVC.navigationBar.tintColor = [UIColor whiteColor];
+    mailVC.toolbar.tintColor = [UIColor whiteColor];
     [self presentViewController:mailVC animated:YES completion:^{
 
     }];
