@@ -25,6 +25,10 @@
     }
     return self;
 }
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
+}
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     [NSException raise:@"Must override abstract methods in ALTableview" format:nil];
@@ -72,9 +76,6 @@
         self.layoutCells[identifier] = cell;
     }
     return cell;
-}
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return UITableViewAutomaticDimension;
 }
 
 #pragma mark - Table view data source

@@ -61,14 +61,6 @@
     }
     return cell;
 }
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([self.insertingIndexPaths containsObject:indexPath]) {
-        return [self tableView:tableView heightForRowAtIndexPath:indexPath];
-    } else {
-        return [super tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-    }
-}
-
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     return (indexPath.row == 0);
