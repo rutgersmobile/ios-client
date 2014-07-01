@@ -51,8 +51,8 @@
 -(void)startNetworkLoad{
     [super startNetworkLoad];
     [[RUBusData sharedInstance] getPredictionsForItem:self.item withSuccess:^(NSArray *response) {
-        [self parseResponse:response];
         [self networkLoadSucceeded];
+        [self parseResponse:response];
     } failure:^{
         [self networkLoadFailed];
     }];
@@ -87,20 +87,6 @@
 -(void)dealloc{
 
 }
-
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUPredictionsExpandingSection *section = (RUPredictionsExpandingSection *)[self sectionInTableView:tableView atIndex:indexPath.section];
-    if (!section.active) return NO;
-    return [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
-}
-/*
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 0) {
-        return self.tableView.rowHeight;
-    } else {
-        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-    }
-}*/
 
 - (void)didReceiveMemoryWarning
 {
