@@ -19,7 +19,7 @@
         if ([imageURLString rangeOfString:@"blockr.jpg"].location == NSNotFound) {
             self.imageUrl = [NSURL URLWithString:imageURLString];
         }
-        self.jerseyNumber = [dictionary[@"jerseyNumber"] firstObject];
+        self.jerseyNumber = [[dictionary[@"jerseyNumber"] firstObject] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
         self.physique = [dictionary[@"physique"] firstObject];
         self.position = [dictionary[@"position"] firstObject];
         self.hometown = [dictionary[@"fullName"] firstObject];

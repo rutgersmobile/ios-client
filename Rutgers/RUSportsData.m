@@ -8,6 +8,7 @@
 
 #import "RUSportsData.h"
 #import "RUNetworkManager.h"
+#import "RUSportsPlayer.h"
 
 @implementation RUSportsData
 +(NSDictionary *)allSports{
@@ -40,7 +41,13 @@
 }
 +(void)getRosterForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-roster.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
-        successBlock(responseObject[@"row"]);
+        NSArray *responseItems = responseObject[@"row"];
+        NSMutableArray *parsedItems = [NSMutableArray array];
+        for (NSDictionary *responseItem in responseItems) {
+            RUSportsPlayer *player = [[RUSportsPlayer alloc] initWithDictionary:responseItem];
+            [parsedItems addObject:player];
+        }
+        successBlock(parsedItems);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failureBlock();
     }];

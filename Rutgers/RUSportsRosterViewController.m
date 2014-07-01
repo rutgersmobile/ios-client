@@ -7,16 +7,23 @@
 //
 
 #import "RUSportsRosterViewController.h"
-#import "RUPlayerCell.h"
+#import "RUSportsPlayerCell.h"
+#import "RUSportsPlayerRow.h"
 #import "RUSportsData.h"
-#import "EZCollectionViewSection.h"
-#import "RUPlayerItem.h"
+#import "EZTableViewSection.h"
 #import "RUSportsPlayer.h"
-#import "RUSportsPlayerViewController.h"
-#import "iPadCheck.h"
+#import "RUSportsRosterSectionHeaderView.h"
+#import "RUSportsRosterPlayerHeaderCell.h"
 
 @interface RUSportsRosterViewController ()
 @property NSString *sportID;
+
+@property EZTableViewSection *headerSection;
+@property EZTableViewSection *bioSection;
+@property EZTableViewSection *rosterSection;
+
+@property NSInteger selectedPlayerIndex;
+@property NSArray *players;
 @end
 
 @implementation RUSportsRosterViewController
@@ -32,34 +39,63 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.maxTileWidth = iPad() ? 180.0 : 130;
-    self.tileAspectRatio = 2.0/3.0;
-    self.tileSpacing = 4;
-    self.tilePadding = 4;
-    [self.collectionView registerClass:[RUPlayerCell class] forCellWithReuseIdentifier:@"RUPlayerCardCell"];
-    
+    self.tableView.separatorColor = [UIColor clearColor];
+    [self.tableView registerClass:[RUSportsRosterSectionHeaderView class] forHeaderFooterViewReuseIdentifier:@"HeaderView"];
     [self startNetworkLoad];
 }
+
 -(void)startNetworkLoad{
-    [super startNetworkLoad];
     [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
-        EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
-        for (NSDictionary *playerDictionary in response) {
-            RUSportsPlayer *player = [[RUSportsPlayer alloc] initWithDictionary:playerDictionary];
-            RUPlayerItem *playerItem = [[RUPlayerItem alloc] initWithSportsPlayer:player];
-            playerItem.didSelectItemBlock = ^ {
-                [self.navigationController pushViewController:[[RUSportsPlayerViewController alloc] initWithPlayer:player] animated:YES];
-            };
-            [section addItem:playerItem];
-        }
-        [self addSection:section];
-        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:0]];
+        self.players = response;
+        [self makeRosterSection];
         [self networkLoadSucceeded];
     } failure:^{
         [self networkLoadFailed];
     }];
 }
+
+-(void)makeRosterSection{
+    EZTableViewSection *rosterSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Roster"];
+    for (RUSportsPlayer *player in self.players) {
+        RUSportsPlayerRow *playerRow = [[RUSportsPlayerRow alloc] initWithPlayer:player];
+        playerRow.showsDisclosureIndicator = NO;
+        playerRow.didSelectRowBlock = ^{
+            [self selectPlayerAtIndex:[self.players indexOfObject:player]];
+        };
+        [rosterSection addRow:playerRow];
+    }
+    [self addSection:rosterSection];
+    self.rosterSection = rosterSection;
+    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:[self indexOfRosterSection]] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+-(NSInteger)indexOfRosterSection{
+    return [self.sections indexOfObject:self.rosterSection];
+}
+
+-(void)selectPlayerAtIndex:(NSInteger)index{
+    UIView *playerHeaderView = [[RUSportsRosterPlayerHeaderCell alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 118)];
+    [self.tableView beginUpdates];
+    self.tableView.tableHeaderView = playerHeaderView;
+    [self.tableView endUpdates];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return nil;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSString *title = [super tableView:tableView titleForHeaderInSection:section];
+    RUSportsRosterSectionHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"HeaderView"];
+    headerView.sectionHeaderLabel.text = title;
+    return headerView;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    return 38;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

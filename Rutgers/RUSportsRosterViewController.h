@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "TileCollectionViewController.h"
+#import "EZTableViewController.h"
 
-@interface RUSportsRosterViewController : TileCollectionViewController
+@interface RUSportsRosterViewController : EZTableViewController
 -(id)initWithSportID:(NSString *)sportID;
 @end
