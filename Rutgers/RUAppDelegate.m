@@ -47,21 +47,16 @@
     
     NSArray *channels = [self.channelManager loadChannels];
     
-    self.tabBarController.viewControllers = [self viewControllerForChannels:channels];
+    self.tabBarController.viewControllers = [self viewControllersForChannels:channels];
     
     [self.channelManager loadWebLinksWithCompletion:^(NSArray *webLinks) {
-        NSArray *viewControllers = [self viewControllerForChannels:webLinks];
+        NSArray *viewControllers = [self viewControllersForChannels:webLinks];
         self.tabBarController.viewControllers = [self.tabBarController.viewControllers arrayByAddingObjectsFromArray:viewControllers];
     }];
     
     [RUAppearance applyAppearance];
     
-    /*
-    [RUAppearance applyAppearanceToTabBarController:self.tabBarController];
-    [RUAppearance applyAppearanceToNavigationController:self.tabBarController.moreNavigationController];
-    */
-   // [self.tabBarController.moreNavigationController setViewControllers:@[]];
-    
+
     self.window.rootViewController = self.tabBarController;
     
     /*
@@ -82,7 +77,7 @@
     return YES;
 }
 
--(NSArray *)viewControllerForChannels:(NSArray *)channels{
+-(NSArray *)viewControllersForChannels:(NSArray *)channels{
     NSMutableArray *viewControllers = [NSMutableArray array];
     for (NSDictionary *channel in channels) {
         UIViewController *viewController = [self.channelManager viewControllerForChannel:channel];
@@ -94,10 +89,7 @@
     }
     return viewControllers;
 }
--(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
-    CGFloat ratio = [tabBarController.viewControllers indexOfObject:viewController]/((CGFloat)tabBarController.viewControllers.count);
-    self.tabBarController.tabBar.tintColor = [UIColor colorWithHue:ratio saturation:1 brightness:1 alpha:1];
-}
+
 -(void)initCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cachesFolder = paths[0];
