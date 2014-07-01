@@ -51,6 +51,7 @@
 }
 
 -(void)getURL:(NSString *)url{
+    if (!url) return;
     [[RUNetworkManager xmlSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *channel = [responseObject[@"channel"] firstObject];
