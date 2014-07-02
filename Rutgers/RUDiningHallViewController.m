@@ -21,13 +21,9 @@
     if (self) {
         self.diningHall = diningHall;
         self.title = diningHall[@"location_name"];
+        [self makeSections];
     }
     return self;
-}
-
--(void)viewDidLoad{
-    [super viewDidLoad];
-    [self makeSections];
 }
 
 -(void)makeSections{
