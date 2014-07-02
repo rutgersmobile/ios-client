@@ -43,8 +43,8 @@
 }
 
 -(void)getFoodWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
-    // NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
-    NSString *url = @"http://vps.rsopher.com/nutrition.json";
+    NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
+   // NSString *url = @"http://vps.rsopher.com/nutrition.json";
     [[RUNetworkManager jsonSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             NSArray *food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
