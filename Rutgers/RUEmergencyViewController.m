@@ -21,55 +21,36 @@
 +(instancetype)componentForChannel:(NSDictionary *)channel{
     return [[RUEmergencyViewController alloc] init];
 }
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
-        
-        NSString *emergencyAlertTitle = @"Emergency Alerts";
-        TileCollectionViewItem *alertsItem = [[TileCollectionViewItem alloc] initWithText:emergencyAlertTitle];
-        alertsItem.didSelectItemBlock = ^ {
-            RUOperatingStatusViewController *operatingStatusVc = [[RUOperatingStatusViewController alloc] init];
-            operatingStatusVc.title = emergencyAlertTitle;
-            [self.navigationController pushViewController:operatingStatusVc animated:YES];
-        };
-    
-        NSString *actionPlanTitle = @"Emergency Action Plans";
-        TileCollectionViewItem *actionPlanItem = [[TileCollectionViewItem alloc] initWithText:actionPlanTitle];
-        actionPlanItem.didSelectItemBlock = ^ {
-            [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : actionPlanTitle, @"view" : @"www", @"url" : @"http://halflife.rutgers.edu/eap/mobile.php"}] animated:YES];
-        };
-        
-        [section addItems:@[alertsItem,actionPlanItem]];
-        
-        [self addSection:section];
-
+        [self makeSections];
     }
     return self;
 }
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+
+-(void)makeSections{
+    EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
     
-    // Do any additional setup after loading the view.
+    NSString *emergencyAlertTitle = @"Emergency Alerts";
+    TileCollectionViewItem *alertsItem = [[TileCollectionViewItem alloc] initWithText:emergencyAlertTitle];
+    alertsItem.didSelectItemBlock = ^ {
+        RUOperatingStatusViewController *operatingStatusVc = [[RUOperatingStatusViewController alloc] init];
+        operatingStatusVc.title = emergencyAlertTitle;
+        [self.navigationController pushViewController:operatingStatusVc animated:YES];
+    };
+    
+    NSString *actionPlanTitle = @"Emergency Action Plans";
+    TileCollectionViewItem *actionPlanItem = [[TileCollectionViewItem alloc] initWithText:actionPlanTitle];
+    actionPlanItem.didSelectItemBlock = ^ {
+        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : actionPlanTitle, @"view" : @"www", @"url" : @"http://halflife.rutgers.edu/eap/mobile.php"}] animated:YES];
+    };
+    
+    [section addItems:@[alertsItem,actionPlanItem]];
+    
+    [self addSection:section];
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
