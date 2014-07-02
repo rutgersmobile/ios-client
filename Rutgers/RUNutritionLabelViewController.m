@@ -21,14 +21,11 @@
     if (self) {
         self.foodItem = foodItem;
         self.title = [foodItem[@"name"] capitalizedString];
- 
+        [self makeSections];
     }
     return self;
 }
--(void)viewDidLoad{
-    [super viewDidLoad];
-    [self makeSections];
-}
+
 -(void)makeSections{
     EZTableViewRightDetailRow *calories = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"calories"] stringValue] detailText:@"Calories"];
     EZTableViewRightDetailRow *serving = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"serving"] capitalizedString] detailText:@"Serving"];
