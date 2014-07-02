@@ -2,20 +2,8 @@
   {
   "handle" : "bus",
   "title": "Bus",
-  "view" : "RUBusViewController",
+  "view" : "bus",
   "icon" : "bus"
-  },
-  {
-  "handle" : "food",
-  "title": "Food",
-  "view" : "RUFoodViewController",
-  "icon" : "food"
-  },
-  {
-  "handle" : "maps",
-  "title": "Maps",
-  "view" : "RUMapsComponent",
-  "icon" : "maps"
   },
   {
   "handle" : "news",
@@ -25,30 +13,36 @@
   "icon" : "news"
   },
   {
-  "handle" : "ruinfo",
-  "title": "RU-Info",
-  "view" : "RUInfoTableViewController",
-  "icon" : "ruinfo"
+  "handle" : "food",
+  "title": "Food",
+  "view" : "food",
+  "icon" : "food"
   },
   {
-  "handle" : "recreation_index",
+  "handle" : "places",
+  "title": "Places",
+  "view" : "places",
+  "icon" : "places"
+  },
+  {
+  "handle" : "recreation",
   "title": "Recreation",
   "url": "https://rumobile.rutgers.edu/1/rec.txt",
   "view" : "dtable",
   "icon" : "recreation"
   },
   {
-  "handle" : "places",
-  "title": "Places",
-  "view" : "RUPlacesViewController",
-  "icon" : "places"
-  },
-  {
-  "handle" : "calendar",
+  "handle" : "events",
   "title": "Events",
   "url": "https://rumobile.rutgers.edu/1/events.txt",
   "view" : "dtable",
   "icon" : "events"
+  },
+  {
+  "handle" : "ruinfo",
+  "title": "RU-Info",
+  "view" : "ruinfo",
+  "icon" : "ruinfo"
   },
   {
   "handle" : "career_services",
@@ -60,25 +54,25 @@
   {
   "handle" : "soc",
   "title": "Schedule of Classes",
-  "view" : "RUSOCViewController",
+  "view" : "soc",
   "icon" : "soc"
   },
   {
-  "handle" : "sports",
+  "handle" : "athletics",
   "title": "Athletics",
-  "view" : "RUSportsViewController",
-  "icon" : "sports"
+  "view" : "athletics",
+  "icon" : "athletics"
   },
   {
   "handle" : "campus_status",
   "title": "Emergency Alerts",
-  "view" : "RUEmergencyViewController",
-  "icon" : "emergency4"
+  "view" : "emergency",
+  "icon" : "emergency"
   },
   {
   "handle" : "feedback",
   "title": "Feedback",
-  "view" : "RUFeedbackViewController",
+  "view" : "feedback",
   "icon" : "feedback"
   }
 ]
