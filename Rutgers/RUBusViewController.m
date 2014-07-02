@@ -87,7 +87,7 @@ typedef enum : NSUInteger {
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-  //  [self.navigationController setToolbarHidden:NO animated:NO];
+    [self.navigationController setToolbarHidden:NO animated:NO];
     [[RULocationManager sharedLocationManager] addDelegatesObject:self];
 }
 
@@ -101,6 +101,7 @@ typedef enum : NSUInteger {
     [self setupToolbarHeightForInterfaceOrientation:toInterfaceOrientation];
 }
 
+#pragma mark - Bus Data Source Methods
 -(void)loadAgency{
     [self.busData getAgencyConfigWithCompletion:^(NSDictionary *allStops, NSDictionary *allRoutes) {
         [self.tableView beginUpdates];
@@ -142,7 +143,7 @@ typedef enum : NSUInteger {
     }];
 }
 
-#pragma mark - location
+#pragma mark - Location Manager Methods
 -(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location{
     self.lastLocation = location;
     [self updateNearbyStopsWithLocation:location];
@@ -162,7 +163,7 @@ typedef enum : NSUInteger {
     }];
 }
 
-#pragma mark - segmented control
+#pragma mark - Segmented Control
 
 -(void)segmentedControlButtonChanged:(UISegmentedControl *)segmentedControl{    
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -178,15 +179,10 @@ typedef enum : NSUInteger {
     [self.segmentedControl addTarget:self action:@selector(segmentedControlButtonChanged:) forControlEvents:UIControlEventValueChanged];
     self.segmentedControl.frame = CGRectMake(0, 0, 290, 30);
     
-    self.navigationItem.titleView = self.segmentedControl;
-
-    /*
-    UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:(UIView *)segmentedControl];
+    UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = [NSArray arrayWithObjects: flexibleSpace, segmentedControlButtonItem, flexibleSpace, nil];
     [self setToolbarItems:barArray];
-     */
-
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults registerDefaults:@{busLastPaneKey: @(1)}];
@@ -205,7 +201,7 @@ typedef enum : NSUInteger {
     }
 }
 
-#pragma mark - search bar
+#pragma mark - Search Bar
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
     dispatch_group_enter(self.searchingGroup);
 }
