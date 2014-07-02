@@ -45,10 +45,16 @@
 }
 
 -(void)startNetworkLoad{
+    [super startNetworkLoad];
     [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
+        [self networkLoadSucceeded];
+        [self.tableView beginUpdates];
+        if (self.sections.count) {
+            [self removeAllSections];
+        }
         self.players = response;
         [self makeRosterSection];
-        [self networkLoadSucceeded];
+        [self.tableView endUpdates];
     } failure:^{
         [self networkLoadFailed];
     }];
@@ -66,7 +72,6 @@
     }
     [self addSection:rosterSection];
     self.rosterSection = rosterSection;
-    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:[self indexOfRosterSection]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(NSInteger)indexOfRosterSection{
@@ -74,10 +79,11 @@
 }
 
 -(void)selectPlayerAtIndex:(NSInteger)index{
+    /*
     UIView *playerHeaderView = [[RUSportsRosterPlayerHeaderCell alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 118)];
     [self.tableView beginUpdates];
     self.tableView.tableHeaderView = playerHeaderView;
-    [self.tableView endUpdates];
+    [self.tableView endUpdates];*/
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
