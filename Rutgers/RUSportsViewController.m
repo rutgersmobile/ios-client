@@ -25,14 +25,9 @@
 {
     self = [super init];
     if (self) {
-
+        [self makeSections];
     }
     return self;
-}
-
--(void)viewDidLoad{
-    [super viewDidLoad];
-    [self makeSections];
 }
 
 -(void)makeSections{
