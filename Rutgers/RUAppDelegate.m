@@ -13,8 +13,6 @@
 #import "RURootController.h"
 #import "RUAppearance.h"
 
-#import "RUTabBarController.h"
-
 #import "RUChannelManager.h"
 #import "RUUserInfoManager.h"
 
@@ -23,8 +21,7 @@
 #define DISK_MEGS 50
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
-//@property RURootController *rootController;
-@property RUTabBarController *tabBarController;
+@property RURootController *rootController;
 @property RUChannelManager *channelManager;
 @end
 
@@ -34,35 +31,15 @@
 {
     [self initCache];
     [application setStatusBarHidden:NO];
-    
     [RUAppearance applyAppearance];
-
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-        
-    self.tabBarController = [[RUTabBarController alloc] init];
-    self.tabBarController.delegate = self;
     
     self.channelManager = [RUChannelManager sharedInstance];
-    
-    NSArray *channels = [self.channelManager loadChannels];
-    
-    self.tabBarController.viewControllers = [self viewControllersForChannels:channels];
-    
-    [self.channelManager loadWebLinksWithCompletion:^(NSArray *webLinks) {
-        NSArray *viewControllers = [self viewControllersForChannels:webLinks];
-        self.tabBarController.viewControllers = [self.tabBarController.viewControllers arrayByAddingObjectsFromArray:viewControllers];
-    }];
-    
-    [RUAppearance applyAppearance];
-    
-
-    self.window.rootViewController = self.tabBarController;
-    
-    /*
+        
     self.rootController = [[RURootController alloc] init];
-    self.window.rootViewController = [self.rootController makeRootViewController];//[[ARTabBarController alloc] init];//
-    */
+    self.window.rootViewController = [self.rootController makeRootViewController];
     
     [self.window makeKeyAndVisible];
     
@@ -75,19 +52,6 @@
     }
     
     return YES;
-}
-
--(NSArray *)viewControllersForChannels:(NSArray *)channels{
-    NSMutableArray *viewControllers = [NSMutableArray array];
-    for (NSDictionary *channel in channels) {
-        UIViewController *viewController = [self.channelManager viewControllerForChannel:channel];
-        if (viewController) {
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-            navigationController.tabBarItem = viewController.tabBarItem;
-            [viewControllers addObject:navigationController];
-        }
-    }
-    return viewControllers;
 }
 
 -(void)initCache{
