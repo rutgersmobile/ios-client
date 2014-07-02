@@ -7,7 +7,7 @@
 //
 
 #import "dtable.h"
-#import "Reader.h"
+#import "RUReaderViewController.h"
 #import "RUChannelManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
@@ -53,7 +53,6 @@
     [self.tableView beginUpdates];
     if (self.sections.count) {
         [self removeAllSections];
-        [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)] withRowAnimation:UITableViewRowAnimationFade];
     }
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
     for (NSDictionary *child in responseObject) {
@@ -74,7 +73,6 @@
         [section addRow:row];
     }
     [self addSection:section];
-    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
 }
 
