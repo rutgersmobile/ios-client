@@ -82,18 +82,24 @@
 
 -(void)addSection:(EZTableViewSection *)section{
     [self.sections addObject:section];
-    //[self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
+    if (self.isViewLoaded) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index{
     [self.sections insertObject:section atIndex:index];
-  //      [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+    if (self.isViewLoaded) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 -(void)removeAllSections{
-   // NSInteger count = self.sections.count;
+    NSInteger count = self.sections.count;
     [self.sections removeAllObjects];
-  //  [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)] withRowAnimation:UITableViewRowAnimationFade];
+    if (self.isViewLoaded) {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 #pragma mark - TableView Data source
