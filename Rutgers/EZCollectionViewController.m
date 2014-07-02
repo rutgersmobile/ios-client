@@ -18,7 +18,7 @@
 @implementation EZCollectionViewController
 - (instancetype)init
 {
-    self = [super init];
+    self = [super initWithCollectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     if (self) {
         self.sections = [NSMutableArray array];
     }
@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
 
@@ -43,25 +43,36 @@
 -(void)networkLoadFailed{
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(UICollectionViewFlowLayout *)flowLayout{
+    return (UICollectionViewFlowLayout *)self.collectionViewLayout;
 }
 
 -(void)addSection:(EZCollectionViewSection *)section{
-    [self.sections addObject:section];
+    [self.collectionView performBatchUpdates:^{
+        [self.sections addObject:section];
+        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1]];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index{
-    [self.sections insertObject:section atIndex:index];
+    [self.collectionView performBatchUpdates:^{
+        [self.sections insertObject:section atIndex:index];
+        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:index]];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 -(void)removeAllSections{
-    NSInteger count = self.sections.count;
-    [self.sections removeAllObjects];
-    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
+    [self.collectionView performBatchUpdates:^{
+        NSInteger count = self.sections.count;
+        [self.sections removeAllObjects];
+        [self.collectionView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section{

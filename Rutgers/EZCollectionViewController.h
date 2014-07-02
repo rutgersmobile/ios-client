@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ALCollectionViewController.h"
 
 
 @class EZCollectionViewSection;
 @class EZCollectionViewAbstractItem;
 
-@interface EZCollectionViewController : ALCollectionViewController
+@interface EZCollectionViewController : UICollectionViewController
+-(UICollectionViewFlowLayout *)flowLayout;
 
 -(void)addSection:(EZCollectionViewSection *)section;
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
