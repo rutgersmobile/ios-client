@@ -35,8 +35,10 @@
     _item = item;
     if ([item isKindOfClass:[RUBusRoute class]]) {
         self.tableView.rowHeight = 68.0;
+        self.tableView.estimatedRowHeight = 68.0;
     } else {
         self.tableView.rowHeight = 90.0;
+        self.tableView.estimatedRowHeight = 90.0;
     }
     self.title = [item title];
 }
@@ -60,13 +62,14 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 -(void)parseResponse:(NSArray *)response{
+    [self.tableView beginUpdates];
      if (self.sections.count == 0) {
         for (NSDictionary *predictions in response) {
             [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
         }
     } else {
         [response enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -74,6 +77,7 @@
         }];
         [self.tableView reloadData];
     }
+    [self.tableView endUpdates];
 }
 
 -(void)startTimer{
@@ -82,10 +86,6 @@
         [weakSelf startNetworkLoad];
         [weakSelf startTimer];
     });
-}
-
--(void)dealloc{
-
 }
 
 - (void)didReceiveMemoryWarning
