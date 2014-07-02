@@ -80,7 +80,6 @@
             [self addSection:infoSection];
         }
         
-        
         if (place.location) {
             NSInteger index = [self numberOfSectionsInTableView:self.tableView];
             [[RUBusData sharedInstance] getActiveStopsNearLocation:place.location completion:^(NSArray *results) {
@@ -93,7 +92,6 @@
                     [nearbySection addRow:row];
                 }
                 [self insertSection:nearbySection atIndex:index];
-                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
             }];
         }
         
