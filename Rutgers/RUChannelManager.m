@@ -74,11 +74,32 @@
     }];
 }
 
+-(Class)classForViewTag:(NSString *)viewTag{
+    static NSDictionary *viewTagsToClassNameMapping = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        viewTagsToClassNameMapping = @{@"bus" : @"RUBusViewController",
+                                       @"dtable" : @"DynamicCollectionView",
+                                       @"food" : @"RUFoodViewController",
+                                       @"places" : @"RUPlacesViewController",
+                                       @"ruinfo" : @"RUInfoTableViewController",
+                                       @"soc" : @"RUSOCViewController",
+                                       @"athletics" : @"RUSportsViewController",
+                                       @"emergency" : @"RUEmergencyViewController",
+                                       @"Reader" :  @"RUReaderViewController",
+                                       @"recreation" : @"RURecreationViewController",
+                                       @"www" : @"RUWebViewController",
+                                       @"text" : @"RUTextViewController",
+                                       @"feedback" : @"RUFeedbackViewController"
+                                       };
+    });
+    return NSClassFromString(viewTagsToClassNameMapping[viewTag]);
+}
+
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
     NSString *view = channel[@"view"];
     if (!view) view = @"www";
-    if ([view isEqualToString:@"dtable"]) view = @"DynamicCollectionView";
-    Class class = NSClassFromString(view);
+    Class class = [self classForViewTag:view];
     if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
         UIViewController * vc = [class componentForChannel:channel];
         NSString *title = [channel titleForChannel];
