@@ -12,9 +12,10 @@
 
 +(void)applyAppearance{
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    /*
     [self applyAppearanceToNavigationBar:[UINavigationBar appearance]];
     [self applyAppearanceToToolbar:[UIToolbar appearance]];
-    [self applyAppearanceToTabBar:[UITabBar appearance]];
+    [self applyAppearanceToTabBar:[UITabBar appearance]];*/
 }
 
 +(void)applyAppearanceToNavigationController:(UINavigationController *)navigationController{
