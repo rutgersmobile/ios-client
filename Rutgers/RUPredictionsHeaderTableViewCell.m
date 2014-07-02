@@ -45,7 +45,7 @@
 }
 
 -(void)makeConstraintChanges{
-    self.directionConstraint.constant = self.directionLabel.text ? 2 : 0;
+    self.directionConstraint.constant = self.directionLabel.text.length ? 2 : 0;
 }
 
 -(void)didLayoutSubviews{
