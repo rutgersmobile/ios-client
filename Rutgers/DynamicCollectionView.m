@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "Reader.h"
+#import "RUReaderViewController.h"
 #import "RUChannelManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
@@ -26,7 +26,6 @@ typedef enum : NSUInteger {
 @interface DynamicCollectionView ()
 @property (nonatomic) NSDictionary *channel;
 @property (nonatomic) NSArray *children;
-@property (nonatomic) UISlider *slider;
 @end
 
 @implementation DynamicCollectionView
@@ -95,11 +94,9 @@ typedef enum : NSUInteger {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self.collectionView performBatchUpdates:^{
                 if (self.sections.count) {
-                    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.sections.count)]];
                     [self removeAllSections];
                 }
                 [self parseResponse:responseObject[@"children"]];
-                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:0]];
             } completion:^(BOOL finished) {
                 
             }];
