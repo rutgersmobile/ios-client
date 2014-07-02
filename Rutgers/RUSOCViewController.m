@@ -33,15 +33,11 @@
 -(void)startNetworkLoad{
     [super startNetworkLoad];
     [[RUSOCData sharedInstance] getSubjectsForCurrentConfigurationWithSuccess:^(NSArray *subjects) {
+        [self networkLoadSucceeded];
         if (self.sections.count) {
             [self removeAllSections];
-            [self makeSectionsForResponse:subjects];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        } else {
-            [self makeSectionsForResponse:subjects];
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         }
-        [self networkLoadSucceeded];
+        [self makeSectionsForResponse:subjects];
     } failure:^{
         [self networkLoadFailed];
     }];
