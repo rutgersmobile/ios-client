@@ -78,7 +78,7 @@
 }
 
 -(void)makeConstraintChanges{
-    self.descriptionConstraint.constant = self.descriptionLabel.text ? -kLabelVerticalInsets : 0;
+    self.descriptionConstraint.constant = self.descriptionLabel.text.length ? -kLabelVerticalInsets : 0;
 }
 
 -(void)didLayoutSubviews{
