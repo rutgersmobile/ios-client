@@ -37,15 +37,15 @@
 -(void)startNetworkLoad{
     [super startNetworkLoad];
     [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code forCurrentConfigurationWithSuccess:^(NSArray *courses) {
+        [self networkLoadSucceeded];
+
+        [self.tableView beginUpdates];
         if (self.sections.count) {
             [self removeAllSections];
-            [self makeSectionsForResponse:courses];
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        } else {
-            [self makeSectionsForResponse:courses];
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
         }
-        [self networkLoadSucceeded];
+        [self makeSectionsForResponse:courses];
+        [self.tableView endUpdates];
+        
     } failure:^{
         [self networkLoadFailed];
     }];
