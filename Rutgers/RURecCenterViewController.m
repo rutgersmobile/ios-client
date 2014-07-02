@@ -34,15 +34,11 @@
     if (self) {
         self.title = title;
         self.recCenter = recCenter;
+        [self makeSections];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
     }
     return self;
-}
-
--(void)viewDidLoad{
-    [super viewDidLoad];
-    [self makeSections];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
 }
 
 -(void)makeSections{
