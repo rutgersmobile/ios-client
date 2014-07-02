@@ -7,7 +7,7 @@
 //
 
 #import "EZTableViewController.h"
+#import "RUComponentProtocol.h"
 
-@interface RUFeedbackViewController : EZTableViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel;
+@interface RUFeedbackViewController : EZTableViewController <RUComponentProtocol>
 @end
