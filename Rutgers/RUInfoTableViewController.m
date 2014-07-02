@@ -22,10 +22,14 @@
     return [[RUInfoTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
--(void)viewDidLoad{
-    [super viewDidLoad];
-    [self makeSections];
+-(id)initWithStyle:(UITableViewStyle)style{
+    self = [super initWithStyle:style];
+    if (self) {
+        [self makeSections];
+    }
+    return self;
 }
+
 /**
  *  Build the data structure containing all the information pertinent to the ru-info channel
  */
@@ -143,8 +147,6 @@
         messageVC.body = body;
         messageVC.recipients = recipients;
         messageVC.messageComposeDelegate = self;
-        messageVC.navigationBar.tintColor = [UIColor whiteColor];
-        messageVC.toolbar.tintColor = [UIColor whiteColor];
         [self presentViewController:messageVC animated:YES completion:^{
             
         }];
@@ -162,8 +164,6 @@
     [mailVC setMessageBody:body isHTML:NO];
     [mailVC setToRecipients:recipients];
     mailVC.mailComposeDelegate = self;
-    mailVC.navigationBar.tintColor = [UIColor whiteColor];
-    mailVC.toolbar.tintColor = [UIColor whiteColor];
     [self presentViewController:mailVC animated:YES completion:^{
 
     }];
