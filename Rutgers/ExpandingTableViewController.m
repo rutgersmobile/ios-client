@@ -11,13 +11,13 @@
 #import "NSIndexPath+RowExtensions.h"
 
 @interface ExpandingTableViewController ()
-@property NSArray *insertingIndexPaths;
 @end
 
 @implementation ExpandingTableViewController
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.tableView.separatorInset = UIEdgeInsetsZero;
+    self.tableView.estimatedRowHeight = 0;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -39,15 +39,13 @@
         UITableViewRowAnimation animationType = UITableViewRowAnimationFade;
         
         BOOL nowExpanded = section.expanded;
-        
+        [self.tableView beginUpdates];
         if (nowExpanded) {
-            self.insertingIndexPaths = [NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:indexPath.section];
-            [tableView insertRowsAtIndexPaths:self.insertingIndexPaths  withRowAnimation:animationType];
-            self.insertingIndexPaths = nil;
-
+            [tableView insertRowsAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:indexPath.section] withRowAnimation:animationType];
         } else {
             [tableView deleteRowsAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newCount, oldCount-newCount) inSection:indexPath.section] withRowAnimation:animationType];
         }
+        [self.tableView endUpdates];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
