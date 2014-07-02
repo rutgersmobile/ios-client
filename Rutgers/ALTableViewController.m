@@ -27,7 +27,7 @@
 }
 -(void)viewDidLoad{
     [super viewDidLoad];
-    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 44.0;
 }
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
