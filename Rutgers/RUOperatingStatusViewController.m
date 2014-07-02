@@ -27,7 +27,7 @@
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     NSString *setTextSizeRule = [NSString stringWithFormat:@"document.body.style.fontSize = %d;", 15];
     [webView stringByEvaluatingJavaScriptFromString:setTextSizeRule];
-    self.view.backgroundColor = [self webViewPageBackgroundColor];
+    self.webView.backgroundColor = [self webViewPageBackgroundColor];
 }
 
 - (void)didReceiveMemoryWarning
