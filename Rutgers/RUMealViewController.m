@@ -21,6 +21,7 @@
     if (self) {
         self.meal = meal;
         self.title = meal[@"meal_name"];
+        [self makeSections];
     }
     return self;
 }
@@ -28,9 +29,20 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self enableSearch];
-    [self makeSections];
 }
 
+-(void)makeSections{
+    for (NSDictionary *genre in self.meal[@"genres"]) {
+        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:genre[@"genre_name"]];
+        for (NSString *item in genre[@"items"]) {
+            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:item];
+            [section addRow:row];
+        }
+        [self addSection:section];
+    }
+}
+
+/*
 -(void)makeSections{
     for (NSDictionary *genre in self.meal[@"genres"]) {
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:[genre[@"genre_name"] capitalizedString]];
@@ -50,4 +62,5 @@
 -(BOOL)shouldShowInfoForItem:(NSDictionary *)item{
     return ([item count] > 1);
 }
+*/
 @end
