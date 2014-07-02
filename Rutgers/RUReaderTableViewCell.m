@@ -71,7 +71,7 @@
         constraint.constant = self.hasImage ? IMAGE_SIZE : 0;
     }
     for (NSLayoutConstraint *constraint in self.timeVerticalConstraints) {
-        constraint.constant = self.timeLabel.text ? -kLabelVerticalInsets : 0;
+        constraint.constant = self.timeLabel.text.length ? -kLabelVerticalInsets : 0;
     }
 }
 
