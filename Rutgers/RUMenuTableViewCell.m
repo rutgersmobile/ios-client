@@ -31,7 +31,7 @@
         [self.contentView addSubview:self.channelImage];
         
         [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 30)];
-        self.channelImage.contentMode = UIViewContentModeCenter;
+        self.channelImage.contentMode = UIViewContentModeTopLeft;
         
         [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15];
         [self.channelImage autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
@@ -59,11 +59,20 @@
     return self;
 }
 
+-(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
+    
+    [super setHighlighted:highlighted animated:animated];
+    [self applyStyleForHighlightedState:highlighted];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    
-    if (selected) {
+    [self applyStyleForHighlightedState:selected];
+}
+
+-(void)applyStyleForHighlightedState:(BOOL)state{
+    if (state) {
         self.backgroundColor = [UIColor grey1Color];
         self.leftPadView.hidden = NO;
         self.channelImage.tintColor = [UIColor whiteColor];
@@ -75,5 +84,6 @@
         self.leftPadView.hidden = YES;
     }
 }
+
 
 @end
