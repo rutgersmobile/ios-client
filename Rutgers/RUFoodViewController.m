@@ -39,41 +39,40 @@
 -(void)startNetworkLoad{
     [super startNetworkLoad];
     [self.foodData getFoodWithSuccess:^(NSArray *response) {
-        [self.tableView beginUpdates];
- 
-        if (self.sections.count) {
-            [self removeAllSections];
-        }
-        
-        EZTableViewSection *newBrunswickDining = [[EZTableViewSection alloc] initWithSectionTitle:@"New Brunswick"];
-        for (NSDictionary *diningHall in response) {
-            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:diningHall[@"location_name"]];
-            row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:diningHall] animated:YES];
-            };
-            [newBrunswickDining addRow:row];
-        }
-        [self addSection:newBrunswickDining];
-        
-        for (NSDictionary *staticDiningHall in self.foodData.staticDiningHalls) {
-            EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:staticDiningHall[@"header"]];
-            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:staticDiningHall[@"title"]];
-            row.didSelectRowBlock = ^{
-                [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:staticDiningHall] animated:YES];
-            };
-            [section addRow:row];
-            [self addSection:section];
-        }
-        
-        [self.tableView endUpdates];
         [self networkLoadSucceeded];
+        [self parseResponse:response];
     } failure:^{
         [self networkLoadFailed];
     }];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+-(void)parseResponse:(NSArray *)response{
+    [self.tableView beginUpdates];
+    
+    if (self.sections.count) {
+        [self removeAllSections];
+    }
+    
+    EZTableViewSection *newBrunswickDining = [[EZTableViewSection alloc] initWithSectionTitle:@"New Brunswick"];
+    for (NSDictionary *diningHall in response) {
+        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:diningHall[@"location_name"]];
+        row.didSelectRowBlock = ^{
+            [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:diningHall] animated:YES];
+        };
+        [newBrunswickDining addRow:row];
+    }
+    [self addSection:newBrunswickDining];
+    
+    for (NSDictionary *staticDiningHall in self.foodData.staticDiningHalls) {
+        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:staticDiningHall[@"header"]];
+        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:staticDiningHall[@"title"]];
+        row.didSelectRowBlock = ^{
+            [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:staticDiningHall] animated:YES];
+        };
+        [section addRow:row];
+        [self addSection:section];
+    }
+    
+    [self.tableView endUpdates];
 }
 @end
