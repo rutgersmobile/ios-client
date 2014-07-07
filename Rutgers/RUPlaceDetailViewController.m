@@ -81,7 +81,7 @@
         }
         
         if (place.location) {
-            NSInteger index = [self numberOfSectionsInTableView:self.tableView];
+            NSInteger index = self.sections.count;
             [[RUBusData sharedInstance] getActiveStopsNearLocation:place.location completion:^(NSArray *results) {
                 EZTableViewSection *nearbySection = [[EZTableViewSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
                 for (NSArray *stops in results) {
