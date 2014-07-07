@@ -90,7 +90,7 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 }
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock{
-    dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
+    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@",query]];
         
         NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"title beginswith[cd] %@",query];
@@ -105,7 +105,9 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
             return [[obj1 title] compare:[obj2 title] options:NSNumericSearch|NSCaseInsensitiveSearch];
         }];
         
-        completionBlock(results);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(results);
+        });
     });
 }
 

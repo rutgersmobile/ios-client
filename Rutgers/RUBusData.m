@@ -255,7 +255,7 @@ static NSString *const format = @"&stops=%@|null|%@";
 
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *))completionBlock{
-    dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), ^{
+    dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
         NSPredicate *containsPredicate = [NSPredicate predicateWithFormat:@"title contains[cd] %@",query];
         NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"title beginswith[cd] %@",query];
@@ -303,7 +303,9 @@ static NSString *const format = @"&stops=%@|null|%@";
             return [titleOne compare:titleTwo options:NSNumericSearch|NSCaseInsensitiveSearch];
         }];
         
-        completionBlock(results);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionBlock(results);
+        });
     });
 }
 
