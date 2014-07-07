@@ -16,50 +16,72 @@
 #import "RUChannelManager.h"
 #import "RUUserInfoManager.h"
 
-
-#define MEMORY_MEGS 20
-#define DISK_MEGS 50
-
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property RURootController *rootController;
-@property RUChannelManager *channelManager;
 @end
 
 @implementation RUAppDelegate
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self initCache];
     [application setStatusBarHidden:NO];
-    [RUAppearance applyAppearance];
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    
-    self.channelManager = [RUChannelManager sharedInstance];
-        
-    self.rootController = [[RURootController alloc] init];
-    self.window.rootViewController = [self.rootController makeRootViewController];
-    
-    [self.window makeKeyAndVisible];
-    
-    RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
+    [self initialize];
    
-    if (!userInfoManager.hasUserInformation) {
-        [userInfoManager getUserInformationCompletion:^{
-            
-        }];
-    }
-    
     return YES;
 }
 
--(void)initCache{
+/**
+ *  Setup application wide appearance, application wide cache, drawer, and also ask the user for their information if this is the first run
+ */
+-(void)initialize{
+    
+    [RUAppearance applyAppearance];
+    
+    [self initializeCache];
+    [self initializeDrawer];
+
+    [self askUserForInformationIfNeeded];
+}
+
+/**
+ *  Initialize the cache with the below sizes for memory and disk
+ */
+#define MEMORY_MEGS 20
+#define DISK_MEGS 50
+
+-(void)initializeCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cachesFolder = paths[0];
     NSString *fullPath = [cachesFolder stringByAppendingPathComponent:@"RUNetCache"];
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
     [NSURLCache setSharedURLCache:URLCache];
+}
+
+/**
+ *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the drawer view controller
+ */
+-(void)initializeDrawer{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.rootController = [[RURootController alloc] init];
+    self.window.rootViewController = [self.rootController makeRootViewController];
+    
+    [self.window makeKeyAndVisible];
+    
+}
+
+/**
+ *  If the user has not yet entered their campus or affiliation, prompt them to enter it
+ */
+-(void)askUserForInformationIfNeeded{
+    RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
+    
+    if (!userInfoManager.hasUserInformation) {
+        [userInfoManager getUserInformationCompletion:^{
+            
+        }];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
