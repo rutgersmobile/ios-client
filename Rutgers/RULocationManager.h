@@ -19,5 +19,4 @@
 +(RULocationManager *)sharedLocationManager;
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate;
 -(void)removeDelegatesObject:(id<RULocationManagerDelegate>)delegate;
--(NSString *)formatDistance:(CLLocationDistance)distance;
 @end

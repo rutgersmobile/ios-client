@@ -16,22 +16,30 @@
 @end
 
 @implementation RULocationManager
+
+/**
+ *  Initialize the location manager with our desired settings
+ *
+ *  @return The initialized location manager
+ */
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.distanceFilter = 25; // whenever we move 25 m
-        self.locationManager.activityType = CLActivityTypeFitness;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+        self.locationManager.distanceFilter = 25;  // updates whenever we move 25 m
+        self.locationManager.activityType = CLActivityTypeFitness; 	// includes any pedestrian activities
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters; //middle ground between accuracy and power usage, also 100 meters might be worth using but this may be too inaccurate
         self.locationManager.delegate = self;
-        self.delegates = [NSMutableSet set];
-        self.distanceFormatter = [[MKDistanceFormatter alloc] init];
-        self.distanceFormatter.unitStyle = MKDistanceFormatterUnitStyleFull;
     }
     return self;
 }
 
+/**
+ *  Shared location manager singleton method
+ *
+ *  @return The shared location manager
+ */
 +(RULocationManager *)sharedLocationManager{
     static RULocationManager *locationManager = nil;
     static dispatch_once_t onceToken;
@@ -41,31 +49,36 @@
     return locationManager;
 }
 
--(NSString *)formatDistance:(CLLocationDistance)distance{
-   return [self.distanceFormatter stringFromDistance:distance];
-}
-
+/**
+ *  Adds a delegate, turning on location updates if needed, otherwise providing the delegate with the current location
+ *
+ *  @param delegate The delegate to recieve location callbacks
+ */
 -(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate{
     @synchronized(self.delegates) {
-        if (self.delegates.count == 0) {
-            [self.delegates addObject:delegate];
-            [self.locationManager startUpdatingLocation];
-        } else {
-            [self.delegates addObject:delegate];
-            [delegate locationManager:self didUpdateLocation:self.locationManager.location];
-        }
+        [self.delegates addObject:delegate];
+        (self.delegates.count == 1) ? [self.locationManager startUpdatingLocation] : [delegate locationManager:self didUpdateLocation:self.locationManager.location];
     }
 }
 
+/**
+ *  Removes a delegate, turning off location updates if it is the last item removed
+ *
+ *  @param delegate The delegate to remove
+ */
 -(void)removeDelegatesObject:(id<RULocationManagerDelegate>)delegate{
     @synchronized(self.delegates) {
         [self.delegates removeObject:delegate];
-        if (self.delegates.count == 0) {
-            [self.locationManager stopUpdatingLocation];
-        }
+        if (self.delegates.count == 0) [self.locationManager stopUpdatingLocation];
     }
 }
 
+/**
+ *  Notify the delegates of location updates
+ *
+ *  @param manager   The shared manager that has updated
+ *  @param locations An array of location updates, the most recent of which will be relayed to the delegates
+ */
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation *location = [locations lastObject];
     @synchronized(self.delegates) {
