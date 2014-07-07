@@ -62,7 +62,9 @@
 -(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
     
     [super setHighlighted:highlighted animated:animated];
-    [self applyStyleForHighlightedState:highlighted];
+    if (!self.selected) {
+        [self applyStyleForHighlightedState:highlighted];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
