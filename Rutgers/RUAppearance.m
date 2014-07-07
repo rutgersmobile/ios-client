@@ -23,11 +23,6 @@
     [self applyAppearanceToToolbar:navigationController.toolbar];
 }
 
-+(void)restoreAppearanceToNavigationController:(UINavigationController *)navigationController{
-    [self restoreAppearanceToNavigationBar:navigationController.navigationBar];
-    [self restoreAppearanceToToolbar:navigationController.toolbar];
-}
-
 +(void)applyAppearanceToTabBarController:(UITabBarController *)tabBarController{
     [self applyAppearanceToTabBar:tabBarController.tabBar];
 }
@@ -48,23 +43,14 @@
     toolbar.barTintColor = [self modifiedRed];
 }
 
-+(void)restoreAppearanceToNavigationBar:(UINavigationBar *)navigationBar{
-    
-    navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         nil, NSForegroundColorAttributeName,
-                                         nil];
-    navigationBar.tintColor = nil;
-    navigationBar.barTintColor = nil;
-}
-
-+(void)restoreAppearanceToToolbar:(UIToolbar *)toolbar{
-    toolbar.tintColor = nil;
-    toolbar.barTintColor = nil;
++(void)applyAppearanceToSearchBar:(UISearchBar *)searchBar{
+  //  searchBar.barTintColor = [UIColor colorWithWhite:0.4 alpha:1.0];
+  //  searchBar.tintColor = [UIColor whiteColor];
 }
 
 +(UIColor *)modifiedRed{
     CGFloat hue, sat, bright, alpha;
     [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
-    return [UIColor colorWithHue:hue saturation:1.0 brightness:bright*0.9 alpha:alpha];
+    return [UIColor colorWithHue:hue saturation:1.0 brightness:bright*0.85 alpha:alpha];
 }
 @end
