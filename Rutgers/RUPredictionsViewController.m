@@ -13,11 +13,12 @@
 #import "RUBusData.h"
 #import "NSArray+RUBusStop.h"
 #import "RUPredictionsExpandingSection.h"
+#import <MSWeakTimer.h>
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
 @interface RUPredictionsViewController ()
-//@property NSTimer *timer;
+@property MSWeakTimer *timer;
 @property (nonatomic) id item;
 @end
 
@@ -31,23 +32,27 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self startNetworkLoad];
+    self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self selector:@selector(startNetworkLoad) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:YES];
+}
+
 -(void)setItem:(id)item{
     _item = item;
     if ([item isKindOfClass:[RUBusRoute class]]) {
         self.tableView.rowHeight = 68.0;
-        self.tableView.estimatedRowHeight = 68.0;
     } else {
         self.tableView.rowHeight = 90.0;
-        self.tableView.estimatedRowHeight = 90.0;
     }
     self.title = [item title];
-}
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    [self startNetworkLoad];
-    [self startTimer];
 }
 
 -(void)startNetworkLoad{
@@ -58,11 +63,6 @@
     } failure:^{
         [self networkLoadFailed];
     }];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 -(void)parseResponse:(NSArray *)response{
@@ -80,18 +80,12 @@
     [self.tableView endUpdates];
 }
 
--(void)startTimer{
-    __weak typeof(self) weakSelf = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(PREDICTION_TIMER_INTERVAL * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf startNetworkLoad];
-        [weakSelf startTimer];
-    });
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        return self.tableView.rowHeight;
+    } else {
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
 }
 
 @end
