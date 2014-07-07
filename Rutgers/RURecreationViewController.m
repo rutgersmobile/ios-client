@@ -30,8 +30,8 @@
 -(void)startNetworkLoad{
     [super startNetworkLoad];
     [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self parseResponse:responseObject];
         [self networkLoadSucceeded];
+        [self parseResponse:responseObject];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self networkLoadFailed];
     }];
@@ -43,6 +43,11 @@
     campuses = [campuses sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     
     [self.tableView beginUpdates];
+    
+    if (self.sections.count) {
+        [self removeAllSections];
+    }
+    
     for (NSString *campus in campuses) {
         EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:campus];
         
