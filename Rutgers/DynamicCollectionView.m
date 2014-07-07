@@ -92,6 +92,7 @@ typedef enum : NSUInteger {
 -(void)fetchData{
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self networkLoadSucceeded];
             [self.collectionView performBatchUpdates:^{
                 if (self.sections.count) {
                     [self removeAllSections];
@@ -100,7 +101,6 @@ typedef enum : NSUInteger {
             } completion:^(BOOL finished) {
                 
             }];
-            [self networkLoadSucceeded];
         } else {
             [self networkLoadFailed];
         }
