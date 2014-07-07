@@ -8,7 +8,7 @@
   {
   "handle" : "news",
   "title": "News",
-  "url": "https://rumobile.rutgers.edu/1/news.txt",
+  "url": "news.txt",
   "view" : "dtable",
   "icon" : "news"
   },
@@ -27,14 +27,14 @@
   {
   "handle" : "recreation",
   "title": "Recreation",
-  "url": "https://rumobile.rutgers.edu/1/rec.txt",
+  "url": "rec.txt",
   "view" : "dtable",
   "icon" : "recreation"
   },
   {
   "handle" : "events",
   "title": "Events",
-  "url": "https://rumobile.rutgers.edu/1/events.txt",
+  "url": "events.txt",
   "view" : "dtable",
   "icon" : "events"
   },
@@ -47,7 +47,7 @@
   {
   "handle" : "career_services",
   "title": "Career Services",
-  "url": "https://rumobile.rutgers.edu/1/csfaq.txt",
+  "url": "csfaq.txt",
   "view" : "dtable",
   "icon" : "careers"
   },
