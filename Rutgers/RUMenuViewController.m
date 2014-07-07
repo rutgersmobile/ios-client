@@ -16,8 +16,7 @@
 
 
 @interface RUMenuViewController () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic) UISearchDisplayController *searchController;
-@property (nonatomic) UISearchBar *searchBar;
+
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) UIView *paddingView;
 @property (nonatomic) NSLayoutConstraint *paddingHeightContstraint;
