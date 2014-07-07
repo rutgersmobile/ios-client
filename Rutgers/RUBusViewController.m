@@ -39,7 +39,7 @@ typedef enum : NSUInteger {
 @property RUBusVCPane currentPane;
 @property UISegmentedControl *segmentedControl;
 
-@property (nonatomic) UISearchDisplayController *searchController;
+@property BOOL searching;
 
 @property NSArray *searchResults;
 @property dispatch_group_t searchingGroup;
@@ -87,7 +87,9 @@ typedef enum : NSUInteger {
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:NO animated:NO];
+    if (!self.searching) {
+        [self.navigationController setToolbarHidden:NO animated:NO];
+    }
     [[RULocationManager sharedLocationManager] addDelegatesObject:self];
 }
 
@@ -204,9 +206,15 @@ typedef enum : NSUInteger {
 #pragma mark - Search Bar
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
     dispatch_group_enter(self.searchingGroup);
+    [super searchDisplayControllerWillBeginSearch:controller];
+    [self.navigationController setToolbarHidden:YES animated:YES];
+    self.searching = YES;
 }
 
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
+    self.searching = NO;
+    [self.navigationController setToolbarHidden:NO animated:YES];
+    [super searchDisplayControllerWillEndSearch:controller];
     dispatch_group_leave(self.searchingGroup);
 }
 
@@ -216,20 +224,6 @@ typedef enum : NSUInteger {
         [self.searchController.searchResultsTableView reloadData];
     }];
     return NO;
-}
-
--(void)enableSearch{
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    self.searchController.searchResultsDelegate = self;
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.delegate = self;
-    
-   // [self.searchController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    //self.navigationItem.titleView = searchBar;
-    //self.searchController.displaysSearchBarInNavigationBar = YES;
-    self.tableView.tableHeaderView = searchBar;
 }
 
 #pragma mark - Table view data source
@@ -252,7 +246,7 @@ typedef enum : NSUInteger {
     }
     return 0;
 }
--(id)itemForSection:(NSInteger)section inTableView:(UITableView *)tableView{
+-(id)itemsForSection:(NSInteger)section inTableView:(UITableView *)tableView{
     if (tableView == self.tableView) {
         switch (self.currentPane) {
             case RUBusVCRoutesPane:
@@ -308,11 +302,7 @@ typedef enum : NSUInteger {
                 break;
         }
     } else if (tableView == self.searchController.searchResultsTableView) {
-        if (section == 0) {
-            return self.searchResults;
-        } else {
-            return nil;
-        }
+        return self.searchResults;
     }
     return nil;
 }
@@ -379,11 +369,11 @@ typedef enum : NSUInteger {
     return nil;
 }
 -(id)itemForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView{
-    return [self itemForSection:indexPath.section inTableView:tableView][indexPath.row];
+    return [self itemsForSection:indexPath.section inTableView:tableView][indexPath.row];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[self itemForSection:section inTableView:tableView] count];
+    return [[self itemsForSection:section inTableView:tableView] count];
 }
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     return @"ALTableViewRightDetailCell";

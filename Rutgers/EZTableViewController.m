@@ -12,10 +12,8 @@
 #import "ALTableViewRightDetailCell.h"
 #import "ALTableViewTextCell.h"
 
-@interface EZTableViewController () <UISearchDisplayDelegate>
-@property (nonatomic) UISearchDisplayController *searchController;
+@interface EZTableViewController ()
 @property (nonatomic) NSMutableArray *searchResultSections;
-@property (nonatomic) BOOL searchEnabled;
 @end
 
 @implementation EZTableViewController
@@ -46,21 +44,6 @@
 
 -(void)networkLoadFailed{
     [self.refreshControl endRefreshing];
-}
-
--(void)enableSearch{
-    if (self.searchEnabled) return;
-    
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    self.searchController.searchResultsDelegate = self;
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.delegate = self;
-    
-    self.tableView.tableHeaderView = searchBar;
-
-    self.searchEnabled = YES;
 }
 
 -(NSArray *)sectionsForTableView:(UITableView *)tableView{

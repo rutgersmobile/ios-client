@@ -12,7 +12,6 @@
 @class EZTableViewAbstractRow;
 
 @interface EZTableViewController : ALTableViewController
--(void)enableSearch;
 
 -(void)addSection:(EZTableViewSection *)section;
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index;

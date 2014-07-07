@@ -14,7 +14,6 @@
 #import "RUSOCSubjectViewController.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate>
-@property (nonatomic) UISearchDisplayController *searchController;
 @end
 
 @implementation RUSOCViewController
@@ -54,18 +53,6 @@
         [section addRow:row];
     }
     [self addSection:section];
-}
-
--(void)enableSearch{
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    self.searchController.searchResultsDelegate = self;
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.delegate = self;
-    
-    self.tableView.tableHeaderView = searchBar;
-    
 }
 
 

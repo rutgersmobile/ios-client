@@ -17,7 +17,6 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 
 @interface RUPlacesViewController () <UISearchDisplayDelegate, RULocationManagerDelegate>
 @property (nonatomic) RUPlacesData *placesData;
-@property (nonatomic) UISearchDisplayController *searchController;
 @property dispatch_group_t searchingGroup;
 @property NSArray *nearbyPlaces;
 @property NSArray *searchResults;
@@ -32,6 +31,7 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 -(id)init{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        
     }
     return self;
 }
@@ -42,17 +42,6 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
     self.placesData = [RUPlacesData sharedInstance];
     self.searchingGroup = dispatch_group_create();
     [self enableSearch];
-}
-
--(void)enableSearch{
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    
-    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    self.searchController.searchResultsDelegate = self;
-    self.searchController.searchResultsDataSource = self;
-    self.searchController.delegate = self;
-    
-    self.tableView.tableHeaderView = searchBar;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -91,10 +80,12 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
 #pragma mark - search display controller
 
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+    [super searchDisplayControllerWillBeginSearch:controller];
     dispatch_group_enter(self.searchingGroup);
 }
 
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
+    [super searchDisplayControllerWillEndSearch:controller];
     dispatch_group_leave(self.searchingGroup);
 }
 

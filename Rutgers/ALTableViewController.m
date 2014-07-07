@@ -10,8 +10,9 @@
 #import "ALTableViewRightDetailCell.h"
 #import "ALTableViewTextCell.h"
 
-@interface ALTableViewController ()
+@interface ALTableViewController () 
 @property (nonatomic) NSMutableDictionary *layoutCells;
+@property (nonatomic) BOOL searchEnabled;
 @end
 
 @implementation ALTableViewController
@@ -28,6 +29,31 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.tableView.estimatedRowHeight = 44.0;
+}
+
+-(void)enableSearch{
+    if (self.searchEnabled) return;
+    
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    [RUAppearance applyAppearanceToSearchBar:searchBar];
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.delegate = self;
+    self.searchController.searchResultsTableView.estimatedRowHeight = 44.0;
+    
+    self.tableView.tableHeaderView = searchBar;
+    
+    self.searchEnabled = YES;
+}
+
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+}
+
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{

@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 @class ALTableViewAbstractCell;
 
-@interface ALTableViewController : UITableViewController
+@interface ALTableViewController : UITableViewController <UISearchDisplayDelegate>
 -(ALTableViewAbstractCell *)layoutCellWithIdentifier:(NSString *)identifier;
 -(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+@property (nonatomic) UISearchDisplayController *searchController;
+-(void)enableSearch;
 @end
