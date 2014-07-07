@@ -39,9 +39,6 @@
     self.tableView.rowHeight = 80.0;
     self.tableView.estimatedRowHeight = 80.0;
 
-    self.sessionManager = [[AFHTTPSessionManager alloc] init];
-    self.sessionManager.responseSerializer = [AFImageResponseSerializer serializer];
-
     [self startNetworkLoad];
 }
 
@@ -54,9 +51,9 @@
     if (!url) return;
     [[RUNetworkManager xmlSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self networkLoadSucceeded];
             NSDictionary *channel = [responseObject[@"channel"] firstObject];
             [self parseResponse:channel[@"item"]];
-            [self networkLoadSucceeded];
         } else {
             [self networkLoadFailed];
         }
