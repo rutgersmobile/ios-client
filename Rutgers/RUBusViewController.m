@@ -14,6 +14,7 @@
 #import "NSArray+RUBusStop.h"
 #import "RULocationManager.h"
 #import "ALTableViewRightDetailCell.h"
+#import <MSWeakTimer.h>
 
 #define ACTIVE_TIMER_INTERVAL 60.0
 
@@ -45,6 +46,8 @@ typedef enum : NSUInteger {
 @property dispatch_group_t searchingGroup;
 @property CLLocation *lastLocation;
 
+@property MSWeakTimer *timer;
+
 @end
 
 @implementation RUBusViewController
@@ -69,20 +72,12 @@ typedef enum : NSUInteger {
 
     [self loadAgency];
     [self loadActiveStopsAndRoutes];
-    [self startTimer];
+    self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:ACTIVE_TIMER_INTERVAL target:self selector:@selector(loadActiveStopsAndRoutes) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
 
     //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     [self enableSearch];
     [self setupToolbar];
-}
-
--(void)startTimer{
-    __weak typeof(self) weakSelf = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(ACTIVE_TIMER_INTERVAL * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf loadActiveStopsAndRoutes];
-        [weakSelf startTimer];
-    });
 }
 
 -(void)viewWillAppear:(BOOL)animated{
