@@ -48,31 +48,44 @@
 }
 
 -(void)addSection:(EZCollectionViewSection *)section{
-    [self.collectionView performBatchUpdates:^{
+    if (self.isViewLoaded) {
+        [self.collectionView performBatchUpdates:^{
+            [self.sections addObject:section];
+            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1]];
+        } completion:^(BOOL finished) {
+            
+        }];
+    } else {
         [self.sections addObject:section];
-        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1]];
-    } completion:^(BOOL finished) {
-        
-    }];
+    }
+ 
 }
 
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index{
-    [self.collectionView performBatchUpdates:^{
+    if (self.isViewLoaded) {
+        [self.collectionView performBatchUpdates:^{
+            [self.sections insertObject:section atIndex:index];
+            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:index]];
+        } completion:^(BOOL finished) {
+            
+        }];
+    } else {
         [self.sections insertObject:section atIndex:index];
-        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:index]];
-    } completion:^(BOOL finished) {
-        
-    }];
+    }
 }
 
 -(void)removeAllSections{
-    [self.collectionView performBatchUpdates:^{
-        NSInteger count = self.sections.count;
+    if (self.isViewLoaded) {
+        [self.collectionView performBatchUpdates:^{
+            NSInteger count = self.sections.count;
+            [self.sections removeAllObjects];
+            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
+        } completion:^(BOOL finished) {
+            
+        }];
+    } else {
         [self.sections removeAllObjects];
-        [self.collectionView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
-    } completion:^(BOOL finished) {
-        
-    }];
+    }
 }
 
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section{
