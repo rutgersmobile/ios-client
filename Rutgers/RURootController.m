@@ -41,22 +41,9 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self openDrawer];
     });
-    /*
-     RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
-     if (!infoManager.hasUserInformation) {
-     [infoManager getUserInformationCompletion:openPanel];
-     } else {
-     }*/
+
     return sidePanel;
-    // if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-    /*
-     } else {
-     UISplitViewController *splitView = [[UISplitViewController alloc] init];
-     splitView.viewControllers = @[menuNav,defaultVC];
-     splitView.delegate = self;
-     self.splitViewController = splitView;
-     return splitView;
-     }*/
+
 }
 
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
