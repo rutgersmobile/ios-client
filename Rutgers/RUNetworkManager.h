@@ -12,5 +12,4 @@
 @interface RUNetworkManager : NSObject
 +(AFHTTPSessionManager *)jsonSessionManager;
 +(AFHTTPSessionManager *)xmlSessionManager;
-+(AFHTTPSessionManager *)HTTPSessionManager;
 @end

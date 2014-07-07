@@ -15,6 +15,12 @@
 @end
 
 @implementation RUNetworkManager
+
+/**
+ *  The shared network manager acting as the main entry point for all network requests
+ *
+ *  @return The shared network manager instance
+ */
 +(RUNetworkManager *)sharedInstance{
     static RUNetworkManager *networkManager = nil;
     static dispatch_once_t onceToken;
@@ -24,14 +30,24 @@
     return networkManager;
 }
 
+/**
+ *  The session manager specializing in json, defaulting to load off the rutgers mobile servers if only given a path fragment
+ *  Parses the response using NSJSONSerialization
+ *
+ *  @return The json session manager
+ */
 +(AFHTTPSessionManager *)jsonSessionManager{
     return [RUNetworkManager sharedInstance].jsonSessionManager;
 }
+
+/**
+ *  The session manager specializing in xml
+ *  Parses the response using XMLDictionary
+ *
+ *  @return The xml session manager
+ */
 +(AFHTTPSessionManager *)xmlSessionManager{
     return [RUNetworkManager sharedInstance].xmlSessionManager;
-}
-+(AFHTTPSessionManager *)HTTPSessionManager{
-    return [RUNetworkManager sharedInstance].HTTPSessionManager;
 }
 - (instancetype)init
 {
@@ -44,9 +60,6 @@
         self.xmlSessionManager = [AFHTTPSessionManager manager];
         self.xmlSessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
         self.xmlSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
-        
-        self.HTTPSessionManager = [AFHTTPSessionManager manager];
-        
     }
     return self;
 }
