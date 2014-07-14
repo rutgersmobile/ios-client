@@ -13,6 +13,7 @@
 
 @interface EZCollectionViewController () <UICollectionViewDelegateFlowLayout>
 @property (nonatomic) NSMutableDictionary *layoutCells;
+@property (nonatomic) UIRefreshControl *refreshControl;
 @end
 
 @implementation EZCollectionViewController
@@ -32,17 +33,25 @@
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
 
-
 -(void)startNetworkLoad{
- 
+    /*
+    if (!self.refreshControl) {
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self action:@selector(startNetworkLoad) forControlEvents:UIControlEventValueChanged];
+        
+        [self.collectionView addSubview:self.refreshControl];
+        self.collectionView.alwaysBounceVertical = YES;
+    }*/
+    [self.refreshControl beginRefreshing];
 }
 
 -(void)networkLoadSucceeded{
+    [self.refreshControl endRefreshing];
 }
 
 -(void)networkLoadFailed{
+    [self.refreshControl endRefreshing];
 }
-
 -(UICollectionViewFlowLayout *)flowLayout{
     return (UICollectionViewFlowLayout *)self.collectionViewLayout;
 }
@@ -58,7 +67,6 @@
     } else {
         [self.sections addObject:section];
     }
- 
 }
 
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index{

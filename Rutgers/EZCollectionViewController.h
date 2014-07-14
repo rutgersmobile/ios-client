@@ -19,9 +19,9 @@
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
 
--(void)startNetworkLoad;
--(void)networkLoadSucceeded;
--(void)networkLoadFailed;
+-(void)startNetworkLoad NS_REQUIRES_SUPER;
+-(void)networkLoadSucceeded NS_REQUIRES_SUPER;
+-(void)networkLoadFailed NS_REQUIRES_SUPER;
 
 @property (nonatomic) NSMutableArray *sections;
 
