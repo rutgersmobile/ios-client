@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString *const userInfoManagerHasInfoKey = @"userInfoManagerHasInfoKey";
-static NSString *const userInfoManagerCampusTagKey = @"userInfoManagerCampusTagKey";
-static NSString *const userInfoManagerUserTypeKey = @"userInfoManagerUserTypeKey";
-
-
 @interface RUUserInfoManager : NSObject
--(BOOL)hasUserInformation;
+
 +(instancetype)sharedInstance;
--(void)getUserInformationCompletion:(void(^)())completion;
+
+-(BOOL)hasUserInformation;
+-(void)getUserInformationCancellable:(BOOL)cancellable completion:(dispatch_block_t)completion;
+
+@property (nonatomic) NSDictionary *campus;
+@property (nonatomic) NSDictionary *userRole;
 @end
