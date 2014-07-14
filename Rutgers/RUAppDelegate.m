@@ -68,19 +68,23 @@
     self.window.rootViewController = [self.rootController makeRootViewController];
     
     [self.window makeKeyAndVisible];
-    
 }
 
 /**
- *  If the user has not yet entered their campus or affiliation, prompt them to enter it
+ *  If the user has not yet entered their campus or affiliation, prompt them to enter it, and upon completion open the drawer
  */
 -(void)askUserForInformationIfNeeded{
-    RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
+    dispatch_block_t openDrawer = ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.rootController openDrawer];
+        });
+    };
     
-    if (!userInfoManager.hasUserInformation) {
-        [userInfoManager getUserInformationCompletion:^{
-            
-        }];
+    RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
+    if (![userInfoManager hasUserInformation]) {
+        [userInfoManager getUserInformationCancellable:NO completion:openDrawer];
+    } else {
+        openDrawer();
     }
 }
 
