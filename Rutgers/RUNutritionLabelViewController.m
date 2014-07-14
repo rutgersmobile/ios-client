@@ -30,7 +30,7 @@
     EZTableViewRightDetailRow *calories = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"calories"] stringValue] detailText:@"Calories"];
     EZTableViewRightDetailRow *serving = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"serving"] capitalizedString] detailText:@"Serving"];
     
-    [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:nil rows:@[calories,serving]]];
+    [self addSection:[[EZTableViewSection alloc] initWithRows:@[calories,serving]]];
     
     if ([self.foodItem[@"ingredients"] count]) {
         EZTableViewSection *ingredients = [[EZTableViewSection alloc] initWithSectionTitle:@"Ingredients"];

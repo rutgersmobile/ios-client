@@ -72,8 +72,8 @@
             [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
         }
     } else {
-        [response enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [((RUPredictionsExpandingSection *)[self sectionInTableView:self.tableView atIndex:idx]) updateWithPredictions:obj];
+        [response enumerateObjectsUsingBlock:^(NSDictionary *predictions, NSUInteger idx, BOOL *stop) {
+            [((RUPredictionsExpandingSection *)[self sectionAtIndex:idx]) updateWithPredictions:predictions];
         }];
         [self.tableView reloadData];
     }

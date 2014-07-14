@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-NSString const* newBrunswickAgency;
-NSString const* newarkAgency;
-
 @class RUBusRoute, CLLocation;
+
+extern NSString const *newBrunswickAgency;
+extern NSString const *newarkAgency;
 
 @interface RUBusData : NSObject
 

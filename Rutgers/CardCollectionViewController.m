@@ -90,12 +90,6 @@
     [self updateScrollBounds];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
     if (scrollView == self.secretScrollView) {

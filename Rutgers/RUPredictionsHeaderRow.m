@@ -66,8 +66,7 @@
     NSMutableString *string = [[NSMutableString alloc] init];
     __block NSString *lastMinutes = nil;
     
-    [predictions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSDictionary *prediction = obj;
+    [predictions enumerateObjectsUsingBlock:^(NSDictionary *prediction, NSUInteger idx, BOOL *stop) {
         NSString *minutes = prediction[@"_minutes"];
         if ([minutes isEqualToString:@"0"]) minutes = @"<1";
         if ([string isEqualToString:@""]) {

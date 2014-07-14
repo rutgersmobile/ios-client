@@ -12,7 +12,7 @@
 @end
 @implementation ExpandingTableViewSection
 -(instancetype)initWithHeaderRow:(EZTableViewAbstractRow *)headerRow bodyRows:(NSArray *)bodyRows{
-    self = [super initWithSectionTitle:nil rows:bodyRows];
+    self = [super initWithRows:bodyRows];
     if (self) {
         self.headerRow = headerRow;
     }

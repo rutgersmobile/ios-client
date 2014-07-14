@@ -47,8 +47,8 @@
    // NSString *url = @"http://vps.rsopher.com/nutrition.json";
     [[RUNetworkManager jsonSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            NSArray *food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                for (NSDictionary *meal in evaluatedObject[@"meals"]) {
+            NSArray *food = [responseObject filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDictionary *diningHall, NSDictionary *bindings) {
+                for (NSDictionary *meal in diningHall[@"meals"]) {
                     if ([meal[@"genres"] count] > 0) {
                         return true;
                     }

@@ -40,11 +40,6 @@
     _tilePadding = tilePadding;
     self.flowLayout.sectionInset = UIEdgeInsetsMake(tilePadding, tilePadding, tilePadding, tilePadding);
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - CollectionViewFlowLayout Delegate
 
@@ -56,13 +51,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.collectionView.collectionViewLayout invalidateLayout];
-    
-    [self clearSelection];
 }
--(void)clearSelection{
-    NSIndexPath *selectedIndexPath = self.collectionView.indexPathsForSelectedItems.lastObject;
-    [self.collectionView deselectItemAtIndexPath:selectedIndexPath animated:YES];
-}
+
+
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat layoutWidth = CGRectGetWidth(collectionView.bounds)-self.tilePadding*2;
     NSInteger number = 0;

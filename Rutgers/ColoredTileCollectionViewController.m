@@ -23,7 +23,7 @@
     
     CGFloat hue, sat, bright, alpha;
     [color getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
-    
+
     UIView *backgroundView = [[UIView alloc] init];
     backgroundView.backgroundColor = [UIColor colorWithHue:hue saturation:sat*1.2 brightness:bright/1.8 alpha:1];
     cell.selectedBackgroundView = backgroundView;
@@ -35,18 +35,6 @@
     static NSArray *colorData = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        /*
-        colorData =  @[
-                       @[@184, @100, @82],
-                       @[@171, @97, @78],
-                       @[@125, @39, @79],
-                       @[@63, @57, @79],
-                       @[@47, @95, @100],
-                       @[@39, @90, @100],
-                       @[@29, @86, @100],
-                       @[@19, @83, @100],
-                       @[@8, @80, @100]
-                       ];*/
         colorData =  @[
                        @[@184, @100, @72],
                        @[@171, @97, @68],
@@ -88,7 +76,6 @@
     CGFloat saturation = ([entryOne[1] doubleValue]*(1-ratio)+[entryTwo[1] doubleValue]*ratio)/100.0;
     CGFloat brightness = ([entryOne[2] doubleValue]*(1-ratio)+[entryTwo[2] doubleValue]*ratio)/100.0;
     
-    //   NSLog(@"%f, %f, %f",hue,saturation,brightness);
     return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 }
 
