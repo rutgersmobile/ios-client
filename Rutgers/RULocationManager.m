@@ -31,6 +31,7 @@
         self.locationManager.activityType = CLActivityTypeFitness; 	// includes any pedestrian activities
         self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters; //middle ground between accuracy and power usage, also 100 meters might be worth using but this may be too inaccurate
         self.locationManager.delegate = self;
+        self.delegates = [NSMutableSet set];
     }
     return self;
 }
