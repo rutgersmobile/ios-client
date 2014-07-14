@@ -54,8 +54,10 @@
     self = [super init];
     if (self) {
         self.jsonSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://rumobile.rutgers.edu/1/"]];
-        self.jsonSessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-        self.jsonSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",nil];
+        AFJSONResponseSerializer *jsonSerializer = [AFJSONResponseSerializer serializer];
+        jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",nil];
+        jsonSerializer.removesKeysWithNullValues = YES;
+        self.jsonSessionManager.responseSerializer = jsonSerializer;
     
         self.xmlSessionManager = [AFHTTPSessionManager manager];
         self.xmlSessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
