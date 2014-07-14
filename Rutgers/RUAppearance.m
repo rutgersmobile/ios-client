@@ -51,6 +51,6 @@
 +(UIColor *)modifiedRed{
     CGFloat hue, sat, bright, alpha;
     [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
-    return [UIColor colorWithHue:hue saturation:1.0 brightness:bright*0.85 alpha:alpha];
+    return [UIColor colorWithHue:hue saturation:1.0 brightness:bright alpha:alpha];
 }
 @end
