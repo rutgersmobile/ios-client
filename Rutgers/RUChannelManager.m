@@ -54,16 +54,15 @@
     [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             NSArray *webChannels = responseObject;
-            webChannels = [webChannels filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                NSString *handle = [evaluatedObject handle];
-                if (self.channels[handle]) {
-                    return false;
-                } else {
-                    self.channels[handle] = evaluatedObject;
-                    return true;
+            NSMutableArray *filteredWebChannels = [NSMutableArray array];
+            for (NSDictionary *channel in webChannels) {
+                NSString *handle = [channel handle];
+                if (!self.channels[handle]) {
+                    self.channels[handle] = channel;
+                    [filteredWebChannels addObject:channel];
                 }
-            }]];
-            completion(webChannels);
+            }
+            completion(filteredWebChannels);
         } else {
 
         }
@@ -79,7 +78,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         viewTagsToClassNameMapping = @{@"bus" : @"RUBusViewController",
-                                       @"dtable" : @"DynamicCollectionView",
+                                       @"dtable" : @"DynamicCollectionViewController",
                                        @"food" : @"RUFoodViewController",
                                        @"places" : @"RUPlacesViewController",
                                        @"ruinfo" : @"RUInfoTableViewController",
