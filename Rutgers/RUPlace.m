@@ -61,12 +61,8 @@
     return dictionary;
 }
 
-NSString *stripString(NSString *string){
-    if ([string isKindOfClass:[NSString class]] && ![string isEqualToString:@""]) {
-        return string;
-    }
-    return nil;
-}
+NSString *stripString(NSString *string){ return ![string isEqualToString:@""] ? string : nil; }
+
 -(CLLocationCoordinate2D)coordinate{
     return self.location.coordinate;
 }

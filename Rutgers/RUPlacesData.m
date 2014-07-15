@@ -57,7 +57,6 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
     }];
 }
 -(void)parsePlaces:(NSDictionary *)response{
-   // NSArray *excludedCampuses = @[[NSNull null],@"off-campus",@"Off-Campus"];
     NSMutableDictionary *parsedPlaces = [NSMutableDictionary dictionary];
   //  NSMutableDictionary *sortedByLocation = [NSMutableDictionary dictionary];
     
@@ -143,16 +142,17 @@ static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";
 
 #pragma mark - nearby api
 -(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces))completionBlock{
+    if (!location) {
+        completionBlock(@[]);
+        return;
+    }
     dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
-        NSArray *nearbyPlaces = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            RUPlace *place = evaluatedObject;
+        NSArray *nearbyPlaces = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
             if (!place.location) return NO;
             return ([place.location distanceFromLocation:location] < NEARBY_DISTANCE);
         }]];
         
-        nearbyPlaces = [nearbyPlaces sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            RUPlace *placeOne = obj1;
-            RUPlace *placeTwo = obj2;
+        nearbyPlaces = [nearbyPlaces sortedArrayUsingComparator:^NSComparisonResult(RUPlace *placeOne, RUPlace *placeTwo) {
 
             CLLocationDistance distanceOne = [placeOne.location distanceFromLocation:location];
             CLLocationDistance distanceTwo = [placeTwo.location distanceFromLocation:location];

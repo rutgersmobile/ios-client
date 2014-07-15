@@ -134,7 +134,7 @@ static NSString *const placesSavedSearchTextKey = @"placesSavedSearchTextKey";
     return [[self itemForSection:section inTableView:tableView] count];
 }
 
--(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     return @"ALTableViewRightDetailCell";
 }
 
