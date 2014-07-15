@@ -15,14 +15,21 @@
 
 -(void)addSection:(EZTableViewSection *)section;
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index;
+-(void)replaceSection:(EZTableViewSection *)oldSection withSection:(EZTableViewSection *)newSection;
+-(void)replaceSectionAtIndex:(NSInteger)index withSection:(EZTableViewSection *)section;
+-(void)reloadSection:(EZTableViewSection *)section;
+-(void)reloadSectionAtIndex:(NSInteger)index;
 -(void)removeAllSections;
+
+-(NSInteger)indexOfSection:(EZTableViewSection *)section;
+-(EZTableViewSection *)sectionAtIndex:(NSInteger)index;
 
 @property (nonatomic) NSMutableArray *sections;
 
 - (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section;
 - (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath;
 
--(void)startNetworkLoad;
--(void)networkLoadSucceeded;
--(void)networkLoadFailed;
+-(void)startNetworkLoad NS_REQUIRES_SUPER;
+-(void)networkLoadSucceeded NS_REQUIRES_SUPER;
+-(void)networkLoadFailed NS_REQUIRES_SUPER;
 @end

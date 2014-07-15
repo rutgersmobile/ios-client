@@ -64,10 +64,7 @@
 }
 
 -(void)addSection:(EZTableViewSection *)section{
-    [self.sections addObject:section];
-    if (self.isViewLoaded) {
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:self.sections.count-1] withRowAnimation:UITableViewRowAnimationFade];
-    }
+    [self insertSection:section atIndex:self.sections.count];
 }
 
 -(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index{
@@ -77,16 +74,48 @@
     }
 }
 
+-(void)replaceSectionAtIndex:(NSInteger)index withSection:(EZTableViewSection *)section{
+    self.sections[index] = section;
+    [self reloadSectionAtIndex:index];
+}
+
+-(void)replaceSection:(EZTableViewSection *)oldSection withSection:(EZTableViewSection *)newSection{
+    NSInteger index = [self indexOfSection:oldSection];
+    [self replaceSectionAtIndex:index withSection:newSection];
+}
+
 -(void)removeAllSections{
-    NSInteger count = self.sections.count;
-    [self.sections removeAllObjects];
     if (self.isViewLoaded) {
+        NSInteger count = self.sections.count;
+        [self.tableView beginUpdates];
+        [self.sections removeAllObjects];
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+    } else {
+        [self.sections removeAllObjects];
     }
 }
 
+-(void)reloadSection:(EZTableViewSection *)section{
+    NSInteger index = [self indexOfSection:section];
+    [self reloadSectionAtIndex:index];
+}
+
+-(void)reloadSectionAtIndex:(NSInteger)index{
+    if (self.isViewLoaded) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+-(NSInteger)indexOfSection:(EZTableViewSection *)section{
+    return [self.sections indexOfObject:section];
+}
+-(EZTableViewSection *)sectionAtIndex:(NSInteger)index{
+    return self.sections[index];
+}
+
 #pragma mark - TableView Data source
--(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     return [self rowInTableView:tableView forIndexPath:indexPath].identifier;
 }
 
@@ -106,8 +135,8 @@
     return [self sectionInTableView:tableView atIndex:section].title;
 }
 
-#pragma mark - TableView Delegate
 
+#pragma mark - TableView Delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     EZTableViewAbstractRow *row = [self rowInTableView:tableView forIndexPath:indexPath];
     if (row.didSelectRowBlock) {
@@ -116,18 +145,19 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
+
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self rowInTableView:tableView forIndexPath:indexPath].shouldHighlight;
 }
 
--(void)tableView:(UITableView*)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
+-(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
     if (action == @selector(copy:)){
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        [pasteboard setString:[self rowInTableView:tableView forIndexPath:indexPath].textString];
+        [pasteboard setString:[self rowInTableView:tableView forIndexPath:indexPath].textRepresentation];
     }
 }
 
--(BOOL)tableView:(UITableView*)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
+-(BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
     if (action == @selector(copy:)) return YES;
     return NO;
 }
@@ -146,8 +176,8 @@
     @synchronized (self.searchResultSections) {
         [self.searchResultSections removeAllObjects];
         for (EZTableViewSection *section in self.sections) {
-            NSArray *filteredRows = [section.allRows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-                NSString *text = [evaluatedObject textString];
+            NSArray *filteredRows = [section.allRows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EZTableViewAbstractRow *row, NSDictionary *bindings) {
+                NSString *text = row.textRepresentation;
                 return ([text rangeOfString:string options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch].location != NSNotFound);
             }]];
             if (filteredRows.count) {
