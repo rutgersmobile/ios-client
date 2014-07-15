@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+Channel.h"
+#import "RUUserInfoManager.h"
 
 @implementation NSDictionary (Channel)
 -(NSString *)identifierForChannel{
@@ -17,18 +18,22 @@
     if ([title isKindOfClass:[NSString class]]) {
         return title = title;
     } else if ([title isKindOfClass:[NSDictionary class]]) {
-        id subtitle = title[@"homeTitle"];
-        if ([subtitle isKindOfClass:[NSString class]]) {
-            return subtitle;
+        NSString *campus = title[@"homeCampus"];
+        if ([campus isEqualToString:[RUUserInfoManager sharedInstance].campus[@"title"]]) {
+            return title[@"homeTitle"];
+        } else {
+            return title[@"foreignTitle"];
         }
     }
     return nil;
 }
+
 -(UIImage *)iconForChannel{
     NSString *iconName = self[@"icon"];
     UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     return image;
 }
+
 -(NSString *)handle{
     return self[@"handle"];
 }
