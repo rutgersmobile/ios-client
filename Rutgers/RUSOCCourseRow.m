@@ -10,27 +10,39 @@
 #import "RUSOCCourseCell.h"
 @interface RUSOCCourseRow ()
 @property (nonatomic) NSDictionary *course;
+@property (nonatomic) NSString *titleText;
+@property (nonatomic) NSString *creditsText;
+@property (nonatomic) NSString *sectionText;
 @end
 @implementation RUSOCCourseRow
 -(instancetype)initWithCourse:(NSDictionary *)course{
     self = [super initWithIdentifier:@"RUSOCCourseCell"];
     if (self) {
         self.course = course;
+        self.titleText = [NSString stringWithFormat:@"%@: %@",self.course[@"courseNumber"],[self.course[@"title"] capitalizedString]];
+        if (self.course[@"credits"]) {
+            self.creditsText = [NSString stringWithFormat:@"Credits: %@",self.course[@"credits"]];
+        }
+        NSPredicate *printedSectionsPredicate = [NSPredicate predicateWithFormat:@"printed == %@",@"Y"];
+        NSPredicate *openSectionsPredicate = [NSPredicate predicateWithFormat:@"openStatus == YES"];
+
+        NSArray *sections = [self.course[@"sections"] filteredArrayUsingPredicate:printedSectionsPredicate];
+        NSArray *openSections = [sections filteredArrayUsingPredicate:openSectionsPredicate];
+        
+        self.sectionText = [NSString stringWithFormat:@"Sections: %lu / %lu",(unsigned long)openSections.count,(unsigned long)sections.count];
     }
     return self;
 }
 
 -(void)setupCell:(RUSOCCourseCell *)cell{
-    cell.titleLabel.text = [NSString stringWithFormat:@"%@: %@",self.course[@"courseNumber"],[self.course[@"title"] capitalizedString]];
-    id credits = self.course[@"credits"];
-    if ([credits isKindOfClass:[NSNumber class]]) {
-        cell.creditsLabel.text = [NSString stringWithFormat:@"Credits: %@",credits];
-    } else {
-        cell.creditsLabel.text = nil;
-    }
+    cell.titleLabel.text = self.titleText;
+    cell.creditsLabel.text = self.creditsText;
+    cell.sectionsLabel.text = self.sectionText;
     
-    cell.sectionsLabel.text = nil;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
+-(NSString *)textRepresentation{
+    return self.titleText;
+}
 @end

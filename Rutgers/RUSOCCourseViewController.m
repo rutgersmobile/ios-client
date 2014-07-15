@@ -11,6 +11,8 @@
 #import "EZTableViewSection.h"
 #import "EZTableViewTextRow.h"
 #import "RUSOCSectionRow.h"
+#import "RUChannelManager.h"
+#import "RUSOCData.h"
 
 @interface RUSOCCourseViewController ()
 @property (nonatomic) NSDictionary *course;
@@ -22,6 +24,27 @@
     if (self) {
         self.course = course;
         self.title = [NSString stringWithFormat:@"%@: %@",self.course[@"courseNumber"],[self.course[@"title"] capitalizedString]];
+        
+        NSString *courseDescription = self.course[@"courseDescription"];
+        if (courseDescription) {
+            EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]}]];
+            [self addSection:[[EZTableViewSection alloc] initWithRows:@[row]]];
+        }
+        
+        EZTableViewSection *sectionSection = [[EZTableViewSection alloc] init];
+        
+        NSPredicate *printedSectionsPredicate = [NSPredicate predicateWithFormat:@"printed == %@",@"Y"];
+        NSArray *sections = [self.course[@"sections"] filteredArrayUsingPredicate:printedSectionsPredicate];
+        
+        for (NSDictionary *section in sections) {
+            RUSOCSectionRow *sectionRow = [[RUSOCSectionRow alloc] initWithSection:section];
+            sectionRow.didSelectRowBlock = ^{
+                NSDictionary *channel = @{@"title" : @"WebReg", @"view" : @"www", @"url" :[NSString stringWithFormat:@"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",[RUSOCData sharedInstance].semester[@"tag"],section[@"index"]]};
+                [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
+            };
+            [sectionSection addRow:sectionRow];
+        }
+        [self addSection:sectionSection];
     }
     return self;
 }
@@ -30,26 +53,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    NSString *courseDescription = self.course[@"courseDescription"];
-    if ([courseDescription isKindOfClass:[NSString class]]) {
-        EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]}]];
-        [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:nil rows:@[row]]];
-    }
-    
-    EZTableViewSection *sectionSection = [[EZTableViewSection alloc] init];
-    NSArray *sections = self.course[@"sections"];
-    for (NSDictionary *section in sections) {
-        [sectionSection addRow:[[RUSOCSectionRow alloc] initWithSection:section]];
-    }
-    [self addSection:sectionSection];
+    self.tableView.separatorInset = UIEdgeInsetsZero;
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end

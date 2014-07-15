@@ -8,6 +8,6 @@
 
 #import "EZTableViewRightDetailRow.h"
 
-@interface RUSOCCourseRow : EZTableViewRightDetailRow
+@interface RUSOCCourseRow : EZTableViewAbstractRow
 -(instancetype)initWithCourse:(NSDictionary *)course;
 @end
