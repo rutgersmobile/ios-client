@@ -10,9 +10,12 @@
 @class ALTableViewAbstractCell;
 
 @interface ALTableViewController : UITableViewController <UISearchDisplayDelegate>
--(ALTableViewAbstractCell *)layoutCellWithIdentifier:(NSString *)identifier;
--(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
+-(id)layoutViewForIdentifier:(NSString *)identifier;
+-(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+-(NSString *)identifierForHeaderInTableView:(UITableView *)tableView;
+
 
 @property (nonatomic) UISearchDisplayController *searchController;
 -(void)enableSearch;

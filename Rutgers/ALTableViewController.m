@@ -56,18 +56,43 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
--(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
-    [NSException raise:@"Must override abstract methods in ALTableview" format:nil];
-    return nil;
+#pragma mark - Table view data source
+-(id)layoutViewWithIdentifier:(NSString *)identifier{
+    UIView *layoutView = self.layoutCells[identifier];
+    if (!layoutView) {
+        Class viewClass = NSClassFromString(identifier);
+        if ([viewClass isSubclassOfClass:[UITableViewCell class]]) {
+            layoutView = [[viewClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        } else if ([viewClass isSubclassOfClass:[UITableViewHeaderFooterView class]]) {
+            layoutView = [[viewClass alloc] initWithReuseIdentifier:identifier];
+        } else {
+            [NSException raise:@"identifier is not a table cell or section header" format:nil];
+        }
+        self.layoutCells[identifier] = layoutView;
+    }
+    return layoutView;
+}
+
+-(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([UITableViewCell class]);
+}
+
+-(NSString *)identifierForHeaderInTableView:(UITableView *)tableView inSection:(NSInteger)section{
+    return NSStringFromClass([UITableViewHeaderFooterView class]);
+}
+
+-(BOOL)tableView:(UITableView *)tableView sectionHasCustomHeader:(NSInteger)section{
+    return NO;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *identifier = [self identifierForRowInTableView:tableView atIndexPath:indexPath];
+    NSString *identifier = [self identifierForCellInTableView:tableView atIndexPath:indexPath];
     ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         [tableView registerClass:NSClassFromString(identifier) forCellReuseIdentifier:identifier];
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     }
+    
     [self setupCell:cell inTableView:tableView forRowAtIndexPath:indexPath];
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
@@ -75,38 +100,64 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    NSString *identifier = [self identifierForHeaderInTableView:tableView inSection:section];
+    UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    if (!view) {
+        [tableView registerClass:NSClassFromString(identifier) forHeaderFooterViewReuseIdentifier:identifier];
+        view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    }
     
-    ALTableViewAbstractCell *layoutCell = [self layoutCellWithIdentifier:[self identifierForRowInTableView:tableView atIndexPath:indexPath]];
+    [self setupHeader:view inTableView:tableView inSection:section];
+    [view setNeedsUpdateConstraints];
+    [view updateConstraintsIfNeeded];
+    
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *identifier = [self identifierForCellInTableView:tableView atIndexPath:indexPath];
+    ALTableViewAbstractCell *layoutCell = [self layoutViewWithIdentifier:identifier];
     [self setupCell:layoutCell inTableView:tableView forRowAtIndexPath:indexPath];
     [layoutCell setNeedsUpdateConstraints];
     [layoutCell updateConstraintsIfNeeded];
     
-    layoutCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(layoutCell.bounds));
-    [layoutCell setNeedsLayout];
-    [layoutCell layoutIfNeeded];
+    return [self tableView:tableView layoutHeightForView:layoutCell];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (![self tableView:tableView sectionHasCustomHeader:section]) return UITableViewAutomaticDimension;
+
+    NSString *identifier = [self identifierForHeaderInTableView:tableView inSection:section];
+    UITableViewHeaderFooterView *layoutView = [self layoutViewWithIdentifier:identifier];
+    [self setupHeader:layoutView inTableView:tableView inSection:section];
+    [layoutView setNeedsUpdateConstraints];
+    [layoutView updateConstraintsIfNeeded];
+    
+    return [self tableView:tableView layoutHeightForView:layoutView];
+}
+
+-(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [NSException raise:@"Must override abstract methods in ALTableview" format:nil];
+}
+
+-(void)setupHeader:(UITableViewHeaderFooterView *)header inTableView:(UITableView *)tableView inSection:(NSInteger)section{
+     
+}
+
+-(CGFloat)tableView:(UITableView *)tableView layoutHeightForView:(UIView *)layoutView{
+    layoutView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(layoutView.bounds));
+    [layoutView setNeedsLayout];
+    [layoutView layoutIfNeeded];
     
     // Get the actual height required for the cell
-    CGFloat height = [layoutCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    UIView *contentView = [layoutView respondsToSelector:@selector(contentView)] ? [layoutView performSelector:@selector(contentView)] : layoutView;
+    CGFloat height = [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     
     // Add an extra point to the height to account for internal rounding errors that are occasionally observed in
     // the Auto Layout engine, which cause the returned height to be slightly too small in some cases.
     height += 1;
     return height;
-}
-
--(ALTableViewAbstractCell *)layoutCellWithIdentifier:(NSString *)identifier{
-    ALTableViewAbstractCell *cell = self.layoutCells[identifier];
-    if (!cell) {
-        cell = [[NSClassFromString(identifier) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        self.layoutCells[identifier] = cell;
-    }
-    return cell;
-}
-
-#pragma mark - Table view data source
--(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
-    [NSException raise:@"Must override abstract methods in ALTableview" format:nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
