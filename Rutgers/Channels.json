@@ -26,7 +26,11 @@
   },
   {
   "handle" : "recreation",
-  "title": "Recreation",
+  "title": {
+    "homeCampus": "New Brunswick",
+    "homeTitle": "Recreation",
+    "foreignTitle": "NB Recreation"
+  },
   "url": "rec.txt",
   "view" : "dtable",
   "icon" : "recreation"
@@ -46,7 +50,11 @@
   },
   {
   "handle" : "career_services",
-  "title": "Career Services",
+  "title": {
+    "homeCampus": "New Brunswick",
+    "homeTitle": "Career Services",
+    "foreignTitle": "NB Career Services"
+  },
   "url": "csfaq.txt",
   "view" : "dtable",
   "icon" : "careers"
@@ -59,13 +67,17 @@
   },
   {
   "handle" : "athletics",
-  "title": "Athletics",
+  "title": {
+    "homeCampus": "New Brunswick",
+    "homeTitle": "Athletics",
+    "foreignTitle": "NB Athletics"
+  },
   "view" : "athletics",
   "icon" : "athletics"
   },
   {
   "handle" : "campus_status",
-  "title": "Emergency Alerts",
+  "title": "Emergency Services",
   "view" : "emergency",
   "icon" : "emergency"
   },
