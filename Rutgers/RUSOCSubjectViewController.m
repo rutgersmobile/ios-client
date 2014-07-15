@@ -31,12 +31,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self enableSearch];
     [self startNetworkLoad];
 }
 
 -(void)startNetworkLoad{
     [super startNetworkLoad];
-    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code forCurrentConfigurationWithSuccess:^(NSArray *courses) {
+    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code withSuccess:^(NSArray *courses) {
         [self networkLoadSucceeded];
 
         [self.tableView beginUpdates];
@@ -53,7 +54,7 @@
 
 -(void)makeSectionsForResponse:(NSArray *)response{
     EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Courses"];
-    for (NSDictionary *course in response) {
+    for (NSDictionary *course in response) {    
         RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:course] animated:YES];
