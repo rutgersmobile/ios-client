@@ -7,9 +7,12 @@
 //
 
 #import "RUFeedbackViewController.h"
+#import "EZTableViewSection.h"
+#import "EZTableViewRightDetailRow.h"
 
-@interface RUFeedbackViewController ()
-
+@interface RUFeedbackViewController () <UIActionSheetDelegate>
+@property EZTableViewRightDetailRow *feedbackRow;
+@property NSArray *feedbackSubjects;
 @end
 
 @implementation RUFeedbackViewController
@@ -23,23 +26,33 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UIView *view = self.view;
+    
+    self.feedbackSubjects = @[
+                             @"General Questions",
+                             @"Help Using Application",
+                             @"App Feature Request",
+                             @"Report a Bug",
+                             @"App Channel Feedback"
+                             ];
+    
+    UIActionSheet *feedbackActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please select a subject:" delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    for (NSString *string in self.feedbackSubjects) {
+        [feedbackActionSheet addButtonWithTitle:string];
+    }
+    
+    self.feedbackRow = [[EZTableViewRightDetailRow alloc] initWithText:@"Select a feedback subject..."];
+    self.feedbackRow.didSelectRowBlock = ^{
+        [feedbackActionSheet showInView:view];
+    };
+    
+    [self addSection:[[EZTableViewSection alloc] initWithRows:@[self.feedbackRow]]];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    self.feedbackRow.text = self.feedbackSubjects[buttonIndex];
+    [self reloadSectionAtIndex:0];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
+                                                  
+                                                  
 @end
