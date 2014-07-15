@@ -24,11 +24,13 @@
     self = [super initWithIdentifier:@"RUReaderTableViewCell"];
     if (self) {
         self.title = [[item[@"title"] firstObject] stringByDecodingHTMLEntities];
-        self.date = [item[@"pubDate"] firstObject];
-        if (!self.date) {
-            self.date = [item[@"event:beginDateTime"] firstObject];
+       
+        NSString *date = [item[@"pubDate"] firstObject];
+        if (!date) {
+            date = [item[@"event:beginDateTime"] firstObject];
         }
-        self.date = [self formatDateString:self.date];
+        self.date = [self formatDateString:date];
+        
         self.imageURL = [NSURL URLWithString:[item[@"enclosure"] firstObject][@"_url"]];
     }
     return self;
@@ -44,6 +46,7 @@
 -(NSString *)formatDateString:(NSString *)dateString{
     static NSDateFormatter *outputFormatter;
     static NSMutableArray *inputFormatters;
+  
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         //ex Wednesday, July 2, 2014
@@ -53,7 +56,7 @@
         /*
          
          Wednesday, July 2, 2014
-         EEEE, MMM d, yyyy
+         EEEE, MMMM d, yyyy
          
          Fri, 30 May 2014 16:51:02 GMT
          EEE, d MMM yyyy HH:mm:ss zzz
@@ -76,7 +79,7 @@
         }
     });
     
-    NSDate *dateRepresentation = [NSDate date];
+    NSDate *dateRepresentation;
     for (NSDateFormatter *dateFormatter in inputFormatters) {
         dateRepresentation = [dateFormatter dateFromString:dateString];
         if (dateRepresentation) break;
