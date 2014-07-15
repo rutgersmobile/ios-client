@@ -91,13 +91,6 @@
     [self.mapView showAnnotations:@[self.place] animated:YES];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 -(void)setupOverlay{
     //add our overlay
     RUMapsTileOverlay *overlay = [[RUMapsTileOverlay alloc] init];

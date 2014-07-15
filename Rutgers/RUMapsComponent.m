@@ -58,11 +58,6 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
         self.shouldStartTrackingOnLocationUpdate = NO;
     }
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 /*
 #pragma mark - Navigation
