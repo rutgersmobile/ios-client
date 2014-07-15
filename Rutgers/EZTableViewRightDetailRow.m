@@ -32,7 +32,7 @@
     }
     return self;
 }
--(NSString *)textString{
+-(NSString *)textRepresentation{
     return self.text;
 }
 

@@ -35,7 +35,7 @@
 -(NSString *)string{
     return self.attributedString.string;
 }
--(NSString *)textString{
+-(NSString *)textRepresentation{
     return self.string;
 }
 -(void)setString:(NSString *)string{

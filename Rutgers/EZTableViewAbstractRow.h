@@ -13,11 +13,11 @@
 -(instancetype)initWithIdentifier:(NSString *)identifier;
 
 -(void)setupCell:(ALTableViewAbstractCell *)cell;
--(NSString *)textString;
+-(NSString *)textRepresentation;
 @property (readonly, nonatomic) NSString *identifier;
 @property (nonatomic) BOOL shouldHighlight;
 @property (nonatomic) BOOL shouldCopy;
-@property (copy) void (^didSelectRowBlock)(void);
+@property (copy) dispatch_block_t didSelectRowBlock;
 @property (nonatomic) BOOL active;
 @property (nonatomic) BOOL showsDisclosureIndicator;
 @end

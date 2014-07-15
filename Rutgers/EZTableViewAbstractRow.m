@@ -33,7 +33,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 }
--(NSString *)textString{
+-(NSString *)textRepresentation{
     return nil;
 }
 @end
