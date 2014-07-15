@@ -24,7 +24,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         storedChannels = [[NSCache alloc] init];
-        storedChannels.countLimit = 6;
+        storedChannels.countLimit = 10;
     });
     return storedChannels;
 }
