@@ -14,14 +14,14 @@
 @property (nonatomic) NSString *title;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle rows:(NSArray *)rows;
+-(instancetype)initWithRows:(NSArray *)rows;
 
-@property (nonatomic) NSString *emptyItemFormat;
+@property (nonatomic) NSString *headerIdentifier;
 
 -(void)addRow:(EZTableViewAbstractRow *)row;
 -(void)addRows:(NSArray *)rows;
 -(void)removeAllRows;
 -(NSArray *)allRows;
-
 
 -(NSInteger)numberOfRows;
 -(EZTableViewAbstractRow *)rowAtIndex:(NSInteger)index;

@@ -23,6 +23,7 @@
     }
     return self;
 }
+
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle{
     self = [self init];
     if (self) {
@@ -30,8 +31,17 @@
     }
     return self;
 }
+
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle rows:(NSArray *)rows{
     self = [self initWithSectionTitle:sectionTitle];
+    if (self) {
+        [self addRows:rows];
+    }
+    return self;
+}
+
+-(instancetype)initWithRows:(NSArray *)rows{
+    self = [self init];
     if (self) {
         [self addRows:rows];
     }
@@ -53,39 +63,13 @@
 -(NSArray *)allRows{
     return self.rows;
 }
-/*
--(NSInteger)numberOfRows{
-    return self.rows.count ;
-}
--(EZTableViewRightDetailRow *)rowAtIndex:(NSInteger)index{
-    return self.rows[index];
-}*/
 
 -(NSInteger)numberOfRows{
-    return self.rows.count;// ? self.rows.count : 1;
+    return self.rows.count;
 }
 
 -(EZTableViewRightDetailRow *)rowAtIndex:(NSInteger)index{
-    return self.rows[index];// : self.emptyItem;
-}
-/*
--(NSString *)emptyItemFormat{
-    if (!_emptyItemFormat) {
-        _emptyItemFormat = @"No %@";
-    }
-    return _emptyItemFormat;
+    return self.rows[index];
 }
 
--(EZTableViewRightDetailRow *)emptyItem{
-    if (!_emptyItem) {
-        NSString *text;
-        if (self.title) {
-            text = [NSString stringWithFormat:self.emptyItemFormat,self.title];
-        } else {
-            text = @"No Items";
-        }
-        _emptyItem = [[EZTableViewRightDetailRow alloc] initWithText:text];
-    }
-    return _emptyItem;
-}*/
 @end
