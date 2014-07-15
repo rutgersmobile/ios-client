@@ -30,12 +30,6 @@
     self.webView.backgroundColor = [self webViewPageBackgroundColor];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (UIColor *)webViewPageBackgroundColor
 {
     //Pull the current background colour from the web view
@@ -76,16 +70,5 @@
     
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
