@@ -51,7 +51,6 @@
         [self.tableView insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
     }];
-
     
     self.view.backgroundColor = [UIColor grey2Color];
     self.tableView.backgroundColor = [UIColor grey2Color];
@@ -59,8 +58,8 @@
     self.tableView.separatorColor = [UIColor grey4Color];
     
     
-    [self.tableView registerClass:[RUMenuTableViewCell class] forCellReuseIdentifier:@"Cell"];
-    [self.tableView registerClass:[RUMenuSectionHeaderView class] forHeaderFooterViewReuseIdentifier:@"Header"];
+    [self.tableView registerClass:[RUMenuTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUMenuTableViewCell class])];
+    [self.tableView registerClass:[RUMenuSectionHeaderView class] forHeaderFooterViewReuseIdentifier:NSStringFromClass([RUMenuSectionHeaderView class])];
 }
 
 -(void)makeSubviews{
@@ -90,20 +89,15 @@
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 }
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RUMenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    RUMenuTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RUMenuTableViewCell class])];
     cell.channelTitleLabel.text = [[self channelForIndexPath:indexPath] titleForChannel];
     cell.channelImage.image = [[self channelForIndexPath:indexPath] iconForChannel];
     return cell;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    RUMenuSectionHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"Header"];
+    RUMenuSectionHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([RUMenuSectionHeaderView class])];
     header.sectionTitleLabel.text = [[self titleForHeaderInSection:section] uppercaseString];
     return header;
 }
