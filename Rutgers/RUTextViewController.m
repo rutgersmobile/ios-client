@@ -38,17 +38,12 @@
     self.textView.font = [UIFont systemFontOfSize:17];
     self.textView.textContainerInset = UIEdgeInsetsMake(15, 8, 15, 8);
     self.textView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.textView.alwaysBounceVertical = YES;
     
     [self.view addSubview:self.textView];
     [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     
     self.textView.text = self.data;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
