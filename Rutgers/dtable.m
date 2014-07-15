@@ -36,24 +36,21 @@
     self = [self init];
     if (self) {
         self.children = children;
+        [self parseResponse:self.children];
     }
     return self;
 }
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    if (self.children) {
-        [self parseResponse:self.children];
-    } else {
-        [self fetchData];
+    if (!self.children) {
+        [self startNetworkLoad];
     }
 }
 
 -(void)parseResponse:(id)responseObject{
     [self.tableView beginUpdates];
-    if (self.sections.count) {
-        [self removeAllSections];
-    }
+    [self removeAllSections];
     EZTableViewSection *section = [[EZTableViewSection alloc] init];
     for (NSDictionary *child in responseObject) {
         NSString *title = [child titleForChannel];
@@ -76,15 +73,17 @@
     [self.tableView endUpdates];
 }
 
--(void)fetchData{
+-(void)startNetworkLoad{
+    [super startNetworkLoad];
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self networkLoadSucceeded];
             [self parseResponse:responseObject[@"children"]];
         } else {
-            [self fetchData];
+            [self networkLoadFailed];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self fetchData];
+        [self networkLoadFailed];
     }];
 }
 @end
