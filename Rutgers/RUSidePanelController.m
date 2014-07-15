@@ -25,10 +25,10 @@
     return self;
 }
 
-/*
+
 -(UIBarButtonItem *)leftButtonForCenterPanel{
-    return [[UIBarButtonItem alloc] initWithTitle:@"Channels" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
-}*/
+    return [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+}
 -(void)toggleLeftPanel:(id)sender{
     [super toggleLeftPanel:sender];
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
