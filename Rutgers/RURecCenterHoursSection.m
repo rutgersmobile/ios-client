@@ -46,7 +46,12 @@
         self.todaysDateIndex = [self.allDateComponents indexOfObject:self.currentDateComponents inSortedRange:NSMakeRange(0, self.allDateComponents.count) options:NSBinarySearchingFirstEqual usingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [self compareComponents:obj1 withComponents:obj2];
         }];
-        self.selectedDateIndex = self.todaysDateIndex;
+        
+        if (self.todaysDateIndex != NSNotFound) {
+            self.selectedDateIndex = self.todaysDateIndex;
+        } else {
+            self.selectedDateIndex = self.allDateComponents.count-1;
+        }
         
         RURecCenterHoursHeaderRow *header = [[RURecCenterHoursHeaderRow alloc] init];
         header.shouldHighlight = NO;
@@ -86,6 +91,10 @@
     
     if (self.selectedDateIndex == self.todaysDateIndex) {
         self.headerRow.date = @"Today";
+    } else if (self.selectedDateIndex == self.todaysDateIndex - 1) {
+        self.headerRow.date = @"Yesterday";
+    } else if (self.selectedDateIndex == self.todaysDateIndex + 1) {
+        self.headerRow.date = @"Tomorrow";
     }
     
     self.headerRow.leftButtonEnabled = !(self.selectedDateIndex == 0);
@@ -113,11 +122,13 @@ NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
         return [self compareComponents:obj1 withComponents:obj2];
     }];
 }
+
 NSComparisonResult compare(NSInteger int1, NSInteger int2){
     if (int1 < int2) return NSOrderedAscending;
     if (int1 > int2) return NSOrderedDescending;
     return NSOrderedSame;
 };
+
 -(NSComparisonResult)compareComponents:(NSDateComponents *)comps1 withComponents:(NSDateComponents *)comps2{
 
     NSComparisonResult year = compare(comps1.year,comps2.year);
