@@ -16,7 +16,7 @@
 #import "ALTableViewRightDetailCell.h"
 #import <MSWeakTimer.h>
 
-#define ACTIVE_TIMER_INTERVAL 60.0
+#define ACTIVE_TIMER_INTERVAL 2*60.0
 
 static NSString *const busLastPaneKey = @"busLastPaneKey";
 
@@ -73,8 +73,6 @@ typedef enum : NSUInteger {
     [self loadAgency];
     [self loadActiveStopsAndRoutes];
     self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:ACTIVE_TIMER_INTERVAL target:self selector:@selector(loadActiveStopsAndRoutes) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
-
-    //[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
     [self enableSearch];
     [self setupToolbar];
@@ -91,11 +89,6 @@ typedef enum : NSUInteger {
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [[RULocationManager sharedLocationManager] removeDelegatesObject:self];
-}
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self setupToolbarHeightForInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark - Bus Data Source Methods
@@ -147,7 +140,6 @@ typedef enum : NSUInteger {
 }
 
 -(void)updateNearbyStopsWithLocation:(CLLocation *)location{
-    if (!location) return;
     [self.busData getActiveStopsNearLocation:location completion:^(NSArray *nearbyStops) {
         dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
             self.nearbyStops = nearbyStops;
@@ -188,14 +180,6 @@ typedef enum : NSUInteger {
     
     self.segmentedControl.selectedSegmentIndex = lastPane;
     [self segmentedControlButtonChanged:self.segmentedControl];
-}
-
--(void)setupToolbarHeightForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
-    if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-        self.segmentedControl.frame = CGRectMake(0, 0, 290, 30);
-    } else {
-        self.segmentedControl.frame = CGRectMake(0, 0, 400, 30);
-    }
 }
 
 #pragma mark - Search Bar
@@ -370,7 +354,7 @@ typedef enum : NSUInteger {
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [[self itemsForSection:section inTableView:tableView] count];
 }
--(NSString *)identifierForRowInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
     return @"ALTableViewRightDetailCell";
 }
 -(void)setupCell:(ALTableViewRightDetailCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
