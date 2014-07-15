@@ -40,7 +40,7 @@
 {
     [super viewDidLoad];
     self.tableView.separatorColor = [UIColor clearColor];
-    [self.tableView registerClass:[RUSportsRosterSectionHeaderView class] forHeaderFooterViewReuseIdentifier:@"HeaderView"];
+    [self.tableView registerClass:[RUSportsRosterSectionHeaderView class] forHeaderFooterViewReuseIdentifier:NSStringFromClass([RUSportsRosterSectionHeaderView class])];
     [self startNetworkLoad];
 }
 
@@ -92,20 +92,14 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSString *title = [super tableView:tableView titleForHeaderInSection:section];
-    RUSportsRosterSectionHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"HeaderView"];
+    RUSportsRosterSectionHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([RUSportsRosterSectionHeaderView class])];
     headerView.sectionHeaderLabel.text = title;
     return headerView;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
     return 38;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
