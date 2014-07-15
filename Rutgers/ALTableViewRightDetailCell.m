@@ -14,7 +14,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *detailLabel;
 
 @property (nonatomic) NSLayoutConstraint *textToDetailTextConstraint;
- 
+@property (nonatomic) NSLayoutConstraint *rightConstraint;
+
 @end
 
 @implementation ALTableViewRightDetailCell
@@ -49,18 +50,22 @@
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeRight];
    
-    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-
     self.textToDetailTextConstraint = [self.detailLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.titleLabel withOffset:kLabelHorizontalInsets];
+
     [self.detailLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.detailLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self.detailLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeLeft];
     
+    [self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
+    [self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    self.rightConstraint = [self.detailLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
+
 }
 
 -(void)makeConstraintChanges{
     self.textToDetailTextConstraint.constant = self.detailTextLabel.text.length ? kLabelHorizontalInsets : 0;
+    self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? 0 : -kLabelHorizontalInsets;
 }
+
 -(void)didLayoutSubviews{
     self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
 }
