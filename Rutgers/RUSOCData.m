@@ -9,14 +9,18 @@
 #import "RUSOCData.h"
 #import <AFNetworking.h>
 #import "RUNetworkManager.h"
+#import "RUUserInfoManager.h"
 
 static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
 
+static NSString *const SOCDataCampusKey = @"SOCDataCampusKey";
+static NSString *const SOCDataLevelKey = @"SOCDataLevelKey";
+static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
+
 @interface RUSOCData ()
-@property NSArray *semesters;
-@property NSString *currentSemester;
-@property NSString *campus;
-@property NSString *level;
+
+@property (nonatomic) NSInteger defaultSemesterIndex;
+
 @property dispatch_group_t semesterGroup;
 
 @end
@@ -30,42 +34,57 @@ static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
     });
     return socData;
 }
--(NSString *)stringWithStringRelativeToBase:(NSString *)string{
-    return [NSString stringWithFormat:@"%@%@",baseString,string];
-}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
+        self.campuses = @[
+                         @{@"title": @"New Brunswick", @"tag": @"NB"},
+                         @{@"title": @"Newark", @"tag": @"NK"},
+                         @{@"title": @"Camden", @"tag": @"CM"},
+                         @{@"title": @"Online Courses", @"tag": @"ONLINE"},
+                         @{@"title": @"Freehold WMHEC: RU-BCC", @"tag": @"WM"},
+                         @{@"title": @"Mays Landing: RU-ACCC", @"tag": @"AC"},
+                         @{@"title": @"Denville: RU-Morris", @"tag": @"MC"},
+                         @{@"title": @"McGuire-Dix-Lakehurst: RU-JBMDL", @"tag": @"J"},
+                         @{@"title": @"North Branch: RU-RVCC", @"tag": @"RV"},
+                         @{@"title": @"Camden County College", @"tag": @"CC"},
+                         @{@"title": @"Cumberland County College", @"tag": @"CU"}
+                         ];
+        
+        self.levels = @[
+                      @{@"title": @"Undergraduate", @"tag": @"U"},
+                      @{@"title": @"Graduate", @"tag": @"G"}
+                      ];
+            
         self.semesterGroup = dispatch_group_create();
+        dispatch_group_enter(self.semesterGroup);
         [self getSemesters];
     }
     return self;
 }
+-(void)loadSemestersWithCompletion:(void (^)(void))completion{
+    dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
+        completion();
+    });
+}
 
 -(void)getSemesters{
-    dispatch_group_enter(self.semesterGroup);
     [[RUNetworkManager jsonSessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSArray *semesters = responseObject[@"semesters"];
-        self.semesters = semesters;
-        NSString *semester = semesters[[responseObject[@"defaultSemester"] integerValue]];
-        [self setConfigWithSemester:semester campus:@"NB" level:@"U"];
+        self.semesters = [self parseSemesters:responseObject[@"semesters"]];
+        self.defaultSemesterIndex = [responseObject[@"defaultSemester"] integerValue];
         dispatch_group_leave(self.semesterGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self getSemesters];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self getSemesters];
+        });
     }];
 }
 
--(void)setConfigWithSemester:(NSString *)semester campus:(NSString *)campus level:(NSString *)level{
-    self.currentSemester = semester;
-    self.campus = campus;
-    self.level = level;
-}
-
--(void)getSubjectsForCurrentConfigurationWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock{
+-(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        [[RUNetworkManager jsonSessionManager] GET:[self stringWithStringRelativeToBase:@"subjects.json"] parameters:@{@"semester" : self.currentSemester, @"campus" : self.campus, @"level" : self.level} success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager jsonSessionManager] GET:[baseString stringByAppendingString:@"subjects.json"] parameters:@{@"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
             successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock();
@@ -73,14 +92,75 @@ static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
     });
 }
 
--(void)getCoursesForSubjectCode:(NSString *)subject forCurrentConfigurationWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
+-(void)getCoursesForSubjectCode:(NSString *)subject withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        //NSString *getString = [NSString stringWithFormat:@"courses.json?subject=%@&semester=%@&campus=%@&level=%@",subject,self.currentSemester,self.campus,self.level];
-        [[RUNetworkManager jsonSessionManager] GET:[self stringWithStringRelativeToBase:@"courses.json"] parameters:@{@"subject" : subject, @"semester" : self.currentSemester, @"campus" : self.campus, @"level" : self.level} success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        [[RUNetworkManager jsonSessionManager] GET:[baseString stringByAppendingString:@"courses.json"] parameters:@{@"subject" : subject, @"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
             successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock();
         }];
     });
 }
+
+-(NSDictionary *)campus{
+    NSDictionary *campus = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataCampusKey];
+    if (campus) return campus;
+
+    campus = [RUUserInfoManager sharedInstance].campus;
+    for (NSDictionary *aCampus in self.campuses) {
+        if ([campus[@"tag"] isEqualToString:aCampus[@"tag"]]) return campus;
+    }
+    
+    return [self.campuses firstObject];
+}
+-(void)setCampus:(NSDictionary *)campus{
+    [[NSUserDefaults standardUserDefaults] setObject:campus forKey:SOCDataCampusKey];
+}
+
+-(NSDictionary *)level{
+    NSDictionary *level = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataLevelKey];
+    if (level) return level;
+    
+    level = [RUUserInfoManager sharedInstance].userRole;
+    for (NSDictionary *aLevel in self.levels) {
+        if ([level[@"tag"] isEqualToString:aLevel[@"tag"]]) return level;
+    }
+    
+    return [self.levels firstObject];
+}
+-(void)setLevel:(NSDictionary *)level{
+    [[NSUserDefaults standardUserDefaults] setObject:level forKey:SOCDataLevelKey];
+}
+
+-(NSDictionary *)semester{
+    NSDictionary *semester = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataSemesterKey];
+    if ([self.semesters containsObject:semester]) return semester;
+    
+    return self.semesters[self.defaultSemesterIndex];
+}
+-(void)setSemester:(NSDictionary *)semester{
+    [[NSUserDefaults standardUserDefaults] setObject:semester forKey:SOCDataSemesterKey];
+}
+
+-(NSArray *)parseSemesters:(NSArray *)semesters{
+    NSMutableArray *parsedSemesters = [NSMutableArray array];
+    for (NSString *semesterTag in semesters) {
+        [parsedSemesters addObject:@{@"title": [self descriptionForSemesterTag:semesterTag], @"tag": semesterTag}];
+    }
+    return parsedSemesters;
+}
+
+-(NSString *)descriptionForSemesterTag:(NSString *)semesterTag{
+    NSDictionary *monthMap = @{@"0": @"Winter", @"1": @"Spring", @"7": @"Summer", @"9": @"Fall"};
+    NSString *startMonth = [semesterTag substringToIndex:1];
+    NSString *year = [semesterTag substringFromIndex:1];
+    
+    return [NSString stringWithFormat:@"%@ %@",monthMap[startMonth],year];
+}
+
+-(NSString *)titleForCurrentConfiguration{
+    return [NSString stringWithFormat:@"%@ %@ %@",self.semester[@"title"],self.campus[@"tag"],self.level[@"tag"]];
+}
+
 @end

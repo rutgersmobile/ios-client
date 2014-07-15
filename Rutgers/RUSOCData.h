@@ -10,9 +10,21 @@
 
 @interface RUSOCData : NSObject
 +(RUSOCData *)sharedInstance;
--(void)setConfigWithSemester:(NSString *)semester campus:(NSString *)campus level:(NSString *)level;
--(void)getSubjectsForCurrentConfigurationWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock;
--(void)getCoursesForSubjectCode:(NSString *)subject forCurrentConfigurationWithSuccess:(void (^)(NSArray *courses))successBlock failure:(void (^)(void))failureBlock;
--(NSArray *)semesters;
+
+-(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock;
+-(void)getCoursesForSubjectCode:(NSString *)subject withSuccess:(void (^)(NSArray *courses))successBlock failure:(void (^)(void))failureBlock;
+
+@property (nonatomic) NSDictionary *campus;
+@property (nonatomic) NSDictionary *level;
+@property (nonatomic) NSDictionary *semester;
+
+@property (nonatomic) NSArray *semesters;
+@property (nonatomic) NSArray *campuses;
+@property (nonatomic) NSArray *levels;
+
+-(void)loadSemestersWithCompletion:(void (^)(void))completion;
+
+-(NSString *)titleForCurrentConfiguration;
+
 @end
 
