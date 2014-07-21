@@ -2,13 +2,14 @@ platform :ios, '7.0'
 
 pod 'AFNetworking', '~> 2.2.0'
 pod 'XMLDictionary', '~> 1.4.0'
-pod 'UIView+AutoLayout'
-pod 'TOWebViewController'
-pod 'HexColors'
-pod 'Shimmer'
-pod 'MWFeedParser/NSString+HTML' 
-pod 'MWFeedParser/NSDate+InternetDateTime'
+
 pod 'JASidePanels'
-pod 'NJKWebViewProgress'
+
+pod 'TOWebViewController'
+
+pod 'PureLayout'
+
+pod 'HexColors'
 pod 'MSWeakTimer', '~> 1.1.0'
-pod 'UIActionSheet+Blocks'
+pod 'MWFeedParser/NSString+HTML'
+
