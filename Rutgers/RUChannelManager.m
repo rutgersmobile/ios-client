@@ -78,6 +78,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         viewTagsToClassNameMapping = @{@"bus" : @"RUBusViewController",
+                                       @"newbus" : @"RUNewBusViewController",
                                        @"dtable" : @"DynamicCollectionViewController",
                                        @"food" : @"RUFoodViewController",
                                        @"places" : @"RUPlacesViewController",

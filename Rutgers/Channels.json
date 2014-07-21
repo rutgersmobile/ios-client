@@ -6,6 +6,12 @@
   "icon" : "bus"
   },
   {
+  "handle" : "newbus",
+  "title": "New Bus",
+  "view" : "newbus",
+  "icon" : "bus"
+  },
+  {
   "handle" : "news",
   "title": "News",
   "url": "news.txt",
