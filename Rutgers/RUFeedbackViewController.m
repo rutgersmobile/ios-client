@@ -7,7 +7,7 @@
 //
 
 #import "RUFeedbackViewController.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 @interface RUFeedbackViewController () <UIActionSheetDelegate>
@@ -46,12 +46,12 @@
         [feedbackActionSheet showInView:view];
     };
     
-    [self addSection:[[EZTableViewSection alloc] initWithRows:@[self.feedbackRow]]];
+    [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[self.feedbackRow]]];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     self.feedbackRow.text = self.feedbackSubjects[buttonIndex];
-    [self reloadSectionAtIndex:0];
+    [self.dataSource reloadSectionAtIndex:0];
 }
                                                   
                                                   

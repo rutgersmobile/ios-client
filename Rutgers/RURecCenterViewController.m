@@ -7,7 +7,7 @@
 //
 
 #import "RURecCenterViewController.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 #import "RURecCenterHoursSection.h"
@@ -45,52 +45,52 @@
     NSDictionary *meetingAreas = self.recCenter[@"meetingareas"];
     if (meetingAreas.count) {
         RURecCenterHoursSection *hoursSection = [[RURecCenterHoursSection alloc] initWithMeetingAreas:meetingAreas];
-        [self addSection:hoursSection];
+        [self.dataSource addSection:hoursSection];
         self.hoursSection = hoursSection;
     }
     
     NSString *address = self.recCenter[@"FacilityAddress"];
     if (address.length) {
         RUPlace *place = [[RUPlace alloc] initWithTitle:self.title addressString:address];
-        EZTableViewSection *addressSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Address"];
+        EZDataSourceSection *addressSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Address"];
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
         };
         row.shouldCopy = YES;
-        [addressSection addRow:row];
+        [addressSection addItem:row];
         
-        [self addSection:addressSection];
+        [self.dataSource addSection:addressSection];
     }
     
     NSString *information = self.recCenter[@"FacilityInformation"];
     if (information.length) {
-        EZTableViewSection *informationSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Information Desk"];
+        EZDataSourceSection *informationSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Information Desk"];
         EZTableViewRightDetailRow *infoRow = [[EZTableViewRightDetailRow alloc] initWithText:information detailText:nil];
         infoRow.shouldHighlight = NO;
         infoRow.shouldCopy = YES;
-        [informationSection addRow:infoRow];
-        [self addSection:informationSection];
+        [informationSection addItem:infoRow];
+        [self.dataSource addSection:informationSection];
     }
     
     NSString *business = self.recCenter[@"FacilityBusiness"];
     if (business.length) {
-        EZTableViewSection *buisnessSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Business Office"];
+        EZDataSourceSection *buisnessSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Business Office"];
         EZTableViewRightDetailRow *buisnessRow = [[EZTableViewRightDetailRow alloc] initWithText:business detailText:nil];
         buisnessRow.shouldHighlight = NO;
         buisnessRow.shouldCopy = YES;
-        [buisnessSection addRow:buisnessRow];
-        [self addSection:buisnessSection];
+        [buisnessSection addItem:buisnessRow];
+        [self.dataSource addSection:buisnessSection];
     }
     
     NSString *description = self.recCenter[@"FacilityBody"];
     if (description.length) {
-        EZTableViewSection *descriptionSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Description"];
+        EZDataSourceSection *descriptionSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Description"];
         EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:[description stringByDecodingHTMLEntities] detailText:nil];
         descriptionRow.shouldHighlight = NO;
         descriptionRow.shouldCopy = YES;
-        [descriptionSection addRow:descriptionRow];
-        [self addSection:descriptionSection];
+        [descriptionSection addItem:descriptionRow];
+        [self.dataSource addSection:descriptionSection];
     }
 }
 

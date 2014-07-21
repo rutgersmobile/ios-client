@@ -10,7 +10,7 @@
 #import "RUFoodData.h"
 #import "RUDiningHallViewController.h"
 #import "RUChannelManager.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 
@@ -33,44 +33,41 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self startNetworkLoad];
+    [self setupContentLoadingStateMachine];
 }
 
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [self.foodData getFoodWithSuccess:^(NSArray *response) {
-        [self networkLoadSucceeded];
+        [self.contentLoadingStateMachine networkLoadSuccessful];
         [self parseResponse:response];
     } failure:^{
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 
 -(void)parseResponse:(NSArray *)response{
     [self.tableView beginUpdates];
     
-    if (self.sections.count) {
-        [self removeAllSections];
-    }
+    [self.dataSource removeAllSections];
     
-    EZTableViewSection *newBrunswickDining = [[EZTableViewSection alloc] initWithSectionTitle:@"New Brunswick"];
+    EZDataSourceSection *newBrunswickDining = [[EZDataSourceSection alloc] initWithSectionTitle:@"New Brunswick"];
     for (NSDictionary *diningHall in response) {
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:diningHall[@"location_name"]];
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:diningHall] animated:YES];
         };
-        [newBrunswickDining addRow:row];
+        [newBrunswickDining addItem:row];
     }
-    [self addSection:newBrunswickDining];
+    [self.dataSource addSection:newBrunswickDining];
     
     for (NSDictionary *staticDiningHall in self.foodData.staticDiningHalls) {
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:staticDiningHall[@"header"]];
+        EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:staticDiningHall[@"header"]];
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:staticDiningHall[@"title"]];
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:staticDiningHall] animated:YES];
         };
-        [section addRow:row];
-        [self addSection:section];
+        [section addItem:row];
+        [self.dataSource addSection:section];
     }
     
     [self.tableView endUpdates];

@@ -9,7 +9,7 @@
 #import "RURecreationViewController.h"
 #import "RUNetworkManager.h"
 #import "RURecCenterViewController.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 @interface RURecreationViewController ()
@@ -24,16 +24,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self startNetworkLoad];
+    [self setupContentLoadingStateMachine];
 }
 
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self networkLoadSucceeded];
+        [self.contentLoadingStateMachine networkLoadSuccessful];
         [self parseResponse:responseObject];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 
@@ -44,12 +43,10 @@
     
     [self.tableView beginUpdates];
     
-    if (self.sections.count) {
-        [self removeAllSections];
-    }
+    [self.dataSource removeAllSections];
     
     for (NSString *campus in campuses) {
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:campus];
+        EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:campus];
         
         NSArray *recCenters = [[self.recData[campus] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
         for (NSString *recCenter in recCenters) {
@@ -59,9 +56,9 @@
                 RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:recCenter recCenter:self.recData[campus][recCenter]];
                 [self.navigationController pushViewController:recVC animated:YES];
             };
-            [section addRow:row];
+            [section addItem:row];
         }
-        [self addSection:section];
+        [self.dataSource addSection:section];
     }
     [self.tableView endUpdates];
 }

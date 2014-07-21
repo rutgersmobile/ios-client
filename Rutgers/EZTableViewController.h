@@ -7,29 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ALTableViewController.h"
-@class EZTableViewSection;
-@class EZTableViewAbstractRow;
+#import "TableViewController.h"
 
-@interface EZTableViewController : ALTableViewController
+@class EZDataSource;
 
--(void)addSection:(EZTableViewSection *)section;
--(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index;
--(void)replaceSection:(EZTableViewSection *)oldSection withSection:(EZTableViewSection *)newSection;
--(void)replaceSectionAtIndex:(NSInteger)index withSection:(EZTableViewSection *)section;
--(void)reloadSection:(EZTableViewSection *)section;
--(void)reloadSectionAtIndex:(NSInteger)index;
--(void)removeAllSections;
+@interface EZTableViewController : TableViewController
+//-(void)setDataSource:(EZDataSource *)dataSource;
+-(EZDataSource *)dataSource;
 
--(NSInteger)indexOfSection:(EZTableViewSection *)section;
--(EZTableViewSection *)sectionAtIndex:(NSInteger)index;
+@property (nonatomic) UISearchDisplayController *searchController;
+-(void)enableSearch;
 
-@property (nonatomic) NSMutableArray *sections;
-
-- (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section;
-- (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath;
-
--(void)startNetworkLoad NS_REQUIRES_SUPER;
--(void)networkLoadSucceeded NS_REQUIRES_SUPER;
--(void)networkLoadFailed NS_REQUIRES_SUPER;
+@property (nonatomic) NetworkContentLoadingStateMachine *contentLoadingStateMachine;
+-(void)setupContentLoadingStateMachine;
 @end

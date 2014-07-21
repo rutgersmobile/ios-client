@@ -56,7 +56,7 @@
         RURecCenterHoursHeaderRow *header = [[RURecCenterHoursHeaderRow alloc] init];
         header.shouldHighlight = NO;
         header.date = NSStringFromDateComponents(self.currentDateComponents);
-        [self addRow:header];
+        [self addItem:header];
         self.headerRow = header;
         [self updateDate];
         
@@ -64,7 +64,7 @@
             NSDictionary *datesForArea = meetingAreas[meetingArea];
             RURecCenterMeetingAreaRow *row = [[RURecCenterMeetingAreaRow alloc] initWithArea:meetingArea times:datesForArea];
             row.shouldHighlight = NO;
-            [self addRow:row];
+            [self addItem:row];
         }
         
         [self updateDate];

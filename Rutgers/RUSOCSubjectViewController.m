@@ -11,7 +11,7 @@
 #import "RUSOCData.h"
 #import "RUSOCCourseRow.h"
 #import "RUSOCCourseCell.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "RUSOCCourseViewController.h"
 
 @interface RUSOCSubjectViewController ()
@@ -32,35 +32,32 @@
 {
     [super viewDidLoad];
     [self enableSearch];
-    [self startNetworkLoad];
+    [self setupContentLoadingStateMachine];
 }
 
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code withSuccess:^(NSArray *courses) {
-        [self networkLoadSucceeded];
-
+        [self.contentLoadingStateMachine networkLoadSuccessful];
+        
         [self.tableView beginUpdates];
-        if (self.sections.count) {
-            [self removeAllSections];
-        }
+        [self.dataSource removeAllSections];
         [self makeSectionsForResponse:courses];
         [self.tableView endUpdates];
         
     } failure:^{
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 
 -(void)makeSectionsForResponse:(NSArray *)response{
-    EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Courses"];
+    EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:@"Courses"];
     for (NSDictionary *course in response) {    
         RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:course] animated:YES];
         };
-        [section addRow:row];
+        [section addItem:row];
     }
-    [self addSection:section];
+    [self.dataSource addSection:section];
 }
 @end

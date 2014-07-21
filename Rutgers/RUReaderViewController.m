@@ -7,11 +7,10 @@
 //
 
 #import "RUReaderViewController.h"
-#import <AFNetworking.h>
 #import "RUReaderTableViewCell.h"
 #import "RUNetworkManager.h"
 #import "RUChannelManager.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "RUReaderTableViewRow.h"
 
 @interface RUReaderViewController ()
@@ -39,11 +38,11 @@
     self.tableView.rowHeight = 80.0;
     self.tableView.estimatedRowHeight = 80.0;
 
-    [self startNetworkLoad];
+    [self setupContentLoadingStateMachine];
+
 }
 
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [self getURL:self.channel[@"url"]];
 }
 
@@ -51,14 +50,14 @@
     if (!url) return;
     [[RUNetworkManager xmlSessionManager] GET:url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self networkLoadSucceeded];
+            [self.contentLoadingStateMachine networkLoadSuccessful];
             NSDictionary *channel = [responseObject[@"channel"] firstObject];
             [self parseResponse:channel[@"item"]];
         } else {
-            [self networkLoadFailed];
+            [self.contentLoadingStateMachine networkLoadFailedWithParsingError];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 
@@ -66,16 +65,14 @@
     
     [self.tableView beginUpdates];
    
-    if (self.sections.count) {
-        [self removeAllSections];
-    }
-        [self makeSectionForResponse:response];
+    [self.dataSource removeAllSections];
+    [self makeSectionForResponse:response];
 
     [self.tableView endUpdates];
 }
 
 -(void)makeSectionForResponse:(NSArray *)response{
-    EZTableViewSection *section = [[EZTableViewSection alloc] init];
+    EZDataSourceSection *section = [[EZDataSourceSection alloc] init];
     for (NSDictionary *item in response) {
         RUReaderTableViewRow *row = [[RUReaderTableViewRow alloc] initWithItem:item];
         NSString *link = [item[@"link"] firstObject];
@@ -84,13 +81,13 @@
                 [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : [item[@"title"] firstObject], @"view" : @"www", @"url" : link}] animated:YES];
             };
         }
-        [section addRow:row];
+        [section addItem:row];
     }
-    [self addSection:section];
+    [self.dataSource addSection:section];
 }
 
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUReaderTableViewRow *row = (RUReaderTableViewRow *)[self rowInTableView:tableView forIndexPath:indexPath];
+    RUReaderTableViewRow *row = (RUReaderTableViewRow *)[self.dataSource itemAtIndexPath:indexPath];
     RUReaderTableViewCell *readerCell = (RUReaderTableViewCell *)cell;
     [row setupCell:readerCell];
 }

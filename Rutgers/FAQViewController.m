@@ -9,6 +9,7 @@
 #import "FAQViewController.h"
 #import "ExpandingTableViewSection.h"
 #import "EZTableViewTextRow.h"
+#import "EZDataSource.h"
 
 @interface FAQViewController ()
 @property NSArray *children;
@@ -38,7 +39,7 @@
             EZTableViewTextRow *headerRow = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:child[@"title"] attributes:titleAttributes]];
             EZTableViewTextRow *bodyRow = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:child[@"answer"] attributes:bodyAttributes]];
             ExpandingTableViewSection *section = [[ExpandingTableViewSection alloc] initWithHeaderRow:headerRow bodyRows:@[bodyRow]];
-            [self addSection:section];
+            [self.dataSource addSection:section];
         } else {
             EZTableViewTextRow *headerRow = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:child[@"title"] attributes:titleAttributes]];
             headerRow.didSelectRowBlock = ^{
@@ -46,7 +47,7 @@
                 faqViewController.title = [child titleForChannel];
                 [self.navigationController pushViewController:faqViewController animated:YES];
             };
-            [self addSection:[[EZTableViewSection alloc] initWithRows:@[headerRow]]];
+            [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[headerRow]]];
         }
     }
 }

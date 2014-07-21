@@ -13,7 +13,7 @@
 #import "RUBusData.h"
 #import "NSArray+RUBusStop.h"
 #import "RUPredictionsExpandingSection.h"
-#import <MSWeakTimer.h>
+#import "EZDataSource.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
@@ -36,8 +36,15 @@
 {
     [super viewDidLoad];
     
-    [self startNetworkLoad];
-    self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self selector:@selector(startNetworkLoad) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+    if ([self.item isKindOfClass:[RUBusRoute class]]) {
+        self.tableView.rowHeight = 68.0;
+    } else {
+        self.tableView.rowHeight = 90.0;
+    }
+    self.title = [self.item title];
+    
+    [self setupContentLoadingStateMachine];
+ //   self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.contentLoadingStateMachine selector:@selector(startNetworking) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -45,35 +52,24 @@
     [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
--(void)setItem:(id)item{
-    _item = item;
-    if ([item isKindOfClass:[RUBusRoute class]]) {
-        self.tableView.rowHeight = 68.0;
-    } else {
-        self.tableView.rowHeight = 90.0;
-    }
-    self.title = [item title];
-}
-
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [[RUBusData sharedInstance] getPredictionsForItem:self.item withSuccess:^(NSArray *response) {
-        [self networkLoadSucceeded];
+        [self.contentLoadingStateMachine networkLoadSuccessful];
         [self parseResponse:response];
     } failure:^{
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 
 -(void)parseResponse:(NSArray *)response{
     [self.tableView beginUpdates];
-     if (self.sections.count == 0) {
+     if (self.dataSource.numberOfSections == 0) {
         for (NSDictionary *predictions in response) {
-            [self addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
+            [self.dataSource addSection:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
         }
     } else {
         [response enumerateObjectsUsingBlock:^(NSDictionary *predictions, NSUInteger idx, BOOL *stop) {
-            [((RUPredictionsExpandingSection *)[self sectionAtIndex:idx]) updateWithPredictions:predictions];
+            [((RUPredictionsExpandingSection *)[self.dataSource sectionAtIndex:idx]) updateWithPredictions:predictions];
         }];
         [self.tableView reloadData];
     }

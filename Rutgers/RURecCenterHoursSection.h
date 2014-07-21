@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewSection.h"
+#import "EZDataSourceSection.h"
 
-@interface RURecCenterHoursSection : EZTableViewSection
+@interface RURecCenterHoursSection : EZDataSourceSection
 -(instancetype)initWithMeetingAreas:(NSDictionary *)meetingAreas;
 -(void)goLeft;
 -(void)goRight;

@@ -10,7 +10,6 @@
 #import <AFNetworking.h>
 #import "RULocationManager.h"
 #import "RUNetworkManager.h"
-#import "NSDictionary+FilterDictionary.h"
 #import "RUPlace.h"
 
 static NSString *const placesRecentPlacesKey = @"placesRecentPlacesKey";

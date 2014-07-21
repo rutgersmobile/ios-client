@@ -11,7 +11,7 @@
 #import "RUChannelManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 @interface dtable ()
@@ -44,14 +44,27 @@
     [super viewDidLoad];
     
     if (!self.children) {
-        [self startNetworkLoad];
+        [self setupContentLoadingStateMachine];
     }
+}
+
+-(void)loadNetworkData{
+    [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self.contentLoadingStateMachine networkLoadSuccessful];
+            [self parseResponse:responseObject[@"children"]];
+        } else {
+            [self.contentLoadingStateMachine networkLoadFailedWithParsingError];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
+    }];
 }
 
 -(void)parseResponse:(id)responseObject{
     [self.tableView beginUpdates];
-    [self removeAllSections];
-    EZTableViewSection *section = [[EZTableViewSection alloc] init];
+    [self.dataSource removeAllSections];
+    EZDataSourceSection *section = [[EZDataSourceSection alloc] init];
     for (NSDictionary *child in responseObject) {
         NSString *title = [child titleForChannel];
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:title];
@@ -67,23 +80,9 @@
                 [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]] animated:YES];
             };
         }
-        [section addRow:row];
+        [section addItem:row];
     }
-    [self addSection:section];
+    [self.dataSource addSection:section];
     [self.tableView endUpdates];
-}
-
--(void)startNetworkLoad{
-    [super startNetworkLoad];
-    [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self networkLoadSucceeded];
-            [self parseResponse:responseObject[@"children"]];
-        } else {
-            [self networkLoadFailed];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self networkLoadFailed];
-    }];
 }
 @end

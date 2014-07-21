@@ -8,7 +8,7 @@
 
 #import "RUPlaceDetailViewController.h"
 #import "RUPredictionsViewController.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 #import "RUBusData.h"
 #import "RULocationManager.h"
@@ -40,71 +40,71 @@
             EZTableViewRightDetailRow *addressRow = [[EZTableViewRightDetailRow alloc] initWithText:addressString detailText:nil];
             addressRow.shouldHighlight = NO;
             addressRow.shouldCopy = YES;
-            [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Address" rows:@[addressRow]]];
+            [self.dataSource addSection:[[EZDataSourceSection alloc] initWithSectionTitle:@"Address" items:@[addressRow]]];
         }
 
         if (place.address || place.location) {
             EZTableViewMapsSection *mapsSection = [[EZTableViewMapsSection alloc] initWithSectionTitle:@"Maps" place:self.place];
-            [self addSection:mapsSection];
-            [mapsSection rowAtIndex:0].didSelectRowBlock = ^{
+            [self.dataSource addSection:mapsSection];
+            [mapsSection itemAtIndex:0].didSelectRowBlock = ^{
                 [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
             };
         }
         
         if (place.title || place.campus || place.buildingCode || place.buildingNumber) {
-            EZTableViewSection *infoSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Info"];
+            EZDataSourceSection *infoSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Info"];
             if (place.title) {
                 EZTableViewRightDetailRow *titleRow = [[EZTableViewRightDetailRow alloc] initWithText:place.title detailText:nil];
                 titleRow.shouldHighlight = NO;
                 titleRow.shouldCopy = YES;
-                [infoSection addRow:titleRow];
+                [infoSection addItem:titleRow];
             }
             if (place.campus) {
                 EZTableViewRightDetailRow *campusRow = [[EZTableViewRightDetailRow alloc] initWithText:place.campus detailText:@"Campus"];
                 campusRow.shouldHighlight = NO;
                 campusRow.shouldCopy = YES;
-                [infoSection addRow:campusRow];
+                [infoSection addItem:campusRow];
             }
             if (place.buildingCode) {
                 EZTableViewRightDetailRow *buildingCodeRow = [[EZTableViewRightDetailRow alloc] initWithText:place.buildingCode detailText:@"Building Code"];
                 buildingCodeRow.shouldHighlight = NO;
                 buildingCodeRow.shouldCopy = YES;
-                [infoSection addRow:buildingCodeRow];
+                [infoSection addItem:buildingCodeRow];
             }
             if (place.buildingNumber) {
                 EZTableViewRightDetailRow *buildingNumberRow = [[EZTableViewRightDetailRow alloc] initWithText:place.buildingNumber detailText:@"Building Number"];
                 buildingNumberRow.shouldHighlight = NO;
                 buildingNumberRow.shouldCopy = YES;
-                [infoSection addRow:buildingNumberRow];
+                [infoSection addItem:buildingNumberRow];
             }
-            [self addSection:infoSection];
+            [self.dataSource addSection:infoSection];
         }
         
         if (place.location) {
-            NSInteger index = self.sections.count;
+            NSInteger index = self.dataSource.numberOfSections;
             [[RUBusData sharedInstance] getActiveStopsNearLocation:place.location completion:^(NSArray *results) {
-                EZTableViewSection *nearbySection = [[EZTableViewSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
+                EZDataSourceSection *nearbySection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
                 for (NSArray *stops in results) {
                     EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:[stops title] detailText:nil];
                     row.didSelectRowBlock = ^{
                         [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:stops] animated:YES];
                     };
-                    [nearbySection addRow:row];
+                    [nearbySection addItem:row];
                 }
-                [self insertSection:nearbySection atIndex:index];
+                [self.dataSource insertSection:nearbySection atIndex:index];
             }];
         }
         
         NSArray *offices = place.offices;
         if (offices) {
-            EZTableViewSection *officeSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Offices"];
+            EZDataSourceSection *officeSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Offices"];
             for (NSString *office in offices) {
                 EZTableViewRightDetailRow *officeRow = [[EZTableViewRightDetailRow alloc] initWithText:office detailText:nil];
                 officeRow.shouldHighlight = NO;
                 officeRow.shouldCopy = YES;
-                [officeSection addRow:officeRow];
+                [officeSection addItem:officeRow];
             }
-            [self addSection:officeSection];
+            [self.dataSource addSection:officeSection];
         }
         
         NSString *description = place.description;
@@ -112,7 +112,7 @@
             EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
             descriptionRow.shouldHighlight = NO;
             descriptionRow.shouldCopy = YES;
-            [self addSection:[[EZTableViewSection alloc] initWithSectionTitle:@"Description" rows:@[descriptionRow]]];
+            [self.dataSource addSection:[[EZDataSourceSection alloc] initWithSectionTitle:@"Description" items:@[descriptionRow]]];
         }
         
     }

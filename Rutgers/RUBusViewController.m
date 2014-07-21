@@ -14,7 +14,6 @@
 #import "NSArray+RUBusStop.h"
 #import "RULocationManager.h"
 #import "ALTableViewRightDetailCell.h"
-#import <MSWeakTimer.h>
 
 #define ACTIVE_TIMER_INTERVAL 2*60.0
 

@@ -10,7 +10,7 @@
 #import "RUSportsPlayerCell.h"
 #import "RUSportsPlayerRow.h"
 #import "RUSportsData.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "RUSportsPlayer.h"
 #import "RUSportsRosterSectionHeaderView.h"
 #import "RUSportsRosterPlayerHeaderCell.h"
@@ -18,9 +18,9 @@
 @interface RUSportsRosterViewController ()
 @property NSString *sportID;
 
-@property EZTableViewSection *headerSection;
-@property EZTableViewSection *bioSection;
-@property EZTableViewSection *rosterSection;
+@property EZDataSourceSection *headerSection;
+@property EZDataSourceSection *bioSection;
+@property EZDataSourceSection *rosterSection;
 
 @property NSInteger selectedPlayerIndex;
 @property NSArray *players;
@@ -41,41 +41,39 @@
     [super viewDidLoad];
     self.tableView.separatorColor = [UIColor clearColor];
     [self.tableView registerClass:[RUSportsRosterSectionHeaderView class] forHeaderFooterViewReuseIdentifier:NSStringFromClass([RUSportsRosterSectionHeaderView class])];
-    [self startNetworkLoad];
+ 
+    [self setupContentLoadingStateMachine];
 }
 
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
-        [self networkLoadSucceeded];
+        [self.contentLoadingStateMachine networkLoadSuccessful];
         [self.tableView beginUpdates];
-        if (self.sections.count) {
-            [self removeAllSections];
-        }
+        [self.dataSource removeAllSections];
         self.players = response;
         [self makeRosterSection];
         [self.tableView endUpdates];
     } failure:^{
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 
 -(void)makeRosterSection{
-    EZTableViewSection *rosterSection = [[EZTableViewSection alloc] initWithSectionTitle:@"Roster"];
+    EZDataSourceSection *rosterSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Roster"];
     for (RUSportsPlayer *player in self.players) {
         RUSportsPlayerRow *playerRow = [[RUSportsPlayerRow alloc] initWithPlayer:player];
         playerRow.showsDisclosureIndicator = NO;
         playerRow.didSelectRowBlock = ^{
             [self selectPlayerAtIndex:[self.players indexOfObject:player]];
         };
-        [rosterSection addRow:playerRow];
+        [rosterSection addItem:playerRow];
     }
-    [self addSection:rosterSection];
+    [self.dataSource addSection:rosterSection];
     self.rosterSection = rosterSection;
 }
 
 -(NSInteger)indexOfRosterSection{
-    return [self.sections indexOfObject:self.rosterSection];
+    return [self.dataSource indexOfSection:self.rosterSection];
 }
 
 -(void)selectPlayerAtIndex:(NSInteger)index{
@@ -89,7 +87,7 @@
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return nil;
 }
-
+/*
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSString *title = [super tableView:tableView titleForHeaderInSection:section];
     RUSportsRosterSectionHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([RUSportsRosterSectionHeaderView class])];
@@ -99,7 +97,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 38;
-}
+}*/
 
 
 @end

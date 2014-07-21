@@ -8,7 +8,7 @@
 
 #import "RUSOCCourseViewController.h"
 #import "EZTableViewTextRow.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewTextRow.h"
 #import "RUSOCSectionRow.h"
 #import "RUChannelManager.h"
@@ -28,10 +28,10 @@
         NSString *courseDescription = self.course[@"courseDescription"];
         if (courseDescription) {
             EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]}]];
-            [self addSection:[[EZTableViewSection alloc] initWithRows:@[row]]];
+            [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[row]]];
         }
         
-        EZTableViewSection *sectionSection = [[EZTableViewSection alloc] init];
+        EZDataSourceSection *sectionSection = [[EZDataSourceSection alloc] init];
         
         NSPredicate *printedSectionsPredicate = [NSPredicate predicateWithFormat:@"printed == %@",@"Y"];
         NSArray *sections = [self.course[@"sections"] filteredArrayUsingPredicate:printedSectionsPredicate];
@@ -42,9 +42,9 @@
                 NSDictionary *channel = @{@"title" : @"WebReg", @"view" : @"www", @"url" :[NSString stringWithFormat:@"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",[RUSOCData sharedInstance].semester[@"tag"],section[@"index"]]};
                 [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
             };
-            [sectionSection addRow:sectionRow];
+            [sectionSection addItem:sectionRow];
         }
-        [self addSection:sectionSection];
+        [self.dataSource addSection:sectionSection];
     }
     return self;
 }

@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewSection.h"
+#import "EZDataSourceSection.h"
 
 
-@interface ExpandingTableViewSection : EZTableViewSection
+@interface ExpandingTableViewSection : EZDataSourceSection
 -(instancetype)initWithHeaderRow:(EZTableViewAbstractRow *)headerRow bodyRows:(NSArray *)bodyRows;
 @property (nonatomic) BOOL expanded;
 @end

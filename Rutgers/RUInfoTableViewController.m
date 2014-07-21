@@ -8,7 +8,7 @@
 
 #import "RUInfoTableViewController.h"
 #import <MessageUI/MessageUI.h>
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewTextRow.h"
 #import "RUChannelManager.h"
 
@@ -70,7 +70,7 @@
     for (NSDictionary *sectionDictionary in infoData) {
         
         //Make a new section
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:sectionDictionary[@"header"]];
+        EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:sectionDictionary[@"header"]];
         
         //Loop through all the body rows
         for (NSDictionary *rowDictionary in sectionDictionary[@"body"]) {
@@ -109,9 +109,9 @@
                 }
                 row.showsDisclosureIndicator = NO;
             }
-            [section addRow:row];
+            [section addItem:row];
         }
-        [self addSection:section];
+        [self.dataSource addSection:section];
     }
 }
 

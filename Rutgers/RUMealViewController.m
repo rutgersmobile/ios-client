@@ -8,7 +8,7 @@
 
 #import "RUMealViewController.h"
 #import "RUNutritionLabelViewController.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 @interface RUMealViewController ()
@@ -33,12 +33,12 @@
 
 -(void)makeSections{
     for (NSDictionary *genre in self.meal[@"genres"]) {
-        EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:genre[@"genre_name"]];
+        EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:genre[@"genre_name"]];
         for (NSString *item in genre[@"items"]) {
             EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:item];
-            [section addRow:row];
+            [section addItem:row];
         }
-        [self addSection:section];
+        [self.dataSource addSection:section];
     }
 }
 

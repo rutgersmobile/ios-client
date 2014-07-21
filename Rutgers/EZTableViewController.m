@@ -7,164 +7,68 @@
 //
 
 #import "EZTableViewController.h"
-#import "EZTableViewSection.h"
-#import "EZTableViewRightDetailRow.h"
-#import "ALTableViewRightDetailCell.h"
-#import "ALTableViewTextCell.h"
+#import "EZDataSource.h"
+#import "EZDataSourceSection.h"
 
 @interface EZTableViewController ()
 @property (nonatomic) NSMutableArray *searchResultSections;
+@property (nonatomic) BOOL searchEnabled;
+@property (nonatomic) UITableViewStyle style;
+@property (nonatomic) EZDataSource *dataSource;
 @end
 
 @implementation EZTableViewController
--(id)initWithStyle:(UITableViewStyle)style{
-    self = [super initWithStyle:style];
+
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.sections = [NSMutableArray array];
         self.searchResultSections = [NSMutableArray array];
+        self.dataSource = [[EZDataSource alloc] init];
+        self.dataSource.delegate = self;
     }
     return self;
 }
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    self.tableView.dataSource = self.dataSource;
+    self.tableView.delegate = self.dataSource;
 }
 
--(void)startNetworkLoad{
-    if (!self.refreshControl) {
-        self.refreshControl = [[UIRefreshControl alloc] init];
-        [self.refreshControl addTarget:self action:@selector(startNetworkLoad) forControlEvents:UIControlEventValueChanged];
-    }
-    [self.refreshControl beginRefreshing];
-}
-
--(void)networkLoadSucceeded{
-    [self.refreshControl endRefreshing];
-}
-
--(void)networkLoadFailed{
-    [self.refreshControl endRefreshing];
-}
-
--(NSArray *)sectionsForTableView:(UITableView *)tableView{
-    if (tableView == self.tableView) {
-        return self.sections;
-    } else if (tableView == self.searchController.searchResultsTableView) {
-        return self.searchResultSections;
-    }
-    return nil;
-}
-
-- (EZTableViewSection *)sectionInTableView:(UITableView *)tableView atIndex:(NSInteger)section {
-    return [self sectionsForTableView:tableView][section];
-}
-
-- (EZTableViewAbstractRow *)rowInTableView:(UITableView *)tableView forIndexPath:(NSIndexPath *)indexPath{
-    return [[self sectionInTableView:tableView atIndex:indexPath.section] rowAtIndex:indexPath.row];
-}
-
--(void)addSection:(EZTableViewSection *)section{
-    [self insertSection:section atIndex:self.sections.count];
-}
-
--(void)insertSection:(EZTableViewSection *)section atIndex:(NSInteger)index{
-    [self.sections insertObject:section atIndex:index];
-    if (self.isViewLoaded) {
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
--(void)replaceSectionAtIndex:(NSInteger)index withSection:(EZTableViewSection *)section{
-    self.sections[index] = section;
-    [self reloadSectionAtIndex:index];
-}
-
--(void)replaceSection:(EZTableViewSection *)oldSection withSection:(EZTableViewSection *)newSection{
-    NSInteger index = [self indexOfSection:oldSection];
-    [self replaceSectionAtIndex:index withSection:newSection];
-}
-
--(void)removeAllSections{
-    if (self.isViewLoaded) {
-        NSInteger count = self.sections.count;
-        [self.tableView beginUpdates];
-        [self.sections removeAllObjects];
-        [self.tableView deleteSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-    } else {
-        [self.sections removeAllObjects];
-    }
-}
-
--(void)reloadSection:(EZTableViewSection *)section{
-    NSInteger index = [self indexOfSection:section];
-    [self reloadSectionAtIndex:index];
-}
-
--(void)reloadSectionAtIndex:(NSInteger)index{
-    if (self.isViewLoaded) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:index] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
--(NSInteger)indexOfSection:(EZTableViewSection *)section{
-    return [self.sections indexOfObject:section];
-}
--(EZTableViewSection *)sectionAtIndex:(NSInteger)index{
-    return self.sections[index];
-}
-
-#pragma mark - TableView Data source
--(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
-    return [self rowInTableView:tableView forIndexPath:indexPath].identifier;
-}
-
--(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
-    [[self rowInTableView:tableView forIndexPath:indexPath] setupCell:cell];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self sectionInTableView:tableView atIndex:section].numberOfRows;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [self sectionsForTableView:tableView].count;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return [self sectionInTableView:tableView atIndex:section].title;
+-(void)setupContentLoadingStateMachine{
+    [self performSelector:@selector(loadNetworkData)];
+    /*
+    NetworkContentStateIndicatorView *indicatorView = [[NetworkContentStateIndicatorView alloc] initForAutoLayout];
+    [self.view addSubview:indicatorView];
+    [indicatorView autoCenterInSuperview];
+    
+    self.contentLoadingStateMachine = [[NetworkContentLoadingStateMachine alloc] initWithStateIndicatorView:indicatorView];
+    
+    // self.refreshControl = [[UIRefreshControl alloc] init];
+    self.contentLoadingStateMachine.refreshControl =  self.refreshControl;
+    self.contentLoadingStateMachine.delegate = self;
+    [self.contentLoadingStateMachine startNetworking];*/
 }
 
 
-#pragma mark - TableView Delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    EZTableViewAbstractRow *row = [self rowInTableView:tableView forIndexPath:indexPath];
-    if (row.didSelectRowBlock) {
-        row.didSelectRowBlock();
-    } else {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
+-(void)enableSearch{
+    if (self.searchEnabled) return;
+    /*
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    [RUAppearance applyAppearanceToSearchBar:searchBar];
+    
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.searchResultsDataSource = self;
+    self.searchController.delegate = self;
+    self.searchController.searchResultsTableView.estimatedRowHeight = 44.0;
+    
+    self.tableView.tableHeaderView = searchBar;
+    
+    self.searchEnabled = YES;*/
 }
 
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [self rowInTableView:tableView forIndexPath:indexPath].shouldHighlight;
-}
-
--(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
-    if (action == @selector(copy:)){
-        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        [pasteboard setString:[self rowInTableView:tableView forIndexPath:indexPath].textRepresentation];
-    }
-}
-
--(BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
-    if (action == @selector(copy:)) return YES;
-    return NO;
-}
-
--(BOOL)tableView:(UITableView*)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath*)indexPath{
-    return [self rowInTableView:tableView forIndexPath:indexPath].shouldCopy;
-}
+/*
 
 #pragma mark - SearchDisplayController Delegate
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
@@ -175,17 +79,17 @@
 -(void)filterForSearchString:(NSString *)string{
     @synchronized (self.searchResultSections) {
         [self.searchResultSections removeAllObjects];
-        for (EZTableViewSection *section in self.sections) {
-            NSArray *filteredRows = [section.allRows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EZTableViewAbstractRow *row, NSDictionary *bindings) {
+        for (EZDataSourceSection *section in self.sections) {
+            NSArray *filteredRows = [section.items filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EZTableViewAbstractRow *row, NSDictionary *bindings) {
                 NSString *text = row.textRepresentation;
                 return ([text rangeOfString:string options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch].location != NSNotFound);
             }]];
             if (filteredRows.count) {
-                EZTableViewSection *filteredSection = [[EZTableViewSection alloc] initWithSectionTitle:section.title rows:filteredRows];
+                EZDataSourceSection *filteredSection = [[EZDataSourceSection alloc] initWithSectionTitle:section.title rows:filteredRows];
                 [self.searchResultSections addObject:filteredSection];
             }
         }
     }
-}
+}*/
 
 @end

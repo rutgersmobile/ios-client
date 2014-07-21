@@ -8,7 +8,7 @@
 
 #import "RUDiningHallViewController.h"
 #import "RUMealViewController.h"
-#import "EZTableViewSection.h"
+#import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 
@@ -27,16 +27,16 @@
 }
 
 -(void)makeSections{
-    EZTableViewSection *section = [[EZTableViewSection alloc] initWithSectionTitle:@"Meals"];
+    EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:@"Meals"];
     for (NSDictionary *meal in self.diningHall[@"meals"]) {
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:meal[@"meal_name"]];
         row.active = [meal[@"genres"] count];
         row.didSelectRowBlock = ^{
             [self.navigationController pushViewController:[[RUMealViewController alloc] initWithMeal:meal] animated:YES];
         };
-        [section addRow:row];
+        [section addItem:row];
     }
-    [self addSection:section];
+    [self.dataSource addSection:section];
 }
 
 @end
