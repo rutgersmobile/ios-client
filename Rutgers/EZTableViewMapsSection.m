@@ -13,7 +13,7 @@
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle place:(RUPlace *)place{
     self = [super initWithSectionTitle:sectionTitle];
     if (self) {
-        [self addRow:[[EZTableViewMapsRow alloc] initWithPlace:place]];
+        [self addItem:[[EZTableViewMapsRow alloc] initWithPlace:place]];
     }
     return self;
 }

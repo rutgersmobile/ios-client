@@ -7,16 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class ALTableViewAbstractCell;
 
-@interface ALTableViewController : UITableViewController <UISearchDisplayDelegate>
--(id)layoutViewForIdentifier:(NSString *)identifier;
--(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
--(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
+@interface ALTableViewController : UIViewController <UISearchDisplayDelegate, NetworkContentLoadingStateMachineDelegate, UITableViewDataSource, UITableViewDelegate>
+- (id)initWithStyle:(UITableViewStyle)style;
+@property (nonatomic) UITableView *tableView;
+@property (nonatomic) UIRefreshControl *refreshControl;
 
--(NSString *)identifierForHeaderInTableView:(UITableView *)tableView;
 
 
 @property (nonatomic) UISearchDisplayController *searchController;
 -(void)enableSearch;
+
+@property (nonatomic) NetworkContentLoadingStateMachine * contentLoadingStateMachine;
+-(void)setupContentLoadingStateMachine;
 @end

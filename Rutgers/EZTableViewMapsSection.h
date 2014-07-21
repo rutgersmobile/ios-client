@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewSection.h"
+#import "EZDataSourceSection.h"
 #import <MapKit/MapKit.h>
 
 @class RUPlace;
 
-@interface EZTableViewMapsSection : EZTableViewSection
+@interface EZTableViewMapsSection : EZDataSourceSection
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle place:(RUPlace *)place;
 @end

@@ -9,25 +9,48 @@
 #import "ALTableViewController.h"
 #import "ALTableViewRightDetailCell.h"
 #import "ALTableViewTextCell.h"
+#import "NetworkContentStateIndicatorView.h"
+#import "UIView+LayoutSize.h"
 
 @interface ALTableViewController () 
 @property (nonatomic) NSMutableDictionary *layoutCells;
 @property (nonatomic) BOOL searchEnabled;
+@property (nonatomic) UITableViewStyle style;
 @end
 
 @implementation ALTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
         self.layoutCells = [NSMutableDictionary dictionary];
     }
     return self;
 }
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super init];
+    if (self) {
+        // Custom initialization
+        self.style = style;
+    }
+    return self;
+}
+
+-(void)loadView{
+    [super loadView];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.style];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    self.tableView = tableView;
+    
+    [self.view addSubview:tableView];
+    [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
+
     self.tableView.estimatedRowHeight = 44.0;
 }
 
@@ -47,6 +70,26 @@
     
     self.searchEnabled = YES;
 }
+
+-(void)setupContentLoadingStateMachine{
+    NetworkContentStateIndicatorView *indicatorView = [[NetworkContentStateIndicatorView alloc] initForAutoLayout];
+    [self.view addSubview:indicatorView];
+    [indicatorView autoCenterInSuperview];
+    
+    self.contentLoadingStateMachine = [[NetworkContentLoadingStateMachine alloc] initWithStateIndicatorView:indicatorView];
+    
+   // self.refreshControl = [[UIRefreshControl alloc] init];
+    self.contentLoadingStateMachine.refreshControl =  self.refreshControl;
+    self.contentLoadingStateMachine.delegate = self;
+    [self.contentLoadingStateMachine startNetworking];
+}
+
+-(void)setRefreshControl:(UIRefreshControl *)refreshControl{
+    _refreshControl = refreshControl;
+    [_refreshControl removeFromSuperview];
+    [self.tableView addSubview:refreshControl];
+}
+
 
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
@@ -94,8 +137,8 @@
     }
     
     [self setupCell:cell inTableView:tableView forRowAtIndexPath:indexPath];
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
+    //[cell setNeedsUpdateConstraints];
+    //[cell updateConstraintsIfNeeded];
     
     return cell;
 }
@@ -116,13 +159,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *identifier = [self identifierForCellInTableView:tableView atIndexPath:indexPath];
-    ALTableViewAbstractCell *layoutCell = [self layoutViewWithIdentifier:identifier];
-    [self setupCell:layoutCell inTableView:tableView forRowAtIndexPath:indexPath];
+    UITableViewCell *layoutCell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     [layoutCell setNeedsUpdateConstraints];
     [layoutCell updateConstraintsIfNeeded];
     
-    return [self tableView:tableView layoutHeightForView:layoutCell];
+    return [layoutCell layoutSizeFittingSize:tableView.bounds.size].height;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
