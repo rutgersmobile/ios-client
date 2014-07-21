@@ -13,10 +13,14 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-    #import <UIView+AutoLayout.h>
+    #import <PureLayout.h>
     #import "NSDictionary+Channel.h"
     #import "UIColor+RutgersColors.h"
     #import "RUAppearance.h"
+
+    #import "NetworkContentLoadingStateMachine.h"
+    #import <AFNetworkReachabilityManager.h>
+    #import <MSWeakTimer.h>
 #endif
 
 #define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
