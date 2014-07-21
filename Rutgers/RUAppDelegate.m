@@ -7,7 +7,6 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "UITabBarItem+Copy.h"
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
 #import "RURootController.h"
@@ -37,6 +36,8 @@
 -(void)initialize{
     
     [RUAppearance applyAppearance];
+    
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     [self initializeCache];
     [self initializeDrawer];
