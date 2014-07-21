@@ -54,22 +54,21 @@ typedef enum : NSUInteger {
 -(void)viewDidLoad{
     [super viewDidLoad];
     if (!self.children) {
-        [self startNetworkLoad];
+        [self setupContentLoadingStateMachine];
     }
 }
 
--(void)startNetworkLoad{
-    [super startNetworkLoad];
+-(void)loadNetworkData{
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self networkLoadSucceeded];
+            [self.contentLoadingStateMachine networkLoadSuccessful];
             [self removeAllSections];
             [self parseResponse:responseObject[@"children"]];
         } else {
-            [self networkLoadFailed];
+            [self.contentLoadingStateMachine networkLoadFailedWithParsingError];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self networkLoadFailed];
+        [self.contentLoadingStateMachine networkLoadSuccessful];
     }];
 }
 
