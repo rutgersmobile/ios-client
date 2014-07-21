@@ -8,18 +8,13 @@
 
 #import "TileCollectionViewItem.h"
 #import "TileCollectionViewCell.h"
-#import "NSString+SHA1.h"
 #import "EZCollectionViewController.h"
 #import "iPadCheck.h"
 #import <HexColor.h>
 
-#define RANDOM_SEED 398
-
-
 #define FONT_SIZE  (iPad() ? 22 : 16.0)
 
 @implementation TileCollectionViewItem
-static NSInteger seed = RANDOM_SEED;
 
 -(id)init{
     self = [super initWithIdentifier:@"DynamicCollectionViewCell"];
@@ -35,14 +30,6 @@ static NSInteger seed = RANDOM_SEED;
         self.text = text;
     }
     return self;
-}
-
-+(NSInteger)seedNumber{
-    return seed;
-}
-
-+(void)setSeedNumber:(NSInteger)seedNumber{
-    seed = seedNumber;
 }
 
 -(void)setupCell:(TileCollectionViewCell *)cell{

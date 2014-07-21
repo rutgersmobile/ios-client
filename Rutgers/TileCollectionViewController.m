@@ -36,6 +36,7 @@
     self.flowLayout.minimumInteritemSpacing = tileSpacing;
     self.flowLayout.minimumLineSpacing = tileSpacing;
 }
+
 -(void)setTilePadding:(CGFloat)tilePadding{
     _tilePadding = tilePadding;
     self.flowLayout.sectionInset = UIEdgeInsetsMake(tilePadding, tilePadding, tilePadding, tilePadding);
@@ -52,7 +53,6 @@
     [super viewWillAppear:animated];
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
-
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat layoutWidth = CGRectGetWidth(collectionView.bounds)-self.tilePadding*2;
