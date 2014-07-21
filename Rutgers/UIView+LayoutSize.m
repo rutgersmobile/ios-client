@@ -10,8 +10,8 @@
 
 @implementation UIView (LayoutSize)
 -(CGSize)layoutSizeFittingSize:(CGSize)size{
-  //  [self setNeedsUpdateConstraints];
-  //  [self updateConstraintsIfNeeded];
+    [self setNeedsUpdateConstraints];
+    [self updateConstraintsIfNeeded];
     
     CGRect frame = self.frame;
     frame.size = size;
