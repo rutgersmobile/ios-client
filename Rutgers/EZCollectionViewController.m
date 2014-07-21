@@ -9,7 +9,10 @@
 #import "EZCollectionViewController.h"
 #import "EZCollectionViewSection.h"
 #import "EZCollectionViewAbstractItem.h"
+
 #import "TileCollectionViewCell.h"
+#import "NetworkContentStateIndicatorView.h"
+
 
 @interface EZCollectionViewController () <UICollectionViewDelegateFlowLayout>
 @property (nonatomic) NSMutableDictionary *layoutCells;
@@ -29,29 +32,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
 
--(void)startNetworkLoad{
-    /*
-    if (!self.refreshControl) {
-        self.refreshControl = [[UIRefreshControl alloc] init];
-        [self.refreshControl addTarget:self action:@selector(startNetworkLoad) forControlEvents:UIControlEventValueChanged];
-        
-        [self.collectionView addSubview:self.refreshControl];
-        self.collectionView.alwaysBounceVertical = YES;
-    }*/
-    [self.refreshControl beginRefreshing];
+-(void)setupContentLoadingStateMachine{
+    NetworkContentStateIndicatorView *indicatorView = [[NetworkContentStateIndicatorView alloc] initForAutoLayout];
+    [self.view addSubview:indicatorView];
+    [indicatorView autoCenterInSuperview];
+    
+    self.contentLoadingStateMachine = [[NetworkContentLoadingStateMachine alloc] initWithStateIndicatorView:indicatorView];
+    
+   // self.refreshControl = [[UIRefreshControl alloc] init];
+   // self.contentLoadingStateMachine.refreshControl =  self.refreshControl;
+    self.contentLoadingStateMachine.delegate = self;
+    [self.contentLoadingStateMachine startNetworking];
 }
 
--(void)networkLoadSucceeded{
-    [self.refreshControl endRefreshing];
-}
-
--(void)networkLoadFailed{
-    [self.refreshControl endRefreshing];
-}
 -(UICollectionViewFlowLayout *)flowLayout{
     return (UICollectionViewFlowLayout *)self.collectionViewLayout;
 }

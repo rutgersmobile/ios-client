@@ -8,24 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
-
 @class EZCollectionViewSection;
 @class EZCollectionViewAbstractItem;
 
-@interface EZCollectionViewController : UICollectionViewController
+@interface EZCollectionViewController : UICollectionViewController <NetworkContentLoadingStateMachineDelegate>
 -(UICollectionViewFlowLayout *)flowLayout;
 
 -(void)addSection:(EZCollectionViewSection *)section;
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
 -(void)removeAllSections;
 
--(void)startNetworkLoad NS_REQUIRES_SUPER;
--(void)networkLoadSucceeded NS_REQUIRES_SUPER;
--(void)networkLoadFailed NS_REQUIRES_SUPER;
-
 @property (nonatomic) NSMutableArray *sections;
 
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section;
 - (EZCollectionViewAbstractItem *)itemForIndexPath:(NSIndexPath *)indexPath;
 
+@property (nonatomic) NetworkContentLoadingStateMachine * contentLoadingStateMachine;
+-(void)setupContentLoadingStateMachine;
 @end
