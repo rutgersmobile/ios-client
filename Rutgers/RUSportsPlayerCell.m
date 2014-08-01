@@ -14,7 +14,7 @@
 
 @implementation RUSportsPlayerCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
     self.playerView = [UIView newAutoLayoutView];
     
     self.nameLabel = [UILabel newAutoLayoutView];
@@ -46,7 +46,7 @@
     [self.playerView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:2 relation:NSLayoutRelationGreaterThanOrEqual];
     
     [self.initialsLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self.playerImageView autoSetDimensionsToSize:CGSizeMake(70, 95)];
+    [self.playerImageView autoSetDimensionsToSize:CGSizeMake(65, 90)];
     [self.playerImageView autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.playerView withOffset:-12];
     [self.playerImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
     
@@ -59,7 +59,4 @@
     [self.jerseyNumberLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.nameLabel withOffset:kLabelHorizontalInsets relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
--(void)didLayoutSubviews{
-
-}
 @end

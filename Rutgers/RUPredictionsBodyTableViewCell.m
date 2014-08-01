@@ -10,7 +10,7 @@
 
 @implementation RUPredictionsBodyTableViewCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
     self.minutesLabel = [UILabel newAutoLayoutView];
     self.descriptionLabel = [UILabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
@@ -49,14 +49,5 @@
     [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
 
 }
-
--(void)makeConstraintChanges{
-
-}
-
--(void)didLayoutSubviews{
-
-}
-
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ALTableViewRightDetailCell.h"
+#import "ALTableViewAbstractCell.h"
 
 @interface RURecCenterMeetingAreaTableViewCell : ALTableViewAbstractCell
 @property (nonatomic) UILabel *areaLabel;

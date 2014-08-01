@@ -14,7 +14,7 @@
 
 @implementation RUSportsRosterPlayerHeaderCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
     
     UIView *playerView = [UIView newAutoLayoutView];
     self.playerView = playerView;
@@ -53,18 +53,6 @@
     
 }
 
--(void)didLayoutSubviews{
-    
-}
 
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

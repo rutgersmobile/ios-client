@@ -15,7 +15,7 @@
 
 @implementation RUPredictionsHeaderTableViewCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
     self.titleLabel = [UILabel newAutoLayoutView];
     self.directionLabel = [UILabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
@@ -44,11 +44,11 @@
     [self.timeLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeTop];
 }
 
--(void)makeConstraintChanges{
+-(void)updateConstraints{
+    [super updateConstraints];
     self.directionConstraint.constant = self.directionLabel.text.length ? 2 : 0;
 }
 
--(void)didLayoutSubviews{
-}
+
 
 @end

@@ -14,7 +14,7 @@
 
 @implementation RUSOCSectionCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
 
     self.indexLabel = [UILabel newAutoLayoutView];
     self.professorLabel = [UILabel newAutoLayoutView];
@@ -77,13 +77,14 @@
     [self.locationLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
--(void)makeConstraintChanges{
+-(void)updateConstraints{
+    [super updateConstraints];
     self.descriptionConstraint.constant = self.descriptionLabel.text.length ? -kLabelVerticalInsets : 0;
 }
 
--(void)didLayoutSubviews{
+-(void)layoutSubviews{
+    [super layoutSubviews];
     self.descriptionLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.descriptionLabel.frame);
 }
-
 
 @end

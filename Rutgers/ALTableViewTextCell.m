@@ -7,6 +7,7 @@
 //
 
 #import "ALTableViewTextCell.h"
+#import "RULabel.h"
 
 @interface ALTableViewTextCell ()
 @property (strong, nonatomic) IBOutlet UILabel *attributedTextLabel;
@@ -19,22 +20,19 @@
     return self.attributedTextLabel;
 }
 
--(void)makeSubviews{
-    self.attributedTextLabel = [UILabel newAutoLayoutView];
+-(void)initializeSubviews{
+    self.attributedTextLabel = [RULabel newAutoLayoutView];
     self.attributedTextLabel.numberOfLines = 0;
     [self.contentView addSubview:self.attributedTextLabel];
 }
+
 -(void)initializeConstraints{
     [self.attributedTextLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeRight];
     self.rightConstraint = [self.attributedTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
 }
 
--(void)didLayoutSubviews{
-    self.attributedTextLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.attributedTextLabel.frame);
-}
-
--(void)makeConstraintChanges{
+-(void)updateConstraints{
+    [super updateConstraints];
     self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? 0 : -kLabelHorizontalInsets;
 }
-
 @end

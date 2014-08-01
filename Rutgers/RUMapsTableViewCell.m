@@ -16,7 +16,7 @@
 
 @implementation RUMapsTableViewCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
     self.mapsViewController = [[RUEmbeddedMapsViewController alloc] init];
     self.controllerView = self.mapsViewController.view;
     [self.contentView addSubview:self.controllerView];

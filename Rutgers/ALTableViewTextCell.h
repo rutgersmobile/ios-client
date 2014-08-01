@@ -9,5 +9,5 @@
 #import "ALTableViewAbstractCell.h"
 
 @interface ALTableViewTextCell : ALTableViewAbstractCell
-
+-(UILabel *)textLabel;
 @end

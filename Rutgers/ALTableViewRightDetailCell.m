@@ -7,7 +7,7 @@
 //
 
 #import "ALTableViewRightDetailCell.h"
-
+#import "RULabel.h"
 @interface ALTableViewRightDetailCell ()
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
@@ -26,14 +26,13 @@
     return self.detailLabel;
 }
 
--(void)makeSubviews{
+-(void)initializeSubviews{
  
-    self.titleLabel = [UILabel newAutoLayoutView];
-    self.detailLabel = [UILabel newAutoLayoutView];
+    self.titleLabel = [RULabel newAutoLayoutView];
     self.titleLabel.numberOfLines = 0;
-
-    
     self.titleLabel.font = [UIFont systemFontOfSize:17];
+   
+    self.detailLabel = [UILabel newAutoLayoutView];
     self.detailLabel.font = [UIFont systemFontOfSize:17];
     self.detailLabel.textColor = [UIColor lightGrayColor];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
@@ -61,13 +60,11 @@
 
 }
 
--(void)makeConstraintChanges{
-    self.textToDetailTextConstraint.constant = self.detailTextLabel.text.length ? kLabelHorizontalInsets : 0;
+-(void)updateConstraints{
+    [super updateConstraints];
+    self.textToDetailTextConstraint.constant = self.detailLabel.text.length ? kLabelHorizontalInsets : 0;
     self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? 0 : -kLabelHorizontalInsets;
 }
 
--(void)didLayoutSubviews{
-    self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
-}
 
 @end

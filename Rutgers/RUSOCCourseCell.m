@@ -7,12 +7,13 @@
 //
 
 #import "RUSOCCourseCell.h"
+#import "RULabel.h"
 
 @implementation RUSOCCourseCell
 
--(void)makeSubviews{
+-(void)initializeSubviews{
     
-    self.titleLabel = [UILabel newAutoLayoutView];
+    self.titleLabel = [RULabel newAutoLayoutView];
     self.creditsLabel = [UILabel newAutoLayoutView];
     self.sectionsLabel = [UILabel newAutoLayoutView];
     
@@ -41,7 +42,4 @@
     [self.creditsLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
 }
 
--(void)didLayoutSubviews{
-    self.titleLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.titleLabel.frame);
-}
 @end

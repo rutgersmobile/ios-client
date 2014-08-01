@@ -13,8 +13,6 @@
 
 @interface ALTableViewAbstractCell : UITableViewCell
 @property (nonatomic, assign) BOOL didSetupConstraints;
--(void)makeSubviews;
+-(void)initializeSubviews;
 -(void)initializeConstraints;
--(void)didLayoutSubviews;
--(void)makeConstraintChanges;
 @end
