@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "ColoredTileCollectionViewController.h"
+#import "TileCollectionViewController.h"
 
-@interface RUEmergencyViewController : ColoredTileCollectionViewController
+@interface RUEmergencyViewController : TileCollectionViewController
 +(instancetype)componentForChannel:(NSDictionary *)channel;
 @end

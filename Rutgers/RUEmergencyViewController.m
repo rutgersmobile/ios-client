@@ -11,6 +11,7 @@
 #import "TileCollectionViewItem.h"
 #import "RUOperatingStatusViewController.h"
 #import "RUChannelManager.h"
+#import "TileDataSource.h"
 
 @interface RUEmergencyViewController ()
 
@@ -32,25 +33,25 @@
 }
 
 -(void)makeSections{
-    EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
-    
     NSString *emergencyAlertTitle = @"Emergency Alerts";
-    TileCollectionViewItem *alertsItem = [[TileCollectionViewItem alloc] initWithText:emergencyAlertTitle];
-    alertsItem.didSelectItemBlock = ^ {
-        RUOperatingStatusViewController *operatingStatusVc = [[RUOperatingStatusViewController alloc] init];
-        operatingStatusVc.title = emergencyAlertTitle;
-        [self.navigationController pushViewController:operatingStatusVc animated:YES];
-    };
-    
+    TileCollectionViewItem *alertsItem = [[TileCollectionViewItem alloc] initWithTitle:emergencyAlertTitle object:nil];
+ 
     NSString *actionPlanTitle = @"Emergency Action Plans";
-    TileCollectionViewItem *actionPlanItem = [[TileCollectionViewItem alloc] initWithText:actionPlanTitle];
-    actionPlanItem.didSelectItemBlock = ^ {
-        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : actionPlanTitle, @"view" : @"www", @"url" : @"http://halflife.rutgers.edu/eap/mobile.php"}] animated:YES];
-    };
-    
-    [section addItems:@[alertsItem,actionPlanItem]];
-    
-    [self addSection:section];
+    TileCollectionViewItem *actionPlanItem = [[TileCollectionViewItem alloc] initWithTitle:actionPlanTitle object:nil];
+   
+    self.dataSource = [[TileDataSource alloc] initWithItems:@[alertsItem,actionPlanItem]];
 }
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    TileCollectionViewItem *item = [self.dataSource itemAtIndexPath:indexPath];
+    if (indexPath.row == 0) {
+        RUOperatingStatusViewController *operatingStatusVc = [[RUOperatingStatusViewController alloc] init];
+        operatingStatusVc.title = item.title;
+        [self.navigationController pushViewController:operatingStatusVc animated:YES];
+    } else if (indexPath.row == 1) {
+        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : item.title, @"view" : @"www", @"url" : @"http://halflife.rutgers.edu/eap/mobile.php"}] animated:YES];
+    }
+}
+
 
 @end

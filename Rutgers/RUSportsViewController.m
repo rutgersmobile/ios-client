@@ -11,6 +11,7 @@
 #import "EZCollectionViewSection.h"
 #import "TileCollectionViewItem.h"
 #import "RUSportsRosterViewController.h"
+#import "TileDataSource.h"
 
 @interface RUSportsViewController ()
 @property RUSportsData *sportsData;
@@ -21,13 +22,9 @@
     return [[RUSportsViewController alloc] init];
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        [self makeSections];
-    }
-    return self;
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self makeSections];
 }
 
 -(void)makeSections{
@@ -35,17 +32,19 @@
     
     NSDictionary *allSports = [RUSportsData allSports];
     
-    EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
+    NSMutableArray *items = [NSMutableArray array];
     NSArray *sports = [[allSports allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     for (NSString *sport in sports) {
-        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:sport];
-        item.didSelectItemBlock = ^ {
-            RUSportsRosterViewController *rosterVC = [[RUSportsRosterViewController alloc] initWithSportID:allSports[sport]];
-            rosterVC.title = sport;
-            [self.navigationController pushViewController:rosterVC animated:YES];
-        };
-        [section addItem:item];
+        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithTitle:sport object:allSports[sport]];
+        [items addObject:item];
     }
-    [self addSection:section];
+    self.dataSource = [[TileDataSource alloc] initWithItems:items];
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    TileCollectionViewItem *item = [self.dataSource itemAtIndexPath:indexPath];
+    RUSportsRosterViewController *rosterVC = [[RUSportsRosterViewController alloc] initWithSportID:item.object];
+    rosterVC.title = item.title;
+    [self.navigationController pushViewController:rosterVC animated:YES];
 }
 @end
