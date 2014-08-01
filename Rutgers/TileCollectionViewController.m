@@ -6,43 +6,31 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#define TILE_PADDING 4
-#define TILE_SPACING 3
-
 #import "TileCollectionViewController.h"
 #import "TileCollectionViewCell.h"
 #import "iPadCheck.h"
+#import "RUCollectionViewFlowLayout.h"
 
 @interface TileCollectionViewController ()
 
 @end
 
 @implementation TileCollectionViewController
+- (instancetype)init
+{
+    self = [super initWithCollectionViewLayout:[[RUCollectionViewFlowLayout alloc] init]];
+    if (self) {
+
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self.collectionView registerClass:[TileCollectionViewCell class] forCellWithReuseIdentifier:@"DynamicCollectionViewCell"];
-    self.tileSpacing = TILE_SPACING;
-    self.tilePadding = TILE_PADDING;
-    self.tileAspectRatio = 203.0/170.0;
-    self.maxTileWidth = iPad() ? 180.0 : 130;
-}
 
--(void)setTileSpacing:(CGFloat)tileSpacing{
-    _tileSpacing = tileSpacing;
-    self.flowLayout.minimumInteritemSpacing = tileSpacing;
-    self.flowLayout.minimumLineSpacing = tileSpacing;
 }
-
--(void)setTilePadding:(CGFloat)tilePadding{
-    _tilePadding = tilePadding;
-    self.flowLayout.sectionInset = UIEdgeInsetsMake(tilePadding, tilePadding, tilePadding, tilePadding);
-}
-
-#pragma mark - CollectionViewFlowLayout Delegate
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -52,20 +40,5 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat layoutWidth = CGRectGetWidth(collectionView.bounds)-self.tilePadding*2;
-    NSInteger number = 0;
-    CGFloat width = 0;
-    
-    while (width < layoutWidth) {
-        number++;
-        width += self.maxTileWidth + self.tileSpacing;
-    }
-    
-    CGFloat tileWidth = (layoutWidth - (number-1)*self.tileSpacing) / number;
-
-    return CGSizeMake(floorf(tileWidth), floorf(tileWidth/self.tileAspectRatio));
 }
 @end

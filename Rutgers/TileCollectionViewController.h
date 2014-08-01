@@ -6,11 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZCollectionViewController.h"
+#import "CollectionViewController.h"
 
-@interface TileCollectionViewController : EZCollectionViewController
-@property (nonatomic) CGFloat maxTileWidth;
-@property (nonatomic) CGFloat tileAspectRatio;
-@property (nonatomic) CGFloat tileSpacing;
-@property (nonatomic) CGFloat tilePadding;
+@interface TileCollectionViewController : CollectionViewController
+
 @end
