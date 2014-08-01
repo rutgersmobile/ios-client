@@ -7,17 +7,21 @@
 //
 
 #import "ExpandingTableViewController.h"
-#import "ExpandingTableViewSection.h"
-#import "NSIndexPath+RowExtensions.h"
+#import "ExpandingTableViewDataSource.h"
+#import "DataSource_Private.h"
 
-@interface ExpandingTableViewController ()
+@interface ExpandingTableViewController () <DataSourceDelegate>
 @end
 
 @implementation ExpandingTableViewController
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.estimatedRowHeight = 0;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [((ExpandingTableViewDataSource *)self.dataSource) tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
 @end

@@ -9,6 +9,7 @@
 #import "EZDataSource.h"
 #import "ComposedDataSource_Private.h"
 #import "EZTableViewAbstractRow.h"
+#import "DataSource_Private.h"
 
 @interface EZDataSource ()
 @end
@@ -55,24 +56,8 @@
 }
 
 -(EZTableViewAbstractRow *)itemAtIndexPath:(NSIndexPath *)indexPath{
-    return [[self sectionAtIndex:indexPath.section] itemAtIndex:indexPath.row];
+    return [super itemAtIndexPath:indexPath];
 }
-
-
-#pragma mark - Table View Data Source
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
-    EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
-    [item setupCell:cell];
-    return cell;
-}
-
-
-
-#pragma mark - Collection View Data Source
-
-
-
 
 
 #pragma mark - TableView Delegate
@@ -85,14 +70,18 @@
     }
 }
 
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+-(BOOL)shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath{
     return [self itemAtIndexPath:indexPath].shouldHighlight;
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self shouldHighlightItemAtIndexPath:indexPath];
 }
 
 -(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath*)indexPath withSender:(id)sender{
     if (action == @selector(copy:)){
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        [pasteboard setString:[self itemAtIndexPath:indexPath].textRepresentation];
+        pasteboard.string = [self itemAtIndexPath:indexPath].textRepresentation;
     }
 }
 

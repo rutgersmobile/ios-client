@@ -12,12 +12,10 @@
 @class EZDataSource;
 
 @interface EZTableViewController : TableViewController
-//-(void)setDataSource:(EZDataSource *)dataSource;
--(EZDataSource *)dataSource;
+@property (nonatomic) EZDataSource *dataSource;
 
 @property (nonatomic) UISearchDisplayController *searchController;
 -(void)enableSearch;
 
-@property (nonatomic) NetworkContentLoadingStateMachine *contentLoadingStateMachine;
--(void)setupContentLoadingStateMachine;
+//-(void)setupContentLoadingStateMachine;
 @end

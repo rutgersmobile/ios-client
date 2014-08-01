@@ -9,12 +9,12 @@
 #import "EZTableViewController.h"
 #import "EZDataSource.h"
 #import "EZDataSourceSection.h"
+#import "DataSource_Private.h"
 
-@interface EZTableViewController ()
+@interface EZTableViewController () <DataSourceDelegate>
 @property (nonatomic) NSMutableArray *searchResultSections;
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UITableViewStyle style;
-@property (nonatomic) EZDataSource *dataSource;
 @end
 
 @implementation EZTableViewController
@@ -35,9 +35,10 @@
     self.tableView.delegate = self.dataSource;
 }
 
+/*
 -(void)setupContentLoadingStateMachine{
     [self performSelector:@selector(loadNetworkData)];
-    /*
+    
     NetworkContentStateIndicatorView *indicatorView = [[NetworkContentStateIndicatorView alloc] initForAutoLayout];
     [self.view addSubview:indicatorView];
     [indicatorView autoCenterInSuperview];
@@ -47,9 +48,9 @@
     // self.refreshControl = [[UIRefreshControl alloc] init];
     self.contentLoadingStateMachine.refreshControl =  self.refreshControl;
     self.contentLoadingStateMachine.delegate = self;
-    [self.contentLoadingStateMachine startNetworking];*/
+    [self.contentLoadingStateMachine startNetworking];
 }
-
+*/
 
 -(void)enableSearch{
     if (self.searchEnabled) return;

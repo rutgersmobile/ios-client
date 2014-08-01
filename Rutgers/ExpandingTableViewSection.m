@@ -8,18 +8,13 @@
 
 #import "ExpandingTableViewSection.h"
 #import "NSIndexPath+RowExtensions.h"
+#import "DataSource_Private.h"
 
 @interface ExpandingTableViewSection ()
-@property (nonatomic) EZTableViewAbstractRow *headerRow;
+
 @end
+
 @implementation ExpandingTableViewSection
--(instancetype)initWithHeaderRow:(EZTableViewAbstractRow *)headerRow bodyRows:(NSArray *)bodyRows{
-    self = [super initWithItems:bodyRows];
-    if (self) {
-        self.headerRow = headerRow;
-    }
-    return self;
-}
 
 -(void)setExpanded:(BOOL)expanded{
     
@@ -34,18 +29,8 @@
     }
 }
 
--(NSInteger)numberOfRows{
-    if (self.expanded) {
-        return [super numberOfItems]+1;
-    } else {
-        return 1;
-    }
-}
--(EZTableViewAbstractRow *)itemAtIndex:(NSInteger)index{
-    if (index == 0) {
-        return self.headerRow;
-    } else {
-        return [super itemAtIndex:index-1];
-    }
+-(NSInteger)numberOfItems{
+    NSInteger numberOfItems = [super numberOfItems];
+    return self.expanded ? numberOfItems : MIN(numberOfItems, 1);
 }
 @end

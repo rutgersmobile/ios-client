@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewController.h"
+#import "TableViewController.h"
 
-@interface ExpandingTableViewController : EZTableViewController
+@interface ExpandingTableViewController : TableViewController
 
 @end

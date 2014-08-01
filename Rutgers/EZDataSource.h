@@ -20,4 +20,5 @@
 -(NSInteger)indexOfSection:(EZDataSourceSection *)section;
 -(EZDataSourceSection *)sectionAtIndex:(NSInteger)index;
 -(EZTableViewAbstractRow *)itemAtIndexPath:(NSIndexPath *)indexPath;
+-(BOOL)shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
 @end

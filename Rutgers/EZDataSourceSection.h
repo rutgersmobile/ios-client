@@ -16,7 +16,6 @@
 @interface EZDataSourceSection : BasicDataSource
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle;
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle items:(NSArray *)items;
--(instancetype)initWithItems:(NSArray *)rows;
 
 @property (nonatomic) NSString *headerIdentifier;
 

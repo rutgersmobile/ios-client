@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZDataSource.h"
+#import "ComposedDataSource.h"
 
-@interface ExpandingTableViewDataSource : EZDataSource
-
+@interface ExpandingTableViewDataSource : ComposedDataSource
+@property (nonatomic) NSArray *sections;
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 @end

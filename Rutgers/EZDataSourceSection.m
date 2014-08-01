@@ -8,6 +8,7 @@
 
 #import "EZDataSourceSection.h"
 #import "EZTableViewRightDetailRow.h"
+#import "ALTableViewAbstractCell.h"
 
 @interface EZDataSourceSection ()
 @end
@@ -15,14 +16,6 @@
 @implementation EZDataSourceSection
 
 #pragma mark - Initialization
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.rows = [NSArray array];
-    }
-    return self;
-}
 
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle{
     self = [self init];
@@ -49,37 +42,46 @@
 }
 
 #pragma mark - Adding and removing items
--(void)setRows:(NSArray *)rows{
-    self.items = rows;
-}
 
--(NSArray *)rows{
-    return self.items;
-}
-
--(void)addItem:(EZTableViewRightDetailRow *)row{
-    self.rows = [self.rows arrayByAddingObject:row];
+-(void)addItem:(EZTableViewAbstractRow *)row{
+    self.items = [self.items arrayByAddingObject:row];
 }
 
 -(void)addItems:(NSArray *)rows{
-    self.rows = [self.rows arrayByAddingObjectsFromArray:rows];
+    self.items = [self.items arrayByAddingObjectsFromArray:rows];
 }
 
 -(NSInteger)numberOfRows{
-    return self.rows.count;
+    return self.items.count;
 }
 
--(EZTableViewRightDetailRow *)itemAtIndex:(NSInteger)index{
-    return self.rows[index];
+-(EZTableViewAbstractRow *)itemAtIndex:(NSInteger)index{
+    return self.items[index];
 }
-
 
 -(NSString *)identifierForCellAtIndexPath:(NSIndexPath *)indexPath{
     return [self itemAtIndex:indexPath.row].identifier;
 }
 
 -(NSString *)identifierForHeaderInSection:(NSInteger)section{
- return nil;
+    return nil;
 }
+
+#pragma mark - table view delegate 
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *identifier = [self itemAtIndex:indexPath.row].identifier;
+    ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        [tableView registerClass:NSClassFromString(identifier) forCellReuseIdentifier:identifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    }
+    
+    EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
+    [item setupCell:cell];
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    return cell;
+}
+
 
 @end
