@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "ColoredTileCollectionViewController.h"
+#import "TileCollectionViewController.h"
 
-@interface DynamicCollectionViewController : ColoredTileCollectionViewController <RUComponentProtocol>
--(instancetype)initWithChildren:(NSArray *)children;
+@interface DynamicCollectionViewController : TileCollectionViewController <RUComponentProtocol>
 @end

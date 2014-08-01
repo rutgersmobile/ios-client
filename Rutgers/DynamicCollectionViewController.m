@@ -14,14 +14,8 @@
 #import "TileCollectionViewItem.h"
 #import "TileCollectionViewCell.h"
 #import "EZCollectionViewSection.h"
+#import "DynamicDataSource.h"
 #import "FAQViewController.h"
-
-typedef enum : NSUInteger {
-    kChildTypeChannel,
-    kChildTypeList,
-    kChildTypeFaq,
-    kChildTypeUnknown
-} kChildType;
 
 @interface DynamicCollectionViewController ()
 @property (nonatomic) NSDictionary *channel;
@@ -46,73 +40,34 @@ typedef enum : NSUInteger {
     self = [self init];
     if (self) {
         self.children = children;
-        [self parseResponse:self.children];
     }
     return self;
 }
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    if (!self.children) {
-        [self setupContentLoadingStateMachine];
+    if (self.channel) {
+        self.dataSource = [[DynamicDataSource alloc] initWithUrl:self.channel[@"url"]];
+    } else if (self.children) {
+        self.dataSource = [[DynamicDataSource alloc] initWithItems:self.children];
     }
 }
 
--(void)loadNetworkData{
-    [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self.contentLoadingStateMachine networkLoadSuccessful];
-            [self removeAllSections];
-            [self parseResponse:responseObject[@"children"]];
-        } else {
-            [self.contentLoadingStateMachine networkLoadFailedWithParsingError];
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self.contentLoadingStateMachine networkLoadSuccessful];
-    }];
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    TileCollectionViewItem *item = [self.dataSource itemAtIndexPath:indexPath];
+    kDynamicItemType type = [((DynamicDataSource *)self.dataSource) typeOfItem:item];
+ 
+    if (type == kDynamicItemTypeChannel) {
+        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:item.object[@"channel"]] animated:YES];
+    } else if (type == kDynamicItemTypeList) {
+        DynamicCollectionViewController *dcVC = [[DynamicCollectionViewController alloc] initWithChildren:item.object[@"children"]];
+        dcVC.title = item.title;
+        [self.navigationController pushViewController:dcVC animated:YES];
+    } else if (type == kDynamicItemTypeFaq) {
+        FAQViewController *faqVC = [[FAQViewController alloc] initWithChildren:item.object[@"children"]];
+        faqVC.title = item.title;
+        [self.navigationController pushViewController:faqVC animated:YES];
+    }
 }
 
--(void)parseResponse:(id)responseObject{
-    EZCollectionViewSection *section = [[EZCollectionViewSection alloc] init];
-    for (NSDictionary *child in responseObject) {
-        NSString *title = [child titleForChannel];
-        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithText:title];
-        kChildType type = [self typeOfChild:child];
-        if (type == kChildTypeChannel) {
-            item.didSelectItemBlock = ^{
-                [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:child[@"channel"]] animated:YES];
-            };
-        } else if (type == kChildTypeList) {
-            item.showsEllipses = YES;
-            item.didSelectItemBlock = ^{
-                DynamicCollectionViewController *dcVC = [[DynamicCollectionViewController alloc] initWithChildren:child[@"children"]];
-                dcVC.title = [child titleForChannel];
-                [self.navigationController pushViewController:dcVC animated:YES];
-            };
-        } else if (type == kChildTypeFaq) {
-            item.didSelectItemBlock = ^{
-                FAQViewController *faqVC = [[FAQViewController alloc] initWithChildren:child[@"children"]];
-                faqVC.title = [child titleForChannel];
-                [self.navigationController pushViewController:faqVC animated:YES];
-            };
-        }
-        [section addItem:item];
-    }
-    [self addSection:section];
-}
--(kChildType)typeOfChild:(NSDictionary *)child{
-    NSDictionary *channel = child[@"channel"];
-    if (channel) {
-        return kChildTypeChannel;
-    } else {
-        if (child[@"answer"]) return kChildTypeFaq;
-        NSArray *children = child[@"children"];
-        for (NSDictionary *child in children) {
-            kChildType type = [self typeOfChild:child];
-            if (type == kChildTypeFaq) return type;
-        }
-        return kChildTypeList;
-    }
-    return kChildTypeUnknown;
-}
 @end
