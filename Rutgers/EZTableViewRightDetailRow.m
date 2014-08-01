@@ -14,6 +14,11 @@
 
 @implementation EZTableViewRightDetailRow
 
+- (instancetype)init
+{
+    return [self initWithIdentifier:NSStringFromClass([ALTableViewRightDetailCell class])];
+}
+
 -(instancetype)initWithText:(NSString *)text{
     self = [self init];
     if (self) {
@@ -24,14 +29,14 @@
 }
 
 -(instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText{
-    self = [self init];
+    self = [self initWithText:text];
     if (self) {
         self.textFont = [UIFont systemFontOfSize:17];
-        self.text = text;
         self.detailText = detailText;
     }
     return self;
 }
+
 -(NSString *)textRepresentation{
     return self.text;
 }

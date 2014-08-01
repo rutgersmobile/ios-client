@@ -33,14 +33,14 @@
     return [super expanded] && self.headerRow.active;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
-    
-    id cell = [tableView dequeueReusableCellWithIdentifier:item.identifier];
+    return item.identifier;
+}
+
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
     [item setupCell:cell];
-    
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    return cell;
+    [super configureCell:cell forRowAtIndexPath:indexPath];
 }
 @end

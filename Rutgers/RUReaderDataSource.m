@@ -37,8 +37,10 @@
                     [me parseResponse:channel[@"item"]];
                 }];
             } else {
+                [loading doneWithError:nil];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [loading doneWithError:error];
         }];
     }];
 }
@@ -57,8 +59,11 @@
     [tableView registerClass:[RUReaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUReaderTableViewCell class])];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUReaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RUReaderTableViewCell class])];
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([RUReaderTableViewCell class]);
+}
+
+-(void)configureCell:(RUReaderTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     RUReaderTableViewRow *row = [self itemAtIndexPath:indexPath];
     
@@ -72,11 +77,8 @@
     if (row.imageURL) {
         [cell.imageDisplayView setImageWithURL:row.imageURL];
     }
-    
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
-    return cell;
+
 }
+
 
 @end

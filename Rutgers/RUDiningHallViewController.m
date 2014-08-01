@@ -8,35 +8,30 @@
 
 #import "RUDiningHallViewController.h"
 #import "RUMealViewController.h"
-#import "EZDataSource.h"
+#import "RUDiningHallDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 
 
 @interface RUDiningHallViewController ()
+@property (nonatomic) NSDictionary *diningHall;
 @end
 
 @implementation RUDiningHallViewController
 -(id)initWithDiningHall:(NSDictionary *)diningHall{
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.diningHall = diningHall;
         self.title = diningHall[@"location_name"];
-        [self makeSections];
     }
     return self;
 }
 
--(void)makeSections{
-    EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:@"Meals"];
-    for (NSDictionary *meal in self.diningHall[@"meals"]) {
-        EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:meal[@"meal_name"]];
-        row.active = [meal[@"genres"] count];
-        row.didSelectRowBlock = ^{
-            [self.navigationController pushViewController:[[RUMealViewController alloc] initWithMeal:meal] animated:YES];
-        };
-        [section addItem:row];
-    }
-    [self.dataSource addSection:section];
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    self.dataSource = [[RUDiningHallDataSource alloc] initWithDiningHall:self.diningHall];
 }
 
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NO;
+}
 @end

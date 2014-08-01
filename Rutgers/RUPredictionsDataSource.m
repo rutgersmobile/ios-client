@@ -36,7 +36,7 @@
                 [me parseResponse:response];
             }];
         } failure:^{
-            
+            [loading doneWithError:nil];
         }];
     }];
 }

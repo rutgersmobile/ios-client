@@ -10,7 +10,7 @@
 
 @class ALTableViewAbstractCell;
 
-@interface ALTableViewController : UIViewController <UISearchDisplayDelegate, NetworkContentLoadingStateMachineDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ALTableViewController : UIViewController <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 - (id)initWithStyle:(UITableViewStyle)style;
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) UIRefreshControl *refreshControl;
@@ -20,6 +20,4 @@
 @property (nonatomic) UISearchDisplayController *searchController;
 -(void)enableSearch;
 
-@property (nonatomic) NetworkContentLoadingStateMachine * contentLoadingStateMachine;
--(void)setupContentLoadingStateMachine;
 @end

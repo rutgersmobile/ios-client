@@ -16,16 +16,14 @@
     [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
-   
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([ALTableViewTextCell class]);
+}
+
+-(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self itemAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = [item title];
     cell.textLabel.textColor = [item active] ? [UIColor blackColor] : [UIColor lightGrayColor];
-    
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    return cell;
 }
 @end

@@ -53,15 +53,21 @@
 {
     self = [super init];
     if (self) {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        
         self.jsonSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://rumobile.rutgers.edu/1/"]];
         AFJSONResponseSerializer *jsonSerializer = [AFJSONResponseSerializer serializer];
         jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",nil];
         jsonSerializer.removesKeysWithNullValues = YES;
         self.jsonSessionManager.responseSerializer = jsonSerializer;
+        self.jsonSessionManager.completionQueue = queue;
     
         self.xmlSessionManager = [AFHTTPSessionManager manager];
         self.xmlSessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
         self.xmlSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
+        self.xmlSessionManager.completionQueue = queue;
+        
+        
     }
     return self;
 }

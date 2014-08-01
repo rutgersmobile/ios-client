@@ -26,7 +26,7 @@ typedef enum : NSUInteger {
 } RUBusVCPane;
 
 
-@interface RUBusViewController () <UISearchDisplayDelegate, RULocationManagerDelegate>
+@interface RUBusViewController () <UISearchDisplayDelegate>
 @property (nonatomic) RUBusData *busData;
 
 @property NSDictionary *allStops;
@@ -75,6 +75,11 @@ typedef enum : NSUInteger {
     
     [self enableSearch];
     [self setupToolbar];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(locationManagerDidChangeLocation:) name:LocationManagerDidChangeLocationKey object:nil];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -82,12 +87,12 @@ typedef enum : NSUInteger {
     if (!self.searching) {
         [self.navigationController setToolbarHidden:NO animated:NO];
     }
-    [[RULocationManager sharedLocationManager] addDelegatesObject:self];
+    [[RULocationManager sharedLocationManager] startUpdatingLocation];
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [[RULocationManager sharedLocationManager] removeDelegatesObject:self];
+    [[RULocationManager sharedLocationManager] stopUpdatingLocation];
 }
 
 #pragma mark - Bus Data Source Methods
@@ -133,8 +138,8 @@ typedef enum : NSUInteger {
 }
 
 #pragma mark - Location Manager Methods
--(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location{
-    self.lastLocation = location;
+-(void)locationManagerDidChangeLocation:(NSNotification *)locationNotification{
+    CLLocation *location = locationNotification.userInfo[LocationManagerNotificationLocationKey];
     [self updateNearbyStopsWithLocation:location];
 }
 

@@ -1,15 +1,15 @@
 platform :ios, '7.0'
 
-pod 'AFNetworking', '~> 2.2.0'
-pod 'XMLDictionary', '~> 1.4.0'
+pod 'AFNetworking'
+pod 'XMLDictionary'
 
 pod 'JASidePanels'
+pod 'SWRevealViewController'
 
 pod 'TOWebViewController'
 
 pod 'PureLayout'
 
 pod 'HexColors'
-pod 'MSWeakTimer', '~> 1.1.0'
+pod 'MSWeakTimer'
 pod 'MWFeedParser/NSString+HTML'
-

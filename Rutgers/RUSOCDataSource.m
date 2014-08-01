@@ -28,7 +28,7 @@
                 [me parseResponse:subjects];
             }];
         } failure:^{
-            
+            [loading doneWithError:nil];
         }];
     }];
 }
@@ -45,12 +45,15 @@
     self.items = subjects;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
+
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([ALTableViewTextCell class]);
+}
+
+-(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     DataTuple *tuple = [self itemAtIndexPath:indexPath];
     cell.textLabel.text = tuple.title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    return cell;
 }
 
 @end

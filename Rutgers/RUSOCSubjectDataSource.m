@@ -24,9 +24,14 @@
 }
 
 -(void)loadContent{
-    [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode withSuccess:^(NSArray *courses) {
-        [self makeSectionsForResponse:courses];
-    } failure:^{
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode withSuccess:^(NSArray *courses) {
+            [loading updateWithContent:^(typeof(self) me) {
+                [me makeSectionsForResponse:courses];
+            }];
+        } failure:^{
+            [loading doneWithError:nil];
+        }];
     }];
 }
 
@@ -44,8 +49,11 @@
     [tableView registerClass:[RUSOCCourseCell class] forCellReuseIdentifier:NSStringFromClass([RUSOCCourseCell class])];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUSOCCourseCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RUSOCCourseCell class])];
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([RUSOCCourseCell class]);
+}
+
+-(void)configureCell:(RUSOCCourseCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     RUSOCCourseRow *row = [self itemAtIndexPath:indexPath];
     
     cell.titleLabel.text = row.titleText;
@@ -53,10 +61,5 @@
     cell.sectionsLabel.text = row.sectionText;
     
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
-    return cell;
 }
 @end

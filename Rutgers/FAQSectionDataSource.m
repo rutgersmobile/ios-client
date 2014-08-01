@@ -38,8 +38,11 @@
     [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ALTableViewTextCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([ALTableViewTextCell class]);
+}
+
+-(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *stringForIndex;
     id itemForIndex = [self itemAtIndexPath:indexPath];
     
@@ -54,10 +57,7 @@
     
     cell.textLabel.text = stringForIndex;
     cell.textLabel.font = (indexPath.row == 0) ? [UIFont boldSystemFontOfSize:18] : [UIFont systemFontOfSize:16];
-    
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
-    return cell;
+    [super configureCell:cell forRowAtIndexPath:indexPath];
 }
+
 @end

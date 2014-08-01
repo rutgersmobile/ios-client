@@ -18,7 +18,6 @@
     #import "UIColor+RutgersColors.h"
     #import "RUAppearance.h"
 
-    #import "NetworkContentLoadingStateMachine.h"
     #import <AFNetworkReachabilityManager.h>
     #import <MSWeakTimer.h>
 #endif

@@ -8,7 +8,7 @@
 
 #import "EZTableViewTextRow.h"
 
-@interface RUPredictionsBodyRow : EZTableViewTextRow
+@interface RUPredictionsBodyRow : EZTableViewAbstractRow
 -(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes;
 @property (nonatomic) NSArray *predictionTimes;
 @end

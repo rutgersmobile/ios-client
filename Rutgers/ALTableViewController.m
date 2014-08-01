@@ -9,7 +9,6 @@
 #import "ALTableViewController.h"
 #import "ALTableViewRightDetailCell.h"
 #import "ALTableViewTextCell.h"
-#import "NetworkContentStateIndicatorView.h"
 #import "UIView+LayoutSize.h"
 
 @interface ALTableViewController () 
@@ -70,7 +69,7 @@
     
     self.searchEnabled = YES;
 }
-
+/*
 -(void)setupContentLoadingStateMachine{
     NetworkContentStateIndicatorView *indicatorView = [[NetworkContentStateIndicatorView alloc] initForAutoLayout];
     [self.view addSubview:indicatorView];
@@ -82,7 +81,7 @@
     self.contentLoadingStateMachine.refreshControl =  self.refreshControl;
     self.contentLoadingStateMachine.delegate = self;
     [self.contentLoadingStateMachine startNetworking];
-}
+}*/
 
 -(void)setRefreshControl:(UIRefreshControl *)refreshControl{
     _refreshControl = refreshControl;
@@ -137,9 +136,6 @@
     }
     
     [self setupCell:cell inTableView:tableView forRowAtIndexPath:indexPath];
-    //[cell setNeedsUpdateConstraints];
-    //[cell updateConstraintsIfNeeded];
-    
     return cell;
 }
 
@@ -152,18 +148,14 @@
     }
     
     [self setupHeader:view inTableView:tableView inSection:section];
-    [view setNeedsUpdateConstraints];
-    [view updateConstraintsIfNeeded];
-    
     return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *layoutCell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    [layoutCell setNeedsUpdateConstraints];
-    [layoutCell updateConstraintsIfNeeded];
-    
-    return [layoutCell layoutSizeFittingSize:tableView.bounds.size].height;
+    CGSize fittingSize = [layoutCell layoutSizeFittingSize:tableView.bounds.size];
+    [layoutCell removeFromSuperview];
+    return fittingSize.height;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -175,7 +167,7 @@
     [layoutView setNeedsUpdateConstraints];
     [layoutView updateConstraintsIfNeeded];
     
-    return [self tableView:tableView layoutHeightForView:layoutView];
+    return [layoutView layoutSizeFittingSize:tableView.bounds.size].height;
 }
 
 -(void)setupCell:(ALTableViewAbstractCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -184,21 +176,6 @@
 
 -(void)setupHeader:(UITableViewHeaderFooterView *)header inTableView:(UITableView *)tableView inSection:(NSInteger)section{
      
-}
-
--(CGFloat)tableView:(UITableView *)tableView layoutHeightForView:(UIView *)layoutView{
-    layoutView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.bounds), CGRectGetHeight(layoutView.bounds));
-    [layoutView setNeedsLayout];
-    [layoutView layoutIfNeeded];
-    
-    // Get the actual height required for the cell
-    UIView *contentView = [layoutView respondsToSelector:@selector(contentView)] ? [layoutView performSelector:@selector(contentView)] : layoutView;
-    CGFloat height = [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    
-    // Add an extra point to the height to account for internal rounding errors that are occasionally observed in
-    // the Auto Layout engine, which cause the returned height to be slightly too small in some cases.
-    height += 1;
-    return height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -25,14 +25,15 @@
     return self;
 }
 
-
 -(UIBarButtonItem *)leftButtonForCenterPanel{
     return [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
 }
+
 -(void)toggleLeftPanel:(id)sender{
     [super toggleLeftPanel:sender];
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
+
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration {
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:container.bounds cornerRadius:0.0f];
     if (animate) {

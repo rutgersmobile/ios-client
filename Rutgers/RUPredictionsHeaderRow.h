@@ -8,7 +8,7 @@
 
 #import "EZTableViewTextRow.h"
 
-@interface RUPredictionsHeaderRow : EZTableViewTextRow
+@interface RUPredictionsHeaderRow : EZTableViewAbstractRow
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item;
 @property NSDictionary *predictions;
 -(BOOL)active;

@@ -33,4 +33,12 @@
     NSInteger numberOfItems = [super numberOfItems];
     return self.expanded ? numberOfItems : MIN(numberOfItems, 1);
 }
+
+-(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row != 0) {
+        cell.contentView.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+    }
+}
 @end

@@ -64,7 +64,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     }
     return self;
 }
--(void)onSemestersLoaded:(void (^)(void))completion{
+-(void)performOnSemestersLoaded:(void (^)(void))completion{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
         completion();
     });

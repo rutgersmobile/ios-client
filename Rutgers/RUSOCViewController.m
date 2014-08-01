@@ -31,7 +31,7 @@
     [self setupOptionsButton];
     
     RUSOCDataLoadingManager *loadingManager = [RUSOCDataLoadingManager sharedInstance];
-    [loadingManager onSemestersLoaded:^{
+    [loadingManager performOnSemestersLoaded:^{
         self.title = loadingManager.titleForCurrentConfiguration;
         self.optionsButton.enabled = YES;
     }];

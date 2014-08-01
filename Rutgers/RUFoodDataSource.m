@@ -39,11 +39,15 @@
 }
 
 -(void)loadContent{
-    [RUFoodData getFoodWithSuccess:^(NSArray *response) {
-        [self parseResponse:response];
-        [self updateStaticDiningHalls];
-    } failure:^{
-        
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        [RUFoodData getFoodWithSuccess:^(NSArray *response) {
+            [loading updateWithContent:^(typeof(self) me) {
+                [self parseResponse:response];
+                [self updateStaticDiningHalls];
+            }];
+        } failure:^{
+            [loading doneWithError:nil];
+        }];
     }];
 }
 

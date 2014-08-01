@@ -23,10 +23,14 @@
 }
 
 -(void)loadContent{
-    [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
-        self.items = response;
-    } failure:^{
-        
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
+            [loading updateWithContent:^(typeof(self) me) {
+                self.items = response;
+            }];
+        } failure:^{
+            [loading doneWithError:nil];
+        }];
     }];
 }
 
@@ -35,8 +39,11 @@
     [tableView registerClass:[RUSportsPlayerCell class] forCellReuseIdentifier:NSStringFromClass([RUSportsPlayerCell class])];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUSportsPlayerCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([RUSportsPlayerCell class])];
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([RUSportsPlayerCell class]);
+}
+
+-(void)configureCell:(RUSportsPlayerCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     RUSportsPlayer *player = [self itemAtIndexPath:indexPath];
     
     cell.nameLabel.text = player.name;
@@ -44,11 +51,7 @@
     cell.initialsLabel.text = player.initials;
     cell.playerImageView.image = nil;
     [cell.playerImageView setImageWithURL:player.imageUrl];
-    
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
-    return cell;
+
 }
 
 @end

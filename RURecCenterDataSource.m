@@ -15,10 +15,14 @@
 
 @implementation RURecCenterDataSource
 -(void)loadContent{
-    [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self parseResponse:responseObject];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            [loading updateWithContent:^(typeof(self) me) {
+                [me parseResponse:responseObject];
+            }];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [loading doneWithError:error];
+        }];
     }];
 }
 

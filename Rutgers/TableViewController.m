@@ -1,6 +1,6 @@
-    //
+//
 //  TableViewController.m
-//  RUThereYet?
+//  Rutgers
 //
 //  Created by Kyle Bailey on 7/1/14.
 //  Copyright (c) 2014 Kyle Bailey. All rights reserved.
@@ -15,23 +15,24 @@
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) UISearchBar *searchBar;
+@property (nonatomic) dispatch_group_t searchingGroup;
+@property (nonatomic) BOOL loadsContentOnViewWillAppear;
 @end
 
 @implementation TableViewController
 -(void)viewDidLoad{
     [super viewDidLoad];
+    self.searchingGroup = dispatch_group_create();
+    self.loadsContentOnViewWillAppear = YES;
     self.tableView.estimatedRowHeight = 44.0;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self setNeedsStatusBarAppearanceUpdate];   
+    if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
+        [self.dataSource setNeedsLoadContent];
+    }
 }
-
--(UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
-}
-
 
 #pragma mark - Data Source
 @synthesize dataSource = _dataSource;
@@ -87,7 +88,6 @@
     tableView.dataSource = dataSource;
     [dataSource registerReusableViewsWithTableView:tableView];
     [tableView reloadData];
-    [dataSource setNeedsLoadContent];
 }
 
 -(UITableView *)searchTableView{
@@ -100,15 +100,13 @@
     return NO;
 }
 
-
--(void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView{
-    
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+    dispatch_group_enter(self.searchingGroup);
 }
 
--(void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView{
-    
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
+    dispatch_group_leave(self.searchingGroup);
 }
-
 
 #pragma mark - TableView Delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -222,7 +220,9 @@
     };
     
     if (dataSource == self.dataSource) {
-        updateTable(self.tableView);
+        [self performWhenNotSearching:^{
+            updateTable(self.tableView);
+        }];
     } else if (dataSource == self.searchDataSource){
         updateTable(self.searchTableView);
     }
@@ -237,5 +237,8 @@
     
 }
 
+-(void)performWhenNotSearching:(dispatch_block_t)block{
+    dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), block);
+}
 
 @end

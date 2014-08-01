@@ -43,21 +43,15 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    if (!self.children) {
-        [self setupContentLoadingStateMachine];
-    }
 }
 
 -(void)loadNetworkData{
     [[RUNetworkManager jsonSessionManager] GET:self.channel[@"url"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            [self.contentLoadingStateMachine networkLoadSuccessful];
             [self parseResponse:responseObject[@"children"]];
         } else {
-            [self.contentLoadingStateMachine networkLoadFailedWithParsingError];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
     }];
 }
 

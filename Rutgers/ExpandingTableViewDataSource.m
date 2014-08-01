@@ -104,14 +104,5 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [[self sectionAtIndex:indexPath.section] tableView:tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.row != 0) {
-        cell.contentView.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
-    } else {
-        cell.contentView.backgroundColor = [UIColor whiteColor];
-    }
-    return cell;
-}
 
 @end

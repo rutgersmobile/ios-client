@@ -108,24 +108,25 @@
     NSIndexSet *removedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfOldSections)];;
     NSIndexSet *insertedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfNewSections)];
     
-    [self willChangeValueForKey:@"selectedDataSource"];
-    [self willChangeValueForKey:@"selectedDataSourceIndex"];
-   
     [self notifyBatchUpdate:^{
+        [self willChangeValueForKey:@"selectedDataSource"];
+        [self willChangeValueForKey:@"selectedDataSourceIndex"];
+        
+        
         if (removedSet)
             [self notifySectionsRemoved:removedSet direction:removalDirection];
         _selectedDataSource = selectedDataSource;
         if (insertedSet)
             [self notifySectionsInserted:insertedSet direction:insertionDirection];
-
+        
+        [self didChangeValueForKey:@"selectedDataSource"];
+        [self didChangeValueForKey:@"selectedDataSourceIndex"];
+        
+        if ([selectedDataSource.loadingState isEqualToString:AAPLLoadStateInitial])
+            [selectedDataSource setNeedsLoadContent];
+        
+        
     } complete:completion];
-
-    [self didChangeValueForKey:@"selectedDataSource"];
-    [self didChangeValueForKey:@"selectedDataSourceIndex"];
-    
-    if ([selectedDataSource.loadingState isEqualToString:AAPLLoadStateInitial])
-        [selectedDataSource setNeedsLoadContent];
-
 }
 
 #pragma mark Segmented Control action method

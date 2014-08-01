@@ -7,17 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#define MAX_RECENT_PLACES 7
-#define MAX_NEARBY_PLACES 7
+
 @class CLLocation;
 @class RUPlace;
 
-@interface RUPlacesData : NSObject
+extern NSString *PlacesDataDidUpdateRecentPlacesKey;
+
+@interface RUPlacesDataLoadingManager : NSObject
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
+
+-(void)userWillViewPlace:(RUPlace *)place;
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock;
--(void)addPlaceToRecentPlacesList:(RUPlace *)place;
+
 -(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces))completionBlock;
 
-+(RUPlacesData *)sharedInstance;
++(RUPlacesDataLoadingManager *)sharedInstance;
 @end

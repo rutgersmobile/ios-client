@@ -17,6 +17,7 @@
 
 @implementation RUPredictionsBodyRow
 -(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes{
+    
     self = [super initWithIdentifier:@"RUPredictionsBodyTableViewCell"];
     if (self) {
         self.predictionTimes = predictionTimes;

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ALTableViewAbstractCell.h"
+#import "RURecCenterTableViewCell.h"
 
-@interface RURecCenterHoursHeaderTableViewCell : ALTableViewAbstractCell
+@interface RURecCenterHoursHeaderTableViewCell : RURecCenterTableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *dateLabel;
 @property (strong, nonatomic) UIButton *leftButton;
 @property (strong, nonatomic) UIButton *rightButton;

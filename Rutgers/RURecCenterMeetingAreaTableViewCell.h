@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ALTableViewAbstractCell.h"
+#import "RURecCenterTableViewCell.h"
 
-@interface RURecCenterMeetingAreaTableViewCell : ALTableViewAbstractCell
+
+@interface RURecCenterMeetingAreaTableViewCell : RURecCenterTableViewCell
 @property (nonatomic) UILabel *areaLabel;
 @property (nonatomic) UILabel *timesLabel;
 @end

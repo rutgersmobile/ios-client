@@ -35,7 +35,7 @@
 
 
 /// A placeholder cell. Used when it's not appropriate to display the full size placeholder view in the collection view, but a smaller placeholder is desired.
-@interface AAPLPlaceholderCell : UICollectionViewCell
+@interface AAPLPlaceholderCell : UITableViewCell
 
 - (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated;
 - (void)hidePlaceholderAnimated:(BOOL)animated;

@@ -7,6 +7,7 @@
 //
 
 #import "RUPredictionsHeaderTableViewCell.h"
+#import "RULabel.h"
 
 @interface RUPredictionsHeaderTableViewCell ()
 @property (nonatomic) NSLayoutConstraint *directionConstraint;
@@ -16,10 +17,11 @@
 @implementation RUPredictionsHeaderTableViewCell
 
 -(void)initializeSubviews{
-    self.titleLabel = [UILabel newAutoLayoutView];
+    self.titleLabel = [RULabel newAutoLayoutView];
     self.directionLabel = [UILabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
     
+    self.titleLabel.numberOfLines = 0;
     self.titleLabel.font = [UIFont boldSystemFontOfSize:19];
     self.directionLabel.font = [UIFont systemFontOfSize:16];
     self.timeLabel.font = [UIFont boldSystemFontOfSize:16];

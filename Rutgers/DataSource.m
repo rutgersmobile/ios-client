@@ -19,7 +19,7 @@
 @property (nonatomic, copy) dispatch_block_t pendingUpdateBlock;
 @property (nonatomic) BOOL loadingComplete;
 @property (nonatomic, weak) AAPLLoading *loadingInstance;
-
+@property (nonatomic) NSMutableDictionary *sizingCells;
 @end
 
 @implementation DataSource
@@ -27,7 +27,7 @@
 {
     self = [super init];
     if (self) {
-        
+        self.sizingCells = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -75,17 +75,50 @@
     return NO;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     return nil;
+}
+
+-(id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier{
+    return [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+}
+
+-(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    id cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
+    
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    
+    return cell;
+}
+
+
+-(id)tableView:(UITableView *)tableView sizingCellWithIdentifier:(NSString *)identifier{
+    id cell = self.sizingCells[identifier];
+    if (!cell) {
+        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:identifier];
+        self.sizingCells[identifier] = cell;
+    }
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    id cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
+    
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    
+    return [cell layoutSizeFittingSize:tableView.bounds.size].height;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return [cell layoutSizeFittingSize:tableView.bounds.size].height;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{

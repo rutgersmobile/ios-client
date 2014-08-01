@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EZTableViewController.h"
+#import "SegmentedTableViewController.h"
 
-@interface RUDiningHallViewController : EZTableViewController
+@interface RUDiningHallViewController : SegmentedTableViewController
 -(id)initWithDiningHall:(NSDictionary *)diningHall;
-@property (nonatomic) NSDictionary *diningHall;
 @end

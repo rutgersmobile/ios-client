@@ -67,21 +67,26 @@
     return nil;
 }
 
-#pragma mark - table view delegate 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *identifier = [self itemAtIndex:indexPath.row].identifier;
-    ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+#pragma mark - table view delegate
+
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self itemAtIndex:indexPath.row].identifier;
+}
+
+-(id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier{
+    ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (!cell) {
-        [tableView registerClass:NSClassFromString(identifier) forCellReuseIdentifier:identifier];
-        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        [tableView registerClass:NSClassFromString(reuseIdentifier) forCellReuseIdentifier:reuseIdentifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     }
-    
-    EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
-    [item setupCell:cell];
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
     return cell;
 }
+
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
+    [item setupCell:cell];
+}
+
 
 
 @end

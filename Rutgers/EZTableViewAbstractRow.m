@@ -7,11 +7,12 @@
 //
 
 #import "EZTableViewAbstractRow.h"
+#import "ALTableViewTextCell.h"
 
 @implementation EZTableViewAbstractRow
 - (instancetype)init
 {
-    self = [self initWithIdentifier:@"ALTableViewRightDetailCell"];
+    self = [self initWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
     if (self) {
     }
     return self;
@@ -26,8 +27,9 @@
     }
     return self;
 }
+
 -(void)setupCell:(UITableViewCell *)cell{
-    if (self.didSelectRowBlock && self.active && self.showsDisclosureIndicator) {
+    if (self.didSelectRowBlock && self.showsDisclosureIndicator) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;

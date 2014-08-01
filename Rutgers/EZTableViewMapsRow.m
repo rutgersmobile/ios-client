@@ -15,7 +15,7 @@
 @end
 @implementation EZTableViewMapsRow
 -(id)init{
-    self = [super initWithIdentifier:@"RUMapsTableViewCell"];
+    self = [super initWithIdentifier:NSStringFromClass([RUMapsTableViewCell class])];
     if (self) {
     }
     return self;

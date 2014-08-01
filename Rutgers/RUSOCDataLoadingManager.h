@@ -22,7 +22,7 @@
 @property (nonatomic) NSArray *campuses;
 @property (nonatomic) NSArray *levels;
 
--(void)onSemestersLoaded:(void (^)(void))completion;
+-(void)performOnSemestersLoaded:(void (^)(void))completion;
 
 -(NSString *)titleForCurrentConfiguration;
 

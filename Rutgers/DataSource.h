@@ -44,6 +44,11 @@
 #pragma mark - Subclass hooks
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
+- (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier;
+- (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+
 /// Register reusable views needed by this data source
 - (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;
 

@@ -46,5 +46,4 @@
     self.textView.text = self.data;
 }
 
-
 @end

@@ -1,13 +1,7 @@
  [
   {
-  "handle" : "bus",
-  "title": "Bus",
-  "view" : "bus",
-  "icon" : "bus"
-  },
-  {
   "handle" : "newbus",
-  "title": "New Bus",
+  "title": "Bus",
   "view" : "newbus",
   "icon" : "bus"
   },

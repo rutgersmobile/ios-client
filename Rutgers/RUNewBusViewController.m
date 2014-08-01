@@ -2,21 +2,25 @@
 //  RUNewBusViewController.m
 //  Rutgers
 //
-//  Created by Kyle Bailey on 7/17/14.
+//  Created by Kyle Bailey on 7/22/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
 #import "RUNewBusViewController.h"
+#import "RUBusDataSource.h"
+#import "BusSearchDataSource.h"
+#import "RULocationManager.h"
+#import "RUBusDataLoadingManager.h"
+#import "RUPredictionsViewController.h"
 
 @interface RUNewBusViewController ()
-@property (weak, nonatomic) IBOutlet UIView *rightContainerView;
-
 @end
 
 @implementation RUNewBusViewController
 
+
 +(instancetype)componentForChannel:(NSDictionary *)channel{
-    return [[UIStoryboard storyboardWithName:@"BusStoryboard" bundle:nil] instantiateInitialViewController];
+    return [[self alloc] initWithStyle:UITableViewStylePlain];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -31,12 +35,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
-    
-    CALayer *layer = self.rightContainerView.layer;
-    layer.shadowRadius = 10;
-    layer.shadowOpacity = 0.3;
-    
+    self.dataSource = [[RUBusDataSource alloc] init];
+    self.searchDataSource = [[BusSearchDataSource alloc] init];
+}
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [[RULocationManager sharedLocationManager] startUpdatingLocation];
+    [((RUBusDataSource*)self.dataSource) startUpdates];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [[RULocationManager sharedLocationManager] stopUpdatingLocation];
+    [((RUBusDataSource*)self.dataSource) stopUpdates];
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,7 +60,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    id item;
+    if (tableView == self.tableView) {
+        item = [self.dataSource itemAtIndexPath:indexPath];
+    } else if (tableView == self.searchDisplayController.searchResultsTableView) {
+        item = [self.searchDataSource itemAtIndexPath:indexPath];
+    }
+    [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
+}
 
+/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -53,16 +78,7 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    
-    if ([segue.identifier isEqualToString:@"leftContainer"]) {
-        
-    } else if ([segue.identifier isEqualToString:@"rightContainer"]) {
-        
-    }
-    
-    
-    
 }
-
+*/
 
 @end

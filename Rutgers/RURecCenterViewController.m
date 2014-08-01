@@ -34,11 +34,17 @@
     if (self) {
         self.title = title;
         self.recCenter = recCenter;
-        [self makeSections];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerLeftTapped) name:@"RecCenterHeaderLeft" object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRightTapped) name:@"RecCenterHeaderRight" object:nil];
     }
     return self;
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self makeSections];
+}
+
+-(void)dealloc{
+    
 }
 
 -(void)makeSections{
@@ -54,8 +60,9 @@
         RUPlace *place = [[RUPlace alloc] initWithTitle:self.title addressString:address];
         EZDataSourceSection *addressSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Address"];
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
+        UINavigationController *navController = self.navigationController;
         row.didSelectRowBlock = ^{
-            [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
+            [navController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
         };
         row.shouldCopy = YES;
         [addressSection addItem:row];
@@ -94,17 +101,5 @@
     }
 }
 
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
--(void)headerLeftTapped {
-    [self.hoursSection goLeft];
-    [self.tableView reloadData];
-}
-
--(void)headerRightTapped {
-    [self.hoursSection goRight];
-    [self.tableView reloadData];
-}
 @end

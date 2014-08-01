@@ -16,13 +16,15 @@
     [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
-    
+
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([ALTableViewTextCell class]);
+}
+
+-(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     DataTuple *tuple = [self itemAtIndexPath:indexPath];
     cell.textLabel.text = tuple.title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    return cell;
 }
 
 @end

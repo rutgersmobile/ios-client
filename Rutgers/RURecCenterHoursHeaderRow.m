@@ -11,9 +11,10 @@
 
 @interface RURecCenterHoursHeaderRow ()
 @end
+
 @implementation RURecCenterHoursHeaderRow
 -(id)init{
-    self = [super initWithIdentifier:@"RURecCenterHoursHeaderTableViewCell"];
+    self = [super initWithIdentifier:NSStringFromClass([RURecCenterHoursHeaderTableViewCell class])];
     if (self) {
         
     }

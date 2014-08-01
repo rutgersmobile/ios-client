@@ -10,8 +10,10 @@
 
 @class RUBusRoute, CLLocation;
 
-extern NSString const *newBrunswickAgency;
-extern NSString const *newarkAgency;
+extern NSString *newBrunswickAgency;
+extern NSString *newarkAgency;
+
+#define TITLES @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}
 
 @interface RUBusData : NSObject
 

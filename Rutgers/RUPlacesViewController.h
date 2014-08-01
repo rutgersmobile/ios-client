@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RUComponentProtocol.h"
-#import "ALTableViewController.h"
+#import "TableViewController.h"
 
-@interface RUPlacesViewController : ALTableViewController <RUComponentProtocol>
+@interface RUPlacesViewController : TableViewController <RUComponentProtocol>
 
 @end

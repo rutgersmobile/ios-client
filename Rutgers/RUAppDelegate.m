@@ -17,6 +17,7 @@
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property RURootController *rootController;
+@property (nonatomic) UIImageView *windowBackground;
 @end
 
 @implementation RUAppDelegate
@@ -49,7 +50,7 @@
  *  Initialize the cache with the below sizes for memory and disk
  */
 #define MEMORY_MEGS 20
-#define DISK_MEGS 50
+#define DISK_MEGS 40
 
 -(void)initializeCache{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
@@ -67,8 +68,18 @@
     
     self.rootController = [[RURootController alloc] init];
     self.window.rootViewController = [self.rootController makeRootViewController];
-    
+
     [self.window makeKeyAndVisible];
+    [self.window addSubview:self.windowBackground];
+    [self.window sendSubviewToBack:self.windowBackground];
+}
+
+- (UIImageView *)windowBackground
+{
+    if (!_windowBackground) {
+        _windowBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
+    }
+    return _windowBackground;
 }
 
 /**
@@ -76,16 +87,16 @@
  */
 -(void)askUserForInformationIfNeeded{
     dispatch_block_t openDrawer = ^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.rootController openDrawer];
-        });
+        [self.rootController openDrawer];
     };
     
     RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
     if (![userInfoManager hasUserInformation]) {
         [userInfoManager getUserInformationCancellable:NO completion:openDrawer];
     } else {
-        openDrawer();
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            openDrawer();
+        });
     }
 }
 

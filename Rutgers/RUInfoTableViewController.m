@@ -10,6 +10,7 @@
 #import <MessageUI/MessageUI.h>
 #import "EZDataSource.h"
 #import "EZTableViewTextRow.h"
+#import "ALTableViewTextCell.h"
 #import "RUChannelManager.h"
 
 
@@ -77,35 +78,36 @@
             NSString *string = rowDictionary[@"text"];
             NSString *type = rowDictionary[@"type"];
             EZTableViewTextRow *row = [[EZTableViewTextRow alloc] init];
+            __weak typeof(self) weakSelf = self;
             if ([type isEqualToString:@"text"]) {
                 //Configure for static text
                 row.shouldHighlight = NO;
-                row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
+                row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
             } else {
                 //Configure button
                 if ([self typeEnabled:type]) {
                     //If the buttons action can be handled, figure out its type and set up the action
-                    row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
+                    row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
                     if ([type isEqualToString:@"callButton"]) {
                         row.didSelectRowBlock = ^{
                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:rowDictionary[@"number"]]];
                         };
                     } else if ([type isEqualToString:@"textButton"]) {
                         row.didSelectRowBlock = ^{
-                            [self presentMessageComposeViewControllerWithRecipients:@[rowDictionary[@"number"]] body:rowDictionary[@"body"]];
+                            [weakSelf presentMessageComposeViewControllerWithRecipients:@[rowDictionary[@"number"]] body:rowDictionary[@"body"]];
                         };
                     } else if ([type isEqualToString:@"emailButton"]) {
                         row.didSelectRowBlock = ^{
-                            [self presentMailCompseViewControllerWithRecipients:@[rowDictionary[@"email"]] body:rowDictionary[@"body"]];
+                            [weakSelf presentMailCompseViewControllerWithRecipients:@[rowDictionary[@"email"]] body:rowDictionary[@"body"]];
                         };
                     } else if ([type isEqualToString:@"webButton"]) {
                         row.didSelectRowBlock = ^{
-                            [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : self.title, @"view" : @"www", @"url" : rowDictionary[@"url"]}] animated:YES];
+                            [weakSelf.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : self.title, @"view" : @"www", @"url" : rowDictionary[@"url"]}] animated:YES];
                         };
                     }
                 } else {
                     //Otherwise grey out the button
-                    row.attributedString = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
+                    row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
                 }
                 row.showsDisclosureIndicator = NO;
             }

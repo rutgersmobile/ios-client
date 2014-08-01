@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 @interface RUBusDataAgencyManager : NSObject
 -(instancetype)initWithAgency:(NSString *)agency;
 +(instancetype)managerForAgency:(NSString *)agency;
 
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))handler;
+
 -(void)fetchAllStopsWithCompletion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchAllRoutesWithCompletion:(void(^)(NSArray *routes, NSError *error))handler;
 -(void)fetchActiveStopsWithCompletion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchActiveRoutesWithCompletion:(void(^)(NSArray *routes, NSError *error))handler;
-
+-(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler;
 @end

@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+
+NSString *LocationManagerDidChangeLocationKey;
+NSString *LocationManagerNotificationLocationKey;
+
 @class RULocationManager;
 @protocol RULocationManagerDelegate <NSObject>
 -(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location;
@@ -17,6 +21,7 @@
 
 @interface RULocationManager : NSObject
 +(RULocationManager *)sharedLocationManager;
--(void)addDelegatesObject:(id<RULocationManagerDelegate>)delegate;
--(void)removeDelegatesObject:(id<RULocationManagerDelegate>)delegate;
+-(CLLocation *)location;
+- (void)startUpdatingLocation;
+- (void)stopUpdatingLocation;
 @end

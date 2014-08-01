@@ -7,10 +7,9 @@
 //
 
 #import "RURecreationViewController.h"
-#import "RUNetworkManager.h"
 #import "RURecCenterViewController.h"
-#import "EZDataSource.h"
-#import "EZTableViewRightDetailRow.h"
+#import "RURecCenterDataSource.h"
+#import "DataTuple.h"
 
 @interface RURecreationViewController ()
 @property (nonatomic) NSDictionary *recData;
@@ -24,43 +23,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setupContentLoadingStateMachine];
+    self.dataSource = [[RURecCenterDataSource alloc] init];
 }
 
--(void)loadNetworkData{
-    [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self.contentLoadingStateMachine networkLoadSuccessful];
-        [self parseResponse:responseObject];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
-    }];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    DataTuple *recCenter = [self.dataSource itemAtIndexPath:indexPath];
+   
+    RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:recCenter.title recCenter:recCenter.object];
+    [self.navigationController pushViewController:recVC animated:YES];
 }
-
--(void)parseResponse:(id)responseObject{
-    self.recData = responseObject;
-    NSArray *campuses = [responseObject allKeys];
-    campuses = [campuses sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-    
-    [self.tableView beginUpdates];
-    
-    [self.dataSource removeAllSections];
-    
-    for (NSString *campus in campuses) {
-        EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:campus];
-        
-        NSArray *recCenters = [[self.recData[campus] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-        for (NSString *recCenter in recCenters) {
-
-            EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:recCenter];
-            row.didSelectRowBlock = ^(){
-                RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:recCenter recCenter:self.recData[campus][recCenter]];
-                [self.navigationController pushViewController:recVC animated:YES];
-            };
-            [section addItem:row];
-        }
-        [self.dataSource addSection:section];
-    }
-    [self.tableView endUpdates];
-}
-
 @end

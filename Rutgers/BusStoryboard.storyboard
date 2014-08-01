@@ -5,10 +5,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--New Bus View Controller-->
+        <!--New Design Bus View Controller-->
         <scene sceneID="rCe-vc-9D6">
             <objects>
-                <viewController id="D7U-5l-XZe" customClass="RUNewBusViewController" sceneMemberID="viewController">
+                <viewController id="D7U-5l-XZe" customClass="RUNewDesignBusViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zDo-Td-DbL"/>
                         <viewControllerLayoutGuide type="bottom" id="C1c-Z7-TZn"/>

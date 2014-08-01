@@ -242,7 +242,6 @@
 
 -(void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete{
     [self notifyBatchUpdate:update complete:complete];
-
 }
 
 /// If the content was loaded successfully, the error will be nil.

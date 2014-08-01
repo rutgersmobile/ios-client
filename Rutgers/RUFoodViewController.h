@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EZTableViewController.h"
+#import "TableViewController.h"
 #import "RUComponentProtocol.h"
 
-@interface RUFoodViewController : EZTableViewController <RUComponentProtocol>
+@interface RUFoodViewController : TableViewController <RUComponentProtocol>
 @end

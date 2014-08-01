@@ -41,10 +41,10 @@
                         [me parseItems:responseObject[@"children"]];
                     }];
                 } else {
-                    
+                    [loading doneWithError:nil];
                 }
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
-                
+                [loading doneWithError:error];
             }];
         }];
     }

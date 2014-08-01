@@ -1,5 +1,5 @@
 //
-//  NetworkContentStateOverlayView.h
+//  RUNewBusViewController.h
 //  Rutgers
 //
 //  Created by Kyle Bailey on 7/17/14.
@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUComponentProtocol.h"
 
-@interface NetworkContentStateOverlayView : UIView
-@property (nonatomic) UILabel *label;
+@interface RUNewDesignBusViewController : UIViewController <RUComponentProtocol>
+
 @end

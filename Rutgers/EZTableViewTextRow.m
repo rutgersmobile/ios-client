@@ -7,43 +7,49 @@
 //
 
 #import "EZTableViewTextRow.h"
-#import "ALTableViewAbstractCell.h"
+#import "ALTableViewTextCell.h"
 
 @implementation EZTableViewTextRow
 - (instancetype)init
 {
-    self = [super initWithIdentifier:@"ALTableViewTextCell"];
+    self = [super initWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
     if (self) {
         
     }
     return self;
 }
--(instancetype)initWithAttributedString:(NSAttributedString *)attributedString{
+
+-(instancetype)initWithAttributedText:(NSAttributedString *)attributedText{
     self = [self init];
     if (self) {
-        self.attributedString = attributedString;
+        self.attributedText = attributedText;
     }
     return self;
 }
--(instancetype)initWithString:(NSString *)string{
+
+-(instancetype)initWithText:(NSString *)text{
     self = [self init];
     if (self) {
-        self.string = string;
+        self.text = text;
     }
     return self;
 }
--(NSString *)string{
-    return self.attributedString.string;
+
+-(NSString *)text{
+    return self.attributedText.string;
 }
+
 -(NSString *)textRepresentation{
-    return self.string;
+    return self.text;
 }
--(void)setString:(NSString *)string{
+
+-(void)setText:(NSString *)text{
     NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17]};
-    self.attributedString = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
+    self.attributedText = [[NSAttributedString alloc] initWithString:text attributes:textAttributes];
 }
+
 -(void)setupCell:(ALTableViewAbstractCell *)cell{
     [super setupCell:cell];
-    cell.textLabel.attributedText = self.attributedString;
+    cell.textLabel.attributedText = self.attributedText;
 }
 @end

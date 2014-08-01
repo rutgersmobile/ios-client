@@ -22,28 +22,7 @@
     [self.contentView addSubview:self.areaLabel];
     [self.contentView addSubview:self.timesLabel];
     
-    [self initializeGestureRecognizers];
 }
-
--(void)initializeGestureRecognizers{
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(goRight:)];
-    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-    
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(goLeft:)];
-    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    
-    [self addGestureRecognizer:leftSwipe];
-    [self addGestureRecognizer:rightSwipe];
-}
-
-- (IBAction)goLeft:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"RecCenterHeaderLeft" object:nil];
-}
-
-- (IBAction)goRight:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"RecCenterHeaderRight" object:nil];
-}
-
 
 -(void)initializeConstraints{
     [@[self.areaLabel,self.timesLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllTop];

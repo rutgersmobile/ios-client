@@ -20,10 +20,14 @@
 }
 
 -(void)loadContent{
-    [RUSportsData getScheduleForSportID:self.sportID withSuccess:^(NSArray *response) {
-        
-    } failure:^{
-        
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        [RUSportsData getScheduleForSportID:self.sportID withSuccess:^(NSArray *response) {
+            [loading updateWithContent:^(typeof(self) me) {
+                
+            }];
+        } failure:^{
+            [loading doneWithError:nil];
+        }];
     }];
 }
 @end

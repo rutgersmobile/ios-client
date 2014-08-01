@@ -1,6 +1,6 @@
 //
 //  TableViewController.h
-//  RUThereYet?
+//  Rutgers
 //
 //  Created by Kyle Bailey on 7/1/14.
 //  Copyright (c) 2014 Kyle Bailey. All rights reserved.

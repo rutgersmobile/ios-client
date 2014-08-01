@@ -45,6 +45,10 @@
     return [self.predictions[@"direction"] firstObject] ? YES : NO;
 }
 
+-(BOOL)shouldHighlight{
+    return self.active;
+}
+
 -(NSString *)title{
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
         return self.predictions[@"_stopTitle"];
