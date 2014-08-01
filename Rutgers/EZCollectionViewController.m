@@ -11,10 +11,10 @@
 #import "EZCollectionViewAbstractItem.h"
 
 #import "TileCollectionViewCell.h"
-#import "NetworkContentStateIndicatorView.h"
+#import "RUCollectionViewFlowLayout.h"
 
 
-@interface EZCollectionViewController () <UICollectionViewDelegateFlowLayout>
+@interface EZCollectionViewController ()
 @property (nonatomic) NSMutableDictionary *layoutCells;
 @property (nonatomic) UIRefreshControl *refreshControl;
 @end
@@ -22,7 +22,7 @@
 @implementation EZCollectionViewController
 - (instancetype)init
 {
-    self = [super initWithCollectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    self = [super initWithCollectionViewLayout:[[RUCollectionViewFlowLayout alloc] init]];
     if (self) {
         self.sections = [NSMutableArray array];
     }
@@ -37,6 +37,7 @@
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
 }
 
+/*
 -(void)setupContentLoadingStateMachine{
     NetworkContentStateIndicatorView *indicatorView = [[NetworkContentStateIndicatorView alloc] initForAutoLayout];
     [self.view addSubview:indicatorView];
@@ -48,7 +49,7 @@
    // self.contentLoadingStateMachine.refreshControl =  self.refreshControl;
     self.contentLoadingStateMachine.delegate = self;
     [self.contentLoadingStateMachine startNetworking];
-}
+}*/
 
 -(UICollectionViewFlowLayout *)flowLayout{
     return (UICollectionViewFlowLayout *)self.collectionViewLayout;
@@ -81,6 +82,8 @@
 }
 
 -(void)removeAllSections{
+    if (!self.sections.count) return;
+    
     if (self.isViewLoaded) {
         [self.collectionView performBatchUpdates:^{
             NSInteger count = self.sections.count;

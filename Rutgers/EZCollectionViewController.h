@@ -10,9 +10,10 @@
 
 @class EZCollectionViewSection;
 @class EZCollectionViewAbstractItem;
+@class RUCollectionViewFlowLayout;
 
-@interface EZCollectionViewController : UICollectionViewController <NetworkContentLoadingStateMachineDelegate>
--(UICollectionViewFlowLayout *)flowLayout;
+@interface EZCollectionViewController : UICollectionViewController
+-(RUCollectionViewFlowLayout *)flowLayout;
 
 -(void)addSection:(EZCollectionViewSection *)section;
 -(void)insertSection:(EZCollectionViewSection *)section atIndex:(NSInteger)index;
@@ -23,6 +24,4 @@
 - (EZCollectionViewSection *)sectionAtIndex:(NSInteger)section;
 - (EZCollectionViewAbstractItem *)itemForIndexPath:(NSIndexPath *)indexPath;
 
-@property (nonatomic) NetworkContentLoadingStateMachine * contentLoadingStateMachine;
--(void)setupContentLoadingStateMachine;
 @end
