@@ -10,13 +10,11 @@
 
 @implementation UIView (LayoutSize)
 -(CGSize)layoutSizeFittingSize:(CGSize)size{
-    [self setNeedsUpdateConstraints];
-    [self updateConstraintsIfNeeded];
     
     CGRect frame = self.frame;
     frame.size = size;
     self.frame = frame;
-
+    
     [self setNeedsLayout];
     [self layoutIfNeeded];
     
@@ -28,7 +26,7 @@
     // the Auto Layout engine, which cause the returned height to be slightly too small in some cases.
     layoutSize.height += 1;
     layoutSize.width += 1;
-
+    
     return layoutSize;
 }
 @end
