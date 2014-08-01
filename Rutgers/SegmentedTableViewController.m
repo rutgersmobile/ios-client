@@ -6,12 +6,10 @@
 //  Copyright (c) 2014 Kyle Bailey. All rights reserved.
 //
 
-#import "TableViewController_Private.h"
 #import "SegmentedTableViewController.h"
 #import "SegmentedDataSource.h"
 
 @interface SegmentedTableViewController ()
-@property (nonatomic) DataSource *dataSource;
 @end
 
 @implementation SegmentedTableViewController
@@ -19,7 +17,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.segmentedControl = [[UISegmentedControl alloc] init];
     
+    UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
+    [self setToolbarItems:barArray];
+
+    /*
     UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
     leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
 
@@ -27,8 +33,18 @@
     rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
 
     [self.tableView addGestureRecognizer:leftSwipe];
-    [self.tableView addGestureRecognizer:rightSwipe];
+    [self.tableView addGestureRecognizer:rightSwipe];*/
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:NO animated:YES];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationController setToolbarHidden:YES animated:YES];
+}
+
 
 -(void)handleSwipe:(UISwipeGestureRecognizer *)swipeGestureRecognizer{
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;

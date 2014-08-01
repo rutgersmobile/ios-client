@@ -9,5 +9,5 @@
 #import "TableViewController.h"
 
 @interface SegmentedTableViewController : TableViewController
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (nonatomic) UISegmentedControl *segmentedControl;
 @end
