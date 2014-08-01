@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRightDetailRow.h"
-
-@interface RUReaderTableViewRow : EZTableViewRightDetailRow
+@interface RUReaderTableViewRow : NSObject
 -(instancetype)initWithItem:(NSDictionary *)item;
-
+@property (nonatomic) NSString *title;
+@property (nonatomic) NSString *date;
+@property (nonatomic) NSURL *imageURL;
+@property (nonatomic) NSString *url;
 @end

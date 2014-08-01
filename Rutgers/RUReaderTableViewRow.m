@@ -9,18 +9,14 @@
 #import "RUReaderTableViewRow.h"
 #import <NSString+HTML.h>
 #import "RUReaderTableViewCell.h"
-#import <AFNetworking.h>
-#import <UIKit+AFNetworking.h>
 
 @interface RUReaderTableViewRow ()
-@property (nonatomic) NSString *title;
-@property (nonatomic) NSString *date;
-@property (nonatomic) NSURL *imageURL;
+
 @end
 
 @implementation RUReaderTableViewRow
 -(instancetype)initWithItem:(NSDictionary *)item{
-    self = [super initWithIdentifier:@"RUReaderTableViewCell"];
+    self = [super init];
     if (self) {
         self.title = [[item[@"title"] firstObject] stringByDecodingHTMLEntities];
        
@@ -31,6 +27,7 @@
         self.date = [self formatDateString:date];
         
         self.imageURL = [NSURL URLWithString:[item[@"enclosure"] firstObject][@"_url"]];
+        self.url = [item[@"link"] firstObject];
     }
     return self;
 }
@@ -91,17 +88,6 @@
     }
 }
 
--(void)setupCell:(RUReaderTableViewCell *)cell{
-    cell.titleLabel.text = self.title;
-    cell.timeLabel.text = self.date;
-    
-    cell.hasImage = self.imageURL ? YES : NO;
-    cell.imageDisplayView.image = nil;
-    cell.imageDisplayView.backgroundColor = [UIColor lightGrayColor];
-    if (self.imageURL) {
-        [cell.imageDisplayView setImageWithURL:self.imageURL];
-    }
-}
 
 
 
