@@ -10,6 +10,5 @@
 
 @interface RUPredictionsExpandingSection : ExpandingTableViewSection
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item;
--(void)updateWithPredictions:(NSDictionary *)predictions;
--(BOOL)active;
+@property (nonatomic) NSString *identifier;
 @end

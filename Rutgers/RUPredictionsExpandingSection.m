@@ -13,29 +13,34 @@
 @interface RUPredictionsExpandingSection ()
 @property RUPredictionsHeaderRow *headerRow;
 @property RUPredictionsBodyRow *bodyRow;
+
 @end
 
 @implementation RUPredictionsExpandingSection
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item{
-    RUPredictionsHeaderRow *headerRow = [[RUPredictionsHeaderRow alloc] initWithPredictions:predictions forItem:item];
-    RUPredictionsBodyRow *bodyRow = [[RUPredictionsBodyRow alloc] initWithPredictionTimes:[predictions[@"direction"] firstObject][@"prediction"]];
-    self = [super initWithHeaderRow:headerRow bodyRows:@[bodyRow]];
+ 
+    self = [super init];
     if (self) {
-        self.headerRow = headerRow;
-        self.bodyRow = bodyRow;
+        self.headerRow = [[RUPredictionsHeaderRow alloc] initWithPredictions:predictions forItem:item];
+        self.bodyRow = [[RUPredictionsBodyRow alloc] initWithPredictionTimes:[predictions[@"direction"] firstObject][@"prediction"]];
+        self.items = @[self.headerRow, self.bodyRow];
+        self.identifier = [NSString stringWithFormat:@"%@%@",predictions[@"_stopTag"],predictions[@"_routeTag"]];
     }
     return self;
 }
 
--(void)updateWithPredictions:(NSDictionary *)predictions{
-    self.headerRow.predictions = predictions;
-    self.bodyRow.predictionTimes = [predictions[@"direction"] firstObject][@"prediction"];
+-(BOOL)expanded{
+    return [super expanded] && self.headerRow.active;
 }
 
--(BOOL)active{
-    return self.headerRow.active;
-}
--(BOOL)expanded{
-    return [super expanded] && [self active];
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    EZTableViewAbstractRow *item = [self itemAtIndexPath:indexPath];
+    
+    id cell = [tableView dequeueReusableCellWithIdentifier:item.identifier];
+    [item setupCell:cell];
+    
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    return cell;
 }
 @end
