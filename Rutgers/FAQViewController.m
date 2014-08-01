@@ -9,7 +9,7 @@
 #import "FAQViewController.h"
 #import "ExpandingTableViewSection.h"
 #import "EZTableViewTextRow.h"
-#import "EZDataSource.h"
+#import "FAQDataSource.h"
 
 @interface FAQViewController ()
 @property NSArray *children;
@@ -30,25 +30,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSDictionary *titleAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:18]};
-    NSDictionary *bodyAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:16]};
+    self.dataSource = [[FAQDataSource alloc] initWithItems:self.children];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
-    for (NSDictionary *child in self.children) {
-        id children = child[@"children"];
-        if (![children isKindOfClass:[NSArray class]]) {
-            EZTableViewTextRow *headerRow = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:child[@"title"] attributes:titleAttributes]];
-            EZTableViewTextRow *bodyRow = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:child[@"answer"] attributes:bodyAttributes]];
-            ExpandingTableViewSection *section = [[ExpandingTableViewSection alloc] initWithHeaderRow:headerRow bodyRows:@[bodyRow]];
-            [self.dataSource addSection:section];
-        } else {
-            EZTableViewTextRow *headerRow = [[EZTableViewTextRow alloc] initWithAttributedString:[[NSAttributedString alloc] initWithString:child[@"title"] attributes:titleAttributes]];
-            headerRow.didSelectRowBlock = ^{
-                FAQViewController *faqViewController = [[FAQViewController alloc] initWithChildren:children];
-                faqViewController.title = [child titleForChannel];
-                [self.navigationController pushViewController:faqViewController animated:YES];
-            };
-            [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[headerRow]]];
-        }
+    id item = [self.dataSource itemAtIndexPath:indexPath];
+    if ([item isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *child = item;
+        FAQViewController *faqViewController = [[FAQViewController alloc] initWithChildren:child[@"children"]];
+        faqViewController.title = [child titleForChannel];
+        [self.navigationController pushViewController:faqViewController animated:YES];
     }
 }
 
