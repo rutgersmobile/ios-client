@@ -7,6 +7,7 @@
 //
 
 #import "TileCollectionViewCell.h"
+#import "UIMotionEffect+FloatingMotionEffect.h"
 
 @interface TileCollectionViewCell ()
 @property (nonatomic) UIView *ellipsesView;
@@ -34,14 +35,19 @@
         [self addSubview:self.ellipsesView];
         [self.ellipsesView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:DOT_PADDING];
         [self.ellipsesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
-        
 
         [self.contentView addSubview:self.textLabel];
         [self.textLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(PADDING, PADDING, PADDING, PADDING) excludingEdge:ALEdgeBottom];
         self.textBottomConstraint = [self.textLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:BOTTOM_PADDING];
+     
+        //   [self addMotionEffect:[UIMotionEffect floatingMotionEffectWithIntensity:10]];
+        
+        [self.textLabel addMotionEffect:[UIMotionEffect floatingMotionEffectWithIntensity:7]];
+        [self.ellipsesView addMotionEffect:[UIMotionEffect floatingMotionEffectWithIntensity:3]];
     }
     return self;
 }
+
 -(void)setShowsEllipses:(BOOL)showsEllipses{
     _showsEllipses = showsEllipses;
     self.ellipsesView.hidden = !showsEllipses;

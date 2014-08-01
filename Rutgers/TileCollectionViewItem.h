@@ -6,14 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZCollectionViewAbstractItem.h"
+#import "DataTuple.h"
 
-@interface TileCollectionViewItem : EZCollectionViewAbstractItem
--(instancetype)initWithText:(NSString *)text;
-@property (nonatomic) NSString *text;
-
+@interface TileCollectionViewItem : DataTuple
 @property (nonatomic) BOOL showsEllipses;
-
-@property (nonatomic) UIFont *textFont;
-
 @end
