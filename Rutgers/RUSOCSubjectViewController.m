@@ -7,23 +7,19 @@
 //
 
 #import "RUSOCSubjectViewController.h"
-#import "RUSOCViewController.h"
-#import "RUSOCData.h"
-#import "RUSOCCourseRow.h"
-#import "RUSOCCourseCell.h"
-#import "EZDataSource.h"
 #import "RUSOCCourseViewController.h"
+#import "RUSOCCourseRow.h"
+#import "RUSOCSubjectDataSource.h"
 
 @interface RUSOCSubjectViewController ()
-@property (nonatomic) NSString *code;
+@property (nonatomic) NSString *subjectCode;
 @end
 
 @implementation RUSOCSubjectViewController
--(id)initWithSubject:(NSString *)subject code:(NSString *)code{
+-(id)initWithSubjectCode:(NSString *)subjectCode{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = subject;
-        self.code = code;
+        self.subjectCode = subjectCode;
     }
     return self;
 }
@@ -31,33 +27,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self enableSearch];
-    [self setupContentLoadingStateMachine];
+    self.dataSource = [[RUSOCSubjectDataSource alloc] initWithSubjectCode:self.subjectCode];
 }
 
--(void)loadNetworkData{
-    [[RUSOCData sharedInstance] getCoursesForSubjectCode:self.code withSuccess:^(NSArray *courses) {
-        [self.contentLoadingStateMachine networkLoadSuccessful];
-        
-        [self.tableView beginUpdates];
-        [self.dataSource removeAllSections];
-        [self makeSectionsForResponse:courses];
-        [self.tableView endUpdates];
-        
-    } failure:^{
-        [self.contentLoadingStateMachine networkLoadFailedWithNoData];
-    }];
-}
-
--(void)makeSectionsForResponse:(NSArray *)response{
-    EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:@"Courses"];
-    for (NSDictionary *course in response) {    
-        RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
-        row.didSelectRowBlock = ^{
-            [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:course] animated:YES];
-        };
-        [section addItem:row];
-    }
-    [self.dataSource addSection:section];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    RUSOCCourseRow *row = [self.dataSource itemAtIndexPath:indexPath];
+    [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:row.course] animated:YES];
 }
 @end

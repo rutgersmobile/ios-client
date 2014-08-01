@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "ALTableViewController.h"
+#import "TableViewController.h"
 
 @class RUSOCOptionsViewController;
 
@@ -15,6 +15,8 @@
 -(void)optionsViewControllerDidChangeOptions:(RUSOCOptionsViewController *)optionsViewController;
 
 @end
-@interface RUSOCOptionsViewController : ALTableViewController
+
+
+@interface RUSOCOptionsViewController : UITableViewController
 -(instancetype)initWithDelegate:(id<RUSOCOptionsDelegate>)delegate;
 @end

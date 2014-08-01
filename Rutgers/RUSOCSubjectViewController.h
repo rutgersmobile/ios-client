@@ -8,6 +8,6 @@
 
 #import "EZTableViewController.h"
 
-@interface RUSOCSubjectViewController : EZTableViewController
--(instancetype)initWithSubject:(NSString *)subject code:(NSString *)code;
+@interface RUSOCSubjectViewController : TableViewController
+-(id)initWithSubjectCode:(NSString *)subjectCode;
 @end

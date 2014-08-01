@@ -41,7 +41,7 @@
     if ([self.section[@"openStatus"] boolValue]) {
         cell.backgroundColor = [UIColor colorWithRed:217/255.0 green:242/255.0 blue:213/255.0 alpha:1];
     } else {
-        cell.backgroundColor = [UIColor colorWithRed:244/255.0 green:201/255.0 blue:181/255.0 alpha:1];
+        cell.backgroundColor = [UIColor colorWithRed:243/255.0 green:181/255.0 blue:181/255.0 alpha:1];
     }
 }
 

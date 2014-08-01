@@ -7,12 +7,12 @@
 //
 
 #import "RUSOCOptionsViewController.h"
-#import "ALTableViewRightDetailCell.h"
-#import "RUSOCData.h"
+#import "ALTableViewTextCell.h"
+#import "RUSOCDataLoadingManager.h"
 
 @interface RUSOCOptionsViewController () <UITableViewDelegate, UIActionSheetDelegate>
 @property id<RUSOCOptionsDelegate> delegate;
-@property RUSOCData *SOCData;
+@property RUSOCDataLoadingManager *SOCData;
 @property NSArray *actionSheets;
 @end
 
@@ -23,11 +23,16 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"Options";
-        self.SOCData = [RUSOCData sharedInstance];
+        self.SOCData = [RUSOCDataLoadingManager sharedInstance];
         self.delegate = delegate;
         self.actionSheets = @[[self actionSheetWithData:self.SOCData.semesters],[self actionSheetWithData:self.SOCData.campuses],[self actionSheetWithData:self.SOCData.levels]];
     }
     return self;
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    [self.tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -42,11 +47,8 @@
     return 1;
 }
 
--(NSString *)identifierForCellInTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath{
-    return @"ALTableViewRightDetailCell";
-}
-
--(void)setupCell:(ALTableViewRightDetailCell *)cell inTableView:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath{
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ALTableViewTextCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
     NSDictionary *item;
     switch (indexPath.section) {
         case 0:
@@ -63,6 +65,7 @@
     }
     cell.textLabel.text = item[@"title"];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
