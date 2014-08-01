@@ -12,4 +12,5 @@
 //+(RUSportsData *)sharedInstance;
 +(NSDictionary *)allSports;
 +(void)getRosterForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
++(void)getScheduleForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
 @end

@@ -35,10 +35,12 @@
                      @"Track & Field - Men"     : @"16",
                      @"Track & Field - Women"   : @"17",
                      @"Volleyball - Women"      : @"5",
-                     @"Wrestling"               : @"18"};
+                     @"Wrestling"               : @"18"
+                     };
     });
     return allSpots;
 }
+
 +(void)getRosterForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-roster.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *responseItems = responseObject[@"row"];
@@ -52,4 +54,23 @@
         failureBlock();
     }];
 }
+
++(void)getScheduleForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
+    [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-schedules.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSArray *responseItems = responseObject[@"row"];
+        successBlock(responseItems);
+        /*
+        NSMutableArray *parsedItems = [NSMutableArray array];
+       
+        for (NSDictionary *responseItem in responseItems) {
+            RUSportsPlayer *player = [[RUSportsPlayer alloc] initWithDictionary:responseItem];
+            [parsedItems addObject:player];
+        }*/
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        failureBlock();
+    }];
+}
+
+
+
 @end
