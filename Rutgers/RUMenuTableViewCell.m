@@ -17,12 +17,12 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        self.backgroundColor = [UIColor grey2Color];
-        self.opaque = YES;
-        self.contentView.opaque = YES;
+        self.backgroundColor = [UIColor clearColor];
+        self.opaque = NO;
+       // self.contentView.opaque = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+       // self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         
         self.channelImage = [UIImageView newAutoLayoutView];
@@ -43,7 +43,7 @@
         [self.channelTitleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.channelImage withOffset:16];
         [self.channelTitleLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
         
-        self.channelTitleLabel.font = [UIFont systemFontOfSize:16];
+        self.channelTitleLabel.font = [UIFont systemFontOfSize:17];
         self.channelTitleLabel.textColor = [UIColor menuDeselectedColor];
         
         
@@ -75,12 +75,12 @@
 
 -(void)applyStyleForHighlightedState:(BOOL)state{
     if (state) {
-        self.backgroundColor = [UIColor grey1Color];
+       // self.backgroundColor = [UIColor grey1Color];
         self.leftPadView.hidden = NO;
         self.channelImage.tintColor = [UIColor whiteColor];
         self.channelTitleLabel.textColor = [UIColor whiteColor];
     } else {
-        self.backgroundColor = [UIColor grey2Color];
+       // self.backgroundColor = [UIColor grey2Color];
         self.channelImage.tintColor = [UIColor menuDeselectedColor];
         self.channelTitleLabel.textColor = [UIColor menuDeselectedColor];
         self.leftPadView.hidden = YES;

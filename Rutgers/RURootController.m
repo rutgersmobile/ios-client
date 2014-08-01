@@ -8,15 +8,20 @@
 
 #import "RURootController.h"
 #import "RUMenuViewController.h"
-#import "RUSidePanelController.h"
+//#import "RUSidePanelController.h"
+//#import <MSDynamicsDrawerViewController.h>
+#import <SWRevealViewController.h>
 #import "RUChannelManager.h"
 #import "RUUserInfoManager.h"
 
-@interface RURootController () <RUMenuDelegate, UISplitViewControllerDelegate>
+@interface RURootController () <RUMenuDelegate, UISplitViewControllerDelegate>//, MSDynamicsDrawerViewControllerDelegate>
 @property NSDictionary *currentChannel;
-@property (nonatomic) RUSidePanelController *sidePanel;
-@property (nonatomic) UISplitViewController *splitViewController;
-@property (nonatomic) UIPopoverController *popOver;
+
+//@property (nonatomic) MSDynamicsDrawerViewController *drawerController;
+//@property (nonatomic) RUSidePanelController *sidePanel;
+@property (nonatomic) SWRevealViewController *containerController;
+//@property (nonatomic) UISplitViewController *splitViewController;
+//@property (nonatomic) UIPopoverController *popOver;
 @end
 
 @implementation RURootController
@@ -27,52 +32,119 @@
     
     UIViewController *defaultVC = [self makeDefaultScreen];
     
+    self.containerController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:nil];
+    [self updateCenterWithViewController:defaultVC];
+    
+    self.containerController.replaceViewAnimationDuration = 0.1;
+    self.containerController.toggleAnimationType = SWRevealToggleAnimationTypeEaseOut;
+    self.containerController.toggleAnimationDuration = 0.2;
+    self.containerController.view.backgroundColor = nil;
+    /*
     RUSidePanelController * sidePanel = [[RUSidePanelController alloc] init];
-    sidePanel.view.backgroundColor = [UIColor whiteColor];
-    // TODO: motd, prefs, launch last used channel
     
     sidePanel.centerPanel = defaultVC;
     sidePanel.leftPanel = menu;
     
-    self.sidePanel = sidePanel;
-
-    return sidePanel;
+    self.sidePanel = sidePanel;*/
+    /*
+     
+    self.drawerController = [[MSDynamicsDrawerViewController alloc] init];
+    
+    self.drawerController.paneViewSlideOffAnimationEnabled = NO;
+    self.drawerController.shouldAlignStatusBarToPaneView = NO;
+    self.drawerController.gravityMagnitude = 3.5;
+    self.drawerController.elasticity = 0.0;
+    self.drawerController.delegate = self;
+*/
+    /*
+   // MSDynamicsDrawerShadowStyler *shadowStyler = [[MSDynamicsDrawerShadowStyler alloc] init];
+    MSDynamicsDrawerScaleStyler *scaleStyler = [[MSDynamicsDrawerScaleStyler alloc] init];
+    MSDynamicsDrawerFadeStyler *fadeStyler = [[MSDynamicsDrawerFadeStyler alloc] init];
+   // MSDynamicsDrawerResizeStyler *resizeStyler = [[MSDynamicsDrawerResizeStyler alloc] init];
+    
+    //shadowStyler,resizeStyler
+    [self.drawerController addStylersFromArray:@[scaleStyler,fadeStyler] forDirection:MSDynamicsDrawerDirectionLeft];
+    self.drawerController.paneViewController = defaultVC;
+    [self.drawerController setDrawerViewController:menu forDirection:MSDynamicsDrawerDirectionLeft];
+*/
+    
+    return self.containerController;
 }
 
--(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self closeDrawer];
-        if (![channel isEqual:self.currentChannel]) {
-            self.currentChannel = channel;
-            
-            UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-            
-            [RUAppearance applyAppearanceToNavigationController:navController];
-            
-            [self updateCenterWithViewController:navController];
+- (void)placeButtonAndGestureRecognizerForLeftPanelInViewController:(UIViewController *)viewControler {
+    if ([viewControler isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)viewControler;
+        if ([nav.viewControllers count] > 0) {
+            viewControler = [nav.viewControllers objectAtIndex:0];
         }
-    });
+    }
+    if (!viewControler.navigationItem.leftBarButtonItem) {
+        viewControler.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
+    }
+    [viewControler.view addGestureRecognizer:self.containerController.panGestureRecognizer];
+}
+
+-(UIBarButtonItem *)leftButtonForCenterPanel{
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    return button;
+}
+
+/*
+-(BOOL)dynamicsDrawerViewController:(MSDynamicsDrawerViewController *)drawerViewController shouldBeginPanePan:(UIPanGestureRecognizer *)panGestureRecognizer{
+    UIViewController *paneViewController = drawerViewController.paneViewController;
+    if ([paneViewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *navController = (UINavigationController *)paneViewController;
+        if (navController.viewControllers.count > 1) return NO;
+    }
+    return YES;
+}*/
+
+-(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
+
+    if (![channel isEqual:self.currentChannel]) {
+        self.currentChannel = channel;
+        
+        UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+        
+        [RUAppearance applyAppearanceToNavigationController:navController];
+        
+        [self updateCenterWithViewController:navController];
+    }
+    [self closeDrawer];
 }
 
 
 -(void)updateCenterWithViewController:(UIViewController *)viewController{
-    if (self.sidePanel) {
-        [self.sidePanel setCenterPanel:viewController];
-    } else {
-        self.splitViewController.viewControllers = @[[self.splitViewController.viewControllers firstObject],viewController];
-    }
+    [self placeButtonAndGestureRecognizerForLeftPanelInViewController:viewController];
+    
+  //  [self.sidePanel setCenterPanel:viewController];
+    [self.containerController setFrontViewController:viewController];
+   // NSLog(@"%@",[self.containerController performSelector:@selector(recursiveDescription)]);
+    /*
+    [self.drawerController setPaneViewController:viewController animated:YES completion:^{
+        
+    }];*/
+}
+
+-(void)toggleLeftPanel:(id)sender{
+    [self.containerController revealToggle:sender];
+    // [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
 
 -(void)closeDrawer{
-    if (self.sidePanel) {
-        [self.sidePanel showCenterPanelAnimated:YES];
-    }
+    [self.containerController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+    //[self.sidePanel showCenterPanelAnimated:YES];
 }
 
 -(void)openDrawer{
-    [self.sidePanel showLeftPanelAnimated:YES];
+    [self.containerController setFrontViewPosition:FrontViewPositionRight animated:YES];
+    //[self.sidePanel showLeftPanelAnimated:YES];
+}
+
+-(void)openDrawerWide{
+    [self openDrawer];
+   // [self.sidePanel showLeftPanelAnimated:YES];
 }
 
 - (UIViewController *)makeDefaultScreen {
@@ -85,9 +157,7 @@
     
     return splashViewController;
 }
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation{
-    return NO;
-}
+
 /*
  #pragma mark - Navigation
  

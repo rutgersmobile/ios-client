@@ -52,11 +52,12 @@
         [self.tableView endUpdates];
     }];
     
-    self.view.backgroundColor = [UIColor grey2Color];
-    self.tableView.backgroundColor = [UIColor grey2Color];
-    self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.tableView.separatorColor = [UIColor grey4Color];
+    self.view.backgroundColor = [UIColor clearColor];
+    self.tableView.backgroundColor = [UIColor clearColor];
     
+ //   self.tableView.separatorInset = UIEdgeInsetsZero;
+    //self.tableView.separatorColor = [UIColor grey4Color];
+    self.tableView.separatorColor = [UIColor clearColor];
     
     [self.tableView registerClass:[RUMenuTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUMenuTableViewCell class])];
     [self.tableView registerClass:[RUMenuSectionHeaderView class] forHeaderFooterViewReuseIdentifier:NSStringFromClass([RUMenuSectionHeaderView class])];
@@ -70,7 +71,7 @@
     self.paddingHeightContstraint = [paddingView autoSetDimension:ALDimensionHeight toSize:37.0];
     [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -84,9 +85,9 @@
 }
 
 -(void)setLayoutForOrientation:(UIInterfaceOrientation)orientation{
+    [self.tableView beginUpdates];
     self.tableView.rowHeight = UIInterfaceOrientationIsPortrait(orientation) ? 56.0 : 48.0;
     self.paddingHeightContstraint.constant = UIInterfaceOrientationIsPortrait(orientation) ? 37.0 : 25.0;
-    [self.tableView beginUpdates];
     [self.tableView endUpdates];
 }
 
@@ -96,11 +97,18 @@
     cell.channelImage.image = [[self channelForIndexPath:indexPath] iconForChannel];
     return cell;
 }
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return [self titleForHeaderInSection:section];
+}
+
+/*
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     RUMenuSectionHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([RUMenuSectionHeaderView class])];
     header.sectionTitleLabel.text = [[self titleForHeaderInSection:section] uppercaseString];
     return header;
-}
+}*/
+
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 27.0;
 }
