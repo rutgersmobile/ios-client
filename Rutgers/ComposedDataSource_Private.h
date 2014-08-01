@@ -7,6 +7,7 @@
 //
 
 #import "ComposedDataSource.h"
+#import "DataSource_Private.h"
 
 @interface ComposedDataSource () <DataSourceDelegate>
 @property (nonatomic) NSMutableArray *dataSources;

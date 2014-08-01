@@ -7,8 +7,13 @@
 //
 
 #import "ComposedDataSource_Private.h"
+#import "DataSource_Private.h"
 
+@interface ComposedDataSource ()
+@property (nonatomic, strong) NSString *aggregateLoadingState;
+@end
 @implementation ComposedDataSource
+
 - (instancetype)init
 {
     self = [super init];
@@ -86,6 +91,14 @@
     return [dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:localSection]];
 }
 
+- (void)registerReusableViewsWithTableView:(UITableView *)tableView
+{
+    [super registerReusableViewsWithTableView:tableView];
+    
+    for (DataSource *dataSource in self.dataSources)
+        [dataSource registerReusableViewsWithTableView:tableView];
+}
+
 #pragma mark - Table View Data Source
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger globalSection = indexPath.section;
@@ -99,6 +112,15 @@
     return [self dataSourceForGlobalSection:section].title;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger globalSection = indexPath.section;
+    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
+    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:indexPath.section];
+    NSIndexPath *localIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:localSection];
+    return [dataSource tableView:tableView heightForRowAtIndexPath:localIndexPath];;
+}
+
+
 #pragma mark - Collection View Data Source
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger globalSection = indexPath.section;
@@ -111,11 +133,81 @@
 
 #pragma mark - AAPLContentLoading
 
+- (void)updateLoadingState
+{
+    // let's find out what our state should be by asking our data sources
+    NSInteger numberOfLoading = 0;
+    NSInteger numberOfRefreshing = 0;
+    NSInteger numberOfError = 0;
+    NSInteger numberOfLoaded = 0;
+    NSInteger numberOfNoContent = 0;
+    
+    NSArray *loadingStates = [self.dataSources valueForKey:@"loadingState"];
+    loadingStates = [loadingStates arrayByAddingObject:[super loadingState]];
+    
+    for (NSString *state in loadingStates) {
+        if ([state isEqualToString:AAPLLoadStateLoadingContent])
+            numberOfLoading++;
+        else if ([state isEqualToString:AAPLLoadStateRefreshingContent])
+            numberOfRefreshing++;
+        else if ([state isEqualToString:AAPLLoadStateError])
+            numberOfError++;
+        else if ([state isEqualToString:AAPLLoadStateContentLoaded])
+            numberOfLoaded++;
+        else if ([state isEqualToString:AAPLLoadStateNoContent])
+            numberOfNoContent++;
+    }
+    
+    //    NSLog(@"Composed.loadingState: loading = %d  refreshing = %d  error = %d  no content = %d  loaded = %d", numberOfLoading, numberOfRefreshing, numberOfError, numberOfNoContent, numberOfLoaded);
+    
+    // Always prefer loading
+    if (numberOfLoading)
+        _aggregateLoadingState = AAPLLoadStateLoadingContent;
+    else if (numberOfRefreshing)
+        _aggregateLoadingState = AAPLLoadStateRefreshingContent;
+    else if (numberOfError)
+        _aggregateLoadingState = AAPLLoadStateError;
+    else if (numberOfNoContent)
+        _aggregateLoadingState = AAPLLoadStateNoContent;
+    else if (numberOfLoaded)
+        _aggregateLoadingState = AAPLLoadStateContentLoaded;
+    else
+        _aggregateLoadingState = AAPLLoadStateInitial;
+}
+
+- (NSString *)loadingState
+{
+    if (!_aggregateLoadingState)
+        [self updateLoadingState];
+    return _aggregateLoadingState;
+}
+
+- (void)setLoadingState:(NSString *)loadingState
+{
+    _aggregateLoadingState = nil;
+    [super setLoadingState:loadingState];
+}
+
 - (void)loadContent
 {
     for (DataSource *dataSource in self.dataSources)
         [dataSource loadContent];
 }
+
+- (void)resetContent
+{
+    _aggregateLoadingState = nil;
+    [super resetContent];
+    for (DataSource *dataSource in self.dataSources)
+        [dataSource resetContent];
+}
+
+- (void)stateDidChange
+{
+    [super stateDidChange];
+    [self updateLoadingState];
+}
+
 
 #pragma mark - Data Source Delegate
 
@@ -134,13 +226,13 @@
                            toIndexPath:[self globalIndexPathForLocalIndexPath:newIndexPath inDataSource:dataSource]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction{
+-(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     [self notifySectionsRefreshed:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
--(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction{
+-(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     [self notifySectionsInserted:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
--(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction{
+-(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     [self notifySectionsRemoved:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
 
@@ -153,12 +245,28 @@
 
 }
 
--(void)dataSourceWillLoadContent:(DataSource *)dataSource{
-    [self notifyWillLoadContent];
-}
--(void)dataSource:(DataSource *)dataSource contentLoadedWithError:(NSError *)error{
+/// If the content was loaded successfully, the error will be nil.
+- (void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error
+{
+    BOOL showingPlaceholder = self.shouldDisplayPlaceholder;
+    [self updateLoadingState];
+    
+    // We were showing the placehoder and now we're not
+    if (showingPlaceholder && !self.shouldDisplayPlaceholder)
+        [self notifyBatchUpdate:^{
+            [self executePendingUpdates];
+        }];
+    
     [self notifyContentLoadedWithError:error];
 }
+
+/// Called just before a datasource begins loading its content.
+- (void)dataSourceWillLoadContent:(DataSource *)dataSource
+{
+    [self updateLoadingState];
+    [self notifyWillLoadContent];
+}
+
 
 #pragma mark - Index Transformation
 -(DataSource *)dataSourceForGlobalSection:(NSInteger)section{

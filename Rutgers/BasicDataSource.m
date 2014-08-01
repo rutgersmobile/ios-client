@@ -7,17 +7,43 @@
 //
 
 #import "BasicDataSource.h"
+#import "DataSource_Private.h"
 
 @interface BasicDataSource ()
 @end
 
 @implementation BasicDataSource
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.items = @[];
+    }
+    return self;
+}
 
--(NSInteger)numberOfItemsInSection:(NSInteger)section{
+-(instancetype)initWithItems:(NSArray *)items{
+    self = [super init];
+    if (self) {
+        self.items = items;
+    }
+    return self;
+}
+
+- (void)resetContent
+{
+    [super resetContent];
+    self.items = @[];
+}
+
+-(NSInteger)numberOfItems{
     return self.items.count;
 }
 
-/// Find the item at the specified index path.
+-(NSInteger)numberOfItemsInSection:(NSInteger)section{
+    return self.numberOfItems;
+}
+
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath{
     NSUInteger itemIndex = indexPath.item;
     if (itemIndex < [_items count])
@@ -38,13 +64,26 @@
 
 - (void)setItems:(NSArray *)items
 {
-    [self setItems:items animated:YES];
+    NSArray *clippedItems;
+    
+    if (self.itemLimit && items.count > self.itemLimit) {
+        clippedItems = [items subarrayWithRange:NSMakeRange(0, self.itemLimit)];
+    } else {
+        clippedItems = items;
+    }
+    
+    [self setItems:clippedItems animated:YES];
 }
 
 - (void)setItems:(NSArray *)items animated:(BOOL)animated
 {
     if (_items == items || [_items isEqualToArray:items])
         return;
+    
+    if (!self.delegate) {
+        _items = [items copy];
+        return;
+    }
     
     if (!animated) {
         _items = [items copy];
@@ -96,7 +135,19 @@
             NSIndexPath *toIndexPath = toMovedIndexPaths[i];
             [self notifyItemMovedFromIndexPath:fromIndexPath toIndexPath:toIndexPath];
         }
+    } complete:^{
+        [self updateLoadingStateFromItems];
     }];
+}
+
+- (void)updateLoadingStateFromItems
+{
+    NSString *loadingState = self.loadingState;
+    NSUInteger numberOfItems = [_items count];
+    if (numberOfItems && [loadingState isEqualToString:AAPLLoadStateNoContent])
+        self.loadingState = AAPLLoadStateContentLoaded;
+    else if (!numberOfItems && [loadingState isEqualToString:AAPLLoadStateContentLoaded])
+        self.loadingState = AAPLLoadStateNoContent;
 }
 
 @end

@@ -9,6 +9,9 @@
 #import "DataSource.h"
 
 @interface BasicDataSource : DataSource
+-(instancetype)initWithItems:(NSArray *)items;
 @property (nonatomic) NSArray *items;
-@property (nonatomic) NSInteger numberOfItems;
+@property NSInteger itemLimit;
+
+-(NSInteger)numberOfItems;
 @end

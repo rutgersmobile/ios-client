@@ -9,43 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "AAPLContentLoading.h"
 
-
 @class DataSource;
 @class LayoutMetrics;
 
-typedef enum {
-    DataSourceSectionOperationDirectionNone = 0,
-    DataSourceSectionOperationDirectionLeft,
-    DataSourceSectionOperationDirectionRight,
-} DataSourceSectionOperationDirection;
-
-@protocol DataSourceDelegate <NSObject>
-@optional
-- (void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths;
-- (void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths;
-- (void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths;
-- (void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
-
-- (void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction;
-- (void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction;
-- (void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction;
-
-- (void)dataSourceDidReloadData:(DataSource *)dataSource;
-- (void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete;
-
-- (void)dataSourceWillLoadContent:(DataSource *)dataSource;
-- (void)dataSource:(DataSource *)dataSource contentLoadedWithError:(NSError *)error;
-@end
-
 @interface DataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource, AAPLContentLoading>
-
-@property (nonatomic, weak) id<DataSourceDelegate> delegate;
 
 /// The title of this data source. This value is used to populate section headers and the segmented control tab.
 @property (nonatomic, copy) NSString *title;
-
--(NSString *)identifierForCellAtIndexPath:(NSIndexPath *)indexPath;
--(NSString *)identifierForHeaderInSection:(NSInteger)section;
 
 /// The number of sections in this data source.
 @property (nonatomic, readonly) NSInteger numberOfSections;
@@ -72,6 +42,14 @@ typedef enum {
 @property (nonatomic, readonly) BOOL obscuredByPlaceholder;
 
 #pragma mark - Subclass hooks
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+/// Register reusable views needed by this data source
+- (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;
+
+- (void)registerReusableViewsWithTableView:(UITableView *)tableView NS_REQUIRES_SUPER;
+
+#pragma mark - Content loading
 
 /// Signal that the datasource SHOULD reload its content
 - (void)setNeedsLoadContent;
@@ -84,29 +62,5 @@ typedef enum {
 
 /// Use this method to wait for content to load. The block will be called once the loadingState has transitioned to the ContentLoaded, NoContent, or Error states. If the data source is already in that state, the block will be called immediately.
 - (void)whenLoaded:(dispatch_block_t)block;
-
-#pragma mark - Notifications
-
-// Use these methods to notify the observers of changes to the dataSource.
-- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths;
-- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths;
-- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths;
-- (void)notifyItemMovedFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
-
-- (void)notifySectionsInserted:(NSIndexSet *)sections;
-- (void)notifySectionsRemoved:(NSIndexSet *)sections;
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections;
-
-- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction;
-- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction;
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction;
-
-- (void)notifyDidReloadData;
-
-- (void)notifyBatchUpdate:(dispatch_block_t)update;
-- (void)notifyBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete;
-
-- (void)notifyWillLoadContent;
-- (void)notifyContentLoadedWithError:(NSError *)error;
 
 @end

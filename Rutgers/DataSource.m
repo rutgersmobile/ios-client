@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Kyle Bailey. All rights reserved.
 //
 
-#import "DataSource.h"
+#import "DataSource_Private.h"
 #import "AAPLPlaceholderView.h"
 #import "NSObject+KVOBlock.h"
 #import "UIView+LayoutSize.h"
@@ -27,19 +27,9 @@
 {
     self = [super init];
     if (self) {
-
+        
     }
     return self;
-}
-
-#pragma mark - Auto Layout
-
--(NSString *)identifierForCellAtIndexPath:(NSIndexPath *)indexPath{
-    return NSStringFromClass([UITableViewCell class]);
-}
-
--(NSString *)identifierForHeaderInSection:(NSInteger)section{
-    return NSStringFromClass([UITableViewHeaderFooterView class]);
 }
 
 #pragma mark - Data Source Implementation
@@ -64,6 +54,10 @@
     return nil;
 }
 
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView{
+    
+}
+
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return self.numberOfSections;
@@ -82,29 +76,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *identifier = [self identifierForCellAtIndexPath:indexPath];
-    id cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (!cell) {
-        [tableView registerClass:NSClassFromString(identifier) forCellReuseIdentifier:identifier];
-        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    }
-    return cell;
+    return nil;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    NSString *identifier = [self identifierForHeaderInSection:section];
-    UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
-    if (!view) {
-        [tableView registerClass:NSClassFromString(identifier) forHeaderFooterViewReuseIdentifier:identifier];
-        view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
-    }
-    return view;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
-
-    
     return [cell layoutSizeFittingSize:tableView.bounds.size].height;
 }
 
@@ -130,6 +110,10 @@
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     return nil;
+}
+
+-(void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView{
+
 }
 
 #pragma mark - ContentLoading methods#pragma mark - AAPLContentLoading methods
@@ -285,7 +269,6 @@
     [self updatePlaceholder:self.placeholderView notifyVisibility:YES];
 }
 
-
 #pragma mark - Placeholder
 
 - (BOOL)obscuredByPlaceholder
@@ -383,8 +366,9 @@
             block();
         };
     }
-    else
+    else {
         update = block;
+    }
     
     self.pendingUpdateBlock = update;
 }
@@ -394,9 +378,9 @@
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-        if ([delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexPaths:)]) {
-            [delegate dataSource:self didInsertItemsAtIndexPaths:insertedIndexPaths];
-        }
+    if ([delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexPaths:)]) {
+        [delegate dataSource:self didInsertItemsAtIndexPaths:insertedIndexPaths];
+    }
     
 }
 
@@ -404,9 +388,9 @@
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-        if ([delegate respondsToSelector:@selector(dataSource:didRemoveItemsAtIndexPaths:)]) {
-            [delegate dataSource:self didRemoveItemsAtIndexPaths:removedIndexPaths];
-        }
+    if ([delegate respondsToSelector:@selector(dataSource:didRemoveItemsAtIndexPaths:)]) {
+        [delegate dataSource:self didRemoveItemsAtIndexPaths:removedIndexPaths];
+    }
     
 }
 
@@ -414,9 +398,9 @@
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-        if ([delegate respondsToSelector:@selector(dataSource:didRefreshItemsAtIndexPaths:)]) {
-            [delegate dataSource:self didRefreshItemsAtIndexPaths:refreshedIndexPaths];
-        }
+    if ([delegate respondsToSelector:@selector(dataSource:didRefreshItemsAtIndexPaths:)]) {
+        [delegate dataSource:self didRefreshItemsAtIndexPaths:refreshedIndexPaths];
+    }
     
 }
 
@@ -424,25 +408,30 @@
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-        if ([delegate respondsToSelector:@selector(dataSource:didMoveItemFromIndexPath:toIndexPath:)]) {
-            [delegate dataSource:self didMoveItemFromIndexPath:indexPath toIndexPath:newIndexPath];
-        }
+    if ([delegate respondsToSelector:@selector(dataSource:didMoveItemFromIndexPath:toIndexPath:)]) {
+        [delegate dataSource:self didMoveItemFromIndexPath:indexPath toIndexPath:newIndexPath];
+    }
     
 }
 
 - (void)notifySectionsInserted:(NSIndexSet *)sections{
-    [self notifySectionsInserted:sections direction:DataSourceSectionOperationDirectionNone];
+    [self notifySectionsInserted:sections direction:DataSourceOperationDirectionNone];
 }
 
 - (void)notifySectionsRemoved:(NSIndexSet *)sections{
-    [self notifySectionsRemoved:sections direction:DataSourceSectionOperationDirectionNone];
+    [self notifySectionsRemoved:sections direction:DataSourceOperationDirectionNone];
 }
 
 - (void)notifySectionsRefreshed:(NSIndexSet *)sections{
-    [self notifySectionsRefreshed:sections direction:DataSourceSectionOperationDirectionNone];
+    [self notifySectionsRefreshed:sections direction:DataSourceOperationDirectionNone];
 }
 
-- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction{
+- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection
+{
+    [self notifySectionMovedFrom:section to:newSection direction:DataSourceOperationDirectionNone];
+}
+
+- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -451,7 +440,7 @@
     }
 }
 
-- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction{
+- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -461,7 +450,7 @@
     
 }
 
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceSectionOperationDirection)direction{
+- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -471,6 +460,15 @@
     
 }
 
+- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection direction:(DataSourceOperationDirection)direction
+{
+    ASSERT_MAIN_THREAD;
+    
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:didMoveSection:toSection:direction:)]) {
+        [delegate dataSource:self didMoveSection:section toSection:newSection direction:direction];
+    }
+}
 
 - (void)notifyDidReloadData{
     ASSERT_MAIN_THREAD;
@@ -480,6 +478,7 @@
         [delegate dataSourceDidReloadData:self];
     }
 }
+
 - (void)notifyBatchUpdate:(dispatch_block_t)update
 {
     [self notifyBatchUpdate:update complete:nil];
@@ -507,8 +506,8 @@
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:contentLoadedWithError:)]) {
-        [delegate dataSource:self contentLoadedWithError:error];
+    if ([delegate respondsToSelector:@selector(dataSource:didLoadContentWithError:)]) {
+        [delegate dataSource:self didLoadContentWithError:error];
     }
 }
 
