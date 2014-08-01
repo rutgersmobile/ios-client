@@ -9,7 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface RUFoodData : NSObject
-+(RUFoodData *)sharedInstance;
--(void)getFoodWithSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
-@property NSArray *staticDiningHalls;
++(void)getFoodWithSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
 @end
