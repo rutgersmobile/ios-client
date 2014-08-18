@@ -28,7 +28,6 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    [self enableSearch];
 }
 
 -(void)makeSections{
@@ -39,7 +38,7 @@
             row.shouldHighlight = NO;
             [section addItem:row];
         }
-        [self.dataSource addSection:section];
+        [self.dataSource addDataSource:section];
     }
 }
 @end

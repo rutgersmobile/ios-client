@@ -30,7 +30,7 @@
     EZTableViewRightDetailRow *calories = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"calories"] stringValue] detailText:@"Calories"];
     EZTableViewRightDetailRow *serving = [[EZTableViewRightDetailRow alloc] initWithText:[self.foodItem[@"serving"] capitalizedString] detailText:@"Serving"];
     
-    [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[calories,serving]]];
+    [self.dataSource addDataSource:[[EZDataSourceSection alloc] initWithItems:@[calories,serving]]];
     
     if ([self.foodItem[@"ingredients"] count]) {
         EZDataSourceSection *ingredients = [[EZDataSourceSection alloc] initWithSectionTitle:@"Ingredients"];
@@ -40,7 +40,7 @@
             [ingredients addItem:row];
         }
         
-        [self.dataSource addSection:ingredients];
+        [self.dataSource addDataSource:ingredients];
     }
 }
 
