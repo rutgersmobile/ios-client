@@ -47,10 +47,9 @@
     dispatch_once(&onceToken, ^{
         //ex Wednesday, July 2, 2014
         outputFormatter = [[NSDateFormatter alloc] init];
-        outputFormatter.dateFormat = @"EEEE, MMMM d, yyyy";
-        
+        outputFormatter.dateStyle = NSDateFormatterFullStyle;
+        outputFormatter.timeStyle = NSDateFormatterNoStyle;
         /*
-         
          Wednesday, July 2, 2014
          EEEE, MMMM d, yyyy
          
