@@ -35,34 +35,23 @@
         
         self.minimumInteritemSpacing = self.tileSpacing;
         self.minimumLineSpacing = self.tileSpacing;
+        
     }
     return self;
 }
 
 -(void)prepareLayout{
-    self.itemSize = [self calculateItemSize];
+    [self calculateItemSize];
     [super prepareLayout];
 }
 
-
--(void)invalidateLayout{
-    self.itemSize = [self calculateItemSize];
-    [super invalidateLayout];
-}
-
--(CGSize)calculateItemSize{
-    CGFloat layoutWidth = CGRectGetWidth(self.collectionView.bounds)-self.tilePadding*2;
-    NSInteger number = 0;
-    CGFloat width = 0;
+-(void)calculateItemSize{
+    CGFloat layoutWidth = CGRectGetWidth(self.collectionView.bounds) - self.tilePadding * 2;
+    NSInteger number = ceil((layoutWidth + self.tileSpacing) / (self.maxTileWidth + self.tileSpacing));
     
-    while (width < layoutWidth) {
-        number++;
-        width += self.maxTileWidth + self.tileSpacing;
-    }
+    CGFloat tileWidth = (layoutWidth - (number-1) * self.tileSpacing) / number;
     
-    CGFloat tileWidth = (layoutWidth - (number-1)*self.tileSpacing) / number;
-    
-    return CGSizeMake(floorf(tileWidth), floorf(tileWidth/self.tileAspectRatio));
+    self.itemSize = CGSizeMake(floorf(tileWidth), floorf(tileWidth/self.tileAspectRatio));
 }
 
 
@@ -70,13 +59,6 @@
     UICollectionViewLayoutAttributes *initialAttributes = [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
     
     if (self.isResizing) return initialAttributes;
-    
-  //  CGFloat belowScreenHeight = CGRectGetHeight(self.collectionView.bounds) + 40;
-  //  CGFloat screenCenterX = CGRectGetMidX(self.collectionView.bounds);
-  
-  //  CGFloat leftOfScreen = -80;
- //   CGFloat screenCenterY = CGRectGetMidY(self.collectionView.bounds);
-    
     
     CGPoint center = initialAttributes.center;
     center.x -= CGRectGetWidth(self.collectionView.bounds);
@@ -88,11 +70,16 @@
     return initialAttributes;
 }
 
+
 -(void)prepareForAnimatedBoundsChange:(CGRect)oldBounds{
     self.isResizing = YES;
+    [self calculateItemSize];
+    [self invalidateLayout];
+    [super prepareForAnimatedBoundsChange:oldBounds];
 }
 
 -(void)finalizeAnimatedBoundsChange{
+    [super finalizeAnimatedBoundsChange];
     self.isResizing = NO;
 }
 
