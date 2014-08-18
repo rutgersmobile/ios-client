@@ -9,13 +9,15 @@
 #import "RUPlaceDetailViewController.h"
 #import "RUPredictionsViewController.h"
 #import "EZDataSource.h"
+#import "NearbyActiveStopsDataSource.h"
+
 #import "EZTableViewRightDetailRow.h"
 #import "EZTableViewTextRow.h"
 
-#import "RUBusData.h"
+#import "RUBusDataLoadingManager.h"
 
 #import <MapKit/MapKit.h>
-#import "NSArray+RUBusStop.h"
+#import "RUMultiStop.h"
 #import "RUPlace.h"
 #import "RUMapsViewController.h"
 #import "EZTableViewMapsSection.h"
@@ -52,15 +54,15 @@
         EZTableViewTextRow *addressRow = [[EZTableViewTextRow alloc] initWithText:addressString];
         addressRow.shouldHighlight = NO;
         addressRow.shouldCopy = YES;
-        [self.dataSource addSection:[[EZDataSourceSection alloc] initWithSectionTitle:@"Address" items:@[addressRow]]];
+        [self.dataSource addDataSource:[[EZDataSourceSection alloc] initWithSectionTitle:@"Address" items:@[addressRow]]];
     }
     
     if (place.address || place.location) {
         EZTableViewMapsSection *mapsSection = [[EZTableViewMapsSection alloc] initWithSectionTitle:@"Maps" place:self.place];
-        [self.dataSource addSection:mapsSection];
-        UINavigationController *navController = self.navigationController;
+        [self.dataSource addDataSource:mapsSection];
+        __weak typeof(self) weakSelf = self;
         [mapsSection itemAtIndex:0].didSelectRowBlock = ^{
-            [navController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
+            [weakSelf.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
         };
     }
     
@@ -90,22 +92,24 @@
             buildingNumberRow.shouldCopy = YES;
             [infoSection addItem:buildingNumberRow];
         }
-        [self.dataSource addSection:infoSection];
+        [self.dataSource addDataSource:infoSection];
     }
     
     if (place.location) {
         NSInteger index = self.dataSource.numberOfSections;
-        [[RUBusData sharedInstance] getActiveStopsNearLocation:place.location completion:^(NSArray *results) {
-            EZDataSourceSection *nearbySection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
-            for (NSArray *stops in results) {
-                EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithText:[stops title]];
-                UINavigationController *navController = self.navigationController;
-                row.didSelectRowBlock = ^{
-                    [navController pushViewController:[[RUPredictionsViewController alloc] initWithItem:stops] animated:YES];
-                };
-                [nearbySection addItem:row];
-            }
-            [self.dataSource insertSection:nearbySection atIndex:index];
+        [[RUBusDataLoadingManager sharedInstance] fetchActiveStopsNearbyLocation:place.location completion:^(NSArray *results, NSError *error) {
+          //  if (results.count) {
+                EZDataSourceSection *nearbySection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Nearby Active Stops"];
+                for (RUMultiStop *stop in results) {
+                    EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithText:stop.title];
+                    __weak typeof(self) weakSelf = self;
+                    row.didSelectRowBlock = ^{
+                        [weakSelf.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:stop] animated:YES];
+                    };
+                    [nearbySection addItem:row];
+                }
+                [self.dataSource insertDataSource:nearbySection atIndex:index];
+          //  }
         }];
     }
     
@@ -118,15 +122,15 @@
             officeRow.shouldCopy = YES;
             [officeSection addItem:officeRow];
         }
-        [self.dataSource addSection:officeSection];
+        [self.dataSource addDataSource:officeSection];
     }
     
-    NSString *description = place.description;
+    NSString *description = place.descriptionString;
     if (description) {
         EZTableViewTextRow *descriptionRow = [[EZTableViewTextRow alloc] initWithText:description];
         descriptionRow.shouldHighlight = NO;
         descriptionRow.shouldCopy = YES;
-        [self.dataSource addSection:[[EZDataSourceSection alloc] initWithSectionTitle:@"Description" items:@[descriptionRow]]];
+        [self.dataSource addDataSource:[[EZDataSourceSection alloc] initWithSectionTitle:@"Description" items:@[descriptionRow]]];
     }
 }
 
