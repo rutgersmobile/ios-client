@@ -24,11 +24,15 @@
 
 -(void)initializeConstraints{
     [self.controllerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self.controllerView autoSetDimension:ALDimensionHeight toSize:iPad() ? 260 : 180 relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.controllerView autoSetDimension:ALDimensionHeight toSize:[[self class] rowHeight] relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
 -(void)setPlace:(RUPlace *)place{
     self.mapsViewController.place = place;
+}
+
++(CGFloat)rowHeight{
+    return (iPad() ? 260 : 180);
 }
 
 @end

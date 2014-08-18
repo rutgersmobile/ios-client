@@ -13,5 +13,5 @@
 
 @interface RUMapsTableViewCell : ALTableViewAbstractCell
 @property (nonatomic) RUPlace *place;
-
++(CGFloat)rowHeight;
 @end

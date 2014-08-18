@@ -8,6 +8,7 @@
 
 #import "EZTableViewMapsSection.h"
 #import "EZTableViewMapsRow.h"
+#import "RUMapsTableViewCell.h"
 
 @implementation EZTableViewMapsSection
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle place:(RUPlace *)place{
@@ -16,6 +17,10 @@
         [self addItem:[[EZTableViewMapsRow alloc] initWithPlace:place]];
     }
     return self;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [[RUMapsTableViewCell class] rowHeight];
 }
 
 @end

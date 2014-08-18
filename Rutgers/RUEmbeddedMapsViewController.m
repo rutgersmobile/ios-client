@@ -17,6 +17,8 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.view.userInteractionEnabled = NO;
+    //self.mapView.zoomEnabled = NO;
+    //self.mapView.scrollEnabled = NO;
 }
 
 @synthesize place = _place;
@@ -26,7 +28,8 @@
         _place = place;
         [self zoomToPlace];
     }
-}/*
+}
+/*
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
     MKAnnotationView *view = [super mapView:mapView viewForAnnotation:annotation];
     view.canShowCallout = NO;
