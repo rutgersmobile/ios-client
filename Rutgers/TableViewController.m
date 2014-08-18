@@ -8,29 +8,88 @@
 
 #import "TableViewController.h"
 #import "DataSource_Private.h"
+#import "RUNavigationController.h"
 
-@interface TableViewController () <UISearchDisplayDelegate, DataSourceDelegate>
+@interface TableViewController () <DataSourceDelegate>
 @property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) UISearchBar *searchBar;
-@property (nonatomic) dispatch_group_t searchingGroup;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
+@property (nonatomic, readonly) UITableViewStyle style;
+
 @end
 
 @implementation TableViewController
+-(id)init{
+    self = [super init];
+    if (self) {
+        self.clearsSelectionOnViewWillAppear = YES;
+    }
+    return self;
+}
+
+-(instancetype)initWithStyle:(UITableViewStyle)style{
+    self = [self init];
+    if (self) {
+        _style = style;
+    }
+    return self;
+}
+
+-(void)loadView{
+    [super loadView];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.style];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.delegate = self;
+    [self.view addSubview:self.tableView];
+    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
-    self.searchingGroup = dispatch_group_create();
-    self.loadsContentOnViewWillAppear = YES;
     self.tableView.estimatedRowHeight = 44.0;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    if (self.clearsSelectionOnViewWillAppear) {
+        [self clearSelection];
+    }
+
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
         [self.dataSource setNeedsLoadContent];
+    }
+    
+    if (self.loadsContentOnViewWillAppear || [self.searchDataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
+        [self.searchDataSource setNeedsLoadContent];
+    }
+
+}
+
+-(void)clearSelection{
+    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
+    for (NSIndexPath *indexPath in indexPaths) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    if (self.searching) {
+        [self setStatusAppearanceForSearchingState:YES];
+    }
+}
+
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    
+    if (self.searching) {
+        [self setStatusAppearanceForSearchingState:NO];
     }
 }
 
@@ -96,27 +155,46 @@
  
  #pragma mark - SearchDisplayController Delegate
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-    [self.searchDataSource updateForSearchString:searchString];
+    [self.searchDataSource updateForQuery:searchString];
     return NO;
 }
 
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
-    dispatch_group_enter(self.searchingGroup);
+    [self setStatusAppearanceForSearchingState:YES];
+    self.searching = YES;
 }
 
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
-    dispatch_group_leave(self.searchingGroup);
+    [self setStatusAppearanceForSearchingState:NO];
+    self.searching = NO;
+    [UIView performWithoutAnimation:^{
+        [self.searchDataSource resetContent];
+    }];
 }
 
-#pragma mark - TableView Delegate
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == self.tableView) {
-        return [self.dataSource tableView:tableView heightForRowAtIndexPath:indexPath];
-    } else {
-        return [self.searchDataSource tableView:tableView heightForRowAtIndexPath:indexPath];
+-(void)setStatusAppearanceForSearchingState:(BOOL)searching{
+    id navigationController = self.navigationController;
+    if ([navigationController isKindOfClass:[RUNavigationController class]]) {
+        RUNavigationController *navController = navigationController;
+        navController.preferredStatusBarStyle = (searching ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent);
     }
 }
 
+#pragma mark - TableView Delegate
+-(DataSource *)dataSourceForTableView:(UITableView *)tableView{
+    if ([tableView.dataSource isKindOfClass:[DataSource class]]) return (DataSource *)tableView.dataSource;
+    return nil;
+}
+
+-(UITableView *)tableViewForDataSource:(DataSource *)dataSource{
+    if (dataSource == self.dataSource) return self.tableView;
+    else if (dataSource == self.searchDataSource) return self.searchTableView;
+    return nil;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [[self dataSourceForTableView:tableView] tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
+}
 
 #pragma mark - Data Source notifications
 -(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
@@ -134,99 +212,53 @@
 }
 
 -(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths{
-    if (dataSource == self.dataSource) {
-        [self.tableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    }
+    [[self tableViewForDataSource:dataSource] insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths{
-    if (dataSource == self.dataSource) {
-        [self.tableView deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    }
+    [[self tableViewForDataSource:dataSource] deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths{
-    if (dataSource == self.dataSource) {
-        [self.tableView reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    }
+    [[self tableViewForDataSource:dataSource] reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
-    if (dataSource == self.dataSource) {
-        [self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-    }
+    [[self tableViewForDataSource:dataSource] moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
 
 -(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
-    if (dataSource == self.dataSource) {
-        [self.tableView reloadSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView reloadSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
-    }
+    [[self tableViewForDataSource:dataSource] reloadSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
-    if (dataSource == self.dataSource) {
-        [self.tableView insertSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView insertSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
-    }
+    [[self tableViewForDataSource:dataSource] insertSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
-    if (dataSource == self.dataSource) {
-        [self.tableView deleteSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView deleteSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
-    }
+    [[self tableViewForDataSource:dataSource] deleteSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection direction:(DataSourceOperationDirection)direction{
-    if (dataSource == self.dataSource) {
-        [self.tableView moveSection:section toSection:newSection];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView moveSection:section toSection:newSection];
-    }
+    [[self tableViewForDataSource:dataSource] moveSection:section toSection:newSection];
 }
 
 -(void)dataSourceDidReloadData:(DataSource *)dataSource{
-    if (dataSource == self.dataSource) {
-        [self.tableView reloadData];
-    } else if (dataSource == self.searchDataSource){
-        [self.searchTableView reloadData];
-    }
+    [[self tableViewForDataSource:dataSource] reloadData];
 }
 
 -(void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete{
+    UITableView *tableView = [self tableViewForDataSource:dataSource];
     
-    void(^updateTable)(UITableView *tableView) = ^(UITableView *tableView){
-        [tableView beginUpdates];
-        if (update) {
-            update();
-        }
-        [tableView endUpdates];
-        
-        if (complete) {
-            complete();
-        }
-    };
-    
-    if (dataSource == self.dataSource) {
-        [self performWhenNotSearching:^{
-            updateTable(self.tableView);
-        }];
-    } else if (dataSource == self.searchDataSource){
-        updateTable(self.searchTableView);
+    [tableView beginUpdates];
+    if (update) {
+        update();
     }
-
+    [tableView endUpdates];
+    
+    if (complete) {
+        complete();
+    }
 }
 
 -(void)dataSourceWillLoadContent:(DataSource *)dataSource{
@@ -235,10 +267,6 @@
 
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
     
-}
-
--(void)performWhenNotSearching:(dispatch_block_t)block{
-    dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), block);
 }
 
 @end

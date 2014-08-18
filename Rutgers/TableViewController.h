@@ -10,11 +10,25 @@
 #import "DataSource.h"
 #import "SearchDataSource.h"
 
-@interface TableViewController : UITableViewController
+@interface TableViewController : UIViewController <UITableViewDelegate, UISearchDisplayDelegate>
+-(instancetype)initWithStyle:(UITableViewStyle)style;
+
+@property (nonatomic) UITableView *tableView;
 -(UITableView *)searchTableView;
+
+@property(nonatomic) BOOL clearsSelectionOnViewWillAppear;
+
 -(DataSource *)dataSource;
 -(void)setDataSource:(DataSource *)dataSource;
 
 -(DataSource<SearchDataSource> *)searchDataSource;
 -(void)setSearchDataSource:(DataSource<SearchDataSource> *)searchDataSource;
+
+-(DataSource *)dataSourceForTableView:(UITableView *)tableView;
+-(UITableView *)tableViewForDataSource:(DataSource *)dataSource;
+
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
+
+@property (nonatomic) BOOL searching;
 @end

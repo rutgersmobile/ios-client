@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @protocol SearchDataSource <NSObject>
--(void)updateForSearchString:(NSString *)searchString;
+-(void)updateForQuery:(NSString *)query;
 @end
