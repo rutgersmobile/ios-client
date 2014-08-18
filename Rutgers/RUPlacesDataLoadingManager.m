@@ -53,17 +53,19 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
             dispatch_group_leave(self.placesGroup);
-        } else {
-            [self getPlaces];
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self getPlaces];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self getPlaces];
+            dispatch_group_leave(self.placesGroup);
+        });
     }];
 }
+
 -(void)parsePlaces:(NSDictionary *)response{
     NSMutableDictionary *parsedPlaces = [NSMutableDictionary dictionary];
     
-    [response[@"all"] enumerateKeysAndObjectsWithOptions:0 usingBlock:^(id key, id obj, BOOL *stop) {
+    [response[@"all"] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         RUPlace *place = [[RUPlace alloc] initWithDictionary:obj];
         parsedPlaces[place.uniqueID] = place;
     }];
@@ -72,44 +74,27 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 }
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock{
-    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"title contains[cd] %@",query]];
-        
-        NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"title beginswith[cd] %@",query];
-        results = [results sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            BOOL one = [beginsWithPredicate evaluateWithObject:obj1];
-            BOOL two = [beginsWithPredicate evaluateWithObject:obj2];
-            if (one && !two) {
-                return NSOrderedAscending;
-            } else if (!one && two) {
-                return NSOrderedDescending;
-            }
-            return [[obj1 title] compare:[obj2 title] options:NSNumericSearch|NSCaseInsensitiveSearch];
-        }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock(results);
-        });
+    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSPredicate *searchPredicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
+        NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
+        results = [results sortByKeyPath:@"title"];
+        completionBlock(results);
     });
 }
 
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock{
     dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
         NSArray *recentPlaces = [[NSUserDefaults standardUserDefaults] arrayForKey:PlacesRecentPlacesKey];
-        NSArray *recentPlacesDetails = [self.places objectsForKeys:recentPlaces notFoundMarker:[NSNull null]];
- 
-        recentPlacesDetails = [recentPlacesDetails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            if ([evaluatedObject isEqual:[NSNull null]]) return false;
-            return true;
-        }]];
-        
+        NSArray *recentPlacesDetails = [self.places objectsForKeysIgnoringNotFound:recentPlaces];
         completionBlock(recentPlacesDetails);
     });
 }
 
 -(void)userWillViewPlace:(RUPlace *)place{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
     NSMutableArray *recentPlaces = [[userDefaults arrayForKey:PlacesRecentPlacesKey] mutableCopy];
+    
     NSString *ID = place.uniqueID;
     if ([recentPlaces containsObject:ID]){
         [recentPlaces removeObject:ID];
