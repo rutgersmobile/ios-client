@@ -11,22 +11,16 @@
 @implementation UIView (LayoutSize)
 -(CGSize)layoutSizeFittingSize:(CGSize)size{
     
-    CGRect frame = self.frame;
-    frame.size = size;
-    self.frame = frame;
-    
+    CGRect bounds = self.bounds;
+    bounds.size = size;
+    self.bounds = bounds;
+        
     [self setNeedsLayout];
     [self layoutIfNeeded];
     
     // Get the actual height required for the cell
     UIView *contentView = [self respondsToSelector:@selector(contentView)] ? [self performSelector:@selector(contentView)] : self;
-    CGSize layoutSize = [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     
-    // Add an extra point to the height to account for internal rounding errors that are occasionally observed in
-    // the Auto Layout engine, which cause the returned height to be slightly too small in some cases.
-    layoutSize.height += 1;
-    layoutSize.width += 1;
-    
-    return layoutSize;
+    return [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
 }
 @end
