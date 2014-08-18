@@ -8,7 +8,7 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUBusRoute.h"
-#import "NSArray+RUBusStop.h"
+#import "RUMultiStop.h"
 #import <HexColor.h>
 #import "RUPredictionsHeaderTableViewCell.h"
 
@@ -28,7 +28,7 @@
 
 -(void)setupCell:(RUPredictionsHeaderTableViewCell *)cell{
     cell.titleLabel.text = [self title];
-    cell.directionLabel.text = [self.item isKindOfClass:[NSArray class]] ? [self directionTitle] : nil;
+    cell.directionLabel.text = [self.item isKindOfClass:[RUMultiStop class]] ? [self directionTitle] : nil;
     cell.timeLabel.text = [self arrivalTimeDescription];
     if ([self active]) {
         cell.titleLabel.textColor = [UIColor blackColor];
