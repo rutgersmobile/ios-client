@@ -8,7 +8,6 @@
 
 #import "AllStopsDataSource.h"
 #import "RUBusDataLoadingManager.h"
-#import "RUBusData.h"
 
 @interface AllStopsDataSource ()
 @property NSString *agency;

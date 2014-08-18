@@ -15,14 +15,19 @@
 {
     self = [super init];
     if (self) {
-        self.itemLimit = 25;
+        self.itemLimit = 35;
     }
     return self;
 }
 
--(void)updateForSearchString:(NSString *)searchString{
+-(void)updateForQuery:(NSString *)query{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUBusDataLoadingManager sharedInstance] queryStopsAndRoutesWithString:searchString completion:^(NSArray *results) {
+        [[RUBusDataLoadingManager sharedInstance] queryStopsAndRoutesWithString:query completion:^(NSArray *results) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            
             [loading updateWithContent:^(typeof(self) me) {
                 me.items = results;
             }];

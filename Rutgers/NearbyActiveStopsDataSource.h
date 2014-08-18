@@ -7,7 +7,8 @@
 //
 
 #import "BusBasicDataSource.h"
+#import <MapKit/MapKit.h>
 
 @interface NearbyActiveStopsDataSource : BusBasicDataSource
-
+@property (nonatomic) CLLocation *location;
 @end

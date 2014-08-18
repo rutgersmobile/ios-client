@@ -24,6 +24,6 @@
     id item = [self itemAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = [item title];
-    cell.textLabel.textColor = [item active] ? [UIColor blackColor] : [UIColor lightGrayColor];
+    cell.textLabel.textColor = [item active] ? [UIColor blackColor] : [UIColor grayColor];
 }
 @end
