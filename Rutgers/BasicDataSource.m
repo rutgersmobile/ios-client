@@ -56,23 +56,18 @@
 {
     NSMutableArray *indexPaths = [NSMutableArray array];
     [_items enumerateObjectsUsingBlock:^(id obj, NSUInteger objectIndex, BOOL *stop) {
-        if ([obj isEqual:item])
-            [indexPaths addObject:[NSIndexPath indexPathForItem:objectIndex inSection:0]];
+        if ([obj isEqual:item]) [indexPaths addObject:[NSIndexPath indexPathForItem:objectIndex inSection:0]];
     }];
     return indexPaths;
 }
 
 - (void)setItems:(NSArray *)items
 {
-    NSArray *clippedItems;
-    
-    if (self.itemLimit && items.count > self.itemLimit) {
-        clippedItems = [items subarrayWithRange:NSMakeRange(0, self.itemLimit)];
+    if (self.itemLimit && (items.count > self.itemLimit)) {
+        [self setItems:[items subarrayWithRange:NSMakeRange(0, self.itemLimit)] animated:YES];
     } else {
-        clippedItems = items;
+        [self setItems:items animated:YES];
     }
-    
-    [self setItems:clippedItems animated:YES];
 }
 
 - (void)setItems:(NSArray *)items animated:(BOOL)animated
