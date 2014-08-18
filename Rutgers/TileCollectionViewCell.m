@@ -8,6 +8,7 @@
 
 #import "TileCollectionViewCell.h"
 #import "UIMotionEffect+FloatingMotionEffect.h"
+#import "iPadCheck.h"
 
 @interface TileCollectionViewCell ()
 @property (nonatomic) UIView *ellipsesView;
@@ -20,6 +21,8 @@
 #define DOT_SIZE 5.5
 #define DOT_PADDING 8.5
 #define BOTTOM_PADDING (PADDING+DOT_PADDING+DOT_SIZE)
+#define FONT_SIZE (iPad() ? 19.0 : 16.0)
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -30,7 +33,7 @@
         self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.textLabel.adjustsFontSizeToFitWidth = YES;
         self.textLabel.textColor = [UIColor whiteColor];
-        
+        self.textLabel.font = [UIFont systemFontOfSize:FONT_SIZE];
         
         [self addSubview:self.ellipsesView];
         [self.ellipsesView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:DOT_PADDING];

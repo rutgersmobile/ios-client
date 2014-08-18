@@ -22,11 +22,9 @@
     TileCollectionViewItem *item = [self itemAtIndexPath:indexPath];
     
     cell.textLabel.text = item.title;
-    cell.textLabel.font = [UIFont systemFontOfSize:(iPad() ? 22 : 16.0)];
     cell.showsEllipses = item.showsEllipses;
     
     cell.backgroundColor = [self colorForCollectionView:collectionView itemAtIndexPath:indexPath];
-    
     cell.selectedBackgroundView = [self backgroundViewForCollectionView:collectionView itemAtIndexPath:indexPath];
     
     [cell setNeedsUpdateConstraints];
