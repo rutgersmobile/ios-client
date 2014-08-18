@@ -53,14 +53,16 @@
     self.sections = sections;
 }
 
--(void)restoreExpansionStateFromCurrentSectionsToNewSections:(NSArray *)sections{
-    NSMutableDictionary *expandedSections = [NSMutableDictionary dictionary];
+-(void)restoreExpansionStateFromCurrentSectionsToNewSections:(NSArray *)newSections{
+    if (!self.sections.count) return;
+    
+    NSMutableSet *expandedSections = [NSMutableSet set];
     for (RUPredictionsExpandingSection *section in self.sections) {
-        expandedSections[section.identifier] = @(section.expanded);
+        if (section.expanded) [expandedSections addObject:section.identifier];
     }
     
-    for (RUPredictionsExpandingSection *section in sections) {
-        section.expanded = [expandedSections[section.identifier] boolValue];
+    for (RUPredictionsExpandingSection *section in newSections) {
+        section.expanded = [expandedSections containsObject:section.identifier];
     }
 }
 
