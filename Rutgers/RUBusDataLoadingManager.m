@@ -10,10 +10,11 @@
 #import "RUBusDataAgencyManager.h"
 #import "RUBusStop.h"
 #import "RUBusRoute.h"
-#import "NSArray+RUBusStop.h"
+#import "RUMultiStop.h"
 #import "RUNetworkManager.h"
-#import "RUBusData.h"
 
+NSString const *newBrunswickAgency = @"rutgers";
+NSString const *newarkAgency = @"rutgers-newark";
 
 @interface RUBusDataLoadingManager ()
 @property NSDictionary *agencyManagers;
@@ -72,8 +73,8 @@
         dispatch_group_enter(group);
         [agencyManager fetchActiveStopsNearbyLocation:location completion:^(NSArray *stops, NSError *error) {
             [allStops addObjectsFromArray:stops];
-            dispatch_group_leave(group);
             if (error) outerError = error;
+            dispatch_group_leave(group);
         }];
     }];
     
@@ -85,7 +86,7 @@
 
 #pragma mark - predictions api
 -(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
-    if (!([item isKindOfClass:[RUBusRoute class]] || ([item isKindOfClass:[NSArray class]] && [item isArrayOfBusStops]))) return;
+    if (!([item isKindOfClass:[RUBusRoute class]] || [item isKindOfClass:[RUMultiStop class]])) return;
     
     [[RUNetworkManager xmlSessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -98,6 +99,7 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failureBlock();
     }];
+    
 }
 
 -(NSString *)urlStringForItem:(id)item{
@@ -108,59 +110,38 @@
 
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))handler{
-    dispatch_group_t group = dispatch_group_create();
-    
-    NSMutableArray *allResults = [NSMutableArray array];
-    
-    [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
-        dispatch_group_enter(group);
-        [agencyManager queryStopsAndRoutesWithString:query completion:^(NSArray *results) {
-            [allResults addObjectsFromArray:results];
-            dispatch_group_leave(group);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        dispatch_group_t group = dispatch_group_create();
+        
+        NSMutableArray *allResults = [NSMutableArray array];
+        
+        [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
+            dispatch_group_enter(group);
+            [agencyManager queryStopsAndRoutesWithString:query completion:^(NSArray *results) {
+                [allResults addObjectsFromArray:results];
+                dispatch_group_leave(group);
+            }];
         }];
-    }];
-    
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        NSArray *sortedResults = [self sortSearchResults:allResults forQuery:query];
-        handler(sortedResults);
+        
+        dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSArray *sortedResults = [self sortSearchResults:allResults forQuery:query];
+            handler(sortedResults);
+        });
+
     });
 }
 
 -(NSArray *)sortSearchResults:(NSArray *)results forQuery:(NSString *)query{
-    NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"title beginswith[cd] %@",query];
     return [results sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        
-        BOOL oneBeginsWithString;
-        if ([obj1 isKindOfClass:[RUBusRoute class]]) {
-            oneBeginsWithString = [beginsWithPredicate evaluateWithObject:obj1];
-        } else {
-            RUBusStop *stop = [obj1 firstObject];
-            oneBeginsWithString = [beginsWithPredicate evaluateWithObject:stop];
-        }
-        
-        BOOL twoBeginsWithString;
-        if ([obj2 isKindOfClass:[RUBusRoute class]]) {
-            twoBeginsWithString = [beginsWithPredicate evaluateWithObject:obj2];
-        } else {
-            RUBusStop *stop = [obj2 firstObject];
-            twoBeginsWithString = [beginsWithPredicate evaluateWithObject:stop];
-        }
-        
-        if (oneBeginsWithString && !twoBeginsWithString) {
-            return NSOrderedAscending;
-        } else if (!oneBeginsWithString && twoBeginsWithString) {
-            return NSOrderedDescending;
-        }
         
         if ([obj1 active] && ![obj2 active]) {
             return NSOrderedAscending;
         } else if (![obj1 active] && [obj2 active]) {
             return NSOrderedDescending;
         }
-        
-        NSString *titleOne = [obj1 title];
-        NSString *titleTwo = [obj2 title];
-        return [titleOne compare:titleTwo options:NSNumericSearch|NSCaseInsensitiveSearch];
+
+        return [[obj1 title] compare:[obj2 title] options:NSNumericSearch|NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch];
     }];
 }
 
