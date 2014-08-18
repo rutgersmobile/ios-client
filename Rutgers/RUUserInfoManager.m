@@ -131,7 +131,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     if (actionSheet == self.campusActionSheet) {
         
         [self setCampus:self.campuses[buttonIndex]];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self presentActionSheet:self.userTypeActionSheet];
         });
 
@@ -140,7 +140,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
         [self setUserRole:self.userRoles[buttonIndex]];
         [self setHasUserInformation:YES];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self complete];
         });
     }
