@@ -9,5 +9,5 @@
 #import "EZTableViewController.h"
 
 @interface RUSOCSubjectViewController : TableViewController
--(id)initWithSubjectCode:(NSString *)subjectCode;
+-(id)initWithSubject:(NSDictionary *)subject;
 @end

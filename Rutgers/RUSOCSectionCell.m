@@ -7,6 +7,7 @@
 //
 
 #import "RUSOCSectionCell.h"
+#import "RULabel.h"
 
 @interface RUSOCSectionCell ()
 @property NSLayoutConstraint *descriptionConstraint;
@@ -18,7 +19,7 @@
 
     self.indexLabel = [UILabel newAutoLayoutView];
     self.professorLabel = [UILabel newAutoLayoutView];
-    self.descriptionLabel = [UILabel newAutoLayoutView];
+    self.descriptionLabel = [RULabel newAutoLayoutView];
     self.dayLabel = [UILabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
     self.locationLabel = [UILabel newAutoLayoutView];
@@ -80,11 +81,6 @@
 -(void)updateConstraints{
     [super updateConstraints];
     self.descriptionConstraint.constant = self.descriptionLabel.text.length ? -kLabelVerticalInsets : 0;
-}
-
--(void)layoutSubviews{
-    [super layoutSubviews];
-    self.descriptionLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.descriptionLabel.frame);
 }
 
 @end

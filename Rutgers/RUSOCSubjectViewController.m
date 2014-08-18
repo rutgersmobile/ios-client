@@ -16,10 +16,11 @@
 @end
 
 @implementation RUSOCSubjectViewController
--(id)initWithSubjectCode:(NSString *)subjectCode{
+-(id)initWithSubject:(NSDictionary *)subject{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.subjectCode = subjectCode;
+        self.subjectCode = subject[@"code"];
+        self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], subject[@"title"]];
     }
     return self;
 }

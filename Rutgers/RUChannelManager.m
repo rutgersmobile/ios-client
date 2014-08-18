@@ -9,7 +9,7 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 
 @interface RUChannelManager ()
 @property NSArray *channelTags;
@@ -62,7 +62,9 @@
                     [filteredWebChannels addObject:channel];
                 }
             }
-            completion(filteredWebChannels);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(filteredWebChannels);
+            });
         } else {
 
         }
@@ -77,7 +79,8 @@
     static NSDictionary *viewTagsToClassNameMapping = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        viewTagsToClassNameMapping = @{@"bus" : @"RUBusViewController",
+        viewTagsToClassNameMapping = @{
+                                       @"bus" : @"RUBusViewController",
                                        @"newbus" : @"RUNewBusViewController",
                                        @"dtable" : @"DynamicCollectionViewController",
                                        @"food" : @"RUFoodViewController",
@@ -100,12 +103,10 @@
     NSString *view = channel[@"view"];
     if (!view) view = @"www";
     Class class = [self classForViewTag:view];
-    if (class && [class respondsToSelector:@selector(componentForChannel:)]) {
-        UIViewController * vc = [class componentForChannel:channel];
+    if (class && [class respondsToSelector:@selector(channelWithConfiguration:)]) {
+        UIViewController * vc = [class channelWithConfiguration:channel];
         NSString *title = [channel titleForChannel];
         vc.title = title;
-        vc.tabBarItem.title = title;
-        vc.tabBarItem.image = [channel iconForChannel];
         return vc;
     } else {
         NSLog(@"No way to handle view type %@, \n%@",view,channel);

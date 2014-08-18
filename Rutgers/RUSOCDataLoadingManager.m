@@ -64,10 +64,8 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     }
     return self;
 }
--(void)performOnSemestersLoaded:(void (^)(void))completion{
-    dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        completion();
-    });
+-(void)performOnSemestersLoaded:(void (^)(void))block{
+    dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), block);
 }
 
 -(void)getSemesters{
@@ -82,25 +80,61 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     }];
 }
 
--(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock{
-    dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        [[RUNetworkManager jsonSessionManager] GET:[baseString stringByAppendingString:@"subjects.json"] parameters:@{@"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
-            successBlock(responseObject);
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            failureBlock();
-        }];
-    });
+-(BOOL)isOnline{
+    return [self.campus[@"tag"] isEqualToString:@"ONLINE"];
 }
 
--(void)getCoursesForSubjectCode:(NSString *)subject withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
-    dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), ^{
-        
-        [[RUNetworkManager jsonSessionManager] GET:[baseString stringByAppendingString:@"courses.json"] parameters:@{@"subject" : subject, @"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
+-(NSString *)subjectsURL{
+    return [baseString stringByAppendingString:([self isOnline] ? @"onlineSubjects.json" : @"subjects.json")];
+}
+
+-(NSString *)coursesURL{
+    return [baseString stringByAppendingString:([self isOnline] ? @"onlineCourses.json" : @"courses.json")];
+}
+
+-(NSString *)courseURL{
+    return [baseString stringByAppendingString:([self isOnline] ? @"onlineCourse.json" : @"course.json")];
+}
+
+-(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock{
+    [self performOnSemestersLoaded:^{
+        [[RUNetworkManager jsonSessionManager] GET:[self subjectsURL] parameters:@{@"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
             successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock();
         }];
-    });
+    }];
+}
+
+-(void)getCoursesForSubjectCode:(NSString *)subjectCode withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
+    [self performOnSemestersLoaded:^{
+        [[RUNetworkManager jsonSessionManager] GET:[self coursesURL] parameters:@{@"subject" : subjectCode, @"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
+            successBlock(responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            failureBlock();
+        }];
+    }];
+}
+
+-(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode withSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(void))failureBlock{
+    [self performOnSemestersLoaded:^{
+        [[RUNetworkManager jsonSessionManager] GET:[self courseURL] parameters:@{@"subject" : subjectCode, @"courseNumber" : courseCode, @"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
+            successBlock(responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            failureBlock();
+        }];
+    }];
+}
+
+-(void)getSearchIndexWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSError *))failureBlock{
+    [self performOnSemestersLoaded:^{
+        NSString *indexString = [NSString stringWithFormat:@"indexes/%@_%@_%@.json",self.semester[@"tag"], self.campus[@"tag"], self.level[@"tag"]];
+        [[RUNetworkManager jsonSessionManager] GET:indexString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            successBlock(responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            failureBlock(error);
+        }];
+    }];
 }
 
 -(NSDictionary *)campus{
@@ -108,9 +142,8 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     if (campus) return campus;
 
     campus = [RUUserInfoManager sharedInstance].campus;
-    for (NSDictionary *aCampus in self.campuses) {
-        if ([campus[@"tag"] isEqualToString:aCampus[@"tag"]]) return campus;
-    }
+    
+    if ([[self.campuses valueForKeyPath:@"tag"] containsObject:campus[@"tag"]]) return campus;
     
     return [self.campuses firstObject];
 }
@@ -123,9 +156,8 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     if (level) return level;
     
     level = [RUUserInfoManager sharedInstance].userRole;
-    for (NSDictionary *aLevel in self.levels) {
-        if ([level[@"tag"] isEqualToString:aLevel[@"tag"]]) return level;
-    }
+    
+    if ([[self.levels valueForKeyPath:@"tag"] containsObject:level[@"tag"]]) return level;
     
     return [self.levels firstObject];
 }

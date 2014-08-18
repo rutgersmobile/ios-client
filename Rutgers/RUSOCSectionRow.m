@@ -11,7 +11,6 @@
 #import "UIColor+Utilities.h"
 
 @interface RUSOCSectionRow ()
-@property NSDictionary *section;
 @property NSString *indexText;
 @property NSString *professorText;
 @property NSString *descriptionText;
@@ -22,7 +21,7 @@
 
 @implementation RUSOCSectionRow
 -(instancetype)initWithSection:(NSDictionary *)section{
-    self = [super initWithIdentifier:@"RUSOCSectionCell"];
+    self = [super init];
     if (self) {
         self.section = section;
         [self makeTextStrings];

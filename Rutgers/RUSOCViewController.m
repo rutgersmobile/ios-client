@@ -8,7 +8,9 @@
 
 #import "RUSOCViewController.h"
 #import "RUSOCDataSource.h"
+#import "RUSOCSearchDataSource.h"
 #import "RUSOCSubjectViewController.h"
+#import "RUSOCCourseViewController.h"
 #import "RUSOCOptionsViewController.h"
 #import "RUSOCDataLoadingManager.h"
 #import "DataTuple.h"
@@ -19,7 +21,7 @@
 @end
 
 @implementation RUSOCViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RUSOCViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -27,7 +29,6 @@
 {
     [super viewDidLoad];
     
-    //[self enableSearch];
     [self setupOptionsButton];
     
     RUSOCDataLoadingManager *loadingManager = [RUSOCDataLoadingManager sharedInstance];
@@ -37,7 +38,9 @@
     }];
     
     self.dataSource = [[RUSOCDataSource alloc] init];
+    self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
     
+    [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -45,15 +48,23 @@
     if (self.optionsDidChange) {
         [self.dataSource resetContent];
         [self.dataSource setNeedsLoadContent];
+        
+        [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
+         
         self.optionsDidChange = NO;
     }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    DataTuple *subject = [self.dataSource itemAtIndexPath:indexPath];
-    RUSOCSubjectViewController *subjectVC = [[RUSOCSubjectViewController alloc] initWithSubjectCode:subject.object[@"code"]];
-    subjectVC.title = subject.title;
-    [self.navigationController pushViewController:subjectVC animated:YES];
+    DataTuple *item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
+   
+    if (item.object[@"courseNumber"]) {
+        RUSOCCourseViewController *courseVC = [[RUSOCCourseViewController alloc] initWithCourse:item.object];
+        [self.navigationController pushViewController:courseVC animated:YES];
+    } else {
+        RUSOCSubjectViewController *subjectVC = [[RUSOCSubjectViewController alloc] initWithSubject:item.object];
+        [self.navigationController pushViewController:subjectVC animated:YES];
+    }
 }
 
 -(void)setupOptionsButton{

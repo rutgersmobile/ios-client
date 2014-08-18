@@ -8,6 +8,10 @@
 
 #import "EZTableViewAbstractRow.h"
 
-@interface RUSOCSectionRow : EZTableViewAbstractRow
+@class RUSOCSectionCell;
+
+@interface RUSOCSectionRow : NSObject
 -(instancetype)initWithSection:(NSDictionary *)section;
+@property NSDictionary *section;
+-(void)setupCell:(RUSOCSectionCell *)cell;
 @end

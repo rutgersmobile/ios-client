@@ -12,7 +12,11 @@
 +(RUSOCDataLoadingManager *)sharedInstance;
 
 -(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock;
--(void)getCoursesForSubjectCode:(NSString *)subject withSuccess:(void (^)(NSArray *courses))successBlock failure:(void (^)(void))failureBlock;
+-(void)getCoursesForSubjectCode:(NSString *)subjectCode withSuccess:(void (^)(NSArray *courses))successBlock failure:(void (^)(void))failureBlock;
+-(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode withSuccess:(void (^)(NSDictionary *course))successBlock failure:(void (^)(void))failureBlock;
+
+-(void)getSearchIndexWithSuccess:(void (^)(NSDictionary *index))successBlock failure:(void (^)(NSError *error))failureBlock;
+
 
 @property (nonatomic) NSDictionary *campus;
 @property (nonatomic) NSDictionary *level;
@@ -22,7 +26,7 @@
 @property (nonatomic) NSArray *campuses;
 @property (nonatomic) NSArray *levels;
 
--(void)performOnSemestersLoaded:(void (^)(void))completion;
+-(void)performOnSemestersLoaded:(dispatch_block_t)block;
 
 -(NSString *)titleForCurrentConfiguration;
 
