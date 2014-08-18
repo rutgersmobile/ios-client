@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-/*
-extern NSString const *newBrunswickAgency;
-extern NSString const *newarkAgency;
-*/
 
+extern NSString *newBrunswickAgency;
+extern NSString const *newarkAgency;
+
+#define TITLES @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}
 
 @interface RUBusDataLoadingManager : NSObject
 
