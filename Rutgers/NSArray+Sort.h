@@ -10,5 +10,4 @@
 
 @interface NSArray (Sort)
 -(NSArray *)sortByKeyPath:(NSString *)keyPath;
-//-(NSArray *)sortByKeyPath:(NSString *)keyPath forQuery:(NSString *)query;
 @end
