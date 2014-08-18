@@ -7,8 +7,6 @@
 //
 
 #import "TileCollectionViewController.h"
-#import "TileCollectionViewCell.h"
-#import "iPadCheck.h"
 #import "RUCollectionViewFlowLayout.h"
 
 @interface TileCollectionViewController ()
@@ -29,16 +27,18 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
-}
-
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+-(void)applicationDidBecomeActive:(NSNotification *)notification{
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 @end
