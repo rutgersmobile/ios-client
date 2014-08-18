@@ -24,10 +24,20 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUSOCDataLoadingManager sharedInstance] getSubjectsWithSuccess:^(NSArray *subjects) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            
             [loading updateWithContent:^(typeof(self) me) {
                 [me parseResponse:subjects];
             }];
         } failure:^{
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            
             [loading doneWithError:nil];
         }];
     }];
