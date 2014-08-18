@@ -31,8 +31,10 @@
     return [UIColor colorWithRed:221/255.0 green:44/255.0 blue:58/255.0 alpha:1];
 }
 +(UIColor *)menuDeselectedColor{
-    return [UIColor colorWithWhite:0.8 alpha:1.0];
+    return [UIColor colorWithWhite:0.85 alpha:1.0];
 }
-
++(UIColor *)iconDeselectedColor{
+    return [UIColor colorWithRed:177/255.0 green:198/255.0 blue:226/255.0 alpha:1];
+}
 
 @end
