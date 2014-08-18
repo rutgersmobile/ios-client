@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>874E1D88-593C-4B1E-A036-1642D6342E50</string>
+	<string>8E655BCC-0AA8-4DC5-ACFE-E87E8E39F361</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Rutgers</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>BEF351E3-D256-43BD-B991-B63E55B5901A</key>
+		<key>8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6</key>
 		<string>https://github.com/rutgersmobile/ios-client.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Rutgers.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>BEF351E3-D256-43BD-B991-B63E55B5901A</key>
+		<key>8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/rutgersmobile/ios-client.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>BEF351E3-D256-43BD-B991-B63E55B5901A</string>
+	<string>8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>BEF351E3-D256-43BD-B991-B63E55B5901A</string>
+			<string>8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ios-client</string>
 		</dict>
