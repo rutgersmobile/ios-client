@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-extern NSString const *newBrunswickAgency;
-extern NSString const *newarkAgency;
+static NSString * const newBrunswickAgency;
+static NSString * const newarkAgency;
 
 #define TITLES @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}
 

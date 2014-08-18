@@ -13,8 +13,8 @@
 #import "RUMultiStop.h"
 #import "RUNetworkManager.h"
 
-NSString const *newBrunswickAgency = @"rutgers";
-NSString const *newarkAgency = @"rutgers-newark";
+static NSString * const newBrunswickAgency = @"rutgers";
+static NSString * const newarkAgency = @"rutgers-newark";
 
 @interface RUBusDataLoadingManager ()
 @property NSDictionary *agencyManagers;
