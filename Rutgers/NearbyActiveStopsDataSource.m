@@ -27,7 +27,7 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUBusDataLoadingManager sharedInstance] fetchActiveStopsNearbyLocation:[RULocationManager sharedLocationManager].location completion:^(NSArray *stops, NSError *error) {
+        [[RUBusDataLoadingManager sharedInstance] fetchActiveStopsNearbyLocation:self.location completion:^(NSArray *stops, NSError *error) {
             if (!error) {
                 [loading updateWithContent:^(NearbyActiveStopsDataSource *me) {
                     self.items = stops;
@@ -39,6 +39,13 @@
             }
         }];
     }];
+}
+
+-(CLLocation *)location{
+    if (!_location) {
+        return [RULocationManager sharedLocationManager].location;
+    }
+    return _location;
 }
 
 @end
