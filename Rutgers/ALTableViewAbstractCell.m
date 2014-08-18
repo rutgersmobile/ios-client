@@ -14,8 +14,9 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        [self.contentView autoRemoveConstraintsAffectingView];
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         self.opaque = YES;
         self.contentView.opaque = YES;
         [self initializeSubviews];
@@ -25,32 +26,11 @@
 }
 
 -(void)initializeSubviews{
-    [NSException raise:@"You need to subclass EZTableViewAbstractCell and override the makeSubviews method" format:nil];
-}
-
-- (void)updateConstraints
-{
-    [super updateConstraints];
-    
-    
-    // If constraints have been set, don't do anything.
-/*
-    if (!self.didSetupConstraints) {
-        
-        [self initializeConstraints];
-        self.didSetupConstraints = YES;
-    }*/
     
 }
 
 -(void)initializeConstraints{
-
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-   // [self.contentView layoutSubviews];
     
 }
+
 @end
