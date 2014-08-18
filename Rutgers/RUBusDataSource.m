@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUBusData.h"
 #import "RUBusDataSource.h"
 #import "ComposedDataSource.h"
 #import "ActiveRoutesDataSource.h"
@@ -15,6 +14,7 @@
 #import "AllRoutesDataSource.h"
 #import "AllStopsDataSource.h"
 #import "RUBusDataLoadingManager.h"
+#import "RULocationManager.h"
 
 #define UPDATE_TIME_INTERVAL 60.0
 
@@ -33,7 +33,6 @@
         
         ComposedDataSource *stops = [[ComposedDataSource alloc] init];
         stops.title = @"Stops";
-        [stops addDataSource:[[NearbyActiveStopsDataSource alloc] init]];
         
         ComposedDataSource *all = [[ComposedDataSource alloc] init];
         all.title = @"All";
@@ -54,6 +53,8 @@
             [all addDataSource:[[AllStopsDataSource alloc] initWithAgency:newarkAgency]];
         };
         
+        [stops addDataSource:[[NearbyActiveStopsDataSource alloc] init]];
+        
         addNewBrunswickData();
         addNewarkData();
 
@@ -66,9 +67,11 @@
 
 -(void)startUpdates{
     self.refreshTimer = [MSWeakTimer scheduledTimerWithTimeInterval:UPDATE_TIME_INTERVAL target:self selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+    [[RULocationManager sharedLocationManager] startUpdatingLocation];
 }
 
 -(void)stopUpdates{
     [self.refreshTimer invalidate];
+    [[RULocationManager sharedLocationManager] stopUpdatingLocation];
 }
 @end
