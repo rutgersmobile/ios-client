@@ -20,7 +20,7 @@
 @property (nonatomic) NSString *addressString;
 @property (nonatomic) NSArray *offices;
 @property (nonatomic) NSString *buildingCode;
-@property (nonatomic) NSString *description;
+@property (nonatomic) NSString *descriptionString;
 @property (nonatomic) NSString *uniqueID;
 @property (nonatomic) CLLocation *location;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;

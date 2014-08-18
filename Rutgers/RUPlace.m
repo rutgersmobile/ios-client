@@ -20,7 +20,7 @@
         self.location = [self parseLocationDictionary:dictionary[@"location"]];
         self.offices = dictionary[@"offices"];
         self.buildingCode = stripString(dictionary[@"building_code"]);
-        self.description = stripString(dictionary[@"description"]);
+        self.descriptionString = stripString(dictionary[@"description"]);
         self.uniqueID = stripString(dictionary[@"id"]);
     }
     return self;
