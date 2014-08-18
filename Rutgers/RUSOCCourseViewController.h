@@ -8,6 +8,6 @@
 
 #import "EZTableViewController.h"
 
-@interface RUSOCCourseViewController : EZTableViewController
+@interface RUSOCCourseViewController : TableViewController
 -(id)initWithCourse:(NSDictionary *)course;
 @end

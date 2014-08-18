@@ -7,10 +7,8 @@
 //
 
 #import "RUSOCCourseViewController.h"
-#import "EZTableViewTextRow.h"
-#import "EZDataSource.h"
-#import "EZTableViewTextRow.h"
 #import "RUSOCSectionRow.h"
+#import "RUSOCCourseDataSource.h"
 #import "RUChannelManager.h"
 #import "RUSOCDataLoadingManager.h"
 
@@ -23,8 +21,7 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.course = course;
-        self.title = [NSString stringWithFormat:@"%@: %@",self.course[@"courseNumber"],[self.course[@"title"] capitalizedString]];
-
+        self.title = [self.course[@"title"] capitalizedString];
     }
     return self;
 }
@@ -35,32 +32,15 @@
     // Do any additional setup after loading the view.
     self.tableView.separatorInset = UIEdgeInsetsZero;
     self.tableView.separatorColor = [[UIColor blackColor] colorWithAlphaComponent:0.17];
-    [self makeSections];
+    self.dataSource = [[RUSOCCourseDataSource alloc] initWithCourse:self.course];
 }
 
--(void)makeSections{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    RUSOCSectionRow *sectionRow = [self.dataSource itemAtIndexPath:indexPath];
     
-    NSString *courseDescription = self.course[@"courseDescription"];
-    if (courseDescription) {
-        EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedText:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]}]];
-        [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[row]]];
-    }
-    
-    EZDataSourceSection *sectionSection = [[EZDataSourceSection alloc] init];
-    
-    NSPredicate *printedSectionsPredicate = [NSPredicate predicateWithFormat:@"printed == %@",@"Y"];
-    NSArray *sections = [self.course[@"sections"] filteredArrayUsingPredicate:printedSectionsPredicate];
-    
-    for (NSDictionary *section in sections) {
-        RUSOCSectionRow *sectionRow = [[RUSOCSectionRow alloc] initWithSection:section];
-        UINavigationController *navController = self.navigationController;
-        sectionRow.didSelectRowBlock = ^{
-            NSDictionary *channel = @{@"title" : @"WebReg", @"view" : @"www", @"url" :[NSString stringWithFormat:@"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",[RUSOCDataLoadingManager sharedInstance].semester[@"tag"],section[@"index"]]};
-            [navController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
-        };
-        [sectionSection addItem:sectionRow];
-    }
-    [self.dataSource addSection:sectionSection];
+    NSDictionary *channel = @{@"title" : @"WebReg", @"view" : @"www", @"url" :[NSString stringWithFormat:@"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",[RUSOCDataLoadingManager sharedInstance].semester[@"tag"],sectionRow.section[@"index"]]};
+    [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
 }
+
 
 @end
