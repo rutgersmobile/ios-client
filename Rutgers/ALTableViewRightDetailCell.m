@@ -22,6 +22,7 @@
 -(UILabel *)textLabel{
     return self.titleLabel;
 }
+
 -(UILabel *)detailTextLabel{
     return self.detailLabel;
 }

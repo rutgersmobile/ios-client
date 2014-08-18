@@ -21,7 +21,6 @@
         self.diningHall = diningHall;
         
         for (NSDictionary *meal in self.diningHall[@"meals"]) {
-            //EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:meal[@"meal_name"]];
             if (![meal[@"meal_avail"] boolValue]) continue;
             
             ComposedDataSource *mealDataSource = [[ComposedDataSource alloc] init];

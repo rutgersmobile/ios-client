@@ -32,6 +32,7 @@
     }
     return self;
 }
+
 -(void)loadView{
     [super loadView];
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
@@ -41,6 +42,7 @@
     self.view = self.mapView;
     [self.mapView setVisibleMapRect:MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -136,7 +138,7 @@
     } else {
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (!error && [responseObject isKindOfClass:[NSData class]] && [[response MIMEType] isEqualToString:@"image/png"]) {
+            if (!error && [[response MIMEType] isEqualToString:@"image/png"]) {
                 [self.mapsData.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
                 result(responseObject,error);
             } else {
@@ -167,18 +169,5 @@
     
     return nil;
 }
-/*
--(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-    NSUInteger maxZoomLevel = 16;
-    NSUInteger minZoomLevel = 12;
-    
-    NSUInteger zoomLevel = mapView.zoomLevel;
-    if (zoomLevel > maxZoomLevel || zoomLevel < minZoomLevel) {
-        NSUInteger newZoomLevel = MIN(maxZoomLevel, MAX(minZoomLevel, zoomLevel));
-        [mapView setCenterCoordinate:mapView.centerCoordinate zoomLevel:newZoomLevel animated:YES];
-    }
-
-}
-*/
 
 @end

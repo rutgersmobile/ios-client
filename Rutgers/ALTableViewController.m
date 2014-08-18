@@ -142,6 +142,7 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     NSString *identifier = [self identifierForHeaderInTableView:tableView inSection:section];
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+   
     if (!view) {
         [tableView registerClass:NSClassFromString(identifier) forHeaderFooterViewReuseIdentifier:identifier];
         view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
