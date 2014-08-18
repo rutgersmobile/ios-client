@@ -9,8 +9,6 @@
 
 #import "RUMenuViewController.h"
 #import "RUChannelManager.h"
-#import <JASidePanelController.h>
-#import <UIViewController+JASidePanel.h>
 #import "RUMenuSectionHeaderView.h"
 #import "RUMenuTableViewCell.h"
 
@@ -19,7 +17,7 @@
 
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic) UIView *paddingView;
-@property (nonatomic) NSLayoutConstraint *paddingHeightContstraint;
+//@property (nonatomic) NSLayoutConstraint *paddingHeightContstraint;
 
 @property NSArray *channels;
 @property NSArray *webLinks;
@@ -33,15 +31,39 @@
     if (self) {
         self.channels = [NSMutableArray array];
         self.title = @"Menu";
-        }
+    }
     
     return self;
 }
 
+-(void)loadView{
+    [super loadView];
+    
+    UIView *paddingView = [UIView newAutoLayoutView];
+    [self.view addSubview:paddingView];
+    self.paddingView = paddingView;
+    //self.paddingHeightContstraint =
+    CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+    CGFloat statusBarHeight = MIN(statusBarSize.height, statusBarSize.width);
+    
+    [paddingView autoSetDimension:ALDimensionHeight toSize:statusBarHeight];
+    [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.opaque = YES;
+    
+    [self.view addSubview:self.tableView];
+    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
+    [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:paddingView];
+    
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
-    [self makeSubviews];
-    
+
     RUChannelManager *manager = [RUChannelManager sharedInstance];
     self.channels = [manager loadChannels];
     
@@ -55,39 +77,18 @@
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundColor = [UIColor clearColor];
     
- //   self.tableView.separatorInset = UIEdgeInsetsZero;
-    //self.tableView.separatorColor = [UIColor grey4Color];
+    [self setLayoutForOrientation:self.interfaceOrientation];
+
     self.tableView.separatorColor = [UIColor clearColor];
     
     [self.tableView registerClass:[RUMenuTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUMenuTableViewCell class])];
     [self.tableView registerClass:[RUMenuSectionHeaderView class] forHeaderFooterViewReuseIdentifier:NSStringFromClass([RUMenuSectionHeaderView class])];
 }
 
--(void)makeSubviews{
-    
-    UIView *paddingView = [UIView newAutoLayoutView];
-    [self.view addSubview:paddingView];
-    self.paddingView = paddingView;
-    self.paddingHeightContstraint = [paddingView autoSetDimension:ALDimensionHeight toSize:37.0];
-    [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.opaque = YES;
-    
-    [self setLayoutForOrientation:self.interfaceOrientation];
-    
-    [self.view addSubview:self.tableView];
-    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
-    [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:paddingView];
-}
-
 -(void)setLayoutForOrientation:(UIInterfaceOrientation)orientation{
     [self.tableView beginUpdates];
     self.tableView.rowHeight = UIInterfaceOrientationIsPortrait(orientation) ? 56.0 : 48.0;
-    self.paddingHeightContstraint.constant = UIInterfaceOrientationIsPortrait(orientation) ? 37.0 : 25.0;
+   // self.paddingHeightContstraint.constant = UIInterfaceOrientationIsPortrait(orientation) ? 37.0 : 25.0;
     [self.tableView endUpdates];
 }
 
@@ -107,11 +108,16 @@
     RUMenuSectionHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([RUMenuSectionHeaderView class])];
     header.sectionTitleLabel.text = [[self titleForHeaderInSection:section] uppercaseString];
     return header;
-}*/
+}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 27.0;
+}*/
+
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
+
 -(NSString *)titleForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return @"Channels";
@@ -124,6 +130,7 @@
 -(NSDictionary *)channelForIndexPath:(NSIndexPath *)indexPath{
     return [self channelsForSection:indexPath.section][indexPath.row];
 }
+
 -(NSArray *)channelsForSection:(NSInteger)section{
     if (section == 0) {
         return self.channels;
@@ -132,6 +139,7 @@
     }
     return nil;
 }
+
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self channelsForSection:section].count;
 }
@@ -147,9 +155,6 @@
 
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    self.paddingHeightContstraint.constant = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 37.0 : 25.0;
     [self setLayoutForOrientation:toInterfaceOrientation];
-    [self.paddingView setNeedsUpdateConstraints];
 }
 @end

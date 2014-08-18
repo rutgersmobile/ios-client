@@ -19,14 +19,11 @@
         
         self.backgroundColor = [UIColor clearColor];
         self.opaque = NO;
-       // self.contentView.opaque = NO;
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
 
-       // self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.channelImage = [UIImageView newAutoLayoutView];
-        self.channelImage.tintColor = [UIColor menuDeselectedColor];
+        self.channelImage.tintColor = [UIColor iconDeselectedColor];
 
         [self.contentView addSubview:self.channelImage];
         
@@ -81,7 +78,7 @@
         self.channelTitleLabel.textColor = [UIColor whiteColor];
     } else {
        // self.backgroundColor = [UIColor grey2Color];
-        self.channelImage.tintColor = [UIColor menuDeselectedColor];
+        self.channelImage.tintColor = [UIColor iconDeselectedColor];
         self.channelTitleLabel.textColor = [UIColor menuDeselectedColor];
         self.leftPadView.hidden = YES;
     }
