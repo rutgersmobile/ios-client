@@ -14,8 +14,5 @@
 @interface EZTableViewController : TableViewController
 @property (nonatomic) EZDataSource *dataSource;
 
-@property (nonatomic) UISearchDisplayController *searchController;
--(void)enableSearch;
-
 //-(void)setupContentLoadingStateMachine;
 @end

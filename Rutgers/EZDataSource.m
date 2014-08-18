@@ -14,46 +14,7 @@
 @interface EZDataSource ()
 @end
 
-
 @implementation EZDataSource
-
--(void)addSection:(EZDataSourceSection *)section{
-    [self addDataSource:section];
-}
-
--(void)insertSection:(EZDataSourceSection *)section atIndex:(NSInteger)index{
-    [self insertDataSource:section atIndex:index];
-}
-/*
--(void)replaceSectionAtIndex:(NSInteger)index withSection:(EZDataSourceSection *)section{
-    self.sections[index] = section;
-    [self reloadSectionAtIndex:index];
-}
-
--(void)replaceSection:(EZDataSourceSection *)oldSection withSection:(EZDataSourceSection *)newSection{
-    NSInteger index = [self indexOfSection:oldSection];
-    [self replaceSectionAtIndex:index withSection:newSection];
-}*/
-
--(void)removeAllSections{
-    [super removeAllDataSources];
-}
-
--(void)reloadSection:(EZDataSourceSection *)section{
-    [section notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
-}
-
--(void)reloadSectionAtIndex:(NSInteger)index{
-    [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:index]];
-}
-
--(EZDataSourceSection *)sectionAtIndex:(NSInteger)index{
-    return self.dataSources[index];
-}
-
--(NSInteger)indexOfSection:(EZDataSourceSection *)section{
-    return [self.dataSources indexOfObject:section];
-}
 
 -(EZTableViewAbstractRow *)itemAtIndexPath:(NSIndexPath *)indexPath{
     return [super itemAtIndexPath:indexPath];
@@ -94,5 +55,12 @@
     return [self itemAtIndexPath:indexPath].shouldCopy;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.hidesSeperatorInsets) cell.separatorInset = UIEdgeInsetsZero;
+}
 
 @end
