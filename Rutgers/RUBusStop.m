@@ -12,6 +12,7 @@
 -(id)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
+        self.routes = [NSArray array];
         self.title = dictionary[@"title"];
         CLLocationDegrees lat = [dictionary[@"lat"] doubleValue];
         CLLocationDegrees lon = [dictionary[@"lon"] doubleValue];
@@ -20,12 +21,7 @@
     }
     return self;
 }
--(NSArray *)routes{
-    if (!_routes) {
-        _routes = [NSArray array];
-    }
-    return _routes;
-}
+
 -(NSArray *)activeRoutes{
     return [self.routes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]];
 }

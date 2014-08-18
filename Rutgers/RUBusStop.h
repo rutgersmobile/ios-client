@@ -18,7 +18,6 @@
 @property (nonatomic) NSInteger stopId;
 @property (nonatomic) NSArray *routes;
 -(NSArray *)activeRoutes;
-@property (nonatomic) BOOL active;
 @property (nonatomic) NSString *agency;
 
 @end
