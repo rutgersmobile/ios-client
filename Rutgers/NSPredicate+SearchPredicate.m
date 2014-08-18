@@ -26,6 +26,7 @@
 }
 
 +(NSPredicate *)predicateForQuery:(NSString *)query keyPath:(NSString *)keyPath{
+    if (!query.length || !keyPath.length) return [NSPredicate predicateWithValue:NO];
     return [NSCompoundPredicate andPredicateWithSubpredicates:[self subpredicatesForQuery:query keyPath:keyPath]];
 }
 @end
