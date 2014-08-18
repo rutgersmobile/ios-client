@@ -71,12 +71,10 @@
     cell.timeLabel.text = row.date;
     
     cell.hasImage = row.imageURL ? YES : NO;
-    cell.imageDisplayView.image = nil;
     cell.imageDisplayView.backgroundColor = [UIColor lightGrayColor];
     
-    if (row.imageURL) {
-        [cell.imageDisplayView setImageWithURL:row.imageURL];
-    }
+    cell.imageDisplayView.image = nil;
+    [cell.imageDisplayView setImageWithURL:row.imageURL];
 
 }
 
