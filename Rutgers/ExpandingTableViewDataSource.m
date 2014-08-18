@@ -83,13 +83,7 @@
             toIndex = [toMovedIndexes indexGreaterThanIndex:toIndex];
         }
         
-    } complete:^{
-        [self updateLoadingStateFromItems];
     }];
-}
-
--(void)updateLoadingStateFromItems{
-    NSLog(@"implement %@",NSStringFromSelector(_cmd));
 }
 
 -(ExpandingTableViewSection *)sectionAtIndex:(NSInteger)index{
