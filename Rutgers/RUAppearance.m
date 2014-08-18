@@ -11,7 +11,7 @@
 @implementation RUAppearance
 
 +(void)applyAppearance{
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     /*
     [self applyAppearanceToNavigationBar:[UINavigationBar appearance]];
     [self applyAppearanceToToolbar:[UIToolbar appearance]];
