@@ -7,7 +7,7 @@
 //
 
 #import "TileCollectionViewController.h"
+#import "RUChannelProtocol.h"
 
-@interface RUEmergencyViewController : TileCollectionViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel;
+@interface RUEmergencyViewController : TileCollectionViewController <RUChannelProtocol>
 @end

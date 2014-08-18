@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUChannelProtocol.h"
 
-@interface RUTextViewController : UIViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel;
+@interface RUTextViewController : UIViewController <RUChannelProtocol>
 @end

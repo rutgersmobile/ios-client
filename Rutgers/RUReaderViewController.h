@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "TableViewController.h"
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 
-@interface RUReaderViewController : TableViewController <RUComponentProtocol>
+@interface RUReaderViewController : TableViewController <RUChannelProtocol>
 
 @end

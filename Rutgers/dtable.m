@@ -20,7 +20,7 @@
 @end
 
 @implementation dtable
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[dtable alloc] initWithChannel:channel];
 }
 
@@ -55,7 +55,7 @@
     }];
 }
 
--(void)parseResponse:(id)responseObject{
+-(void)parseResponse:(id)responseObject{/*
     [self.tableView beginUpdates];
     [self.dataSource removeAllSections];
     EZDataSourceSection *section = [[EZDataSourceSection alloc] init];
@@ -77,6 +77,6 @@
         [section addItem:row];
     }
     [self.dataSource addSection:section];
-    [self.tableView endUpdates];
+    [self.tableView endUpdates];*/
 }
 @end

@@ -19,7 +19,7 @@
 
 @implementation RUEmergencyViewController
 
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RUEmergencyViewController alloc] init];
 }
 
@@ -35,7 +35,7 @@
 -(void)makeSections{
     NSString *emergencyAlertTitle = @"Emergency Alerts";
     TileCollectionViewItem *alertsItem = [[TileCollectionViewItem alloc] initWithTitle:emergencyAlertTitle object:nil];
- 
+
     NSString *actionPlanTitle = @"Emergency Action Plans";
     TileCollectionViewItem *actionPlanItem = [[TileCollectionViewItem alloc] initWithTitle:actionPlanTitle object:nil];
    

@@ -19,16 +19,15 @@
 @end
 
 @implementation RUInfoTableViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
+
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RUInfoTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
--(id)initWithStyle:(UITableViewStyle)style{
-    self = [super initWithStyle:style];
-    if (self) {
-        [self makeSections];
-    }
-    return self;
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    self.dataSource.hidesSeperatorInsets = YES;
+    [self makeSections];
 }
 
 /**
@@ -65,7 +64,7 @@
    
     //These attributes will be applied to all buttons
     NSDictionary *buttonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : self.view.tintColor};
-    NSDictionary *disabledButtonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : [UIColor darkGrayColor]};
+    NSDictionary *disabledButtonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : [UIColor grayColor]};
     
     //Loop through the sections in infoData
     for (NSDictionary *sectionDictionary in infoData) {
@@ -78,7 +77,6 @@
             NSString *string = rowDictionary[@"text"];
             NSString *type = rowDictionary[@"type"];
             EZTableViewTextRow *row = [[EZTableViewTextRow alloc] init];
-            __weak typeof(self) weakSelf = self;
             if ([type isEqualToString:@"text"]) {
                 //Configure for static text
                 row.shouldHighlight = NO;
@@ -86,6 +84,7 @@
             } else {
                 //Configure button
                 if ([self typeEnabled:type]) {
+                    __weak typeof(self) weakSelf = self;
                     //If the buttons action can be handled, figure out its type and set up the action
                     row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
                     if ([type isEqualToString:@"callButton"]) {
@@ -113,7 +112,7 @@
             }
             [section addItem:row];
         }
-        [self.dataSource addSection:section];
+        [self.dataSource addDataSource:section];
     }
 }
 
@@ -162,13 +161,15 @@
  *  @param body       The body of the mail message
  */
 -(void)presentMailCompseViewControllerWithRecipients:(NSArray *)recipients body:(NSString *)body{
-    MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
-    [mailVC setMessageBody:body isHTML:NO];
-    [mailVC setToRecipients:recipients];
-    mailVC.mailComposeDelegate = self;
-    [self presentViewController:mailVC animated:YES completion:^{
-
-    }];
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
+        [mailVC setMessageBody:body isHTML:NO];
+        [mailVC setToRecipients:recipients];
+        mailVC.mailComposeDelegate = self;
+        [self presentViewController:mailVC animated:YES completion:^{
+            
+        }];
+    }
 }
 
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result{

@@ -8,5 +8,5 @@
 
 #import "TileCollectionViewController.h"
 
-@interface DynamicCollectionViewController : TileCollectionViewController <RUComponentProtocol>
+@interface DynamicCollectionViewController : TileCollectionViewController <RUChannelProtocol>
 @end

@@ -20,7 +20,7 @@
 @end
 
 @implementation RUPlacesViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -44,24 +44,10 @@
     [super viewWillDisappear:animated];
     [[RULocationManager sharedLocationManager] stopUpdatingLocation];
 }
-/*
--(void)updateRecentPlaces:(NSArray *)recentPlaces{
-    dispatch_group_notify(self.searchingGroup, dispatch_get_main_queue(), ^{
-        [self.tableView beginUpdates];
-        self.recentPlaces = recentPlaces;
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
-        [self.tableView endUpdates];
-    });
-}*/
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUPlace *place;
-    if (tableView == self.tableView) {
-        place = [self.dataSource itemAtIndexPath:indexPath];
-    } else if (tableView == self.searchTableView) {
-        place = [self.searchDataSource itemAtIndexPath:indexPath];
-    }
-    
+    RUPlace *place = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
+
     [[RUPlacesDataLoadingManager sharedInstance] userWillViewPlace:place];
 
     RUPlaceDetailViewController *detailVC = [[RUPlaceDetailViewController alloc] initWithPlace:place];

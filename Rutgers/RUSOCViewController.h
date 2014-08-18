@@ -7,8 +7,8 @@
 //
 
 #import "EZTableViewController.h"
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 
-@interface RUSOCViewController : TableViewController <RUComponentProtocol>
+@interface RUSOCViewController : TableViewController <RUChannelProtocol>
 
 @end

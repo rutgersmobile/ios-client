@@ -14,31 +14,23 @@
 #import "DataTuple.h"
 
 @implementation RUFoodViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
-    return [[RUFoodViewController alloc] init];
-}
-- (instancetype)init{
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-
-    }
-    return self;
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
+    return [[RUFoodViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-   //[self setupContentLoadingStateMachine];
     self.dataSource = [[RUFoodDataSource alloc] init];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];
-    
-    if (indexPath.section == 0) {
-        [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:item.object] animated:YES];
+    NSDictionary *object = item.object;
+    if (object[@"view"]) {
+        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:object] animated:YES];
     } else {
-        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:item.object] animated:YES];
+        [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:object] animated:YES];
     }
 }
 @end

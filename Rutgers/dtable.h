@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EZTableViewController.h"
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 
-@interface dtable : EZTableViewController <RUComponentProtocol>
+@interface dtable : EZTableViewController <RUChannelProtocol>
 @end

@@ -14,11 +14,6 @@
 
 @implementation RUWebViewController
 
--(void)setTitle:(NSString *)title{
-    if (self.title) return;
-    [super setTitle:title];
-}
-
 +(NSCache *)storedChannels{
     static NSCache * storedChannels = nil;
     static dispatch_once_t onceToken;
@@ -29,11 +24,12 @@
     return storedChannels;
 }
 
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(TOWebViewController *)channelWithConfiguration:(NSDictionary *)channel{
     NSString *urlString = channel[@"url"];
-    RUWebViewController *webViewController = [self.storedChannels objectForKey:urlString];
+    TOWebViewController *webViewController = [self.storedChannels objectForKey:urlString];
     if (!webViewController) {
-        webViewController = [[RUWebViewController alloc] initWithURLString:urlString];
+        webViewController = [[TOWebViewController alloc] initWithURLString:urlString];
+        webViewController.showPageTitles = NO;
         [self.storedChannels setObject:webViewController forKey:urlString];
 
         webViewController.hideWebViewBoundaries = YES;

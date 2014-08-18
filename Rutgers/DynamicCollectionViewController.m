@@ -24,7 +24,7 @@
 
 @implementation DynamicCollectionViewController
 
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[DynamicCollectionViewController alloc] initWithChannel:channel];
 }
 

@@ -15,7 +15,7 @@
 
 @implementation RUNewDesignBusViewController
 
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[UIStoryboard storyboardWithName:@"BusStoryboard" bundle:nil] instantiateInitialViewController];
 }
 
@@ -59,8 +59,6 @@
     } else if ([segue.identifier isEqualToString:@"rightContainer"]) {
         
     }
-    
-    
     
 }
 

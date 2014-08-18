@@ -14,7 +14,7 @@
 @end
 
 @implementation RUTextViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RUTextViewController alloc] initWithChannel:channel];
 }
 
@@ -26,23 +26,26 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+-(void)loadView{
+    [super loadView];
+    self.textView = [UITextView newAutoLayoutView];
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.editable = NO;
     self.textView.selectable = NO;
     self.textView.font = [UIFont systemFontOfSize:17];
-    self.textView.textContainerInset = UIEdgeInsetsMake(15, 8, 15, 8);
+    self.textView.textContainerInset = UIEdgeInsetsMake(11, 8, 11, 8);
     self.textView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.textView.alwaysBounceVertical = YES;
     
     [self.view addSubview:self.textView];
     [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+
     self.textView.text = self.data;
 }
 

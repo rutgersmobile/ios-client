@@ -17,7 +17,7 @@
 
 @implementation RUFeedbackViewController
 
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[[self class] alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -46,12 +46,12 @@
         [feedbackActionSheet showInView:view];
     };
     
-    [self.dataSource addSection:[[EZDataSourceSection alloc] initWithItems:@[self.feedbackRow]]];
+    [self.dataSource addDataSource:[[EZDataSourceSection alloc] initWithItems:@[self.feedbackRow]]];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     self.feedbackRow.text = self.feedbackSubjects[buttonIndex];
-    [self.dataSource reloadSectionAtIndex:0];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
                                                   
                                                   

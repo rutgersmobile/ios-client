@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TableViewController.h"
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 
-@interface RUFoodViewController : TableViewController <RUComponentProtocol>
+@interface RUFoodViewController : TableViewController <RUChannelProtocol>
 @end

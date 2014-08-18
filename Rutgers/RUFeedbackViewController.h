@@ -7,7 +7,7 @@
 //
 
 #import "EZTableViewController.h"
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 
-@interface RUFeedbackViewController : EZTableViewController <RUComponentProtocol>
+@interface RUFeedbackViewController : EZTableViewController <RUChannelProtocol>
 @end
