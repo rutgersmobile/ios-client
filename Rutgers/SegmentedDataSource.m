@@ -115,7 +115,6 @@
         
         if (removedSet)
             [self notifySectionsRemoved:removedSet direction:removalDirection];
-        _selectedDataSource = selectedDataSource;
         if (insertedSet)
             [self notifySectionsInserted:insertedSet direction:insertionDirection];
         
@@ -124,7 +123,6 @@
         
         if ([selectedDataSource.loadingState isEqualToString:AAPLLoadStateInitial])
             [selectedDataSource setNeedsLoadContent];
-        
         
     } complete:completion];
 }
@@ -141,14 +139,30 @@
             segmentTitle = @"NULL";
         [segmentedControl insertSegmentWithTitle:segmentTitle atIndex:segmentIndex animated:NO];
     }];
+    
+    [segmentedControl removeTarget:nil action:nil forControlEvents:UIControlEventValueChanged];
     [segmentedControl addTarget:self action:@selector(selectedSegmentIndexChanged:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.selectedSegmentIndex = self.selectedDataSourceIndex;
-    [segmentedControl sizeToFit];
     
     CGFloat minimumWidth = 200;
+    CGFloat maximumWidth = 304;
+    
+    [segmentedControl sizeToFit];
     CGRect bounds = segmentedControl.bounds;
+    
     if (bounds.size.width < minimumWidth) {
         bounds.size.width = minimumWidth;
+    } else if (bounds.size.width > maximumWidth) {
+        segmentedControl.apportionsSegmentWidthsByContent = YES;
+        [segmentedControl sizeToFit];
+        bounds = segmentedControl.bounds;
+        
+        if (bounds.size.width > maximumWidth){
+            bounds.size.width = maximumWidth;
+        }
+    }
+    
+    if (!CGRectEqualToRect(bounds, segmentedControl.bounds)) {
         segmentedControl.bounds = bounds;
     }
 }
@@ -162,7 +176,7 @@
     segmentedControl.userInteractionEnabled = NO;
     NSInteger selectedSegmentIndex = segmentedControl.selectedSegmentIndex;
     DataSource *dataSource = [self dataSourceAtIndex:selectedSegmentIndex];
-    [self setSelectedDataSource:dataSource animated:YES completion:^{
+    [self setSelectedDataSource:dataSource animated:NO completion:^{
         segmentedControl.userInteractionEnabled = YES;
     }];
 }
@@ -226,6 +240,10 @@
     for (DataSource *dataSource in self.dataSources)
         [dataSource resetContent];
     [super resetContent];
+}
+
+-(NSString *)loadingState{
+    return _selectedDataSource.loadingState;
 }
 
 
