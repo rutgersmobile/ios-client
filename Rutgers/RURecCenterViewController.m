@@ -51,7 +51,7 @@
     NSDictionary *meetingAreas = self.recCenter[@"meetingareas"];
     if (meetingAreas.count) {
         RURecCenterHoursSection *hoursSection = [[RURecCenterHoursSection alloc] initWithMeetingAreas:meetingAreas];
-        [self.dataSource addSection:hoursSection];
+        [self.dataSource addDataSource:hoursSection];
         self.hoursSection = hoursSection;
     }
     
@@ -60,14 +60,14 @@
         RUPlace *place = [[RUPlace alloc] initWithTitle:self.title addressString:address];
         EZDataSourceSection *addressSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Address"];
         EZTableViewRightDetailRow *row = [[EZTableViewRightDetailRow alloc] initWithText:address detailText:nil];
-        UINavigationController *navController = self.navigationController;
+        __weak typeof(self) weakSelf = self;
         row.didSelectRowBlock = ^{
-            [navController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
+            [weakSelf.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:place] animated:YES];
         };
         row.shouldCopy = YES;
         [addressSection addItem:row];
         
-        [self.dataSource addSection:addressSection];
+        [self.dataSource addDataSource:addressSection];
     }
     
     NSString *information = self.recCenter[@"FacilityInformation"];
@@ -77,7 +77,7 @@
         infoRow.shouldHighlight = NO;
         infoRow.shouldCopy = YES;
         [informationSection addItem:infoRow];
-        [self.dataSource addSection:informationSection];
+        [self.dataSource addDataSource:informationSection];
     }
     
     NSString *business = self.recCenter[@"FacilityBusiness"];
@@ -87,7 +87,7 @@
         buisnessRow.shouldHighlight = NO;
         buisnessRow.shouldCopy = YES;
         [buisnessSection addItem:buisnessRow];
-        [self.dataSource addSection:buisnessSection];
+        [self.dataSource addDataSource:buisnessSection];
     }
     
     NSString *description = self.recCenter[@"FacilityBody"];
@@ -97,7 +97,7 @@
         descriptionRow.shouldHighlight = NO;
         descriptionRow.shouldCopy = YES;
         [descriptionSection addItem:descriptionRow];
-        [self.dataSource addSection:descriptionSection];
+        [self.dataSource addDataSource:descriptionSection];
     }
 }
 
