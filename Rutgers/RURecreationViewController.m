@@ -16,7 +16,7 @@
 @end
 
 @implementation RURecreationViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RURecreationViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
