@@ -11,6 +11,9 @@
 #import "RULocationManager.h"
 #import "RUNetworkManager.h"
 #import "RUPlace.h"
+#import "NSDictionary+ObjectsForKeys.h"
+#import "NSArray+Sort.h"
+#import "NSPredicate+SearchPredicate.h"
 
 NSString *PlacesDataDidUpdateRecentPlacesKey = @"PlacesDataDidUpdateRecentPlacesKey";
 
@@ -39,13 +42,13 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     if (self) {
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{PlacesRecentPlacesKey: @[]}];
         self.placesGroup =  dispatch_group_create();
-        dispatch_group_enter(self.placesGroup);
         [self getPlaces];
     }
     return self;
 }
 
 -(void)getPlaces{
+    dispatch_group_enter(self.placesGroup);
     [[RUNetworkManager jsonSessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
