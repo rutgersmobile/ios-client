@@ -14,7 +14,6 @@
     [self enumerateSubstringsInRange:NSMakeRange(0, self.length) options:NSStringEnumerationByWords usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
         [words addObject:substring];
     }];
-    NSLog(@"%@",words);
     return words;
 }
 
