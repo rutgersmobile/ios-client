@@ -17,7 +17,12 @@
     }
     return self;
 }
+
 +(instancetype)tupleWithTitle:(NSString *)title object:(id)object{
     return [[self alloc] initWithTitle:title object:object];
+}
+
+-(NSString *)description{
+    return self.title;
 }
 @end
