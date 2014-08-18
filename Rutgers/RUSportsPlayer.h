@@ -12,7 +12,7 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *initials;
-@property (nonatomic) NSURL *imageUrl;
+@property (nonatomic) NSURL *imageURL;
 @property (nonatomic) NSString *jerseyNumber;
 @property (nonatomic) NSString *physique;
 @property (nonatomic) NSString *position;

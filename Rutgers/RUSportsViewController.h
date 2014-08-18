@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUComponentProtocol.h"
+#import "RUChannelProtocol.h"
 #import "TileCollectionViewController.h"
 
-@interface RUSportsViewController : TileCollectionViewController <RUComponentProtocol>
+@interface RUSportsViewController : TileCollectionViewController <RUChannelProtocol>
 
 @end

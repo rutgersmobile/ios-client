@@ -17,7 +17,7 @@
         self.initials = [self initialsFromName:self.name];
         NSString *imageURLString = [dictionary[@"image"] firstObject];
         if ([imageURLString rangeOfString:@"blockr.jpg"].location == NSNotFound) {
-            self.imageUrl = [NSURL URLWithString:imageURLString];
+            self.imageURL = [NSURL URLWithString:imageURLString];
         }
         self.jerseyNumber = [[dictionary[@"jerseyNumber"] firstObject] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
         self.physique = [dictionary[@"physique"] firstObject];

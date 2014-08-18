@@ -18,7 +18,7 @@
 @end
 
 @implementation RUSportsViewController
-+(instancetype)componentForChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RUSportsViewController alloc] init];
 }
 

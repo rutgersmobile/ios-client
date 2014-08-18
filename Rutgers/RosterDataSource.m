@@ -49,9 +49,9 @@
     cell.nameLabel.text = player.name;
     cell.jerseyNumberLabel.text = player.jerseyNumber;
     cell.initialsLabel.text = player.initials;
+ 
     cell.playerImageView.image = nil;
-    [cell.playerImageView setImageWithURL:player.imageUrl];
-
+    [cell.playerImageView setImageWithURL:player.imageURL];
 }
 
 @end
