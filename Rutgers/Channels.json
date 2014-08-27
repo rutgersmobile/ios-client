@@ -1,15 +1,15 @@
  [
   {
-  "handle" : "newbus",
+  "handle" : "bus",
   "title": "Bus",
-  "view" : "newbus",
+  "view" : "bus",
   "icon" : "bus"
   },
   {
   "handle" : "news",
   "title": "News",
   "url": "news.txt",
-  "view" : "dtable",
+  "grouped" : true,
   "icon" : "news"
   },
   {
@@ -32,14 +32,14 @@
     "foreignTitle": "NB Recreation"
   },
   "url": "rec.txt",
-  "view" : "dtable",
+  "grouped" : true,
   "icon" : "recreation"
   },
   {
   "handle" : "events",
   "title": "Events",
   "url": "events.txt",
-  "view" : "dtable",
+  "grouped" : true,
   "icon" : "events"
   },
   {
@@ -56,7 +56,7 @@
     "foreignTitle": "NB Career Services"
   },
   "url": "csfaq.txt",
-  "view" : "dtable",
+  "grouped" : true,
   "icon" : "careers"
   },
   {
@@ -75,10 +75,20 @@
   "view" : "athletics",
   "icon" : "athletics"
   },
+  
+  {
+  "handle" : "knights",
+  "title": "Scarlet Knights",
+  "icon" : "knights",
+  "grouped" : true,
+  "url": "https://nstanlee.rutgers.edu/~rfranknj/mobile/1/athleticsfaq.txt",
+  },
+  
   {
   "handle" : "campus_status",
   "title": "Emergency Services",
-  "view" : "emergency",
+  "url": "emergency.txt",
+  "grouped" : true,
   "icon" : "emergency"
   },
   {
