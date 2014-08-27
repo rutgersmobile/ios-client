@@ -7,14 +7,11 @@
 //
 
 #import "RUReaderViewController.h"
-#import "RUChannelManager.h"
-#import "RUNetworkManager.h"
-#import "NSDictionary+Channel.h"
 #import "DynamicCollectionViewController.h"
 #import "TileCollectionViewItem.h"
 #import "TileCollectionViewCell.h"
 #import "EZCollectionViewSection.h"
-#import "DynamicDataSource.h"
+#import "DynamicTileDataSource.h"
 #import "FAQViewController.h"
 
 @interface DynamicCollectionViewController ()
@@ -47,15 +44,15 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     if (self.channel) {
-        self.dataSource = [[DynamicDataSource alloc] initWithUrl:self.channel[@"url"]];
+        self.dataSource = [[DynamicTileDataSource alloc] initWithUrl:[self.channel channelURL]];
     } else if (self.children) {
-        self.dataSource = [[DynamicDataSource alloc] initWithItems:self.children];
+        self.dataSource = [[DynamicTileDataSource alloc] initWithItems:self.children];
     }
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     TileCollectionViewItem *item = [self.dataSource itemAtIndexPath:indexPath];
-    kDynamicItemType type = [((DynamicDataSource *)self.dataSource) typeOfItem:item];
+    kDynamicItemType type = [((DynamicTileDataSource *)self.dataSource) typeOfItem:item];
  
     if (type == kDynamicItemTypeChannel) {
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:item.object[@"channel"]] animated:YES];
@@ -64,7 +61,7 @@
         dcVC.title = item.title;
         [self.navigationController pushViewController:dcVC animated:YES];
     } else if (type == kDynamicItemTypeFaq) {
-        FAQViewController *faqVC = [[FAQViewController alloc] initWithChildren:item.object[@"children"]];
+        FAQViewController *faqVC = [[FAQViewController alloc] initWithChannel:item.object];
         faqVC.title = item.title;
         [self.navigationController pushViewController:faqVC animated:YES];
     }
