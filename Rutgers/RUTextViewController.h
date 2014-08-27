@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUChannelProtocol.h"
 
 @interface RUTextViewController : UIViewController <RUChannelProtocol>
+@property (nonatomic) UITextView *textView;
 @end
