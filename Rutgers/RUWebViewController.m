@@ -7,10 +7,11 @@
 //
 
 #import "RUWebViewController.h"
-#import "RUChannelManager.h"
 #import <TOWebViewController.h>
 
-
+@interface RUWebViewController ()
+@property NSDictionary *channel;
+@end
 
 @implementation RUWebViewController
 
@@ -19,23 +20,47 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         storedChannels = [[NSCache alloc] init];
-        storedChannels.countLimit = 10;
+        storedChannels.countLimit = 5;
     });
     return storedChannels;
 }
 
-+(TOWebViewController *)channelWithConfiguration:(NSDictionary *)channel{
-    NSString *urlString = channel[@"url"];
-    TOWebViewController *webViewController = [self.storedChannels objectForKey:urlString];
-    if (!webViewController) {
-        webViewController = [[TOWebViewController alloc] initWithURLString:urlString];
-        webViewController.showPageTitles = NO;
-        [self.storedChannels setObject:webViewController forKey:urlString];
-
-        webViewController.hideWebViewBoundaries = YES;
-        webViewController.showUrlWhileLoading = NO;
++(RUWebViewController *)channelWithConfiguration:(NSDictionary *)channel{
+    if ([channel[@"weblink"] boolValue]) {
+        RUWebViewController *webViewController = [self.storedChannels objectForKey:channel];
+        if (!webViewController) {
+            webViewController = [[RUWebViewController alloc] initWithChannel:channel];
+            [self.storedChannels setObject:webViewController forKey:channel];
+        }
+        return webViewController;
+    } else {
+        return [[RUWebViewController alloc] initWithChannel:channel];
     }
-    return webViewController;
+}
+
+-(instancetype)initWithChannel:(NSDictionary *)channel{
+    NSString *urlString = [channel channelURL];
+    self = [super initWithURLString:urlString];
+    if (self) {
+        self.channel = channel;
+    }
+    return self;
+}
+
+-(void)viewDidLoad{
+    [super viewDidLoad];
+    self.showPageTitles = NO;
+    self.hideWebViewBoundaries = YES;
+    self.showUrlWhileLoading = NO;
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView{
+    [super webViewDidFinishLoad:webView];
+    
+    if (self.channel[@"fontSize"]) {
+        NSString *setTextSizeRule = [NSString stringWithFormat:@"document.body.style.fontSize = %@;", self.channel[@"fontSize"]];
+        [webView stringByEvaluatingJavaScriptFromString:setTextSizeRule];
+    }
 }
 @end
 

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <TOWebViewController.h>
-#import "RUChannelProtocol.h"
 
-@interface RUWebViewController : NSObject <RUChannelProtocol>
+@interface RUWebViewController : TOWebViewController <RUChannelProtocol>
 @end
