@@ -10,14 +10,12 @@
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
 #import "RURootController.h"
-#import "RUAppearance.h"
 
-#import "RUChannelManager.h"
-#import "RUUserInfoManager.h"
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property RURootController *rootController;
 @property (nonatomic) UIImageView *windowBackground;
+
 @end
 
 @implementation RUAppDelegate
@@ -27,7 +25,7 @@
 {
     [application setStatusBarHidden:NO];
     [self initialize];
-   
+    
     return YES;
 }
 
@@ -38,10 +36,9 @@
     
     [RUAppearance applyAppearance];
     
-    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    
     [self initializeCache];
     [self initializeDrawer];
+    [RUAnalyticsManager postAnalyticsForAppStartup];
 
     [self askUserForInformationIfNeeded];
 }
