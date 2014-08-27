@@ -6,14 +6,11 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "NSDictionary+Channel.h"
 #import "RUUserInfoManager.h"
 
 @implementation NSDictionary (Channel)
--(NSString *)identifierForChannel{
-    return self[@"handle"];
-}
--(NSString *)titleForChannel{
+
+-(NSString *)channelTitle{
     id title = self[@"title"];
     if ([title isKindOfClass:[NSString class]]) {
         return title = title;
@@ -28,13 +25,17 @@
     return nil;
 }
 
--(UIImage *)iconForChannel{
+-(UIImage *)channelIcon{
     NSString *iconName = self[@"icon"];
     UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     return image;
 }
 
--(NSString *)handle{
+-(NSString *)channelHandle{
     return self[@"handle"];
+}
+
+-(NSString *)channelURL{
+    return self[@"url"];
 }
 @end

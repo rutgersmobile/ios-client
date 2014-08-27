@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface NSDictionary (Channel)
--(NSString *)identifierForChannel;
--(NSString *)titleForChannel;
--(UIImage *)iconForChannel;
--(NSString *)handle;
+
+-(NSString *)channelTitle;
+
+-(UIImage *)channelIcon;
+
+-(NSString *)channelHandle;
+
+-(NSString *)channelURL;
 @end
