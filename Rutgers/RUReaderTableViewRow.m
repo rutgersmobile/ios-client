@@ -28,6 +28,7 @@
         
         self.imageURL = [NSURL URLWithString:[item[@"enclosure"] firstObject][@"_url"]];
         self.url = [item[@"link"] firstObject];
+        self.descriptionText = [item[@"description"] firstObject];
     }
     return self;
 }

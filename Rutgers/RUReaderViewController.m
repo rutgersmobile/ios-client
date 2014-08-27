@@ -8,7 +8,6 @@
 
 #import "RUReaderViewController.h"
 #import "RUReaderTableViewRow.h"
-#import "RUChannelManager.h"
 #import "RUReaderDataSource.h"
 
 @interface RUReaderViewController ()
@@ -32,9 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.rowHeight = 90.0;
-    self.tableView.estimatedRowHeight = 90.0;
-    self.dataSource = [[RUReaderDataSource alloc] initWithUrl:self.channel[@"url"]];
+    self.tableView.rowHeight = 160;
+    self.tableView.estimatedRowHeight = self.tableView.rowHeight;
+    self.dataSource = [[RUReaderDataSource alloc] initWithUrl:[self.channel channelURL]];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

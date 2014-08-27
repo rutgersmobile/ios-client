@@ -12,4 +12,5 @@
 @property (nonatomic) NSString *date;
 @property (nonatomic) NSURL *imageURL;
 @property (nonatomic) NSString *url;
+@property (nonatomic) NSString *descriptionText;
 @end

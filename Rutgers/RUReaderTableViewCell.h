@@ -12,8 +12,9 @@
 
 
 @interface RUReaderTableViewCell : ALTableViewAbstractCell
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
+@property (nonatomic) UILabel *titleLabel;
+@property (nonatomic) UILabel *timeLabel;
+@property (nonatomic) UILabel *descriptionLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *imageDisplayView;
 @property (nonatomic) BOOL hasImage;
 @end

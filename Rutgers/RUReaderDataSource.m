@@ -8,7 +8,6 @@
 
 #import "RUReaderDataSource.h"
 #import "RUReaderTableViewCell.h"
-#import "RUNetworkManager.h"
 #import "EZDataSource.h"
 #import "RUReaderTableViewRow.h"
 #import <UIKit+AFNetworking.h>
@@ -22,6 +21,7 @@
 -(id)initWithUrl:(NSString *)url{
     self = [super init];
     if (self) {
+        if (BETA) url = [url stringByReplacingOccurrencesOfString:@"https://rumobile.rutgers.edu/1/" withString:@"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/"];
         self.url = url;
     }
     return self;
@@ -30,7 +30,7 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUNetworkManager xmlSessionManager] GET:self.url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:self.url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
                 [loading updateWithContent:^(typeof(self) me) {
@@ -71,11 +71,12 @@
     cell.timeLabel.text = row.date;
     
     cell.hasImage = row.imageURL ? YES : NO;
-    cell.imageDisplayView.backgroundColor = [UIColor lightGrayColor];
+    cell.imageDisplayView.backgroundColor = [UIColor grayColor];
     
     cell.imageDisplayView.image = nil;
     [cell.imageDisplayView setImageWithURL:row.imageURL];
-
+    
+    cell.descriptionLabel.text = row.descriptionText;
 }
 
 
