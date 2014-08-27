@@ -9,5 +9,5 @@
 #import "ExpandingTableViewDataSource.h"
 
 @interface FAQDataSource : ExpandingTableViewDataSource
--(instancetype)initWithItems:(NSArray *)items;
+-(instancetype)initWithChannel:(NSDictionary *)channel;
 @end

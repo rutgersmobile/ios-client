@@ -12,15 +12,19 @@
 #import "FAQDataSource.h"
 
 @interface FAQViewController ()
-@property NSArray *children;
+@property NSDictionary *channel;
 @end
 
 @implementation FAQViewController
 
--(instancetype)initWithChildren:(NSArray *)children{
++(id)channelWithConfiguration:(NSDictionary *)channel{
+    return [[self alloc] initWithChannel:channel];
+}
+
+-(instancetype)initWithChannel:(NSDictionary *)channel{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        self.children = children;
+        self.channel = channel;
     }
     return self;
 }
@@ -30,19 +34,36 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.dataSource = [[FAQDataSource alloc] initWithItems:self.children];
+    self.dataSource = [[FAQDataSource alloc] initWithChannel:self.channel];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     id item = [self.dataSource itemAtIndexPath:indexPath];
+    
     if ([item isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *child = item;
-        FAQViewController *faqViewController = [[FAQViewController alloc] initWithChildren:child[@"children"]];
-        faqViewController.title = [child titleForChannel];
-        [self.navigationController pushViewController:faqViewController animated:YES];
+        NSDictionary *channel = item[@"channel"];
+        if (!channel) channel = item;
+        
+        UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+        vc.title = [item channelTitle];
+        
+        [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return (indexPath.row == 1);
+}
+
+-(BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+    return (indexPath.row == 1 && action == @selector(copy:));
+}
+
+-(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+    if (action != @selector(copy:)) return;
+    [UIPasteboard generalPasteboard].string = [[self.dataSource itemAtIndexPath:indexPath] description];
 }
 
 @end

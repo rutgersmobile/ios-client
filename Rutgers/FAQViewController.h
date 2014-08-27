@@ -8,6 +8,6 @@
 
 #import "ExpandingTableViewController.h"
 
-@interface FAQViewController : ExpandingTableViewController
--(instancetype)initWithChildren:(NSArray *)children;
+@interface FAQViewController : ExpandingTableViewController <RUChannelProtocol>
+-(instancetype)initWithChannel:(NSDictionary *)channel;
 @end

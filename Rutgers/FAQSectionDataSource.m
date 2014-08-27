@@ -11,31 +11,29 @@
 
 @interface FAQSectionDataSource ()
 @property NSDictionary *item;
+
 @end
 
 @implementation FAQSectionDataSource
 
 -(instancetype)initWithItem:(NSDictionary *)item{
-    id children = item[@"children"];
-    NSArray *items;
-    
-    if (![children isKindOfClass:[NSArray class]]) {
-        items = @[item[@"title"],item[@"answer"]];
-    } else {
-        items = @[item];
-    }
 
-    self = [super initWithItems:items];
+    self = [super init];
     if (self) {
+        NSArray *items;
+        id answer = item[@"answer"];
+        
+        if (answer) {
+            items = @[item[@"title"],answer];
+        } else {
+            items = @[item];
+        }
+        
+        self.items = items;
+
         self.item = item;
     }
     return self;
-}
-
-
--(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    [super registerReusableViewsWithTableView:tableView];
-    [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -43,6 +41,8 @@
 }
 
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [super configureCell:cell forRowAtIndexPath:indexPath];
+    
     NSString *stringForIndex;
     id itemForIndex = [self itemAtIndexPath:indexPath];
     
@@ -51,13 +51,24 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
         
     } else if ([itemForIndex isKindOfClass:[NSDictionary class]]) {
-        stringForIndex = itemForIndex[@"title"];
+        stringForIndex = [itemForIndex channelTitle];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     cell.textLabel.text = stringForIndex;
-    cell.textLabel.font = (indexPath.row == 0) ? [UIFont boldSystemFontOfSize:18] : [UIFont systemFontOfSize:16];
-    [super configureCell:cell forRowAtIndexPath:indexPath];
+    
+    if (indexPath.row == 0){
+        cell.textLabel.font =  [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        if (self.expanded) {
+            cell.textLabel.textColor = cell.tintColor;
+        } else {
+            cell.textLabel.textColor = [UIColor blackColor];
+        }
+    } else {
+        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        cell.textLabel.textColor = [UIColor blackColor];
+    }
+    
 }
 
 @end
