@@ -11,6 +11,7 @@
 @interface RUChannelManager : NSObject
 +(RUChannelManager *)sharedInstance;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
--(NSArray *)loadChannels;
--(void)loadWebLinksWithCompletion:(void(^)(NSArray *webLinks))completion;
+@property (readonly) NSArray *nativeChannels;
+-(void)webLinksWithCompletion:(void(^)(NSArray *webLinks))completion;
+@property (readonly) NSArray *allChannels;
 @end

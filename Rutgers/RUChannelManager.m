@@ -5,26 +5,14 @@
 //  Created by Kyle Bailey on 5/12/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
-#import "RUChannelManager.h"
-#import "RUNetworkManager.h"
-#import "NSDictionary+Channel.h"
 
-#import "RUChannelProtocol.h"
 
 @interface RUChannelManager ()
-@property NSArray *channelTags;
-@property NSMutableDictionary *channels;
+@property (readonly) NSSet *nativeChannelHandles;
+@property NSArray *webChannels;
 @end
 
 @implementation RUChannelManager
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.channels = [NSMutableDictionary dictionary];
-    }
-    return self;
-}
 
 +(RUChannelManager *)sharedInstance{
     static RUChannelManager *manager = nil;
@@ -35,44 +23,50 @@
     return manager;
 }
 
--(NSArray *)loadChannels{
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
-    NSError *error;
-    if (error && !data) {
-    } else {
-        NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-        for (NSDictionary *channel in channels) {
-            NSString *handle = [channel handle];
-            self.channels[handle] = channel;
+@synthesize nativeChannels = _nativeChannels;
+-(NSArray *)nativeChannels{
+    @synchronized(self) {
+        if (!_nativeChannels) {
+            NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
+            _nativeChannels =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
         }
-        return channels;
+        return _nativeChannels;
     }
-    return nil;
 }
 
--(void)loadWebLinksWithCompletion:(void(^)(NSArray *webLinks))completion{
-    [[RUNetworkManager jsonSessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[NSArray class]]) {
-            NSArray *webChannels = responseObject;
-            NSMutableArray *filteredWebChannels = [NSMutableArray array];
-            for (NSDictionary *channel in webChannels) {
-                NSString *handle = [channel handle];
-                if (!self.channels[handle]) {
-                    self.channels[handle] = channel;
-                    [filteredWebChannels addObject:channel];
-                }
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(filteredWebChannels);
-            });
-        } else {
+@synthesize nativeChannelHandles = _nativeChannelHandles;
+-(NSSet *)nativeChannelHandles{
+    @synchronized(self) {
+        if (!_nativeChannelHandles) _nativeChannelHandles = [self.nativeChannels valueForKey:@"handle"];
+        return _nativeChannelHandles;
+    }
+}
 
+-(void)webLinksWithCompletion:(void (^)(NSArray *))completion{
+    [[RUNetworkManager sessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject isKindOfClass:[NSArray class]]) {
+            self.webChannels = [self filterWebChannels:responseObject];
+            completion(self.webChannels);
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self loadWebLinksWithCompletion:completion];
+            [self webLinksWithCompletion:completion];
         });
     }];
+}
+
+-(NSArray *)filterWebChannels:(NSArray *)webChannels{
+    NSMutableArray *filteredWebChannels = [NSMutableArray array];
+    for (NSDictionary *channel in webChannels) {
+        NSString *handle = [channel channelHandle];
+        if (![self.nativeChannelHandles containsObject:handle]) {
+            NSMutableDictionary *modifiedWebChannel = [channel mutableCopy];
+            modifiedWebChannel[@"view"] = @"www";
+            modifiedWebChannel[@"weblink"] = @YES;
+            [filteredWebChannels addObject:modifiedWebChannel];
+        }
+    }
+    return filteredWebChannels;
 }
 
 -(Class)classForViewTag:(NSString *)viewTag{
@@ -81,8 +75,8 @@
     dispatch_once(&onceToken, ^{
         viewTagsToClassNameMapping = @{
                                        @"bus" : @"RUBusViewController",
-                                       @"newbus" : @"RUNewBusViewController",
-                                       @"dtable" : @"DynamicCollectionViewController",
+                                       @"faqview" : @"FAQViewController",
+                                       @"dtable" : @"DynamicTableViewController",
                                        @"food" : @"RUFoodViewController",
                                        @"places" : @"RUPlacesViewController",
                                        @"ruinfo" : @"RUInfoTableViewController",
@@ -93,26 +87,45 @@
                                        @"recreation" : @"RURecreationViewController",
                                        @"www" : @"RUWebViewController",
                                        @"text" : @"RUTextViewController",
-                                       @"feedback" : @"RUFeedbackViewController"
+                                       @"feedback" : @"RUFeedbackViewController",
+                                       @"options" : @"RUOptionsViewController"
                                        };
     });
     return NSClassFromString(viewTagsToClassNameMapping[viewTag]);
 }
 
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
+    [RUAnalyticsManager postAnalyticsForChannelOpen:channel];
     NSString *view = channel[@"view"];
-    if (!view) view = @"www";
+    if (!view) view = [self defaultViewForChannel:channel];
+    
     Class class = [self classForViewTag:view];
+    
     if (class && [class respondsToSelector:@selector(channelWithConfiguration:)]) {
         UIViewController * vc = [class channelWithConfiguration:channel];
-        NSString *title = [channel titleForChannel];
+        NSString *title = [channel channelTitle];
         vc.title = title;
         return vc;
     } else {
-        NSLog(@"No way to handle view type %@, \n%@",view,channel);
+        if (class) {
+            NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
+        } else {
+            NSLog(@"No way to handle view type %@, \n%@",view,channel);
+        }
     }
     return nil;
 }
 
+-(NSString *)defaultViewForChannel:(NSDictionary *)channel{
+    NSArray *children = channel[@"children"];
+    for (NSDictionary *child in children) {
+        if (child[@"answer"]) return @"faqview";
+    }
+    return @"dtable";
+}
+
+-(NSArray *)allChannels{
+    return [self.nativeChannels arrayByAddingObjectsFromArray:self.webChannels];
+}
 
 @end
