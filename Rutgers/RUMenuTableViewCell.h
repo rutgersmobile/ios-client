@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ALTableViewAbstractCell.h"
 
-@interface RUMenuTableViewCell : UITableViewCell
+@interface RUMenuTableViewCell : ALTableViewAbstractCell
 @property (nonatomic) UILabel *channelTitleLabel;
 @property (nonatomic) UIImageView *channelImage;
 @end

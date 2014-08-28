@@ -20,7 +20,7 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.subjectCode = subject[@"code"];
-        self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], subject[@"title"]];
+        self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], [subject[@"description"] capitalizedString]];
     }
     return self;
 }

@@ -15,6 +15,7 @@
 #import "AllStopsDataSource.h"
 #import "RUBusDataLoadingManager.h"
 #import "RULocationManager.h"
+#import "RUUserInfoManager.h"
 
 #define UPDATE_TIME_INTERVAL 60.0
 
@@ -37,26 +38,23 @@
         ComposedDataSource *all = [[ComposedDataSource alloc] init];
         all.title = @"All";
         
-        dispatch_block_t addNewBrunswickData = ^{
-            [routes addDataSource:[[ActiveRoutesDataSource alloc] initWithAgency:newBrunswickAgency]];
-            [stops addDataSource:[[ActiveStopsDataSource alloc] initWithAgency:newBrunswickAgency]];
-            
-            [all addDataSource:[[AllRoutesDataSource alloc] initWithAgency:newBrunswickAgency]];
-            [all addDataSource:[[AllStopsDataSource alloc] initWithAgency:newBrunswickAgency]];
-        };
-        
-        dispatch_block_t addNewarkData = ^{
-            [routes addDataSource:[[ActiveRoutesDataSource alloc] initWithAgency:newarkAgency]];
-            [stops addDataSource:[[ActiveStopsDataSource alloc] initWithAgency:newarkAgency]];
-            
-            [all addDataSource:[[AllRoutesDataSource alloc] initWithAgency:newarkAgency]];
-            [all addDataSource:[[AllStopsDataSource alloc] initWithAgency:newarkAgency]];
-        };
-        
         [stops addDataSource:[[NearbyActiveStopsDataSource alloc] init]];
         
-        addNewBrunswickData();
-        addNewarkData();
+        void (^addDataForAgency)(NSString *agency) = ^void (NSString *agency) {
+            
+            [routes addDataSource:[[ActiveRoutesDataSource alloc] initWithAgency:agency]];
+            [stops addDataSource:[[ActiveStopsDataSource alloc] initWithAgency:agency]];
+            
+            [all addDataSource:[[AllRoutesDataSource alloc] initWithAgency:agency]];
+            [all addDataSource:[[AllStopsDataSource alloc] initWithAgency:agency]];
+            
+        };
+        
+        [RUUserInfoManager performInCampusPriorityOrderWithNewBrunswickBlock:^{
+            addDataForAgency(newBrunswickAgency);
+        } newarkBlock:^{
+            addDataForAgency(newarkAgency);
+        } camdenBlock:nil];
 
         [self addDataSource:routes];
         [self addDataSource:stops];
@@ -67,6 +65,7 @@
 
 -(void)startUpdates{
     self.refreshTimer = [MSWeakTimer scheduledTimerWithTimeInterval:UPDATE_TIME_INTERVAL target:self selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+    [self setNeedsLoadContent];
     [[RULocationManager sharedLocationManager] startUpdatingLocation];
 }
 

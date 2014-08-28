@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EZTableViewController.h"
+#import "TableViewController.h"
+
 @class RUPlace;
 
-@interface RUPlaceDetailViewController : EZTableViewController
+@interface RUPlaceDetailViewController : TableViewController
 -(id)initWithPlace:(RUPlace *)place;
 
 @end

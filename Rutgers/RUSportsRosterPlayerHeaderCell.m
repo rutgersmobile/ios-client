@@ -36,6 +36,10 @@
 
 }
 
+-(void)updateFonts{
+
+}
+
 -(void)initializeConstraints{
     [self.playerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(7, 7, 7, 7) excludingEdge:ALEdgeLeft];
 

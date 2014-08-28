@@ -11,4 +11,5 @@
 @interface TileCollectionViewCell : UICollectionViewCell
 @property (nonatomic) UILabel *textLabel;
 @property (nonatomic) BOOL showsEllipses;
+-(void)updateFonts;
 @end

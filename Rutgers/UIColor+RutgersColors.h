@@ -15,7 +15,7 @@
 +(UIColor *)grey2Color;
 +(UIColor *)grey3Color;
 +(UIColor *)grey4Color;
-+(UIColor *)selectedRedColor;
 +(UIColor *)menuDeselectedColor;
 +(UIColor *)iconDeselectedColor;
++(UIColor *)modifiedRedColor;
 @end

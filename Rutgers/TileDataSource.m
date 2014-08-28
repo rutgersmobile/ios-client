@@ -17,19 +17,23 @@
     [collectionView registerClass:[TileCollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([TileCollectionViewCell class])];
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    TileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([TileCollectionViewCell class]) forIndexPath:indexPath];
+-(NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return NSStringFromClass([TileCollectionViewCell class]);
+}
+
+-(void)configureCell:(TileCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
     TileCollectionViewItem *item = [self itemAtIndexPath:indexPath];
     
     cell.textLabel.text = item.title;
     cell.showsEllipses = item.showsEllipses;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell = [super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
     cell.backgroundColor = [self colorForCollectionView:collectionView itemAtIndexPath:indexPath];
     cell.selectedBackgroundView = [self backgroundViewForCollectionView:collectionView itemAtIndexPath:indexPath];
-    
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
-    
+
     return cell;
 }
 

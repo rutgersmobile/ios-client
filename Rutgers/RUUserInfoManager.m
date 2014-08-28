@@ -25,6 +25,31 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 
 @implementation RUUserInfoManager
+
++(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
+    RUUserInfoManager *infoManager = [self sharedInstance];
+    NSDictionary *campus = infoManager.campus;
+    NSString *tag = campus[@"tag"];
+    
+    newBrunswickBlock = ^{ if (newBrunswickBlock) newBrunswickBlock(); };
+    newarkBlock = ^{ if (newarkBlock) newarkBlock(); };
+    camdenBlock = ^{ if (camdenBlock) camdenBlock(); };
+    
+    if ([tag isEqualToString:@"NK"]) {
+        newarkBlock();
+        newBrunswickBlock();
+        camdenBlock();
+    } else if ([tag isEqualToString:@"CM"]) {
+        camdenBlock();
+        newBrunswickBlock();
+        newarkBlock();
+    } else {
+        newBrunswickBlock();
+        camdenBlock();
+        newarkBlock();
+    }
+}
+
 +(instancetype)sharedInstance{
     static RUUserInfoManager *infoManager = nil;
     static dispatch_once_t onceToken;
@@ -157,4 +182,6 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 -(void)presentActionSheet:(UIActionSheet *)actionSheet{
     [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window]];
 }
+
+
 @end

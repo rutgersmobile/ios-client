@@ -12,5 +12,4 @@
 @interface EZDataSource : ComposedDataSource <UICollectionViewDelegate, UITableViewDelegate>
 -(EZTableViewAbstractRow *)itemAtIndexPath:(NSIndexPath *)indexPath;
 -(BOOL)shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
-@property (nonatomic) BOOL hidesSeperatorInsets;
 @end

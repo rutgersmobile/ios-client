@@ -8,7 +8,6 @@
 
 #import "RUFoodViewController.h"
 #import "RUDiningHallViewController.h"
-#import "RUChannelManager.h"
 #import "RUFoodDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 #import "DataTuple.h"
@@ -30,7 +29,23 @@
     if (object[@"view"]) {
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:object] animated:YES];
     } else {
+        if ([self isDiningHallOpen:object])
         [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:object] animated:YES];
     }
+}
+-(BOOL)isDiningHallOpen:(NSDictionary *)diningHall{
+    NSArray *meals = diningHall[@"meals"];
+    for (NSDictionary *meal in meals) {
+        if ([meal[@"meal_avail"] boolValue]) return YES;
+    }
+    return NO;
+}
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];
+    NSDictionary *object = item.object;
+    if (!object[@"view"]) {
+        return [self isDiningHallOpen:object];
+    }
+    return YES;
 }
 @end

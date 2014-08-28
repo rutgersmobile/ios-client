@@ -7,53 +7,52 @@
 //
 
 #import "RUMenuTableViewCell.h" 
+#import "RULabel.h"
 
 @interface RUMenuTableViewCell ()
-@property (nonatomic) UIView *leftPadView;
 @end
 
 @implementation RUMenuTableViewCell
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
         self.backgroundColor = [UIColor clearColor];
         self.opaque = NO;
-
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        self.channelImage = [UIImageView newAutoLayoutView];
-        self.channelImage.tintColor = [UIColor iconDeselectedColor];
-
-        [self.contentView addSubview:self.channelImage];
-        
-        [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 30)];
-        self.channelImage.contentMode = UIViewContentModeTopLeft;
-        
-        [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:15];
-        [self.channelImage autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        
-        
-        self.channelTitleLabel = [UILabel newAutoLayoutView];
-        [self.contentView addSubview:self.channelTitleLabel];
-
-        [self.channelTitleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.channelImage withOffset:16];
-        [self.channelTitleLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        
-        self.channelTitleLabel.font = [UIFont systemFontOfSize:17];
-        self.channelTitleLabel.textColor = [UIColor menuDeselectedColor];
-        
-        
-        self.leftPadView = [UIView newAutoLayoutView];
-        [self.contentView addSubview:self.leftPadView];
-        
-        [self.leftPadView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
-        [self.leftPadView autoSetDimension:ALDimensionWidth toSize:5];
-        
-        self.leftPadView.backgroundColor = [UIColor selectedRedColor];
-        self.leftPadView.hidden = YES;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return self;
+}
+
+-(void)initializeSubviews {
+    
+    self.channelImage = [UIImageView newAutoLayoutView];
+    self.channelImage.tintColor = [UIColor iconDeselectedColor];
+    [self.contentView addSubview:self.channelImage];
+    self.channelImage.contentMode = UIViewContentModeTopLeft;
+    
+    self.channelTitleLabel = [RULabel newAutoLayoutView];
+    self.channelTitleLabel.numberOfLines = 2;
+    self.channelTitleLabel.adjustsFontSizeToFitWidth = YES;
+    
+    [self.contentView addSubview:self.channelTitleLabel];
+    self.channelTitleLabel.textColor = [UIColor menuDeselectedColor];
+
+}
+
+-(void)initializeConstraints {
+    [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 30)];
+    [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
+    [self.channelImage autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+    
+    [self.channelTitleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.channelImage withOffset:kLabelHorizontalInsets];
+    [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets+3];
+    [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets+3 relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+}
+
+-(void)updateFonts{
+    self.channelTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
@@ -71,17 +70,9 @@
 }
 
 -(void)applyStyleForHighlightedState:(BOOL)state{
-    if (state) {
-       // self.backgroundColor = [UIColor grey1Color];
-        self.leftPadView.hidden = NO;
-        self.channelImage.tintColor = [UIColor whiteColor];
-        self.channelTitleLabel.textColor = [UIColor whiteColor];
-    } else {
-       // self.backgroundColor = [UIColor grey2Color];
-        self.channelImage.tintColor = [UIColor iconDeselectedColor];
-        self.channelTitleLabel.textColor = [UIColor menuDeselectedColor];
-        self.leftPadView.hidden = YES;
-    }
+    self.channelImage.tintColor = state ? [UIColor whiteColor] : [UIColor iconDeselectedColor];
+    self.channelTitleLabel.textColor = state ? [UIColor whiteColor] : [UIColor menuDeselectedColor];
+    self.backgroundColor = state ? [[UIColor blackColor] colorWithAlphaComponent:0.13] : nil;
 }
 
 

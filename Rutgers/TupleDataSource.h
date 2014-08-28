@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "BasicDataSource.h"
+#import "StringDataSource.h"
 
-@interface TupleDataSource : BasicDataSource
+@interface TupleDataSource : StringDataSource
 
 @end

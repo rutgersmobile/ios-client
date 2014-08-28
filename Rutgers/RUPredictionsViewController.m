@@ -33,7 +33,8 @@
     
     self.title = [self.item title];
     
-    self.tableView.rowHeight = [self.item isKindOfClass:[RUBusRoute class]] ? 68.0 : 90.0;
+    self.tableView.rowHeight = [self.item isKindOfClass:[RUBusRoute class]] ? 70.0 : 96.0;
+    self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     
     self.dataSource = [[RUPredictionsDataSource alloc] initWithItem:self.item];
     

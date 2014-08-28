@@ -25,4 +25,8 @@
 -(NSArray *)activeRoutes{
     return [self.routes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]];
 }
+
+-(NSString *)description{
+    return self.title;
+}
 @end 

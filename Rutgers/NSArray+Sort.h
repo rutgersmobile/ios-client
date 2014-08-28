@@ -10,4 +10,5 @@
 
 @interface NSArray (Sort)
 -(NSArray *)sortByKeyPath:(NSString *)keyPath;
+-(NSArray *)sortByKeyPath:(NSString *)keyPath beginsWith:(NSString *)string;
 @end

@@ -21,6 +21,10 @@
     // Get the actual height required for the cell
     UIView *contentView = [self respondsToSelector:@selector(contentView)] ? [self performSelector:@selector(contentView)] : self;
     
-    return [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    CGSize fittingSize = [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    fittingSize.height++;
+    fittingSize.width++;
+    
+    return fittingSize;
 }
 @end

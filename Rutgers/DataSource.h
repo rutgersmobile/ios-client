@@ -17,6 +17,8 @@
 /// The title of this data source. This value is used to populate section headers and the segmented control tab.
 @property (nonatomic, copy) NSString *title;
 
+@property (nonatomic, copy) NSString *footer;
+
 /// The number of sections in this data source.
 @property (nonatomic, readonly) NSInteger numberOfSections;
 
@@ -41,13 +43,21 @@
 /// Is this data source "hidden" by a placeholder either of its own or from an enclosing data source. Use this to determine whether to report that there are no items in your data source while loading.
 @property (nonatomic, readonly) BOOL obscuredByPlaceholder;
 
-#pragma mark - Subclass hooks
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+-(void)invalidateCachedHeights;
+-(void)invalidateCachedHeightsForSection:(NSInteger)section;
+-(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths;
+
+#pragma mark - Subclass hooks
 
 - (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier;
 - (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 
+- (NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /// Register reusable views needed by this data source
 - (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;

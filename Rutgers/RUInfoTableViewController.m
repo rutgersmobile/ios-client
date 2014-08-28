@@ -7,12 +7,9 @@
 //
 
 #import "RUInfoTableViewController.h"
+#import "DataTuple.h"
+#import "RUInfoDataSource.h"
 #import <MessageUI/MessageUI.h>
-#import "EZDataSource.h"
-#import "EZTableViewTextRow.h"
-#import "ALTableViewTextCell.h"
-#import "RUChannelManager.h"
-
 
 @interface RUInfoTableViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
@@ -26,114 +23,35 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    self.dataSource.hidesSeperatorInsets = YES;
-    [self makeSections];
+    
+    self.dataSource = [[RUInfoDataSource alloc] init];
 }
 
-/**
- *  Build the data structure containing all the information pertinent to the ru-info channel
- */
--(void)makeSections{
-    NSArray *infoData = @[@{@"header" :@"Call RU-Info",
-                            @"body" : @[@{@"type" : @"text" , @"text" : @"Contact a helpful Information Assistant at RU-info with your Rutgers questions by calling, texting, or email."},
-                                        @{@"type" : @"callButton", @"text" : @"Call (732-445-INFO)", @"number" : @"telprompt://732-445-INFO"}]},
-                          
-                          @{@"header" :@"Text RU-Info",
-                            @"body" : @[@{@"type" : @"text" , @"text" : @"Text RU-info with your question. To sign up for RU-info TEXT:"},
-                                        @{@"type" : @"textButton", @"text" : @"Text 'Rutgers' to 66746", @"number" : @"66746", @"body" : @"Rutgers"},
-                                        @{@"type" : @"text" , @"text" : @"Or, if you have already signed up:"},
-                                        @{@"type" : @"textButton" , @"text" : @"Text your question to 66746", @"number" : @"66746"}]
-                            },
-                          
-                          @{@"header" :@"Email RU-Info",
-                            @"body" : @[@{@"type" : @"text" , @"text" : @"Email RU-Info with your question:"},
-                                        @{@"type" : @"emailButton", @"text" : @"Email Colonel Henry", @"email" : @"colhenry@rci.rutgers.edu"}]
-                            },
-                          
-                          @{@"header" :@"Visit Website",
-                            @"body" : @[@{@"type" : @"text" , @"text" : @"For hours and additional info, visit us online:"},
-                                        @{@"type" : @"webButton", @"text" : @"Visit Website", @"url" : @"http://m.rutgers.edu/ruinfo.html"}]
-                            }];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
+    NSString *type = item[@"type"];
     
-    //Create centered paragraph style for use below
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    
-    //These attributes will be applied to all the text onscreen that is not a button
-    NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle};
-   
-    //These attributes will be applied to all buttons
-    NSDictionary *buttonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : self.view.tintColor};
-    NSDictionary *disabledButtonAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:17], NSParagraphStyleAttributeName : paragraphStyle, NSForegroundColorAttributeName : [UIColor grayColor]};
-    
-    //Loop through the sections in infoData
-    for (NSDictionary *sectionDictionary in infoData) {
-        
-        //Make a new section
-        EZDataSourceSection *section = [[EZDataSourceSection alloc] initWithSectionTitle:sectionDictionary[@"header"]];
-        
-        //Loop through all the body rows
-        for (NSDictionary *rowDictionary in sectionDictionary[@"body"]) {
-            NSString *string = rowDictionary[@"text"];
-            NSString *type = rowDictionary[@"type"];
-            EZTableViewTextRow *row = [[EZTableViewTextRow alloc] init];
-            if ([type isEqualToString:@"text"]) {
-                //Configure for static text
-                row.shouldHighlight = NO;
-                row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:textAttributes];
-            } else {
-                //Configure button
-                if ([self typeEnabled:type]) {
-                    __weak typeof(self) weakSelf = self;
-                    //If the buttons action can be handled, figure out its type and set up the action
-                    row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:buttonAttributes];
-                    if ([type isEqualToString:@"callButton"]) {
-                        row.didSelectRowBlock = ^{
-                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:rowDictionary[@"number"]]];
-                        };
-                    } else if ([type isEqualToString:@"textButton"]) {
-                        row.didSelectRowBlock = ^{
-                            [weakSelf presentMessageComposeViewControllerWithRecipients:@[rowDictionary[@"number"]] body:rowDictionary[@"body"]];
-                        };
-                    } else if ([type isEqualToString:@"emailButton"]) {
-                        row.didSelectRowBlock = ^{
-                            [weakSelf presentMailCompseViewControllerWithRecipients:@[rowDictionary[@"email"]] body:rowDictionary[@"body"]];
-                        };
-                    } else if ([type isEqualToString:@"webButton"]) {
-                        row.didSelectRowBlock = ^{
-                            [weakSelf.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : self.title, @"view" : @"www", @"url" : rowDictionary[@"url"]}] animated:YES];
-                        };
-                    }
-                } else {
-                    //Otherwise grey out the button
-                    row.attributedText = [[NSAttributedString alloc] initWithString:string attributes:disabledButtonAttributes];
-                }
-                row.showsDisclosureIndicator = NO;
-            }
-            [section addItem:row];
-        }
-        [self.dataSource addDataSource:section];
+    if (![RUInfoDataSource typeEnabled:type]) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
     }
-}
-
-/**
- *  Checks if a specified button action type can be handled
- *
- *  @param type callButton, textButton, emailButton, webButton
- *
- *  @return YES if the action can be handled, no otherwise
- */
--(BOOL)typeEnabled:(NSString *)type{
-     if ([type isEqualToString:@"callButton"]) {
-         return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"telprompt://732-445-INFO"]];
+    
+    if ([type isEqualToString:@"callButton"]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:item[@"number"]]];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if ([type isEqualToString:@"textButton"]) {
-        return [MFMessageComposeViewController canSendText];
+        [self presentMessageComposeViewControllerWithRecipients:@[item[@"number"]] body:item[@"body"]];
     } else if ([type isEqualToString:@"emailButton"]) {
-        return [MFMailComposeViewController canSendMail];
+        [self presentMailCompseViewControllerWithRecipients:@[item[@"email"]] body:item[@"body"]];
     } else if ([type isEqualToString:@"webButton"]) {
-        return YES;
+        [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : self.title, @"view" : @"www", @"url" : item[@"url"]}] animated:YES];
     }
-    return NO;
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
+    NSString *type = item[@"type"];
+    return ![type isEqualToString:@"text"];
 }
 
 /**

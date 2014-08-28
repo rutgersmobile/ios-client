@@ -10,5 +10,5 @@
 
 @interface ExpandingTableViewDataSource : ComposedDataSource
 @property (nonatomic) NSArray *sections;
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)toggleExpansionForSection:(NSUInteger)section;
 @end

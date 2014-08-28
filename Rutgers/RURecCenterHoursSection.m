@@ -10,6 +10,7 @@
 #import "RURecCenterHoursHeaderRow.h"
 #import "RURecCenterMeetingAreaRow.h"
 #import "DataSource_Private.h"
+#import "NSIndexPath+RowExtensions.h"
 
 @interface RURecCenterHoursSection ()
 @property (nonatomic) NSDictionary *meetingAreas;
@@ -106,7 +107,8 @@
 }
 
 -(void)updateDateWithDirection:(DataSourceOperationDirection)direction{
-    [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0] direction:direction];
+    [self invalidateCachedHeightsForSection:0];
+    [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, [self numberOfItemsInSection:0]) inSection:0] direction:direction];
 }
 
 NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
@@ -129,12 +131,6 @@ NSArray *componentsForDateStrings(NSSet *dateStrings){
         return compareComponents(obj1, obj2);
     }];
 }
-
-NSComparisonResult compare(NSInteger int1, NSInteger int2){
-    if (int1 < int2) return NSOrderedAscending;
-    if (int1 > int2) return NSOrderedDescending;
-    return NSOrderedSame;
-};
 
 NSComparisonResult compareComponents(NSDateComponents *comps1, NSDateComponents *comps2){
 

@@ -9,5 +9,5 @@
 #import "BasicDataSource.h"
 
 @interface StringDataSource : BasicDataSource
-
+@property (nonatomic) BOOL showsDisclosureIndicator;
 @end

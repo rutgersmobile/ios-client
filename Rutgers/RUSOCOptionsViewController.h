@@ -17,6 +17,6 @@
 @end
 
 
-@interface RUSOCOptionsViewController : UITableViewController
+@interface RUSOCOptionsViewController : TableViewController
 -(instancetype)initWithDelegate:(id<RUSOCOptionsDelegate>)delegate;
 @end

@@ -45,8 +45,8 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.distanceFilter = 15;  // updates whenever we move 15 m
-        self.locationManager.activityType = CLActivityTypeFitness; 	// includes any pedestrian activities
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters; //middle ground between accuracy and power usage, also 100 meters might be worth using but this may be too inaccurate
+        self.locationManager.activityType = CLActivityTypeFitness; 	// docs say that this includes any pedestrian activities
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters; //middle ground between accuracy and power usage, 100 meters is probably too inaccurate
         self.locationManager.delegate = self;
     }
     return self;
@@ -67,25 +67,45 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
     [[NSNotificationCenter defaultCenter] postNotificationName:LocationManagerDidChangeLocationKey object:self userInfo:@{LocationManagerNotificationLocationKey : location}];
 }
 
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
+    // the enum falls through to any of the positive status types including the new ios 8 types, to avoid refering to them by their enum def that isnt available in the pre ios 8 sdk
+    switch (status) {
+        case kCLAuthorizationStatusNotDetermined:
+        case kCLAuthorizationStatusDenied:
+        case kCLAuthorizationStatusRestricted:
+            break;
+        default:
+            @synchronized(self) {
+                if (self.numberOfUpdates > 0) [self.locationManager startUpdatingLocation];
+            }
+            break;
+    }
+}
+
 -(CLLocation *)location{
     return self.locationManager.location;
 }
 
 - (void)startUpdatingLocation{
     @synchronized(self) {
-        if (self.numberOfUpdates == 0){
-            [self.locationManager startUpdatingLocation];
-        }
+        if (self.numberOfUpdates == 0) [self _startUpdatingLocation];
         self.numberOfUpdates++;
+    }
+}
+
+-(void)_startUpdatingLocation{
+    
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [[CLLocationManager class] authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        [self.locationManager performSelector:@selector(requestWhenInUseAuthorization)];
+    } else {
+        [self.locationManager startUpdatingLocation];
     }
 }
 
 - (void)stopUpdatingLocation{
     @synchronized(self) {
         self.numberOfUpdates--;
-        if (!self.numberOfUpdates == 0) {
-            [self.locationManager stopUpdatingLocation];
-        }
+        if (self.numberOfUpdates == 0) [self.locationManager stopUpdatingLocation];
     }
 }
 @end

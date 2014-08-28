@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-static NSString * const newBrunswickAgency;
-static NSString * const newarkAgency;
+extern NSString * const newBrunswickAgency;
+extern NSString * const newarkAgency;
 
 #define TITLES @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}
 
@@ -25,7 +25,7 @@ static NSString * const newarkAgency;
 
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler;
 
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))handler;
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler;
 
 -(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock;
 @end

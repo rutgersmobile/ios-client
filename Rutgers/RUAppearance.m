@@ -35,22 +35,16 @@
 +(void)applyAppearanceToNavigationBar:(UINavigationBar *)navigationBar{
     navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     navigationBar.tintColor = [UIColor whiteColor];
-    navigationBar.barTintColor = [self modifiedRed];
+    navigationBar.barTintColor = [UIColor modifiedRedColor];
 }
 
 +(void)applyAppearanceToToolbar:(UIToolbar *)toolbar{
     toolbar.tintColor = [UIColor whiteColor];
-    toolbar.barTintColor = [self modifiedRed];
+    toolbar.barTintColor = [UIColor modifiedRedColor];
 }
 
 +(void)applyAppearanceToSearchBar:(UISearchBar *)searchBar{
   //  searchBar.barTintColor = [UIColor colorWithWhite:0.4 alpha:1.0];
   //  searchBar.tintColor = [UIColor whiteColor];
-}
-
-+(UIColor *)modifiedRed{
-    CGFloat hue, sat, bright, alpha;
-    [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
-    return [UIColor colorWithHue:hue saturation:1.0 brightness:bright alpha:alpha];
 }
 @end

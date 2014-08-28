@@ -13,7 +13,7 @@
 -(instancetype)initWithAgency:(NSString *)agency;
 +(instancetype)managerForAgency:(NSString *)agency;
 
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))handler;
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler;
 
 -(void)fetchAllStopsWithCompletion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchAllRoutesWithCompletion:(void(^)(NSArray *routes, NSError *error))handler;

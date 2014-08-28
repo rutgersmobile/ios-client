@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "TupleDataSource.h"
+#import "ComposedDataSource.h"
 #import "SearchDataSource.h"
 
-@interface RUSOCSearchDataSource : TupleDataSource <SearchDataSource>
+@interface RUSOCSearchDataSource : ComposedDataSource <SearchDataSource>
 -(void)setNeedsLoadIndex;
 @end

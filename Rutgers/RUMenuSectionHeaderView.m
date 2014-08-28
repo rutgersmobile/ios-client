@@ -14,18 +14,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.contentView.backgroundColor = [UIColor grey3Color];
-        self.opaque = YES;
-        self.contentView.opaque = YES;
-
         self.sectionTitleLabel = [UILabel newAutoLayoutView];
         [self.contentView addSubview:self.sectionTitleLabel];
 
-        self.sectionTitleLabel.font = [UIFont systemFontOfSize:14];
+        self.sectionTitleLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleHeadline];
         self.sectionTitleLabel.textColor = [UIColor colorWithRed:147/255.0 green:166/255.0 blue:176/255.0 alpha:1];
         
-        [self.sectionTitleLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
-        [self.sectionTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:16.0];
+        [self.sectionTitleLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsetsSmall, kLabelHorizontalInsets, kLabelVerticalInsetsSmall, kLabelHorizontalInsets)];
 
         self.layer.borderColor = [UIColor grey4Color].CGColor;
         self.layer.borderWidth = 0.5;

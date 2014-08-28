@@ -11,6 +11,9 @@
 #import "NSObject+KVOBlock.h"
 #import "UIView+LayoutSize.h"
 #import <libkern/OSAtomic.h>
+#import "ALTableViewAbstractCell.h"
+#import "TileCollectionViewCell.h"
+#import "RowHeightCache.h"
 
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
@@ -19,7 +22,9 @@
 @property (nonatomic, copy) dispatch_block_t pendingUpdateBlock;
 @property (nonatomic) BOOL loadingComplete;
 @property (nonatomic, weak) AAPLLoading *loadingInstance;
+
 @property (nonatomic) NSMutableDictionary *sizingCells;
+@property (nonatomic) RowHeightCache *rowHeightCache;
 @end
 
 @implementation DataSource
@@ -28,8 +33,13 @@
     self = [super init];
     if (self) {
         self.sizingCells = [NSMutableDictionary dictionary];
+        self.rowHeightCache = [[RowHeightCache alloc] init];
     }
     return self;
+}
+
+-(NSString *)description{
+    return [[super description] stringByAppendingFormat:@"\t%@",self.title];
 }
 
 #pragma mark - Data Source Implementation
@@ -58,6 +68,17 @@
     
 }
 
+#pragma mark - Cached Heights
+-(void)invalidateCachedHeights{
+    [self.rowHeightCache invalidateCachedHeights];
+}
+-(void)invalidateCachedHeightsForSection:(NSInteger)section{
+    [self.rowHeightCache invalidateCachedHeightsForSection:section];
+}
+-(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
+    [self.rowHeightCache invalidateCachedHeightsForIndexPaths:indexPaths];
+}
+
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return self.numberOfSections;
@@ -69,6 +90,10 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return (section == 0) ? self.title : nil;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    return (section == 0) ? self.footer : nil;
 }
 
 -(BOOL)tableView:(UITableView *)tableView sectionHasCustomHeader:(NSInteger)section{
@@ -88,11 +113,16 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+    ALTableViewAbstractCell *cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+   
+    [cell updateFonts];
     [self configureCell:cell forRowAtIndexPath:indexPath];
     
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
+    
+   // [cell setNeedsLayout];
+   // [cell layoutIfNeeded];
     
     return cell;
 }
@@ -107,14 +137,31 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-    [self configureCell:cell forRowAtIndexPath:indexPath];
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    //if (NEW_TABLEVIEW_HEIGHT_CALCULATIONS) return UITableViewAutomaticDimension;
     
+    NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
+    if (cachedHeight) return [cachedHeight doubleValue];
+   
+    id cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        
+    [cell updateFonts];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
+
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
-    return [cell layoutSizeFittingSize:tableView.bounds.size].height;
+    CGFloat height = [cell layoutSizeFittingSize:tableView.bounds.size].height;
+    
+    [self.rowHeightCache setCachedHeight:height forRowAtIndexPath:indexPath];
+    
+    return height;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
+    if (cachedHeight) return [cachedHeight doubleValue];
+    return tableView.estimatedRowHeight;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -142,11 +189,27 @@
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return nil;
+    TileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForItemAtIndexPath:indexPath] forIndexPath:indexPath];
+    
+    [cell updateFonts];
+    [self configureCell:cell forItemAtIndexPath:indexPath];
+    
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    
+    return cell;
 }
 
 -(void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView{
 
+}
+
+-(NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return nil;
+}
+
+-(void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    
 }
 
 #pragma mark - ContentLoading methods#pragma mark - AAPLContentLoading methods
@@ -408,31 +471,45 @@
 
 // Use these methods to notify the observers of changes to the dataSource.
 - (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths{
-    ASSERT_MAIN_THREAD;
-
-    id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexPaths:)]) {
-        [delegate dataSource:self didInsertItemsAtIndexPaths:insertedIndexPaths];
-    }
-    
+    [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceOperationDirectionNone];
 }
 
 - (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths{
-    ASSERT_MAIN_THREAD;
-
-    id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didRemoveItemsAtIndexPaths:)]) {
-        [delegate dataSource:self didRemoveItemsAtIndexPaths:removedIndexPaths];
-    }
+    [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceOperationDirectionNone];
     
 }
 
 - (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths{
-    ASSERT_MAIN_THREAD;
+    [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:DataSourceOperationDirectionNone];
+}
 
+// Use these methods to notify the observers of changes to the dataSource.
+- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction{
+    ASSERT_MAIN_THREAD;
+    
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didRefreshItemsAtIndexPaths:)]) {
-        [delegate dataSource:self didRefreshItemsAtIndexPaths:refreshedIndexPaths];
+    if ([delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexPaths:direction:)]) {
+        [delegate dataSource:self didInsertItemsAtIndexPaths:insertedIndexPaths direction:direction];
+    }
+    
+}
+
+- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction{
+    ASSERT_MAIN_THREAD;
+    
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:didRemoveItemsAtIndexPaths:direction:)]) {
+        [delegate dataSource:self didRemoveItemsAtIndexPaths:removedIndexPaths direction:direction];
+    }
+    
+}
+
+- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction{
+    ASSERT_MAIN_THREAD;
+    
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:didRefreshItemsAtIndexPaths:direction:)]) {
+        [delegate dataSource:self didRefreshItemsAtIndexPaths:refreshedIndexPaths direction:direction];
     }
     
 }
@@ -459,9 +536,12 @@
     [self notifySectionsRefreshed:sections direction:DataSourceOperationDirectionNone];
 }
 
-- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection
-{
-    [self notifySectionMovedFrom:section to:newSection direction:DataSourceOperationDirectionNone];
+- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection{
+    ASSERT_MAIN_THREAD;
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:didMoveSection:toSection:)]) {
+        [delegate dataSource:self didMoveSection:section toSection:newSection];
+    }
 }
 
 - (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
@@ -491,16 +571,6 @@
         [delegate dataSource:self didRefreshSections:sections direction:direction];
     }
     
-}
-
-- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection direction:(DataSourceOperationDirection)direction
-{
-    ASSERT_MAIN_THREAD;
-    
-    id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didMoveSection:toSection:direction:)]) {
-        [delegate dataSource:self didMoveSection:section toSection:newSection direction:direction];
-    }
 }
 
 - (void)notifyDidReloadData{

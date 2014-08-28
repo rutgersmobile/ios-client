@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "BusBasicDataSource.h"
+#import "ComposedDataSource.h"
 #import "SearchDataSource.h"
 
-@interface BusSearchDataSource : BusBasicDataSource <SearchDataSource>
+@interface BusSearchDataSource : ComposedDataSource <SearchDataSource>
 
 @end

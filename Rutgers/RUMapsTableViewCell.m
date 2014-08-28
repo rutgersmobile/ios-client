@@ -9,6 +9,7 @@
 #import "RUMapsTableViewCell.h"
 #import "RUEmbeddedMapsViewController.h"
 #import "iPadCheck.h"
+
 @interface RUMapsTableViewCell ()
 @property (nonatomic) UIView *controllerView;
 @property (nonatomic) RUEmbeddedMapsViewController *mapsViewController;
@@ -23,8 +24,9 @@
 }
 
 -(void)initializeConstraints{
-    [self.controllerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.controllerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
     [self.controllerView autoSetDimension:ALDimensionHeight toSize:[[self class] rowHeight] relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.controllerView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
 }
 
 -(void)setPlace:(RUPlace *)place{

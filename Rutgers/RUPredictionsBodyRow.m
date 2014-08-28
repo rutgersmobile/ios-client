@@ -38,26 +38,32 @@
     NSMutableString *descriptionString = [NSMutableString new];
     NSMutableString *timeString = [NSMutableString new];
     
-    for (NSDictionary *prediction in self.predictionTimes) {
+    [self.predictionTimes enumerateObjectsUsingBlock:^(NSDictionary *prediction, NSUInteger idx, BOOL *stop) {
         NSString *minutes = prediction[@"_minutes"];
         NSString *seconds = prediction[@"_seconds"];
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[seconds integerValue]];
-       
+        
+        if (idx != 0) {
+            [minutesString appendString:@"\n"];
+            [descriptionString appendString:@"\n"];
+            [timeString appendString:@"\n"];
+        }
+        
         if ([minutes integerValue] == 0) {
-            [minutesString appendFormat:@"%@\n",seconds];
-            [descriptionString appendString:@"seconds at\n"];
+            [minutesString appendString:seconds];
+            [descriptionString appendString:@"seconds at"];
         } else {
-            [minutesString appendFormat:@"%@\n",minutes];
+            [minutesString appendString:minutes];
             if ([minutes integerValue] == 1) {
-                [descriptionString appendString:@"minute at\n"];
+                [descriptionString appendString:@"minute at"];
             } else {
-                [descriptionString appendString:@"minutes at\n"];
-
+                [descriptionString appendString:@"minutes at"];
             }
         }
-        [timeString appendFormat:@"%@\n",[self formatDate:date]];
-    }
-    
+        [timeString appendString:[self formatDate:date]];
+        
+    }];
+
     self.minutesString = minutesString;
     self.descriptionString = descriptionString;
     self.timeString = timeString;
@@ -72,25 +78,5 @@
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     });
     return [dateFormatter stringFromDate:date];
-}/*
-
--(NSAttributedString *)labelString{
-    NSDictionary *attributes = @{NSFontAttributeName : [UIFont systemFontOfSize:16]};
-    NSDictionary *boldAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:16]};
-    
-    NSMutableAttributedString *labelString = [[NSMutableAttributedString alloc] init];
-    for (NSDictionary *prediction in self.predictionTimes) {
-        NSString *minutes = prediction[@"_minutes"];
-        NSInteger seconds = [prediction[@"_seconds"] integerValue];
-        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:seconds];
-  
-        NSString *minutesString = [NSString stringWithFormat:@"%@ minutes at ",minutes];
-        NSString *timeString = [NSString stringWithFormat:@"%@ \n",[self formatDate:date]];
-        
-        [labelString appendAttributedString:[[NSAttributedString alloc] initWithString:minutesString attributes:attributes]];
-        [labelString appendAttributedString:[[NSAttributedString alloc] initWithString:timeString attributes:boldAttributes]];
-    }
-    
-    return labelString;
-}*/
+}
 @end

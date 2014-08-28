@@ -10,7 +10,7 @@
 #import "RUCollectionViewFlowLayout.h"
 
 @interface TileCollectionViewController ()
-
+@property (nonatomic) CGRect lastValidBounds;
 @end
 
 @implementation TileCollectionViewController
@@ -23,22 +23,16 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
+-(void)viewWillLayoutSubviews{
+    [self invalidateLayoutIfNeeded];
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.collectionView.collectionViewLayout invalidateLayout];
+-(void)invalidateLayoutIfNeeded{
+    if (!CGRectEqualToRect(self.view.bounds, self.lastValidBounds)) [self invalidateLayout];
 }
 
--(void)applicationDidBecomeActive:(NSNotification *)notification{
+-(void)invalidateLayout{
     [self.collectionView.collectionViewLayout invalidateLayout];
+    self.lastValidBounds = self.view.bounds;
 }
 @end

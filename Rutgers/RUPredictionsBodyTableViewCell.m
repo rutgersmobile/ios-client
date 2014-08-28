@@ -7,45 +7,49 @@
 //
 
 #import "RUPredictionsBodyTableViewCell.h"
+#import "RULabel.h"
 
 @implementation RUPredictionsBodyTableViewCell
 
 -(void)initializeSubviews{
-    self.minutesLabel = [UILabel newAutoLayoutView];
-    self.descriptionLabel = [UILabel newAutoLayoutView];
-    self.timeLabel = [UILabel newAutoLayoutView];
+    self.minutesLabel = [RULabel newAutoLayoutView];
+    self.descriptionLabel = [RULabel newAutoLayoutView];
+    self.timeLabel = [RULabel newAutoLayoutView];
     
     self.minutesLabel.numberOfLines = 0;
     self.descriptionLabel.numberOfLines = 0;
     self.timeLabel.numberOfLines = 0;
-
-    
-    self.minutesLabel.font = [UIFont boldSystemFontOfSize:15];
-    self.descriptionLabel.font = [UIFont systemFontOfSize:15];
-    self.timeLabel.font = [UIFont boldSystemFontOfSize:15];
     
     self.minutesLabel.textAlignment = NSTextAlignmentRight;
     self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+
+    ((RULabel *)self.minutesLabel).doesNotAutomaticallyLineBreak = YES;
+    ((RULabel *)self.descriptionLabel).doesNotAutomaticallyLineBreak = YES;
+    ((RULabel *)self.timeLabel).doesNotAutomaticallyLineBreak = YES;
     
     [self.contentView addSubview:self.minutesLabel];
     [self.contentView addSubview:self.descriptionLabel];
     [self.contentView addSubview:self.timeLabel];
 }
 
+-(void)updateFonts{
+    self.minutesLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleBody];
+    self.descriptionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.timeLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleBody];
+}
+
 -(void)initializeConstraints{
     
-    [self.minutesLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
+    [self.minutesLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets*2];
     [self.minutesLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
     [self.minutesLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-    [self.minutesLabel autoSetDimension:ALDimensionWidth toSize:25];
     
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
-    [self.descriptionLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.minutesLabel];
+    [self.descriptionLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.minutesLabel withOffset:kLabelHorizontalInsetsSmall];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-    [self.descriptionLabel autoSetDimension:ALDimensionWidth toSize:87];
     
     [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
-    [self.timeLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.descriptionLabel];
+    [self.timeLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.descriptionLabel withOffset:kLabelHorizontalInsetsSmall];
     [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
 
 }

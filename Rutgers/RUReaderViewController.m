@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.rowHeight = 160;
+    self.tableView.rowHeight = 135;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.dataSource = [[RUReaderDataSource alloc] initWithUrl:[self.channel channelURL]];
 }

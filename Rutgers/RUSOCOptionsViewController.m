@@ -7,13 +7,12 @@
 //
 
 #import "RUSOCOptionsViewController.h"
-#import "ALTableViewTextCell.h"
 #import "RUSOCDataLoadingManager.h"
+#import "AlertDataSource.h"
+#import "ComposedDataSource.h"
 
-@interface RUSOCOptionsViewController () <UITableViewDelegate, UIActionSheetDelegate>
+@interface RUSOCOptionsViewController ()
 @property id<RUSOCOptionsDelegate> delegate;
-@property RUSOCDataLoadingManager *SOCData;
-@property NSArray *actionSheets;
 @end
 
 @implementation RUSOCOptionsViewController
@@ -23,84 +22,56 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"Options";
-        self.SOCData = [RUSOCDataLoadingManager sharedInstance];
         self.delegate = delegate;
-        self.actionSheets = @[[self actionSheetWithData:self.SOCData.semesters],[self actionSheetWithData:self.SOCData.campuses],[self actionSheetWithData:self.SOCData.levels]];
     }
     return self;
 }
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    [self.tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
-}
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @[@"Semester",@"Campus",@"Level"][section];
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ALTableViewTextCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([ALTableViewTextCell class])];
-    NSDictionary *item;
-    switch (indexPath.section) {
-        case 0:
-            item = self.SOCData.semester;
-            break;
-        case 1:
-            item = self.SOCData.campus;
-            break;
-        case 2:
-            item = self.SOCData.level;
-            break;
-        default:
-            break;
-    }
-    cell.textLabel.text = item[@"title"];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    return cell;
+    
+    RUSOCDataLoadingManager *dataManager = [RUSOCDataLoadingManager sharedInstance];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    AlertDataSource *semesterDataSource = [[AlertDataSource alloc] initWithPlaceholderText:dataManager.semester[@"title"] alertButtonTitles:[dataManager.semesters valueForKey:@"title"]];
+    semesterDataSource.title = @"Semester";
+    semesterDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
+        dataManager.semester = dataManager.semesters[buttonIndex];
+        [weakSelf notifyOptionsDidChange];
+    };
+    
+    AlertDataSource *campusDataSource = [[AlertDataSource alloc] initWithPlaceholderText:dataManager.campus[@"title"] alertButtonTitles:[dataManager.campuses valueForKey:@"title"]];
+    campusDataSource.title = @"Campus";
+    campusDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
+        dataManager.campus = dataManager.campuses[buttonIndex];
+        [weakSelf notifyOptionsDidChange];
+    };
+    
+    AlertDataSource *levelDataSource = [[AlertDataSource alloc] initWithPlaceholderText:dataManager.level[@"title"] alertButtonTitles:[dataManager.levels valueForKey:@"title"]];
+    levelDataSource.title = @"Level";
+    levelDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
+        dataManager.level = dataManager.levels[buttonIndex];
+        [weakSelf notifyOptionsDidChange];
+    };
+    
+    ComposedDataSource *dataSource = [[ComposedDataSource alloc] init];
+    [dataSource addDataSource:semesterDataSource];
+    [dataSource addDataSource:campusDataSource];
+    [dataSource addDataSource:levelDataSource];
+    
+    self.dataSource = dataSource;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self presentActionSheet:self.actionSheets[indexPath.section]];
+    ComposedDataSource *dataSouce = (ComposedDataSource *)self.dataSource;
+    AlertDataSource *alertDataSource = (AlertDataSource *)[dataSouce dataSourceAtIndex:indexPath.section];
+    [alertDataSource showAlert];
 }
 
--(UIActionSheet *)actionSheetWithData:(NSArray *)data{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    for (NSDictionary *item in data) {
-        [actionSheet addButtonWithTitle:item[@"title"]];
-    }
-    return actionSheet;
-}
-
--(void)presentActionSheet:(UIActionSheet *)actionSheet{
-    [actionSheet showInView:self.view];
-}
-
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSInteger indexOfSheet = [self.actionSheets indexOfObject:actionSheet];
-    switch (indexOfSheet) {
-        case 0:
-            self.SOCData.semester = self.SOCData.semesters[buttonIndex];
-            break;
-        case 1:
-            self.SOCData.campus = self.SOCData.campuses[buttonIndex];
-            break;
-        case 2:
-            self.SOCData.level = self.SOCData.levels[buttonIndex];
-            break;
-        default:
-            break;
-    }
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:indexOfSheet] withRowAnimation:UITableViewRowAnimationAutomatic];
+-(void)notifyOptionsDidChange{
     [self.delegate optionsViewControllerDidChangeOptions:self];
 }
+
 
 @end

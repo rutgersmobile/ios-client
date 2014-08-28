@@ -20,7 +20,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [[RUMapsTableViewCell class] rowHeight];
+    return [[RUMapsTableViewCell class] rowHeight]+1;
 }
 
 @end

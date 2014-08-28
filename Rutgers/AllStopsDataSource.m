@@ -27,13 +27,11 @@
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUBusDataLoadingManager sharedInstance] fetchAllStopsForAgency:self.agency completion:^(NSArray *stops, NSError *error) {
             if (!error) {
-                [loading updateWithContent:^(AllStopsDataSource *me) {
+                [loading updateWithContent:^(typeof(self) me) {
                     self.items = stops;
                 }];
             } else {
-                [loading doneWithError:^(AllStopsDataSource *me) {
-                    
-                }];
+                [loading doneWithError:error];
             }
         }];
     }];

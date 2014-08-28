@@ -16,8 +16,24 @@
 @implementation CollectionViewController
 -(void)viewDidLoad{
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(preferredContentSizeChanged)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+    
+
+    
     self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+}
+
+-(void)preferredContentSizeChanged{
+    [self.collectionView reloadData];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
 
 @synthesize dataSource = _dataSource;
@@ -80,7 +96,7 @@
     [self.collectionView deleteSections:sections];
 }
 
--(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection direction:(DataSourceOperationDirection)direction{
+-(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection{
     [self.collectionView moveSection:section toSection:newSection];
 }
 

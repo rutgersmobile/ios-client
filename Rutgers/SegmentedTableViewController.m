@@ -19,20 +19,54 @@
     [super viewDidLoad];
 
     self.segmentedControl = [[UISegmentedControl alloc] init];
-    
+
     UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
     [self setToolbarItems:barArray];
     
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    if (![[self.navigationController.viewControllers firstObject] isEqual:self]) {
+        UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
+        leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+        
+        UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
+        rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+        
+        [self.tableView addGestureRecognizer:leftSwipe];
+        [self.tableView addGestureRecognizer:rightSwipe];
+    }
+    
+}
 
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+#pragma mark - Segmented Control
 
-    [self.tableView addGestureRecognizer:leftSwipe];
-    [self.tableView addGestureRecognizer:rightSwipe];
+-(void)segmentedControlIndexChanged:(UISegmentedControl *)segmentedControl{
+    NSString *selectedTitle = [segmentedControl titleForSegmentAtIndex:segmentedControl.selectedSegmentIndex];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:selectedTitle forKey:[self segmentRestorationKey]];
+}
+
+-(NSString *)segmentRestorationKey{
+    return [NSString stringWithFormat:@"%@SelectedSegmentKey", NSStringFromClass([self class])];
+}
+
+
+-(void)restoreSelectionState{
+    
+    NSString *selectedTitle = [[NSUserDefaults standardUserDefaults] stringForKey:[self segmentRestorationKey]];
+    
+    UISegmentedControl *segmentedControl = self.segmentedControl;
+    
+    for (NSInteger index = 0; index < self.segmentedControl.numberOfSegments; index++) {
+        if ([[segmentedControl titleForSegmentAtIndex:index] isEqualToString:selectedTitle]) {
+            
+            SegmentedDataSource *dataSource = (SegmentedDataSource *)self.dataSource;
+            [dataSource setSelectedDataSourceIndex:index];
+            self.segmentedControl.selectedSegmentIndex = index;
+            
+            break;
+        }
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -59,21 +93,17 @@
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
--(void)handleSwipe:(UISwipeGestureRecognizer *)swipeGestureRecognizer{
-    if ([self.navigationController.viewControllers indexOfObject:self] == 0) return;
-    
+-(void)swipeLeft{
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     if (selectedSegmentIndex == -1) return;
-    switch (swipeGestureRecognizer.direction) {
-        case UISwipeGestureRecognizerDirectionLeft:
-            if (selectedSegmentIndex < self.segmentedControl.numberOfSegments - 1) [self selectSegmentIndex:++selectedSegmentIndex];
-            break;
-        case UISwipeGestureRecognizerDirectionRight:
-            if (selectedSegmentIndex > 0) [self selectSegmentIndex:--selectedSegmentIndex];
-            break;
-        default:
-            break;
-    }
+    if (selectedSegmentIndex < self.segmentedControl.numberOfSegments - 1) [self selectSegmentIndex:++selectedSegmentIndex];
+
+}
+
+-(void)swipeRight{
+    NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
+    if (selectedSegmentIndex == -1) return;
+    if (selectedSegmentIndex > 0) [self selectSegmentIndex:--selectedSegmentIndex];
 }
 
 -(void)selectSegmentIndex:(NSInteger)index{
@@ -81,20 +111,19 @@
         [self.segmentedControl setSelectedSegmentIndex:index];
     }];
     
-    if ([self.dataSource isKindOfClass:[SegmentedDataSource class]]) {
-        SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)self.dataSource;
-        [segmentedDataSource setSelectedDataSourceIndex:index animated:YES];
-    }
+    SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)self.dataSource;
+    [segmentedDataSource setSelectedDataSourceIndex:index animated:YES];
+    [self segmentedControlIndexChanged:self.segmentedControl];
 }
 
 -(void)setDataSource:(DataSource *)dataSource{
     if ([self.dataSource isEqual:dataSource]) return;
     [super setDataSource:dataSource];
     
-    if ([dataSource isKindOfClass:[SegmentedDataSource class]]) {
-        SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)dataSource;
-        [segmentedDataSource configureSegmentedControl:self.segmentedControl];
-    }
+    SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)dataSource;
+    [segmentedDataSource configureSegmentedControl:self.segmentedControl];
+    [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged:) forControlEvents:UIControlEventValueChanged];
+    [self restoreSelectionState];
 }
 
 @end

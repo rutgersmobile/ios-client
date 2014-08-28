@@ -33,5 +33,7 @@
 -(CLLocation *)location{
     return [CLLocation centroidOfLocations:[self.stops valueForKey:@"location"]];
 }
-
+-(NSString *)description{
+    return [self.stops description];
+}
 @end

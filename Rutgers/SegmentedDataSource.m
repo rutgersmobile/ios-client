@@ -10,7 +10,6 @@
 #import "DataSource_Private.h"
 
 @interface SegmentedDataSource () <DataSourceDelegate>
-/// A reference to the selected data source.
 @property (nonatomic) NSMutableArray *dataSources;
 @property (nonatomic) DataSource *selectedDataSource;
 @end
@@ -112,7 +111,8 @@
         [self willChangeValueForKey:@"selectedDataSource"];
         [self willChangeValueForKey:@"selectedDataSourceIndex"];
         
-        
+        _selectedDataSource = selectedDataSource;
+
         if (removedSet)
             [self notifySectionsRemoved:removedSet direction:removalDirection];
         if (insertedSet)
@@ -144,7 +144,10 @@
     [segmentedControl addTarget:self action:@selector(selectedSegmentIndexChanged:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.selectedSegmentIndex = self.selectedDataSourceIndex;
     
-    CGFloat minimumWidth = 200;
+    CGFloat minimumWidth = 160;
+    if (titles.count > 1) minimumWidth += 30;
+    if (titles.count > 2) minimumWidth += 30;
+    
     CGFloat maximumWidth = 304;
     
     [segmentedControl sizeToFit];
@@ -209,6 +212,22 @@
         [dataSource registerReusableViewsWithTableView:tableView];
 }
 
+#pragma mark - Cached Heights
+
+-(void)invalidateCachedHeights{
+    for (DataSource *dataSource in self.dataSources) {
+        [dataSource invalidateCachedHeights];
+    }
+}
+-(void)invalidateCachedHeightsForSection:(NSInteger)section{
+    [self.selectedDataSource invalidateCachedHeightsForSection:section];
+}
+
+-(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
+    [self.selectedDataSource invalidateCachedHeightsForIndexPaths:indexPaths];
+}
+
+
 #pragma mark - Table View Data Source
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self.selectedDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -220,6 +239,10 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self.selectedDataSource tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self.selectedDataSource tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
 #pragma mark - Collection View Data Source
@@ -309,19 +332,19 @@
 
 #pragma mark - Data Source Delegate
 
--(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths{
+-(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction{
     if (self.selectedDataSource == dataSource) {
-        [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths];
+        [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:direction];
     }
 }
--(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths{
+-(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction{
     if (self.selectedDataSource == dataSource) {
-        [self notifyItemsRemovedAtIndexPaths:removedIndexPaths];
+        [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:direction];
     }
 }
--(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths{
+-(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction{
     if (self.selectedDataSource == dataSource) {
-        [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths];
+        [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:direction];
     }
 }
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{

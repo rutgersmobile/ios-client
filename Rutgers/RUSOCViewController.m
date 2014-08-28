@@ -29,31 +29,60 @@
 {
     [super viewDidLoad];
     
-    [self setupOptionsButton];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
+    
+    self.dataSource = [[RUSOCDataSource alloc] init];
+    self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
+    self.searchBar.placeholder = @"Search Subjects and Courses";
+    
+    [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
+    
+    [self disableInterface];
     
     RUSOCDataLoadingManager *loadingManager = [RUSOCDataLoadingManager sharedInstance];
     [loadingManager performOnSemestersLoaded:^{
         self.title = loadingManager.titleForCurrentConfiguration;
-        self.optionsButton.enabled = YES;
+        [self enableInterface];
     }];
+
+}
+
+-(void)disableInterface{
+    self.optionsButton.enabled = NO;
+    self.searchBar.userInteractionEnabled = NO;
+    self.searchBar.alpha = 0.4;
+}
+
+-(void)enableInterface{
+    self.optionsButton.enabled = YES;
+    self.searchBar.userInteractionEnabled = YES;
+    [UIView animateWithDuration:0.15 animations:^{
+        self.searchBar.alpha = 1.0;
+    }];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
-    self.dataSource = [[RUSOCDataSource alloc] init];
-    self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
-    
-    [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
+    if (self.optionsDidChange) {
+        [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    }
+
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     if (self.optionsDidChange) {
         [self.dataSource resetContent];
         [self.dataSource setNeedsLoadContent];
         
         [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
-         
+        
         self.optionsDidChange = NO;
     }
 }
+ 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     DataTuple *item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
@@ -65,12 +94,6 @@
         RUSOCSubjectViewController *subjectVC = [[RUSOCSubjectViewController alloc] initWithSubject:item.object];
         [self.navigationController pushViewController:subjectVC animated:YES];
     }
-}
-
--(void)setupOptionsButton{
-    self.optionsButton = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
-    self.navigationItem.rightBarButtonItem = self.optionsButton;
-    self.optionsButton.enabled = NO;
 }
 
 -(void)optionsButtonPressed{

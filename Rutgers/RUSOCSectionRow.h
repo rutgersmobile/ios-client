@@ -12,6 +12,6 @@
 
 @interface RUSOCSectionRow : NSObject
 -(instancetype)initWithSection:(NSDictionary *)section;
-@property NSDictionary *section;
+@property (nonatomic) NSDictionary *section;
 -(void)setupCell:(RUSOCSectionCell *)cell;
 @end

@@ -18,23 +18,33 @@
     self.sectionsLabel = [UILabel newAutoLayoutView];
     
     self.titleLabel.numberOfLines = 0;
-    
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    self.creditsLabel.font = [UIFont systemFontOfSize:15];
-    self.sectionsLabel.font = [UIFont systemFontOfSize:15];
-    
+    self.sectionsLabel.adjustsFontSizeToFitWidth = YES;
     
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.creditsLabel];
     [self.contentView addSubview:self.sectionsLabel];
 }
+
+-(void)updateFonts{
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.creditsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.sectionsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+}
+
 -(void)initializeConstraints{
     UIEdgeInsets standardInsets = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0);
 
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeBottom];
     
-    [@[self.creditsLabel,self.sectionsLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllBottom];
+    NSArray *constraints = [@[self.creditsLabel,self.sectionsLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllBottom];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ([constraint.secondItem isEqual:self.contentView] && [constraint.firstItem isEqual:self.sectionsLabel]) {
+            constraint.constant = 0;
+            break;
+        }
+    }
 
     [self.creditsLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:4];
     [self.sectionsLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];

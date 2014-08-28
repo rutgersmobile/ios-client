@@ -12,6 +12,7 @@
 @protocol RUMenuDelegate <NSObject>
 @required
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel;
+-(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu;
 @end
 
 @interface RURootController : NSObject

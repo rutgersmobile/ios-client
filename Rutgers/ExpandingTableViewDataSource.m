@@ -28,6 +28,7 @@
     
     if (!animated) {
         self.sections = [sections copy];
+        [self invalidateCachedHeights];
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sections.count)]];
         return;
     }
@@ -65,13 +66,15 @@
     }];
     
     [self notifyBatchUpdate:^{
+        [self invalidateCachedHeights];
+
         self.dataSources = [sections copy];
         
         if ([deletedIndexes count])
-            [self notifySectionsRemoved:deletedIndexes];
+            [self notifySectionsRemoved:deletedIndexes direction:DataSourceOperationDirectionRight];
         
         if ([insertedIndexes count])
-            [self notifySectionsInserted:insertedIndexes];
+            [self notifySectionsInserted:insertedIndexes direction:DataSourceOperationDirectionLeft];
         
         NSUInteger fromIndex = [fromMovedIndexes firstIndex];
         NSUInteger toIndex = [toMovedIndexes firstIndex];
@@ -82,7 +85,6 @@
             fromIndex = [fromMovedIndexes indexGreaterThanIndex:fromIndex];
             toIndex = [toMovedIndexes indexGreaterThanIndex:toIndex];
         }
-        
     }];
 }
 
@@ -90,13 +92,9 @@
     return self.sections[index];
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    ExpandingTableViewSection *expandingSection = [self sectionAtIndex:indexPath.section];
-    
+-(void)toggleExpansionForSection:(NSUInteger)section{
+    ExpandingTableViewSection *expandingSection = [self sectionAtIndex:section];
     expandingSection.expanded = !expandingSection.expanded;
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
 
 @end

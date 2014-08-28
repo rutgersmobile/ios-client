@@ -20,8 +20,13 @@
 }
 
 -(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *string = [self itemAtIndexPath:indexPath];
-    cell.textLabel.text = string;
+    id string = [self itemAtIndexPath:indexPath];
+    if ([string isKindOfClass:[NSString class]]) {
+        cell.textLabel.text = string;
+    } else if ([string isKindOfClass:[NSAttributedString class]]) {
+        cell.textLabel.attributedText = string;
+    }
+    cell.accessoryType = self.showsDisclosureIndicator ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 @end

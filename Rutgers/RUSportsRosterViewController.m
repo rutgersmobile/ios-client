@@ -34,33 +34,11 @@
     self.dataSource = [[TeamDataSource alloc] initWithSportID:self.sportID];
 }
 
-/*
--(NSInteger)indexOfRosterSection{
-    return [self.dataSource indexOfSection:self.rosterSection];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    id item = [self.dataSource itemAtIndexPath:indexPath];
+    if ([item isKindOfClass:[RUSportsPlayer class]]) {
+        [((TeamDataSource *)self.dataSource) toggleExpansionForPlayer:item];
+    }
 }
-
--(void)selectPlayerAtIndex:(NSInteger)index{
- 
-    UIView *playerHeaderView = [[RUSportsRosterPlayerHeaderCell alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 118)];
-    [self.tableView beginUpdates];
-    self.tableView.tableHeaderView = playerHeaderView;
-    [self.tableView endUpdates];
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return nil;
-}
-
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    NSString *title = [super tableView:tableView titleForHeaderInSection:section];
-    RUSportsRosterSectionHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass([RUSportsRosterSectionHeaderView class])];
-    headerView.sectionHeaderLabel.text = title;
-    return headerView;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 38;
-}
-*/
 
 @end

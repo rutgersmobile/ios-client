@@ -14,6 +14,7 @@
 
 @interface RUPredictionsHeaderRow ()
 @property id item;
+@property NSDictionary *predictions;
 @end
 
 @implementation RUPredictionsHeaderRow
@@ -36,8 +37,8 @@
         cell.timeLabel.textColor = [self timeLabelColor];
     } else {
         cell.titleLabel.textColor = [UIColor grayColor];
-        cell.directionLabel.textColor = [UIColor lightGrayColor];
-        cell.timeLabel.textColor = [UIColor lightGrayColor];
+        cell.directionLabel.textColor = [UIColor grayColor];
+        cell.timeLabel.textColor = [UIColor grayColor];
     }
 }
 
@@ -67,26 +68,37 @@
 -(NSString *)arrivalTimeDescription{
     if (![self active]) return @"No predictions available.";
     NSArray *predictions = [self.predictions[@"direction"] firstObject][@"prediction"];
-    NSMutableString *string = [[NSMutableString alloc] init];
-    __block NSString *lastMinutes = nil;
+    
+    NSMutableString *string = [[NSMutableString alloc] initWithString:@"Arriving in "];
     
     [predictions enumerateObjectsUsingBlock:^(NSDictionary *prediction, NSUInteger idx, BOOL *stop) {
         NSString *minutes = prediction[@"_minutes"];
-        if ([minutes isEqualToString:@"0"]) minutes = @"<1";
-        if ([string isEqualToString:@""]) {
-            [string appendFormat:@"Arriving in %@",minutes];
-        } else {
-            [string appendFormat:@", %@",minutes,nil];
+        
+        BOOL lastPrediction = (idx == 2 || idx == predictions.count - 1);
+        
+        if (idx != 0){
+            if (idx == 1 && lastPrediction) [string appendString:@" "];
+            else [string appendString:@", "];
         }
-        lastMinutes = minutes;
+        
+        if (idx != 0 && lastPrediction) [string appendString:@"and "];
+        
+        if ([minutes isEqualToString:@"0"]) minutes = @"<1";
+        
+        [string appendString:minutes];
+
+        if (lastPrediction){
+            if ([minutes integerValue] == 1) {
+                [string appendString:@" minute."];
+            } else {
+                [string appendString:@" minutes."];
+            }
+        }
+        
         if (idx == 2) *stop = YES;
     }];
     
-    if ([lastMinutes integerValue] > 1) {
-        [string appendString:@" minutes."];
-    } else {
-        [string appendString:@" minute."];
-    }
+    
     return string;
 }
 

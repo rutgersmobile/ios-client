@@ -36,5 +36,11 @@
 +(UIColor *)iconDeselectedColor{
     return [UIColor colorWithRed:177/255.0 green:198/255.0 blue:226/255.0 alpha:1];
 }
++(UIColor *)modifiedRedColor{
+    CGFloat hue, sat, bright, alpha;
+    [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
+    return [UIColor colorWithHue:0.99f saturation:1.0 brightness:bright alpha:alpha];
+    //return [UIColor colorWithHue:hue saturation:1.0 brightness:bright alpha:alpha];
+}
 
 @end

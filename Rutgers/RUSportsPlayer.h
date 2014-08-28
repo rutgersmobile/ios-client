@@ -16,5 +16,7 @@
 @property (nonatomic) NSString *jerseyNumber;
 @property (nonatomic) NSString *physique;
 @property (nonatomic) NSString *position;
+@property (nonatomic) NSString *className;
 @property (nonatomic) NSString *hometown;
+@property (nonatomic) NSAttributedString *bio;
 @end

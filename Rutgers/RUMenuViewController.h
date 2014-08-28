@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RURootController.h"
+#import "TableViewController.h"
 
-@interface RUMenuViewController : UIViewController
+@interface RUMenuViewController : TableViewController
 @property id <RUMenuDelegate> delegate;
 @end

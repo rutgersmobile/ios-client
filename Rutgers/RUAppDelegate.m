@@ -38,7 +38,7 @@
     
     [self initializeCache];
     [self initializeDrawer];
-    [RUAnalyticsManager postAnalyticsForAppStartup];
+    [[RUAnalyticsManager sharedManager] queueEventForApplicationStart];
 
     [self askUserForInformationIfNeeded];
 }

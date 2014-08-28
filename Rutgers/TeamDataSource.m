@@ -10,14 +10,25 @@
 #import "ScheduleDataSource.h"
 #import "RosterDataSource.h"
 
+@interface TeamDataSource ()
+@property RosterDataSource *rosterDataSource;
+
+@end
+
 @implementation TeamDataSource
 -(id)initWithSportID:(NSString *)sportID{
     self = [super init];
     if (self) {
         self.sportID = sportID;
+        
         [self addDataSource:[[ScheduleDataSource alloc] initWithSportID:sportID]];
-        [self addDataSource:[[RosterDataSource alloc] initWithSportID:sportID]];
+        
+        self.rosterDataSource = [[RosterDataSource alloc] initWithSportID:sportID];
+        [self addDataSource:self.rosterDataSource];
     }
     return self;
+}
+-(void)toggleExpansionForPlayer:(RUSportsPlayer *)player{
+    [self.rosterDataSource toggleExpansionForPlayer:player];
 }
 @end

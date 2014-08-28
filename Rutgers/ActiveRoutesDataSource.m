@@ -28,13 +28,11 @@
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUBusDataLoadingManager sharedInstance] fetchActiveRoutesForAgency:self.agency completion:^(NSArray *routes, NSError *error) {
             if (!error) {
-                [loading updateWithContent:^(ActiveRoutesDataSource *me) {
+                [loading updateWithContent:^(typeof(self) me) {
                     self.items = routes;
                 }];
             } else {
-                [loading doneWithError:^(ActiveRoutesDataSource *me) {
-                    
-                }];
+                [loading doneWithError:error];
             }
         }];
     }];

@@ -9,6 +9,7 @@
 #import "TileCollectionViewCell.h"
 #import "UIMotionEffect+FloatingMotionEffect.h"
 #import "iPadCheck.h"
+#import "RULabel.h"
 
 @interface TileCollectionViewCell ()
 @property (nonatomic) UIView *ellipsesView;
@@ -17,44 +18,46 @@
 
 @implementation TileCollectionViewCell
 
-#define PADDING 6
+
 #define DOT_SIZE 5.5
 #define DOT_PADDING 8.5
-#define BOTTOM_PADDING (PADDING+DOT_PADDING+DOT_SIZE)
-#define FONT_SIZE (iPad() ? 19.0 : 16.0)
-
+#define BOTTOM_PADDING (kLabelVerticalInsetsSmall+DOT_PADDING+DOT_SIZE)
+#define FONT_STYLE (iPad() ? UIFontTextStyleBody : UIFontTextStyleSubheadline)
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.textLabel = [UILabel newAutoLayoutView];
+        self.textLabel = [RULabel newAutoLayoutView];
         self.textLabel.numberOfLines = 0;
         self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.textLabel.adjustsFontSizeToFitWidth = YES;
         self.textLabel.textColor = [UIColor whiteColor];
-        self.textLabel.font = [UIFont systemFontOfSize:FONT_SIZE];
         
         [self addSubview:self.ellipsesView];
         [self.ellipsesView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:DOT_PADDING];
         [self.ellipsesView autoAlignAxisToSuperviewAxis:ALAxisVertical];
 
         [self.contentView addSubview:self.textLabel];
-        [self.textLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(PADDING, PADDING, PADDING, PADDING) excludingEdge:ALEdgeBottom];
+        [self.textLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsetsSmall, kLabelHorizontalInsetsSmall, kLabelVerticalInsetsSmall, kLabelHorizontalInsetsSmall) excludingEdge:ALEdgeBottom];
         self.textBottomConstraint = [self.textLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:BOTTOM_PADDING];
-     
-        //   [self addMotionEffect:[UIMotionEffect floatingMotionEffectWithIntensity:10]];
         
         [self.textLabel addMotionEffect:[UIMotionEffect floatingMotionEffectWithIntensity:7]];
         [self.ellipsesView addMotionEffect:[UIMotionEffect floatingMotionEffectWithIntensity:3]];
+        
+        [self updateFonts];
     }
     return self;
+}
+
+-(void)updateFonts{
+    self.textLabel.font = [UIFont preferredFontForTextStyle:FONT_STYLE];
 }
 
 -(void)setShowsEllipses:(BOOL)showsEllipses{
     _showsEllipses = showsEllipses;
     self.ellipsesView.hidden = !showsEllipses;
-    self.textBottomConstraint.constant = showsEllipses ? -BOTTOM_PADDING : -PADDING;
+    self.textBottomConstraint.constant = showsEllipses ? -BOTTOM_PADDING : -kLabelVerticalInsetsSmall;
     [self.textLabel setNeedsLayout];
 }
 

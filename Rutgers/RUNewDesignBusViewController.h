@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUChannelProtocol.h"
 
 @interface RUNewDesignBusViewController : UIViewController <RUChannelProtocol>
 

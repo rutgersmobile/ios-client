@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface RUAnalyticsManager : NSObject
-+(void)postAnalyticsForNewInstall;
-+(void)postAnalyticsForAppStartup;
-+(void)postAnalyticsForError:(NSError *)error;
-+(void)postAnalyticsForChannelOpen:(NSDictionary *)channel;
-+(void)postAnalyticsForEvent:(NSDictionary *)event;
++(instancetype)sharedManager;
+-(void)queueEventForApplicationStart;
+-(void)queueEventForError:(NSError *)error;
+-(void)queueEventForChannelOpen:(NSDictionary *)channel;
+-(void)flushQueue;
 @end

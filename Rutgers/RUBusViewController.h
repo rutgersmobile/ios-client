@@ -7,8 +7,7 @@
 //
 
 #import "SegmentedTableViewController.h"
-#import "RUChannelProtocol.h"
 
-@interface RUNewBusViewController : SegmentedTableViewController <RUChannelProtocol>
+@interface RUBusViewController : SegmentedTableViewController <RUChannelProtocol>
 
 @end

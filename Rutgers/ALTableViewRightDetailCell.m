@@ -15,7 +15,6 @@
 
 @property (nonatomic) NSLayoutConstraint *textToDetailTextConstraint;
 @property (nonatomic) NSLayoutConstraint *rightConstraint;
-
 @end
 
 @implementation ALTableViewRightDetailCell
@@ -31,16 +30,19 @@
  
     self.titleLabel = [RULabel newAutoLayoutView];
     self.titleLabel.numberOfLines = 0;
-    self.titleLabel.font = [UIFont systemFontOfSize:17];
    
     self.detailLabel = [UILabel newAutoLayoutView];
-    self.detailLabel.font = [UIFont systemFontOfSize:17];
-    self.detailLabel.textColor = [UIColor lightGrayColor];
+    self.detailLabel.textColor = [UIColor grayColor];
     self.detailLabel.textAlignment = NSTextAlignmentRight;
     
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.detailLabel];
  
+}
+
+-(void)updateFonts{
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.detailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{
@@ -64,6 +66,7 @@
 -(void)updateConstraints{
     [super updateConstraints];
     self.textToDetailTextConstraint.constant = self.detailLabel.text.length ? kLabelHorizontalInsets : 0;
+    self.titleLabel.numberOfLines = self.detailLabel.text.length ? 1 : 0;
     self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? 0 : -kLabelHorizontalInsets;
 }
 

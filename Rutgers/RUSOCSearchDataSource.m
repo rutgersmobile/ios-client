@@ -8,9 +8,12 @@
 
 #import "RUSOCSearchDataSource.h"
 #import "RUSOCSearchIndex.h"
+#import "TupleDataSource.h"
 
 @interface RUSOCSearchDataSource()
 @property RUSOCSearchIndex *index;
+@property TupleDataSource *subjects;
+@property TupleDataSource *courses;
 @end
 
 @implementation RUSOCSearchDataSource
@@ -19,7 +22,16 @@
 {
     self = [super init];
     if (self) {
-        self.itemLimit = 35;
+        self.subjects = [[TupleDataSource alloc] init];
+        self.subjects.title = @"Subjects";
+        self.subjects.itemLimit = 25;
+        
+        self.courses = [[TupleDataSource alloc] init];
+        self.courses.title = @"Courses";
+        self.courses.itemLimit = 50;
+        
+        [self addDataSource:self.subjects];
+        [self addDataSource:self.courses];
     }
     return self;
 }
@@ -30,14 +42,15 @@
 
 -(void)updateForQuery:(NSString *)query{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [self.index resultsForQuery:query completion:^(NSArray *results) {
+        [self.index resultsForQuery:query completion:^(NSArray *subjects, NSArray *courses) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
             
             [loading updateWithContent:^(typeof(self) me) {
-                self.items = results;
+                me.subjects.items = subjects;
+                me.courses.items = courses;
             }];
         }];
     }];

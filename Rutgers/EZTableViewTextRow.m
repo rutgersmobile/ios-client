@@ -44,9 +44,9 @@
 }
 
 -(void)setText:(NSString *)text{
-    NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17]};
-    self.attributedText = [[NSAttributedString alloc] initWithString:text attributes:textAttributes];
+    self.attributedText = [[NSAttributedString alloc] initWithString:text];
 }
+
 
 -(void)setupCell:(ALTableViewAbstractCell *)cell{
     [super setupCell:cell];

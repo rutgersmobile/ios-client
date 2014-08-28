@@ -12,12 +12,15 @@
 -(void)setBounds:(CGRect)bounds{
     [super setBounds:bounds];
     
-    if (self.numberOfLines != 1) {
-        // If this is a multiline label, need to make sure
-        // preferredMaxLayoutWidth always matches the frame width
-        // (i.e. orientation change can mess this up)
-        self.preferredMaxLayoutWidth = bounds.size.width;
-    }
+    // If this is a multiline label, need to make sure
+    // preferredMaxLayoutWidth always matches the frame width
+    // (i.e. orientation change can mess this up)
+    self.preferredMaxLayoutWidth = bounds.size.width;
+}
+
+-(CGSize)intrinsicContentSize{
+    if (!self.doesNotAutomaticallyLineBreak) return [super intrinsicContentSize];
+    return [self sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
 }
 
 @end

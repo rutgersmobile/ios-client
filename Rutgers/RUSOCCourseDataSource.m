@@ -11,10 +11,12 @@
 #import "ALTableViewTextCell.h"
 #import "RUSOCCourseSectionsDataSource.h"
 #import "RUSOCDataLoadingManager.h"
+#import "RUSOCCourseHeaderDataSource.h"
 
 @interface RUSOCCourseDataSource ()
 @property (nonatomic) NSDictionary *course;
 @property (nonatomic) RUSOCCourseSectionsDataSource *sectionsDataSource;
+@property (nonatomic) RUSOCCourseHeaderDataSource *headerDataSource;
 @end
 
 @implementation RUSOCCourseDataSource
@@ -22,8 +24,8 @@
     self = [super init];
     if (self) {
         self.course = course;
+        self.headerDataSource = [[RUSOCCourseHeaderDataSource alloc] init];
         self.sectionsDataSource = [[RUSOCCourseSectionsDataSource alloc] init];
-        [self addDataSource:self.sectionsDataSource];
     }
     return self;
 }
@@ -33,12 +35,12 @@
         NSArray *sections = self.course[@"sections"];
         if (sections) {
             [loading updateWithContent:^(typeof(self) me) {
-                me.sectionsDataSource.items = sections;
+                [me updateWithCourse:me.course];
             }];
         } else {
             [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:self.course[@"subjectCode"] courseCode:self.course[@"courseNumber"] withSuccess:^(NSDictionary *course) {
                 [loading updateWithContent:^(typeof(self) me) {
-                    me.sectionsDataSource.items = course[@"sections"];
+                    [me updateWithCourse:course];
                 }];
             } failure:^{
                 [loading doneWithError:nil];
@@ -47,22 +49,30 @@
     }];
 }
 
+-(void)updateWithCourse:(NSDictionary *)course{
+    self.course = course;
+    
+    NSMutableDictionary *headerItems = [NSMutableDictionary dictionary];
+    for (NSString *key in @[@"subjectNotes",@"preReqNotes",@"synopsisUrl"]) {
+        id value = course[key];
+        if (value) headerItems[key] = value;
+    }
+    
+    if (headerItems.count) {
+        self.headerDataSource.headerItems = headerItems;
+        [self addDataSource:self.headerDataSource];
+    }
+    
+    
+    NSLog(@"%@",headerItems);
+    self.sectionsDataSource.items = course[@"sections"];
+    [self addDataSource:self.sectionsDataSource];
+}
+
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
     [super registerReusableViewsWithTableView:tableView];
+    [tableView registerClass:[RUSOCSectionCell class] forCellReuseIdentifier:NSStringFromClass([RUSOCSectionCell class])];
     [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
-
-/*
- NSString *courseDescription = self.course[@"courseDescription"];
- if (courseDescription) {
- EZTableViewTextRow *row = [[EZTableViewTextRow alloc] initWithAttributedText:[[NSAttributedString alloc] initWithString:courseDescription attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15]}]];
- [self.dataSource addDataSource:[[EZDataSourceSection alloc] initWithItems:@[row]]];
- }
- 
- EZDataSourceSection *sectionSection = [[EZDataSourceSection alloc] init];
- 
-  }
- [self.dataSource addDataSource:sectionSection];
- */
 @end

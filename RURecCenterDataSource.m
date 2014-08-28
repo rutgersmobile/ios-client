@@ -7,7 +7,6 @@
 //
 
 #import "RURecCenterDataSource.h"
-#import "RUNetworkManager.h"
 #import "BasicDataSource.h"
 #import "DataTuple.h"
 #import "ALTableViewTextCell.h"
@@ -16,7 +15,7 @@
 @implementation RURecCenterDataSource
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUNetworkManager jsonSessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:@"gyms.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             [loading updateWithContent:^(typeof(self) me) {
                 [me parseResponse:responseObject];
             }];

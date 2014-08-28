@@ -7,8 +7,10 @@
 //
 
 #import "ComposedDataSource.h"
+@class RUSportsPlayer;
 
 @interface TeamDataSource : ComposedDataSource
 -(id)initWithSportID:(NSString *)sportID;
 @property (nonatomic) NSString *sportID;
+-(void)toggleExpansionForPlayer:(RUSportsPlayer *)player;
 @end

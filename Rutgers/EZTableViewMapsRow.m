@@ -20,6 +20,7 @@
     }
     return self;
 }
+
 -(instancetype)initWithPlace:(RUPlace *)place{
     self = [self init];
     if (self) {

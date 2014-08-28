@@ -8,10 +8,9 @@
 
 #import "RUSportsViewController.h"
 #import "RUSportsData.h"
-#import "EZCollectionViewSection.h"
-#import "TileCollectionViewItem.h"
 #import "RUSportsRosterViewController.h"
-#import "TileDataSource.h"
+#import "TupleDataSource.h"
+#import "DataTuple.h"
 
 @interface RUSportsViewController ()
 @property RUSportsData *sportsData;
@@ -19,7 +18,7 @@
 
 @implementation RUSportsViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RUSportsViewController alloc] init];
+    return [[RUSportsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 -(void)viewDidLoad{
@@ -35,16 +34,17 @@
     NSMutableArray *items = [NSMutableArray array];
     NSArray *sports = [[allSports allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     for (NSString *sport in sports) {
-        TileCollectionViewItem *item = [[TileCollectionViewItem alloc] initWithTitle:sport object:allSports[sport]];
+        DataTuple *item = [[DataTuple alloc] initWithTitle:sport object:allSports[sport]];
         [items addObject:item];
     }
-    self.dataSource = [[TileDataSource alloc] initWithItems:items];
+    self.dataSource = [[TupleDataSource alloc] initWithItems:items];
 }
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    TileCollectionViewItem *item = [self.dataSource itemAtIndexPath:indexPath];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];
     RUSportsRosterViewController *rosterVC = [[RUSportsRosterViewController alloc] initWithSportID:item.object];
     rosterVC.title = item.title;
     [self.navigationController pushViewController:rosterVC animated:YES];
 }
+
 @end

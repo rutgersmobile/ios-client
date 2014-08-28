@@ -9,6 +9,7 @@
 #import "RURecCenterViewController.h"
 #import "EZDataSource.h"
 #import "EZTableViewRightDetailRow.h"
+#import "EZTableViewTextRow.h"
 
 #import "RURecCenterHoursSection.h"
 #import "RURecCenterHoursHeaderRow.h"
@@ -21,6 +22,7 @@
 #import "RUMapsViewController.h"
 
 #import <NSString+HTML.h>
+#import "NSAttributedString+FromHTML.h"
 
 @interface RURecCenterViewController ()
 @property (nonatomic) RURecCenterHoursSection *hoursSection;
@@ -90,13 +92,23 @@
         [self.dataSource addDataSource:buisnessSection];
     }
     
-    NSString *description = self.recCenter[@"FacilityBody"];
+    NSString *description = [[self.recCenter[@"FacilityBody"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (description.length) {
         EZDataSourceSection *descriptionSection = [[EZDataSourceSection alloc] initWithSectionTitle:@"Description"];
-        EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:[description stringByDecodingHTMLEntities] detailText:nil];
-        descriptionRow.shouldHighlight = NO;
-        descriptionRow.shouldCopy = YES;
-        [descriptionSection addItem:descriptionRow];
+        if (!BETA) {
+            EZTableViewRightDetailRow *descriptionRow = [[EZTableViewRightDetailRow alloc] initWithText:description detailText:nil];
+            descriptionRow.shouldHighlight = NO;
+            descriptionRow.shouldCopy = YES;
+            [descriptionSection addItem:descriptionRow];
+        } else {
+            #warning fix this spaghetti
+            description = [description stringByReplacingOccurrencesOfString:@"<hr align=\"left\" color=\"#c00000\" noshade=\"noshade\" size=\"1\" width=\"100%\">" withString:@""];
+            NSAttributedString *string = [NSAttributedString attributedStringFromHTMLString:description];
+            EZTableViewTextRow *descriptionRow = [[EZTableViewTextRow alloc] initWithAttributedText:string];
+            descriptionRow.shouldHighlight = NO;
+            descriptionRow.shouldCopy = YES;
+            [descriptionSection addItem:descriptionRow];
+        }
         [self.dataSource addDataSource:descriptionSection];
     }
 }

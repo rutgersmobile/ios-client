@@ -29,6 +29,7 @@
     [super viewDidLoad];
     self.dataSource = [[PlacesDataSource alloc] init];
     self.searchDataSource = [[PlacesSearchDataSource alloc] init];
+    self.searchBar.placeholder = @"Search All Places";
 }
 
 -(void)dealloc{
@@ -50,8 +51,7 @@
 
     [[RUPlacesDataLoadingManager sharedInstance] userWillViewPlace:place];
 
-    RUPlaceDetailViewController *detailVC = [[RUPlaceDetailViewController alloc] initWithPlace:place];
-    [self.navigationController pushViewController:detailVC animated:YES];
+    [self.navigationController pushViewController:[[RUPlaceDetailViewController alloc] initWithPlace:place] animated:YES];
 }
 
 @end

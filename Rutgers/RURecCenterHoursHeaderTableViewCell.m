@@ -26,13 +26,17 @@
     [self.rightButton addTarget:self action:@selector(goRight:) forControlEvents:UIControlEventTouchUpInside];
     
     self.dateLabel = [UILabel newAutoLayoutView];
-    self.dateLabel.font = [UIFont systemFontOfSize:17];
     
     [self.contentView addSubview:self.dateLabel];
     [self.contentView addSubview:self.leftButton];
     [self.contentView addSubview:self.rightButton];
 
 }
+
+-(void)updateFonts{
+    self.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+}
+
 -(void)initializeConstraints{
     [self.leftButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
     [self.leftButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];

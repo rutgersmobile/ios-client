@@ -9,8 +9,14 @@
 #import "RosterDataSource.h"
 #import "RUSportsData.h"
 #import "RUSportsPlayer.h"
-#import "RUSportsPlayerCell.h"
+#import "RUSportsPlayerExpandedCell.h"
+#import "RUSportsPlayerUnexpandedCell.h"
 #import <UIKit+AFNetworking.h>
+#import "DataSource_Private.h"
+
+@interface RosterDataSource ()
+@property RUSportsPlayer *expandedPlayer;
+@end
 
 @implementation RosterDataSource
 -(id)initWithSportID:(NSString *)sportID{
@@ -36,11 +42,30 @@
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
     [super registerReusableViewsWithTableView:tableView];
-    [tableView registerClass:[RUSportsPlayerCell class] forCellReuseIdentifier:NSStringFromClass([RUSportsPlayerCell class])];
+    [tableView registerClass:[RUSportsPlayerExpandedCell class] forCellReuseIdentifier:NSStringFromClass([RUSportsPlayerExpandedCell class])];
+    [tableView registerClass:[RUSportsPlayerUnexpandedCell class] forCellReuseIdentifier:NSStringFromClass([RUSportsPlayerUnexpandedCell class])];
 }
 
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NSStringFromClass([RUSportsPlayerCell class]);
+    RUSportsPlayer *player = [self itemAtIndexPath:indexPath];
+    return NSStringFromClass([player isEqual:self.expandedPlayer] ? [RUSportsPlayerExpandedCell class] :[RUSportsPlayerUnexpandedCell class]);
+}
+
+-(void)toggleExpansionForPlayer:(RUSportsPlayer *)player{
+    RUSportsPlayer *lastExpandedPlayer = self.expandedPlayer;
+    self.expandedPlayer = player;
+    
+    NSArray *indexPaths;
+    
+    if ([player isEqual:lastExpandedPlayer]){
+        _expandedPlayer = nil;
+        indexPaths = [self indexPathsForItem:player];
+    } else {
+        indexPaths = [[self indexPathsForItem:player] arrayByAddingObjectsFromArray:[self indexPathsForItem:lastExpandedPlayer]];
+    }
+    
+    [self invalidateCachedHeightsForIndexPaths:indexPaths];
+    [self notifyItemsRefreshedAtIndexPaths:indexPaths];
 }
 
 -(void)configureCell:(RUSportsPlayerCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -49,9 +74,17 @@
     cell.nameLabel.text = player.name;
     cell.jerseyNumberLabel.text = player.jerseyNumber;
     cell.initialsLabel.text = player.initials;
- 
+    cell.positionLabel.text = player.position;
+
     cell.playerImageView.image = nil;
     [cell.playerImageView setImageWithURL:player.imageURL];
+    
+
+    if ([cell isKindOfClass:[RUSportsPlayerExpandedCell class]]) {
+        RUSportsPlayerExpandedCell *expandedCell = (RUSportsPlayerExpandedCell *)cell;
+        expandedCell.bioLabel.attributedText = player.bio;
+       // expandedCell.positionLabel.text = player.position;
+    }
 }
 
 @end

@@ -13,4 +13,5 @@
 +(instancetype)tupleWithTitle:(NSString *)title object:(id)object;
 @property NSString *title;
 @property id object;
+- (id)objectForKeyedSubscript:(id <NSCopying>)key;
 @end

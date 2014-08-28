@@ -11,12 +11,11 @@
 
 @implementation NSPredicate (SearchPredicate)
 
-+(NSArray *)subpredicatesForQuery:(NSString *)query keyPath:(NSString *)keyPath{
-    NSArray *wordsInQuery = [query wordsInString];
++(NSArray *)subpredicatesForWords:(NSArray *)words keyPath:(NSString *)keyPath{
     
     NSMutableArray *predicates = [NSMutableArray array];
     
-    for (NSString *word in wordsInQuery) {
+    for (NSString *word in words) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:
                                   @"(%K BEGINSWITH[cd] %@) OR (%K CONTAINS[cd] %@)", keyPath, word, keyPath,[NSString stringWithFormat:@" %@", word]];
         [predicates addObject:predicate];
@@ -27,6 +26,31 @@
 
 +(NSPredicate *)predicateForQuery:(NSString *)query keyPath:(NSString *)keyPath{
     if (!query.length || !keyPath.length) return [NSPredicate predicateWithValue:NO];
-    return [NSCompoundPredicate andPredicateWithSubpredicates:[self subpredicatesForQuery:query keyPath:keyPath]];
+    NSArray *wordsInQuery = [query wordsInString];
+    if (!wordsInQuery.count) return [NSPredicate predicateWithValue:NO];
+    return [NSCompoundPredicate andPredicateWithSubpredicates:[self subpredicatesForWords:wordsInQuery keyPath:keyPath]];
 }
+
+/*
++(NSPredicate *)predicateForQuery:(NSString *)query keyPath:(NSString *)keyPath{
+    NSArray *wordsInQuery = [query wordsInString];
+    if (!wordsInQuery.count) return [NSPredicate predicateWithValue:NO];
+    
+    return [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        NSString *string = [evaluatedObject valueForKeyPath:keyPath];
+        NSArray *wordsInString = [string wordsInString];
+        
+        NSMutableSet *matchedWords = [NSMutableSet set];
+        
+        for (NSString *queryWord in wordsInQuery) {
+            NSPredicate *matchPredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@",@"self",queryWord];
+            for (NSString *word in wordsInString) {
+                if ([matchedWords containsObject:queryWord]) break;
+                if ([matchPredicate evaluateWithObject:word]) [matchedWords addObject:queryWord];
+            }
+        }
+        return matchedWords.count == wordsInQuery.count;
+    }];
+}*/
+
 @end

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RULabel : UILabel
-
+@property (nonatomic) BOOL doesNotAutomaticallyLineBreak;
 @end

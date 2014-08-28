@@ -15,9 +15,9 @@
 -(instancetype)initWithText:(NSString *)text;
 
 @property (nonatomic) NSString *text;
-@property (nonatomic) UIFont *textFont;
+//@property (nonatomic) UIFont *textFont;
 
 @property (nonatomic) NSString *detailText;
-@property (nonatomic) UIFont *detailTextFont;
+//@property (nonatomic) UIFont *detailTextFont;
 
 @end

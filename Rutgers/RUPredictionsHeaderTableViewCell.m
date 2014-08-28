@@ -18,17 +18,22 @@
 
 -(void)initializeSubviews{
     self.titleLabel = [RULabel newAutoLayoutView];
-    self.directionLabel = [UILabel newAutoLayoutView];
-    self.timeLabel = [UILabel newAutoLayoutView];
+    self.directionLabel = [RULabel newAutoLayoutView];
+    self.timeLabel = [RULabel newAutoLayoutView];
     
     self.titleLabel.numberOfLines = 0;
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:19];
-    self.directionLabel.font = [UIFont systemFontOfSize:16];
-    self.timeLabel.font = [UIFont boldSystemFontOfSize:16];
+    self.directionLabel.numberOfLines = 0;
+    self.timeLabel.numberOfLines = 0;
     
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.directionLabel];
     [self.contentView addSubview:self.timeLabel];
+}
+
+-(void)updateFonts{
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.directionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{
@@ -36,19 +41,18 @@
     
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeBottom];
    
-    self.directionConstraint = [self.directionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:2];
+    self.directionConstraint = [self.directionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsetsSmall];
   
     [self.directionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.directionLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
     
-    [self.directionLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.timeLabel withOffset:-2];
-    
+    [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.directionLabel withOffset:kLabelVerticalInsetsSmall];
     [self.timeLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeTop];
 }
 
 -(void)updateConstraints{
     [super updateConstraints];
-    self.directionConstraint.constant = self.directionLabel.text.length ? 2 : 0;
+    self.directionConstraint.constant = self.directionLabel.text.length ? kLabelVerticalInsetsSmall : 0;
 }
 
 

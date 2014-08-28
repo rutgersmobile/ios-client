@@ -11,6 +11,15 @@
 #import "RUSOCSectionRow.h"
 
 @implementation RUSOCCourseSectionsDataSource
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.title = @"Sections";
+    }
+    return self;
+}
+
 -(void)setItems:(NSArray *)items{
     NSMutableArray *sections = [NSMutableArray array];
 
@@ -22,18 +31,14 @@
     [super setItems:sections];
 }
 
--(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    [super registerReusableViewsWithTableView:tableView];
-    [tableView registerClass:[RUSOCSectionCell class] forCellReuseIdentifier:NSStringFromClass([RUSOCSectionCell class])];
-}
-
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     return NSStringFromClass([RUSOCSectionCell class]);
 }
 
--(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)configureCell:(RUSOCSectionCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     RUSOCSectionRow *row = [self itemAtIndexPath:indexPath];
     [row setupCell:cell];
+    cell.separatorInset = UIEdgeInsetsZero;
 }
 
 @end

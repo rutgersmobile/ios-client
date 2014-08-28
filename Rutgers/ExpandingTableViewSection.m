@@ -19,13 +19,27 @@
 -(void)setExpanded:(BOOL)expanded{
     
     NSInteger oldCount = self.numberOfItems;
-    _expanded = expanded;
+    
+    if ([super numberOfItems] <= 1){
+        _expanded = NO;
+        return;
+    } else {
+        _expanded = expanded;
+    }
+    
     NSInteger newCount = self.numberOfItems;
     
+    [self invalidateCachedHeightsForSection:0];
     if (expanded) {
-        [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:0]];
+        [self notifyBatchUpdate:^{
+            [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldCount) inSection:0]];
+            [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:0]];
+        }];
     } else {
-        [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newCount, oldCount-newCount) inSection:0]];
+        [self notifyBatchUpdate:^{
+            [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newCount) inSection:0]];
+            [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newCount, oldCount-newCount) inSection:0]];
+        }];
     }
 }
 
@@ -35,10 +49,15 @@
 }
 
 -(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    UIEdgeInsets insets =  UIEdgeInsetsMake(0, kLabelHorizontalInsets, 0, 0);
+    
     if (indexPath.row != 0) {
-        cell.contentView.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
+        cell.contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        cell.separatorInset = UIEdgeInsetsZero;
     } else {
         cell.contentView.backgroundColor = [UIColor whiteColor];
+        cell.separatorInset = self.expanded ? UIEdgeInsetsZero : insets;
     }
 }
+
 @end

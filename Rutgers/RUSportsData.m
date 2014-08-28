@@ -7,7 +7,6 @@
 //
 
 #import "RUSportsData.h"
-#import "RUNetworkManager.h"
 #import "RUSportsPlayer.h"
 
 @implementation RUSportsData
@@ -42,21 +41,42 @@
 }
 
 +(void)getRosterForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
-    [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-roster.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-roster.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *responseItems = responseObject[@"row"];
         NSMutableArray *parsedItems = [NSMutableArray array];
         for (NSDictionary *responseItem in responseItems) {
             RUSportsPlayer *player = [[RUSportsPlayer alloc] initWithDictionary:responseItem];
             [parsedItems addObject:player];
+     //       [self addPositionString:player.position forSportID:sportID];
         }
+       // NSLog(@"%@",[self setForSportID:sportID]);
         successBlock(parsedItems);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failureBlock();
     }];
 }
 
++(void)addPositionString:(NSString *)position forSportID:(NSString *)sportID{
+    [[self setForSportID:sportID] addObject:position];
+}
+
++(NSMutableSet *)setForSportID:(NSString *)sportID{
+    static NSMutableDictionary *sports = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sports = [NSMutableDictionary dictionary];
+    });
+    
+    NSMutableSet *set = sports[sportID];
+    if (!set) {
+        set = [NSMutableSet set];
+        sports[sportID] = set;
+    }
+    return set;
+}
+
 +(void)getScheduleForSportID:(NSString *)sportID withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
-    [[RUNetworkManager xmlSessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-schedules.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:@"http://scarletknights.com/rss/mobile/feed-schedules.asp" parameters:@{@"sportid" : sportID} success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *responseItems = responseObject[@"row"];
         successBlock(responseItems);
         /*

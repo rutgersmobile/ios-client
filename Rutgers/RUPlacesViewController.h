@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUChannelProtocol.h"
-#import "TableViewController.h"
+#import "SegmentedTableViewController.h"
 
-@interface RUPlacesViewController : TableViewController <RUChannelProtocol>
+@interface RUPlacesViewController : SegmentedTableViewController <RUChannelProtocol>
 
 @end

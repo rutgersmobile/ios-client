@@ -24,6 +24,9 @@
 }
 
 #pragma mark - Composed Data Source Interface
+-(DataSource *)dataSourceAtIndex:(NSInteger)index{
+    return self.dataSources[index];
+}
 
 -(void)addDataSource:(DataSource *)dataSource{
     [self.dataSources addObject:dataSource];
@@ -99,12 +102,37 @@
         [dataSource registerReusableViewsWithTableView:tableView];
 }
 
+#pragma mark - Cached Heights
+
+-(void)invalidateCachedHeights{
+    for (DataSource *dataSource in self.dataSources) {
+        [dataSource invalidateCachedHeights];
+    }
+}
+
+-(void)invalidateCachedHeightsForSection:(NSInteger)section{
+    DataSource *dataSource = [self dataSourceForGlobalSection:section];
+    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
+    [dataSource invalidateCachedHeightsForSection:localSection];
+}
+
+-(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
+    for (NSIndexPath *indexPath in indexPaths) {
+        [self invalidateCachedHeightForIndexPath:indexPath];
+    }
+}
+
+-(void)invalidateCachedHeightForIndexPath:(NSIndexPath *)indexPath{
+    DataSource *dataSource = [self dataSourceForGlobalSection:indexPath.section];
+    NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
+    [dataSource invalidateCachedHeightsForIndexPaths:@[localIndexPath]];
+}
+
 #pragma mark - Table View Data Source
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
-    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:indexPath.section];
-    NSIndexPath *localIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:localSection];
+    NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
     return [dataSource tableView:tableView cellForRowAtIndexPath:localIndexPath];
 }
 
@@ -112,21 +140,29 @@
     return [self dataSourceForGlobalSection:section].title;
 }
 
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    return [self dataSourceForGlobalSection:section].footer;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
-    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:indexPath.section];
-    NSIndexPath *localIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:localSection];
-    return [dataSource tableView:tableView heightForRowAtIndexPath:localIndexPath];;
+    NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
+    return [dataSource tableView:tableView heightForRowAtIndexPath:localIndexPath];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger globalSection = indexPath.section;
+    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
+    NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
+    return [dataSource tableView:tableView estimatedHeightForRowAtIndexPath:localIndexPath];
+}
 
 #pragma mark - Collection View Data Source
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
-    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:indexPath.section];
-    NSIndexPath *localIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:localSection];
+    NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
     return [dataSource collectionView:collectionView cellForItemAtIndexPath:localIndexPath];
 }
 
@@ -211,15 +247,15 @@
 
 #pragma mark - Data Source Delegate
 
--(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths{
-    [self notifyItemsInsertedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:insertedIndexPaths inDataSource:dataSource]];
+-(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction{
+    [self notifyItemsInsertedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:insertedIndexPaths inDataSource:dataSource] direction:direction];
 }
--(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths{
-    [self notifyItemsRemovedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:removedIndexPaths inDataSource:dataSource]];
+-(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction{
+    [self notifyItemsRemovedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:removedIndexPaths inDataSource:dataSource] direction:direction];
 
 }
--(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths{
-    [self notifyItemsRefreshedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:refreshedIndexPaths inDataSource:dataSource]];
+-(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction{
+    [self notifyItemsRefreshedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:refreshedIndexPaths inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
     [self notifyItemMovedFromIndexPath:[self globalIndexPathForLocalIndexPath:indexPath inDataSource:dataSource]
@@ -234,6 +270,9 @@
 }
 -(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
     [self notifySectionsRemoved:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
+}
+-(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection{
+    // implement
 }
 
 -(void)dataSourceDidReloadData:(DataSource *)dataSource{

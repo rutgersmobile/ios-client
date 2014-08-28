@@ -13,15 +13,18 @@
 -(void)initializeSubviews{
     self.areaLabel = [RULabel newAutoLayoutView];
     self.areaLabel.numberOfLines = 0;
-    self.areaLabel.font = [UIFont boldSystemFontOfSize:14];
 
-    self.timesLabel = [UILabel newAutoLayoutView];
+    self.timesLabel = [RULabel newAutoLayoutView];
     self.timesLabel.numberOfLines = 0;
-    self.timesLabel.font = [UIFont systemFontOfSize:14];
     
     [self.contentView addSubview:self.areaLabel];
     [self.contentView addSubview:self.timesLabel];
     
+}
+
+-(void)updateFonts{
+    self.areaLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleFootnote];
+    self.timesLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 -(void)initializeConstraints{

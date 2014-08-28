@@ -17,4 +17,9 @@
 
 @property (nonatomic) NSDictionary *campus;
 @property (nonatomic) NSDictionary *userRole;
+@property (readonly) NSArray *campuses;
+@property (readonly) NSArray *userRoles;
+
++(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock;
+
 @end

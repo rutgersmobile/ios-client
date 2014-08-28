@@ -22,8 +22,9 @@
     }
     return self;
 }
+
 -(void)setupCell:(RURecCenterMeetingAreaTableViewCell *)cell{
     cell.areaLabel.text = self.area;
-    cell.timesLabel.text = [self.times[self.date] stringByReplacingOccurrencesOfString:@", " withString:@",\n"];
+    cell.timesLabel.text = self.times[self.date];
 }
 @end

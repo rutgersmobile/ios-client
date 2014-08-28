@@ -9,11 +9,11 @@
 #import "RUPlacesDataLoadingManager.h"
 #import <AFNetworking.h>
 #import "RULocationManager.h"
-#import "RUNetworkManager.h"
 #import "RUPlace.h"
 #import "NSDictionary+ObjectsForKeys.h"
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
+#import "NSArray+LimitedToCount.h"
 
 NSString *PlacesDataDidUpdateRecentPlacesKey = @"PlacesDataDidUpdateRecentPlacesKey";
 
@@ -49,7 +49,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 
 -(void)getPlaces{
     dispatch_group_enter(self.placesGroup);
-    [[RUNetworkManager jsonSessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
             dispatch_group_leave(self.placesGroup);
@@ -101,7 +101,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     }
     [recentPlaces insertObject:ID atIndex:0];
 
-    [userDefaults setObject:recentPlaces forKey:PlacesRecentPlacesKey];
+    [userDefaults setObject:[recentPlaces limitedToCount:20] forKey:PlacesRecentPlacesKey];
     
     [self notifyRecentPlacesDidUpdate];
 }

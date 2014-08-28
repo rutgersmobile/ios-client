@@ -9,16 +9,17 @@
 #import "TableViewController.h"
 #import "DataSource_Private.h"
 #import "RUNavigationController.h"
+#import "UITableView+Selection.h"
 
 @interface TableViewController () <DataSourceDelegate>
 @property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
-@property (nonatomic) UISearchBar *searchBar;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
 @property (nonatomic, readonly) UITableViewStyle style;
 
+@property (nonatomic) CGRect lastValidBounds;
 @end
 
 @implementation TableViewController
@@ -40,6 +41,7 @@
 
 -(void)loadView{
     [super loadView];
+    
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.style];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.delegate = self;
@@ -49,14 +51,22 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(preferredContentSizeChanged)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+    
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, kLabelHorizontalInsets, 0, 0);
     self.tableView.estimatedRowHeight = 44.0;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    [self invalidateCachedHeightsIfNeeded];
+    
     if (self.clearsSelectionOnViewWillAppear) {
-        [self clearSelection];
+        [self.tableView clearSelection];
     }
 
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
@@ -66,14 +76,6 @@
     if (self.loadsContentOnViewWillAppear || [self.searchDataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
         [self.searchDataSource setNeedsLoadContent];
     }
-
-}
-
--(void)clearSelection{
-    NSArray *indexPaths = [self.tableView indexPathsForSelectedRows];
-    for (NSIndexPath *indexPath in indexPaths) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -81,9 +83,11 @@
     
     if (self.searching) {
         [self setStatusAppearanceForSearchingState:YES];
+        [self.searchTableView flashScrollIndicators];
+    } else {
+        [self.tableView flashScrollIndicators];
     }
 }
-
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
@@ -91,6 +95,37 @@
     if (self.searching) {
         [self setStatusAppearanceForSearchingState:NO];
     }
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+}
+
+-(void)viewWillLayoutSubviews{
+    [self invalidateCachedHeightsIfNeeded];
+}
+
+-(void)invalidateCachedHeightsIfNeeded{
+    if (!CGRectEqualToRect(self.view.bounds, self.lastValidBounds)) [self invalidateCachedHeights];
+}
+
+-(void)invalidateCachedHeights{
+    [[self dataSourceForTableView:self.tableView] invalidateCachedHeights];
+    [[self dataSourceForTableView:self.searchTableView] invalidateCachedHeights];
+    self.lastValidBounds = self.view.bounds;
+}
+
+-(void)preferredContentSizeChanged{
+    [self invalidateCachedHeights];
+    
+    [self reloadTablePreservingSelectionState:self.tableView];
+    [self reloadTablePreservingSelectionState:self.searchTableView];
+}
+
+-(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
+    NSArray *selectedIndexPaths = [tableView indexPathsForSelectedRows];
+    [tableView reloadData];
+    [tableView selectRowsAtIndexPaths:selectedIndexPaths animated:NO];
 }
 
 #pragma mark - Data Source
@@ -193,14 +228,18 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [[self dataSourceForTableView:tableView] tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
+    return [[self dataSourceForTableView:tableView] tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [[self dataSourceForTableView:tableView] tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
 #pragma mark - Data Source notifications
 -(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
     switch (direction) {
         case DataSourceOperationDirectionNone:
-            return UITableViewRowAnimationAutomatic;
+            return UITableViewRowAnimationFade;
             break;
         case DataSourceOperationDirectionLeft:
             return UITableViewRowAnimationLeft;
@@ -211,16 +250,16 @@
     }
 }
 
--(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths{
-    [[self tableViewForDataSource:dataSource] insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+-(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction{
+    [[self tableViewForDataSource:dataSource] insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths{
-    [[self tableViewForDataSource:dataSource] deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+-(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction{
+    [[self tableViewForDataSource:dataSource] deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths{
-    [[self tableViewForDataSource:dataSource] reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+-(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction{
+    [[self tableViewForDataSource:dataSource] reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
@@ -239,7 +278,7 @@
     [[self tableViewForDataSource:dataSource] deleteSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection direction:(DataSourceOperationDirection)direction{
+-(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection{
     [[self tableViewForDataSource:dataSource] moveSection:section toSection:newSection];
 }
 

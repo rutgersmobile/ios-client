@@ -17,4 +17,24 @@
     }];
 }
 
+-(NSArray *)sortByKeyPath:(NSString *)keyPath beginsWith:(NSString *)string{
+    NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"%k beginswith[cd] %@",@"self",string];
+    return [self sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSString *valueOne = [obj1 valueForKeyPath:keyPath];
+        NSString *valueTwo = [obj2 valueForKeyPath:keyPath];
+        
+        BOOL oneBeginsWith = [beginsWithPredicate evaluateWithObject:valueOne];
+        BOOL twoBeingsWith = [beginsWithPredicate evaluateWithObject:valueTwo];
+        
+        if (oneBeginsWith && !twoBeingsWith) {
+            return NSOrderedAscending;
+        } else if (!oneBeginsWith && twoBeingsWith) {
+            return NSOrderedDescending;
+        } else {
+            return [valueOne compare:valueTwo options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSNumericSearch];
+        }
+    }];
+}
+
+
 @end

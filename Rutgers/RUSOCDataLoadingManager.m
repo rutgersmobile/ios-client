@@ -8,8 +8,8 @@
 
 #import "RUSOCDataLoadingManager.h"
 #import <AFNetworking.h>
-#import "RUNetworkManager.h"
 #import "RUUserInfoManager.h"
+#import "RUSOCCourseRow.h"
 
 static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
 
@@ -69,7 +69,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSemesters{
-    [[RUNetworkManager jsonSessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         self.semesters = [self parseSemesters:responseObject[@"semesters"]];
         self.defaultSemesterIndex = [responseObject[@"defaultSemester"] integerValue];
         dispatch_group_leave(self.semesterGroup);
@@ -96,9 +96,28 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     return [baseString stringByAppendingString:([self isOnline] ? @"onlineCourse.json" : @"course.json")];
 }
 
+-(NSDictionary *)parametersWithOtherParameters:(NSDictionary *)parameters{
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    
+    NSString *semesterTag = self.semester[@"tag"];
+    if ([self isOnline]) {
+        [mutableParameters addEntriesFromDictionary:@{@"term" : [semesterTag substringToIndex:1],
+                                                      @"year" : [semesterTag substringFromIndex:1],
+                                                      @"level" : self.level[@"tag"]
+                                                      }];
+    } else {
+        [mutableParameters addEntriesFromDictionary:@{
+                                                      @"semester" : semesterTag,
+                                                      @"campus" : self.campus[@"tag"],
+                                                      @"level" : self.level[@"tag"]
+                                                      }];
+    }
+    return mutableParameters;
+}
+
 -(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock{
     [self performOnSemestersLoaded:^{
-        [[RUNetworkManager jsonSessionManager] GET:[self subjectsURL] parameters:@{@"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:[self subjectsURL] parameters:[self parametersWithOtherParameters:nil] success:^(NSURLSessionDataTask *task, id responseObject) {
             successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock();
@@ -108,8 +127,13 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     [self performOnSemestersLoaded:^{
-        [[RUNetworkManager jsonSessionManager] GET:[self coursesURL] parameters:@{@"subject" : subjectCode, @"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
-            successBlock(responseObject);
+        [[RUNetworkManager sessionManager] GET:[self coursesURL] parameters:[self parametersWithOtherParameters:@{@"subject" : subjectCode}] success:^(NSURLSessionDataTask *task, id responseObject) {
+            NSMutableArray *parsedItems = [NSMutableArray array];
+            for (NSDictionary *course in responseObject) {
+                RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
+                [parsedItems addObject:row];
+            }
+            successBlock(parsedItems);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock();
         }];
@@ -118,7 +142,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
 -(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode withSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(void))failureBlock{
     [self performOnSemestersLoaded:^{
-        [[RUNetworkManager jsonSessionManager] GET:[self courseURL] parameters:@{@"subject" : subjectCode, @"courseNumber" : courseCode, @"semester" : self.semester[@"tag"], @"campus" : self.campus[@"tag"], @"level" : self.level[@"tag"]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:[self courseURL] parameters:[self parametersWithOtherParameters:@{@"subject" : subjectCode, @"courseNumber" : courseCode}] success:^(NSURLSessionDataTask *task, id responseObject) {
             successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock();
@@ -129,7 +153,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 -(void)getSearchIndexWithSuccess:(void (^)(NSDictionary *))successBlock failure:(void (^)(NSError *))failureBlock{
     [self performOnSemestersLoaded:^{
         NSString *indexString = [NSString stringWithFormat:@"indexes/%@_%@_%@.json",self.semester[@"tag"], self.campus[@"tag"], self.level[@"tag"]];
-        [[RUNetworkManager jsonSessionManager] GET:indexString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:indexString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             successBlock(responseObject);
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             failureBlock(error);

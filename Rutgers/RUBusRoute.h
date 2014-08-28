@@ -17,7 +17,6 @@
 @property (nonatomic) NSArray *stops;
 @property (nonatomic) BOOL active;
 @property (nonatomic) NSArray *directions;
--(NSArray *)activeStops;
 @property (nonatomic) NSString *agency;
 
 @end

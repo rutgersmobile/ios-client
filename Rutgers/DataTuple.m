@@ -25,4 +25,7 @@
 -(NSString *)description{
     return self.title;
 }
+-(id)objectForKeyedSubscript:(id<NSCopying>)key{
+    return [self.object objectForKeyedSubscript:key];
+}
 @end

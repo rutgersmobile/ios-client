@@ -16,7 +16,7 @@
     self = [super init];
     if (self) {
         self.title = @"Nearby Places";
-        self.itemLimit = 7;
+        self.itemLimit = 10;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:LocationManagerDidChangeLocationKey object:nil];
     }
     return self;
@@ -29,7 +29,7 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUPlacesDataLoadingManager sharedInstance] placesNearLocation:[RULocationManager sharedLocationManager].location completion:^(NSArray *nearbyPlaces) {
-            [loading updateWithContent:^(NearbyPlacesDataSource* me) {
+            [loading updateWithContent:^(typeof(self) me) {
                 me.items = nearbyPlaces;
             }];
         }];

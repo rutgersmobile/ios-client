@@ -16,17 +16,15 @@
 @property CGFloat tilePadding;
 @property CGRect lastBounds;
 @property BOOL isResizing;
-
 @end
-
 
 @implementation RUCollectionViewFlowLayout
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.tileSpacing = 3;
-        self.tilePadding = 4;
+        self.tileSpacing = 2;
+        self.tilePadding = 3;
         
         self.tileAspectRatio = 203.0/170.0;
         self.maxTileWidth = iPad() ? 180.0 : 130;
@@ -54,7 +52,6 @@
     self.itemSize = CGSizeMake(floorf(tileWidth), floorf(tileWidth/self.tileAspectRatio));
 }
 
-
 -(UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath{
     UICollectionViewLayoutAttributes *initialAttributes = [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
     
@@ -70,10 +67,13 @@
     return initialAttributes;
 }
 
+-(BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds{
+    BOOL should = [super shouldInvalidateLayoutForBoundsChange:newBounds];
+    return should;
+}
 
 -(void)prepareForAnimatedBoundsChange:(CGRect)oldBounds{
     self.isResizing = YES;
-    [self calculateItemSize];
     [self invalidateLayout];
     [super prepareForAnimatedBoundsChange:oldBounds];
 }

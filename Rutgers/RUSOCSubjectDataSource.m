@@ -27,21 +27,12 @@
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode withSuccess:^(NSArray *courses) {
             [loading updateWithContent:^(typeof(self) me) {
-                [me makeSectionsForResponse:courses];
+                me.items = courses;
             }];
         } failure:^{
             [loading doneWithError:nil];
         }];
     }];
-}
-
--(void)makeSectionsForResponse:(NSArray *)response{
-    NSMutableArray *parsedItems = [NSMutableArray array];
-    for (NSDictionary *course in response) {
-        RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
-        [parsedItems addObject:row];
-    }
-    self.items = parsedItems;
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{

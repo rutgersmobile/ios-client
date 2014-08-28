@@ -9,8 +9,9 @@
 #import "ALTableViewAbstractCell.h"
 
 @interface RUSportsPlayerCell : ALTableViewAbstractCell
-@property UILabel *initialsLabel;
-@property UIImageView *playerImageView;
-@property UILabel *nameLabel;
-@property UILabel *jerseyNumberLabel;
+@property (nonatomic) UILabel *initialsLabel;
+@property (nonatomic) UIImageView *playerImageView;
+@property (nonatomic) UILabel *nameLabel;
+@property (nonatomic) UILabel *jerseyNumberLabel;
+@property (nonatomic) UILabel *positionLabel;
 @end

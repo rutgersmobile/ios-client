@@ -55,12 +55,4 @@
     return [self itemAtIndexPath:indexPath].shouldCopy;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath] + 1;
-}
-
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.hidesSeperatorInsets) cell.separatorInset = UIEdgeInsetsZero;
-}
-
 @end

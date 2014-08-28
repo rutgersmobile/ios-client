@@ -8,7 +8,6 @@
 
 #import "BasicDataSource.h"
 
-
 @interface ExpandingTableViewSection : BasicDataSource
 @property (nonatomic) BOOL expanded;
 @end

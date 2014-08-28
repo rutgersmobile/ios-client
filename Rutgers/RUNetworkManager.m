@@ -6,12 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUNetworkManager.h"
 #import "AFXMLResponseSerializer.h"
 @interface RUNetworkManager ()
-@property AFHTTPSessionManager *jsonSessionManager;
-@property AFHTTPSessionManager *xmlSessionManager;
-@property AFHTTPSessionManager *HTTPSessionManager;
+@property AFHTTPSessionManager *sessionManager;
 @end
 
 @implementation RUNetworkManager
@@ -30,44 +27,30 @@
     return networkManager;
 }
 
-/**
- *  The session manager specializing in json, defaulting to load off the rutgers mobile servers if only given a path fragment
- *  Parses the response using NSJSONSerialization
- *
- *  @return The json session manager
- */
-+(AFHTTPSessionManager *)jsonSessionManager{
-    return [RUNetworkManager sharedInstance].jsonSessionManager;
++(AFHTTPSessionManager *)sessionManager{
+    return [RUNetworkManager sharedInstance].sessionManager;
 }
 
-/**
- *  The session manager specializing in xml
- *  Parses the response using XMLDictionary
- *
- *  @return The xml session manager
- */
-+(AFHTTPSessionManager *)xmlSessionManager{
-    return [RUNetworkManager sharedInstance].xmlSessionManager;
-}
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
-        self.jsonSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://rumobile.rutgers.edu/1/"]];
         AFJSONResponseSerializer *jsonSerializer = [AFJSONResponseSerializer serializer];
         jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",nil];
         jsonSerializer.removesKeysWithNullValues = YES;
-        self.jsonSessionManager.responseSerializer = jsonSerializer;
-        self.jsonSessionManager.completionQueue = queue;
     
-        self.xmlSessionManager = [AFHTTPSessionManager manager];
-        self.xmlSessionManager.responseSerializer = [AFXMLResponseSerializer serializer];
-        self.xmlSessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
-        self.xmlSessionManager.completionQueue = queue;
+        AFHTTPResponseSerializer *xmlSerializer = [AFXMLResponseSerializer serializer];
+        xmlSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
         
+        NSString *urlString = @"https://rumobile.rutgers.edu/1/";
+        if (BETA) urlString = @"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/";
         
+        self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+        self.sessionManager.responseSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[jsonSerializer,xmlSerializer]];
+        self.sessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        
+        if (BETA) self.sessionManager.securityPolicy.allowInvalidCertificates = YES;
     }
     return self;
 }

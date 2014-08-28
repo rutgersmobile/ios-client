@@ -15,12 +15,14 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self.contentView autoRemoveConstraintsAffectingView];
-        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        
+        //self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        self.opaque = YES;
-        self.contentView.opaque = YES;
+       // self.opaque = YES;
+       // self.contentView.opaque = YES;
         [self initializeSubviews];
         [self initializeConstraints];
+        [self updateFonts];
     }
     return self;
 }
@@ -33,4 +35,7 @@
     
 }
 
+-(void)updateFonts{
+    
+}
 @end

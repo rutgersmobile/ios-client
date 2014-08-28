@@ -11,11 +11,18 @@
 #import "ALTableViewTextCell.h"
 
 @implementation TupleDataSource
+-(id)init{
+    self = [super init];
+    if (self) {
+        self.showsDisclosureIndicator = YES;
+    }
+    return self;
+}
+
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
-
 
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     return NSStringFromClass([ALTableViewTextCell class]);

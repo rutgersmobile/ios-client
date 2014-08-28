@@ -7,15 +7,13 @@
 //
 
 #import "RUFoodDataSource.h"
-#import "RUFoodData.h"
 #import "ALTableViewTextCell.h"
 #import "TupleDataSource.h"
 #import "DataTuple.h"
+#import "NewBrunswickFoodDataSource.h"
+#import "RUUserInfoManager.h"
 
 @interface RUFoodDataSource ()
-@property (nonatomic) TupleDataSource *nbDiningHalls;
-@property (nonatomic) TupleDataSource *camdenDiningHalls;
-@property (nonatomic) TupleDataSource *newarkDiningHalls;
 @end
 
 @implementation RUFoodDataSource
@@ -23,63 +21,35 @@
 {
     self = [super init];
     if (self) {
-        self.nbDiningHalls = [[TupleDataSource alloc] init];
-        self.nbDiningHalls.title = @"New Brunswick";
-        [self addDataSource:self.nbDiningHalls];
+        NSDictionary *camdenData = @{@"title" : @"Gateway Cafe",
+                                     @"header" : @"Camden",
+                                     @"data" : @"The Camden Dining Hall, the Gateway Cafe, is located at the Camden Campus Center.\n\nIt offers a variety of eateries in one convenient location.",
+                                     @"view" : @"text"
+                                     };
         
-        self.camdenDiningHalls = [[TupleDataSource alloc] init];
-        self.camdenDiningHalls.title = @"Camden";
-        [self addDataSource:self.camdenDiningHalls];
-
-        self.newarkDiningHalls = [[TupleDataSource alloc] init];
-        self.newarkDiningHalls.title = @"Newark";
-        [self addDataSource:self.newarkDiningHalls];
+        NSDictionary *newarkData =  @{@"title" : @"Stonsby Commons & Eatery",
+                                      @"header" : @"Newark",
+                                      @"data" : @"Students enjoy all-you-care-to-eat dining in a contemporary setting. This exciting location offers fresh made menu items, cutting-edge American entrees, ethnically-inspired foods, vegetarian selections and lots more... \n\nThe Commons also features upscale Premium entrees and fresh baked goods from our in house bakery or local vendors.",
+                                      @"view" : @"text"
+                                      };
+        
+        [RUUserInfoManager performInCampusPriorityOrderWithNewBrunswickBlock:^{
+            [self addDataSource:[[NewBrunswickFoodDataSource alloc] init]];
+        } newarkBlock:^{
+            [self addDataSource:[self dataSourceWithDictionary:newarkData]];
+        } camdenBlock:^{
+            [self addDataSource:[self dataSourceWithDictionary:camdenData]];
+        }];
+        
     }
     return self;
 }
 
--(void)loadContent{
-    [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [RUFoodData getFoodWithSuccess:^(NSArray *response) {
-            [loading updateWithContent:^(typeof(self) me) {
-                [self parseResponse:response];
-                [self updateStaticDiningHalls];
-            }];
-        } failure:^{
-            [loading doneWithError:nil];
-        }];
-    }];
-}
-
--(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    [super registerReusableViewsWithTableView:tableView];
-    [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
-}
-
--(void)parseResponse:(NSArray *)response{
-    NSMutableArray *parsedDiningHalls = [NSMutableArray array];
-    for (NSDictionary *diningHall in response) {
-        DataTuple *parsedDiningHall = [[DataTuple alloc] initWithTitle:diningHall[@"location_name"] object:diningHall];
-        [parsedDiningHalls addObject:parsedDiningHall];
-    }
-    self.nbDiningHalls.items = parsedDiningHalls;
-}
-
--(void)updateStaticDiningHalls{
-    NSDictionary *newarkData =  @{@"title" : @"Stonsby Commons & Eatery",
-                                  @"header" : @"Newark",
-                                  @"data" : @"Students enjoy all-you-care-to-eat dining in a contemporary setting. This exciting location offers fresh made menu items, cutting-edge American entrees, ethnically-inspired foods, vegetarian selections and lots more... \n\nThe Commons also features upscale Premium entrees and fresh baked goods from our in house bakery or local vendors.",
-                                  @"view" : @"text"
-                                  };
-    
-    NSDictionary *camdenData = @{@"title" : @"Gateway Cafe",
-                                 @"header" : @"Camden",
-                                 @"data" : @"The Camden Dining Hall, the Gateway Cafe, is located at the Camden Campus Center.\n\nIt offers a variety of eateries in one convenient location.",
-                                 @"view" : @"text"
-                                 };
-    
-    self.newarkDiningHalls.items = @[[[DataTuple alloc] initWithTitle:newarkData[@"title"] object:newarkData]];
-    self.camdenDiningHalls.items = @[[[DataTuple alloc] initWithTitle:camdenData[@"title"] object:camdenData]];
+-(DataSource *)dataSourceWithDictionary:(NSDictionary *)dictionary{
+    TupleDataSource *dataSource = [[TupleDataSource alloc] init];
+    dataSource.title = dictionary[@"header"];
+    dataSource.items = @[[[DataTuple alloc] initWithTitle:dictionary[@"title"] object:dictionary]];
+    return dataSource;
 }
 
 @end

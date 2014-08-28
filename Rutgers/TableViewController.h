@@ -30,5 +30,9 @@
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
 
-@property (nonatomic) BOOL searching;
+@property (nonatomic, getter = isSearching) BOOL searching;
+@property (nonatomic) UISearchBar *searchBar;
+
+-(void)preferredContentSizeChanged NS_REQUIRES_SUPER;
+-(void)reloadTablePreservingSelectionState:(UITableView *)tableView;
 @end

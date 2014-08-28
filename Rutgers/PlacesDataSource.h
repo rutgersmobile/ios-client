@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "ComposedDataSource.h"
+#import "SegmentedDataSource.h"
 
-@interface PlacesDataSource : ComposedDataSource
+@interface PlacesDataSource : SegmentedDataSource
 
 @end

@@ -15,8 +15,8 @@
 {
     self = [super init];
     if (self) {
-        self.title = @"Recent Places";
-        self.itemLimit = 7;
+        self.title = @"Recently Viewed";
+        self.itemLimit = 8;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:PlacesDataDidUpdateRecentPlacesKey object:nil];
     }
     return self;
@@ -29,7 +29,7 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUPlacesDataLoadingManager sharedInstance] getRecentPlacesWithCompletion:^(NSArray *recentPlaces) {
-            [loading updateWithContent:^(RecentPlacesDataSource* me) {
+            [loading updateWithContent:^(typeof(self) me) {
                 me.items = recentPlaces;
             }];
         }];

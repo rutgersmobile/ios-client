@@ -95,7 +95,7 @@
 }
 
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
-    [RUAnalyticsManager postAnalyticsForChannelOpen:channel];
+    [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];
     NSString *view = channel[@"view"];
     if (!view) view = [self defaultViewForChannel:channel];
     

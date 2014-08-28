@@ -8,13 +8,11 @@
 
 #import "RUBusDataAgencyManager.h"
 #import "RUBusDataLoadingManager.h"
-#import "RUNetworkManager.h"
 #import "RULocationManager.h"
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
 #import "RUMultiStop.h"
 #import "NSArray+Sort.h"
-#import <MSWeakTimer.h>
 #import "NSPredicate+SearchPredicate.h"
 
 
@@ -59,13 +57,13 @@
 }
 
 -(void)performBlockWhenAgencyLoaded:(dispatch_block_t)block{
-    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), block);
+    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block);
 }
 
 -(void)performBlockWhenActiveLoaded:(dispatch_block_t)block{
     if ([self activeStopsAndRoutesNeedsRefresh]) [self getActiveStopsAndRoutes];
-    dispatch_group_notify(self.agencyGroup, dispatch_get_main_queue(), ^{
-        dispatch_group_notify(self.activeGroup, dispatch_get_main_queue(), block);
+    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block);
     });
 }
 
@@ -136,14 +134,14 @@
 
 #pragma mark - searching
 
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))handler{
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler{
     [self performBlockWhenAgencyLoaded:^{
-        NSMutableArray *stopsAndRoutes = [NSMutableArray array];
-        [stopsAndRoutes addObjectsFromArray:self.stops.allValues];
-        [stopsAndRoutes addObjectsFromArray:self.routes.allValues];
+        NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
         
-        NSArray *results = [stopsAndRoutes filteredArrayUsingPredicate:[NSPredicate predicateForQuery:query keyPath:@"title"]];
-        handler(results);
+        NSArray *routes = [self.routes.allValues filteredArrayUsingPredicate:predicate];
+        NSArray *stops = [self.stops.allValues filteredArrayUsingPredicate:predicate];
+        
+        handler(routes,stops);
     }];
 }
 
@@ -151,7 +149,7 @@
 
 -(void)getAgencyConfig{
     dispatch_group_enter(self.agencyGroup);
-    [[RUNetworkManager jsonSessionManager] GET:URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
        
         [self parseRouteConfig:responseObject];
         dispatch_group_leave(self.agencyGroup);
@@ -169,7 +167,7 @@
 -(void)getActiveStopsAndRoutes{
     dispatch_group_enter(self.activeGroup);
     self.lastTaskDate = [NSDate date];
-    [[RUNetworkManager jsonSessionManager] GET:ACTIVE_URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:ACTIVE_URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
       
         [self performBlockWhenAgencyLoaded:^{
             [self parseActiveStopsAndRoutes:responseObject];
@@ -274,7 +272,7 @@ static NSString *const format = @"&stops=%@|null|%@";
         RUBusRoute *route = routesByTag[routeTag];
         //retrieve the temp array of stop tags
         NSArray *stopTags = route.stops;
-        //and replace it with an array of the actual stop objects we have made
+        //and use it to get an array of the actual stop objects we have made
         NSMutableArray *stops = [NSMutableArray array];
         for (NSString *stopTag in stopTags) {
             RUBusStop *stop = stopsByTag[stopTag];
@@ -289,35 +287,31 @@ static NSString *const format = @"&stops=%@|null|%@";
 }
 
 -(void)parseActiveStopsAndRoutes:(NSDictionary *)activeConfig{
-    NSArray *activeRoutesResponse = activeConfig[@"routes"];
-    NSArray *routes = [self.routes allValues];
+    NSSet *activeRouteTags = [NSSet setWithArray:[activeConfig[@"routes"] valueForKey:@"tag"]];
+    NSMutableArray *activeRoutes = [NSMutableArray array];
     
-    for (RUBusRoute *route in routes) {
-        route.active = NO;
+    for (RUBusRoute *route in self.routes.allValues) {
+        BOOL active = [activeRouteTags containsObject:route.tag];
+        route.active = active;
+        if (active) {
+            [activeRoutes addObject:route];
+        }
     }
     
-    for (NSDictionary *routeDescription in activeRoutesResponse) {
-        RUBusRoute *route = self.routes[routeDescription[@"tag"]];
-        route.active = YES;
-    }
-    
-    NSArray *activeStopsResponse = activeConfig[@"stops"];
-    NSArray *allStops = [self.stops allValues];
-    
-    for (RUMultiStop *stop in allStops) {
-        stop.active = NO;
-    }
-    
-    for (NSDictionary *stopDescription in activeStopsResponse) {
-        RUMultiStop *stop = self.stops[stopDescription[@"title"]];
-        stop.active = YES;
-    }
-    
-    NSPredicate *activePredicate = [NSPredicate predicateWithFormat:@"active = YES"];
-    
-    self.activeRoutes = [[[self.routes allValues] filteredArrayUsingPredicate:activePredicate] sortByKeyPath:@"title"];
+    NSSet *activeStopTitles = [NSSet setWithArray:[activeConfig[@"stops"] valueForKey:@"title"]];
+    NSMutableArray *activeStops = [NSMutableArray array];
 
-    self.activeStops = [[[self.stops allValues] filteredArrayUsingPredicate:activePredicate] sortByKeyPath:@"title"];
+    for (RUMultiStop *stop in self.stops.allValues) {
+        BOOL active = [activeStopTitles containsObject:stop.title];
+        stop.active = active;
+        if (active) {
+            [activeStops addObject:stop];
+        }
+    }
+    
+    self.activeRoutes = [activeRoutes sortByKeyPath:@"title"];
+
+    self.activeStops = [activeStops sortByKeyPath:@"title"];
 }
 
 @end

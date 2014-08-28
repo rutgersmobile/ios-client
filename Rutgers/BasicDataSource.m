@@ -8,6 +8,7 @@
 
 #import "BasicDataSource.h"
 #import "DataSource_Private.h"
+#import "NSArray+LimitedToCount.h"
 
 @interface BasicDataSource ()
 @end
@@ -63,8 +64,8 @@
 
 - (void)setItems:(NSArray *)items
 {
-    if (self.itemLimit && (items.count > self.itemLimit)) {
-        [self setItems:[items subarrayWithRange:NSMakeRange(0, self.itemLimit)] animated:YES];
+    if (self.itemLimit) {
+        [self setItems:[items limitedToCount:self.itemLimit] animated:YES];
     } else {
         [self setItems:items animated:YES];
     }
@@ -77,12 +78,15 @@
     
     if (!self.delegate) {
         _items = [items copy];
+        [self updateLoadingStateFromItems];
         return;
     }
     
     if (!animated) {
         _items = [items copy];
+        [self invalidateCachedHeightsForSection:0];
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
+        [self updateLoadingStateFromItems];
         return;
     }
     
@@ -116,6 +120,9 @@
     }
     
     [self notifyBatchUpdate:^{
+        
+        [self invalidateCachedHeightsForSection:0];
+        
         _items = [items copy];
         
         if ([deletedIndexPaths count])
@@ -130,9 +137,10 @@
             NSIndexPath *toIndexPath = toMovedIndexPaths[i];
             [self notifyItemMovedFromIndexPath:fromIndexPath toIndexPath:toIndexPath];
         }
-    } complete:^{
-        [self updateLoadingStateFromItems];
+        
     }];
+    
+    [self updateLoadingStateFromItems];
 }
 
 - (void)updateLoadingStateFromItems

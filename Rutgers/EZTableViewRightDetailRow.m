@@ -23,7 +23,6 @@
     self = [self init];
     if (self) {
         self.text = text;
-        self.textFont = [UIFont systemFontOfSize:18];
     }
     return self;
 }
@@ -31,7 +30,6 @@
 -(instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText{
     self = [self initWithText:text];
     if (self) {
-        self.textFont = [UIFont systemFontOfSize:17];
         self.detailText = detailText;
     }
     return self;
@@ -44,18 +42,15 @@
 -(void)setupCell:(ALTableViewRightDetailCell *)cell{
     [super setupCell:cell];
     
-    cell.textLabel.font = self.textFont;
     cell.textLabel.text = self.text;
     cell.detailTextLabel.text = self.detailText;
-    cell.detailTextLabel.font = self.detailTextFont;
-    
     
     if (self.active) {
         cell.textLabel.textColor = [UIColor blackColor];
         cell.userInteractionEnabled = YES;
     } else {
         cell.userInteractionEnabled = NO;
-        cell.textLabel.textColor = [UIColor lightGrayColor];
+        cell.textLabel.textColor = [UIColor grayColor];
     }
 
 }

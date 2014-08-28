@@ -29,13 +29,11 @@
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUBusDataLoadingManager sharedInstance] fetchActiveStopsNearbyLocation:self.location completion:^(NSArray *stops, NSError *error) {
             if (!error) {
-                [loading updateWithContent:^(NearbyActiveStopsDataSource *me) {
+                [loading updateWithContent:^(typeof(self) me) {
                     self.items = stops;
                 }];
             } else {
-                [loading doneWithError:^(NearbyActiveStopsDataSource *me) {
-                    
-                }];
+                [loading doneWithError:nil];
             }
         }];
     }];

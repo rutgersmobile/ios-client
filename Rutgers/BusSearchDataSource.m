@@ -7,7 +7,13 @@
 //
 
 #import "BusSearchDataSource.h"
+#import "BusBasicDataSource.h"
 #import "RUBusDataLoadingManager.h"
+
+@interface BusSearchDataSource ()
+@property (nonatomic) BusBasicDataSource *routes;
+@property (nonatomic) BusBasicDataSource *stops;
+@end
 
 @implementation BusSearchDataSource
 
@@ -15,21 +21,31 @@
 {
     self = [super init];
     if (self) {
-        self.itemLimit = 35;
+        self.routes = [[BusBasicDataSource alloc] init];
+        self.routes.title = @"Routes";
+        self.routes.itemLimit = 15;
+
+        self.stops = [[BusBasicDataSource alloc] init];
+        self.stops.title = @"Stops";
+        self.stops.itemLimit = 30;
+        
+        [self addDataSource:self.routes];
+        [self addDataSource:self.stops];
     }
     return self;
 }
 
 -(void)updateForQuery:(NSString *)query{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUBusDataLoadingManager sharedInstance] queryStopsAndRoutesWithString:query completion:^(NSArray *results) {
+        [[RUBusDataLoadingManager sharedInstance] queryStopsAndRoutesWithString:query completion:^(NSArray *routes, NSArray *stops) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
             
             [loading updateWithContent:^(typeof(self) me) {
-                me.items = results;
+                me.routes.items = routes;
+                me.stops.items = stops;
             }];
         }];
     }];

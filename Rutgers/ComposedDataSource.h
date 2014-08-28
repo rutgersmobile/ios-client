@@ -9,6 +9,7 @@
 #import "DataSource.h"
 
 @interface ComposedDataSource : DataSource
+-(DataSource *)dataSourceAtIndex:(NSInteger)index;
 -(void)addDataSource:(DataSource *)dataSource;
 -(void)insertDataSource:(DataSource *)dataSource atIndex:(NSInteger)index;
 -(void)removeDataSource:(DataSource *)dataSource;

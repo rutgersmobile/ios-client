@@ -7,8 +7,11 @@
 //
 
 #import "BasicDataSource.h"
+@class RUSportsPlayer;
 
 @interface RosterDataSource : BasicDataSource
 @property (nonatomic) NSString *sportID;
 -(id)initWithSportID:(NSString *)sportID;
+
+-(void)toggleExpansionForPlayer:(RUSportsPlayer *)player;
 @end

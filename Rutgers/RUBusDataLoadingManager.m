@@ -11,10 +11,9 @@
 #import "RUBusStop.h"
 #import "RUBusRoute.h"
 #import "RUMultiStop.h"
-#import "RUNetworkManager.h"
 
-static NSString * const newBrunswickAgency = @"rutgers";
-static NSString * const newarkAgency = @"rutgers-newark";
+NSString * const newBrunswickAgency = @"rutgers";
+NSString * const newarkAgency = @"rutgers-newark";
 
 @interface RUBusDataLoadingManager ()
 @property NSDictionary *agencyManagers;
@@ -44,23 +43,19 @@ static NSString * const newarkAgency = @"rutgers-newark";
 
 
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler{
-    RUBusDataAgencyManager *agencyManager = self.agencyManagers[agency];
-    [agencyManager fetchAllStopsWithCompletion:handler];
+    [self.agencyManagers[agency] fetchAllStopsWithCompletion:handler];
 }
 
 -(void)fetchAllRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler{
-    RUBusDataAgencyManager *agencyManager = self.agencyManagers[agency];
-    [agencyManager fetchAllRoutesWithCompletion:handler];
+    [self.agencyManagers[agency] fetchAllRoutesWithCompletion:handler];
 }
 
 -(void)fetchActiveStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler{
-    RUBusDataAgencyManager *agencyManager = self.agencyManagers[agency];
-    [agencyManager fetchActiveStopsWithCompletion:handler];
+    [self.agencyManagers[agency] fetchActiveStopsWithCompletion:handler];
 }
 
 -(void)fetchActiveRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler{
-    RUBusDataAgencyManager *agencyManager = self.agencyManagers[agency];
-    [agencyManager fetchActiveRoutesWithCompletion:handler];
+    [self.agencyManagers[agency] fetchActiveRoutesWithCompletion:handler];
 }
 
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void (^)(NSArray *stops, NSError *error))handler{
@@ -78,7 +73,7 @@ static NSString * const newarkAgency = @"rutgers-newark";
         }];
     }];
     
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         handler(allStops,outerError);
     });
 }
@@ -88,7 +83,7 @@ static NSString * const newarkAgency = @"rutgers-newark";
 -(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
     if (!([item isKindOfClass:[RUBusRoute class]] || [item isKindOfClass:[RUMultiStop class]])) return;
     
-    [[RUNetworkManager xmlSessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
             successBlock(predictions);
@@ -109,26 +104,30 @@ static NSString * const newarkAgency = @"rutgers-newark";
 
 
 #pragma mark - search
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *results))handler{
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         dispatch_group_t group = dispatch_group_create();
         
-        NSMutableArray *allResults = [NSMutableArray array];
+        NSMutableArray *allRoutes = [NSMutableArray array];
+        NSMutableArray *allStops = [NSMutableArray array];
         
         [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
             dispatch_group_enter(group);
-            [agencyManager queryStopsAndRoutesWithString:query completion:^(NSArray *results) {
-                [allResults addObjectsFromArray:results];
-                dispatch_group_leave(group);
+            [agencyManager queryStopsAndRoutesWithString:query completion:^(NSArray *routes, NSArray *stops) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [allRoutes addObjectsFromArray:routes];
+                    [allStops addObjectsFromArray:stops];
+                    dispatch_group_leave(group);
+                });
             }];
         }];
         
         dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSArray *sortedResults = [self sortSearchResults:allResults forQuery:query];
-            handler(sortedResults);
+            NSArray *sortedRoutes = [self sortSearchResults:allRoutes forQuery:query];
+            NSArray *sortedStops = [self sortSearchResults:allStops forQuery:query];
+            handler(sortedRoutes,sortedStops);
         });
-
     });
 }
 

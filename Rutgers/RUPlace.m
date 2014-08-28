@@ -20,7 +20,7 @@
         self.location = [self parseLocationDictionary:dictionary[@"location"]];
         self.offices = dictionary[@"offices"];
         self.buildingCode = stripString(dictionary[@"building_code"]);
-        self.descriptionString = stripString(dictionary[@"description"]);
+        self.descriptionString = stripString([dictionary[@"description"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]);
         self.uniqueID = stripString(dictionary[@"id"]);
     }
     return self;
@@ -38,7 +38,13 @@
 }
 -(CLLocation *)parseLocationDictionary:(NSDictionary *)locationDictionary{
     if (!(locationDictionary[@"latitude"] && locationDictionary[@"longitude"])) return nil;
-    return [[CLLocation alloc] initWithLatitude:[locationDictionary[@"latitude"] doubleValue] longitude:[locationDictionary[@"longitude"] doubleValue]];
+    
+    CLLocationDegrees latitude = [locationDictionary[@"latitude"] doubleValue];
+    CLLocationDegrees longitude = [locationDictionary[@"longitude"] doubleValue];
+    
+    if (latitude == 0 && longitude == 0) return nil;
+    
+    return [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
 }
 
 -(NSDictionary *)parseAddressDictionary:(NSDictionary *)addressDictionary{
