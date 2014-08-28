@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewController.h"
-#import "RUChannelProtocol.h"
+#import "TableViewController.h"
 
-@interface RUFeedbackViewController : EZTableViewController <RUChannelProtocol>
+@interface RUFeedbackViewController : TableViewController <RUChannelProtocol>
 @end
