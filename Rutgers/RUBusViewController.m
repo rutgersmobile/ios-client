@@ -11,6 +11,7 @@
 #import "BusSearchDataSource.h"
 #import "RUBusDataLoadingManager.h"
 #import "RUPredictionsViewController.h"
+#import "TableViewController_Private.h"
 
 @interface RUBusViewController ()
 

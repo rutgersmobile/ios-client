@@ -10,6 +10,8 @@
 #import "OptionsDataSource.h"
 #import "RUPreferencesViewController.h"
 #import "RULegalViewController.h"
+#import "AlertDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface RUOptionsViewController ()
 @property NSDictionary *channel;
@@ -34,9 +36,9 @@
     if (indexPath.section == 0) {
         [self.navigationController pushViewController:[[RUPreferencesViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
     } else if (indexPath.section == 1) {
-        
-    } else if (indexPath.section == 2) {
         [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
+    } else if (indexPath.section == 2) {
+        [((AlertDataSource *)[((ComposedDataSource *)self.dataSource) dataSourceAtIndex:indexPath.section]) showAlert];
     }
 }
 
@@ -45,16 +47,17 @@
     return YES;
 }
 
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
-{
+-(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
     if (motion == UIEventSubtypeMotionShake)
     {
         [self deviceShaken];
-    } 
+    }
 }
+
 
 -(void)deviceShaken{
     [[[UIAlertView alloc] initWithTitle:@"Cache Cleared" message:@"Your cache has been cleared." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
+
 @end

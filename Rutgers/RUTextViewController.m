@@ -36,11 +36,8 @@
     self.textView.editable = NO;
     self.textView.selectable = NO;
     self.textView.textContainerInset = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsetsSmall, kLabelVerticalInsets, kLabelHorizontalInsetsSmall);
-    self.textView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.textView.alwaysBounceVertical = YES;
     self.textView.textAlignment = self.centersText ? NSTextAlignmentCenter : NSTextAlignmentLeft;
-    
-    [self setupFontStyle];
     
     [self.view addSubview:self.textView];
     [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
@@ -51,19 +48,27 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(preferredContentSizeChanged)
+                                             selector:@selector(loadText)
                                                  name:UIContentSizeCategoryDidChangeNotification
                                                object:nil];
-    [self loadTextData:self.data];
+    [self loadText];
 }
 
--(void)loadTextData:(NSString *)data{
-    self.textView.text = data;
-   // self.textView.attributedText = [NSAttributedString attributedStringFromHTMLString:data];
+-(void)loadText{
+    NSMutableAttributedString *attributedText = [NSMutableAttributedString attributedStringFromHTMLString:self.data preferedTextStyle:UIFontTextStyleBody];
+    if (self.centersText) {
+        [attributedText enumerateAttributesInRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+            NSMutableParagraphStyle *paragraphStyle = [attrs[NSParagraphStyleAttributeName] mutableCopy];
+            paragraphStyle.alignment = NSTextAlignmentCenter;
+            [attributedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
+        }];
+    }
+    
+    self.textView.attributedText = attributedText;
 }
 
 -(void)setupFontStyle{
-    self.textView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.textView.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 

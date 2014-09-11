@@ -23,13 +23,15 @@
     self.textField = [UITextField newAutoLayoutView];
     self.textField.enablesReturnKeyAutomatically = YES;
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.textField.textAlignment = NSTextAlignmentRight;
 
     [self.contentView addSubview:self.realTextLabel];
     [self.contentView addSubview:self.textField];
 }
 
 -(void)updateFonts{
-    self.realTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.realTextLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+    self.textField.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{

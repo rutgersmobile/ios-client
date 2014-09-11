@@ -53,7 +53,6 @@
     NSMutableString *mutableTimeString = [[NSMutableString alloc] init];
     NSMutableString *mutableLocationString = [[NSMutableString alloc] init];
     
-    
     NSArray *meetingTimes = [self sortMeetingTimesByDay:self.section[@"meetingTimes"]];
     
     [meetingTimes enumerateObjectsUsingBlock:^(NSDictionary *meetingTime, NSUInteger idx, BOOL *stop) {
@@ -79,7 +78,7 @@
             NSInteger endHour = [[numberFormatter numberFromString:[endTime substringToIndex:2]] integerValue];
 
             NSString *pmCode = meetingTime[@"pmCode"];
-            if (startHour  > endHour || (startHour < 12 && endHour >= 12)) pmCode = @"P";
+            if (startHour > endHour || (startHour < 12 && endHour >= 12)) pmCode = @"P";
             
             if ([pmCode isEqualToString:@"A"]) {
                 pmCode = @"AM";
@@ -107,7 +106,7 @@
         self.timeText = [mutableTimeString copy];
         self.locationText = [mutableLocationString copy];
     } else {
-        self.timeText = @"Hours by arr.";
+        self.timeText = @"Hours by arrangement.";
     }
 
 }

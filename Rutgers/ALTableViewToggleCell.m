@@ -32,7 +32,7 @@
 }
 
 -(void)updateFonts{
-    self.realTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.realTextLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{

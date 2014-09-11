@@ -14,6 +14,7 @@
 #import "RUSOCOptionsViewController.h"
 #import "RUSOCDataLoadingManager.h"
 #import "DataTuple.h"
+#import "TableViewController_Private.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate, RUSOCOptionsDelegate>
 @property (nonatomic) UIBarButtonItem *optionsButton;
@@ -37,28 +38,26 @@
     
     [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
     
-    [self disableInterface];
+    [self setInterfaceEnabled:NO];
     
     RUSOCDataLoadingManager *loadingManager = [RUSOCDataLoadingManager sharedInstance];
     [loadingManager performOnSemestersLoaded:^{
         self.title = loadingManager.titleForCurrentConfiguration;
-        [self enableInterface];
+        [self setInterfaceEnabled:YES];
     }];
 
 }
 
--(void)disableInterface{
-    self.optionsButton.enabled = NO;
-    self.searchBar.userInteractionEnabled = NO;
-    self.searchBar.alpha = 0.4;
-}
-
--(void)enableInterface{
-    self.optionsButton.enabled = YES;
-    self.searchBar.userInteractionEnabled = YES;
-    [UIView animateWithDuration:0.15 animations:^{
-        self.searchBar.alpha = 1.0;
-    }];
+-(void)setInterfaceEnabled:(BOOL)enabled {
+    self.optionsButton.enabled = enabled;
+    self.searchBar.userInteractionEnabled = enabled;
+    if (enabled) {
+        [UIView animateWithDuration:0.15 animations:^{
+            self.searchBar.alpha = 1.0;
+        }];
+    } else {
+        self.searchBar.alpha = 0.4;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{

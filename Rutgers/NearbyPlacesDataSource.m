@@ -17,6 +17,11 @@
     if (self) {
         self.title = @"Nearby Places";
         self.itemLimit = 10;
+        
+
+        self.noContentTitle = @"There are no nearby places";
+        self.noContentMessage = @"No nearby places";
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:LocationManagerDidChangeLocationKey object:nil];
     }
     return self;
@@ -29,9 +34,15 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUPlacesDataLoadingManager sharedInstance] placesNearLocation:[RULocationManager sharedLocationManager].location completion:^(NSArray *nearbyPlaces) {
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = nearbyPlaces;
-            }];
+            if (nearbyPlaces.count) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = nearbyPlaces;
+                }];
+            } else {
+                [loading updateWithNoContent:^(typeof(self) me) {
+                    me.items = nearbyPlaces;
+                }];
+            }
         }];
     }];
 }

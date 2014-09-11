@@ -13,7 +13,7 @@
 
 -(void)updateFonts{
     [super updateFonts];
-    self.positionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    self.positionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleCaption1];
 }
 
 -(void)initializeConstraints{

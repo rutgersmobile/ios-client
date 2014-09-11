@@ -22,10 +22,10 @@
     NSString *type = item[@"type"];
     
     if ([type isEqualToString:@"text"]) {
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
         cell.textLabel.textColor = [UIColor blackColor];
     } else {
-        cell.textLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleBody];
+        cell.textLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleBody];
         cell.textLabel.textColor = [RUInfoDataSource typeEnabled:type] ? cell.tintColor : [UIColor grayColor];
     }
 }

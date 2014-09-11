@@ -11,15 +11,15 @@
 #import "RULabel.h"
 
 @interface RUReaderTableViewCell ()
-//@property NSLayoutConstraint *imageBottomConstraint;
-@property (nonatomic) NSArray *imageSizeConstraints;
+@property (nonatomic) NSLayoutConstraint *imageHeightConstraint;
 
-@property (nonatomic) NSLayoutConstraint *timeTopConstraint;
-@property (nonatomic) NSLayoutConstraint *titleRightConstraint;
-@property (nonatomic) NSArray *descriptionTopConstraints;
+//@property (nonatomic) NSLayoutConstraint *timeTopConstraint;
+@property (nonatomic) NSLayoutConstraint *titleTopConstraint;
+@property (nonatomic) NSLayoutConstraint *descriptionTopConstraint;
+@property (nonatomic) UIView *containerView;
 @end
 
-#define IMAGE_SIZE 68
+#define IMAGE_SIZE (60*(iPad() ? IPAD_SCALE : 1.0))
 
 @implementation RUReaderTableViewCell
 
@@ -27,69 +27,73 @@
     self.imageDisplayView = [UIImageView newAutoLayoutView];
     self.imageDisplayView.clipsToBounds = YES;
     self.imageDisplayView.contentMode = UIViewContentModeScaleAspectFill;
+    self.imageDisplayView.layer.cornerRadius = 2;
+    self.imageDisplayView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
+    self.imageDisplayView.layer.borderWidth = 1.0;
+    
+    self.containerView = [UIView newAutoLayoutView];
     
     self.titleLabel = [RULabel newAutoLayoutView];
     self.timeLabel = [UILabel newAutoLayoutView];
     self.descriptionLabel = [RULabel newAutoLayoutView];
 
-    self.titleLabel.numberOfLines = 3;
+    self.titleLabel.numberOfLines = 2;
     self.descriptionLabel.numberOfLines = 4;
 
     self.timeLabel.adjustsFontSizeToFitWidth = YES;
     self.timeLabel.minimumScaleFactor = 0.8;
-    self.timeLabel.textColor = [UIColor scarletRedColor];
+    self.timeLabel.textColor = [UIColor darkGrayColor];
+    self.timeLabel.textAlignment = NSTextAlignmentRight;
     
     [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.timeLabel];
     [self.contentView addSubview:self.descriptionLabel];
-    [self.contentView addSubview:self.imageDisplayView];
+    
+    [self.contentView addSubview:self.containerView];
+    [self.containerView addSubview:self.timeLabel];
+    [self.containerView addSubview:self.imageDisplayView];
 }
 
 -(void)updateFonts{
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.timeLabel.font = [UIFont preferredItalicFontForTextStyle:UIFontTextStyleBody];
-    self.descriptionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    self.titleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.timeLabel.font = [UIFont ruPreferredItalicFontForTextStyle:UIFontTextStyleFootnote];
+    self.descriptionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{
+    [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeBottom];
+    
+    self.imageHeightConstraint = [self.imageDisplayView autoSetDimension:ALDimensionHeight toSize:IMAGE_SIZE];
+    [self.imageDisplayView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionHeight ofView:self.imageDisplayView withMultiplier:16.0/9.0];
+    
+    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0 relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0 relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+    
+    [self.timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+    //[self.timeLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
+    [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
+    [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0 relation:NSLayoutRelationGreaterThanOrEqual];
     
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    
-    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
+    self.titleTopConstraint = [self.titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.containerView withOffset:kLabelVerticalInsetsSmall];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
-
-    self.imageSizeConstraints = [self.imageDisplayView autoSetDimensionsToSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE)];
-    self.titleRightConstraint = [self.imageDisplayView autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.titleLabel withOffset:kLabelHorizontalInsetsSmall];
-    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
-    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
-    [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-
-    [self.timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [self.timeLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:self.titleLabel];
-    [self.timeLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self.titleLabel];
-    self.timeTopConstraint = [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsetsSmall];
+    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
     
-    NSLayoutConstraint *descriptionTopOne = [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.timeLabel withOffset:kLabelVerticalInsetsSmall relation:NSLayoutRelationGreaterThanOrEqual];
-    NSLayoutConstraint *descriptionTopTwo = [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.imageDisplayView withOffset:kLabelVerticalInsetsSmall relation:NSLayoutRelationGreaterThanOrEqual];
-    self.descriptionTopConstraints = @[descriptionTopOne,descriptionTopTwo];
-    
+    self.descriptionTopConstraint = [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsetsSmall relation:NSLayoutRelationGreaterThanOrEqual];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
-    [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
+    [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
 -(void)updateConstraints{
     [super updateConstraints];
-    for (NSLayoutConstraint *constraint in self.imageSizeConstraints) { 
-        constraint.constant = self.hasImage ? IMAGE_SIZE : 0;
-    }
     
-    self.timeTopConstraint.constant = self.timeLabel.text.length ? kLabelVerticalInsetsSmall : 0;
-    self.titleRightConstraint.constant = self.hasImage ? kLabelHorizontalInsetsSmall : 0;
+    self.imageHeightConstraint.constant = self.hasImage ? IMAGE_SIZE : 0;
+
+    self.titleTopConstraint.constant = self.hasImage || self.timeLabel.text.length ? kLabelHorizontalInsetsSmall : 0;
     
-    for (NSLayoutConstraint *constraint in self.descriptionTopConstraints) {
-        constraint.constant = self.descriptionLabel.text.length ? kLabelVerticalInsetsSmall : 0;
-    }
+    self.descriptionTopConstraint.constant = self.descriptionLabel.text.length ? kLabelVerticalInsetsSmall : 0;
 }
 
 @end

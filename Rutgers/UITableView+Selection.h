@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface UITableView (Selection)
--(void)clearSelection;
+-(void)clearSelectionAnimated:(BOOL)animated;
 -(void)selectRowsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated;
 @end

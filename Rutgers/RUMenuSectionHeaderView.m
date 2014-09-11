@@ -17,7 +17,7 @@
         self.sectionTitleLabel = [UILabel newAutoLayoutView];
         [self.contentView addSubview:self.sectionTitleLabel];
 
-        self.sectionTitleLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleHeadline];
+        self.sectionTitleLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleHeadline];
         self.sectionTitleLabel.textColor = [UIColor colorWithRed:147/255.0 green:166/255.0 blue:176/255.0 alpha:1];
         
         [self.sectionTitleLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsetsSmall, kLabelHorizontalInsets, kLabelVerticalInsetsSmall, kLabelHorizontalInsets)];

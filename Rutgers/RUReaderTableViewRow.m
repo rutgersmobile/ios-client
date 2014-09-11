@@ -26,9 +26,12 @@
         }
         self.date = [self formatDateString:date];
         
-        self.imageURL = [NSURL URLWithString:[item[@"enclosure"] firstObject][@"_url"]];
+        NSString *urlString = [item[@"enclosure"] firstObject][@"_url"];
+        if (!urlString) urlString = [item[@"media:thumbnail"] firstObject][@"_url"];
+        
+        self.imageURL = [NSURL URLWithString:urlString];
         self.url = [item[@"link"] firstObject];
-        self.descriptionText = [item[@"description"] firstObject];
+        self.descriptionText = [[[item[@"description"] firstObject] stringByDecodingHTMLEntities] stringByConvertingHTMLToPlainText];
     }
     return self;
 }
@@ -48,7 +51,7 @@
     dispatch_once(&onceToken, ^{
         //ex Wednesday, July 2, 2014
         outputFormatter = [[NSDateFormatter alloc] init];
-        outputFormatter.dateStyle = NSDateFormatterFullStyle;
+        outputFormatter.dateStyle = NSDateFormatterMediumStyle;
         outputFormatter.timeStyle = NSDateFormatterNoStyle;
         /*
          Wednesday, July 2, 2014

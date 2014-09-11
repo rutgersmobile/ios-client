@@ -7,17 +7,25 @@
 //
 
 #import "NSAttributedString+FromHTML.h"
+#import <NSString+HTML.h>
 
 @implementation NSAttributedString (FromHTML)
-+(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString{
++(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString preferedTextStyle:(NSString *)textStyle{
     NSDictionary *docattrs = nil;
-    NSAttributedString *string = [[self alloc] initWithData:[HTMLString dataUsingEncoding:NSUTF8StringEncoding]
+    HTMLString = [HTMLString stringWithNewLinesAsBRs];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithData:[HTMLString dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                               NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding),
-                                                              NSDefaultAttributesDocumentAttribute:
-                                                                  @{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody]}
+                                                               NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
                                                               }
                                          documentAttributes:&docattrs error:nil];
+    
+    [string enumerateAttributesInRange:NSMakeRange(0, string.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+        if (attrs[NSBackgroundColorAttributeName]) [string removeAttribute:NSBackgroundColorAttributeName range:range];
+        UIFont *font = attrs[NSFontAttributeName];
+        UIFont *preferredFont = [UIFont ruPreferredFontForTextStyle:textStyle symbolicTraits:font.fontDescriptor.symbolicTraits];
+        [string addAttributes:@{NSFontAttributeName : preferredFont} range:range];
+    }];
   
     return string;
 }

@@ -76,6 +76,7 @@
 		A74CAEE81961E5D9008C5AF5 /* RUSportsPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A74CAEE71961E5D9008C5AF5 /* RUSportsPlayerCell.m */; };
 		A754263419AFAB8F00D4E573 /* PreferencesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A754263319AFAB8F00D4E573 /* PreferencesDataSource.m */; };
 		A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */; };
+		A75B1C8019B0EEDD00268214 /* TextViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */; };
 		A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75D6AA8199A73D5009E94D3 /* RUSOCSearchDataSource.m */; };
 		A75E7EB619A3C44B00782AE5 /* MenuBasicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EB519A3C44B00782AE5 /* MenuBasicDataSource.m */; };
 		A75E7EB919A3C6C300782AE5 /* MenuDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EB819A3C6C300782AE5 /* MenuDataSource.m */; };
@@ -137,11 +138,12 @@
 		A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C6192075F40070A414 /* RUMapsViewController.m */; };
 		A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970CC19215F910070A414 /* RUNetworkManager.m */; };
 		A7B970D21921603E0070A414 /* RUChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970D11921603E0070A414 /* RUChannelManager.m */; };
+		A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C0373719B1287F00F5D962 /* UIApplication+StatusBarHeight.m */; };
 		A7C155F4198AB21E00CDCAE3 /* RUDiningHallDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C155F3198AB21E00CDCAE3 /* RUDiningHallDataSource.m */; };
 		A7C155F9198AB50E00CDCAE3 /* FAQDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C155F8198AB50E00CDCAE3 /* FAQDataSource.m */; };
 		A7C155FD198AB6A800CDCAE3 /* FAQSectionDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C155FC198AB6A800CDCAE3 /* FAQSectionDataSource.m */; };
 		A7C15600198ABA4600CDCAE3 /* StringDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C155FF198ABA4600CDCAE3 /* StringDataSource.m */; };
-		A7C15602198ADE3F00CDCAE3 /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7C15601198ADE3F00CDCAE3 /* bg@2x.png */; };
+		A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C60D1E19C0DE580014C35A /* ALTableViewTextViewCell.m */; };
 		A7C92C9219460F6800609549 /* RUSportsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92C9119460F6800609549 /* RUSportsViewController.m */; };
 		A7C92C951946108200609549 /* RUSportsData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92C941946108200609549 /* RUSportsData.m */; };
 		A7C92C9819462A0800609549 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C92C9619462A0800609549 /* AddressBook.framework */; };
@@ -203,10 +205,9 @@
 		A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F082F619AFA50B00BA554C /* ButtonDataSource.m */; };
 		A7F9029C19A7C02500FD3054 /* ALTableViewToggleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9029B19A7C02500FD3054 /* ALTableViewToggleCell.m */; };
 		A7F9029F19A7C21C00FD3054 /* ALTableViewTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9029E19A7C21C00FD3054 /* ALTableViewTextFieldCell.m */; };
-		A7F902A219A7C4E400FD3054 /* ResponseDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A119A7C4E400FD3054 /* ResponseDataSource.m */; };
+		A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */; };
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
-		A7F902AC19A7D59800FD3054 /* RUFeedbackSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902AB19A7D59800FD3054 /* RUFeedbackSecondViewController.m */; };
 		A7F9564A19630BB10074305D /* RUSportsRosterSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9564919630BB10074305D /* RUSportsRosterSectionHeaderView.m */; };
 		A7F9564D1963206D0074305D /* RUSportsRosterPlayerHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9564C1963206D0074305D /* RUSportsRosterPlayerHeaderCell.m */; };
 		A7F95650196334890074305D /* RUSportsRosterPlayerHeaderRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9564F196334890074305D /* RUSportsRosterPlayerHeaderRow.m */; };
@@ -373,6 +374,8 @@
 		A754263319AFAB8F00D4E573 /* PreferencesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesDataSource.m; sourceTree = "<group>"; };
 		A75B0AA519098DD900A57149 /* RUPredictionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsViewController.h; sourceTree = "<group>"; };
 		A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsViewController.m; sourceTree = "<group>"; };
+		A75B1C7E19B0EEDD00268214 /* TextViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewDataSource.h; sourceTree = "<group>"; };
+		A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewDataSource.m; sourceTree = "<group>"; };
 		A75D6AA7199A73D5009E94D3 /* RUSOCSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSearchDataSource.h; sourceTree = "<group>"; };
 		A75D6AA8199A73D5009E94D3 /* RUSOCSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSearchDataSource.m; sourceTree = "<group>"; };
 		A75E7EB419A3C44B00782AE5 /* MenuBasicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuBasicDataSource.h; sourceTree = "<group>"; };
@@ -458,6 +461,7 @@
 		A79BBE3218FF1085007136B0 /* RUReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUReaderViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A79C0036195CA62F001FED30 /* RUPredictionsBodyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyTableViewCell.h; sourceTree = "<group>"; };
 		A79C0037195CA62F001FED30 /* RUPredictionsBodyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsBodyTableViewCell.m; sourceTree = "<group>"; };
+		A79F3C0019B8C5FB001507EC /* TableViewController_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController_Private.h; sourceTree = "<group>"; };
 		A7B2D993190EDBAC003ABEA3 /* RUPlaceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPlaceDetailViewController.h; sourceTree = "<group>"; };
 		A7B2D994190EDBAC003ABEA3 /* RUPlaceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPlaceDetailViewController.m; sourceTree = "<group>"; };
 		A7B2D996190EE7DF003ABEA3 /* TTTAddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAddressFormatter.h; sourceTree = "<group>"; };
@@ -493,6 +497,8 @@
 		A7B970CC19215F910070A414 /* RUNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNetworkManager.m; sourceTree = "<group>"; };
 		A7B970D01921603E0070A414 /* RUChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelManager.h; sourceTree = "<group>"; };
 		A7B970D11921603E0070A414 /* RUChannelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUChannelManager.m; sourceTree = "<group>"; };
+		A7C0373619B1287F00F5D962 /* UIApplication+StatusBarHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+StatusBarHeight.h"; sourceTree = "<group>"; };
+		A7C0373719B1287F00F5D962 /* UIApplication+StatusBarHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+StatusBarHeight.m"; sourceTree = "<group>"; };
 		A7C155F2198AB21E00CDCAE3 /* RUDiningHallDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDiningHallDataSource.h; sourceTree = "<group>"; };
 		A7C155F3198AB21E00CDCAE3 /* RUDiningHallDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDiningHallDataSource.m; sourceTree = "<group>"; };
 		A7C155F7198AB50E00CDCAE3 /* FAQDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAQDataSource.h; sourceTree = "<group>"; };
@@ -501,7 +507,8 @@
 		A7C155FC198AB6A800CDCAE3 /* FAQSectionDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAQSectionDataSource.m; sourceTree = "<group>"; };
 		A7C155FE198ABA4600CDCAE3 /* StringDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringDataSource.h; sourceTree = "<group>"; };
 		A7C155FF198ABA4600CDCAE3 /* StringDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringDataSource.m; sourceTree = "<group>"; };
-		A7C15601198ADE3F00CDCAE3 /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
+		A7C60D1D19C0DE580014C35A /* ALTableViewTextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTableViewTextViewCell.h; sourceTree = "<group>"; };
+		A7C60D1E19C0DE580014C35A /* ALTableViewTextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTableViewTextViewCell.m; sourceTree = "<group>"; };
 		A7C92C9019460F6800609549 /* RUSportsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsViewController.h; sourceTree = "<group>"; };
 		A7C92C9119460F6800609549 /* RUSportsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSportsViewController.m; sourceTree = "<group>"; };
 		A7C92C931946108200609549 /* RUSportsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsData.h; sourceTree = "<group>"; };
@@ -619,14 +626,12 @@
 		A7F9029B19A7C02500FD3054 /* ALTableViewToggleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTableViewToggleCell.m; sourceTree = "<group>"; };
 		A7F9029D19A7C21C00FD3054 /* ALTableViewTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTableViewTextFieldCell.h; sourceTree = "<group>"; };
 		A7F9029E19A7C21C00FD3054 /* ALTableViewTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTableViewTextFieldCell.m; sourceTree = "<group>"; };
-		A7F902A019A7C4E400FD3054 /* ResponseDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseDataSource.h; sourceTree = "<group>"; };
-		A7F902A119A7C4E400FD3054 /* ResponseDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseDataSource.m; sourceTree = "<group>"; };
+		A7F902A019A7C4E400FD3054 /* TextFieldDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldDataSource.h; sourceTree = "<group>"; };
+		A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldDataSource.m; sourceTree = "<group>"; };
 		A7F902A319A7C79700FD3054 /* DynamicTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicTableViewController.h; sourceTree = "<group>"; };
 		A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewController.m; sourceTree = "<group>"; };
 		A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDataSource.h; sourceTree = "<group>"; };
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
-		A7F902AA19A7D59800FD3054 /* RUFeedbackSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFeedbackSecondViewController.h; sourceTree = "<group>"; };
-		A7F902AB19A7D59800FD3054 /* RUFeedbackSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFeedbackSecondViewController.m; sourceTree = "<group>"; };
 		A7F9564819630BB10074305D /* RUSportsRosterSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsRosterSectionHeaderView.h; sourceTree = "<group>"; };
 		A7F9564919630BB10074305D /* RUSportsRosterSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSportsRosterSectionHeaderView.m; sourceTree = "<group>"; };
 		A7F9564B1963206D0074305D /* RUSportsRosterPlayerHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsRosterPlayerHeaderCell.h; sourceTree = "<group>"; };
@@ -721,6 +726,8 @@
 			children = (
 				A70C2BDC198C2C60004F82D4 /* ALTableViewAbstractCell.h */,
 				A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */,
+				A7C60D1D19C0DE580014C35A /* ALTableViewTextViewCell.h */,
+				A7C60D1E19C0DE580014C35A /* ALTableViewTextViewCell.m */,
 				A7F9029D19A7C21C00FD3054 /* ALTableViewTextFieldCell.h */,
 				A7F9029E19A7C21C00FD3054 /* ALTableViewTextFieldCell.m */,
 				A70C2BDE198C2C60004F82D4 /* ALTableViewTextCell.h */,
@@ -992,8 +999,6 @@
 			isa = PBXGroup;
 			children = (
 				A7B970D3192161B10070A414 /* channels */,
-				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
-				A74669021986D8F000A5EBE0 /* RUAppDelegate.m */,
 				A731C38D193FBC5600E9E7E0 /* objects */,
 				A7E8E12D192464970089F166 /* Utils */,
 				A7D73B22197887FD006BC215 /* data source */,
@@ -1109,6 +1114,7 @@
 			children = (
 				A7D73B231978880C006BC215 /* TableViewController.h */,
 				A7D73B241978880C006BC215 /* TableViewController.m */,
+				A79F3C0019B8C5FB001507EC /* TableViewController_Private.h */,
 				A7241A2B1988537100304436 /* CollectionViewController.h */,
 				A7241A2C1988537100304436 /* CollectionViewController.m */,
 				A7D73B251978880C006BC215 /* SegmentedTableViewController.h */,
@@ -1185,12 +1191,8 @@
 			children = (
 				A72795E9195B5FD900C21165 /* RUFeedbackViewController.h */,
 				A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */,
-				A7F902AA19A7D59800FD3054 /* RUFeedbackSecondViewController.h */,
-				A7F902AB19A7D59800FD3054 /* RUFeedbackSecondViewController.m */,
 				A7D4B63719AB9D580087A8BC /* RUFeedbackDataSource.h */,
 				A7D4B63819AB9D580087A8BC /* RUFeedbackDataSource.m */,
-				A7F902A019A7C4E400FD3054 /* ResponseDataSource.h */,
-				A7F902A119A7C4E400FD3054 /* ResponseDataSource.m */,
 			);
 			name = rufeedback;
 			sourceTree = "<group>";
@@ -1260,6 +1262,10 @@
 				A7C155FF198ABA4600CDCAE3 /* StringDataSource.m */,
 				A7907CC919A2997300711DCB /* AlertDataSource.h */,
 				A7907CCA19A2997300711DCB /* AlertDataSource.m */,
+				A7F902A019A7C4E400FD3054 /* TextFieldDataSource.h */,
+				A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */,
+				A75B1C7E19B0EEDD00268214 /* TextViewDataSource.h */,
+				A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */,
 			);
 			name = "concrete data sources";
 			sourceTree = "<group>";
@@ -1424,6 +1430,8 @@
 				A7B8DB9119A65FE400EF1953 /* NSArray+LimitedToCount.m */,
 				A7D4B6E719AD0B370087A8BC /* NSAttributedString+FromHTML.h */,
 				A7D4B6E819AD0B370087A8BC /* NSAttributedString+FromHTML.m */,
+				A7C0373619B1287F00F5D962 /* UIApplication+StatusBarHeight.h */,
+				A7C0373719B1287F00F5D962 /* UIApplication+StatusBarHeight.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1613,7 +1621,8 @@
 		C262EFB2188345D10035C8F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A7C15601198ADE3F00CDCAE3 /* bg@2x.png */,
+				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
+				A74669021986D8F000A5EBE0 /* RUAppDelegate.m */,
 				C262EFB3188345D10035C8F5 /* Rutgers-Info.plist */,
 				C262EFB4188345D10035C8F5 /* InfoPlist.strings */,
 				C262EFB7188345D10035C8F5 /* main.m */,
@@ -1723,7 +1732,6 @@
 			files = (
 				A704C7861922AF7F00ED9E36 /* Channels.json in Resources */,
 				A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */,
-				A7C15602198ADE3F00CDCAE3 /* bg@2x.png in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
@@ -1800,7 +1808,6 @@
 				A7D4B64619ABD1300087A8BC /* OptionsDataSource.m in Sources */,
 				A7DD348C1981D3CB0078023A /* PlacesBasicDataSource.m in Sources */,
 				A7778D8319A54897003BD8DE /* RUInfoTableSection.m in Sources */,
-				A7F902AC19A7D59800FD3054 /* RUFeedbackSecondViewController.m in Sources */,
 				A7B3F7AF1953595A00458B19 /* RUPredictionsHeaderTableViewCell.m in Sources */,
 				A7C92C951946108200609549 /* RUSportsData.m in Sources */,
 				A7177BAE199DC0CD0092126F /* RUNavigationController.m in Sources */,
@@ -1809,6 +1816,7 @@
 				A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */,
 				A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */,
 				A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */,
+				A75B1C8019B0EEDD00268214 /* TextViewDataSource.m in Sources */,
 				A7241A5819899B9C00304436 /* ScheduleDataSource.m in Sources */,
 				A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */,
 				A7D4B64C19ABD3CC0087A8BC /* RULegalViewController.m in Sources */,
@@ -1818,6 +1826,7 @@
 				A7EA4C41197D655D00E972DD /* DataSource.m in Sources */,
 				A75E7EB919A3C6C300782AE5 /* MenuDataSource.m in Sources */,
 				A74669031986D8F000A5EBE0 /* RUAppDelegate.m in Sources */,
+				A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */,
 				A7E89566197EFF9F00B21265 /* BusBasicDataSource.m in Sources */,
 				A7241A33198861E300304436 /* DynamicTileDataSource.m in Sources */,
 				A72FFFBC1937DF9000016C89 /* RUSOCCourseCell.m in Sources */,
@@ -1847,7 +1856,7 @@
 				A77028B4191EC2BA003F5D28 /* RUNutritionLabelViewController.m in Sources */,
 				A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */,
 				A741577D194B713000F396B5 /* EZTableViewMapsRow.m in Sources */,
-				A7F902A219A7C4E400FD3054 /* ResponseDataSource.m in Sources */,
+				A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */,
 				A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */,
 				041AE339193D2E32002ED85C /* RUAppearance.m in Sources */,
 				A73F6574193E422E00E26449 /* RUMapsComponent.m in Sources */,
@@ -1887,6 +1896,7 @@
 				A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */,
 				A7241A4519896FEF00304436 /* TupleDataSource.m in Sources */,
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
+				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
 				A7B435E91912DFBB001FE8B6 /* RUFoodData.m in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
 				A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */,

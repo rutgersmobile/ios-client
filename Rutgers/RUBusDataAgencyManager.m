@@ -15,7 +15,6 @@
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
 
-
 #define URLS @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"}
 #define ACTIVE_URLS @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"}
 

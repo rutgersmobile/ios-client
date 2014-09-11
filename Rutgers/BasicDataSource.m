@@ -19,6 +19,7 @@
     self = [super init];
     if (self) {
         self.items = @[];
+        
     }
     return self;
 }
@@ -38,10 +39,13 @@
 }
 
 -(NSInteger)numberOfItems{
-    return self.items.count;
+    return [_items count];
 }
 
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
+    //if (self.shouldDisplayPlaceholder){
+   //    return [super numberOfItemsInSection:section];
+   // }
     return self.numberOfItems;
 }
 
@@ -84,9 +88,9 @@
     
     if (!animated) {
         _items = [items copy];
+        [self updateLoadingStateFromItems];
         [self invalidateCachedHeightsForSection:0];
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
-        [self updateLoadingStateFromItems];
         return;
     }
     
@@ -119,6 +123,8 @@
         [toMovedIndexPaths addObject:[NSIndexPath indexPathForItem:[newItemSet indexOfObject:movedItem] inSection:0]];
     }
     
+    [self updateLoadingStateFromItems];
+
     [self notifyBatchUpdate:^{
         
         [self invalidateCachedHeightsForSection:0];
@@ -139,8 +145,6 @@
         }
         
     }];
-    
-    [self updateLoadingStateFromItems];
 }
 
 - (void)updateLoadingStateFromItems

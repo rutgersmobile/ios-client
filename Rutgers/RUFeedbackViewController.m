@@ -8,11 +8,11 @@
 
 #import "RUFeedbackViewController.h"
 #import "RUFeedbackDataSource.h"
-#import "RUFeedbackSecondViewController.h"
 #import "RUFeedbackDataSource.h"
 #import "AlertDataSource.h"
+#import "TableViewController_Private.h"
 
-@interface RUFeedbackViewController () <UIActionSheetDelegate>
+@interface RUFeedbackViewController ()
 
 @end
 
@@ -26,10 +26,11 @@
 {
     [super viewDidLoad];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-
+    self.tableView.bounces = NO;
+    
     self.dataSource = [[RUFeedbackDataSource alloc] init];
     
-   // self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(pushNextViewController)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -49,7 +50,8 @@
     NSDictionary* info = [notification userInfo];
     CGRect kbRect = [self.view convertRect:[[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue] fromView:nil];
     
-    [self setBottomInset:CGRectGetHeight(kbRect)];
+#warning fix this
+    [self setBottomInsetHeight:CGRectGetHeight(kbRect)];
     [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentSize.height, 1, 1) animated:YES];
 
     /*
@@ -63,10 +65,10 @@
 }
 
 -(void)keyboardWillHide:(NSNotification *)notification{
-    [self setBottomInset:0];
+    [self setBottomInsetHeight:0];
 }
 
--(void)setBottomInset:(CGFloat)height{
+-(void)setBottomInsetHeight:(CGFloat)height{
     UIEdgeInsets contentInsets = self.tableView.contentInset;
     contentInsets.bottom = height;
     
@@ -76,11 +78,6 @@
     scrollIndicatorInsets.bottom = height;
     
     self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
-}
-
--(void)pushNextViewController{
-    [self.view endEditing:YES];
-    [self.navigationController pushViewController:[[RUFeedbackSecondViewController alloc] init] animated:YES];
 }
                                                   
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -100,6 +97,10 @@
 
 -(BOOL)validateForm{
     return NO;
+}
+
+-(void)send{
+    
 }
 
 @end

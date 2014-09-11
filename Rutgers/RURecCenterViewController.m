@@ -101,9 +101,7 @@
             descriptionRow.shouldCopy = YES;
             [descriptionSection addItem:descriptionRow];
         } else {
-            #warning fix this spaghetti
-            description = [description stringByReplacingOccurrencesOfString:@"<hr align=\"left\" color=\"#c00000\" noshade=\"noshade\" size=\"1\" width=\"100%\">" withString:@""];
-            NSAttributedString *string = [NSAttributedString attributedStringFromHTMLString:description];
+            NSAttributedString *string = [NSAttributedString attributedStringFromHTMLString:description preferedTextStyle:UIFontTextStyleBody];
             EZTableViewTextRow *descriptionRow = [[EZTableViewTextRow alloc] initWithAttributedText:string];
             descriptionRow.shouldHighlight = NO;
             descriptionRow.shouldCopy = YES;

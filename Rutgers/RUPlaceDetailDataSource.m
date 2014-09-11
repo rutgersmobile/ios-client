@@ -57,6 +57,7 @@
                                   @{@"keyPath" : @"buildingCode", @"label" : @"Building Code"},
                                   @{@"keyPath" : @"buildingNumber", @"label" : @"Building Number"},
                                   ];
+            
             [self addDataSource:infoSection];
         }
         

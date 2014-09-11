@@ -51,7 +51,7 @@
 }
 
 -(void)updateFonts{
-    self.textLabel.font = [UIFont preferredFontForTextStyle:FONT_STYLE];
+    self.textLabel.font = [UIFont ruPreferredFontForTextStyle:FONT_STYLE];
 }
 
 -(void)setShowsEllipses:(BOOL)showsEllipses{

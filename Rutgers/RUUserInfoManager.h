@@ -9,17 +9,15 @@
 #import <Foundation/Foundation.h>
 
 @interface RUUserInfoManager : NSObject
-
 +(instancetype)sharedInstance;
 
--(BOOL)hasUserInformation;
--(void)getUserInformationCancellable:(BOOL)cancellable completion:(dispatch_block_t)completion;
+-(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion;
 
 @property (nonatomic) NSDictionary *campus;
 @property (nonatomic) NSDictionary *userRole;
 @property (readonly) NSArray *campuses;
 @property (readonly) NSArray *userRoles;
 
-+(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock;
+-(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock;
 
 @end

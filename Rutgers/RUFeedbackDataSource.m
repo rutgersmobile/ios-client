@@ -8,10 +8,10 @@
 
 #import "RUFeedbackDataSource.h"
 #import "AlertDataSource.h"
-#import "ResponseDataSource.h"
+#import "TextFieldDataSource.h"
 #import "ComposedDataSource_Private.h"
 #import "RUChannelManager.h"
-#import "ButtonDataSource.h"
+#import "TextViewDataSource.h"
 
 @interface RUFeedbackDataSource ()
 @property (nonatomic) AlertDataSource *channelSelectionDataSource;
@@ -29,13 +29,13 @@
 {
     self = [super init];
     if (self) {
-        AlertDataSource *feedbackDataSource = [[AlertDataSource alloc] initWithPlaceholderText:@"Select a feedback subject..." alertButtonTitles:@[
-                                                                                                                                                   @"General Questions",
-                                                                                                                                                   @"Help Using Application",
-                                                                                                                                                   @"App Feature Request",
-                                                                                                                                                   @"Report a Bug",
-                                                                                                                                                   @"App Channel Feedback"
-                                                                                                                                                   ]];
+        AlertDataSource *feedbackDataSource = [[AlertDataSource alloc] initWithInitialText:@"Select a feedback subject..." alertButtonTitles:@[
+                                @"General Questions",
+                                @"Help Using Application",
+                                @"App Feature Request",
+                                @"Report a Bug",
+                                @"App Channel Feedback"
+                                ]];
         
         feedbackDataSource.alertTitle = @"Please select a subject:";
         feedbackDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
@@ -51,7 +51,7 @@
             [channelTitles addObject:[channel channelTitle]];
         }
         
-        AlertDataSource *channelSelectionDataSource = [[AlertDataSource alloc] initWithPlaceholderText:@"Select a channel..." alertButtonTitles:channelTitles];
+        AlertDataSource *channelSelectionDataSource = [[AlertDataSource alloc] initWithInitialText:@"Select a channel..." alertButtonTitles:channelTitles];
         
         feedbackDataSource.alertTitle = @"Please select a subject:";
         feedbackDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
@@ -61,16 +61,16 @@
         
         self.channelSelectionDataSource = channelSelectionDataSource;
         
-        ResponseDataSource *toggleDataSource = [[ResponseDataSource alloc] init];
-        toggleDataSource.toggleLabel = @"Want a response?";
+        TextFieldDataSource *toggleDataSource = [[TextFieldDataSource alloc] init];
         toggleDataSource.textFieldLabel = @"Email:";
-        toggleDataSource.textFieldPlaceholder = @"netID@rutgers.edu";
+        toggleDataSource.textFieldPlaceholder = @"optional";
         
         [self addDataSource:toggleDataSource];
         
+        TextViewDataSource *messageDataSource = [[TextViewDataSource alloc] init];
+        messageDataSource.title = @"Enter your feedback message below:";
+        [self addDataSource:messageDataSource];
         
-        ButtonDataSource *nextButtonDataSource = [[ButtonDataSource alloc] initWithTitle:@"Next"];
-        [self addDataSource:nextButtonDataSource];
     }
     return self;
 }

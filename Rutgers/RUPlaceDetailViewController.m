@@ -14,6 +14,7 @@
 #import "RUMultiStop.h"
 #import "EZTableViewMapsRow.h"
 #import "RUPlace.h"
+#import "TableViewController_Private.h"
 
 @interface RUPlaceDetailViewController ()
 @property (nonatomic) RUPlace *place;

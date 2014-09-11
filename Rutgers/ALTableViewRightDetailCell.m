@@ -41,8 +41,8 @@
 }
 
 -(void)updateFonts{
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.detailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.titleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+    self.detailLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{

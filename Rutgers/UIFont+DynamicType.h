@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface UIFont (DynamicType)
-+(UIFont *)preferredItalicFontForTextStyle:(NSString *)style;
-+(UIFont *)preferredBoldFontForTextStyle:(NSString *)style;
+
++(UIFont *)ruPreferredItalicFontForTextStyle:(NSString *)style;
++(UIFont *)ruPreferredBoldFontForTextStyle:(NSString *)style;
++(UIFont *)ruPreferredFontForTextStyle:(NSString *)style;
++(UIFont *)ruPreferredFontForTextStyle:(NSString *)style symbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits;
 +(CGFloat)preferredContentSizeScaleFactor;
 @end

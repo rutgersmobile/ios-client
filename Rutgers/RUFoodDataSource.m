@@ -33,7 +33,7 @@
                                       @"view" : @"text"
                                       };
         
-        [RUUserInfoManager performInCampusPriorityOrderWithNewBrunswickBlock:^{
+        [[RUUserInfoManager sharedInstance] performInCampusPriorityOrderWithNewBrunswickBlock:^{
             [self addDataSource:[[NewBrunswickFoodDataSource alloc] init]];
         } newarkBlock:^{
             [self addDataSource:[self dataSourceWithDictionary:newarkData]];

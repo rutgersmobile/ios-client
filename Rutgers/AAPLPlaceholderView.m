@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UIButton *actionButton;
 @property (nonatomic, strong) NSArray *constraints;
+
 @end
 
 @implementation AAPLPlaceholderView
@@ -286,15 +287,27 @@
     [super updateConstraints];
 }
 
+
+
+
 @end
 
 
 @interface AAPLCollectionPlaceholderView ()
+
+@end
+
+@implementation AAPLCollectionPlaceholderView
+
+@end
+
+
+@interface AAPLPlaceholderCell ()
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) AAPLPlaceholderView *placeholderView;
 @end
 
-@implementation AAPLCollectionPlaceholderView
+@implementation AAPLPlaceholderCell
 
 - (void)showActivityIndicator:(BOOL)show
 {
@@ -302,16 +315,16 @@
         _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
         _activityIndicatorView.color = [UIColor lightGrayColor];
-
+        
         [self addSubview:_activityIndicatorView];
         NSMutableArray *constraints = [NSMutableArray array];
         [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
         [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
         [self addConstraints:constraints];
     }
-
+    
     _activityIndicatorView.hidden = !show;
-
+    
     if (show)
         [_activityIndicatorView startAnimating];
     else
@@ -321,12 +334,12 @@
 - (void)hidePlaceholderAnimated:(BOOL)animated
 {
     AAPLPlaceholderView *placeholderView = _placeholderView;
-
+    
     if (!placeholderView)
         return;
-
+    
     if (animated) {
-
+        
         [UIView animateWithDuration:0.25 animations:^{
             placeholderView.alpha = 0.0;
         } completion:^(BOOL finished) {
@@ -348,26 +361,20 @@
 - (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated
 {
     AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
-
+    
     if (oldPlaceHolder && [oldPlaceHolder.title isEqualToString:title] && [oldPlaceHolder.message isEqualToString:message])
         return;
-
+    
     [self showActivityIndicator:NO];
-
+    
     self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:CGRectZero title:title message:message image:image buttonTitle:nil buttonAction:nil];
     _placeholderView.alpha = 0.0;
     _placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_placeholderView];
-
-    NSMutableArray *constraints = [NSMutableArray array];
-    NSDictionary *views = NSDictionaryOfVariableBindings(_placeholderView);
-
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_placeholderView]|" options:0 metrics:nil views:views]];
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_placeholderView]|" options:0 metrics:nil views:views]];
-
-    [self addConstraints:constraints];
+    
+    [_placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     [self sendSubviewToBack:_placeholderView];
-
+    
     if (animated) {
         [UIView animateWithDuration:0.25 animations:^{
             _placeholderView.alpha = 1.0;
@@ -385,79 +392,11 @@
     }
 }
 
-@end
-
-
-@interface AAPLPlaceholderCell ()
-@property (nonatomic, strong) AAPLPlaceholderView *placeholderView;
-@end
-
-@implementation AAPLPlaceholderCell
-
-- (void)hidePlaceholderAnimated:(BOOL)animated
-{
-    AAPLPlaceholderView *placeholderView = _placeholderView;
-
-    if (!placeholderView)
-        return;
-
-    if (animated) {
-        [UIView animateWithDuration:0.25 animations:^{
-            placeholderView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [placeholderView removeFromSuperview];
-            // If it's still the current placeholder, get rid of it
-            if (placeholderView == _placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            [placeholderView removeFromSuperview];
-            if (_placeholderView == placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
+-(void)initializeSubviews{
+    [self.contentView autoSetDimension:ALDimensionHeight toSize:100];
 }
 
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated
-{
-    UIView *contentView = self.contentView;
-
-    AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
-
-    if (oldPlaceHolder && [oldPlaceHolder.title isEqualToString:title] && [oldPlaceHolder.message isEqualToString:message])
-        return;
-
-    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:CGRectZero title:title message:message image:image buttonTitle:nil buttonAction:nil];
-    _placeholderView.alpha = 0.0;
-    _placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
-    [contentView addSubview:_placeholderView];
-
-    NSMutableArray *constraints = [NSMutableArray array];
-    NSDictionary *views = NSDictionaryOfVariableBindings(_placeholderView);
-
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_placeholderView]|" options:0 metrics:nil views:views]];
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_placeholderView]|" options:0 metrics:nil views:views]];
-
-    [contentView addConstraints:constraints];
-    [contentView sendSubviewToBack:_placeholderView];
-
-    if (animated) {
-        [UIView animateWithDuration:0.25 animations:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
+-(void)initializeConstraints{
+    [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets)];
 }
-
 @end

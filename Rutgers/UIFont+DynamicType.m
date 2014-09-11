@@ -9,16 +9,27 @@
 #import "UIFont+DynamicType.h"
 
 @implementation UIFont (DynamicType)
-+(UIFont *)preferredItalicFontForTextStyle:(NSString *)style{
-    UIFontDescriptor *descriptor = [[UIFontDescriptor preferredFontDescriptorWithTextStyle:style] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic];
-    return [UIFont fontWithDescriptor:descriptor size:0.0];
++(UIFont *)ruPreferredItalicFontForTextStyle:(NSString *)style{
+    return [self ruPreferredFontForTextStyle:style symbolicTraits:UIFontDescriptorTraitItalic];
 }
 
-+(UIFont *)preferredBoldFontForTextStyle:(NSString *)style{
-    UIFontDescriptor *descriptor = [[UIFontDescriptor preferredFontDescriptorWithTextStyle:style] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-    return [UIFont fontWithDescriptor:descriptor size:0.0];
++(UIFont *)ruPreferredBoldFontForTextStyle:(NSString *)style{
+    return [self ruPreferredFontForTextStyle:style symbolicTraits:UIFontDescriptorTraitBold];
 }
 
++(UIFont *)ruPreferredFontForTextStyle:(NSString *)style{
+    UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style];
+    CGFloat pointSize = descriptor.pointSize;
+    return [UIFont fontWithDescriptor:descriptor size:(iPad() ? pointSize * IPAD_SCALE : pointSize)];
+}
+
++(UIFont *)ruPreferredFontForTextStyle:(NSString *)style symbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits{
+    UIFontDescriptor *descriptor = [[UIFontDescriptor preferredFontDescriptorWithTextStyle:style] fontDescriptorWithSymbolicTraits:symbolicTraits];
+    CGFloat pointSize = descriptor.pointSize;
+    return [UIFont fontWithDescriptor:descriptor size:(iPad() ? pointSize * IPAD_SCALE : pointSize)];
+}
+
+//stuff below here isnt used yet
 +(CGFloat)preferredContentSizeScaleFactor{
     NSString *contentSizeCategory = [UIApplication sharedApplication].preferredContentSizeCategory;
     NSString *defaultSizeCategory = UIContentSizeCategoryLarge;

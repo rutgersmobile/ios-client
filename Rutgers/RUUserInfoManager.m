@@ -19,16 +19,17 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 @property NSArray *campuses;
 @property NSArray *userRoles;
 
-@property BOOL cancellable;
 @property (copy) dispatch_block_t completion;
+
+-(BOOL)hasUserInformation;
+-(void)getUserInformationCompletion:(dispatch_block_t)completion;
 @end
 
 
 @implementation RUUserInfoManager
 
-+(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
-    RUUserInfoManager *infoManager = [self sharedInstance];
-    NSDictionary *campus = infoManager.campus;
+-(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
+    NSDictionary *campus = self.campus;
     NSString *tag = campus[@"tag"];
     
     newBrunswickBlock = ^{ if (newBrunswickBlock) newBrunswickBlock(); };
@@ -107,23 +108,31 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     [[NSUserDefaults standardUserDefaults] setObject:userRole forKey:userInfoManagerUserRoleKey];
 }
 
+-(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion{
+    if (![self hasUserInformation]) {
+        [self getUserInformationCompletion:completion];
+    } else {
+        if (completion) completion();
+    }
+}
+
 /**
  *  Presents the user interface to allow the user to enter their campus or affiliation
  *
  *  @param cancellable Is the user allowed to cancel without entering their information
  *  @param completion A block to be executed when
  */
--(void)getUserInformationCancellable:(BOOL)cancellable completion:(dispatch_block_t)completion{
+-(void)getUserInformationCompletion:(dispatch_block_t)completion{
     NSAssert(!self.completion, @"Starting an information request while another is already in progress");
-    self.cancellable = cancellable;
     self.completion = completion;
     
-    [self makeActionSheetsCancellable:cancellable];
+    [self makeActionSheets];
     
     [self presentActionSheet:self.campusActionSheet];
+
 }
 
--(void)makeActionSheetsCancellable:(BOOL)cancellable{
+-(void)makeActionSheets{
     
     self.campusActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please choose your campus." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     for (NSDictionary *campus in self.campuses) {
@@ -134,10 +143,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     for (NSDictionary *userRole in self.userRoles) {
         [self.userTypeActionSheet addButtonWithTitle:userRole[@"title"]];
     }
-    
-    if (cancellable) {
-        self.campusActionSheet.cancelButtonIndex = [self.campusActionSheet addButtonWithTitle:@"Cancel"];
-    }
+
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
@@ -156,18 +162,14 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     if (actionSheet == self.campusActionSheet) {
         
         [self setCampus:self.campuses[buttonIndex]];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self presentActionSheet:self.userTypeActionSheet];
-        });
+        [self presentActionSheet:self.userTypeActionSheet];
 
     } else if (actionSheet == self.userTypeActionSheet) {
         
         [self setUserRole:self.userRoles[buttonIndex]];
         [self setHasUserInformation:YES];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self complete];
-        });
+        [self complete];
     }
 }
 
@@ -180,7 +182,9 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 }
 
 -(void)presentActionSheet:(UIActionSheet *)actionSheet{
-    [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window]];
+    });
 }
 
 

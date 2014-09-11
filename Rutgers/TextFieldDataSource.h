@@ -8,9 +8,7 @@
 
 #import "StringDataSource.h"
 
-@interface ResponseDataSource : StringDataSource
-@property (nonatomic) BOOL on;
-@property (nonatomic) NSString *toggleLabel;
+@interface TextFieldDataSource : BasicDataSource
 @property (nonatomic) NSString *textFieldLabel;
 @property (nonatomic) NSString *textFieldPlaceholder;
 @property (nonatomic) NSString *textFieldText;

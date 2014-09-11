@@ -21,26 +21,23 @@
 @implementation RUAppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    [application setStatusBarHidden:NO];
-    [self initialize];
-    
-    return YES;
-}
-
 /**
  *  Setup application wide appearance, application wide cache, drawer, and also ask the user for their information if this is the first run
  */
--(void)initialize{
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [application setStatusBarHidden:NO];
     [RUAppearance applyAppearance];
     
     [self initializeCache];
     [self initializeDrawer];
+    
     [[RUAnalyticsManager sharedManager] queueEventForApplicationStart];
-
-    [self askUserForInformationIfNeeded];
+    [[RUUserInfoManager sharedInstance] getUserInfoIfNeededWithCompletion:^{
+        [self.rootController openDrawer];
+    }];
+    
+    return YES;
 }
 
 /**
@@ -58,7 +55,7 @@
 }
 
 /**
- *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the drawer view controller
+ *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the menu/drawer containment view controller
  */
 -(void)initializeDrawer{
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -77,24 +74,6 @@
         _windowBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
     }
     return _windowBackground;
-}
-
-/**
- *  If the user has not yet entered their campus or affiliation, prompt them to enter it, and upon completion open the drawer
- */
--(void)askUserForInformationIfNeeded{
-    dispatch_block_t openDrawer = ^{
-        [self.rootController openDrawer];
-    };
-    
-    RUUserInfoManager *userInfoManager = [RUUserInfoManager sharedInstance];
-    if (![userInfoManager hasUserInformation]) {
-        [userInfoManager getUserInformationCancellable:NO completion:openDrawer];
-    } else {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            openDrawer();
-        });
-    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -122,6 +101,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[RUAnalyticsManager sharedManager] flushQueue];
 }
 
 @end

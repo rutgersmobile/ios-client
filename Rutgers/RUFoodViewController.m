@@ -11,6 +11,7 @@
 #import "RUFoodDataSource.h"
 #import "EZTableViewRightDetailRow.h"
 #import "DataTuple.h"
+#import "TableViewController_Private.h"
 
 @implementation RUFoodViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{

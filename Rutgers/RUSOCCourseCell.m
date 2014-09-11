@@ -26,9 +26,9 @@
 }
 
 -(void)updateFonts{
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    self.creditsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    self.sectionsLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.titleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.creditsLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.sectionsLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
 }
 
 -(void)initializeConstraints{

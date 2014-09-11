@@ -9,10 +9,10 @@
 #import "UITableView+Selection.h"
 
 @implementation UITableView (Selection)
--(void)clearSelection{
+-(void)clearSelectionAnimated:(BOOL)animated{
     NSArray *indexPaths = [self indexPathsForSelectedRows];
     for (NSIndexPath *indexPath in indexPaths) {
-        [self deselectRowAtIndexPath:indexPath animated:YES];
+        [self deselectRowAtIndexPath:indexPath animated:animated];
     }
 }
 -(void)selectRowsAtIndexPaths:(NSArray *)indexPaths animated:(BOOL)animated{

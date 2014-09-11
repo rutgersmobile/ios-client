@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NSAttributedString (FromHTML)
-+(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString;
++(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString preferedTextStyle:(NSString *)textStyle;
 @end

@@ -143,31 +143,6 @@
     [segmentedControl removeTarget:nil action:nil forControlEvents:UIControlEventValueChanged];
     [segmentedControl addTarget:self action:@selector(selectedSegmentIndexChanged:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.selectedSegmentIndex = self.selectedDataSourceIndex;
-    
-    CGFloat minimumWidth = 160;
-    if (titles.count > 1) minimumWidth += 30;
-    if (titles.count > 2) minimumWidth += 30;
-    
-    CGFloat maximumWidth = 304;
-    
-    [segmentedControl sizeToFit];
-    CGRect bounds = segmentedControl.bounds;
-    
-    if (bounds.size.width < minimumWidth) {
-        bounds.size.width = minimumWidth;
-    } else if (bounds.size.width > maximumWidth) {
-        segmentedControl.apportionsSegmentWidthsByContent = YES;
-        [segmentedControl sizeToFit];
-        bounds = segmentedControl.bounds;
-        
-        if (bounds.size.width > maximumWidth){
-            bounds.size.width = maximumWidth;
-        }
-    }
-    
-    if (!CGRectEqualToRect(bounds, segmentedControl.bounds)) {
-        segmentedControl.bounds = bounds;
-    }
 }
 
 - (void)selectedSegmentIndexChanged:(id)sender
@@ -185,6 +160,7 @@
 }
 
 #pragma mark - Segmented Data Source Implementation
+
 -(NSInteger)numberOfSections{
     return self.selectedDataSource.numberOfSections;
 }
@@ -212,22 +188,6 @@
         [dataSource registerReusableViewsWithTableView:tableView];
 }
 
-#pragma mark - Cached Heights
-
--(void)invalidateCachedHeights{
-    for (DataSource *dataSource in self.dataSources) {
-        [dataSource invalidateCachedHeights];
-    }
-}
--(void)invalidateCachedHeightsForSection:(NSInteger)section{
-    [self.selectedDataSource invalidateCachedHeightsForSection:section];
-}
-
--(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
-    [self.selectedDataSource invalidateCachedHeightsForIndexPaths:indexPaths];
-}
-
-
 #pragma mark - Table View Data Source
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self.selectedDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -250,10 +210,28 @@
     return [self.selectedDataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];
 }
 
+#pragma mark - Cached Heights
+
+-(void)invalidateCachedHeights{
+    for (DataSource *dataSource in self.dataSources) {
+        [dataSource invalidateCachedHeights];
+    }
+}
+-(void)invalidateCachedHeightsForSection:(NSInteger)section{
+    [self.selectedDataSource invalidateCachedHeightsForSection:section];
+}
+
+-(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
+    [self.selectedDataSource invalidateCachedHeightsForIndexPaths:indexPaths];
+}
+
+
 #pragma mark - AAPLContentLoading
 
 - (void)loadContent
 {
+    //[_selectedDataSource loadContent];
+    
     for (DataSource *dataSource in self.dataSources)
         [dataSource loadContent];
 }
@@ -294,7 +272,7 @@
     return YES;
 }
 
-- (void)updatePlaceholder:(AAPLCollectionPlaceholderView *)placeholderView notifyVisibility:(BOOL)notify
+- (void)updatePlaceholder:(AAPLPlaceholderCell *)placeholderView notifyVisibility:(BOOL)notify
 {
     [_selectedDataSource updatePlaceholder:placeholderView notifyVisibility:notify];
 }

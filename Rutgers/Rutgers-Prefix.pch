@@ -41,9 +41,11 @@
 
 #endif
 
-#define BETA false//true//false//true
+#define IPAD_SCALE 1.25
 
-#define ASSERT_MAIN_THREAD//NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
+#define BETA false//true//false//true//false//true
+
+#define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
 extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
 
 static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){

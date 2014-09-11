@@ -10,6 +10,7 @@
 #import "RURecCenterViewController.h"
 #import "RURecCenterDataSource.h"
 #import "DataTuple.h"
+#import "TableViewController_Private.h"
 
 @interface RURecreationViewController ()
 @property (nonatomic) NSDictionary *recData;

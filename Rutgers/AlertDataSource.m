@@ -17,12 +17,12 @@
 @end
 
 @implementation AlertDataSource
--(instancetype)initWithPlaceholderText:(NSString *)placeholderText alertButtonTitles:(NSArray *)alertButtonTitles{
-    self = [super initWithItems:@[placeholderText]];
+-(instancetype)initWithInitialText:(NSString *)initialText alertButtonTitles:(NSArray *)alertButtonTitles{
+    self = [super initWithItems:@[initialText]];
     if (self) {
         self.actionSheet = [self makeActionSheetWithAlertButtonTitles:alertButtonTitles];
         self.showsDisclosureIndicator = YES;
-        self.updatesPlaceholderText = YES;
+        self.updatesInitialText = YES;
     }
     return self;
 }
@@ -53,7 +53,7 @@
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     if (self.alertAction) self.alertAction(buttonTitle,buttonIndex);
     
-    if (self.updatesPlaceholderText){
+    if (self.updatesInitialText){
         self.items = @[buttonTitle];
         [self invalidateCachedHeightsForSection:0];
     }

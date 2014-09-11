@@ -33,14 +33,7 @@
 
 -(NSAttributedString *)bio{
     if (!_bio && self.bioString) {
-        
-        NSMutableAttributedString *string = [NSMutableAttributedString attributedStringFromHTMLString:self.bioString];
-        [string enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, string.length) options:0 usingBlock:^(UIFont *font, NSRange range, BOOL *stop) {
-            BOOL bold = [[font description] rangeOfString:@"bold"].location != NSNotFound;
-            [string setAttributes:@{NSFontAttributeName : [UIFont preferredFontForTextStyle:bold ? UIFontTextStyleCaption1 : UIFontTextStyleCaption2]} range:range];
-        }];
-        _bio = string;
-        
+        _bio = [NSMutableAttributedString attributedStringFromHTMLString:self.bioString preferedTextStyle:UIFontTextStyleFootnote];
     }
     return _bio;
 }

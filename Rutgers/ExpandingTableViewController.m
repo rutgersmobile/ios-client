@@ -8,7 +8,7 @@
 
 #import "ExpandingTableViewController.h"
 #import "ExpandingTableViewDataSource.h"
-#import "DataSource_Private.h"
+#import "TableViewController_Private.h"
 
 @interface ExpandingTableViewController () <DataSourceDelegate>
 @end
@@ -26,6 +26,11 @@
 }*/
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [((ExpandingTableViewDataSource *)self.dataSource) toggleExpansionForSection:indexPath.section];
+    if (indexPath.row == 0) {
+      [((ExpandingTableViewDataSource *)self.dataSource) toggleExpansionForSection:indexPath.section];
+    } else {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
 }
+
 @end

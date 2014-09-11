@@ -18,7 +18,9 @@ static NSString *const SOCDataLevelKey = @"SOCDataLevelKey";
 static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
 @interface RUSOCDataLoadingManager ()
-
+@property (nonatomic) NSArray *semesters;
+@property (nonatomic) NSArray *campuses;
+@property (nonatomic) NSArray *levels;
 @property (nonatomic) NSInteger defaultSemesterIndex;
 
 @property dispatch_group_t semesterGroup;
@@ -171,6 +173,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     
     return [self.campuses firstObject];
 }
+
 -(void)setCampus:(NSDictionary *)campus{
     [[NSUserDefaults standardUserDefaults] setObject:campus forKey:SOCDataCampusKey];
 }

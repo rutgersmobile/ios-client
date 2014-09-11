@@ -10,16 +10,17 @@
 
 @implementation RULabel
 -(void)setBounds:(CGRect)bounds{
+    CGRect oldBounds = self.bounds;
     [super setBounds:bounds];
     
     // If this is a multiline label, need to make sure
     // preferredMaxLayoutWidth always matches the frame width
     // (i.e. orientation change can mess this up)
-    self.preferredMaxLayoutWidth = bounds.size.width;
+    if (CGRectGetWidth(oldBounds) != CGRectGetWidth(bounds)) self.preferredMaxLayoutWidth = bounds.size.width;
 }
 
 -(CGSize)intrinsicContentSize{
-    if (!self.doesNotAutomaticallyLineBreak) return [super intrinsicContentSize];
+    if (!self.ignoresPreferredLayoutWidth) return [super intrinsicContentSize];
     return [self sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
 }
 

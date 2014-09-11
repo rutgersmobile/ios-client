@@ -10,6 +10,7 @@
 #import "RUSOCCourseViewController.h"
 #import "RUSOCCourseRow.h"
 #import "RUSOCSubjectDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface RUSOCSubjectViewController ()
 @property (nonatomic) NSString *subjectCode;

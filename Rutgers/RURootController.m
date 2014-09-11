@@ -11,11 +11,16 @@
 #import <SWRevealViewController.h>
 #import "RUUserInfoManager.h"
 #import "RUNavigationController.h"
+#import "TableViewController_Private.h"
 
-@interface RURootController () <RUMenuDelegate, UISplitViewControllerDelegate, SWRevealViewControllerDelegate>
+@interface RURootController () <RUMenuDelegate, SWRevealViewControllerDelegate>
 @property (nonatomic) SWRevealViewController *containerController;
-@property (nonatomic) UISplitViewController *splitViewController;
+//@property (nonatomic) UISplitViewController *splitViewController;
+
 @property (nonatomic) NSHashTable *managedScrollViews;
+
+@property (nonatomic) UIBarButtonItem *menuBarButtonItem;
+@property (nonatomic) UIViewController *centerViewController;
 @end
 
 @implementation RURootController
@@ -27,55 +32,92 @@
     }
     return self;
 }
+#pragma initialization
 -(UIViewController *)makeRootViewController{
     RUMenuViewController *menu = [[RUMenuViewController alloc] initWithStyle:UITableViewStyleGrouped];
     menu.delegate = self;
     UIViewController *defaultScreen = [self makeDefaultScreen];
-    
+    /*
     if (iPad()) {
+       
         self.splitViewController = [[UISplitViewController alloc] init];
         self.splitViewController.viewControllers = @[menu,defaultScreen];
+        self.splitViewController.delegate = self;
+        self.splitViewController.view.backgroundColor = [UIColor clearColor];
         
         return self.splitViewController;
-    } else {
+    } else {*/
         self.containerController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:nil];
         self.containerController.delegate = self;
         
-        [self updateCenterWithViewController:defaultScreen];
-        
-        self.containerController.view.backgroundColor = nil;
-        // self.containerController.frontViewShadowRadius = 4;
-        // self.containerController.frontViewShadowOffset = CGSizeMake(0, 0);
+        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    
+        self.containerController.rearViewRevealWidth = iPad() ? 260 * IPAD_SCALE : 260;
+        self.containerController.rearViewRevealOverdraw = 0;
+        self.containerController.rearViewRevealDisplacement = 50;
+        self.containerController.bounceBackOnOverdraw = NO;
+        self.containerController.clipsViewsToBounds = YES;
+    
+        self.containerController.view.backgroundColor = [UIColor clearColor];
         self.containerController.frontViewShadowOpacity = 0;
-        
-        // self.containerController.draggableBorderWidth = 30.0;
         
         self.containerController.replaceViewAnimationDuration = 0.4;
         self.containerController.toggleAnimationDuration = 0.4;
         
-        self.containerController.bounceBackOnOverdraw = NO;
-        self.containerController.clipsViewsToBounds = YES;
-        
         [self.containerController panGestureRecognizer];
         [self.containerController tapGestureRecognizer];
-        
+    
+        self.centerViewController = defaultScreen;
+    
         return self.containerController;
-    }
+   // }
 }
 
-- (void)placeButtonInViewController:(UIViewController *)viewController {
+-(UIViewController *)makeDefaultScreen{
+    UIViewController * splashViewController = [[UIViewController alloc] init];
+    splashViewController.view.backgroundColor = [UIColor whiteColor];
+    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DefaultImage"]];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [splashViewController.view addSubview:imageView];
+    [imageView autoCenterInSuperview];
+    
+    return splashViewController;
+}
+
+-(UIViewController *)centerViewController{
+    return self.containerController.frontViewController;
+}
+
+-(void)setCenterViewController:(UIViewController *)centerViewController{
+    [self.containerController pushFrontViewController:centerViewController animated:NO];
+    [self placeButtonInCenterViewController];
+}
+
+
+#pragma managing buttons
+- (void)placeButtonInCenterViewController{
+    UIViewController *viewController = [self centerViewController];
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)viewController;
         if ([nav.viewControllers count] > 0) viewController = [nav.viewControllers objectAtIndex:0];
     }
-    if (!viewController.navigationItem.leftBarButtonItem) viewController.navigationItem.leftBarButtonItem = [self leftButtonForCenterPanel];
+    
+    UINavigationItem *navigationItem = viewController.navigationItem;
+    if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
 
--(UIBarButtonItem *)leftButtonForCenterPanel{
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
-    return button;
+- (void)removeButtonFromCenterViewController{
+    UIViewController *viewController = [self centerViewController];
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = (UINavigationController *)viewController;
+        if ([nav.viewControllers count] > 0) viewController = [nav.viewControllers objectAtIndex:0];
+    }
+
+    UINavigationItem *navigationItem = viewController.navigationItem;
+    if ([navigationItem.leftBarButtonItem isEqual:self.menuBarButtonItem]) navigationItem.leftBarButtonItem = nil;
 }
 
+#pragma channel selection
 -(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
     [self closeDrawer];
 }
@@ -86,20 +128,9 @@
     
     [RUAppearance applyAppearanceToNavigationController:navController];
     
-    [self updateCenterWithViewController:navController];
+    self.centerViewController = navController;
     
     [self closeDrawer];
-}
-
--(void)updateCenterWithViewController:(UIViewController *)viewController{
-    if (self.splitViewController) {
-        NSMutableArray *viewControllers = [self.splitViewController.viewControllers mutableCopy];
-        viewControllers[1] = viewController;
-        self.splitViewController.viewControllers = viewControllers;
-    } else {
-        [self.containerController pushFrontViewController:viewController animated:NO];
-    }
-    [self placeButtonInViewController:viewController];
 }
 
 -(void)toggleLeftPanel:(id)sender{
@@ -113,40 +144,8 @@
 -(void)openDrawer{
     [self.containerController setFrontViewPosition:FrontViewPositionRight animated:YES];
 }
-
--(UIViewController *)makeDefaultScreen {
-    UIViewController * splashViewController = [[UIViewController alloc] init];
-    splashViewController.view.backgroundColor = [UIColor whiteColor];
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DefaultImage"]];
-    imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [splashViewController.view addSubview:imageView];
-    [imageView autoCenterInSuperview];
     
-    return splashViewController;
-}
-
--(BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController{
-    id viewController = revealController.frontViewController;
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = viewController;
-        if ([nav.viewControllers count] > 1) return false;
-        viewController = nav.topViewController;
-    }
-    if ([viewController isKindOfClass:[TableViewController class]]) return ![viewController isSearching];
-    return true;
-}
-
-- (void)revealController:(SWRevealViewController *)revealController willMoveToPosition:(FrontViewPosition)position{
-    UIView *frontView = revealController.frontViewController.view;
-    if (position == FrontViewPositionRight) {
-        [self recursivelyRemoveScrollingToTop:frontView];
-        frontView.userInteractionEnabled = NO;
-    } else if (position == FrontViewPositionLeft) {
-        [self restoreScrollingToTop:frontView];
-        frontView.userInteractionEnabled = YES;
-    }
-}
-
+#pragma scroll view scrolls to top
 -(void)recursivelyRemoveScrollingToTop:(UIView *)view{
     [self removeScrollingToTop:view];
     for (UIView *subview in view.subviews) {
@@ -169,14 +168,38 @@
     [self.managedScrollViews removeAllObjects];
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma split view delegate
+- (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc{
+    self.menuBarButtonItem = barButtonItem;
+    [self placeButtonInCenterViewController];
+}
+
+// Called when the view is shown again in the split view, invalidating the button and popover controller.
+- (void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem{
+    
+}
+
+#pragma reveal view controller
+
+-(BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController{
+    id viewController = revealController.frontViewController;
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = viewController;
+        if ([nav.viewControllers count] > 1) return false;
+        viewController = nav.topViewController;
+    }
+    if ([viewController isKindOfClass:[TableViewController class]]) return ![viewController isSearching];
+    return true;
+}
+
+- (void)revealController:(SWRevealViewController *)revealController willMoveToPosition:(FrontViewPosition)position{
+    UIView *frontView = revealController.frontViewController.view;
+    if (position == FrontViewPositionRight) {
+        [self recursivelyRemoveScrollingToTop:frontView];
+        frontView.userInteractionEnabled = NO;
+    } else if (position == FrontViewPositionLeft) {
+        [self restoreScrollingToTop:frontView];
+        frontView.userInteractionEnabled = YES;
+    }
+}
 @end

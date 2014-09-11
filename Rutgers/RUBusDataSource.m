@@ -50,7 +50,7 @@
             
         };
         
-        [RUUserInfoManager performInCampusPriorityOrderWithNewBrunswickBlock:^{
+        [[RUUserInfoManager sharedInstance] performInCampusPriorityOrderWithNewBrunswickBlock:^{
             addDataForAgency(newBrunswickAgency);
         } newarkBlock:^{
             addDataForAgency(newarkAgency);

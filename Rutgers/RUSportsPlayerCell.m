@@ -44,8 +44,8 @@
 }
 
 -(void)updateFonts{
-    self.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.jerseyNumberLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.nameLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+    self.jerseyNumberLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleHeadline];
 }
 
 -(void)initializeConstraints{

@@ -52,7 +52,7 @@
 }
 
 -(void)updateFonts{
-    self.channelTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.channelTitleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{

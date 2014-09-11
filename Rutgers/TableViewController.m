@@ -10,6 +10,7 @@
 #import "DataSource_Private.h"
 #import "RUNavigationController.h"
 #import "UITableView+Selection.h"
+#import "TableViewController_Private.h"
 
 @interface TableViewController () <DataSourceDelegate>
 @property (nonatomic) DataSource *dataSource;
@@ -66,7 +67,7 @@
     [self invalidateCachedHeightsIfNeeded];
     
     if (self.clearsSelectionOnViewWillAppear) {
-        [self.tableView clearSelection];
+        [self.tableView clearSelectionAnimated:YES];
     }
 
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
@@ -99,6 +100,7 @@
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+    NSLog(@"dealloc tbvc");
 }
 
 -(void)viewWillLayoutSubviews{

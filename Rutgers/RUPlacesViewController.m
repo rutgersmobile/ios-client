@@ -13,7 +13,7 @@
 #import "RUPlaceDetailViewController.h"
 #import "RULocationManager.h"
 #import "RUPlace.h"
-
+#import "TableViewController_Private.h"
 
 @interface RUPlacesViewController ()
 

@@ -15,24 +15,4 @@
 
 @property (nonatomic) UITableView *tableView;
 -(UITableView *)searchTableView;
-
-@property(nonatomic) BOOL clearsSelectionOnViewWillAppear;
-
--(DataSource *)dataSource;
--(void)setDataSource:(DataSource *)dataSource;
-
--(DataSource<SearchDataSource> *)searchDataSource;
--(void)setSearchDataSource:(DataSource<SearchDataSource> *)searchDataSource;
-
--(DataSource *)dataSourceForTableView:(UITableView *)tableView;
--(UITableView *)tableViewForDataSource:(DataSource *)dataSource;
-
--(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
--(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
-
-@property (nonatomic, getter = isSearching) BOOL searching;
-@property (nonatomic) UISearchBar *searchBar;
-
--(void)preferredContentSizeChanged NS_REQUIRES_SUPER;
--(void)reloadTablePreservingSelectionState:(UITableView *)tableView;
 @end

@@ -23,8 +23,8 @@
 }
 
 -(void)updateFonts{
-    self.areaLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleFootnote];
-    self.timesLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    self.areaLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleFootnote];
+    self.timesLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 -(void)initializeConstraints{

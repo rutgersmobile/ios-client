@@ -10,6 +10,7 @@
 #import "RUSOCDataLoadingManager.h"
 #import "AlertDataSource.h"
 #import "ComposedDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface RUSOCOptionsViewController ()
 @property id<RUSOCOptionsDelegate> delegate;
@@ -34,21 +35,21 @@
     
     __weak typeof(self) weakSelf = self;
     
-    AlertDataSource *semesterDataSource = [[AlertDataSource alloc] initWithPlaceholderText:dataManager.semester[@"title"] alertButtonTitles:[dataManager.semesters valueForKey:@"title"]];
+    AlertDataSource *semesterDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.semester[@"title"] alertButtonTitles:[dataManager.semesters valueForKey:@"title"]];
     semesterDataSource.title = @"Semester";
     semesterDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
         dataManager.semester = dataManager.semesters[buttonIndex];
         [weakSelf notifyOptionsDidChange];
     };
     
-    AlertDataSource *campusDataSource = [[AlertDataSource alloc] initWithPlaceholderText:dataManager.campus[@"title"] alertButtonTitles:[dataManager.campuses valueForKey:@"title"]];
+    AlertDataSource *campusDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.campus[@"title"] alertButtonTitles:[dataManager.campuses valueForKey:@"title"]];
     campusDataSource.title = @"Campus";
     campusDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
         dataManager.campus = dataManager.campuses[buttonIndex];
         [weakSelf notifyOptionsDidChange];
     };
     
-    AlertDataSource *levelDataSource = [[AlertDataSource alloc] initWithPlaceholderText:dataManager.level[@"title"] alertButtonTitles:[dataManager.levels valueForKey:@"title"]];
+    AlertDataSource *levelDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.level[@"title"] alertButtonTitles:[dataManager.levels valueForKey:@"title"]];
     levelDataSource.title = @"Level";
     levelDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
         dataManager.level = dataManager.levels[buttonIndex];

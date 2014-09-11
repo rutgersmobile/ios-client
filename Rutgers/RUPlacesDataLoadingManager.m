@@ -116,6 +116,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
         completionBlock(@[]);
         return;
     }
+    
     dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
         NSArray *nearbyPlaces = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
             if (!place.location) return NO;

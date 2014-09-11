@@ -14,10 +14,11 @@
 #import "ALTableViewAbstractCell.h"
 #import "TileCollectionViewCell.h"
 #import "RowHeightCache.h"
+#import "AAPLPlaceholderView.h"
 
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
-@property (nonatomic, strong) AAPLCollectionPlaceholderView *placeholderView;
+@property (nonatomic, strong) AAPLPlaceholderCell *placeholderView;
 
 @property (nonatomic, copy) dispatch_block_t pendingUpdateBlock;
 @property (nonatomic) BOOL loadingComplete;
@@ -28,6 +29,8 @@
 @end
 
 @implementation DataSource
+@synthesize loadingError = _loadingError;
+
 - (instancetype)init
 {
     self = [super init];
@@ -36,6 +39,12 @@
         self.rowHeightCache = [[RowHeightCache alloc] init];
     }
     return self;
+}
+
+- (BOOL)isRootDataSource
+{
+    id delegate = self.delegate;
+    return [delegate isKindOfClass:[DataSource class]] ? NO : YES;
 }
 
 -(NSString *)description{
@@ -48,6 +57,7 @@
 }
 
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
+    //if (self.shouldDisplayPlaceholder) return 1;
     return 0;
 }
 
@@ -65,7 +75,7 @@
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    
+    [tableView registerClass:[AAPLPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
 }
 
 #pragma mark - Cached Heights
@@ -112,19 +122,31 @@
     
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ALTableViewAbstractCell *cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-   
-    [cell updateFonts];
-    [self configureCell:cell forRowAtIndexPath:indexPath];
+    ALTableViewAbstractCell *cell;
+    
+    
+    //if (self.shouldDisplayPlaceholder) {
+    //    cell = [self dequeuePlaceholderViewForTableView:tableView atIndexPath:indexPath];
+    //} else {
+        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        [cell updateFonts];
+        [self configureCell:cell forRowAtIndexPath:indexPath];
+    //}
     
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
-   // [cell setNeedsLayout];
-   // [cell layoutIfNeeded];
-    
     return cell;
+}
+
+- (AAPLPlaceholderCell *)dequeuePlaceholderViewForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    if (!_placeholderView)
+        _placeholderView = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+    [self updatePlaceholder:_placeholderView notifyVisibility:NO];
+    return _placeholderView;
 }
 
 
@@ -138,21 +160,24 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    //if (NEW_TABLEVIEW_HEIGHT_CALCULATIONS) return UITableViewAutomaticDimension;
-    
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
    
-    id cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-        
-    [cell updateFonts];
-    [self configureCell:cell forRowAtIndexPath:indexPath];
-
+    ALTableViewAbstractCell *cell;
+    
+    //if (self.shouldDisplayPlaceholder) {
+    //    cell = [self dequeuePlaceholderViewForTableView:tableView atIndexPath:indexPath];
+    //    [self updatePlaceholder:((AAPLPlaceholderCell *)cell) notifyVisibility:NO];
+    //} else {
+        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        [cell updateFonts];
+        [self configureCell:cell forRowAtIndexPath:indexPath];
+    //}
+    
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
     CGFloat height = [cell layoutSizeFittingSize:tableView.bounds.size].height;
-    
     [self.rowHeightCache setCachedHeight:height forRowAtIndexPath:indexPath];
     
     return height;
@@ -187,7 +212,6 @@
     return [self numberOfItemsInSection:section];
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     TileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForItemAtIndexPath:indexPath] forIndexPath:indexPath];
     
@@ -212,8 +236,7 @@
     
 }
 
-#pragma mark - ContentLoading methods#pragma mark - AAPLContentLoading methods
-@synthesize loadingError = _loadingError;
+#pragma mark - ContentLoading methods
 
 - (AAPLLoadableContentStateMachine *)stateMachine
 {
@@ -394,6 +417,8 @@
     if (![loadingState isEqualToString:AAPLLoadStateLoadingContent] && ![loadingState isEqualToString:AAPLLoadStateNoContent])
         return NO;
     
+    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) return YES;
+    
     // Can't display the placeholder if both the title and message are missing
     if (!self.noContentMessage && !self.noContentTitle)
         return NO;
@@ -401,7 +426,7 @@
     return YES;
 }
 
-- (void)updatePlaceholder:(AAPLCollectionPlaceholderView *)placeholderView notifyVisibility:(BOOL)notify
+- (void)updatePlaceholder:(AAPLPlaceholderCell *)placeholderView notifyVisibility:(BOOL)notify
 {
     NSString *message;
     NSString *title;
@@ -430,16 +455,6 @@
     if (notify && (self.noContentTitle || self.noContentMessage || self.errorTitle || self.errorMessage))
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfSections)]];
 }
-
-- (AAPLCollectionPlaceholderView *)dequeuePlaceholderViewForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
-{
-    return nil;/*
-    if (!_placeholderView)
-        _placeholderView = [collectionView dequeueReusableSupplementaryViewOfKind:AAPLCollectionElementKindPlaceholder withReuseIdentifier:NSStringFromClass([AAPLCollectionPlaceholderView class]) forIndexPath:indexPath];
-    [self updatePlaceholder:_placeholderView notifyVisibility:NO];
-    return _placeholderView;*/
-}
-
 
 #pragma mark - Data Source Delegate
 - (void)executePendingUpdates
@@ -476,7 +491,6 @@
 
 - (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths{
     [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceOperationDirectionNone];
-    
 }
 
 - (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths{

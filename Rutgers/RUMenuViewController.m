@@ -11,6 +11,8 @@
 #import "MenuDataSource.h"
 #import <SWRevealViewController.h>
 #import "UITableView+Selection.h"
+#import "UIApplication+StatusBarHeight.h"
+#import "TableViewController_Private.h"
 
 @interface RUMenuViewController ()
 @property (nonatomic) UIView *paddingView;
@@ -29,9 +31,8 @@
 -(void)loadView{
     [super loadView];
     
-    CGRect statusBarFrame = [self.view convertRect:[[UIApplication sharedApplication] statusBarFrame] fromView:nil];
-    CGFloat statusBarHeight = CGRectGetHeight(statusBarFrame);
-    
+    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarHeight];
+
     UIView *paddingView = [UIView newAutoLayoutView];
 
     [self.view addSubview:paddingView];
@@ -41,9 +42,11 @@
     [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
     
     self.tableView.contentInset = UIEdgeInsetsMake(statusBarHeight, 0, 0, 0);
+    
     [self.tableView autoRemoveConstraintsAffectingView];
     [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
-    [self.tableView autoSetDimension:ALDimensionWidth toSize:self.revealViewController.rightViewRevealWidth];
+    [self.tableView autoSetDimension:ALDimensionWidth toSize:self.revealViewController.rearViewRevealWidth];
+
 }
 
 -(void)viewDidLoad{
@@ -54,7 +57,7 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.separatorColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];//[UIColor clearColor];
+    self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 32+kLabelHorizontalInsets*2, 0, 0);
     
 }

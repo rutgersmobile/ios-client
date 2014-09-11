@@ -57,7 +57,7 @@
 -(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
     switch (direction) {
         case DataSourceOperationDirectionNone:
-            return UITableViewRowAnimationAutomatic;
+            return UITableViewRowAnimationFade;
             break;
         case DataSourceOperationDirectionLeft:
             return UITableViewRowAnimationLeft;

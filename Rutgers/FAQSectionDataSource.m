@@ -58,14 +58,14 @@
     cell.textLabel.text = stringForIndex;
     
     if (indexPath.row == 0){
-        cell.textLabel.font =  [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        cell.textLabel.font =  [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
         if (self.expanded) {
             cell.textLabel.textColor = cell.tintColor;
         } else {
             cell.textLabel.textColor = [UIColor blackColor];
         }
     } else {
-        cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
         cell.textLabel.textColor = [UIColor blackColor];
     }
     

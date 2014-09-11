@@ -10,6 +10,7 @@
 #import "ExpandingTableViewSection.h"
 #import "EZTableViewTextRow.h"
 #import "FAQDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface FAQViewController ()
 @property NSDictionary *channel;

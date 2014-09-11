@@ -9,6 +9,7 @@
 #import "RUPreferencesViewController.h"
 #import "PreferencesDataSource.h"
 #import "AlertDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface RUPreferencesViewController ()
 
@@ -20,6 +21,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.dataSource = [[PreferencesDataSource alloc] init];
+    self.title = @"Preferences";
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

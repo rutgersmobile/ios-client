@@ -11,6 +11,7 @@
 @interface RUAnalyticsManager ()
 @property NSMutableArray *queue;
 @property NSTimer *flushTimer;
+@property BOOL firstLaunch;
 @end
 
 @implementation RUAnalyticsManager
@@ -32,6 +33,19 @@
     }
     return self;
 }
+
+static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirstLaunchKey";
+
+-(BOOL)firstLaunch{
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kAnalyticsManagerFirstLaunchKey : @(YES)}];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kAnalyticsManagerFirstLaunchKey];
+}
+
+-(void)setFirstLaunch:(BOOL)firstLaunch{
+    [[NSUserDefaults standardUserDefaults] setBool:firstLaunch forKey:kAnalyticsManagerFirstLaunchKey];
+}
+
+
 -(void)queueEventForNewInstall{
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary:@{
@@ -110,20 +124,29 @@
              };
 }
 
--(void)queueAnalyticsEvent:(NSDictionary *)event{
-    [self.queue addObject:event];
-    if (self.queue.count < 10) {
-        [self.flushTimer invalidate];
-        self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
-    } else {
-        [self.flushTimer invalidate];
-        [self flushQueue];
+-(void)queueAnalyticsEvents:(NSArray *)events{
+    @synchronized (self) {
+        [self.queue addObjectsFromArray:events];
+        if (self.queue.count < 10) {
+            [self resetFlushTimer];
+        } else {
+            [self flushQueue];
+        }
     }
 }
 
+-(void)queueAnalyticsEvent:(NSDictionary *)event{
+    [self queueAnalyticsEvents:@[event]];
+}
+
+-(void)resetFlushTimer{
+    [self.flushTimer invalidate];
+    self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
+}
 
 -(void)flushQueue{
     @synchronized(self) {
+        [self.flushTimer invalidate];
         [self postAnalyticsEvents:self.queue];
         [self.queue removeAllObjects];
     }
@@ -134,7 +157,9 @@
     NSString *url = @"analytics.php";
     url = @"http://sauron.rutgers.edu/~jamchamb/analytics.php";
     
-    [[RUNetworkManager sessionManager] POST:url parameters:@{@"payload" : [self payloadStringForEvents:events]} success:nil failure:nil];
+    [[RUNetworkManager sessionManager] POST:url parameters:@{@"payload" : [self payloadStringForEvents:events]} success:nil failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self queueAnalyticsEvents:events];
+    }];
 }
 
 -(NSString *)payloadStringForEvents:(NSArray *)events{

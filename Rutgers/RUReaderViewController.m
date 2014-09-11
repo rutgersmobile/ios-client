@@ -9,6 +9,7 @@
 #import "RUReaderViewController.h"
 #import "RUReaderTableViewRow.h"
 #import "RUReaderDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface RUReaderViewController ()
 @property (nonatomic) NSDictionary *channel;
@@ -38,6 +39,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     RUReaderTableViewRow *row = [self.dataSource itemAtIndexPath:indexPath];
+    
+    if (!row.url) return;
     
     [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : row.title, @"view" : @"www", @"url" : row.url}] animated:YES];
 }

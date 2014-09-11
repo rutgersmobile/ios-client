@@ -34,7 +34,7 @@
 }
 
 -(void)updateFonts{
-    self.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.dateLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{

@@ -37,7 +37,7 @@
 
 -(void)updateFonts{
     [super updateFonts];
-    self.positionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.positionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
 }
 
 -(void)initializeConstraints{

@@ -9,6 +9,7 @@
 #import "RUInfoTableViewController.h"
 #import "DataTuple.h"
 #import "RUInfoDataSource.h"
+#import "TableViewController_Private.h"
 #import <MessageUI/MessageUI.h>
 
 @interface RUInfoTableViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
@@ -32,7 +33,7 @@
     NSString *type = item[@"type"];
     
     if (![RUInfoDataSource typeEnabled:type]) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
     }
     

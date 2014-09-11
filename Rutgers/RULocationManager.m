@@ -60,7 +60,7 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
  */
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation *location = [locations lastObject];
-    [self notifyLocationChanged:location];
+    if (location) [self notifyLocationChanged:location];
 }
 
 -(void)notifyLocationChanged:(CLLocation *)location{
@@ -94,8 +94,7 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
 }
 
 -(void)_startUpdatingLocation{
-    
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [[CLLocationManager class] authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         [self.locationManager performSelector:@selector(requestWhenInUseAuthorization)];
     } else {
         [self.locationManager startUpdatingLocation];

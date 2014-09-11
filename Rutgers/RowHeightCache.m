@@ -59,7 +59,8 @@
     
     NSNumber *cachedHeight = [self cacheForSection:indexPath.section][@(indexPath.row)];
     
-    cachedHeight ? OSAtomicIncrement64(&hits) : OSAtomicIncrement64(&misses);
+    OSAtomicIncrement64(cachedHeight ? &hits : &misses);
+    
     NSLog(@"Hits: %lld, Misses: %lld, Rate: %f",hits,misses,((CGFloat)hits/(hits+misses))*100.0);
     
     return cachedHeight;

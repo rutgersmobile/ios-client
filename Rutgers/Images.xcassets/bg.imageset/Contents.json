@@ -6,7 +6,8 @@
     },
     {
       "idiom" : "iphone",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "Background copy.png"
     },
     {
       "idiom" : "iphone",
@@ -20,7 +21,8 @@
     },
     {
       "idiom" : "ipad",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "background-1.png"
     }
   ],
   "info" : {

@@ -36,9 +36,7 @@ typedef enum {
 
 @interface DataSource ()
 
-- (AAPLCollectionPlaceholderView *)dequeuePlaceholderViewForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
-
-- (void)updatePlaceholder:(AAPLCollectionPlaceholderView *)placeholderView notifyVisibility:(BOOL)notify;
+- (void)updatePlaceholder:(AAPLPlaceholderCell *)placeholderView notifyVisibility:(BOOL)notify;
 
 - (void)stateWillChange;
 - (void)stateDidChange;

@@ -9,6 +9,7 @@
 #import "RUPredictionsViewController.h"
 #import "RUPredictionsDataSource.h"
 #import "RUBusRoute.h"
+#import "TableViewController_Private.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
@@ -40,6 +41,22 @@
     
     self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
 }
+
+-(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
+    switch (direction) {
+        case DataSourceOperationDirectionNone:
+            return UITableViewRowAnimationAutomatic;
+            break;
+        default:
+            return [super rowAnimationForSectionOperationDirection:direction];
+            break;
+    }
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return (indexPath.row == 0);
+}
+
 
 
 @end

@@ -23,9 +23,9 @@
     self.minutesLabel.textAlignment = NSTextAlignmentRight;
     self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
 
-    ((RULabel *)self.minutesLabel).doesNotAutomaticallyLineBreak = YES;
-    ((RULabel *)self.descriptionLabel).doesNotAutomaticallyLineBreak = YES;
-    ((RULabel *)self.timeLabel).doesNotAutomaticallyLineBreak = YES;
+    ((RULabel *)self.minutesLabel).ignoresPreferredLayoutWidth = YES;
+    ((RULabel *)self.descriptionLabel).ignoresPreferredLayoutWidth = YES;
+    ((RULabel *)self.timeLabel).ignoresPreferredLayoutWidth = YES;
     
     [self.contentView addSubview:self.minutesLabel];
     [self.contentView addSubview:self.descriptionLabel];
@@ -33,9 +33,9 @@
 }
 
 -(void)updateFonts{
-    self.minutesLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleBody];
-    self.descriptionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.timeLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleBody];
+    self.minutesLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleBody];
+    self.descriptionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+    self.timeLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{

@@ -8,6 +8,7 @@
 
 #import "SegmentedTableViewController.h"
 #import "SegmentedDataSource.h"
+#import "TableViewController_Private.h"
 
 @interface SegmentedTableViewController ()
 @end
@@ -23,7 +24,7 @@
     UIBarButtonItem *segmentedControlButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.segmentedControl];
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
-    [self setToolbarItems:barArray];
+    self.toolbarItems = barArray;
     
     if (![[self.navigationController.viewControllers firstObject] isEqual:self]) {
         UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
@@ -42,14 +43,12 @@
 
 -(void)segmentedControlIndexChanged:(UISegmentedControl *)segmentedControl{
     NSString *selectedTitle = [segmentedControl titleForSegmentAtIndex:segmentedControl.selectedSegmentIndex];
-    
     [[NSUserDefaults standardUserDefaults] setObject:selectedTitle forKey:[self segmentRestorationKey]];
 }
 
 -(NSString *)segmentRestorationKey{
     return [NSString stringWithFormat:@"%@SelectedSegmentKey", NSStringFromClass([self class])];
 }
-
 
 -(void)restoreSelectionState{
     
@@ -97,7 +96,6 @@
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     if (selectedSegmentIndex == -1) return;
     if (selectedSegmentIndex < self.segmentedControl.numberOfSegments - 1) [self selectSegmentIndex:++selectedSegmentIndex];
-
 }
 
 -(void)swipeRight{
@@ -123,7 +121,37 @@
     SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)dataSource;
     [segmentedDataSource configureSegmentedControl:self.segmentedControl];
     [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged:) forControlEvents:UIControlEventValueChanged];
+    [self setupSegmentedControlWidth:self.segmentedControl];
     [self restoreSelectionState];
 }
 
+-(void)setupSegmentedControlWidth:(UISegmentedControl *)segmentedControl{
+    
+    CGFloat minimumWidth = iPad() ? 240 : 160;
+    if (segmentedControl.numberOfSegments >= 2) minimumWidth += iPad() ? 40 : 30;
+    if (segmentedControl.numberOfSegments >= 3) minimumWidth += iPad() ? 40 : 30;
+    
+    CGRect viewBounds = self.view.bounds;
+    CGFloat maximumWidth = MIN(CGRectGetHeight(viewBounds), CGRectGetWidth(viewBounds))-12;
+    
+    [segmentedControl sizeToFit];
+    CGRect controlBounds = segmentedControl.bounds;
+    
+    if (controlBounds.size.width < minimumWidth) {
+        controlBounds.size.width = minimumWidth;
+    } else if (controlBounds.size.width > maximumWidth) {
+        segmentedControl.apportionsSegmentWidthsByContent = YES;
+        [segmentedControl sizeToFit];
+        controlBounds = segmentedControl.bounds;
+        
+        if (controlBounds.size.width > maximumWidth){
+            controlBounds.size.width = maximumWidth;
+        }
+    }
+    
+    if (!CGRectEqualToRect(controlBounds, segmentedControl.bounds)) {
+        segmentedControl.bounds = controlBounds;
+    }
+
+}
 @end

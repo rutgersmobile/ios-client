@@ -26,10 +26,10 @@
     self.locationLabel = [RULabel newAutoLayoutView];
     self.containerView = [UIView newAutoLayoutView];
     
-    ((RULabel *)self.dayLabel).doesNotAutomaticallyLineBreak = YES;
-    ((RULabel *)self.timeLabel).doesNotAutomaticallyLineBreak = YES;
-    ((RULabel *)self.locationLabel).doesNotAutomaticallyLineBreak = YES;
-    ((RULabel *)self.professorLabel).doesNotAutomaticallyLineBreak = YES;
+    ((RULabel *)self.dayLabel).ignoresPreferredLayoutWidth = YES;
+    ((RULabel *)self.timeLabel).ignoresPreferredLayoutWidth = YES;
+    ((RULabel *)self.locationLabel).ignoresPreferredLayoutWidth = YES;
+    ((RULabel *)self.professorLabel).ignoresPreferredLayoutWidth = YES;
     
     self.descriptionLabel.numberOfLines = 0;
     self.dayLabel.numberOfLines = 0;
@@ -51,12 +51,12 @@
 }
 
 -(void)updateFonts{
-    self.indexLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
-    self.professorLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
-    self.descriptionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    self.timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    self.dayLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
-    self.locationLabel.font = [UIFont preferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
+    self.indexLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
+    self.professorLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
+    self.descriptionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.timeLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.dayLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
+    self.locationLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleSubheadline];
 }
 
 -(void)initializeConstraints{

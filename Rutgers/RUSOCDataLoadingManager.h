@@ -17,14 +17,13 @@
 
 -(void)getSearchIndexWithSuccess:(void (^)(NSDictionary *index))successBlock failure:(void (^)(NSError *error))failureBlock;
 
-
 @property (nonatomic) NSDictionary *campus;
 @property (nonatomic) NSDictionary *level;
 @property (nonatomic) NSDictionary *semester;
 
-@property (nonatomic) NSArray *semesters;
-@property (nonatomic) NSArray *campuses;
-@property (nonatomic) NSArray *levels;
+@property (nonatomic, readonly) NSArray *semesters;
+@property (nonatomic, readonly) NSArray *campuses;
+@property (nonatomic, readonly) NSArray *levels;
 
 -(void)performOnSemestersLoaded:(dispatch_block_t)block;
 

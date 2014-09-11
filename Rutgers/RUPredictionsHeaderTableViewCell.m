@@ -31,9 +31,9 @@
 }
 
 -(void)updateFonts{
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    self.directionLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.timeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    self.titleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.directionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+    self.timeLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 -(void)initializeConstraints{
