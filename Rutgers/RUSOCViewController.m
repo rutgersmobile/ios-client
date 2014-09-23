@@ -30,7 +30,8 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
+    self.optionsButton = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
+    self.navigationItem.rightBarButtonItem = self.optionsButton;
     
     self.dataSource = [[RUSOCDataSource alloc] init];
     self.searchDataSource = [[RUSOCSearchDataSource alloc] init];

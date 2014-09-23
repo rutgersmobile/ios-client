@@ -36,4 +36,10 @@
     textFieldCell.textField.delegate = self;
 }
 
+-(void)resetContent{
+    [super resetContent];
+    self.textFieldText = nil;
+    [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
+}
+
 @end

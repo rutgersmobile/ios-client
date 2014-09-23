@@ -74,6 +74,7 @@
 		A74669031986D8F000A5EBE0 /* RUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A74669021986D8F000A5EBE0 /* RUAppDelegate.m */; };
 		A748ECED191602C400CB91FF /* RULocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A748ECEC191602C400CB91FF /* RULocationManager.m */; };
 		A74CAEE81961E5D9008C5AF5 /* RUSportsPlayerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A74CAEE71961E5D9008C5AF5 /* RUSportsPlayerCell.m */; };
+		A75425E719C8B216003F0D58 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A786C71119C8AC8E00347BBD /* libxml2.dylib */; };
 		A754263419AFAB8F00D4E573 /* PreferencesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A754263319AFAB8F00D4E573 /* PreferencesDataSource.m */; };
 		A75B0AA719098DD900A57149 /* RUPredictionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B0AA619098DD900A57149 /* RUPredictionsViewController.m */; };
 		A75B1C8019B0EEDD00268214 /* TextViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */; };
@@ -110,6 +111,8 @@
 		A777C2B0190B35C400F978D7 /* RUPlacesDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A777C2AF190B35C400F978D7 /* RUPlacesDataLoadingManager.m */; };
 		A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A777C2B1190C243100F978D7 /* rockoff.gpx */; };
 		A777C2B4190C248500F978D7 /* barr.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A777C2B3190C248500F978D7 /* barr.gpx */; };
+		A786C6F919C750EA00347BBD /* ALTTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A786C6F819C750EA00347BBD /* ALTTableViewController.m */; };
+		A786C71019C8A75800347BBD /* SVG in Resources */ = {isa = PBXBuildFile; fileRef = A786C70F19C8A75800347BBD /* SVG */; };
 		A7907CCB19A2997300711DCB /* AlertDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7907CCA19A2997300711DCB /* AlertDataSource.m */; };
 		A7907CD119A2B83700711DCB /* UIFont+DynamicType.m in Sources */ = {isa = PBXBuildFile; fileRef = A7907CD019A2B83700711DCB /* UIFont+DynamicType.m */; };
 		A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C3E9194F651000D27B5F /* NSIndexPath+RowExtensions.m */; };
@@ -440,6 +443,14 @@
 		A777C2AF190B35C400F978D7 /* RUPlacesDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPlacesDataLoadingManager.m; sourceTree = "<group>"; };
 		A777C2B1190C243100F978D7 /* rockoff.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = rockoff.gpx; sourceTree = "<group>"; };
 		A777C2B3190C248500F978D7 /* barr.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = barr.gpx; sourceTree = "<group>"; };
+		A786C6F719C750EA00347BBD /* ALTTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTTableViewController.h; sourceTree = "<group>"; };
+		A786C6F819C750EA00347BBD /* ALTTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALTTableViewController.m; sourceTree = "<group>"; };
+		A786C6FA19C7519000347BBD /* ALTTableViewController_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTTableViewController_Private.h; sourceTree = "<group>"; };
+		A786C70E19C7B14F00347BBD /* FeedbackDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackDataSourceDelegate.h; sourceTree = "<group>"; };
+		A786C70F19C8A75800347BBD /* SVG */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SVG; sourceTree = "<group>"; };
+		A786C71119C8AC8E00347BBD /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		A786C71319C8AC9900347BBD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		A786C71519C8AC9F00347BBD /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		A7907CC919A2997300711DCB /* AlertDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertDataSource.h; sourceTree = "<group>"; };
 		A7907CCA19A2997300711DCB /* AlertDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertDataSource.m; sourceTree = "<group>"; };
 		A7907CCF19A2B83700711DCB /* UIFont+DynamicType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+DynamicType.h"; sourceTree = "<group>"; };
@@ -666,6 +677,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A75425E719C8B216003F0D58 /* libxml2.dylib in Frameworks */,
 				A7D73ADC1977275B006BC215 /* SystemConfiguration.framework in Frameworks */,
 				A7C92C9819462A0800609549 /* AddressBook.framework in Frameworks */,
 				A7C92C9919462A0800609549 /* AddressBookUI.framework in Frameworks */,
@@ -1112,6 +1124,9 @@
 		A7778D7119A4FD7F003BD8DE /* view controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A786C6F719C750EA00347BBD /* ALTTableViewController.h */,
+				A786C6F819C750EA00347BBD /* ALTTableViewController.m */,
+				A786C6FA19C7519000347BBD /* ALTTableViewController_Private.h */,
 				A7D73B231978880C006BC215 /* TableViewController.h */,
 				A7D73B241978880C006BC215 /* TableViewController.m */,
 				A79F3C0019B8C5FB001507EC /* TableViewController_Private.h */,
@@ -1193,6 +1208,7 @@
 				A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */,
 				A7D4B63719AB9D580087A8BC /* RUFeedbackDataSource.h */,
 				A7D4B63819AB9D580087A8BC /* RUFeedbackDataSource.m */,
+				A786C70E19C7B14F00347BBD /* FeedbackDataSourceDelegate.h */,
 			);
 			name = rufeedback;
 			sourceTree = "<group>";
@@ -1582,6 +1598,9 @@
 		C262EFAA188345D10035C8F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A786C71519C8AC9F00347BBD /* CoreImage.framework */,
+				A786C71319C8AC9900347BBD /* CoreText.framework */,
+				A786C71119C8AC8E00347BBD /* libxml2.dylib */,
 				A7D73ADB1977275B006BC215 /* SystemConfiguration.framework */,
 				A7C92C9619462A0800609549 /* AddressBook.framework */,
 				A7C92C9719462A0800609549 /* AddressBookUI.framework */,
@@ -1621,6 +1640,7 @@
 		C262EFB2188345D10035C8F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A786C70F19C8A75800347BBD /* SVG */,
 				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
 				A74669021986D8F000A5EBE0 /* RUAppDelegate.m */,
 				C262EFB3188345D10035C8F5 /* Rutgers-Info.plist */,
@@ -1731,6 +1751,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A704C7861922AF7F00ED9E36 /* Channels.json in Resources */,
+				A786C71019C8A75800347BBD /* SVG in Resources */,
 				A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
@@ -1888,6 +1909,7 @@
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
 				A72FFFB21937C55F00016C89 /* RUSOCDataLoadingManager.m in Sources */,
 				A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */,
+				A786C6F919C750EA00347BBD /* ALTTableViewController.m in Sources */,
 				A7EA4C58197D6C2900E972DD /* BasicDataSource.m in Sources */,
 				A731C393193FBDEC00E9E7E0 /* RUPredictionsHeaderRow.m in Sources */,
 				A7DD348F1981D3D90078023A /* PlacesDataSource.m in Sources */,
@@ -2108,6 +2130,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2125,6 +2151,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

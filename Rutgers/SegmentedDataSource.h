@@ -20,4 +20,5 @@
 
 /// Call this method to configure a segmented control with the titles of the data sources. This method also sets the target & action of the segmented control to switch the selected data source.
 - (void)configureSegmentedControl:(UISegmentedControl *)segmentedControl;
+
 @end

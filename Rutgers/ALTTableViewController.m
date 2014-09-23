@@ -1,48 +1,27 @@
 //
-//  TableViewController.m
+//  ALTTableViewController.m
 //  Rutgers
 //
-//  Created by Kyle Bailey on 7/1/14.
-//  Copyright (c) 2014 Kyle Bailey. All rights reserved.
+//  Created by Kyle Bailey on 9/15/14.
+//  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "TableViewController.h"
+#import "ALTTableViewController.h"
 #import "DataSource_Private.h"
 #import "RUNavigationController.h"
 #import "UITableView+Selection.h"
-#import "TableViewController_Private.h"
+#import "ALTTableViewController_Private.h"
 
-@interface TableViewController () <DataSourceDelegate>
+@interface ALTTableViewController () <DataSourceDelegate>
 @property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
-@property (nonatomic, readonly) UITableViewStyle style;
-
 @property (nonatomic) CGRect lastValidBounds;
 @end
 
-@implementation TableViewController
-
--(instancetype)initWithStyle:(UITableViewStyle)style{
-    self = [super init];
-    if (self) {
-        self.clearsSelectionOnViewWillAppear = YES;
-        _style = style;
-    }
-    return self;
-}
-
--(void)loadView{
-    [super loadView];
-    
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.style];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.delegate = self;
-    [self.view addSubview:self.tableView];
-    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-}
+@implementation ALTTableViewController
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -63,7 +42,7 @@
     if (self.clearsSelectionOnViewWillAppear) {
         [self.tableView clearSelectionAnimated:YES];
     }
-
+    
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
         [self.dataSource setNeedsLoadContent];
     }
@@ -163,15 +142,15 @@
 }
 
 -(void)enableSearch{
-     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-     [RUAppearance applyAppearanceToSearchBar:self.searchBar];
-     
-     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-     self.searchController.searchResultsDelegate = self;
-     self.searchController.delegate = self;
-     self.searchController.searchResultsTableView.estimatedRowHeight = 44.0;
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    [RUAppearance applyAppearanceToSearchBar:self.searchBar];
     
-     self.searchEnabled = YES;
+    self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    self.searchController.searchResultsDelegate = self;
+    self.searchController.delegate = self;
+    self.searchController.searchResultsTableView.estimatedRowHeight = 44.0;
+    
+    self.searchEnabled = YES;
 }
 
 -(void)setupTableView:(UITableView *)tableView withDataSource:(DataSource *)dataSource{
@@ -183,8 +162,8 @@
 -(UITableView *)searchTableView{
     return self.searchController.searchResultsTableView;
 }
- 
- #pragma mark - SearchDisplayController Delegate
+
+#pragma mark - SearchDisplayController Delegate
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
     [self.searchDataSource updateForQuery:searchString];
     return NO;

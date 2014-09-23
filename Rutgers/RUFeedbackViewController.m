@@ -10,10 +10,11 @@
 #import "RUFeedbackDataSource.h"
 #import "RUFeedbackDataSource.h"
 #import "AlertDataSource.h"
-#import "TableViewController_Private.h"
+#import "ALTTableViewController_Private.h"
+#import "FeedbackDataSourceDelegate.h"
 
-@interface RUFeedbackViewController ()
-
+@interface RUFeedbackViewController () <FeedbackDataSourceDelegate>
+@property (nonatomic) UIBarButtonItem *sendButton;
 @end
 
 @implementation RUFeedbackViewController
@@ -26,60 +27,16 @@
 {
     [super viewDidLoad];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-    self.tableView.bounces = NO;
     
-    self.dataSource = [[RUFeedbackDataSource alloc] init];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
+    RUFeedbackDataSource *feedback = [[RUFeedbackDataSource alloc] init];
+    feedback.feedbackDelegate = self;
+    self.dataSource = feedback;
+
+    self.sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
+    self.navigationItem.rightBarButtonItem = self.sendButton;
+    self.sendButton.enabled = NO;
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
--(void)keyboardDidShow:(NSNotification *)notification{
-    NSDictionary* info = [notification userInfo];
-    CGRect kbRect = [self.view convertRect:[[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue] fromView:nil];
-    
-#warning fix this
-    [self setBottomInsetHeight:CGRectGetHeight(kbRect)];
-    [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentSize.height, 1, 1) animated:YES];
-
-    /*
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your app might not need or want this behavior.
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, activeField.frame.origin) ) {
-        [self.scrollView scrollRectToVisible:activeField.frame animated:YES];
-    }*/
-}
-
--(void)keyboardWillHide:(NSNotification *)notification{
-    [self setBottomInsetHeight:0];
-}
-
--(void)setBottomInsetHeight:(CGFloat)height{
-    UIEdgeInsets contentInsets = self.tableView.contentInset;
-    contentInsets.bottom = height;
-    
-    self.tableView.contentInset = contentInsets;
-    
-    UIEdgeInsets scrollIndicatorInsets = self.tableView.contentInset;
-    scrollIndicatorInsets.bottom = height;
-    
-    self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
-}
-                                                  
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
@@ -96,11 +53,30 @@
 }
 
 -(BOOL)validateForm{
-    return NO;
+    return [(RUFeedbackDataSource *)self.dataSource validateForm];
+}
+
+-(void)updateInterface{
+    self.sendButton.enabled = [self validateForm];
 }
 
 -(void)send{
-    
+    [(RUFeedbackDataSource *)self.dataSource send];
+    self.sendButton.enabled = NO;
 }
 
+-(void)formDidChange{
+    self.sendButton.enabled = [self validateForm];
+}
+
+-(void)formSendFailed{
+    self.sendButton.enabled = YES;
+    [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"Your feedback has not been sent!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+}
+
+-(void)formSendSucceeded{
+    [self.view endEditing:YES];
+    [self.dataSource resetContent];
+    [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Your feedback has been sent to the abyss!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+}
 @end

@@ -64,9 +64,10 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 -(void)queueEventForError:(NSError *)error{
     NSMutableDictionary *event = [self baseEvent];
-    [event addEntriesFromDictionary:@{
-                                      @"type" : @"error"
 #warning add error string
+    [event addEntriesFromDictionary:@{
+                                      @"type" : @"error",
+                                      @"error" : error.localizedDescription
                                       }];
     [self queueAnalyticsEvent:event];
 }
@@ -82,7 +83,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
                                       }];
     [self queueAnalyticsEvent:event];
 }
-
+/*
 -(void)postAnalyticsForEvent:(NSDictionary *)event{
     NSMutableDictionary *baseEvent = [self baseEvent];
     [baseEvent addEntriesFromDictionary:@{
@@ -91,7 +92,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [baseEvent addEntriesFromDictionary:event];
     [self queueAnalyticsEvent:event];
 }
-
+*/
 -(NSMutableDictionary *)baseEvent{
     RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
     NSMutableDictionary *baseEvent = [@{

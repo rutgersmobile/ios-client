@@ -9,6 +9,5 @@
 #import "BasicDataSource.h"
 
 @interface TextViewDataSource : BasicDataSource
-@property (nonatomic) NSString *textViewPlaceholder;
 @property (nonatomic) NSString *textViewText;
 @end

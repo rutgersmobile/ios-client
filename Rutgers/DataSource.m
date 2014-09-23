@@ -26,6 +26,8 @@
 
 @property (nonatomic) NSMutableDictionary *sizingCells;
 @property (nonatomic) RowHeightCache *rowHeightCache;
+
+@property (nonatomic) BOOL lastPlaceholderState;
 @end
 
 @implementation DataSource
@@ -57,7 +59,6 @@
 }
 
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
-    //if (self.shouldDisplayPlaceholder) return 1;
     return 0;
 }
 
@@ -160,6 +161,14 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    /*static BOOL iOS8Tables = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        iOS8Tables = [tableView respondsToSelector:@selector(separatorStyle)];
+    });
+    
+    if (iOS8Tables) return UITableViewAutomaticDimension;*/
+    
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
    
@@ -452,8 +461,15 @@
             [placeholderView hidePlaceholderAnimated:YES];
     }
     
-    if (notify && (self.noContentTitle || self.noContentMessage || self.errorTitle || self.errorMessage))
-        [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfSections)]];
+    if (notify) [self notifyPlaceholderUpdate];
+}
+
+-(void)notifyPlaceholderUpdate{
+    BOOL state = self.lastPlaceholderState;
+    BOOL currentState = self.shouldDisplayPlaceholder;
+    self.lastPlaceholderState = currentState;
+
+    if (state != currentState) [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfSections)]];
 }
 
 #pragma mark - Data Source Delegate

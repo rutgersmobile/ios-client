@@ -7,6 +7,7 @@
 //
 
 #import "TextViewDataSource.h"
+#import "DataSource_Private.h"
 #import "ALTableViewTextViewCell.h"
 
 @interface TextViewDataSource () <UITextViewDelegate>
@@ -28,17 +29,20 @@
 
 -(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     ALTableViewTextViewCell *textViewCell = cell;
-    if (self.textViewText.length) {
-        textViewCell.textView.text = self.textViewText;
-    } else {
-        textViewCell.textView.text = self.textViewPlaceholder;
-        textViewCell.textView.selectedRange = NSMakeRange(0, self.textViewPlaceholder.length);
-    }
+    
+    textViewCell.textView.text = self.textViewText;
+    
     textViewCell.textView.delegate = self;
 }
 
 -(void)textViewDidChange:(UITextView *)textView{
     self.textViewText = textView.text;
+}
+
+-(void)resetContent{
+    [super resetContent];
+    self.textViewText = nil;
+    [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
 }
 
 @end

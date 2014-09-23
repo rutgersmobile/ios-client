@@ -14,12 +14,14 @@
 @interface AlertDataSource () <UIActionSheetDelegate>
 @property (nonatomic) NSArray *data;
 @property (nonatomic) UIActionSheet *actionSheet;
+@property (nonatomic) NSString *initialText;
 @end
 
 @implementation AlertDataSource
 -(instancetype)initWithInitialText:(NSString *)initialText alertButtonTitles:(NSArray *)alertButtonTitles{
     self = [super initWithItems:@[initialText]];
     if (self) {
+        self.initialText = initialText;
         self.actionSheet = [self makeActionSheetWithAlertButtonTitles:alertButtonTitles];
         self.showsDisclosureIndicator = YES;
         self.updatesInitialText = YES;
@@ -54,7 +56,7 @@
     if (self.alertAction) self.alertAction(buttonTitle,buttonIndex);
     
     if (self.updatesInitialText){
-        self.items = @[buttonTitle];
+        self.text = buttonTitle;
         [self invalidateCachedHeightsForSection:0];
     }
     
@@ -74,8 +76,17 @@
     return NSStringFromClass([ALTableViewTextCell class]);
 }
 
--(NSInteger)numberOfItemsInSection:(NSInteger)section{
-    return 1;
+-(void)setText:(NSString *)text{
+    self.items = @[text];
+}
+
+-(NSString *)text{
+    return [self.items firstObject];
+}
+
+-(void)resetContent{
+    [super resetContent];
+    self.items = @[self.initialText];
 }
 
 @end

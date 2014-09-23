@@ -61,7 +61,9 @@
     
     OSAtomicIncrement64(cachedHeight ? &hits : &misses);
     
-    NSLog(@"Hits: %lld, Misses: %lld, Rate: %f",hits,misses,((CGFloat)hits/(hits+misses))*100.0);
+    if (((hits + misses) % 100) == 0) {
+        NSLog(@"Hits: %lld, Misses: %lld, Rate: %f",hits,misses,((CGFloat)hits/(hits+misses))*100.0);
+    }
     
     return cachedHeight;
 }

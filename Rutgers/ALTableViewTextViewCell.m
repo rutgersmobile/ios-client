@@ -21,8 +21,7 @@
 
 -(void)initializeConstraints{
     [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets-5, kLabelVerticalInsets, kLabelHorizontalInsets-5)];
-    [self.textView autoSetDimension:ALDimensionHeight toSize:150];
+    [self.textView autoSetDimension:ALDimensionHeight toSize:150 relation:NSLayoutRelationGreaterThanOrEqual];
 }
-
 
 @end

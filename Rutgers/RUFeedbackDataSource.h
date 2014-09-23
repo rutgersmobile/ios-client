@@ -7,7 +7,10 @@
 //
 
 #import "ComposedDataSource.h"
+#import "FeedbackDataSourceDelegate.h"
 
 @interface RUFeedbackDataSource : ComposedDataSource
-
+@property (weak) id<FeedbackDataSourceDelegate> feedbackDelegate;
+-(BOOL)validateForm;
+-(void)send;
 @end

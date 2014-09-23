@@ -37,7 +37,7 @@
     if (self) {
         
         AFJSONResponseSerializer *jsonSerializer = [AFJSONResponseSerializer serializer];
-        jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",nil];
+        jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",@"text/html",nil];
         jsonSerializer.removesKeysWithNullValues = YES;
     
         AFHTTPResponseSerializer *xmlSerializer = [AFXMLResponseSerializer serializer];

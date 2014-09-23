@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-
 #import "RUMenuViewController.h"
 #import "MenuDataSource.h"
 #import <SWRevealViewController.h>
@@ -20,8 +19,9 @@
 @end
 
 @implementation RUMenuViewController
--(instancetype)initWithStyle:(UITableViewStyle)style{
-    self = [super initWithStyle:style];
+- (instancetype)init
+{
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.title = @"Menu";
     }

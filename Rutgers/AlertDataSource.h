@@ -12,6 +12,7 @@
 @interface AlertDataSource : StringDataSource
 -(instancetype)initWithInitialText:(NSString *)initialText alertButtonTitles:(NSArray *)alertButtonTitles;
 @property (nonatomic) NSString *alertTitle;
+@property (nonatomic) NSString *text;
 @property (nonatomic) BOOL updatesInitialText;
 -(void)showAlert;
 @property (nonatomic, copy) void(^alertAction)(NSString *buttonTitle, NSInteger buttonIndex);

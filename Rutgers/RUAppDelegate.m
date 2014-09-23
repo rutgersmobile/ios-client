@@ -11,7 +11,6 @@
 #import "XMLDictionary.h"
 #import "RURootController.h"
 
-
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property RURootController *rootController;
 @property (nonatomic) UIImageView *windowBackground;

@@ -14,12 +14,9 @@
 -(id)init{
     self = [super init];
     if (self) {
+        [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:@[@{@"title" : @"Options", @"view" : @"options"}]]];
         [self addDataSource:[[NativeChannelsDataSource alloc] init]];
         [self addDataSource:[[WebLinksDataSource alloc] init]];
-        
-        MenuBasicDataSource *optionsDataSource = [[MenuBasicDataSource alloc] init];
-        optionsDataSource.items = @[@{@"title" : @"Options", @"view" : @"options"}];
-        [self addDataSource:optionsDataSource];
     }
     return self;
 }
@@ -27,4 +24,5 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     return YES;
 }
+
 @end

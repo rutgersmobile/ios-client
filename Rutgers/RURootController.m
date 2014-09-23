@@ -34,7 +34,7 @@
 }
 #pragma initialization
 -(UIViewController *)makeRootViewController{
-    RUMenuViewController *menu = [[RUMenuViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    RUMenuViewController *menu = [[RUMenuViewController alloc] init];
     menu.delegate = self;
     UIViewController *defaultScreen = [self makeDefaultScreen];
     /*

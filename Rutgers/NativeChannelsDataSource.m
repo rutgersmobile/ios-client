@@ -13,7 +13,6 @@
 {
     self = [super init];
     if (self) {
-        self.title = @"Channels";
         self.items = [RUChannelManager sharedInstance].nativeChannels;
     }
     return self;

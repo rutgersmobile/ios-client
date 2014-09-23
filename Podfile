@@ -1,17 +1,17 @@
 platform :ios, '7.0'
 
-pod 'AFNetworking'
-pod 'XMLDictionary'
+pod 'AFNetworking', "~> 2.0"
+pod 'XMLDictionary', "~> 1.0"
 
-pod 'MWFeedParser/NSString+HTML'
+pod 'MWFeedParser/NSString+HTML', "~> 1.0"
 
-pod 'TOWebViewController'
+pod 'TOWebViewController', "~> 2.0"
 
-pod 'SWRevealViewController'
+pod 'SWRevealViewController', "~> 2.0"
 
-pod 'PureLayout'
+pod 'PureLayout', "~> 1.0"
 
-pod 'HexColors'
+pod 'HexColors', "~> 2.0"
 
-pod 'MSWeakTimer'
+pod 'MSWeakTimer', "~> 1.0"
 
