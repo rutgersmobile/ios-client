@@ -31,6 +31,10 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUNetworkManager sessionManager] GET:self.url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
                 [loading updateWithContent:^(typeof(self) me) {

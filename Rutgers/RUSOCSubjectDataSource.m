@@ -26,9 +26,19 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode withSuccess:^(NSArray *courses) {
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = courses;
-            }];
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            if (courses.count) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = courses;
+                }];
+            } else {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = courses;
+                }];
+            }
         } failure:^{
             [loading doneWithError:nil];
         }];

@@ -29,9 +29,19 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUPlacesDataLoadingManager sharedInstance] getRecentPlacesWithCompletion:^(NSArray *recentPlaces) {
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = recentPlaces;
-            }];
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            if (recentPlaces.count) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = recentPlaces;
+                }];
+            } else {
+                [loading updateWithNoContent:^(typeof(self) me) {
+                    me.items = recentPlaces;
+                }];
+            }
         }];
     }];
 }

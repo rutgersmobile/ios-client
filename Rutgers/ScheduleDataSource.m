@@ -22,6 +22,10 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [RUSportsData getScheduleForSportID:self.sportID withSuccess:^(NSArray *response) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             [loading updateWithContent:^(typeof(self) me) {
                 
             }];

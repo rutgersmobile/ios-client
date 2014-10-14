@@ -31,12 +31,19 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUBusDataLoadingManager sharedInstance] getPredictionsForItem:self.item withSuccess:^(NSArray *response) {
-            [loading updateWithContent:^(typeof(self) me) {
-                [me parseResponse:response];
-            }];
-        } failure:^{
-            [loading doneWithError:nil];
+        [[RUBusDataLoadingManager sharedInstance] getPredictionsForItem:self.item completion:^(NSArray *predictions, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me parseResponse:predictions];
+                }];
+            } else {
+                [loading doneWithError:nil];
+
+            }
         }];
     }];
 }

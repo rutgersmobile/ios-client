@@ -35,15 +35,31 @@
 -(void)loadContent{
     if (![self.channel channelURL]) return;
     [self loadContentWithBlock:^(AAPLLoading *loading) {
+    
         [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    me.items = responseObject[@"children"];
-                }];
+                NSArray *items = responseObject[@"children"];
+                if (items.count) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        me.items = items;
+                    }];
+                } else {
+                    [loading updateWithNoContent:^(typeof(self) me) {
+                        me.items = items;
+                    }];
+                }
             } else {
                 [loading doneWithError:nil];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             [loading doneWithError:error];
         }];
         

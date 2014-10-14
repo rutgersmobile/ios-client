@@ -32,15 +32,23 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUPlacesDataLoadingManager sharedInstance] placesNearLocation:[RULocationManager sharedLocationManager].location completion:^(NSArray *nearbyPlaces) {
-            if (nearbyPlaces.count) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    me.items = nearbyPlaces;
-                }];
+        [[RUPlacesDataLoadingManager sharedInstance] placesNearLocation:[RULocationManager sharedLocationManager].location completion:^(NSArray *nearbyPlaces, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            if (!error) {
+                if (nearbyPlaces.count) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        me.items = nearbyPlaces;
+                    }];
+                } else {
+                    [loading updateWithNoContent:^(typeof(self) me) {
+                        me.items = nearbyPlaces;
+                    }];
+                }
             } else {
-                [loading updateWithNoContent:^(typeof(self) me) {
-                    me.items = nearbyPlaces;
-                }];
+                [loading doneWithError:error];
             }
         }];
     }];

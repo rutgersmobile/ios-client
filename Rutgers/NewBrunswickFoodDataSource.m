@@ -22,12 +22,24 @@
 }
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [RUFoodData getFoodWithSuccess:^(NSArray *response) {
-            [loading updateWithContent:^(typeof(self) me) {
-                [me parseResponse:response];
-            }];
-        } failure:^{
-            [loading doneWithError:nil];
+        [RUFoodData getFoodWithCompletion:^(NSArray *diningHalls, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            if (!error) {
+                if (diningHalls.count) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        [me parseResponse:diningHalls];
+                    }];
+                } else {
+                    [loading updateWithNoContent:^(typeof(self) me) {
+                        self.items = nil;
+                    }];
+                }
+            } else {
+                [loading doneWithError:error];
+            }
         }];
     }];
 }

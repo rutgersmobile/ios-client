@@ -26,10 +26,20 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUBusDataLoadingManager sharedInstance] fetchAllRoutesForAgency:self.agency completion:^(NSArray *routes, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             if (!error) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    self.items = routes;
-                }];
+                if (routes.count) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        me.items = routes;
+                    }];
+                } else {
+                    [loading updateWithNoContent:^(typeof(self) me) {
+                        me.items = routes;
+                    }];
+                }
             } else {
                 [loading doneWithError:error];
             }

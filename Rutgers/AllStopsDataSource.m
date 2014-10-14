@@ -26,10 +26,20 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUBusDataLoadingManager sharedInstance] fetchAllStopsForAgency:self.agency completion:^(NSArray *stops, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             if (!error) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    self.items = stops;
-                }];
+                if (stops.count) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        me.items = stops;
+                    }];
+                } else {
+                    [loading updateWithNoContent:^(typeof(self) me) {
+                        me.items = stops;
+                    }];
+                }
             } else {
                 [loading doneWithError:error];
             }
