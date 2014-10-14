@@ -46,7 +46,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 
--(void)queueEventForNewInstall{
+-(void)queueEventForFirstLaunch{
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary:@{
                                       @"type" : @"fresh_launch"
@@ -54,7 +54,11 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
--(void)queueEventForApplicationStart{
+-(void)queueEventForApplicationLaunch{
+    if (self.firstLaunch) {
+        [self queueEventForFirstLaunch];
+        self.firstLaunch = NO;
+    }
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary:@{
                                       @"type" : @"launch"
@@ -64,7 +68,6 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 -(void)queueEventForError:(NSError *)error{
     NSMutableDictionary *event = [self baseEvent];
-#warning add error string
     [event addEntriesFromDictionary:@{
                                       @"type" : @"error",
                                       @"error" : error.localizedDescription
@@ -83,16 +86,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
                                       }];
     [self queueAnalyticsEvent:event];
 }
-/*
--(void)postAnalyticsForEvent:(NSDictionary *)event{
-    NSMutableDictionary *baseEvent = [self baseEvent];
-    [baseEvent addEntriesFromDictionary:@{
-                                      @"type" : @"event"
-                                      }];
-    [baseEvent addEntriesFromDictionary:event];
-    [self queueAnalyticsEvent:event];
-}
-*/
+
 -(NSMutableDictionary *)baseEvent{
     RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
     NSMutableDictionary *baseEvent = [@{

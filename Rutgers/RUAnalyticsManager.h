@@ -10,7 +10,7 @@
 
 @interface RUAnalyticsManager : NSObject
 +(instancetype)sharedManager;
--(void)queueEventForApplicationStart;
+-(void)queueEventForApplicationLaunch;
 -(void)queueEventForError:(NSError *)error;
 -(void)queueEventForChannelOpen:(NSDictionary *)channel;
 -(void)flushQueue;
