@@ -17,4 +17,6 @@
 -(NSString *)channelHandle;
 
 -(NSString *)channelURL;
+
+-(NSString *)channelView;
 @end

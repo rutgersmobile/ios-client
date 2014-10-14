@@ -38,4 +38,8 @@
 -(NSString *)channelURL{
     return self[@"url"];
 }
+
+-(NSString *)channelView{
+    return self[@"view"];
+}
 @end
