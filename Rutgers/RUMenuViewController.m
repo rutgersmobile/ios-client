@@ -31,6 +31,7 @@
 -(void)loadView{
     [super loadView];
     
+    /*
     CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarHeight];
 
     UIView *paddingView = [UIView newAutoLayoutView];
@@ -42,11 +43,12 @@
     [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
     
     self.tableView.contentInset = UIEdgeInsetsMake(statusBarHeight, 0, 0, 0);
+    */
+    [self setContentInsets];
     
     [self.tableView autoRemoveConstraintsAffectingView];
     [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
     [self.tableView autoSetDimension:ALDimensionWidth toSize:self.revealViewController.rearViewRevealWidth];
-
 }
 
 -(void)viewDidLoad{
@@ -60,6 +62,26 @@
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 32+kLabelHorizontalInsets*2, 0, 0);
     
+    self.currentChannel = [RUChannelManager sharedInstance].lastChannel;
+    NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:self.currentChannel] lastObject];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+    
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    [self setContentInsets];
+}
+
+-(void)setContentInsets{
+    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarHeight];
+    UIEdgeInsets insets = UIEdgeInsetsMake(statusBarHeight, 0, 0, 0);
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
+    
+    CGPoint offset = self.tableView.contentOffset;
+    if (offset.y == 0) offset.y = -insets.top;
+    self.tableView.contentOffset = offset;
 }
 
 -(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
@@ -95,4 +117,5 @@
         [self.delegate menu:self didSelectChannel:channel];
     }
 }
+
 @end
