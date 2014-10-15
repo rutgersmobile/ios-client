@@ -72,7 +72,7 @@
 -(void)applyStyleForHighlightedState:(BOOL)state{
     self.channelImage.tintColor = state ? [UIColor whiteColor] : [UIColor iconDeselectedColor];
     self.channelTitleLabel.textColor = state ? [UIColor whiteColor] : [UIColor menuDeselectedColor];
-    self.backgroundColor = state ? [[UIColor blackColor] colorWithAlphaComponent:0.13] : nil;
+    self.backgroundColor = state ? [[UIColor blackColor] colorWithAlphaComponent:0.25] : nil;
 }
 
 
