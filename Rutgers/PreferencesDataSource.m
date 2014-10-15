@@ -30,7 +30,7 @@
         NSString *userRolesPlaceholderText = userInfoManager.userRole[@"title"];
         if (!userRolesPlaceholderText) userRolesPlaceholderText = @"Please indicate your role at the university";
         AlertDataSource *userRoles = [[AlertDataSource alloc] initWithInitialText:userRolesPlaceholderText alertButtonTitles:[userInfoManager.userRoles valueForKey:@"title"]];
-        userRoles.title = @"Roles";
+        userRoles.title = @"Role";
         userRoles.alertTitle = @"Please indicate your role at the university";
         userRoles.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
             userInfoManager.userRole = userInfoManager.userRoles[buttonIndex];
