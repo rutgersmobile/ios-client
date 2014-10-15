@@ -132,7 +132,7 @@
     if (segmentedControl.numberOfSegments >= 3) minimumWidth += iPad() ? 40 : 30;
     
     CGRect viewBounds = self.view.bounds;
-    CGFloat maximumWidth = MIN(CGRectGetHeight(viewBounds), CGRectGetWidth(viewBounds))-12;
+    CGFloat maximumWidth = MIN(CGRectGetHeight(viewBounds), CGRectGetWidth(viewBounds))-16;
     
     [segmentedControl sizeToFit];
     CGRect controlBounds = segmentedControl.bounds;
@@ -141,12 +141,7 @@
         controlBounds.size.width = minimumWidth;
     } else if (controlBounds.size.width > maximumWidth) {
         segmentedControl.apportionsSegmentWidthsByContent = YES;
-        [segmentedControl sizeToFit];
-        controlBounds = segmentedControl.bounds;
-        
-        if (controlBounds.size.width > maximumWidth){
-            controlBounds.size.width = maximumWidth;
-        }
+        controlBounds.size.width = maximumWidth;
     }
     
     if (!CGRectEqualToRect(controlBounds, segmentedControl.bounds)) {

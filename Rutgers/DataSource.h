@@ -61,7 +61,6 @@
 
 /// Register reusable views needed by this data source
 - (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;
-
 - (void)registerReusableViewsWithTableView:(UITableView *)tableView NS_REQUIRES_SUPER;
 
 #pragma mark - Content loading

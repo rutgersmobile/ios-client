@@ -296,6 +296,7 @@
         }];
     
     [self notifyContentLoadedWithError:error];
+    [self updatePlaceholderNotifyVisibility:YES];
 }
 
 /// Called just before a datasource begins loading its content.

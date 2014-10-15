@@ -18,7 +18,6 @@
 
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
-@property (nonatomic, strong) AAPLPlaceholderCell *placeholderView;
 
 @property (nonatomic, copy) dispatch_block_t pendingUpdateBlock;
 @property (nonatomic) BOOL loadingComplete;
@@ -26,8 +25,6 @@
 
 @property (nonatomic) NSMutableDictionary *sizingCells;
 @property (nonatomic) RowHeightCache *rowHeightCache;
-
-@property (nonatomic) BOOL lastPlaceholderState;
 @end
 
 @implementation DataSource
@@ -76,7 +73,7 @@
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    [tableView registerClass:[AAPLPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+    //[tableView registerClass:[AAPLPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
 }
 
 #pragma mark - Cached Heights
@@ -127,29 +124,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ALTableViewAbstractCell *cell;
     
-    
-    //if (self.shouldDisplayPlaceholder) {
-    //    cell = [self dequeuePlaceholderViewForTableView:tableView atIndexPath:indexPath];
-    //} else {
-        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-        [cell updateFonts];
-        [self configureCell:cell forRowAtIndexPath:indexPath];
-    //}
+    cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+    [cell updateFonts];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
     
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
     return cell;
 }
-
-- (AAPLPlaceholderCell *)dequeuePlaceholderViewForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
-{
-    if (!_placeholderView)
-        _placeholderView = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
-    [self updatePlaceholder:_placeholderView notifyVisibility:NO];
-    return _placeholderView;
-}
-
 
 -(id)tableView:(UITableView *)tableView sizingCellWithIdentifier:(NSString *)identifier{
     id cell = self.sizingCells[identifier];
@@ -161,27 +144,15 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    /*static BOOL iOS8Tables = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        iOS8Tables = [tableView respondsToSelector:@selector(separatorStyle)];
-    });
-    
-    if (iOS8Tables) return UITableViewAutomaticDimension;*/
-    
+
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
    
     ALTableViewAbstractCell *cell;
-    
-    //if (self.shouldDisplayPlaceholder) {
-    //    cell = [self dequeuePlaceholderViewForTableView:tableView atIndexPath:indexPath];
-    //    [self updatePlaceholder:((AAPLPlaceholderCell *)cell) notifyVisibility:NO];
-    //} else {
-        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-        [cell updateFonts];
-        [self configureCell:cell forRowAtIndexPath:indexPath];
-    //}
+
+    cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+    [cell updateFonts];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
     
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
@@ -324,7 +295,7 @@
 {
     [self beginLoading];
     
-    __weak typeof(&*self) weakself = self;
+    __weak typeof(self) weakself = self;
     
     AAPLLoading *loading = [AAPLLoading loadingWithCompletionHandler:^(NSString *newState, NSError *error, AAPLLoadingUpdateBlock update){
         if (!newState)
@@ -379,22 +350,22 @@
 
 - (void)didEnterLoadingState
 {
-    [self updatePlaceholder:self.placeholderView notifyVisibility:YES];
+    [self updatePlaceholderNotifyVisibility:YES];
 }
 
 - (void)didEnterLoadedState
 {
-    [self updatePlaceholder:self.placeholderView notifyVisibility:YES];
+    [self updatePlaceholderNotifyVisibility:YES];
 }
 
 - (void)didEnterNoContentState
 {
-    [self updatePlaceholder:self.placeholderView notifyVisibility:YES];
+    [self updatePlaceholderNotifyVisibility:YES];
 }
 
 - (void)didEnterErrorState
 {
-    [self updatePlaceholder:self.placeholderView notifyVisibility:YES];
+    [self updatePlaceholderNotifyVisibility:YES];
 }
 
 #pragma mark - Placeholder
@@ -426,8 +397,6 @@
     if (![loadingState isEqualToString:AAPLLoadStateLoadingContent] && ![loadingState isEqualToString:AAPLLoadStateNoContent])
         return NO;
     
-    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) return YES;
-    
     // Can't display the placeholder if both the title and message are missing
     if (!self.noContentMessage && !self.noContentTitle)
         return NO;
@@ -435,41 +404,56 @@
     return YES;
 }
 
-- (void)updatePlaceholder:(AAPLPlaceholderCell *)placeholderView notifyVisibility:(BOOL)notify
+- (void)notifyActivityIndicatorShown:(BOOL)show{
+    ASSERT_MAIN_THREAD;
+    
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:didShowActivityIndicator:)]) {
+        [delegate dataSource:self didShowActivityIndicator:show];
+    }
+}
+
+- (void)notifyShowPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated{
+    ASSERT_MAIN_THREAD;
+    
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:showPlaceholderWithTitle:message:image:animated:)]) {
+        [delegate dataSource:self showPlaceholderWithTitle:title message:message image:image animated:animated];
+    }
+}
+
+- (void)notifyHidePlaceholderAnimated:(BOOL)animated{
+    ASSERT_MAIN_THREAD;
+    
+    id<DataSourceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(dataSource:hidePlaceholderAnimated:)]) {
+        [delegate dataSource:self hidePlaceholderAnimated:animated];
+    }
+}
+
+- (void)updatePlaceholderNotifyVisibility:(BOOL)notify
 {
     NSString *message;
     NSString *title;
     
-    if (placeholderView) {
-        NSString *loadingState = self.loadingState;
-        if ([loadingState isEqualToString:AAPLLoadStateLoadingContent])
-            [placeholderView showActivityIndicator:YES];
-        else
-            [placeholderView showActivityIndicator:NO];
-        
-        if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
-            title = self.noContentTitle;
-            message = self.noContentMessage;
-            [placeholderView showPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
-        }
-        else if ([loadingState isEqualToString:AAPLLoadStateError]) {
-            title = self.errorTitle;
-            message = self.errorMessage;
-            [placeholderView showPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
-        }
-        else
-            [placeholderView hidePlaceholderAnimated:YES];
-    }
+    NSString *loadingState = self.loadingState;
+    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent])
+        [self notifyActivityIndicatorShown:YES];
+    else
+        [self notifyActivityIndicatorShown:NO];
     
-    if (notify) [self notifyPlaceholderUpdate];
-}
-
--(void)notifyPlaceholderUpdate{
-    BOOL state = self.lastPlaceholderState;
-    BOOL currentState = self.shouldDisplayPlaceholder;
-    self.lastPlaceholderState = currentState;
-
-    if (state != currentState) [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfSections)]];
+    if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
+        title = self.noContentTitle;
+        message = self.noContentMessage;
+        [self notifyShowPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
+    }
+    else if ([loadingState isEqualToString:AAPLLoadStateError]) {
+        title = self.errorTitle;
+        message = self.errorMessage;
+        [self notifyShowPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
+    }
+    else
+        [self notifyHidePlaceholderAnimated:YES];
 }
 
 #pragma mark - Data Source Delegate

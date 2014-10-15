@@ -243,10 +243,6 @@
     [super resetContent];
 }
 
--(NSString *)loadingState{
-    return _selectedDataSource.loadingState;
-}
-
 
 #pragma mark - Placeholders
 
@@ -272,9 +268,9 @@
     return YES;
 }
 
-- (void)updatePlaceholder:(AAPLPlaceholderCell *)placeholderView notifyVisibility:(BOOL)notify
+- (void)updatePlaceholderNotifyVisibility:(BOOL)notify
 {
-    [_selectedDataSource updatePlaceholder:placeholderView notifyVisibility:notify];
+    [_selectedDataSource updatePlaceholderNotifyVisibility:notify];
 }
 
 - (NSString *)noContentMessage
@@ -369,9 +365,11 @@
         [self notifyWillLoadContent];
     }
 }
+
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
     if (self.selectedDataSource == dataSource) {
         [self notifyContentLoadedWithError:error];
+        [self updatePlaceholderNotifyVisibility:YES];
     }
 }
 @end

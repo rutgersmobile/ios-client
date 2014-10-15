@@ -32,11 +32,15 @@ typedef enum {
 
 - (void)dataSourceWillLoadContent:(DataSource *)dataSource;
 - (void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error;
+
+- (void)dataSource:(DataSource *)dataSource didShowActivityIndicator:(BOOL)show;
+- (void)dataSource:(DataSource *)dataSource showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated;
+- (void)dataSource:(DataSource *)dataSource hidePlaceholderAnimated:(BOOL)animated;
+
 @end
 
 @interface DataSource ()
-
-- (void)updatePlaceholder:(AAPLPlaceholderCell *)placeholderView notifyVisibility:(BOOL)notify;
+- (void)updatePlaceholderNotifyVisibility:(BOOL)notify;
 
 - (void)stateWillChange;
 - (void)stateDidChange;
@@ -81,6 +85,10 @@ typedef enum {
 
 - (void)notifyWillLoadContent;
 - (void)notifyContentLoadedWithError:(NSError *)error;
+
+- (void)notifyActivityIndicatorShown:(BOOL)show;
+- (void)notifyShowPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated;
+- (void)notifyHidePlaceholderAnimated:(BOOL)animated;
 
 @end
 
