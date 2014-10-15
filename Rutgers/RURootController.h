@@ -17,5 +17,6 @@
 
 @interface RURootController : NSObject
 -(void)openDrawer;
+-(void)openDrawerIfNeeded;
 -(UIViewController *)makeRootViewController;
 @end

@@ -36,52 +36,43 @@
 -(UIViewController *)makeRootViewController{
     RUMenuViewController *menu = [[RUMenuViewController alloc] init];
     menu.delegate = self;
-    UIViewController *defaultScreen = [self makeDefaultScreen];
     /*
-    if (iPad()) {
-       
-        self.splitViewController = [[UISplitViewController alloc] init];
-        self.splitViewController.viewControllers = @[menu,defaultScreen];
-        self.splitViewController.delegate = self;
-        self.splitViewController.view.backgroundColor = [UIColor clearColor];
-        
-        return self.splitViewController;
-    } else {*/
-        self.containerController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:nil];
-        self.containerController.delegate = self;
-        
-        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+     if (iPad()) {
+     
+     self.splitViewController = [[UISplitViewController alloc] init];
+     self.splitViewController.viewControllers = @[menu,defaultScreen];
+     self.splitViewController.delegate = self;
+     self.splitViewController.view.backgroundColor = [UIColor clearColor];
+     
+     return self.splitViewController;
+     } else {*/
     
-        self.containerController.rearViewRevealWidth = iPad() ? 260 * IPAD_SCALE : 260;
-        self.containerController.rearViewRevealOverdraw = 0;
-        self.containerController.rearViewRevealDisplacement = 50;
-        self.containerController.bounceBackOnOverdraw = NO;
-        self.containerController.clipsViewsToBounds = YES;
+    self.containerController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:nil];
+    self.containerController.delegate = self;
     
-        self.containerController.view.backgroundColor = [UIColor clearColor];
-        self.containerController.frontViewShadowOpacity = 0;
-        
-        self.containerController.replaceViewAnimationDuration = 0.4;
-        self.containerController.toggleAnimationDuration = 0.4;
-        
-        [self.containerController panGestureRecognizer];
-        [self.containerController tapGestureRecognizer];
+    self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
     
-        self.centerViewController = defaultScreen;
+    self.containerController.rearViewRevealWidth = iPad() ? 260 * IPAD_SCALE : 260;
+    self.containerController.rearViewRevealOverdraw = 0;
+    self.containerController.rearViewRevealDisplacement = 50;
+    self.containerController.bounceBackOnOverdraw = NO;
+    self.containerController.clipsViewsToBounds = YES;
     
-        return self.containerController;
-   // }
-}
-
--(UIViewController *)makeDefaultScreen{
-    UIViewController * splashViewController = [[UIViewController alloc] init];
-    splashViewController.view.backgroundColor = [UIColor whiteColor];
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DefaultImage"]];
-    imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [splashViewController.view addSubview:imageView];
-    [imageView autoCenterInSuperview];
+    self.containerController.view.backgroundColor = [UIColor clearColor];
+    self.containerController.frontViewShadowOpacity = 0;
     
-    return splashViewController;
+    self.containerController.replaceViewAnimationDuration = 0.4;
+    self.containerController.toggleAnimationDuration = 0.4;
+    
+    [self.containerController panGestureRecognizer];
+    [self.containerController tapGestureRecognizer];
+    
+    NSDictionary *lastChannel = [RUChannelManager sharedInstance].lastChannel;
+    if (!lastChannel) lastChannel = @{@"view" : @"splash"};
+    
+    [self setCenterChannel:lastChannel];
+    
+    return self.containerController;
 }
 
 -(UIViewController *)centerViewController{
@@ -106,6 +97,7 @@
     if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
 
+/*
 - (void)removeButtonFromCenterViewController{
     UIViewController *viewController = [self centerViewController];
     if ([viewController isKindOfClass:[UINavigationController class]]) {
@@ -115,7 +107,7 @@
 
     UINavigationItem *navigationItem = viewController.navigationItem;
     if ([navigationItem.leftBarButtonItem isEqual:self.menuBarButtonItem]) navigationItem.leftBarButtonItem = nil;
-}
+}*/
 
 #pragma channel selection
 -(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
@@ -123,14 +115,22 @@
 }
 
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
-    UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
-    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
-    
-    [RUAppearance applyAppearanceToNavigationController:navController];
-    
-    self.centerViewController = navController;
-    
+    [self setCenterChannel:channel];
+    [RUChannelManager sharedInstance].lastChannel = channel;
     [self closeDrawer];
+}
+
+-(void)setCenterChannel:(NSDictionary *)channel{
+    UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+    
+    if (![[channel channelView] isEqualToString:@"splash"]) {
+        UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
+        
+        [RUAppearance applyAppearanceToNavigationController:navController];
+        vc = navController;
+    }
+
+    self.centerViewController = vc;
 }
 
 -(void)toggleLeftPanel:(id)sender{
@@ -141,6 +141,11 @@
     [self.containerController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
 
+-(void)openDrawerIfNeeded{
+    if (![RUChannelManager sharedInstance].lastChannel) {
+        [self openDrawer];
+    }
+}
 -(void)openDrawer{
     [self.containerController setFrontViewPosition:FrontViewPositionRight animated:YES];
 }
