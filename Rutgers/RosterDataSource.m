@@ -31,10 +31,18 @@
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [RUSportsData getRosterForSportID:self.sportID withSuccess:^(NSArray *response) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             [loading updateWithContent:^(typeof(self) me) {
                 self.items = response;
             }];
         } failure:^{
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
             [loading doneWithError:nil];
         }];
     }];
