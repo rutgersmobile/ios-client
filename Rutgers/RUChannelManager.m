@@ -88,7 +88,8 @@
                                        @"www" : @"RUWebViewController",
                                        @"text" : @"RUTextViewController",
                                        @"feedback" : @"RUFeedbackViewController",
-                                       @"options" : @"RUOptionsViewController"
+                                       @"options" : @"RUOptionsViewController",
+                                       @"splash" : @"RUSplashViewController"
                                        };
     });
     return NSClassFromString(viewTagsToClassNameMapping[viewTag]);
@@ -101,17 +102,19 @@
     
     Class class = [self classForViewTag:view];
     
-    if (class && [class respondsToSelector:@selector(channelWithConfiguration:)]) {
-        UIViewController * vc = [class channelWithConfiguration:channel];
+    if (class) {
+        UIViewController * vc;
+        if ([class respondsToSelector:@selector(channelWithConfiguration:)]) {
+            vc = [class channelWithConfiguration:channel];
+        } else {
+            NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
+            vc = [class new];
+        }
         NSString *title = [channel channelTitle];
         vc.title = title;
         return vc;
     } else {
-        if (class) {
-            NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
-        } else {
-            NSLog(@"No way to handle view type %@, \n%@",view,channel);
-        }
+        NSLog(@"No way to handle view type %@, \n%@",view,channel);
     }
     return nil;
 }
@@ -128,4 +131,13 @@
     return [self.nativeChannels arrayByAddingObjectsFromArray:self.webChannels];
 }
 
+static NSString *const kChannelManagerLastChannelKey = @"kChannelManagerLastChannelKey";
+
+-(NSDictionary *)lastChannel{
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kChannelManagerLastChannelKey];
+}
+
+-(void)setLastChannel:(NSDictionary *)lastChannel{
+    [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:kChannelManagerLastChannelKey];
+}
 @end
