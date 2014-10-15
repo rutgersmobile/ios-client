@@ -31,9 +31,9 @@
     [self initializeCache];
     [self initializeDrawer];
     
-    [[RUAnalyticsManager sharedManager] queueEventForApplicationStart];
+    [[RUAnalyticsManager sharedManager] queueEventForApplicationLaunch];
     [[RUUserInfoManager sharedInstance] getUserInfoIfNeededWithCompletion:^{
-        [self.rootController openDrawer];
+        [self.rootController openDrawerIfNeeded];
     }];
     
     return YES;
@@ -64,13 +64,16 @@
 
     [self.window makeKeyAndVisible];
     [self.window addSubview:self.windowBackground];
+    [self.windowBackground autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     [self.window sendSubviewToBack:self.windowBackground];
 }
 
 - (UIImageView *)windowBackground
 {
     if (!_windowBackground) {
+        
         _windowBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
+        _windowBackground.contentMode = UIViewContentModeScaleToFill;
     }
     return _windowBackground;
 }
