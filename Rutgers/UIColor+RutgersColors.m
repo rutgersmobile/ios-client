@@ -50,7 +50,7 @@
     CGFloat hue, sat, bright, alpha;
     [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
     
-    CGFloat hueFactor = 0.3;
+    CGFloat hueFactor = 0.32;
     CGFloat satFactor = 1.0;
     
     hue = (hue + (1.0 - hue)*hueFactor);
