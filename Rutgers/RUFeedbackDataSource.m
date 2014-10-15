@@ -86,6 +86,8 @@
 -(void)resetContent{
     [super resetContent];
     self.channelSelectorStateEnabled = NO;
+    self.subjectDataSource = nil;
+    self.channelSelected = NO;
 }
 
 -(void)dealloc{
