@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface RUFoodData : NSObject
-+(void)getFoodWithSuccess:(void (^)(NSArray *response))successBlock failure:(void (^)(void))failureBlock;
++(void)getFoodWithCompletion:(void (^)(NSArray *diningHalls, NSError *error))block;
 @end

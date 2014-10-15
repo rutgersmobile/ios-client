@@ -13,18 +13,17 @@
 @end
 
 @implementation RUFoodData
-
-+(void)getFoodWithSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
++(void)getFoodWithCompletion:(void (^)(NSArray *, NSError *))block{
     NSString *url = @"https://rumobile.rutgers.edu/1/rutgers-dining.txt";
-   // NSString *url = @"http://vps.rsopher.com/nutrition.json";
+    // NSString *url = @"http://vps.rsopher.com/nutrition.json";
     [[RUNetworkManager sessionManager] GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            successBlock(responseObject);
+            block(responseObject,nil);
         } else {
-            failureBlock();
+            block(nil,nil);
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        failureBlock();
+        block(nil,error);
     }];
 }
 
