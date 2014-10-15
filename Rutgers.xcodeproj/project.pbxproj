@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
+		04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3519D32EB800A20D1E /* Splash Screen.xib */; };
+		04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3719D32FC000A20D1E /* rutgerscopyright@2x.png */; };
+		04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3819D32FC000A20D1E /* rutgerslogo@2x.png */; };
+		04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AEDE3C19D349D900A20D1E /* RUSplashViewController.m */; };
 		6862BA48665649378AC0462B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
 		A704909E194781F5003B99DC /* TileCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A704909D194781F5003B99DC /* TileCollectionViewController.m */; };
 		A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */; };
@@ -243,6 +247,11 @@
 /* Begin PBXFileReference section */
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
 		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
+		04AEDE3519D32EB800A20D1E /* Splash Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Splash Screen.xib"; sourceTree = "<group>"; };
+		04AEDE3719D32FC000A20D1E /* rutgerscopyright@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rutgerscopyright@2x.png"; sourceTree = "<group>"; };
+		04AEDE3819D32FC000A20D1E /* rutgerslogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rutgerslogo@2x.png"; sourceTree = "<group>"; };
+		04AEDE3B19D349D900A20D1E /* RUSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSplashViewController.h; sourceTree = "<group>"; };
+		04AEDE3C19D349D900A20D1E /* RUSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSplashViewController.m; sourceTree = "<group>"; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DB61C3F48194968B9D64C1C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		A704909C194781F5003B99DC /* TileCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileCollectionViewController.h; sourceTree = "<group>"; };
@@ -916,10 +925,14 @@
 		A73F6580193E549F00E26449 /* menu */ = {
 			isa = PBXGroup;
 			children = (
+				04AEDE3719D32FC000A20D1E /* rutgerscopyright@2x.png */,
+				04AEDE3819D32FC000A20D1E /* rutgerslogo@2x.png */,
 				A75E7EB319A3C42A00782AE5 /* Data source */,
 				A73F6581193E54A700E26449 /* view */,
 				C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */,
 				C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */,
+				04AEDE3B19D349D900A20D1E /* RUSplashViewController.h */,
+				04AEDE3C19D349D900A20D1E /* RUSplashViewController.m */,
 			);
 			name = menu;
 			sourceTree = "<group>";
@@ -1514,6 +1527,7 @@
 				A73F6580193E549F00E26449 /* menu */,
 				A7E8E13A192547190089F166 /* RURootController.h */,
 				A7E8E13B192547190089F166 /* RURootController.m */,
+				04AEDE3519D32EB800A20D1E /* Splash Screen.xib */,
 			);
 			name = "initial view";
 			sourceTree = "<group>";
@@ -1756,8 +1770,11 @@
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
+				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				A7D73B0C1978636E006BC215 /* BusStoryboard.storyboard in Resources */,
+				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
+				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
 			);
@@ -1907,6 +1924,7 @@
 				A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */,
 				A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */,
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
+				04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */,
 				A72FFFB21937C55F00016C89 /* RUSOCDataLoadingManager.m in Sources */,
 				A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */,
 				A786C6F919C750EA00347BBD /* ALTTableViewController.m in Sources */,
@@ -2124,7 +2142,6 @@
 			baseConfigurationReference = 6DB61C3F48194968B9D64C1C /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2145,7 +2162,6 @@
 			baseConfigurationReference = 6DB61C3F48194968B9D64C1C /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
