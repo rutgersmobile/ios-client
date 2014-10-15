@@ -80,21 +80,22 @@ NSString * const newarkAgency = @"rutgers-newark";
 
 
 #pragma mark - predictions api
--(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock{
-    if (!([item isKindOfClass:[RUBusRoute class]] || [item isKindOfClass:[RUMultiStop class]])) return;
-    
+-(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *, NSError *))handler{
+    if (!([item isKindOfClass:[RUBusRoute class]] || [item isKindOfClass:[RUMultiStop class]])) {
+        handler(nil,nil);
+        return;
+    }
     [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
-            successBlock(predictions);
+            handler(predictions,nil);
         } else {
-            failureBlock();
+            handler(nil,nil);
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        failureBlock();
+        handler(nil,error);
     }];
-    
 }
 
 -(NSString *)urlStringForItem:(id)item{

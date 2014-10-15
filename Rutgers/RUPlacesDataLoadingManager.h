@@ -20,7 +20,7 @@ extern NSString *PlacesDataDidUpdateRecentPlacesKey;
 -(void)userWillViewPlace:(RUPlace *)place;
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock;
 
--(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces))completionBlock;
+-(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces, NSError *error))completionBlock;
 
 +(RUPlacesDataLoadingManager *)sharedInstance;
 @end

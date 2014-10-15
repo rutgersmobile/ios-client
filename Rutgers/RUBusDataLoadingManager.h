@@ -27,5 +27,5 @@ extern NSString * const newarkAgency;
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler;
 
--(void)getPredictionsForItem:(id)item withSuccess:(void (^)(NSArray *))successBlock failure:(void (^)(void))failureBlock;
+-(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *predictions, NSError *error))handler;
 @end

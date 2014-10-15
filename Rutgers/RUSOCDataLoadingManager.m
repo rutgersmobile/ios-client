@@ -195,7 +195,6 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 -(NSDictionary *)semester{
     NSDictionary *semester = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataSemesterKey];
     if ([self.semesters containsObject:semester]) return semester;
-    
     return self.semesters[self.defaultSemesterIndex];
 }
 -(void)setSemester:(NSDictionary *)semester{

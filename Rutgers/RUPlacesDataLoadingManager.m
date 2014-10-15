@@ -96,9 +96,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     NSMutableArray *recentPlaces = [[userDefaults arrayForKey:PlacesRecentPlacesKey] mutableCopy];
     
     NSString *ID = place.uniqueID;
-    if ([recentPlaces containsObject:ID]){
-        [recentPlaces removeObject:ID];
-    }
+    if ([recentPlaces containsObject:ID]) [recentPlaces removeObject:ID];
     [recentPlaces insertObject:ID atIndex:0];
 
     [userDefaults setObject:[recentPlaces limitedToCount:20] forKey:PlacesRecentPlacesKey];
@@ -111,12 +109,11 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 }
 
 #pragma mark - nearby api
--(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces))completionBlock{
+-(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces, NSError *error))completionBlock{
     if (!location) {
-        completionBlock(@[]);
+        completionBlock(@[],nil);
         return;
     }
-    
     dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSArray *nearbyPlaces = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
             if (!place.location) return NO;
@@ -132,9 +129,9 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
             else if (distanceOne > distanceTwo) return NSOrderedDescending;
             return NSOrderedSame;
         }];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock([nearbyPlaces copy]);
-
+            completionBlock([nearbyPlaces copy],nil);
         });
     });
 }
