@@ -119,8 +119,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 /**
  *  Presents the user interface to allow the user to enter their campus or affiliation
  *
- *  @param cancellable Is the user allowed to cancel without entering their information
- *  @param completion A block to be executed when
+ *  @param completion A block to be executed upon completion
  */
 -(void)getUserInformationCompletion:(dispatch_block_t)completion{
     NSAssert(!self.completion, @"Starting an information request while another is already in progress");
