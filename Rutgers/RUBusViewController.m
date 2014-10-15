@@ -40,8 +40,8 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
     [(RUBusDataSource*)self.dataSource stopUpdates];
+    [super viewWillDisappear:animated];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
