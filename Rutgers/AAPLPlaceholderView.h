@@ -23,9 +23,8 @@
 /// Initialize a placeholder view. A message is required in order to display a button.
 - (instancetype)initWithFrame:(CGRect)frame title:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction;
 
-
 @end
-
+/*
 /// A placeholder view for use in the collection view. This placeholder includes the loading indicator.
 @interface AAPLCollectionPlaceholderView : UICollectionReusableView
 
@@ -39,3 +38,4 @@
 - (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated;
 - (void)hidePlaceholderAnimated:(BOOL)animated;
 @end
+*/

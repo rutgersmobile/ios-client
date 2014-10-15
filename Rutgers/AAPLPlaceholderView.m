@@ -292,7 +292,7 @@
 
 @end
 
-
+/*
 @interface AAPLCollectionPlaceholderView ()
 
 @end
@@ -303,94 +303,11 @@
 
 
 @interface AAPLPlaceholderCell ()
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
-@property (nonatomic, strong) AAPLPlaceholderView *placeholderView;
+
 @end
 
 @implementation AAPLPlaceholderCell
 
-- (void)showActivityIndicator:(BOOL)show
-{
-    if (!_activityIndicatorView) {
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-        _activityIndicatorView.color = [UIColor lightGrayColor];
-        
-        [self addSubview:_activityIndicatorView];
-        NSMutableArray *constraints = [NSMutableArray array];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-        [self addConstraints:constraints];
-    }
-    
-    _activityIndicatorView.hidden = !show;
-    
-    if (show)
-        [_activityIndicatorView startAnimating];
-    else
-        [_activityIndicatorView stopAnimating];
-}
-
-- (void)hidePlaceholderAnimated:(BOOL)animated
-{
-    AAPLPlaceholderView *placeholderView = _placeholderView;
-    
-    if (!placeholderView)
-        return;
-    
-    if (animated) {
-        
-        [UIView animateWithDuration:0.25 animations:^{
-            placeholderView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [placeholderView removeFromSuperview];
-            // If it's still the current placeholder, get rid of it
-            if (placeholderView == _placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            [placeholderView removeFromSuperview];
-            if (_placeholderView == placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
-}
-
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated
-{
-    AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
-    
-    if (oldPlaceHolder && [oldPlaceHolder.title isEqualToString:title] && [oldPlaceHolder.message isEqualToString:message])
-        return;
-    
-    [self showActivityIndicator:NO];
-    
-    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:CGRectZero title:title message:message image:image buttonTitle:nil buttonAction:nil];
-    _placeholderView.alpha = 0.0;
-    _placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_placeholderView];
-    
-    [_placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self sendSubviewToBack:_placeholderView];
-    
-    if (animated) {
-        [UIView animateWithDuration:0.25 animations:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
-}
 
 -(void)initializeSubviews{
     [self.contentView autoSetDimension:ALDimensionHeight toSize:100];
@@ -399,4 +316,4 @@
 -(void)initializeConstraints{
     [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets)];
 }
-@end
+@end*/
