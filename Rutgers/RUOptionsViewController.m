@@ -15,7 +15,6 @@
 
 @interface RUOptionsViewController ()
 @property NSDictionary *channel;
-
 @end
 
 @implementation RUOptionsViewController
