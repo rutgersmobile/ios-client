@@ -16,11 +16,7 @@
 @implementation BasicDataSource
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        self.items = @[];
-        
-    }
+    self = [self initWithItems:@[]];
     return self;
 }
 
@@ -28,6 +24,8 @@
     self = [super init];
     if (self) {
         self.items = items;
+        self.noContentMessage = @"Sorry.";
+        self.noContentTitle = @"No content.";
     }
     return self;
 }
