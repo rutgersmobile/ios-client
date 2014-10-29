@@ -46,7 +46,7 @@
     return self.actionSheet.title;
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (buttonIndex == actionSheet.cancelButtonIndex || buttonIndex == actionSheet.destructiveButtonIndex || buttonIndex < 0){
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
         return;
@@ -57,14 +57,13 @@
     
     if (self.updatesInitialText){
         self.text = buttonTitle;
-        [self invalidateCachedHeightsForSection:0];
     }
     
     [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
 }
 
--(void)showAlert{
-    [self.actionSheet showInView:[UIApplication sharedApplication].keyWindow];
+-(void)showAlertInView:(UIView *)view{
+    [self.actionSheet showInView:view];
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{

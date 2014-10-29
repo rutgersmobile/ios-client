@@ -14,6 +14,6 @@
 @property (nonatomic) NSString *alertTitle;
 @property (nonatomic) NSString *text;
 @property (nonatomic) BOOL updatesInitialText;
--(void)showAlert;
+-(void)showAlertInView:(UIView *)view;
 @property (nonatomic, copy) void(^alertAction)(NSString *buttonTitle, NSInteger buttonIndex);
 @end
