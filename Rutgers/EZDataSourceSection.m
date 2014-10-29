@@ -18,7 +18,7 @@
 #pragma mark - Initialization
 
 -(instancetype)initWithSectionTitle:(NSString *)sectionTitle{
-    self = [self init];
+    self = [self initWithItems:@[]];
     if (self) {
         self.title = sectionTitle;
     }
@@ -34,7 +34,7 @@
 }
 
 -(instancetype)initWithItems:(NSArray *)rows{
-    self = [self init];
+    self = [super initWithItems:rows];
     if (self) {
         [self addItems:rows];
     }
