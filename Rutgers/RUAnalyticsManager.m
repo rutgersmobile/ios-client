@@ -76,9 +76,10 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(void)queueEventForChannelOpen:(NSDictionary *)channel{
-    NSMutableDictionary *event = [self baseEvent];
     NSString *channelHandle = [channel channelHandle];
     if (!channelHandle) return;
+    
+    NSMutableDictionary *event = [self baseEvent];
     
     [event addEntriesFromDictionary:@{
                                       @"type" : @"channel",
