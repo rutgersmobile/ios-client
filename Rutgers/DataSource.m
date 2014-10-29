@@ -433,14 +433,21 @@
 
 - (void)updatePlaceholderNotifyVisibility:(BOOL)notify
 {
+    
     NSString *message;
     NSString *title;
     
     NSString *loadingState = self.loadingState;
-    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent])
+    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
         [self notifyActivityIndicatorShown:YES];
-    else
+        return;
+    } else {
         [self notifyActivityIndicatorShown:NO];
+    }
+    
+    if (!(self.noContentTitle || self.noContentMessage || self.errorTitle || self.errorMessage)) {
+        return;
+    }
     
     if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
         title = self.noContentTitle;
