@@ -82,31 +82,31 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     }];
 }
 
--(BOOL)isOnline{
+-(BOOL)isOnlineCampus{
     return [self.campus[@"tag"] isEqualToString:@"ONLINE"];
 }
 
 -(NSString *)subjectsURL{
-    return [baseString stringByAppendingString:([self isOnline] ? @"onlineSubjects.json" : @"subjects.json")];
+    return [baseString stringByAppendingString:([self isOnlineCampus] ? @"onlineSubjects.json" : @"subjects.json")];
 }
 
 -(NSString *)coursesURL{
-    return [baseString stringByAppendingString:([self isOnline] ? @"onlineCourses.json" : @"courses.json")];
+    return [baseString stringByAppendingString:([self isOnlineCampus] ? @"onlineCourses.json" : @"courses.json")];
 }
 
 -(NSString *)courseURL{
-    return [baseString stringByAppendingString:([self isOnline] ? @"onlineCourse.json" : @"course.json")];
+    return [baseString stringByAppendingString:([self isOnlineCampus] ? @"onlineCourse.json" : @"course.json")];
 }
 
 -(NSDictionary *)parametersWithOtherParameters:(NSDictionary *)parameters{
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     
     NSString *semesterTag = self.semester[@"tag"];
-    if ([self isOnline]) {
+    if ([self isOnlineCampus]) {
         [mutableParameters addEntriesFromDictionary:@{@"term" : [semesterTag substringToIndex:1],
                                                       @"year" : [semesterTag substringFromIndex:1],
                                                       @"level" : self.level[@"tag"]
-                                                      }];
+                                                    }];
     } else {
         [mutableParameters addEntriesFromDictionary:@{
                                                       @"semester" : semesterTag,
