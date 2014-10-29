@@ -12,6 +12,5 @@
 -(instancetype)initWithItems:(NSArray *)items;
 @property (nonatomic) NSArray *items;
 @property NSUInteger itemLimit;
-
 -(NSInteger)numberOfItems;
 @end

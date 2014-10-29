@@ -26,6 +26,8 @@
         self.items = items;
         self.noContentMessage = @"Sorry.";
         self.noContentTitle = @"No content.";
+        self.errorTitle = @"Error";
+        self.errorMessage = @"Theres an error";
     }
     return self;
 }
@@ -121,13 +123,10 @@
         [toMovedIndexPaths addObject:[NSIndexPath indexPathForItem:[newItemSet indexOfObject:movedItem] inSection:0]];
     }
     
-    [self updateLoadingStateFromItems];
-
     [self notifyBatchUpdate:^{
+        _items = [items copy];
         
         [self invalidateCachedHeightsForSection:0];
-        
-        _items = [items copy];
         
         if ([deletedIndexPaths count])
             [self notifyItemsRemovedAtIndexPaths:deletedIndexPaths];
@@ -141,8 +140,9 @@
             NSIndexPath *toIndexPath = toMovedIndexPaths[i];
             [self notifyItemMovedFromIndexPath:fromIndexPath toIndexPath:toIndexPath];
         }
-        
+        [self updateLoadingStateFromItems];
     }];
+
 }
 
 - (void)updateLoadingStateFromItems
