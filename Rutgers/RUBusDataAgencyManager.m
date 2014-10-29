@@ -155,7 +155,7 @@
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self getAgencyConfig];
             dispatch_group_leave(self.agencyGroup);
         });
@@ -175,7 +175,7 @@
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self getActiveStopsAndRoutes];
             dispatch_group_leave(self.activeGroup);
         });
