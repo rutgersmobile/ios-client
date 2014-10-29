@@ -126,7 +126,7 @@
     }
     
     [selectedDataSource updatePlaceholderNotifyVisibility:YES];
-}   
+}
 
 #pragma mark Segmented Control action method
 
