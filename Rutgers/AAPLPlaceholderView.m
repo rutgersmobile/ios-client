@@ -43,7 +43,7 @@
     _title = [title copy];
     _message = [message copy];
     _image = image;
-
+    self.backgroundColor = [[UIColor groupTableViewBackgroundColor] colorWithAlphaComponent:0.8];
     if (buttonTitle && buttonAction) {
         NSAssert(message != nil, @"a message must be provided when using a button");
         _buttonTitle = [buttonTitle copy];
