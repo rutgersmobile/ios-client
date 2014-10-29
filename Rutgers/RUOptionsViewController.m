@@ -37,7 +37,7 @@
     } else if (indexPath.section == 1) {
         [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
     } else if (indexPath.section == 2) {
-        [((AlertDataSource *)[((ComposedDataSource *)self.dataSource) dataSourceAtIndex:indexPath.section]) showAlert];
+        [((AlertDataSource *)[((ComposedDataSource *)self.dataSource) dataSourceAtIndex:indexPath.section]) showAlertInView:tableView];
     }
 }
 

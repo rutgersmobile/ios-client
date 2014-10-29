@@ -43,7 +43,7 @@
 
     if ([dataSource isKindOfClass:[AlertDataSource class]]) {
         AlertDataSource *alertDataSource = (AlertDataSource *)dataSource;
-        [alertDataSource showAlert];
+        [alertDataSource showAlertInView:tableView];
     }
 }
 

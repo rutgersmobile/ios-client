@@ -67,7 +67,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     ComposedDataSource *dataSouce = (ComposedDataSource *)self.dataSource;
     AlertDataSource *alertDataSource = (AlertDataSource *)[dataSouce dataSourceAtIndex:indexPath.section];
-    [alertDataSource showAlert];
+    [alertDataSource showAlertInView:tableView];
 }
 
 -(void)notifyOptionsDidChange{
