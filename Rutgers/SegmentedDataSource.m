@@ -91,41 +91,42 @@
         
         if (completion)
             completion();
-        return;
+    } else {
+        DataSource *oldDataSource = self.selectedDataSource;
+        NSInteger numberOfOldSections = oldDataSource.numberOfSections;
+        NSInteger numberOfNewSections = selectedDataSource.numberOfSections;
+        
+        NSInteger oldIndex = [_dataSources indexOfObjectIdenticalTo:oldDataSource];
+        NSInteger newIndex = [_dataSources indexOfObjectIdenticalTo:selectedDataSource];
+        
+        DataSourceOperationDirection removalDirection = (oldIndex < newIndex) ? DataSourceOperationDirectionLeft : DataSourceOperationDirectionRight;
+        DataSourceOperationDirection insertionDirection = (oldIndex < newIndex) ? DataSourceOperationDirectionRight : DataSourceOperationDirectionLeft;
+        
+        NSIndexSet *removedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfOldSections)];;
+        NSIndexSet *insertedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfNewSections)];
+        
+        [self notifyBatchUpdate:^{
+            [self willChangeValueForKey:@"selectedDataSource"];
+            [self willChangeValueForKey:@"selectedDataSourceIndex"];
+            
+            _selectedDataSource = selectedDataSource;
+            
+            if (removedSet)
+                [self notifySectionsRemoved:removedSet direction:removalDirection];
+            if (insertedSet)
+                [self notifySectionsInserted:insertedSet direction:insertionDirection];
+            
+            [self didChangeValueForKey:@"selectedDataSource"];
+            [self didChangeValueForKey:@"selectedDataSourceIndex"];
+            
+            if ([selectedDataSource.loadingState isEqualToString:AAPLLoadStateInitial])
+                [selectedDataSource setNeedsLoadContent];
+            
+        } complete:completion];
     }
     
-    DataSource *oldDataSource = self.selectedDataSource;
-    NSInteger numberOfOldSections = oldDataSource.numberOfSections;
-    NSInteger numberOfNewSections = selectedDataSource.numberOfSections;
-    
-    NSInteger oldIndex = [_dataSources indexOfObjectIdenticalTo:oldDataSource];
-    NSInteger newIndex = [_dataSources indexOfObjectIdenticalTo:selectedDataSource];
-    
-    DataSourceOperationDirection removalDirection = (oldIndex < newIndex) ? DataSourceOperationDirectionLeft : DataSourceOperationDirectionRight;
-    DataSourceOperationDirection insertionDirection = (oldIndex < newIndex) ? DataSourceOperationDirectionRight : DataSourceOperationDirectionLeft;
-    
-    NSIndexSet *removedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfOldSections)];;
-    NSIndexSet *insertedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfNewSections)];
-    
-    [self notifyBatchUpdate:^{
-        [self willChangeValueForKey:@"selectedDataSource"];
-        [self willChangeValueForKey:@"selectedDataSourceIndex"];
-        
-        _selectedDataSource = selectedDataSource;
-
-        if (removedSet)
-            [self notifySectionsRemoved:removedSet direction:removalDirection];
-        if (insertedSet)
-            [self notifySectionsInserted:insertedSet direction:insertionDirection];
-        
-        [self didChangeValueForKey:@"selectedDataSource"];
-        [self didChangeValueForKey:@"selectedDataSourceIndex"];
-        
-        if ([selectedDataSource.loadingState isEqualToString:AAPLLoadStateInitial])
-            [selectedDataSource setNeedsLoadContent];
-        
-    } complete:completion];
-}
+    [selectedDataSource updatePlaceholderNotifyVisibility:YES];
+}   
 
 #pragma mark Segmented Control action method
 
@@ -369,7 +370,25 @@
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
     if (self.selectedDataSource == dataSource) {
         [self notifyContentLoadedWithError:error];
-        [self updatePlaceholderNotifyVisibility:YES];
     }
 }
+
+- (void)dataSource:(DataSource *)dataSource didShowActivityIndicator:(BOOL)show{
+    if (self.selectedDataSource == dataSource) {
+        [self notifyActivityIndicatorShown:show];
+    }
+}
+
+- (void)dataSource:(DataSource *)dataSource showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated{
+    if (self.selectedDataSource == dataSource) {
+        [self notifyShowPlaceholderWithTitle:title message:message image:image animated:animated];
+    }
+}
+
+- (void)dataSource:(DataSource *)dataSource hidePlaceholderAnimated:(BOOL)animated{
+    if (self.selectedDataSource == dataSource) {
+        [self notifyHidePlaceholderAnimated:YES];
+    }
+}
+
 @end
