@@ -50,9 +50,10 @@
     self.containerController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:nil];
     self.containerController.delegate = self;
     
-    self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+    self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+  //  self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
     
-    self.containerController.rearViewRevealWidth = iPad() ? 260 * IPAD_SCALE : 260;
+    self.containerController.rearViewRevealWidth = round(iPad() ? 260 * IPAD_SCALE : 260);
     self.containerController.rearViewRevealOverdraw = 0;
     self.containerController.rearViewRevealDisplacement = 50;
     self.containerController.bounceBackOnOverdraw = NO;
