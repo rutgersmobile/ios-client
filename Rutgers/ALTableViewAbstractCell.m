@@ -21,7 +21,10 @@
        // self.opaque = YES;
        // self.contentView.opaque = YES;
         [self initializeSubviews];
-        [self initializeConstraints];
+        
+        [UIView autoSetPriority:999 forConstraints:^{
+            [self initializeConstraints];
+        }];
         [self updateFonts];
     }
     return self;
