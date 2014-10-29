@@ -52,6 +52,7 @@
 -(void)setInterfaceEnabled:(BOOL)enabled {
     self.optionsButton.enabled = enabled;
     self.searchBar.userInteractionEnabled = enabled;
+    
     if (enabled) {
         [UIView animateWithDuration:0.15 animations:^{
             self.searchBar.alpha = 1.0;

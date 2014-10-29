@@ -51,9 +51,7 @@
 }
 
 -(void)restoreSelectionState{
-    
     NSString *selectedTitle = [[NSUserDefaults standardUserDefaults] stringForKey:[self segmentRestorationKey]];
-    
     UISegmentedControl *segmentedControl = self.segmentedControl;
     
     for (NSInteger index = 0; index < self.segmentedControl.numberOfSegments; index++) {
