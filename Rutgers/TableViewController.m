@@ -400,7 +400,7 @@
     [self.view addSubview:_placeholderView];
     
     [_placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self.view sendSubviewToBack:_placeholderView];
+    [self.view bringSubviewToFront:_placeholderView];
     
     if (animated) {
         [UIView animateWithDuration:0.25 animations:^{
