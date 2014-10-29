@@ -43,8 +43,7 @@
 -(void)resetApp{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     
-    [[NSUserDefaults standardUserDefaults]
-     removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [[RUUserInfoManager sharedInstance] getUserInfoIfNeededWithCompletion:nil];
