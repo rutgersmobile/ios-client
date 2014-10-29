@@ -9,6 +9,7 @@
 
 @interface RUChannelManager ()
 @property (readonly) NSSet *nativeChannelHandles;
+@property dispatch_group_t webLinksGroup;
 @property NSArray *webChannels;
 @end
 
@@ -21,6 +22,15 @@
         manager = [[RUChannelManager alloc] init];
     });
     return manager;
+}
+
+-(instancetype)init{
+    self = [super init];
+    if (self) {
+        self.webLinksGroup = dispatch_group_create();
+        [self getWebChannels];
+    }
+    return self;
 }
 
 @synthesize nativeChannels = _nativeChannels;
@@ -43,14 +53,23 @@
 }
 
 -(void)webLinksWithCompletion:(void (^)(NSArray *))completion{
+    if (!self.webChannels) [self getWebChannels];
+    dispatch_group_notify(self.webLinksGroup, dispatch_get_main_queue(), ^{
+        completion(self.webChannels);
+    });
+}
+
+-(void)getWebChannels{
+    dispatch_group_enter(self.webLinksGroup);
     [[RUNetworkManager sessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.webChannels = [self filterWebChannels:responseObject];
-            completion(self.webChannels);
         }
+        dispatch_group_leave(self.webLinksGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self webLinksWithCompletion:completion];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (!self.webChannels) [self getWebChannels];
+            dispatch_group_leave(self.webLinksGroup);
         });
     }];
 }
