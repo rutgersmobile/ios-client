@@ -19,7 +19,7 @@
 @property (nonatomic) UIView *containerView;
 @end
 
-#define IMAGE_SIZE (60*(iPad() ? IPAD_SCALE : 1.0))
+#define IMAGE_SIZE round(60.0*(iPad() ? IPAD_SCALE : 1.0))
 
 @implementation RUReaderTableViewCell
 
@@ -71,7 +71,6 @@
     
     [self.timeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-    //[self.timeLabel autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
     [self.timeLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0 relation:NSLayoutRelationGreaterThanOrEqual];
     
@@ -84,6 +83,7 @@
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    
 }
 
 -(void)updateConstraints{
