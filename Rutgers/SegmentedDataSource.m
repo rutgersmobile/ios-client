@@ -238,62 +238,6 @@
 {
     return NO;
 }
-    /*
-    if ([super shouldDisplayPlaceholder])
-        return YES;
-    
-    NSString *loadingState = _selectedDataSource.loadingState;
-    
-    // If we're in the error state & have an error message or title
-    if ([loadingState isEqualToString:AAPLLoadStateError] && (_selectedDataSource.errorMessage || _selectedDataSource.errorTitle))
-        return YES;
-    
-    // Only display a placeholder when we're loading or have no content
-    if (![loadingState isEqualToString:AAPLLoadStateLoadingContent] && ![loadingState isEqualToString:AAPLLoadStateNoContent])
-        return NO;
-    
-    // Can't display the placeholder if both the title and message is missing
-    if (!_selectedDataSource.noContentMessage && !_selectedDataSource.noContentTitle)
-        return NO;
-    
-    return YES;
-}
-
-- (void)updatePlaceholderNotifyVisibility:(BOOL)notify
-{
-    [_selectedDataSource updatePlaceholderNotifyVisibility:notify];
-}
-
-- (NSString *)noContentMessage
-{
-    return _selectedDataSource.noContentMessage;
-}
-
-- (NSString *)noContentTitle
-{
-    return _selectedDataSource.noContentTitle;
-}
-
-- (UIImage *)noContentImage
-{
-    return _selectedDataSource.noContentImage;
-}
-
-- (NSString *)errorTitle
-{
-    return _selectedDataSource.errorTitle;
-}
-
-- (NSString *)errorMessage
-{
-    return _selectedDataSource.errorMessage;
-}
-
-- (UIImage *)errorImage
-{
-    return _selectedDataSource.errorImage;
-}*/
-
 
 #pragma mark - Data Source Delegate
 

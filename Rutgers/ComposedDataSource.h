@@ -9,6 +9,8 @@
 #import "DataSource.h"
 
 @interface ComposedDataSource : DataSource
+@property (nonatomic) BOOL singleLoadingIndicator;
+
 -(DataSource *)dataSourceAtIndex:(NSInteger)index;
 -(void)addDataSource:(DataSource *)dataSource;
 -(void)insertDataSource:(DataSource *)dataSource atIndex:(NSInteger)index;

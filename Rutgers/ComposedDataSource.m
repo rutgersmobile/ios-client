@@ -132,6 +132,7 @@
 
 #pragma mark - Table View Data Source
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.singleLoadingIndicator && self.showingPlaceholder) return [super tableView:tableView cellForRowAtIndexPath:indexPath];
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
@@ -139,14 +140,17 @@
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (self.singleLoadingIndicator && self.showingPlaceholder) return nil;
     return [self dataSourceForGlobalSection:section].title;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    if (self.singleLoadingIndicator && self.showingPlaceholder) return nil;
     return [self dataSourceForGlobalSection:section].footer;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.singleLoadingIndicator && self.showingPlaceholder) return [super tableView:tableView heightForRowAtIndexPath:indexPath];;
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
@@ -154,6 +158,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.singleLoadingIndicator && self.showingPlaceholder) return [super tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
@@ -162,6 +167,7 @@
 
 #pragma mark - Collection View Data Source
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.singleLoadingIndicator && self.showingPlaceholder) return [super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];

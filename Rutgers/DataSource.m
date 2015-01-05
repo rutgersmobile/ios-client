@@ -15,6 +15,7 @@
 #import "TileCollectionViewCell.h"
 #import "RowHeightCache.h"
 #import "AAPLPlaceholderView.h"
+#import "NSIndexPath+RowExtensions.h"
 
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
@@ -103,12 +104,10 @@
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if (self.showingPlaceholder) return nil;
     return (section == 0) ? self.title : nil;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-    if (self.showingPlaceholder) return nil;
     return (section == 0) ? self.footer : nil;
 }
 
@@ -131,32 +130,20 @@
 - (id)placeholderCellForTableView:(UITableView *)tableView{
     AAPLPlaceholderCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
     
-    NSString *message;
-    NSString *title;
-    
     NSString *loadingState = self.loadingState;
     if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
+        [cell hidePlaceholderAnimated:NO];
         [cell showActivityIndicator:YES];
         return cell;
     } else {
         [cell showActivityIndicator:NO];
     }
     
-    if (!(self.noContentTitle || self.noContentMessage || self.errorTitle || self.errorMessage)) {
-        return cell;
-    }
-    
     if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
-        title = self.noContentTitle;
-        message = self.noContentMessage;
-        [cell showPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
-    }
-    else if ([loadingState isEqualToString:AAPLLoadStateError]) {
-        title = self.errorTitle;
-        message = self.errorMessage;
-        [cell showPlaceholderWithTitle:title message:message image:self.errorImage animated:YES];
-    }
-    else
+        [cell showPlaceholderWithTitle:self.noContentTitle message:self.noContentMessage image:self.noContentImage animated:YES];
+    } else if ([loadingState isEqualToString:AAPLLoadStateError]) {
+        [cell showPlaceholderWithTitle:self.errorTitle message:self.errorMessage image:self.errorImage animated:YES];
+    } else
         [cell hidePlaceholderAnimated:YES];
     
     return cell;
@@ -189,7 +176,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.showingPlaceholder) return 200;
+    if (self.showingPlaceholder) return PLACEHOLDER_HEIGHT;
     
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
@@ -461,11 +448,23 @@
     
     [self notifyBatchUpdate:^{
         NSInteger oldNumberOfSections = self.numberOfSections;
-        _showingPlaceholder = showingPlaceholder;
-        NSInteger newNumberOfSections = self.numberOfSections;
+        NSInteger oldNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
         
-        [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
-        [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
+        _showingPlaceholder = showingPlaceholder;
+        
+        NSInteger newNumberOfSections = self.numberOfSections;
+        NSInteger newNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
+        
+        if (newNumberOfSections > 0) {
+            [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItemsInFirstSection) inSection:0]];
+            [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItemsInFirstSection) inSection:0]];
+            
+            [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, oldNumberOfSections-1)]];
+            [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, newNumberOfSections-1)]];
+        } else {
+            [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
+        }
+
     }];
 }
 

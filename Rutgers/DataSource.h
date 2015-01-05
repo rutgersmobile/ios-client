@@ -52,6 +52,7 @@
 - (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier;
 - (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (id)placeholderCellForTableView:(UITableView *)tableView;
 
 - (NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
