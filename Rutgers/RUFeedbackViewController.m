@@ -62,7 +62,9 @@
 
 -(void)send{
     [(RUFeedbackDataSource *)self.dataSource send];
+    self.sendButton.title = @"Sending...";
     self.sendButton.enabled = NO;
+    [self.view endEditing:YES];
 }
 
 -(void)formDidChange{
@@ -70,13 +72,14 @@
 }
 
 -(void)formSendFailed{
+    self.sendButton.title = @"Send";
     self.sendButton.enabled = YES;
-    [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"Your feedback has not been sent!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Failure" message:@"Your feedback has not been sent! Please check your network connection and try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
 }
 
 -(void)formSendSucceeded{
-    [self.view endEditing:YES];
+    self.sendButton.title = @"Send";
     [self.dataSource resetContent];
-    [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Your feedback has been sent to the abyss!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Your feedback has been sent!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
 }
 @end
