@@ -66,6 +66,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     }
     return self;
 }
+
 -(void)performOnSemestersLoaded:(void (^)(void))block{
     dispatch_group_notify(self.semesterGroup, dispatch_get_main_queue(), block);
 }
@@ -167,7 +168,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     NSDictionary *campus = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataCampusKey];
     if (campus) return campus;
 
-    campus = [RUUserInfoManager sharedInstance].campus;
+    campus = [RUUserInfoManager currentCampus];
     
     if ([[self.campuses valueForKeyPath:@"tag"] containsObject:campus[@"tag"]]) return campus;
     
@@ -182,7 +183,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     NSDictionary *level = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataLevelKey];
     if (level) return level;
     
-    level = [RUUserInfoManager sharedInstance].userRole;
+    level = [RUUserInfoManager currentUserRole];
     
     if ([[self.levels valueForKeyPath:@"tag"] containsObject:level[@"tag"]]) return level;
     

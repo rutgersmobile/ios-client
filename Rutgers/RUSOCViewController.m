@@ -39,26 +39,27 @@
     
     [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
     
-    [self setInterfaceEnabled:NO];
+    [self setInterfaceEnabled:NO animated:NO];
     
+    __weak typeof(self) weakSelf = self;
     RUSOCDataLoadingManager *loadingManager = [RUSOCDataLoadingManager sharedInstance];
     [loadingManager performOnSemestersLoaded:^{
-        self.title = loadingManager.titleForCurrentConfiguration;
-        [self setInterfaceEnabled:YES];
+        weakSelf.title = loadingManager.titleForCurrentConfiguration;
+        [weakSelf setInterfaceEnabled:YES animated:YES];
     }];
 
 }
 
--(void)setInterfaceEnabled:(BOOL)enabled {
+-(void)setInterfaceEnabled:(BOOL)enabled animated:(BOOL)animated{
     self.optionsButton.enabled = enabled;
     self.searchBar.userInteractionEnabled = enabled;
     
-    if (enabled) {
+    if (animated) {
         [UIView animateWithDuration:0.15 animations:^{
-            self.searchBar.alpha = 1.0;
+
         }];
     } else {
-        self.searchBar.alpha = 0.4;
+        
     }
 }
 
