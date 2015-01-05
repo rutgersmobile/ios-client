@@ -55,7 +55,7 @@
     return (!self.lastTaskDate || [[NSDate date] timeIntervalSinceDate:self.lastTaskDate] > 45);
 }
 
--(void)performBlockWhenAgencyLoaded:(dispatch_block_t)block{
+-(void)performWhenAgencyLoaded:(dispatch_block_t)block{
     dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block);
 }
 
@@ -134,7 +134,8 @@
 #pragma mark - searching
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler{
-    [self performBlockWhenAgencyLoaded:^{
+    [self performWhenAgencyLoaded:^{
+        
         NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
         
         NSArray *routes = [self.routes.allValues filteredArrayUsingPredicate:predicate];
@@ -168,7 +169,7 @@
     self.lastTaskDate = [NSDate date];
     [[RUNetworkManager sessionManager] GET:ACTIVE_URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
       
-        [self performBlockWhenAgencyLoaded:^{
+        [self performWhenAgencyLoaded:^{
             [self parseActiveStopsAndRoutes:responseObject];
             dispatch_group_leave(self.activeGroup);
         }];

@@ -41,6 +41,17 @@ NSString * const newarkAgency = @"rutgers-newark";
     return self;
 }
 
+-(void)performWhenAgenciesLoaded:(dispatch_block_t)block{
+    dispatch_group_t group = dispatch_group_create();
+    [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
+        dispatch_group_enter(group);
+        [agencyManager performWhenAgencyLoaded:^{
+            dispatch_group_leave(group);
+        }];
+    }];
+    dispatch_group_notify(group, dispatch_get_main_queue(), block);
+}
+
 
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler{
     [self.agencyManagers[agency] fetchAllStopsWithCompletion:handler];

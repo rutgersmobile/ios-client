@@ -31,12 +31,15 @@
         
         ComposedDataSource *routes = [[ComposedDataSource alloc] init];
         routes.title = @"Routes";
+        routes.singleLoadingIndicator = YES;
         
         ComposedDataSource *stops = [[ComposedDataSource alloc] init];
         stops.title = @"Stops";
+        stops.singleLoadingIndicator = YES;
         
         ComposedDataSource *all = [[ComposedDataSource alloc] init];
         all.title = @"All";
+        all.singleLoadingIndicator = YES;
         
         [stops addDataSource:[[NearbyActiveStopsDataSource alloc] init]];
         
@@ -50,7 +53,7 @@
             
         };
         
-        [[RUUserInfoManager sharedInstance] performInCampusPriorityOrderWithNewBrunswickBlock:^{
+        [RUUserInfoManager performInCampusPriorityOrderWithNewBrunswickBlock:^{
             addDataForAgency(newBrunswickAgency);
         } newarkBlock:^{
             addDataForAgency(newarkAgency);

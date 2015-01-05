@@ -17,6 +17,9 @@ extern NSString * const newarkAgency;
 @interface RUBusDataLoadingManager : NSObject
 
 +(instancetype)sharedInstance;
+
+-(void)performWhenAgenciesLoaded:(dispatch_block_t)block;
+
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchAllRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler;
 
