@@ -23,7 +23,7 @@
         StringDataSource *legal = [[StringDataSource alloc] initWithItems:@[@"Legal Notices"]];
         legal.showsDisclosureIndicator = YES;
         
-        AlertDataSource *reset = [[AlertDataSource alloc] initWithInitialText:@"Reset App" alertButtonTitles:@[@"Yes, i am sure"]];
+        AlertDataSource *reset = [[AlertDataSource alloc] initWithInitialText:@"Reset App" alertButtonTitles:@[@"Yes, I am sure."]];
         reset.alertTitle = @"Are you sure you wish to reset the app?";
         reset.updatesInitialText = NO;
         reset.showsDisclosureIndicator = YES;
