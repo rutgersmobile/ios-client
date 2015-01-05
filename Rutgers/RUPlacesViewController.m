@@ -30,6 +30,13 @@
     self.dataSource = [[PlacesDataSource alloc] init];
     self.searchDataSource = [[PlacesSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search All Places";
+    
+    self.searchBar.userInteractionEnabled = NO;
+    
+    __weak UISearchBar *weakSearchBar = self.searchBar;
+    [[RUPlacesDataLoadingManager sharedInstance] performOnPlacesLoaded:^{
+        weakSearchBar.userInteractionEnabled = YES;
+    }];
 }
 
 -(void)dealloc{

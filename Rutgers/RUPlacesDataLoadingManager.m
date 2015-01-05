@@ -42,13 +42,17 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     if (self) {
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{PlacesRecentPlacesKey: @[]}];
         self.placesGroup =  dispatch_group_create();
+        dispatch_group_enter(self.placesGroup);
         [self getPlaces];
     }
     return self;
 }
 
+-(void)performOnPlacesLoaded:(void (^)(void))block{
+    dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), block);
+}
+
 -(void)getPlaces{
-    dispatch_group_enter(self.placesGroup);
     [[RUNetworkManager sessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
@@ -57,7 +61,6 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self getPlaces];
-            dispatch_group_leave(self.placesGroup);
         });
     }];
 }
@@ -83,11 +86,11 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 }
 
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock{
-    dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
+    [self performOnPlacesLoaded:^{
         NSArray *recentPlaces = [[NSUserDefaults standardUserDefaults] arrayForKey:PlacesRecentPlacesKey];
         NSArray *recentPlacesDetails = [self.places objectsForKeysIgnoringNotFound:recentPlaces];
         completionBlock(recentPlacesDetails);
-    });
+    }];
 }
 
 -(void)userWillViewPlace:(RUPlace *)place{
