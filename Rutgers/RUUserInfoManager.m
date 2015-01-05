@@ -15,9 +15,6 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 @property UIActionSheet *campusActionSheet;
 @property UIActionSheet *userTypeActionSheet;
 
-@property NSArray *campuses;
-@property NSArray *userRoles;
-
 @property (copy) dispatch_block_t completion;
 
 -(BOOL)hasUserInformation;
@@ -27,8 +24,8 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 @implementation RUUserInfoManager
 
--(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
-    NSDictionary *campus = self.campus;
++(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
+    NSDictionary *campus = [self currentCampus];
     NSString *tag = campus[@"tag"];
     
     newBrunswickBlock = ^{ if (newBrunswickBlock) newBrunswickBlock(); };
@@ -50,57 +47,48 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     }
 }
 
-+(instancetype)sharedInstance{
-    static RUUserInfoManager *infoManager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        infoManager = [[RUUserInfoManager alloc] init];
-    });
-    return infoManager;
++(NSArray *)campuses{
+    return @[
+             @{@"title" : @"New Brunswick", @"tag" : @"NB"},
+             @{@"title" : @"Newark" , @"tag" : @"NK"},
+             @{@"title" : @"Camden", @"tag" : @"CM"},
+             @{@"title" : @"RBHS", @"tag" : @"RBHS"},
+             @{@"title" : @"Other", @"tag" : @"other"}
+             ];
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.campuses = @[
-                          @{@"title" : @"New Brunswick", @"tag" : @"NB"},
-                          @{@"title" : @"Newark" , @"tag" : @"NK"},
-                          @{@"title" : @"Camden", @"tag" : @"CM"},
-                          @{@"title" : @"RBHS", @"tag" : @"RBHS"},
-                          @{@"title" : @"Other", @"tag" : @"other"}
-                          ];
-        
-        self.userRoles = @[
-                           @{@"title" : @"Undergraduate Student", @"tag" : @"UG"},
-                           @{@"title" : @"Graduate Student", @"tag" : @"G"},
-                           @{@"title" : @"Prospective Student", @"tag" : @"prospective"},
-                           @{@"title" : @"Faculty/Staff", @"tag" : @"facstaff"},
-                           @{@"title" : @"Parent", @"tag" : @"parent"},
-                           @{@"title" : @"Alumni", @"tag" : @"alumni"},
-                           @{@"title" : @"Friend", @"tag" : @"friend"}
-                           ];
-    }
-    return self;
++(NSDictionary *)currentCampus{
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:userInfoManagerCampusKey];
+}
+
++(void)setCurrentCampus:(NSDictionary *)currentCampus{
+    [[NSUserDefaults standardUserDefaults] setObject:currentCampus forKey:userInfoManagerCampusKey];
+}
+
++(NSArray *)userRoles{
+    return @[
+             @{@"title" : @"Undergraduate Student", @"tag" : @"UG"},
+             @{@"title" : @"Graduate Student", @"tag" : @"G"},
+             @{@"title" : @"Prospective Student", @"tag" : @"prospective"},
+             @{@"title" : @"Faculty/Staff", @"tag" : @"facstaff"},
+             @{@"title" : @"Parent", @"tag" : @"parent"},
+             @{@"title" : @"Alumni", @"tag" : @"alumni"},
+             @{@"title" : @"Friend", @"tag" : @"friend"}
+             ];
+}
+
++(NSDictionary *)currentUserRole{
+    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:userInfoManagerUserRoleKey];
+}
++(void)setCurrentUserRole:(NSDictionary *)currentUserRole{
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserRole forKey:userInfoManagerUserRoleKey];
 }
 
 -(BOOL)hasUserInformation{
-    return self.campus && self.userRole;
+    return [[self class] currentCampus] && [[self class] currentUserRole];
 }
 
--(NSDictionary *)campus{
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:userInfoManagerCampusKey];
-}
--(void)setCampus:(NSDictionary *)campus{
-    [[NSUserDefaults standardUserDefaults] setObject:campus forKey:userInfoManagerCampusKey];
-}
 
--(NSDictionary *)userRole{
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:userInfoManagerUserRoleKey];
-}
--(void)setUserRole:(NSDictionary *)userRole{
-    [[NSUserDefaults standardUserDefaults] setObject:userRole forKey:userInfoManagerUserRoleKey];
-}
 
 -(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion{
     if (![self hasUserInformation]) {
@@ -128,12 +116,12 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 -(void)makeActionSheets{
     
     self.campusActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please choose your campus." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    for (NSDictionary *campus in self.campuses) {
+    for (NSDictionary *campus in [[self class] campuses]) {
         [self.campusActionSheet addButtonWithTitle:campus[@"title"]];
     }
     
     self.userTypeActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please indicate your role at the university." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-    for (NSDictionary *userRole in self.userRoles) {
+    for (NSDictionary *userRole in [[self class] userRoles]) {
         [self.userTypeActionSheet addButtonWithTitle:userRole[@"title"]];
     }
 
@@ -154,12 +142,12 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     
     if (actionSheet == self.campusActionSheet) {
         
-        [self setCampus:self.campuses[buttonIndex]];
+        [[self class] setCurrentCampus:[[self class] campuses][buttonIndex]];
         [self presentActionSheet:self.userTypeActionSheet];
 
     } else if (actionSheet == self.userTypeActionSheet) {
         
-        [self setUserRole:self.userRoles[buttonIndex]];
+        [[self class] setCurrentUserRole:[[self class] userRoles][buttonIndex]];
         [self complete];
     }
 }

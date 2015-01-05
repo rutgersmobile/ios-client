@@ -89,16 +89,15 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(NSMutableDictionary *)baseEvent{
-    RUUserInfoManager *infoManager = [RUUserInfoManager sharedInstance];
     NSMutableDictionary *baseEvent = [@{
                                        @"date" : [NSString stringWithFormat:@"@%ld",((long)[NSDate date].timeIntervalSince1970)],
                                        @"platform" : [self platform],
                                        @"release" : [self releaseDict]
                                        } mutableCopy];
     
-    if (infoManager.userRole) baseEvent[@"role"] = infoManager.userRole[@"title"];
+    baseEvent[@"role"] = [RUUserInfoManager currentUserRole][@"title"];
 
-    if (infoManager.campus) baseEvent[@"campus"] = infoManager.campus[@"title"];
+    baseEvent[@"campus"] = [RUUserInfoManager currentCampus][@"title"];
     
     return baseEvent;
 }

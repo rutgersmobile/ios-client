@@ -9,6 +9,7 @@
 #import "OptionsDataSource.h"
 #import "StringDataSource.h"
 #import "AlertDataSource.h"
+#import "RUAppDelegate.h"
 
 @implementation OptionsDataSource
 - (instancetype)init
@@ -46,6 +47,6 @@
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[RUUserInfoManager sharedInstance] getUserInfoIfNeededWithCompletion:nil];
+    [((RUAppDelegate *)[UIApplication sharedApplication].delegate).userInfoManager getUserInfoIfNeededWithCompletion:nil];
 }
 @end

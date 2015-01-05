@@ -11,5 +11,6 @@
 @interface RUAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic) RUUserInfoManager *userInfoManager;
 
 @end
