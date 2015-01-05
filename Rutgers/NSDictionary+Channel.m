@@ -16,7 +16,7 @@
         return title = title;
     } else if ([title isKindOfClass:[NSDictionary class]]) {
         NSString *campus = title[@"homeCampus"];
-        if ([campus isEqualToString:[RUUserInfoManager sharedInstance].campus[@"title"]]) {
+        if ([campus isEqualToString:[RUUserInfoManager currentCampus][@"title"]]) {
             return title[@"homeTitle"];
         } else {
             return title[@"foreignTitle"];
@@ -41,5 +41,9 @@
 
 -(NSString *)channelView{
     return self[@"view"];
+}
+
+-(BOOL)channelIsWebLink{
+    return [self[@"weblink"] boolValue];
 }
 @end

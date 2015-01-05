@@ -19,4 +19,6 @@
 -(NSString *)channelURL;
 
 -(NSString *)channelView;
+
+-(BOOL)channelIsWebLink;
 @end

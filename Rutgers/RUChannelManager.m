@@ -6,11 +6,12 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+#import "NSDictionary+Channel.h"
 
 @interface RUChannelManager ()
-@property (readonly) NSSet *nativeChannelHandles;
 @property dispatch_group_t webLinksGroup;
 @property NSArray *webChannels;
+@property (readonly) NSMutableDictionary *channelsByHandle;
 @end
 
 @implementation RUChannelManager
@@ -44,11 +45,17 @@
     }
 }
 
-@synthesize nativeChannelHandles = _nativeChannelHandles;
--(NSSet *)nativeChannelHandles{
+@synthesize channelsByHandle = _channelsByHandle;
+-(NSMutableDictionary *)channelsByHandle{
     @synchronized(self) {
-        if (!_nativeChannelHandles) _nativeChannelHandles = [self.nativeChannels valueForKey:@"handle"];
-        return _nativeChannelHandles;
+        if (!_channelsByHandle) {
+            NSMutableDictionary *channelsByTag = [NSMutableDictionary dictionary];
+            for (NSDictionary *channel in self.nativeChannels) {
+                channelsByTag[[channel channelHandle]] = channel;
+            }
+            _channelsByHandle = channelsByTag;
+        }
+        return _channelsByHandle;
     }
 }
 
@@ -78,7 +85,8 @@
     NSMutableArray *filteredWebChannels = [NSMutableArray array];
     for (NSDictionary *channel in webChannels) {
         NSString *handle = [channel channelHandle];
-        if (![self.nativeChannelHandles containsObject:handle]) {
+        if (!self.channelsByHandle[handle]) {
+            self.channelsByHandle[handle] = channel;
             NSMutableDictionary *modifiedWebChannel = [channel mutableCopy];
             modifiedWebChannel[@"view"] = @"www";
             modifiedWebChannel[@"weblink"] = @YES;
@@ -153,7 +161,10 @@
 static NSString *const kChannelManagerLastChannelKey = @"kChannelManagerLastChannelKey";
 
 -(NSDictionary *)lastChannel{
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:kChannelManagerLastChannelKey];
+    NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kChannelManagerLastChannelKey];
+    if (lastChannel && ![lastChannel channelIsWebLink] && !self.channelsByHandle[[lastChannel channelHandle]]) lastChannel = nil;
+    if (!lastChannel) lastChannel = @{@"view" : @"splash"};
+    return lastChannel;
 }
 
 -(void)setLastChannel:(NSDictionary *)lastChannel{
