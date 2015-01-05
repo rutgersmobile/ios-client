@@ -62,6 +62,7 @@
 
 #pragma mark - Composed Data Source Implementation
 -(NSInteger)numberOfSections{
+    if (self.showingPlaceholder) return 1;
     NSInteger numberOfSections = 0;
     for (DataSource *dataSource in self.dataSources) {
         numberOfSections += dataSource.numberOfSections;
@@ -70,6 +71,7 @@
 }
 
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
+    if (self.showingPlaceholder) return 1;
     DataSource *dataSource = [self dataSourceForGlobalSection:section];
     NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
     return [dataSource numberOfItemsInSection:localSection];
@@ -286,11 +288,11 @@
 /// If the content was loaded successfully, the error will be nil.
 - (void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error
 {
-    BOOL showingPlaceholder = self.shouldDisplayPlaceholder;
+    BOOL showingPlaceholder = self.showingPlaceholder;
     [self updateLoadingState];
     
     // We were showing the placehoder and now we're not
-    if (showingPlaceholder && !self.shouldDisplayPlaceholder)
+    if (showingPlaceholder && !self.showingPlaceholder)
         [self notifyBatchUpdate:^{
             [self executePendingUpdates];
         }];

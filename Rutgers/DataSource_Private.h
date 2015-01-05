@@ -33,10 +33,6 @@ typedef enum {
 - (void)dataSourceWillLoadContent:(DataSource *)dataSource;
 - (void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error;
 
-- (void)dataSource:(DataSource *)dataSource didShowActivityIndicator:(BOOL)show;
-- (void)dataSource:(DataSource *)dataSource showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated;
-- (void)dataSource:(DataSource *)dataSource hidePlaceholderAnimated:(BOOL)animated;
-
 @end
 
 @interface DataSource ()
@@ -53,6 +49,10 @@ typedef enum {
 
 /// Whether this data source should display the placeholder.
 @property (nonatomic, readonly) BOOL shouldDisplayPlaceholder;
+@property (nonatomic) BOOL showingPlaceholder;
+
+/// Is this data source "hidden" by a placeholder either of its own or from an enclosing data source. Use this to determine whether to report that there are no items in your data source while loading.
+//@property (nonatomic, readonly) BOOL obscuredByPlaceholder;
 
 /// A delegate object that will receive change notifications from this data source.
 @property (nonatomic, weak) id<DataSourceDelegate> delegate;
@@ -85,10 +85,6 @@ typedef enum {
 
 - (void)notifyWillLoadContent;
 - (void)notifyContentLoadedWithError:(NSError *)error;
-
-- (void)notifyActivityIndicatorShown:(BOOL)show;
-- (void)notifyShowPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated;
-- (void)notifyHidePlaceholderAnimated:(BOOL)animated;
 
 @end
 

@@ -60,7 +60,7 @@
 }
 
 -(void)initializeConstraints{
-    [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeBottom];
+    [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, 0) excludingEdge:ALEdgeBottom];
     
     self.imageHeightConstraint = [self.imageDisplayView autoSetDimension:ALDimensionHeight toSize:IMAGE_SIZE];
     [self.imageDisplayView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionHeight ofView:self.imageDisplayView withMultiplier:16.0/9.0];
@@ -77,11 +77,11 @@
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     self.titleTopConstraint = [self.titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.containerView withOffset:kLabelVerticalInsetsSmall];
     [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
-    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
+    [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
     
     self.descriptionTopConstraint = [self.descriptionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsetsSmall relation:NSLayoutRelationGreaterThanOrEqual];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
-    [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
+    [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
     [self.descriptionLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     
 }

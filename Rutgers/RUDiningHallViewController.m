@@ -32,6 +32,7 @@
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     return NO;
 }
 @end

@@ -8,7 +8,6 @@
 
 #import "RUUserInfoManager.h"
 
-static NSString *const userInfoManagerHasInfoKey = @"userInfoManagerHasInfoKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
 static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey";
 
@@ -64,8 +63,6 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 {
     self = [super init];
     if (self) {
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{userInfoManagerHasInfoKey : @(NO)}];
-        
         self.campuses = @[
                           @{@"title" : @"New Brunswick", @"tag" : @"NB"},
                           @{@"title" : @"Newark" , @"tag" : @"NK"},
@@ -88,10 +85,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 }
 
 -(BOOL)hasUserInformation{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:userInfoManagerHasInfoKey];
-}
--(void)setHasUserInformation:(BOOL)hasUserInformation{
-    [[NSUserDefaults standardUserDefaults] setBool:hasUserInformation forKey:userInfoManagerHasInfoKey];
+    return self.campus && self.userRole;
 }
 
 -(NSDictionary *)campus{
@@ -166,8 +160,6 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     } else if (actionSheet == self.userTypeActionSheet) {
         
         [self setUserRole:self.userRoles[buttonIndex]];
-        [self setHasUserInformation:YES];
-        
         [self complete];
     }
 }

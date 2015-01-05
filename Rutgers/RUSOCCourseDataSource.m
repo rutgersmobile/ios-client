@@ -63,8 +63,6 @@
         [self addDataSource:self.headerDataSource];
     }
     
-    
-    NSLog(@"%@",headerItems);
     self.sectionsDataSource.items = course[@"sections"];
     [self addDataSource:self.sectionsDataSource];
 }

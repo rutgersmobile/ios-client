@@ -56,20 +56,17 @@
     NSArray *meetingTimes = [self sortMeetingTimesByDay:self.section[@"meetingTimes"]];
     
     [meetingTimes enumerateObjectsUsingBlock:^(NSDictionary *meetingTime, NSUInteger idx, BOOL *stop) {
-      
+        NSString *meetingDay = meetingTime[@"meetingDay"];
+        NSString *startTime = meetingTime[@"startTime"];
+        NSString *endTime = meetingTime[@"endTime"];
+
+        if (!meetingDay && !(startTime || endTime)) return;
+        
         if (idx != 0) {
             [mutableDayString appendString:@"\n"];
             [mutableTimeString appendString:@"\n"];
             [mutableLocationString appendString:@"\n"];
         }
-        
-        NSString *meetingDay = meetingTime[@"meetingDay"];
-        if (meetingDay) {
-            [mutableDayString appendString:meetingDay];
-        }
-        
-        NSString *startTime = meetingTime[@"startTime"];
-        NSString *endTime = meetingTime[@"endTime"];
         
         if (startTime || endTime) {
             NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
@@ -90,6 +87,8 @@
         }
         
         if (meetingDay) {
+            [mutableDayString appendString:meetingDay];
+
             NSString *campusAbbrev = meetingTime[@"campusAbbrev"];
             NSString *buildingCode = meetingTime[@"buildingCode"];
             NSString *roomNumber = meetingTime[@"roomNumber"];

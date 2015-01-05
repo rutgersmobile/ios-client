@@ -57,6 +57,7 @@
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     id item = [self.dataSource itemAtIndexPath:indexPath];
     return ![self showMenuForItem:item];
 }

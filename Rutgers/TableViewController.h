@@ -15,4 +15,6 @@
 
 @property (nonatomic) UITableView *tableView;
 -(UITableView *)searchTableView;
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath NS_REQUIRES_SUPER;
 @end

@@ -40,9 +40,6 @@
 @property (nonatomic, copy) NSString *errorTitle;
 @property (nonatomic, strong) UIImage *errorImage;
 
-/// Is this data source "hidden" by a placeholder either of its own or from an enclosing data source. Use this to determine whether to report that there are no items in your data source while loading.
-@property (nonatomic, readonly) BOOL obscuredByPlaceholder;
-
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 

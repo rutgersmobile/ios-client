@@ -42,6 +42,7 @@
     return NO;
 }
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];
     NSDictionary *object = item.object;
     if (!object[@"view"]) {

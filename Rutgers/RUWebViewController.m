@@ -62,6 +62,7 @@
         [webView stringByEvaluatingJavaScriptFromString:setTextSizeRule];
     }
 }
+
 @end
 
 

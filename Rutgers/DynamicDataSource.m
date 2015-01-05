@@ -76,7 +76,7 @@
 }
 
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    [super configureCell:cell forRowAtIndexPath:indexPath];
+   // [super configureCell:cell forRowAtIndexPath:indexPath];
     
     NSString *stringForIndex;
     id itemForIndex = [self itemAtIndexPath:indexPath];

@@ -23,7 +23,6 @@
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UIButton *actionButton;
 @property (nonatomic, strong) NSArray *constraints;
-
 @end
 
 @implementation AAPLPlaceholderView
@@ -43,7 +42,6 @@
     _title = [title copy];
     _message = [message copy];
     _image = image;
-    self.backgroundColor = [[UIColor groupTableViewBackgroundColor] colorWithAlphaComponent:0.8];
     if (buttonTitle && buttonAction) {
         NSAssert(message != nil, @"a message must be provided when using a button");
         _buttonTitle = [buttonTitle copy];
@@ -300,20 +298,118 @@
 @implementation AAPLCollectionPlaceholderView
 
 @end
-
+*/
 
 @interface AAPLPlaceholderCell ()
-
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @end
 
 @implementation AAPLPlaceholderCell
 
-
 -(void)initializeSubviews{
-    [self.contentView autoSetDimension:ALDimensionHeight toSize:100];
+    
 }
 
 -(void)initializeConstraints{
     [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets)];
 }
-@end*/
+
+- (void)showActivityIndicator:(BOOL)show
+{
+    if (!_activityIndicatorView) {
+        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+        _activityIndicatorView.color = [UIColor lightGrayColor];
+        
+        [self.contentView addSubview:_activityIndicatorView];
+        NSMutableArray *constraints = [NSMutableArray array];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView    attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+        [self.contentView addConstraints:constraints];
+    }
+    
+    _activityIndicatorView.hidden = !show;
+    
+    if (show){
+        [_activityIndicatorView startAnimating];
+       /* [UIView animateWithDuration:0.25 animations:^{
+            self.tableView.alpha = 0;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.tableView.hidden = YES;
+                self.tableView.userInteractionEnabled = NO;
+            }
+        }];*/
+        
+    } else {
+        [_activityIndicatorView stopAnimating];
+     /*   self.tableView.hidden = NO;
+        self.tableView.userInteractionEnabled = YES;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.tableView.alpha = 1;
+        }];*/
+    }
+}
+
+- (void)hidePlaceholderAnimated:(BOOL)animated
+{
+    AAPLPlaceholderView *placeholderView = _placeholderView;
+    
+    if (!placeholderView)
+        return;
+    
+    if (animated) {
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            placeholderView.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [placeholderView removeFromSuperview];
+            // If it's still the current placeholder, get rid of it
+            if (placeholderView == _placeholderView)
+                self.placeholderView = nil;
+        }];
+    }
+    else {
+        [UIView performWithoutAnimation:^{
+            [placeholderView removeFromSuperview];
+            if (_placeholderView == placeholderView)
+                self.placeholderView = nil;
+        }];
+    }
+}
+
+- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated
+{
+    AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
+    
+    if (oldPlaceHolder && [oldPlaceHolder.title isEqualToString:title] && [oldPlaceHolder.message isEqualToString:message])
+        return;
+    
+    [self showActivityIndicator:NO];
+    
+    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:CGRectZero title:title message:message image:image buttonTitle:nil buttonAction:nil];
+    _placeholderView.alpha = 0.0;
+    _placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView addSubview:_placeholderView];
+    
+    [_placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.contentView bringSubviewToFront:_placeholderView];
+    
+    if (animated) {
+        [UIView animateWithDuration:0.25 animations:^{
+            _placeholderView.alpha = 1.0;
+            oldPlaceHolder.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [oldPlaceHolder removeFromSuperview];
+        }];
+    }
+    else {
+        [UIView performWithoutAnimation:^{
+            _placeholderView.alpha = 1.0;
+            oldPlaceHolder.alpha = 0.0;
+            [oldPlaceHolder removeFromSuperview];
+        }];
+    }
+}
+
+@end

@@ -19,11 +19,7 @@
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
 @property (nonatomic, readonly) UITableViewStyle style;
-
 @property (nonatomic) CGRect lastValidBounds;
-
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
-@property (nonatomic, strong) AAPLPlaceholderView *placeholderView;
 @end
 
 @implementation TableViewController
@@ -40,7 +36,7 @@
     [super loadView];
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    
+
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.style];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.delegate = self;
@@ -235,6 +231,12 @@
     return [[self dataSourceForTableView:tableView] tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[AAPLPlaceholderCell class]]) return NO;
+    return YES;
+}
+
 #pragma mark - Data Source notifications
 -(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
     switch (direction) {
@@ -307,118 +309,5 @@
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
     
 }
-
-- (void)dataSource:(DataSource *)dataSource didShowActivityIndicator:(BOOL)show{
-    [self showActivityIndicator:show];
-}
-
-- (void)dataSource:(DataSource *)dataSource showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated{
-    [self showPlaceholderWithTitle:title message:message image:image animated:animated];
-}
-
-- (void)dataSource:(DataSource *)dataSource hidePlaceholderAnimated:(BOOL)animated{
-    [self hidePlaceholderAnimated:animated];
-}
-
-- (void)showActivityIndicator:(BOOL)show
-{
-    if (!_activityIndicatorView) {
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-        _activityIndicatorView.color = [UIColor lightGrayColor];
-        
-        [self.view addSubview:_activityIndicatorView];
-        NSMutableArray *constraints = [NSMutableArray array];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view    attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-        [self.view addConstraints:constraints];
-    }
-    
-    _activityIndicatorView.hidden = !show;
-    
-    if (show){
-        
-        [_activityIndicatorView startAnimating];
-        [UIView animateWithDuration:0.25 animations:^{
-            self.tableView.alpha = 0;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.tableView.hidden = YES;
-                self.tableView.userInteractionEnabled = NO;
-            }
-        }];
-        
-    } else {
-        [_activityIndicatorView stopAnimating];
-        self.tableView.hidden = NO;
-        self.tableView.userInteractionEnabled = YES;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.tableView.alpha = 1;
-        }];
-    }
-}
-
-- (void)hidePlaceholderAnimated:(BOOL)animated
-{
-    AAPLPlaceholderView *placeholderView = _placeholderView;
-    
-    if (!placeholderView)
-        return;
-    
-    if (animated) {
-        
-        [UIView animateWithDuration:0.25 animations:^{
-            placeholderView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [placeholderView removeFromSuperview];
-            // If it's still the current placeholder, get rid of it
-            if (placeholderView == _placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            [placeholderView removeFromSuperview];
-            if (_placeholderView == placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
-}
-
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated
-{
-    AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
-    
-    if (oldPlaceHolder && [oldPlaceHolder.title isEqualToString:title] && [oldPlaceHolder.message isEqualToString:message])
-        return;
-    
-    [self showActivityIndicator:NO];
-    
-    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:CGRectZero title:title message:message image:image buttonTitle:nil buttonAction:nil];
-    _placeholderView.alpha = 0.0;
-    _placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:_placeholderView];
-    
-    [_placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self.view bringSubviewToFront:_placeholderView];
-    
-    if (animated) {
-        [UIView animateWithDuration:0.25 animations:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
-}
-
-
 
 @end

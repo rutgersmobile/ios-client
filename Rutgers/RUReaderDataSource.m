@@ -81,6 +81,7 @@
     [cell.imageDisplayView setImageWithURL:row.imageURL];
     
     cell.descriptionLabel.text = row.descriptionText;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 

@@ -18,7 +18,10 @@
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
-        self.title = [[item[@"title"] firstObject] stringByDecodingHTMLEntities];
+        id title = [item[@"title"] firstObject];
+        if ([title isKindOfClass:[NSString class]]) {
+            self.title = [title stringByDecodingHTMLEntities];
+        }
        
         NSString *date = [item[@"pubDate"] firstObject];
         if (!date) {
@@ -31,7 +34,11 @@
         
         self.imageURL = [NSURL URLWithString:urlString];
         self.url = [item[@"link"] firstObject];
-        self.descriptionText = [[[item[@"description"] firstObject] stringByDecodingHTMLEntities] stringByConvertingHTMLToPlainText];
+        
+        id description = [item[@"description"] firstObject];
+        if ([description isKindOfClass:[NSString class]]) {
+            self.descriptionText = [[description stringByDecodingHTMLEntities] stringByConvertingHTMLToPlainText];
+        }
     }
     return self;
 }
@@ -57,7 +64,7 @@
          Wednesday, July 2, 2014
          EEEE, MMMM d, yyyy
          
-         Fri, 30 May 2014 16:51:02 GMT
+         Fri, 30 May 2014b 16:51:02 GMT
          EEE, d MMM yyyy HH:mm:ss zzz
          
          Mon, 07 Jul 2014 -0400

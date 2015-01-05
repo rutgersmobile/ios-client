@@ -50,6 +50,7 @@
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
     NSString *type = item[@"type"];
     return ![type isEqualToString:@"text"];

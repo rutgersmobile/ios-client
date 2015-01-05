@@ -43,9 +43,7 @@
 }
 
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
-    //if (self.shouldDisplayPlaceholder){
-   //    return [super numberOfItemsInSection:section];
-   // }
+    if (self.showingPlaceholder) return 1;
     return self.numberOfItems;
 }
 

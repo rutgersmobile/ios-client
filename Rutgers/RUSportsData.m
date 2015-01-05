@@ -47,9 +47,7 @@
         for (NSDictionary *responseItem in responseItems) {
             RUSportsPlayer *player = [[RUSportsPlayer alloc] initWithDictionary:responseItem];
             [parsedItems addObject:player];
-     //       [self addPositionString:player.position forSportID:sportID];
         }
-       // NSLog(@"%@",[self setForSportID:sportID]);
         successBlock(parsedItems);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         failureBlock();

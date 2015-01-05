@@ -25,6 +25,7 @@
 
 @property (nonatomic) NSMutableDictionary *sizingCells;
 @property (nonatomic) RowHeightCache *rowHeightCache;
+@property (nonatomic) AAPLPlaceholderView *placeholderView;
 @end
 
 @implementation DataSource
@@ -42,8 +43,11 @@
 
 - (BOOL)isRootDataSource
 {
-    id delegate = self.delegate;
-    return [delegate isKindOfClass:[DataSource class]] ? NO : YES;
+    return [self.delegate isKindOfClass:[DataSource class]] ? NO : YES;
+}
+
+- (BOOL)isSearchDataSource{
+    return [self conformsToProtocol:NSProtocolFromString(@"SearchDataSource")] ? YES : NO;
 }
 
 -(NSString *)description{
@@ -52,10 +56,12 @@
 
 #pragma mark - Data Source Implementation
 -(NSInteger)numberOfSections{
+    if (self.showingPlaceholder) return 1;
     return 1;
 }
 
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
+    if (self.showingPlaceholder) return 1;
     return 0;
 }
 
@@ -73,7 +79,7 @@
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    //[tableView registerClass:[AAPLPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+    [tableView registerClass:[AAPLPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
 }
 
 #pragma mark - Cached Heights
@@ -97,10 +103,12 @@
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (self.showingPlaceholder) return nil;
     return (section == 0) ? self.title : nil;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+    if (self.showingPlaceholder) return nil;
     return (section == 0) ? self.footer : nil;
 }
 
@@ -120,16 +128,36 @@
     
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ALTableViewAbstractCell *cell;
+- (id)placeholderCellForTableView:(UITableView *)tableView{
+    AAPLPlaceholderCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
     
-    cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-    [cell updateFonts];
-    [self configureCell:cell forRowAtIndexPath:indexPath];
+    NSString *message;
+    NSString *title;
     
-    [cell setNeedsUpdateConstraints];
-    [cell updateConstraintsIfNeeded];
+    NSString *loadingState = self.loadingState;
+    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
+        [cell showActivityIndicator:YES];
+        return cell;
+    } else {
+        [cell showActivityIndicator:NO];
+    }
+    
+    if (!(self.noContentTitle || self.noContentMessage || self.errorTitle || self.errorMessage)) {
+        return cell;
+    }
+    
+    if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
+        title = self.noContentTitle;
+        message = self.noContentMessage;
+        [cell showPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
+    }
+    else if ([loadingState isEqualToString:AAPLLoadStateError]) {
+        title = self.errorTitle;
+        message = self.errorMessage;
+        [cell showPlaceholderWithTitle:title message:message image:self.errorImage animated:YES];
+    }
+    else
+        [cell hidePlaceholderAnimated:YES];
     
     return cell;
 }
@@ -143,14 +171,30 @@
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ALTableViewAbstractCell *cell;
+    
+    if (self.showingPlaceholder) {
+        cell = [self placeholderCellForTableView:tableView];
+    } else {
+        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        [cell updateFonts];
+        [self configureCell:cell forRowAtIndexPath:indexPath];
+    }
+    
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    
+    return cell;
+}
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.showingPlaceholder) return 200;
+    
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
    
-    ALTableViewAbstractCell *cell;
-
-    cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+    ALTableViewAbstractCell *cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
     [cell updateFonts];
     [self configureCell:cell forRowAtIndexPath:indexPath];
     
@@ -256,7 +300,7 @@
     self.loadingError = error;
     self.loadingState = state;
     
-    if (self.shouldDisplayPlaceholder) {
+    if (self.showingPlaceholder) {
         if (update)
             [self enqueuePendingUpdateBlock:update];
     }
@@ -378,7 +422,7 @@
     if (!self.delegate)
         return NO;
     
-    if (![self.delegate isKindOfClass:[DataSource class]])
+    if ([self isRootDataSource])
         return NO;
     
     DataSource *dataSource = (DataSource *)self.delegate;
@@ -404,63 +448,25 @@
     return YES;
 }
 
-- (void)notifyActivityIndicatorShown:(BOOL)show{
-    ASSERT_MAIN_THREAD;
-    
-    id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didShowActivityIndicator:)]) {
-        [delegate dataSource:self didShowActivityIndicator:show];
-    }
-}
-
-- (void)notifyShowPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated{
-    ASSERT_MAIN_THREAD;
-    
-    id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:showPlaceholderWithTitle:message:image:animated:)]) {
-        [delegate dataSource:self showPlaceholderWithTitle:title message:message image:image animated:animated];
-    }
-}
-
-- (void)notifyHidePlaceholderAnimated:(BOOL)animated{
-    ASSERT_MAIN_THREAD;
-    
-    id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:hidePlaceholderAnimated:)]) {
-        [delegate dataSource:self hidePlaceholderAnimated:animated];
-    }
-}
-
 - (void)updatePlaceholderNotifyVisibility:(BOOL)notify
 {
-    
-    NSString *message;
-    NSString *title;
-    
-    NSString *loadingState = self.loadingState;
-    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
-        [self notifyActivityIndicatorShown:YES];
-        return;
-    } else {
-        [self notifyActivityIndicatorShown:NO];
+    self.showingPlaceholder = self.shouldDisplayPlaceholder;
+}
+
+-(void)setShowingPlaceholder:(BOOL)showingPlaceholder{
+    if (_showingPlaceholder == showingPlaceholder) {
+        if (!showingPlaceholder) return;
+        else [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
     }
     
-    if (!(self.noContentTitle || self.noContentMessage || self.errorTitle || self.errorMessage)) {
-        return;
-    }
-    
-    if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
-        title = self.noContentTitle;
-        message = self.noContentMessage;
-        [self notifyShowPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
-    }
-    else if ([loadingState isEqualToString:AAPLLoadStateError]) {
-        title = self.errorTitle;
-        message = self.errorMessage;
-        [self notifyShowPlaceholderWithTitle:title message:message image:self.noContentImage animated:YES];
-    }
-    else
-        [self notifyHidePlaceholderAnimated:YES];
+    [self notifyBatchUpdate:^{
+        NSInteger oldNumberOfSections = self.numberOfSections;
+        _showingPlaceholder = showingPlaceholder;
+        NSInteger newNumberOfSections = self.numberOfSections;
+        
+        [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
+        [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
+    }];
 }
 
 #pragma mark - Data Source Delegate
