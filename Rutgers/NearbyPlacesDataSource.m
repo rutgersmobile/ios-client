@@ -18,8 +18,8 @@
         self.title = @"Nearby Places";
         self.itemLimit = 10;
 
-        self.noContentTitle = @"There are no nearby places";
-        self.noContentMessage = @"No nearby places";
+        self.noContentMessage = nil;
+        self.noContentTitle = @"No nearby places.";
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:LocationManagerDidChangeLocationKey object:nil];
     }
