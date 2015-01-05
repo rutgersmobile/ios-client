@@ -69,7 +69,6 @@
     [self.containerController tapGestureRecognizer];
     
     NSDictionary *lastChannel = [RUChannelManager sharedInstance].lastChannel;
-    if (!lastChannel) lastChannel = @{@"view" : @"splash"};
     
     [self setCenterChannel:lastChannel];
     
