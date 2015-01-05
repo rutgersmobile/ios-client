@@ -12,4 +12,6 @@
 
 @interface RUPlaceDetailDataSource : ComposedDataSource
 -(id)initWithPlace:(RUPlace *)place;
+-(void)startUpdates;
+-(void)stopUpdates;
 @end

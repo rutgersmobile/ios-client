@@ -18,7 +18,6 @@
 
 @interface RUPlaceDetailViewController ()
 @property (nonatomic) RUPlace *place;
-
 @end
 
 @implementation RUPlaceDetailViewController
@@ -34,9 +33,19 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
     self.dataSource = [[RUPlaceDetailDataSource alloc] initWithPlace:self.place];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [(RUPlaceDetailDataSource *)self.dataSource startUpdates];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [(RUPlaceDetailDataSource *)self.dataSource stopUpdates];
+    [super viewWillDisappear:animated];
+}
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];

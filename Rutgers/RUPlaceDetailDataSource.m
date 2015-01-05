@@ -21,6 +21,12 @@
 
 #import <AddressBookUI/AddressBookUI.h>
 
+#define UPDATE_TIME_INTERVAL 60.0
+
+@interface RUPlaceDetailDataSource ()
+@property MSWeakTimer *refreshTimer;
+@property NearbyActiveStopsDataSource *nearbyActiveStopsDataSource;
+@end
 
 @implementation RUPlaceDetailDataSource
 
@@ -45,6 +51,7 @@
         if (place.location) {
             NearbyActiveStopsDataSource *nearbyActiveStopsDataSource = [[NearbyActiveStopsDataSource alloc] init];
             nearbyActiveStopsDataSource.location = place.location;
+            self.nearbyActiveStopsDataSource = nearbyActiveStopsDataSource;
             [self addDataSource:nearbyActiveStopsDataSource];
         }
         
@@ -76,5 +83,16 @@
         }
     }
     return self;
+}
+
+-(void)startUpdates{
+    if (self.nearbyActiveStopsDataSource) {
+        self.refreshTimer = [MSWeakTimer scheduledTimerWithTimeInterval:UPDATE_TIME_INTERVAL target:self.nearbyActiveStopsDataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+        [self.nearbyActiveStopsDataSource setNeedsLoadContent];
+    }
+}
+
+-(void)stopUpdates{
+    [self.refreshTimer invalidate];
 }
 @end
