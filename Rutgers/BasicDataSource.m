@@ -24,10 +24,9 @@
     self = [super init];
     if (self) {
         self.items = items;
-        self.noContentMessage = @"Sorry.";
-        self.noContentTitle = @"No content.";
-        self.errorTitle = @"Error";
-        self.errorMessage = @"Theres an error";
+        self.noContentTitle = @"No content available.";
+        self.errorTitle = @"Network error.";
+        self.errorMessage = @"Please check your network connection and try again.";
     }
     return self;
 }
