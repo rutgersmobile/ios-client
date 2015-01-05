@@ -16,6 +16,10 @@
     self = [super init];
     if (self) {
         self.title = @"Recently Viewed";
+        
+        self.noContentTitle = @"No recent places.";
+        self.noContentMessage = @"Search for places using the search bar.";
+
         self.itemLimit = 8;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:PlacesDataDidUpdateRecentPlacesKey object:nil];
     }
