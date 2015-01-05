@@ -324,7 +324,7 @@
         [self.contentView addSubview:_activityIndicatorView];
         NSMutableArray *constraints = [NSMutableArray array];
         [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView    attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
         [self.contentView addConstraints:constraints];
     }
     
@@ -332,22 +332,9 @@
     
     if (show){
         [_activityIndicatorView startAnimating];
-       /* [UIView animateWithDuration:0.25 animations:^{
-            self.tableView.alpha = 0;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.tableView.hidden = YES;
-                self.tableView.userInteractionEnabled = NO;
-            }
-        }];*/
         
     } else {
         [_activityIndicatorView stopAnimating];
-     /*   self.tableView.hidden = NO;
-        self.tableView.userInteractionEnabled = YES;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.tableView.alpha = 1;
-        }];*/
     }
 }
 
@@ -382,7 +369,7 @@
 {
     AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
     
-    if (oldPlaceHolder && [oldPlaceHolder.title isEqualToString:title] && [oldPlaceHolder.message isEqualToString:message])
+    if (oldPlaceHolder && ([oldPlaceHolder.title isEqualToString:title]) && [oldPlaceHolder.message isEqualToString:message])
         return;
     
     [self showActivityIndicator:NO];

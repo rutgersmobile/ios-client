@@ -11,14 +11,16 @@
 #import <UIKit/UIKit.h>
 #import "ALTableViewAbstractCell.h"
 
+#define PLACEHOLDER_HEIGHT 80
+
 /// A placeholder view that approximates the standard iOS no content view.
 @interface AAPLPlaceholderView : UIView
 
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *message;
-@property (nonatomic, copy) NSString *buttonTitle;
-@property (nonatomic, copy) void (^buttonAction)(void);
+@property (nonatomic, readonly) UIImage *image;
+@property (nonatomic, readonly) NSString *title;
+@property (nonatomic, readonly) NSString *message;
+@property (nonatomic, readonly) NSString *buttonTitle;
+@property (nonatomic, readonly) void (^buttonAction)(void);
 
 /// Initialize a placeholder view. A message is required in order to display a button.
 - (instancetype)initWithFrame:(CGRect)frame title:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction;
