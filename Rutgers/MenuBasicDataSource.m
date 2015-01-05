@@ -24,4 +24,10 @@
     cell.channelTitleLabel.text = [channel channelTitle];
     cell.channelImage.image = [channel channelIcon];
 }
+
+-(id)placeholderCellForTableView:(UITableView *)tableView{
+    UITableViewCell *cell = [super placeholderCellForTableView:tableView];
+    cell.backgroundColor = [UIColor clearColor];
+    return cell;
+}
 @end
