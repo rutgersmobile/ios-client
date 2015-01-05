@@ -32,7 +32,7 @@
     NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
     NSString *type = item[@"type"];
     
-    if (![RUInfoDataSource typeEnabled:type]) {
+    if (![RUInfoDataSource buttonTypeEnabled:type]) {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
     }

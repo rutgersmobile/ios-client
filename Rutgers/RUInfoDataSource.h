@@ -9,5 +9,5 @@
 #import "ComposedDataSource.h"
 
 @interface RUInfoDataSource : ComposedDataSource
-+(BOOL)typeEnabled:(NSString *)type;
++(BOOL)buttonTypeEnabled:(NSString *)type;
 @end

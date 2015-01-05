@@ -26,7 +26,7 @@
         cell.textLabel.textColor = [UIColor blackColor];
     } else {
         cell.textLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleBody];
-        cell.textLabel.textColor = [RUInfoDataSource typeEnabled:type] ? cell.tintColor : [UIColor grayColor];
+        cell.textLabel.textColor = [RUInfoDataSource buttonTypeEnabled:type] ? cell.tintColor : [UIColor grayColor];
     }
 }
 

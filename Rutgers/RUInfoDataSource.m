@@ -56,7 +56,7 @@
     [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
 }
 
-+(BOOL)typeEnabled:(NSString *)type{
++(BOOL)buttonTypeEnabled:(NSString *)type{
     if ([type isEqualToString:@"callButton"]) {
         return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"telprompt://732-445-INFO"]];
     } else if ([type isEqualToString:@"textButton"]) {
