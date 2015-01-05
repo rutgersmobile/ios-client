@@ -136,13 +136,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "-numberOfSectionsInTableView:"
-            landmarkType = "5">
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "@implementation DataSource"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -308,11 +308,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
             landmarkName = "-didEnterLoadingState"
             landmarkType = "5">
          </BreakpointContent>
@@ -324,7 +324,39 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
+            landmarkName = "-didEnterLoadedState"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "386"
+            endingLineNumber = "386"
+            landmarkName = "-didEnterLoadedState"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "391"
@@ -340,43 +372,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
-            landmarkName = "-didEnterLoadedState"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "395"
-            endingLineNumber = "395"
-            landmarkName = "-didEnterNoContentState"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "-didEnterErrorState"
             landmarkType = "5">
          </BreakpointContent>
@@ -404,11 +404,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
             landmarkName = "-stateWillChange"
             landmarkType = "5">
          </BreakpointContent>
@@ -706,11 +706,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/BasicDataSource.m"
-            timestampString = "437091839.41744"
+            timestampString = "442187482.137205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "-setItems:animated:"
             landmarkType = "5">
          </BreakpointContent>
@@ -972,11 +972,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/BasicDataSource.m"
-            timestampString = "437091839.41744"
+            timestampString = "442187482.137205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "-setItems:"
             landmarkType = "5">
          </BreakpointContent>
@@ -988,11 +988,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/BasicDataSource.m"
-            timestampString = "437091839.41744"
+            timestampString = "442187482.137205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "-setItems:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1020,12 +1020,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
-            landmarkName = "-tableView:titleForFooterInSection:"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "-tableView:titleForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1160,11 +1160,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1176,11 +1176,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "-placeholderCellForTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1192,11 +1192,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "-placeholderCellForTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1208,11 +1208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
             landmarkName = "-placeholderCellForTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1224,11 +1224,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1240,12 +1240,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "-tableView:numberOfRowsInSection:"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1256,11 +1256,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "407"
-            endingLineNumber = "407"
+            startingLineNumber = "403"
+            endingLineNumber = "403"
             landmarkName = "-obscuredByPlaceholder"
             landmarkType = "5">
          </BreakpointContent>
@@ -1272,7 +1272,39 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "418"
+            endingLineNumber = "418"
+            landmarkName = "-shouldDisplayPlaceholder"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "419"
+            endingLineNumber = "419"
+            landmarkName = "-shouldDisplayPlaceholder"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "422"
@@ -1288,23 +1320,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
-            landmarkName = "-shouldDisplayPlaceholder"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "426"
@@ -1320,7 +1336,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "430"
@@ -1336,11 +1352,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "434"
-            endingLineNumber = "434"
+            startingLineNumber = "432"
+            endingLineNumber = "432"
             landmarkName = "-shouldDisplayPlaceholder"
             landmarkType = "5">
          </BreakpointContent>
@@ -1352,11 +1368,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "436"
-            endingLineNumber = "436"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
             landmarkName = "-shouldDisplayPlaceholder"
             landmarkType = "5">
          </BreakpointContent>
@@ -1368,27 +1384,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
-            landmarkName = "-shouldDisplayPlaceholder"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "448"
-            endingLineNumber = "448"
+            startingLineNumber = "444"
+            endingLineNumber = "444"
             landmarkName = "-setShowingPlaceholder:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1400,12 +1400,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "445"
-            endingLineNumber = "445"
-            landmarkName = "-setShowingPlaceholder:"
+            startingLineNumber = "441"
+            endingLineNumber = "441"
+            landmarkName = "-updatePlaceholderNotifyVisibility:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1448,27 +1448,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "-numberOfItemsInSection:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "-numberOfSections"
             landmarkType = "5">
          </BreakpointContent>
@@ -1480,11 +1464,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "-description"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1496,12 +1496,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "-tableView:sizingCellWithIdentifier:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1590,11 +1590,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "@implementation DataSource"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
             landmarkName = "-numberOfSections"
             landmarkType = "5">
          </BreakpointContent>
@@ -1606,12 +1622,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "-numberOfItemsInSection:"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "-configureCell:forRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1622,11 +1638,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "-placeholderCellForTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1638,11 +1654,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
             landmarkName = "-placeholderCellForTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1654,27 +1670,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
+            timestampString = "442187564.299705"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "-placeholderCellForTableView:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/DataSource.m"
-            timestampString = "442181554.14068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "-placeholderCellForTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1916,6 +1916,38 @@
             startingLineNumber = "19"
             endingLineNumber = "19"
             landmarkName = "-init"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
+            landmarkName = "-tableView:heightForRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/DataSource.m"
+            timestampString = "442187564.299705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
