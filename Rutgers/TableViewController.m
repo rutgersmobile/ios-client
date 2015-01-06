@@ -18,11 +18,11 @@
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
-@property (nonatomic, readonly) UITableViewStyle style;
+//@property (nonatomic, readonly) UITableViewStyle style;
 @property (nonatomic) CGRect lastValidBounds;
 @end
 
-@implementation TableViewController
+@implementation TableViewController/*
 -(instancetype)initWithStyle:(UITableViewStyle)style{
     self = [super init];
     if (self) {
@@ -42,7 +42,7 @@
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
     [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-}
+}*/
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -125,11 +125,6 @@
 }
 
 #pragma mark - Data Source
-@synthesize dataSource = _dataSource;
--(DataSource *)dataSource{
-    return _dataSource;
-}
-
 -(void)setDataSource:(DataSource *)dataSource{
     _dataSource.delegate = nil;
     _dataSource = dataSource;
@@ -138,11 +133,6 @@
 }
 
 #pragma mark - Search Data Source
-@synthesize searchDataSource = _searchDataSource;
--(DataSource<SearchDataSource> *)searchDataSource{
-    return _searchDataSource;
-}
-
 -(void)setSearchDataSource:(DataSource<SearchDataSource> *)searchDataSource{
     if (searchDataSource && !self.searchEnabled) {
         [self enableSearch];
@@ -238,46 +228,46 @@
 }
 
 #pragma mark - Data Source notifications
--(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
+-(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimation)direction{
     switch (direction) {
-        case DataSourceOperationDirectionNone:
+        case DataSourceAnimationFade:
             return UITableViewRowAnimationFade;
             break;
-        case DataSourceOperationDirectionLeft:
+        case DataSourceAnimationLeft:
             return UITableViewRowAnimationLeft;
             break;
-        case DataSourceOperationDirectionRight:
+        case DataSourceAnimationRight:
             return UITableViewRowAnimationRight;
             break;
     }
 }
 
--(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction{
-    [[self tableViewForDataSource:dataSource] insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
+-(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction{
+    [[self tableViewForDataSource:dataSource] insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction{
-    [[self tableViewForDataSource:dataSource] deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
+-(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction{
+    [[self tableViewForDataSource:dataSource] deleteRowsAtIndexPaths:removedIndexPaths withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction{
-    [[self tableViewForDataSource:dataSource] reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
+-(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction{
+    [[self tableViewForDataSource:dataSource] reloadRowsAtIndexPaths:refreshedIndexPaths withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
     [[self tableViewForDataSource:dataSource] moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
-    [[self tableViewForDataSource:dataSource] reloadSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
+-(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+    [[self tableViewForDataSource:dataSource] reloadSections:sections withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
-    [[self tableViewForDataSource:dataSource] insertSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
+-(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+    [[self tableViewForDataSource:dataSource] insertSections:sections withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
-    [[self tableViewForDataSource:dataSource] deleteSections:sections withRowAnimation:[self rowAnimationForSectionOperationDirection:direction]];
+-(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+    [[self tableViewForDataSource:dataSource] deleteSections:sections withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection{

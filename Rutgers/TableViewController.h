@@ -10,11 +10,7 @@
 #import "DataSource.h"
 #import "SearchDataSource.h"
 
-@interface TableViewController : UIViewController <UITableViewDelegate, UISearchDisplayDelegate>
--(instancetype)initWithStyle:(UITableViewStyle)style;
-
-@property (nonatomic) UITableView *tableView;
+@interface TableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate>
 -(UITableView *)searchTableView;
-
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath NS_REQUIRES_SUPER;
 @end
