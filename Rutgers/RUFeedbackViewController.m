@@ -10,7 +10,7 @@
 #import "RUFeedbackDataSource.h"
 #import "RUFeedbackDataSource.h"
 #import "AlertDataSource.h"
-#import "ALTTableViewController_Private.h"
+#import "TableViewController_Private.h"
 #import "FeedbackDataSourceDelegate.h"
 
 @interface RUFeedbackViewController () <FeedbackDataSourceDelegate>
@@ -48,6 +48,7 @@
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
     return [dataSource isKindOfClass:[AlertDataSource class]];
 }

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "ALTTableViewController.h"
+#import "TableViewController.h"
 
-@interface RUFeedbackViewController : ALTTableViewController <RUChannelProtocol>
+@interface RUFeedbackViewController : TableViewController <RUChannelProtocol>
 @end
