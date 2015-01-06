@@ -95,9 +95,11 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
                                        @"release" : [self releaseDict]
                                        } mutableCopy];
     
-    baseEvent[@"role"] = [RUUserInfoManager currentUserRole][@"title"];
-
-    baseEvent[@"campus"] = [RUUserInfoManager currentCampus][@"title"];
+    NSString *roleTitle = [RUUserInfoManager currentUserRole][@"title"];
+    NSString *campusTitle = [RUUserInfoManager currentCampus][@"title"];
+    
+    if (roleTitle) baseEvent[@"role"] = roleTitle;
+    if (campusTitle) baseEvent[@"campus"] = campusTitle;
     
     return baseEvent;
 }
