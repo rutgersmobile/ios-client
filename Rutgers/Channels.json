@@ -1,5 +1,10 @@
  [
   {
+  "handle" : "options",
+  "title" : "Options",
+  "view" : "options"
+  },
+  {
   "handle" : "bus",
   "title": "Bus",
   "view" : "bus",
