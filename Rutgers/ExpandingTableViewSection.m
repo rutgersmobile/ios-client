@@ -29,7 +29,7 @@
     
     NSInteger newCount = self.numberOfItems;
     
-    [self invalidateCachedHeightsForSection:0];
+    [self invalidateCachedHeightsForIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(1, newCount-1) inSection:0]];
     if (expanded) {
         [self notifyBatchUpdate:^{
             [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldCount) inSection:0]];
