@@ -28,29 +28,6 @@
     return self;
 }
 
--(void)loadView{
-    [super loadView];
-    
-    /*
-    CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarHeight];
-
-    UIView *paddingView = [UIView newAutoLayoutView];
-
-    [self.view addSubview:paddingView];
-    self.paddingView = paddingView;
-
-    [paddingView autoSetDimension:ALDimensionHeight toSize:statusBarHeight];
-    [paddingView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
-    
-    self.tableView.contentInset = UIEdgeInsetsMake(statusBarHeight, 0, 0, 0);
-    */
-    [self setContentInsets];
-    
-    [self.tableView autoRemoveConstraintsAffectingView];
-    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeRight];
-    [self.tableView autoSetDimension:ALDimensionWidth toSize:self.revealViewController.rearViewRevealWidth];
-}
-
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = NO;
