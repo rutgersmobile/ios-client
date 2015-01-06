@@ -74,8 +74,10 @@
 
 - (void)setItems:(NSArray *)items animated:(BOOL)animated
 {
-    if (_items == items || [_items isEqualToArray:items])
+    if (_items == items || [_items isEqualToArray:items]) {
+        [self updateLoadingStateFromItems];
         return;
+    }
     
     if (!self.delegate) {
         _items = [items copy];
@@ -85,9 +87,9 @@
     
     if (!animated) {
         _items = [items copy];
-        [self updateLoadingStateFromItems];
         [self invalidateCachedHeightsForSection:0];
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
+        [self updateLoadingStateFromItems];
         return;
     }
     
@@ -120,6 +122,7 @@
         [toMovedIndexPaths addObject:[NSIndexPath indexPathForItem:[newItemSet indexOfObject:movedItem] inSection:0]];
     }
     
+    
     [self notifyBatchUpdate:^{
         _items = [items copy];
         
@@ -139,7 +142,6 @@
         }
         [self updateLoadingStateFromItems];
     }];
-
 }
 
 - (void)updateLoadingStateFromItems
