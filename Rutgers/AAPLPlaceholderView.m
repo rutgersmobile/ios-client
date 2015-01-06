@@ -9,6 +9,7 @@
  */
 
 #import "AAPLPlaceholderView.h"
+#import "RULabel.h"
 
 #define CORNER_RADIUS 3.0
 #define VERTICAL_ELEMENT_SPACING 35.0
@@ -48,7 +49,6 @@
         _buttonAction = [buttonAction copy];
     }
 
-    self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _containerView = [[UIView alloc] initWithFrame:CGRectZero];
     _containerView.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -58,7 +58,7 @@
     _imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [_containerView addSubview:_imageView];
 
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _titleLabel = [[RULabel alloc] initWithFrame:CGRectZero];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.backgroundColor = nil;
     _titleLabel.opaque = NO;
@@ -66,9 +66,10 @@
     _titleLabel.numberOfLines = 0;
     _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.textColor = textColor;
-    [_containerView addSubview:_titleLabel];
+    [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [_titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
-    _messageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _messageLabel = [[RULabel alloc] initWithFrame:CGRectZero];
     _messageLabel.textAlignment = NSTextAlignmentCenter;
     _messageLabel.opaque = NO;
     _messageLabel.backgroundColor = nil;
@@ -76,7 +77,8 @@
     _messageLabel.numberOfLines = 0;
     _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _messageLabel.textColor = textColor;
-    [_containerView addSubview:_messageLabel];
+    [_messageLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [_messageLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     _actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [_actionButton addTarget:self action:@selector(_actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -86,25 +88,28 @@
     _actionButton.contentEdgeInsets = UIEdgeInsetsMake(0, 16, 0, 16);
     [_actionButton setBackgroundImage:[self _buttonBackgroundImageWithColor:textColor] forState:UIControlStateNormal];
     [_actionButton setTitleColor:textColor forState:UIControlStateNormal];
-    [_containerView addSubview:_actionButton];
 
     [self addSubview:_containerView];
 
     [self _updateViewHierarchy];
 
+    
     // Constrain the container to the host view. The height of the container will be determined by the contents.
-    NSMutableArray *constraints = [NSMutableArray array];
-
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:_containerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
-
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
+    [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
+    [self.containerView autoCenterInSuperview];
+    
+  
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         // _containerView should be no more than 418pt and the left and right padding should be no less than 30pt on both sides
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=30)-[_containerView(<=418)]-(>=30)-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_containerView)]];
-    else
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-30-[_containerView]-30-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_containerView)]];
+        [self.containerView autoSetDimension:ALDimensionWidth toSize:418 relation:NSLayoutRelationLessThanOrEqual];
+    } else {
+        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:30 relation:NSLayoutRelationGreaterThanOrEqual];
+        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30 relation:NSLayoutRelationGreaterThanOrEqual];
+    }
 
-    [self addConstraints:constraints];
+    
     return self;
 }
 
@@ -290,16 +295,6 @@
 
 @end
 
-/*
-@interface AAPLCollectionPlaceholderView ()
-
-@end
-
-@implementation AAPLCollectionPlaceholderView
-
-@end
-*/
-
 @interface AAPLPlaceholderCell ()
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @end
@@ -307,28 +302,27 @@
 @implementation AAPLPlaceholderCell
 
 -(void)initializeSubviews{
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.activityIndicatorView.color = [UIColor lightGrayColor];
     
+    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:self.contentView.bounds title:nil message:nil image:nil buttonTitle:nil buttonAction:nil];
+    self.placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.contentView addSubview:self.activityIndicatorView];
+    [self.contentView addSubview:self.placeholderView];
 }
 
 -(void)initializeConstraints{
-    [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets)];
+    [self.activityIndicatorView autoCenterInSuperview];
+    [self.activityIndicatorView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.activityIndicatorView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+
+    [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
 }
 
 - (void)showActivityIndicator:(BOOL)show
 {
-    if (!_activityIndicatorView) {
-        _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-        _activityIndicatorView.color = [UIColor lightGrayColor];
-        
-        [self.contentView addSubview:_activityIndicatorView];
-        NSMutableArray *constraints = [NSMutableArray array];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:_activityIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-        [self.contentView addConstraints:constraints];
-    }
-    
-    _activityIndicatorView.hidden = !show;
     
     if (show){
         [_activityIndicatorView startAnimating];
@@ -338,64 +332,19 @@
     }
 }
 
-- (void)hidePlaceholderAnimated:(BOOL)animated
-{
-    AAPLPlaceholderView *placeholderView = _placeholderView;
-    
-    if (!placeholderView)
-        return;
-    
-    if (animated) {
-        
-        [UIView animateWithDuration:0.25 animations:^{
-            placeholderView.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [placeholderView removeFromSuperview];
-            // If it's still the current placeholder, get rid of it
-            if (placeholderView == _placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
-    else {
-        [UIView performWithoutAnimation:^{
-            [placeholderView removeFromSuperview];
-            if (_placeholderView == placeholderView)
-                self.placeholderView = nil;
-        }];
-    }
+- (void)hidePlaceholder{
+    self.placeholderView.alpha = 0.0;
 }
 
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated
-{
-    AAPLPlaceholderView *oldPlaceHolder = self.placeholderView;
-    
-    if (oldPlaceHolder && ([oldPlaceHolder.title isEqualToString:title]) && [oldPlaceHolder.message isEqualToString:message])
-        return;
-    
+- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image{
     [self showActivityIndicator:NO];
-    
-    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:CGRectZero title:title message:message image:image buttonTitle:nil buttonAction:nil];
-    _placeholderView.alpha = 0.0;
-    _placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:_placeholderView];
-    
-    [_placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self.contentView bringSubviewToFront:_placeholderView];
-    
-    if (animated) {
-        [UIView animateWithDuration:0.25 animations:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [oldPlaceHolder removeFromSuperview];
-        }];
-    }
+    self.placeholderView.alpha = 1.0;
+    if ([self.placeholderView.title isEqualToString:title] && [self.placeholderView.message isEqualToString:message])
+        return;
     else {
-        [UIView performWithoutAnimation:^{
-            _placeholderView.alpha = 1.0;
-            oldPlaceHolder.alpha = 0.0;
-            [oldPlaceHolder removeFromSuperview];
-        }];
+        self.placeholderView.title = title;
+        self.placeholderView.message = message;
+        self.placeholderView.image = image;
     }
 }
 
