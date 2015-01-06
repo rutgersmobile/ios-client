@@ -10,7 +10,7 @@
 #import "AAPLContentLoading.h"
 
 @class DataSource;
-@class LayoutMetrics;
+@class AAPLPlaceholderCell;
 
 @interface DataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource, AAPLContentLoading>
 
@@ -52,7 +52,7 @@
 - (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier;
 - (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-- (id)placeholderCellForTableView:(UITableView *)tableView;
+- (void)configurePlaceholderCell:(AAPLPlaceholderCell *)cell;
 
 - (NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath;

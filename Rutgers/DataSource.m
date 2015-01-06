@@ -12,7 +12,6 @@
 #import "UIView+LayoutSize.h"
 #import <libkern/OSAtomic.h>
 #import "ALTableViewAbstractCell.h"
-#import "TileCollectionViewCell.h"
 #import "RowHeightCache.h"
 #import "AAPLPlaceholderView.h"
 #import "NSIndexPath+RowExtensions.h"
@@ -127,26 +126,20 @@
     
 }
 
-- (id)placeholderCellForTableView:(UITableView *)tableView{
-    AAPLPlaceholderCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
-    
+-(void)configurePlaceholderCell:(AAPLPlaceholderCell *)cell{
     NSString *loadingState = self.loadingState;
     if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
-        [cell hidePlaceholderAnimated:NO];
+        [cell hidePlaceholder];
         [cell showActivityIndicator:YES];
-        return cell;
     } else {
-        [cell showActivityIndicator:NO];
-    }
     
     if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
-        [cell showPlaceholderWithTitle:self.noContentTitle message:self.noContentMessage image:self.noContentImage animated:YES];
+        [cell showPlaceholderWithTitle:self.noContentTitle message:self.noContentMessage image:self.noContentImage];
     } else if ([loadingState isEqualToString:AAPLLoadStateError]) {
-        [cell showPlaceholderWithTitle:self.errorTitle message:self.errorMessage image:self.errorImage animated:YES];
+        [cell showPlaceholderWithTitle:self.errorTitle message:self.errorMessage image:self.errorImage];
     } else
-        [cell hidePlaceholderAnimated:YES];
-    
-    return cell;
+        [cell hidePlaceholder];
+    }
 }
 
 -(id)tableView:(UITableView *)tableView sizingCellWithIdentifier:(NSString *)identifier{
@@ -162,28 +155,36 @@
     ALTableViewAbstractCell *cell;
     
     if (self.showingPlaceholder) {
-        cell = [self placeholderCellForTableView:tableView];
+        AAPLPlaceholderCell *placeholderCell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+        cell = placeholderCell;
+        [self configurePlaceholderCell:placeholderCell];
     } else {
         cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
         [cell updateFonts];
         [self configureCell:cell forRowAtIndexPath:indexPath];
     }
-    
+
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.showingPlaceholder) return PLACEHOLDER_HEIGHT;
-    
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{    
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
    
-    ALTableViewAbstractCell *cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-    [cell updateFonts];
-    [self configureCell:cell forRowAtIndexPath:indexPath];
+    ALTableViewAbstractCell *cell;
+    
+    if (self.showingPlaceholder) {
+        AAPLPlaceholderCell *placeholderCell = [self tableView:tableView sizingCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+        cell = placeholderCell;
+        [self configurePlaceholderCell:placeholderCell];
+    } else {
+        cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        [cell updateFonts];
+        [self configureCell:cell forRowAtIndexPath:indexPath];
+    }
     
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
@@ -224,9 +225,9 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    TileCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForItemAtIndexPath:indexPath] forIndexPath:indexPath];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForItemAtIndexPath:indexPath] forIndexPath:indexPath];
     
-    [cell updateFonts];
+   // [cell updateFonts];
     [self configureCell:cell forItemAtIndexPath:indexPath];
     
     [cell setNeedsUpdateConstraints];
@@ -381,22 +382,22 @@
 
 - (void)didEnterLoadingState
 {
-    [self updatePlaceholderNotifyVisibility:YES];
+    [self updatePlaceholder];
 }
 
 - (void)didEnterLoadedState
 {
-    [self updatePlaceholderNotifyVisibility:YES];
+    [self updatePlaceholder];
 }
 
 - (void)didEnterNoContentState
 {
-    [self updatePlaceholderNotifyVisibility:YES];
+    [self updatePlaceholder];
 }
 
 - (void)didEnterErrorState
 {
-    [self updatePlaceholderNotifyVisibility:YES];
+    [self updatePlaceholder];
 }
 
 #pragma mark - Placeholder
@@ -428,43 +429,41 @@
     if (![loadingState isEqualToString:AAPLLoadStateLoadingContent] && ![loadingState isEqualToString:AAPLLoadStateNoContent])
         return NO;
     
-    // Can't display the placeholder if both the title and message are missing
-    if (!self.noContentMessage && !self.noContentTitle)
-        return NO;
-    
     return YES;
 }
 
-- (void)updatePlaceholderNotifyVisibility:(BOOL)notify
-{
+- (void)updatePlaceholder{
     self.showingPlaceholder = self.shouldDisplayPlaceholder;
 }
 
 -(void)setShowingPlaceholder:(BOOL)showingPlaceholder{
     if (_showingPlaceholder == showingPlaceholder) {
-        if (!showingPlaceholder) return;
-        else [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
-    }
-    
-    [self notifyBatchUpdate:^{
-        NSInteger oldNumberOfSections = self.numberOfSections;
-        NSInteger oldNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
-        
-        _showingPlaceholder = showingPlaceholder;
-        
-        NSInteger newNumberOfSections = self.numberOfSections;
-        NSInteger newNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
-        
-        if (newNumberOfSections > 0 && oldNumberOfSections > 0) {
-            [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItemsInFirstSection) inSection:0]];
-            [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItemsInFirstSection) inSection:0]];
-            [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, newNumberOfSections-1)]];
-            [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, oldNumberOfSections-1)]];
-        } else {
-            [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
-            [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
+        if (showingPlaceholder) {
+            [self invalidateCachedHeightsForIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
+            [self notifyItemsRefreshedAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
         }
-    }];
+    } else {
+        [self notifyBatchUpdate:^{
+            [self invalidateCachedHeights];
+            NSInteger oldNumberOfSections = self.numberOfSections;
+            NSInteger oldNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
+            
+            _showingPlaceholder = showingPlaceholder;
+            
+            NSInteger newNumberOfSections = self.numberOfSections;
+            NSInteger newNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
+            
+            if (newNumberOfSections > 0 && oldNumberOfSections > 0) {
+                [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItemsInFirstSection) inSection:0]];
+                [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItemsInFirstSection) inSection:0]];
+                [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, newNumberOfSections-1)]];
+                [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, oldNumberOfSections-1)]];
+            } else {
+                [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
+                [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
+            }
+        }];
+    }
 }
 
 #pragma mark - Data Source Delegate
@@ -497,19 +496,19 @@
 
 // Use these methods to notify the observers of changes to the dataSource.
 - (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths{
-    [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceOperationDirectionNone];
+    [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceAnimationFade];
 }
 
 - (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths{
-    [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceOperationDirectionNone];
+    [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceAnimationFade];
 }
 
 - (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths{
-    [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:DataSourceOperationDirectionNone];
+    [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:DataSourceAnimationFade];
 }
 
 // Use these methods to notify the observers of changes to the dataSource.
-- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction{
+- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
@@ -519,7 +518,7 @@
     
 }
 
-- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction{
+- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
@@ -529,7 +528,7 @@
     
 }
 
-- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction{
+- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
@@ -550,15 +549,15 @@
 }
 
 - (void)notifySectionsInserted:(NSIndexSet *)sections{
-    [self notifySectionsInserted:sections direction:DataSourceOperationDirectionNone];
+    [self notifySectionsInserted:sections direction:DataSourceAnimationFade];
 }
 
 - (void)notifySectionsRemoved:(NSIndexSet *)sections{
-    [self notifySectionsRemoved:sections direction:DataSourceOperationDirectionNone];
+    [self notifySectionsRemoved:sections direction:DataSourceAnimationFade];
 }
 
 - (void)notifySectionsRefreshed:(NSIndexSet *)sections{
-    [self notifySectionsRefreshed:sections direction:DataSourceOperationDirectionNone];
+    [self notifySectionsRefreshed:sections direction:DataSourceAnimationFade];
 }
 
 - (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection{
@@ -569,7 +568,7 @@
     }
 }
 
-- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
+- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -578,7 +577,7 @@
     }
 }
 
-- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
+- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -588,7 +587,7 @@
     
 }
 
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction{
+- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
