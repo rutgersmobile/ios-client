@@ -20,7 +20,7 @@
 
 -(void)updateForQuery:(NSString *)query{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUPlacesDataLoadingManager sharedInstance] queryPlacesWithString:query completion:^(NSArray *results) {
+        [[RUPlacesDataLoadingManager sharedInstance] queryPlacesWithString:query completion:^(NSArray *results, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;

@@ -16,9 +16,9 @@ extern NSString *PlacesDataDidUpdateRecentPlacesKey;
 @interface RUPlacesDataLoadingManager : NSObject
 +(RUPlacesDataLoadingManager *)sharedInstance;
 
--(void)performOnPlacesLoaded:(void (^)(void))block;
+-(void)performOnPlacesLoaded:(void (^)(NSError *error))block;
 
--(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock;
+-(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results, NSError *error))completionBlock;
 
 -(void)userWillViewPlace:(RUPlace *)place;
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock;

@@ -34,7 +34,7 @@
     self.searchBar.userInteractionEnabled = NO;
     
     __weak UISearchBar *weakSearchBar = self.searchBar;
-    [[RUPlacesDataLoadingManager sharedInstance] performOnPlacesLoaded:^{
+    [[RUPlacesDataLoadingManager sharedInstance] performOnPlacesLoaded:^(NSError *error){
         weakSearchBar.userInteractionEnabled = YES;
     }];
 }

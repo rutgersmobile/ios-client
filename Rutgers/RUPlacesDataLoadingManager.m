@@ -16,7 +16,6 @@
 #import "NSArray+LimitedToCount.h"
 
 NSString *PlacesDataDidUpdateRecentPlacesKey = @"PlacesDataDidUpdateRecentPlacesKey";
-
 static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 
 @interface RUPlacesDataLoadingManager ()
@@ -48,8 +47,10 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     return self;
 }
 
--(void)performOnPlacesLoaded:(void (^)(void))block{
-    dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), block);
+-(void)performOnPlacesLoaded:(void (^)(NSError *))block{
+    dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
+        block(nil);
+    });
 }
 
 -(void)getPlaces{
@@ -76,17 +77,17 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     self.places = parsedPlaces;
 }
 
--(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results))completionBlock{
+-(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results, NSError *error))completionBlock{
     dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSPredicate *searchPredicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
         NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
         results = [results sortByKeyPath:@"title"];
-        completionBlock(results);
+        completionBlock(results,nil);
     });
 }
 
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock{
-    [self performOnPlacesLoaded:^{
+    [self performOnPlacesLoaded:^(NSError *error){
         NSArray *recentPlaces = [[NSUserDefaults standardUserDefaults] arrayForKey:PlacesRecentPlacesKey];
         NSArray *recentPlacesDetails = [self.places objectsForKeysIgnoringNotFound:recentPlaces];
         completionBlock(recentPlacesDetails);
