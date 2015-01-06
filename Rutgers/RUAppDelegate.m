@@ -31,10 +31,9 @@
     [self initializeCache];
     [self initializeDrawer];
     
-    [[RUAnalyticsManager sharedManager] queueEventForApplicationLaunch];
-    
     self.userInfoManager = [[RUUserInfoManager alloc] init];
     [self.userInfoManager getUserInfoIfNeededWithCompletion:^{
+        [[RUAnalyticsManager sharedManager] queueEventForApplicationLaunch];
         [self.rootController openDrawerIfNeeded];
     }];
     
