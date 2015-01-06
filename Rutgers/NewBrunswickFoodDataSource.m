@@ -20,6 +20,7 @@
     }
     return self;
 }
+
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [RUFoodData getFoodWithCompletion:^(NSArray *diningHalls, NSError *error) {
@@ -28,15 +29,9 @@
                 return;
             }
             if (!error) {
-                if (diningHalls.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        [me parseResponse:diningHalls];
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        self.items = nil;
-                    }];
-                }
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me parseResponse:diningHalls];
+                }];
             } else {
                 [loading doneWithError:error];
             }

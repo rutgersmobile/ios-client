@@ -31,15 +31,9 @@
                 return;
             }
             if (!error) {
-                if (routes.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        me.items = routes;
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        me.items = routes;
-                    }];
-                }
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = routes;
+                }];
             } else {
                 [loading doneWithError:error];
             }

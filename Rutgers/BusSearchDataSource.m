@@ -42,18 +42,10 @@
                 [loading ignore];
                 return;
             }
-            if (routes.count || stops.count) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    me.routes.items = routes;
-                    me.stops.items = stops;
-                }];
-            } else {
-                [loading updateWithNoContent:^(typeof(self) me) {
-                    me.routes.items = routes;
-                    me.stops.items = stops;
-                }];
-            }
-
+            [loading updateWithContent:^(typeof(self) me) {
+                me.routes.items = routes;
+                me.stops.items = stops;
+            }];
         }];
     }];
 }

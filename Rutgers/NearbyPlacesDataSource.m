@@ -38,15 +38,9 @@
                 return;
             }
             if (!error) {
-                if (nearbyPlaces.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        me.items = nearbyPlaces;
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        me.items = nearbyPlaces;
-                    }];
-                }
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = nearbyPlaces;
+                }];
             } else {
                 [loading doneWithError:error];
             }

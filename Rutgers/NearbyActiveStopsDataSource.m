@@ -35,15 +35,9 @@
                 return;
             }
             if (!error) {
-                if (stops.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        self.items = stops;
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        self.items = stops;
-                    }];
-                }
+                [loading updateWithContent:^(typeof(self) me) {
+                    self.items = stops;
+                }];
             } else {
                 [loading doneWithError:nil];
             }

@@ -32,15 +32,9 @@
                 return;
             }
             if (!error) {
-                if (stops.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        me.items = stops;
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        me.items = stops;
-                    }];
-                }
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = stops;
+                }];
             } else {
                 [loading doneWithError:error];
             }

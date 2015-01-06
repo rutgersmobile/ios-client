@@ -16,15 +16,9 @@
                 [loading ignore];
                 return;
             }
-            if (webLinks.count) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    me.items = webLinks;
-                }];
-            } else {
-                [loading updateWithNoContent:^(typeof(self) me) {
-                    me.items = webLinks;
-                }];
-            }
+            [loading updateWithContent:^(typeof(self) me) {
+                me.items = webLinks;
+            }];
         }];
     }];
 }

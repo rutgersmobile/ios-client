@@ -30,15 +30,9 @@
                 [loading ignore];
                 return;
             }
-            if (courses.count) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    me.items = courses;
-                }];
-            } else {
-                [loading updateWithContent:^(typeof(self) me) {
-                    me.items = courses;
-                }];
-            }
+            [loading updateWithContent:^(typeof(self) me) {
+                me.items = courses;
+            }];
         } failure:^{
             [loading doneWithError:nil];
         }];

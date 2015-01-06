@@ -43,15 +43,9 @@
             }
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSArray *items = responseObject[@"children"];
-                if (items.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        me.items = items;
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        me.items = items;
-                    }];
-                }
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = items;
+                }];
             } else {
                 [loading doneWithError:nil];
             }
