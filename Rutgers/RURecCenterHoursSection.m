@@ -80,13 +80,13 @@
 -(void)goLeft{
     if (self.selectedDateIndex == 0) return;
     self.selectedDateIndex--;
-    [self updateDateWithDirection:DataSourceOperationDirectionRight];
+    [self updateDateWithDirection:DataSourceAnimationRight];
 }
 
 -(void)goRight{
     if (self.selectedDateIndex == self.allDateComponents.count - 1) return;
     self.selectedDateIndex++;
-    [self updateDateWithDirection:DataSourceOperationDirectionLeft];
+    [self updateDateWithDirection:DataSourceAnimationLeft];
 }
 
 -(void)setSelectedDateIndex:(NSInteger)selectedDateIndex{
@@ -106,7 +106,7 @@
     self.headerRow.rightButtonEnabled = !(self.selectedDateIndex == self.allDateComponents.count - 1);
 }
 
--(void)updateDateWithDirection:(DataSourceOperationDirection)direction{
+-(void)updateDateWithDirection:(DataSourceAnimation)direction{
     [self invalidateCachedHeightsForSection:0];
     [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, [self numberOfItemsInSection:0]) inSection:0] direction:direction];
 }

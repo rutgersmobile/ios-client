@@ -10,21 +10,22 @@
 #import "AAPLPlaceholderView.h"
 
 typedef enum {
-    DataSourceOperationDirectionNone = 0,
-    DataSourceOperationDirectionLeft,
-    DataSourceOperationDirectionRight,
-} DataSourceOperationDirection;
+    DataSourceAnimationFade = 0,
+    DataSourceAnimationLeft,
+    DataSourceAnimationRight,
+    
+} DataSourceAnimation;
 
 @protocol DataSourceDelegate <NSObject>
 @optional
-- (void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction;
-- (void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction;
-- (void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction;
+- (void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction;
 - (void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
-- (void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction;
-- (void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction;
-- (void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction;
+- (void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
 - (void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection;
 
 - (void)dataSourceDidReloadData:(DataSource *)dataSource;
@@ -36,7 +37,7 @@ typedef enum {
 @end
 
 @interface DataSource ()
-- (void)updatePlaceholderNotifyVisibility:(BOOL)notify;
+- (void)updatePlaceholder;
 
 - (void)stateWillChange;
 - (void)stateDidChange;
@@ -65,18 +66,18 @@ typedef enum {
 - (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths;
 - (void)notifyItemMovedFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
-- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceOperationDirection)direction;
-- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceOperationDirection)direction;
-- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceOperationDirection)direction;
+- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction;
 
 - (void)notifySectionsInserted:(NSIndexSet *)sections;
 - (void)notifySectionsRemoved:(NSIndexSet *)sections;
 - (void)notifySectionsRefreshed:(NSIndexSet *)sections;
 - (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection;
 
-- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction;
-- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction;
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceOperationDirection)direction;
+- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
 
 - (void)notifyDidReloadData;
 

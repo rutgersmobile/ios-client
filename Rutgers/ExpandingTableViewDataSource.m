@@ -71,10 +71,10 @@
         self.dataSources = [sections copy];
         
         if ([deletedIndexes count])
-            [self notifySectionsRemoved:deletedIndexes direction:DataSourceOperationDirectionRight];
+            [self notifySectionsRemoved:deletedIndexes direction:DataSourceAnimationRight];
         
         if ([insertedIndexes count])
-            [self notifySectionsInserted:insertedIndexes direction:DataSourceOperationDirectionLeft];
+            [self notifySectionsInserted:insertedIndexes direction:DataSourceAnimationLeft];
         
         NSUInteger fromIndex = [fromMovedIndexes firstIndex];
         NSUInteger toIndex = [toMovedIndexes firstIndex];

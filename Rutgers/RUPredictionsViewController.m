@@ -42,13 +42,13 @@
     self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
 }
 
--(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceOperationDirection)direction{
+-(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimation)direction{
     switch (direction) {
-        case DataSourceOperationDirectionNone:
+        case DataSourceAnimationFade:
             return UITableViewRowAnimationAutomatic;
             break;
         default:
-            return [super rowAnimationForSectionOperationDirection:direction];
+            return [super rowAnimationForOperationDirection:direction];
             break;
     }
 }
