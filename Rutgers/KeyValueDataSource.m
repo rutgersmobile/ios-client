@@ -70,14 +70,7 @@ static NSString * const AAPLKeyValueDataSourceLabelKey = @"label";
     id value = [self.object valueForKeyPath:dictionary[AAPLKeyValueDataSourceKeyPathKey]];
     
     valueString = value;
-/*
-    if ([value isKindOfClass:[NSString class]]) {
-    } else if ([value isKindOfClass:[NSArray class]]) {
-        valueString = [value componentsJoinedByString:@" "];
-    } else {
-        
-    }*/
-    
+
     cell.textLabel.text = valueString;
 }
 

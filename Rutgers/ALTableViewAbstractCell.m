@@ -16,15 +16,14 @@
     if (self) {
         [self.contentView autoRemoveConstraintsAffectingView];
         
-        //self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-       // self.opaque = YES;
-       // self.contentView.opaque = YES;
+     
         [self initializeSubviews];
         
         [UIView autoSetPriority:999 forConstraints:^{
             [self initializeConstraints];
         }];
+        
         [self updateFonts];
     }
     return self;
