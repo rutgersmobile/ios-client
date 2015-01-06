@@ -51,7 +51,8 @@
         if (!_channelsByHandle) {
             NSMutableDictionary *channelsByTag = [NSMutableDictionary dictionary];
             for (NSDictionary *channel in self.nativeChannels) {
-                channelsByTag[[channel channelHandle]] = channel;
+                NSString *handle = [channel channelHandle];
+                if (handle) channelsByTag[handle] = channel;
             }
             _channelsByHandle = channelsByTag;
         }
