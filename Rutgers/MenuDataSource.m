@@ -14,7 +14,6 @@
 -(id)init{
     self = [super init];
     if (self) {
-        [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:@[@{@"title" : @"Options", @"view" : @"options"}]]];
         [self addDataSource:[[NativeChannelsDataSource alloc] init]];
         [self addDataSource:[[WebLinksDataSource alloc] init]];
     }
