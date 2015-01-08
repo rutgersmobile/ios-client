@@ -177,6 +177,10 @@
 }
 
 #pragma mark - Table View Data Source
+-(CGFloat)tableViewWidth{
+    return [self.delegate tableViewWidth];
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self.selectedDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
 }

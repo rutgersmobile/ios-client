@@ -131,6 +131,10 @@
 }
 
 #pragma mark - Table View Data Source
+-(CGFloat)tableViewWidth{
+    return  [self.delegate tableViewWidth];
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.showingPlaceholder) return [super tableView:tableView cellForRowAtIndexPath:indexPath];
     NSInteger globalSection = indexPath.section;
