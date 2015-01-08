@@ -17,6 +17,9 @@ typedef enum {
 } DataSourceAnimation;
 
 @protocol DataSourceDelegate <NSObject>
+
+-(CGFloat)tableViewWidth;
+
 @optional
 - (void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction;
 - (void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction;
@@ -37,7 +40,7 @@ typedef enum {
 @end
 
 @interface DataSource ()
-- (void)updatePlaceholder;
+- (void)updatePlaceholderState;
 
 - (void)stateWillChange;
 - (void)stateDidChange;
