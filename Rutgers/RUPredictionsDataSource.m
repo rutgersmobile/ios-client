@@ -25,6 +25,7 @@
     self = [super init];
     if (self) {
         self.item = item;
+        self.noContentTitle = @"No predictions available.";
     }
     return self;
 }
