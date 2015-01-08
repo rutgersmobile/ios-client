@@ -37,6 +37,16 @@
     if (self) {
         self.sizingCells = [NSMutableDictionary dictionary];
         self.rowHeightCache = [[RowHeightCache alloc] init];
+        
+        self.noContentTitle = @"No content available.";
+        self.errorTitle = @"Network error.";
+        self.errorMessage = @"Please check your network connection and try again.";
+        self.errorButtonTitle = @"Retry";
+        
+        __weak typeof(self) weakSelf = self;
+        self.errorButtonAction = ^{
+            [weakSelf setNeedsLoadContent];
+        };
     }
     return self;
 }
@@ -129,14 +139,13 @@
 -(void)configurePlaceholderCell:(AAPLPlaceholderCell *)cell{
     NSString *loadingState = self.loadingState;
     if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
-        [cell hidePlaceholder];
         [cell showActivityIndicator:YES];
     } else {
     
     if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
-        [cell showPlaceholderWithTitle:self.noContentTitle message:self.noContentMessage image:self.noContentImage];
+        [cell showPlaceholderWithTitle:self.noContentTitle message:self.noContentMessage image:self.noContentImage buttonTitle:nil buttonAction:nil];
     } else if ([loadingState isEqualToString:AAPLLoadStateError]) {
-        [cell showPlaceholderWithTitle:self.errorTitle message:self.errorMessage image:self.errorImage];
+        [cell showPlaceholderWithTitle:self.errorTitle message:self.errorMessage image:self.errorImage buttonTitle:self.errorButtonTitle buttonAction:self.errorButtonAction];
     } else
         [cell hidePlaceholder];
     }
@@ -155,7 +164,7 @@
     ALTableViewAbstractCell *cell;
     
     if (self.showingPlaceholder) {
-        AAPLPlaceholderCell *placeholderCell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+        AAPLPlaceholderCell *placeholderCell = [self tableView:tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
         cell = placeholderCell;
         [self configurePlaceholderCell:placeholderCell];
     } else {
@@ -189,7 +198,7 @@
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
-    CGFloat height = [cell layoutSizeFittingSize:tableView.bounds.size].height;
+    CGFloat height = [cell layoutSizeFittingWidth:[self.delegate tableViewWidth]].height;
     [self.rowHeightCache setCachedHeight:height forRowAtIndexPath:indexPath];
     
     return height;
@@ -212,7 +221,7 @@
     [view setNeedsUpdateConstraints];
     [view updateConstraintsIfNeeded];
     
-    return [view layoutSizeFittingSize:tableView.bounds.size].height;
+    return [view layoutSizeFittingWidth:[self.delegate tableViewWidth]].height;
 }
 
 #pragma mark - Collection View Data Source
@@ -382,22 +391,22 @@
 
 - (void)didEnterLoadingState
 {
-    [self updatePlaceholder];
+    [self updatePlaceholderState];
 }
 
 - (void)didEnterLoadedState
 {
-    [self updatePlaceholder];
+    [self updatePlaceholderState];
 }
 
 - (void)didEnterNoContentState
 {
-    [self updatePlaceholder];
+    [self updatePlaceholderState];
 }
 
 - (void)didEnterErrorState
 {
-    [self updatePlaceholder];
+    [self updatePlaceholderState];
 }
 
 #pragma mark - Placeholder
@@ -432,7 +441,7 @@
     return YES;
 }
 
-- (void)updatePlaceholder{
+- (void)updatePlaceholderState{
     self.showingPlaceholder = self.shouldDisplayPlaceholder;
 }
 

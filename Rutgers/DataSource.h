@@ -39,6 +39,8 @@
 @property (nonatomic, copy) NSString *errorMessage;
 @property (nonatomic, copy) NSString *errorTitle;
 @property (nonatomic, strong) UIImage *errorImage;
+@property (nonatomic, copy) NSString *errorButtonTitle;
+@property (nonatomic, copy) dispatch_block_t errorButtonAction;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
