@@ -23,13 +23,16 @@
 }
 
 -(void)setSections:(NSArray *)sections animated:(BOOL)animated{
-    if (self.sections == sections || [self.sections isEqualToArray:sections])
+    if (self.sections == sections || [self.sections isEqualToArray:sections]) {
+        [self updateLoadingStateFromSections];
         return;
+    }
     
     if (!animated) {
         self.sections = [sections copy];
         [self invalidateCachedHeights];
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sections.count)]];
+        [self updateLoadingStateFromSections];
         return;
     }
     
@@ -85,8 +88,20 @@
             fromIndex = [fromMovedIndexes indexGreaterThanIndex:fromIndex];
             toIndex = [toMovedIndexes indexGreaterThanIndex:toIndex];
         }
+        [self updateLoadingStateFromSections];
     }];
 }
+
+- (void)updateLoadingStateFromSections
+{
+    NSString *loadingState = self.loadingState;
+    NSUInteger numberOfSections = [self.sections count];
+    if (numberOfSections && [loadingState isEqualToString:AAPLLoadStateNoContent])
+        self.loadingState = AAPLLoadStateContentLoaded;
+    else if (!numberOfSections && [loadingState isEqualToString:AAPLLoadStateContentLoaded])
+        self.loadingState = AAPLLoadStateNoContent;
+}
+
 
 -(ExpandingTableViewSection *)sectionAtIndex:(NSInteger)index{
     return self.sections[index];
