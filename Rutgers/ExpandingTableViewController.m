@@ -10,20 +10,10 @@
 #import "ExpandingTableViewDataSource.h"
 #import "TableViewController_Private.h"
 
-@interface ExpandingTableViewController () <DataSourceDelegate>
+@interface ExpandingTableViewController ()
 @end
 
 @implementation ExpandingTableViewController
-/*
--(void)viewDidLoad{
-    [super viewDidLoad];
-    self.tableView.estimatedRowHeight = 0;
-}
-
--(BOOL)respondsToSelector:(SEL)aSelector{
-    if (@selector(tableView:estimatedHeightForRowAtIndexPath:) == aSelector) return NO;
-    return [super respondsToSelector:aSelector];
-}*/
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {

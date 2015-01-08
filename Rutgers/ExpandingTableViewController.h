@@ -8,6 +8,6 @@
 
 #import "TableViewController.h"
 
-@interface ExpandingTableViewController : TableViewController
+@interface ExpandingTableViewController : TableViewController 
 
 @end
