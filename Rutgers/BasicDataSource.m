@@ -24,9 +24,6 @@
     self = [super init];
     if (self) {
         self.items = items;
-        self.noContentTitle = @"No content available.";
-        self.errorTitle = @"Network error.";
-        self.errorMessage = @"Please check your network connection and try again.";
     }
     return self;
 }
