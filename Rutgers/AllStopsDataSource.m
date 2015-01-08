@@ -31,7 +31,7 @@
                 return;
             }
             if (!error) {
-                [loading updateWithNoContent:^(typeof(self) me) {
+                [loading updateWithContent:^(typeof(self) me) {
                     me.items = stops;
                 }];
             } else {
