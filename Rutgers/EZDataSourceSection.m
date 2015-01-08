@@ -74,7 +74,7 @@
 }
 
 -(id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier{
-    ALTableViewAbstractCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    ALTableViewAbstractCell *cell = [super tableView:tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (!cell) {
         [tableView registerClass:NSClassFromString(reuseIdentifier) forCellReuseIdentifier:reuseIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
