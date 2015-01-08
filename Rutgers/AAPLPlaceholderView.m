@@ -290,9 +290,6 @@
     [super updateConstraints];
 }
 
-
-
-
 @end
 
 @interface AAPLPlaceholderCell ()
@@ -323,10 +320,9 @@
 
 - (void)showActivityIndicator:(BOOL)show
 {
-    
     if (show){
         [_activityIndicatorView startAnimating];
-        
+        [self hidePlaceholder];
     } else {
         [_activityIndicatorView stopAnimating];
     }
@@ -336,7 +332,7 @@
     self.placeholderView.alpha = 0.0;
 }
 
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image{
+- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction{
     [self showActivityIndicator:NO];
     self.placeholderView.alpha = 1.0;
     if ([self.placeholderView.title isEqualToString:title] && [self.placeholderView.message isEqualToString:message])
@@ -345,6 +341,8 @@
         self.placeholderView.title = title;
         self.placeholderView.message = message;
         self.placeholderView.image = image;
+        self.placeholderView.buttonTitle = buttonTitle;
+        self.placeholderView.buttonAction = buttonAction;
     }
 }
 

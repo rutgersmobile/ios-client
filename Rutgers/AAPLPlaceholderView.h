@@ -34,6 +34,6 @@
 @interface AAPLPlaceholderCell : ALTableViewAbstractCell
 @property (nonatomic) AAPLPlaceholderView *placeholderView;
 - (void)showActivityIndicator:(BOOL)show;
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image;
+- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction;
 - (void)hidePlaceholder;
 @end
