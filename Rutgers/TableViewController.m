@@ -12,37 +12,17 @@
 #import "UITableView+Selection.h"
 #import "TableViewController_Private.h"
 
-@interface TableViewController () <DataSourceDelegate>
+@interface TableViewController () 
 @property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
 //@property (nonatomic, readonly) UITableViewStyle style;
-@property (nonatomic) CGRect lastValidBounds;
+@property (nonatomic) CGFloat lastValidWidth;
 @end
 
-@implementation TableViewController/*
--(instancetype)initWithStyle:(UITableViewStyle)style{
-    self = [super init];
-    if (self) {
-        self.clearsSelectionOnViewWillAppear = YES;
-        _style = style;
-    }
-    return self;
-}
-
--(void)loadView{
-    [super loadView];
-    
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.style];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.delegate = self;
-    [self.view addSubview:self.tableView];
-    [self.tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-}*/
+@implementation TableViewController
 
 -(void)viewDidLoad{
     [super viewDidLoad];
@@ -78,9 +58,6 @@
     
     if (self.searching) {
         [self setStatusAppearanceForSearchingState:YES];
-        [self.searchTableView flashScrollIndicators];
-    } else {
-        [self.tableView flashScrollIndicators];
     }
 }
 
@@ -102,13 +79,14 @@
 }
 
 -(void)invalidateCachedHeightsIfNeeded{
-    if (!CGRectEqualToRect(self.view.bounds, self.lastValidBounds)) [self invalidateCachedHeights];
+    CGFloat width = CGRectGetWidth(self.view.bounds);
+    if (width != self.lastValidWidth) [self invalidateCachedHeights];
 }
 
 -(void)invalidateCachedHeights{
     [[self dataSourceForTableView:self.tableView] invalidateCachedHeights];
     [[self dataSourceForTableView:self.searchTableView] invalidateCachedHeights];
-    self.lastValidBounds = self.view.bounds;
+    self.lastValidWidth = CGRectGetWidth(self.view.bounds);
 }
 
 -(void)preferredContentSizeChanged{
@@ -125,6 +103,9 @@
 }
 
 #pragma mark - Data Source
+-(CGFloat)tableViewWidth{
+    return self.lastValidWidth;
+}
 -(void)setDataSource:(DataSource *)dataSource{
     _dataSource.delegate = nil;
     _dataSource = dataSource;
