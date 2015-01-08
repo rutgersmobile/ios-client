@@ -9,12 +9,11 @@
 #import "UIView+LayoutSize.h"
 
 @implementation UIView (LayoutSize)
--(CGSize)layoutSizeFittingSize:(CGSize)size{
-    
+-(CGSize)layoutSizeFittingWidth:(CGFloat)width{
     CGRect bounds = self.bounds;
-    bounds.size = size;
+    bounds.size.width = width;
     self.bounds = bounds;
-        
+    
     [self setNeedsLayout];
     [self layoutIfNeeded];
     

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (LayoutSize)
--(CGSize)layoutSizeFittingSize:(CGSize)size;
+-(CGSize)layoutSizeFittingWidth:(CGFloat)width;
 @end
