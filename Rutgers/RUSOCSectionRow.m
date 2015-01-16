@@ -11,12 +11,7 @@
 #import "UIColor+Utilities.h"
 
 @interface RUSOCSectionRow ()
-@property (nonatomic) NSString *indexText;
-@property (nonatomic) NSString *professorText;
-@property (nonatomic) NSString *descriptionText;
-@property (nonatomic) NSString *dayText;
-@property (nonatomic) NSString *timeText;
-@property (nonatomic) NSString *locationText;
+
 @end
 
 @implementation RUSOCSectionRow
@@ -27,21 +22,6 @@
         [self makeTextStrings];
     }
     return self;
-}
-
--(void)setupCell:(RUSOCSectionCell *)cell{
-    cell.indexLabel.text = self.indexText;
-    cell.professorLabel.text = self.professorText;
-    cell.descriptionLabel.text = self.descriptionText;
-    cell.dayLabel.text = self.dayText;
-    cell.timeLabel.text = self.timeText;
-    cell.locationLabel.text = self.locationText;
-    
-    if ([self.section[@"openStatus"] boolValue]) {
-        cell.backgroundColor = [UIColor colorWithRed:217/255.0 green:242/255.0 blue:213/255.0 alpha:1];
-    } else {
-        cell.backgroundColor = [UIColor colorWithRed:243/255.0 green:181/255.0 blue:181/255.0 alpha:1];
-    }
 }
 
 -(void)makeTextStrings{

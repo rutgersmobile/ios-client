@@ -12,7 +12,6 @@
 #import "RUPlacesViewController.h"
 #import "RUPlaceDetailDataSource.h"
 #import "RUMultiStop.h"
-#import "EZTableViewMapsRow.h"
 #import "RUPlace.h"
 #import "TableViewController_Private.h"
 
@@ -49,8 +48,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[EZTableViewMapsRow class]]) {
-        [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:self.place] animated:YES];
+    if ([item isKindOfClass:[RUPlace class]]) {
+        [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:item] animated:YES];
     } else if ([item isKindOfClass:[RUMultiStop class]]) {
          [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
     }

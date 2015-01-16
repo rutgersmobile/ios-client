@@ -6,9 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRightDetailRow.h"
-
-@interface RURecCenterMeetingAreaRow : EZTableViewRightDetailRow
+@interface RURecCenterMeetingAreaRow : NSObject
 @property (nonatomic) NSString *date;
 -(instancetype)initWithArea:(NSString *)area times:(NSDictionary *)dates;
 @end

@@ -9,7 +9,7 @@
 #import "ALTableViewAbstractCell.h"
 
 @interface RURecCenterTableViewCell : ALTableViewAbstractCell
-- (IBAction)goLeft:(id)sender;
-- (IBAction)goRight:(id)sender;
+//- (IBAction)goLeft:(id)sender;
+//- (IBAction)goRight:(id)sender;
 
 @end

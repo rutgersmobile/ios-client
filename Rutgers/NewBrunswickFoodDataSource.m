@@ -7,9 +7,9 @@
 //
 
 #import "NewBrunswickFoodDataSource.h"
-#import "RUFoodData.h"
 #import "DataTuple.h"
 #import "ALTableViewTextCell.h"
+#import "DataSource_Private.h"
 
 @implementation NewBrunswickFoodDataSource
 - (instancetype)init
@@ -23,18 +23,24 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [RUFoodData getFoodWithCompletion:^(NSArray *diningHalls, NSError *error) {
+        [[RUNetworkManager sessionManager] GET:@"rutgers-dining.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
-            if (!error) {
+            if ([responseObject isKindOfClass:[NSArray class]]) {
                 [loading updateWithContent:^(typeof(self) me) {
-                    [me parseResponse:diningHalls];
+                    [me parseResponse:responseObject];
                 }];
             } else {
-                [loading doneWithError:error];
+                [loading doneWithError:nil];
             }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            [loading doneWithError:error];
         }];
     }];
 }

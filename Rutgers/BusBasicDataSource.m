@@ -8,6 +8,7 @@
 
 #import "BusBasicDataSource.h"
 #import "ALTableViewTextCell.h"
+#import "DataSource_Private.h"
 
 @implementation BusBasicDataSource
 

@@ -7,10 +7,10 @@
 //
 
 #import "TableViewController.h"
-#import "DataSource_Private.h"
 #import "RUNavigationController.h"
 #import "UITableView+Selection.h"
 #import "TableViewController_Private.h"
+#import "AAPLPlaceholderView.h"
 
 @interface TableViewController () 
 @property (nonatomic) DataSource *dataSource;
@@ -33,6 +33,7 @@
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, kLabelHorizontalInsets, 0, 0);
     self.tableView.estimatedRowHeight = 44.0;
+    self.lastValidWidth = CGRectGetWidth(self.tableView.bounds);
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -71,7 +72,8 @@
 
 -(void)dealloc{
     self.dataSource.delegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
+    self.searchDataSource.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)viewWillLayoutSubviews{
@@ -84,9 +86,15 @@
 }
 
 -(void)invalidateCachedHeights{
-    [[self dataSourceForTableView:self.tableView] invalidateCachedHeights];
-    [[self dataSourceForTableView:self.searchTableView] invalidateCachedHeights];
     self.lastValidWidth = CGRectGetWidth(self.view.bounds);
+    [self invalidateCachedHeightsForTableView:self.tableView];
+    [self invalidateCachedHeightsForTableView:self.searchTableView];
+}
+
+-(void)invalidateCachedHeightsForTableView:(UITableView *)tableView{
+    [[self dataSourceForTableView:tableView] invalidateCachedHeights];
+    [tableView beginUpdates];
+    [tableView endUpdates];
 }
 
 -(void)preferredContentSizeChanged{
@@ -103,9 +111,6 @@
 }
 
 #pragma mark - Data Source
--(CGFloat)tableViewWidth{
-    return self.lastValidWidth;
-}
 -(void)setDataSource:(DataSource *)dataSource{
     _dataSource.delegate = nil;
     _dataSource = dataSource;
@@ -204,7 +209,7 @@
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[AAPLPlaceholderCell class]]) return NO;
+    if ([cell isKindOfClass:[ALPlaceholderCell class]] || [cell isKindOfClass:[ALActivityIndicatorCell class]]) return NO;
     return YES;
 }
 
@@ -271,6 +276,7 @@
     if (complete) {
         complete();
     }
+    
 }
 
 -(void)dataSourceWillLoadContent:(DataSource *)dataSource{

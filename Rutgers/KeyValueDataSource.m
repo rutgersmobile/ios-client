@@ -10,6 +10,7 @@
 
 #import "KeyValueDataSource.h"
 #import "ALTableViewRightDetailCell.h"
+#import "DataSource_Private.h"
 
 static NSString * const AAPLKeyValueDataSourceKeyPathKey = @"keyPath";
 static NSString * const AAPLKeyValueDataSourceLabelKey = @"label";

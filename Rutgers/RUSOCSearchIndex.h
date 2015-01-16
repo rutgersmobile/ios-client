@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface RUSOCSearchIndex : NSObject
--(void)resultsForQuery:(NSString *)query completion:(void(^)(NSArray *subjects, NSArray *courses))handler;
+-(void)resultsForQuery:(NSString *)query completion:(void(^)(NSArray *subjects, NSArray *courses, NSError *error))handler;
 @end

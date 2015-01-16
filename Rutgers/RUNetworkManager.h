@@ -10,7 +10,5 @@
 #import <AFNetworking.h>
 
 @interface RUNetworkManager : NSObject
-//+(AFHTTPSessionManager *)jsonSessionManager;
-//+(AFHTTPSessionManager *)xmlSessionManager;
 +(AFHTTPSessionManager *)sessionManager;
 @end

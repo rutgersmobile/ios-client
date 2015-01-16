@@ -8,7 +8,7 @@
 
 #import "RURecreationViewController.h"
 #import "RURecCenterViewController.h"
-#import "RURecCenterDataSource.h"
+#import "RURecreationDataSource.h"
 #import "DataTuple.h"
 #import "TableViewController_Private.h"
 
@@ -24,7 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.dataSource = [[RURecCenterDataSource alloc] init];
+    self.dataSource = [[RURecreationDataSource alloc] init];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

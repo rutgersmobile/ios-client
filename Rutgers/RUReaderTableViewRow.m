@@ -78,7 +78,12 @@
          */
 
         inputFormatters = [NSMutableArray array];
-        for (NSString *dateFormatString in @[@"EEEE, MMMM d, yyyy", @"EEE, d MMM yyyy HH:mm:ss zzz", @"EEE, dd MMM yyyy -HHmm", @"yyyy-MM-dd HH:mm:ss EEE", @"EEE, dd MMM yyyy"]) {
+        for (NSString *dateFormatString in @[@"EEEE, MMMM d, yyyy",
+                                             @"EEE, d MMM yyyy HH:mm:ss zzz",
+                                             @"EEE, dd MMM yyyy -HHmm",
+                                             @"yyyy-MM-dd HH:mm:ss EEE",
+                                             @"EEE, dd MMM yyyy"])
+        {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             dateFormatter.dateFormat = dateFormatString;
             [inputFormatters addObject:dateFormatter];

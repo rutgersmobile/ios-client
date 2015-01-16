@@ -11,8 +11,6 @@
 
 @interface RowHeightCache ()
 @property (nonatomic) NSMutableDictionary *sections;
-@property (nonatomic) NSInteger cacheHits;
-@property (nonatomic) NSInteger cacheMisses;
 @end
 
 @implementation RowHeightCache
@@ -54,12 +52,12 @@
 -(NSNumber *)cachedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self cacheForSection:indexPath.section][@(indexPath.row)];
     
-    static volatile int64_t hits = 0;
-    static volatile int64_t misses = 0;
+    static int64_t hits = 0;
+    static int64_t misses = 0;
     
     NSNumber *cachedHeight = [self cacheForSection:indexPath.section][@(indexPath.row)];
     
-    OSAtomicIncrement64(cachedHeight ? &hits : &misses);
+    cachedHeight ? hits++ : misses++;
     
     if (((hits + misses) % 100) == 0) {
         NSLog(@"Hits: %lld, Misses: %lld, Rate: %f",hits,misses,((CGFloat)hits/(hits+misses))*100.0);

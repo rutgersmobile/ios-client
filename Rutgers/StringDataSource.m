@@ -8,6 +8,7 @@
 
 #import "StringDataSource.h"
 #import "ALTableViewTextCell.h"
+#import "DataSource_Private.h"
 
 @implementation StringDataSource
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{

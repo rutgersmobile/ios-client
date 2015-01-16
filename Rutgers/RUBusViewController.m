@@ -31,11 +31,6 @@
     self.dataSource = [[RUBusDataSource alloc] init];
     self.searchDataSource = [[BusSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search All Routes and Stops";
-    
-    __weak UISearchBar *weakSearchBar = self.searchBar;
-    [[RUBusDataLoadingManager sharedInstance] performWhenAgenciesLoaded:^{
-        weakSearchBar.userInteractionEnabled = YES;
-    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

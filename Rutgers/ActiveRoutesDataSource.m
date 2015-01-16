@@ -20,6 +20,7 @@
     if (self) {
         self.agency = agency;
         self.title = [NSString stringWithFormat:@"%@ Active Routes",TITLES[agency]];
+        self.noContentTitle = [NSString stringWithFormat:@"No %@ Active Routes",TITLES[agency]];
     }
     return self;
 }

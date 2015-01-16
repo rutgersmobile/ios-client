@@ -6,9 +6,12 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewTextRow.h"
-
-@interface RUPredictionsHeaderRow : EZTableViewAbstractRow
+@interface RUPredictionsHeaderRow : NSObject
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item;
+-(id)item;
 -(BOOL)active;
+-(NSString *)title;
+-(NSString *)directionTitle;
+-(NSString *)arrivalTimeDescription;
+-(UIColor *)timeLabelColor;
 @end

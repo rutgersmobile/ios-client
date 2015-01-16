@@ -21,10 +21,11 @@
     if (self) {
         self.channel = channel;
         
-        if (channel[@"children"]) {
+        NSArray *children = channel[@"children"];
+        if (children) {
             [self loadContentWithBlock:^(AAPLLoading *loading) {
                 [loading updateWithContent:^(typeof(self) me) {
-                    [me updateWithItems:channel[@"children"]];
+                    [me updateWithItems:children];
                 }];
             }];
         }
@@ -52,7 +53,9 @@
                     [me updateWithItems:responseObject[@"children"]];
                 }];
             } else {
-                [loading doneWithError:nil];
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me updateWithItems:nil];
+                }];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             if (!loading.current) {

@@ -7,7 +7,6 @@
 //
 
 #import "TableViewController.h"
-#import "DataSource_Private.h"
 @interface TableViewController ()
 
 @property(nonatomic) BOOL clearsSelectionOnViewWillAppear;

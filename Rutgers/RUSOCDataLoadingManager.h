@@ -11,11 +11,12 @@
 @interface RUSOCDataLoadingManager : NSObject
 +(RUSOCDataLoadingManager *)sharedInstance;
 
--(void)getSubjectsWithSuccess:(void (^)(NSArray *subjects))successBlock failure:(void (^)(void))failureBlock;
--(void)getCoursesForSubjectCode:(NSString *)subjectCode withSuccess:(void (^)(NSArray *courses))successBlock failure:(void (^)(void))failureBlock;
--(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode withSuccess:(void (^)(NSDictionary *course))successBlock failure:(void (^)(void))failureBlock;
+-(void)getSubjectsWithCompletion:(void (^)(NSArray *subjects, NSError *error))handler;
 
--(void)getSearchIndexWithSuccess:(void (^)(NSDictionary *index))successBlock failure:(void (^)(NSError *error))failureBlock;
+-(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *courses, NSError *error))handler;
+-(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode completion:(void (^)(NSDictionary *course, NSError *error))handler;
+
+-(void)getSearchIndexWithCompletion:(void (^)(NSDictionary *index, NSError *error))handler;
 
 @property (nonatomic) NSDictionary *campus;
 @property (nonatomic) NSDictionary *level;
@@ -24,8 +25,6 @@
 @property (nonatomic, readonly) NSArray *semesters;
 @property (nonatomic, readonly) NSArray *campuses;
 @property (nonatomic, readonly) NSArray *levels;
-
--(void)performOnSemestersLoaded:(dispatch_block_t)block;
 
 -(NSString *)titleForCurrentConfiguration;
 

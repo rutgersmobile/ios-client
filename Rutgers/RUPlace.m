@@ -25,6 +25,7 @@
     }
     return self;
 }
+
 -(id)initWithTitle:(NSString *)title addressString:(NSString *)addressString{
     self = [super init];
     if (self) {
@@ -33,9 +34,11 @@
     }
     return self;
 }
+
 -(NSString *)description{
     return [NSString stringWithFormat:@"%@ - %@",self.buildingNumber,self.title];
 }
+
 -(CLLocation *)parseLocationDictionary:(NSDictionary *)locationDictionary{
     if (!(locationDictionary[@"latitude"] && locationDictionary[@"longitude"])) return nil;
     

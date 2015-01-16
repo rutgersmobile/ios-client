@@ -14,5 +14,5 @@
 +(UIFont *)ruPreferredBoldFontForTextStyle:(NSString *)style;
 +(UIFont *)ruPreferredFontForTextStyle:(NSString *)style;
 +(UIFont *)ruPreferredFontForTextStyle:(NSString *)style symbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits;
-+(CGFloat)preferredContentSizeScaleFactor;
+-(UIFont *)fontByScalingPointSize:(CGFloat)scalingRatio;
 @end

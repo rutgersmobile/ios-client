@@ -20,7 +20,12 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 
 @interface RUPlacesDataLoadingManager ()
 @property (nonatomic) NSDictionary *places;
+
 @property dispatch_group_t placesGroup;
+
+@property BOOL loading;
+@property BOOL finishedLoading;
+@property NSError *loadingError;
 
 @end
 
@@ -41,28 +46,47 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     if (self) {
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{PlacesRecentPlacesKey: @[]}];
         self.placesGroup =  dispatch_group_create();
-        dispatch_group_enter(self.placesGroup);
-        [self getPlaces];
     }
     return self;
 }
 
--(void)performOnPlacesLoaded:(void (^)(NSError *))block{
-    dispatch_group_notify(self.placesGroup, dispatch_get_main_queue(), ^{
-        block(nil);
+-(BOOL)placesNeedLoad{
+    return !(self.loading || self.finishedLoading);
+}
+
+-(void)performWhenPlacesLoaded:(void (^)(NSError *error))handler{
+    if ([self placesNeedLoad]) {
+        [self loadPlaces];
+    }
+    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        handler(self.loadingError);
     });
 }
 
--(void)getPlaces{
+-(void)loadPlaces{
+    dispatch_group_enter(self.placesGroup);
+    
+    self.loading = YES;
+    self.finishedLoading = NO;
+    self.loadingError = nil;
+    
     [[RUNetworkManager sessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
-            dispatch_group_leave(self.placesGroup);
         }
+        
+        self.loading = NO;
+        self.finishedLoading = YES;
+        self.loadingError = nil;
+        
+        dispatch_group_leave(self.placesGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self getPlaces];
-        });
+        
+        self.loading = NO;
+        self.finishedLoading = NO;
+        self.loadingError = error;
+        
+        dispatch_group_leave(self.placesGroup);
     }];
 }
 
@@ -78,19 +102,19 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 }
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results, NSError *error))completionBlock{
-    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [self performWhenPlacesLoaded:^(NSError *error) {
         NSPredicate *searchPredicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
         NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
         results = [results sortByKeyPath:@"title"];
-        completionBlock(results,nil);
-    });
+        completionBlock(results,error);
+    }];
 }
 
--(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents))completionBlock{
-    [self performOnPlacesLoaded:^(NSError *error){
+-(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents, NSError *error))completionBlock{
+    [self performWhenPlacesLoaded:^(NSError *error){
         NSArray *recentPlaces = [[NSUserDefaults standardUserDefaults] arrayForKey:PlacesRecentPlacesKey];
         NSArray *recentPlacesDetails = [self.places objectsForKeysIgnoringNotFound:recentPlaces];
-        completionBlock(recentPlacesDetails);
+        completionBlock(recentPlacesDetails,error);
     }];
 }
 
@@ -100,7 +124,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     NSMutableArray *recentPlaces = [[userDefaults arrayForKey:PlacesRecentPlacesKey] mutableCopy];
     
     NSString *ID = place.uniqueID;
-    if ([recentPlaces containsObject:ID]) [recentPlaces removeObject:ID];
+    [recentPlaces removeObject:ID];
     [recentPlaces insertObject:ID atIndex:0];
 
     [userDefaults setObject:[recentPlaces limitedToCount:20] forKey:PlacesRecentPlacesKey];
@@ -118,14 +142,13 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
         completionBlock(@[],nil);
         return;
     }
-    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSArray *nearbyPlaces = [[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
+    
+    [self performWhenPlacesLoaded:^(NSError *error) {
+        NSArray *nearbyPlaces = [[[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
             if (!place.location) return NO;
             return ([place.location distanceFromLocation:location] < NEARBY_DISTANCE);
-        }]];
-        
-        nearbyPlaces = [nearbyPlaces sortedArrayUsingComparator:^NSComparisonResult(RUPlace *placeOne, RUPlace *placeTwo) {
-
+        }]] sortedArrayUsingComparator:^NSComparisonResult(RUPlace *placeOne, RUPlace *placeTwo) {
+            
             CLLocationDistance distanceOne = [placeOne.location distanceFromLocation:location];
             CLLocationDistance distanceTwo = [placeTwo.location distanceFromLocation:location];
             
@@ -134,9 +157,8 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
             return NSOrderedSame;
         }];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionBlock([nearbyPlaces copy],nil);
-        });
-    });
+        completionBlock(nearbyPlaces,error);
+
+    }];
 }
 @end

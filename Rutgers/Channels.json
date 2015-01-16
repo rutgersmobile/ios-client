@@ -48,6 +48,12 @@
   "icon" : "events"
   },
   {
+  "handle" : "soc",
+  "title": "Schedule of Classes",
+  "view" : "soc",
+  "icon" : "soc"
+  },
+  {
   "handle" : "ruinfo",
   "title": "RU-Info",
   "view" : "ruinfo",
@@ -65,20 +71,6 @@
   "icon" : "careers"
   },
   {
-  "handle" : "soc",
-  "title": "Schedule of Classes",
-  "view" : "soc",
-  "icon" : "soc"
-  },
-  {
-  "handle" : "knights",
-  "title": "Scarlet Knights",
-  "icon" : "knights",
-  "grouped" : true,
-  "url": "athleticsfaq.txt",
-  },
-  
-  {
   "handle" : "campus_status",
   "title": "Emergency Services",
   "url": "emergency.txt",
@@ -90,5 +82,12 @@
   "title": "Feedback",
   "view" : "feedback",
   "icon" : "feedback"
+  },
+  {
+  "handle" : "knights",
+  "title": "Scarlet Knights",
+  "icon" : "knights",
+  "grouped" : true,
+  "url": "athleticsfaq.txt",
   }
 ]

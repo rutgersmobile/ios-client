@@ -19,7 +19,7 @@
 
 @implementation RUPredictionsHeaderRow
 -(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item{
-    self = [super initWithIdentifier:@"RUPredictionsHeaderTableViewCell"];
+    self = [super init];
     if (self) {
         self.item = item;
         self.predictions = predictions;
@@ -27,27 +27,8 @@
     return self;
 }
 
--(void)setupCell:(RUPredictionsHeaderTableViewCell *)cell{
-    cell.titleLabel.text = [self title];
-    cell.directionLabel.text = [self.item isKindOfClass:[RUMultiStop class]] ? [self directionTitle] : nil;
-    cell.timeLabel.text = [self arrivalTimeDescription];
-    if ([self active]) {
-        cell.titleLabel.textColor = [UIColor blackColor];
-        cell.directionLabel.textColor = [UIColor blackColor];
-        cell.timeLabel.textColor = [self timeLabelColor];
-    } else {
-        cell.titleLabel.textColor = [UIColor grayColor];
-        cell.directionLabel.textColor = [UIColor grayColor];
-        cell.timeLabel.textColor = [UIColor grayColor];
-    }
-}
-
 -(BOOL)active{
     return [self.predictions[@"direction"] firstObject] ? YES : NO;
-}
-
--(BOOL)shouldHighlight{
-    return self.active;
 }
 
 -(NSString *)title{

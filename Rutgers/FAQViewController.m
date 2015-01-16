@@ -8,7 +8,6 @@
 
 #import "FAQViewController.h"
 #import "ExpandingTableViewSection.h"
-#import "EZTableViewTextRow.h"
 #import "FAQDataSource.h"
 #import "TableViewController_Private.h"
 
@@ -51,7 +50,16 @@
         vc.title = [item channelTitle];
         
         [self.navigationController pushViewController:vc animated:YES];
-    }
+    } /* else {
+       
+        ExpandingTableViewSection *section = (ExpandingTableViewSection *)[(FAQDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
+        if (indexPath.row == 0 && section.expanded) {
+            CGFloat bodyHeight = [section tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+            if (bodyHeight > CGRectGetHeight(tableView.bounds)*0.6) {
+                [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+        }
+    }*/
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath{

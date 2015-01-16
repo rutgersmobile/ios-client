@@ -8,6 +8,6 @@
 
 #import "ComposedDataSource.h"
 
-@interface RURecCenterDataSource : ComposedDataSource
+@interface RURecreationDataSource : ComposedDataSource
 
 @end

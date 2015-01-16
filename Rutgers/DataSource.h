@@ -10,9 +10,39 @@
 #import "AAPLContentLoading.h"
 
 @class DataSource;
-@class AAPLPlaceholderCell;
+@class ALPlaceholderCell;
+
+typedef enum {
+    DataSourceAnimationFade = 0,
+    DataSourceAnimationLeft,
+    DataSourceAnimationRight,
+    
+} DataSourceAnimation;
+
+@protocol DataSourceDelegate <NSObject>
+@optional
+- (void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
+
+- (void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection;
+
+- (void)dataSourceDidReloadData:(DataSource *)dataSource;
+- (void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete;
+
+- (void)dataSourceWillLoadContent:(DataSource *)dataSource;
+- (void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error;
+
+@end
 
 @interface DataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource, AAPLContentLoading>
+
+/// A delegate object that will receive change notifications from this data source.
+@property (nonatomic, weak) id<DataSourceDelegate> delegate;
 
 /// The title of this data source. This value is used to populate section headers and the segmented control tab.
 @property (nonatomic, copy) NSString *title;
@@ -30,6 +60,12 @@
 /// Find the index paths of the specified item in the data source. An item may appear more than once in a given data source.
 - (NSArray *)indexPathsForItem:(id)item;
 
+-(void)invalidateCachedHeights;
+
+/// Register reusable views needed by this data source
+- (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;
+- (void)registerReusableViewsWithTableView:(UITableView *)tableView NS_REQUIRES_SUPER;
+
 #pragma mark - Placeholders
 
 @property (nonatomic, copy) NSString *noContentTitle;
@@ -44,24 +80,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-
--(void)invalidateCachedHeights;
--(void)invalidateCachedHeightsForSection:(NSInteger)section;
--(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths;
-
-#pragma mark - Subclass hooks
-
-- (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier;
-- (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)configurePlaceholderCell:(AAPLPlaceholderCell *)cell;
-
-- (NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath;
-- (void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
-
-/// Register reusable views needed by this data source
-- (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;
-- (void)registerReusableViewsWithTableView:(UITableView *)tableView NS_REQUIRES_SUPER;
 
 #pragma mark - Content loading
 

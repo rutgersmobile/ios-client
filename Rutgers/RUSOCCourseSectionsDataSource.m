@@ -16,6 +16,7 @@
     self = [super init];
     if (self) {
         self.title = @"Sections";
+        self.noContentTitle = @"No listed sections";
     }
     return self;
 }
@@ -37,7 +38,20 @@
 
 -(void)configureCell:(RUSOCSectionCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     RUSOCSectionRow *row = [self itemAtIndexPath:indexPath];
-    [row setupCell:cell];
+    
+    cell.indexLabel.text = row.indexText;
+    cell.professorLabel.text = row.professorText;
+    cell.descriptionLabel.text = row.descriptionText;
+    cell.dayLabel.text = row.dayText;
+    cell.timeLabel.text = row.timeText;
+    cell.locationLabel.text = row.locationText;
+    
+    if ([row.section[@"openStatus"] boolValue]) {
+        cell.backgroundColor = [UIColor colorWithRed:217/255.0 green:242/255.0 blue:213/255.0 alpha:1];
+    } else {
+        cell.backgroundColor = [UIColor colorWithRed:243/255.0 green:181/255.0 blue:181/255.0 alpha:1];
+    }
+    
     cell.separatorInset = UIEdgeInsetsZero;
 }
 

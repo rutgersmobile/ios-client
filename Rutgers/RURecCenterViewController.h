@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewController.h"
+#import "TableViewController.h"
 
-@interface RURecCenterViewController : EZTableViewController
+@interface RURecCenterViewController : TableViewController
 - (instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter;
 @end

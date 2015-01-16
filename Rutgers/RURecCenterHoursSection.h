@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZDataSourceSection.h"
+#import "BasicDataSource.h"
 
-@interface RURecCenterHoursSection : EZDataSourceSection
--(instancetype)initWithMeetingAreas:(NSDictionary *)meetingAreas;
+@interface RURecCenterHoursSection : BasicDataSource
+-(instancetype)initWithDailySchedules:(NSArray *)dailySchedules;
 -(void)goLeft;
 -(void)goRight;
 @end

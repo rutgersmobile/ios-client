@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface RowHeightCache : NSObject
+-(NSNumber *)cachedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(void)setCachedHeight:(CGFloat)height forRowAtIndexPath:(NSIndexPath *)indexPath;
+
 -(void)invalidateCachedHeights;
 -(void)invalidateCachedHeightsForSection:(NSInteger)section;
 -(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths;
-
--(NSNumber *)cachedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
--(void)setCachedHeight:(CGFloat)height forRowAtIndexPath:(NSIndexPath *)indexPath;
 @end

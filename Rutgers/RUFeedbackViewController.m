@@ -81,6 +81,6 @@
 -(void)formSendSucceeded{
     self.sendButton.title = @"Send";
     [self.dataSource resetContent];
-    [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Your feedback has been sent!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Thank you for sending your feedback!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
 }
 @end

@@ -1,0 +1,85 @@
+//
+//  RURecCenterDataSource.m
+//  Rutgers
+//
+//  Created by Kyle Bailey on 7/24/14.
+//  Copyright (c) 2014 Rutgers. All rights reserved.
+//
+
+#import "RURecreationDataSource.h"
+#import "BasicDataSource.h"
+#import "DataTuple.h"
+#import "ALTableViewTextCell.h"
+#import "TupleDataSource.h"
+#import "DataSource_Private.h"
+
+@implementation RURecreationDataSource
+-(void)loadContent{
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        NSString *url = @"gyms.txt";
+        url = @"http://sauron.rutgers.edu/~jamchamb/gyms_array.txt";
+        
+        [[RUNetworkManager sessionManager] GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            
+            [loading updateWithContent:^(typeof(self) me) {
+                [me parseResponse:responseObject];
+            }];
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            if (!loading.current) {
+                [loading ignore];
+                return;
+            }
+            
+            [loading doneWithError:error];
+        }];
+    }];
+}
+
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView{
+    [super registerReusableViewsWithTableView:tableView];
+    [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
+}
+
+-(void)parseResponse:(id)responseObject{
+    if (BETA) {
+        NSArray *campuses = responseObject;
+        for (NSDictionary *campus in campuses) {
+            
+            TupleDataSource *recCenterDataForCampus = [[TupleDataSource alloc] init];
+            recCenterDataForCampus.title = campus[@"title"];
+            
+            NSMutableArray *recCenters  = [NSMutableArray array];
+            for (NSDictionary *facility in campus[@"facilities"]) {
+                [recCenters addObject:[DataTuple tupleWithTitle:facility[@"title"] object:facility]];
+            }
+            
+            recCenterDataForCampus.items = recCenters;
+            [self addDataSource:recCenterDataForCampus];
+        }
+    } else {
+        NSArray *campuses = [responseObject allKeys];
+        campuses = [campuses sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+        
+        for (NSString *campus in campuses) {
+            TupleDataSource *recCenterDataForCampus = [[TupleDataSource alloc] init];
+            recCenterDataForCampus.title = campus;
+            
+            NSArray *sortedKeys = [[responseObject[campus] allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+            NSMutableArray *recCenters  = [NSMutableArray array];
+            for (NSString *key in sortedKeys) {
+                [recCenters addObject:[DataTuple tupleWithTitle:key object:responseObject[campus][key]]];
+            }
+            
+            recCenterDataForCampus.items = recCenters;
+            
+            [self addDataSource:recCenterDataForCampus];
+        }
+
+    }
+}
+
+@end

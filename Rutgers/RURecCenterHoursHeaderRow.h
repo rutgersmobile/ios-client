@@ -6,9 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewRightDetailRow.h"
-
-@interface RURecCenterHoursHeaderRow : EZTableViewRightDetailRow
+@interface RURecCenterHoursHeaderRow : NSObject
 @property (nonatomic) NSString *date;
 
 @property (nonatomic) BOOL leftButtonEnabled;

@@ -16,7 +16,7 @@
     self = [super init];
     if (self) {
         self.title = @"Nearby Active Stops";
-        self.noContentTitle = @"No nearby active stops.";
+        self.noContentTitle = @"No Nearby Active Stops";
         self.noContentMessage = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:LocationManagerDidChangeLocationKey object:nil];
     }
@@ -39,7 +39,7 @@
                     self.items = stops;
                 }];
             } else {
-                [loading doneWithError:nil];
+                [loading doneWithError:error];
             }
         }];
     }];

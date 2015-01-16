@@ -15,7 +15,7 @@
 
 @implementation RURecCenterMeetingAreaRow
 -(id)initWithArea:(NSString *)area times:(NSDictionary *)times{
-    self = [super initWithIdentifier:@"RURecCenterMeetingAreaTableViewCell"];
+    self = [super init];
     if (self) {
         self.area = area;
         self.times = times;

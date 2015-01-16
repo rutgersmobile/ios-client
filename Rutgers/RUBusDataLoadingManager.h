@@ -18,8 +18,6 @@ extern NSString * const newarkAgency;
 
 +(instancetype)sharedInstance;
 
--(void)performWhenAgenciesLoaded:(dispatch_block_t)block;
-
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchAllRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler;
 
@@ -28,7 +26,7 @@ extern NSString * const newarkAgency;
 
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler;
 
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler;
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler;
 
 -(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *predictions, NSError *error))handler;
 @end

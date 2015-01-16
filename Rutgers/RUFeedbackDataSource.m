@@ -136,15 +136,17 @@
     }
     
     NSString *url = @"feedback.php";
+    if (betaStage) {
+        
+    }
     url = @"http://sauron.rutgers.edu/~jamchamb/feedback.php";
     
     [[RUNetworkManager sessionManager] POST:url parameters:feedback success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
+        //NSLog(@"%@",responseObject);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.feedbackDelegate formSendSucceeded];
         });
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"failure");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.feedbackDelegate formSendFailed];
         });

@@ -8,8 +8,8 @@
 
 #import "RUReaderDataSource.h"
 #import "RUReaderTableViewCell.h"
-#import "EZDataSource.h"
 #import "RUReaderTableViewRow.h"
+#import "DataSource_Private.h"
 #import <UIKit+AFNetworking.h>
 
 
@@ -21,7 +21,6 @@
 -(id)initWithUrl:(NSString *)url{
     self = [super init];
     if (self) {
-        if (BETA) url = [url stringByReplacingOccurrencesOfString:@"https://rumobile.rutgers.edu/1/" withString:@"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/"];
         self.url = url;
     }
     return self;
@@ -30,7 +29,7 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUNetworkManager sessionManager] GET:self.url parameters:0 success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
                 [loading ignore];
                 return;
@@ -41,7 +40,9 @@
                     [me parseResponse:channel[@"item"]];
                 }];
             } else {
-                [loading doneWithError:nil];
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me parseResponse:nil];
+                }];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             [loading doneWithError:error];
@@ -81,7 +82,7 @@
     [cell.imageDisplayView setImageWithURL:row.imageURL];
     
     cell.descriptionLabel.text = row.descriptionText;
-    cell.accessoryType = row.url ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+  //  cell.accessoryType = row.url ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 

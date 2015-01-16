@@ -67,13 +67,9 @@
     self.textView.attributedText = attributedText;
 }
 
--(void)setupFontStyle{
-    self.textView.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
-}
-
 
 -(void)preferredContentSizeChanged{
-    [self setupFontStyle];
+    [self loadText];
 }
 
 -(void)dealloc{

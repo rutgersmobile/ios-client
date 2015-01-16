@@ -10,6 +10,7 @@
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
 #import "RURootController.h"
+#import <AFNetworkActivityIndicatorManager.h>
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property RURootController *rootController;
@@ -25,6 +26,9 @@
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
     [application setStatusBarHidden:NO];
     [RUAppearance applyAppearance];
     
@@ -61,7 +65,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.rootController = [[RURootController alloc] init];
-    self.window.rootViewController = [self.rootController makeRootViewController];
+    self.window.rootViewController = self.rootController.containerViewController;
 
     [self.window makeKeyAndVisible];
     [self.window addSubview:self.windowBackground];

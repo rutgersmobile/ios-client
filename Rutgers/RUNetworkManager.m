@@ -44,13 +44,11 @@
         xmlSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
         
         NSString *urlString = @"https://rumobile.rutgers.edu/1/";
-        if (BETA) urlString = @"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/";
         
         self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
         self.sessionManager.responseSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[jsonSerializer,xmlSerializer]];
         self.sessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         
-        if (BETA) self.sessionManager.securityPolicy.allowInvalidCertificates = YES;
     }
     return self;
 }

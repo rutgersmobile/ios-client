@@ -17,7 +17,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Legal";
+    self.title = @"Legal Notices";
 }
 
 @end

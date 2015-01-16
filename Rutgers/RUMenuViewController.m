@@ -21,7 +21,7 @@
 @implementation RUMenuViewController
 - (instancetype)init
 {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"Menu";
     }
@@ -38,6 +38,7 @@
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 32+kLabelHorizontalInsets*2, 0, 0);
+    self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     self.currentChannel = [RUChannelManager sharedInstance].lastChannel;
     NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:self.currentChannel] lastObject];

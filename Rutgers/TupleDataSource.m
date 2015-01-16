@@ -9,6 +9,7 @@
 #import "TupleDataSource.h"
 #import "DataTuple.h"
 #import "ALTableViewTextCell.h"
+#import "DataSource_Private.h"
 
 @implementation TupleDataSource
 -(id)init{

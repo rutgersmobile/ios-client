@@ -21,29 +21,12 @@
     //self.mapView.scrollEnabled = NO;
 }
 
-@synthesize place = _place;
 -(void)setPlace:(RUPlace *)place{
-    if (![_place isEqual:place]) {
-        [self.mapView removeAnnotation:_place];
-        _place = place;
+    if (![self.place isEqual:place]) {
+        [self.mapView removeAnnotation:self.place];
+        [super setPlace:place];
         [self zoomToPlace];
     }
 }
-/*
--(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
-    MKAnnotationView *view = [super mapView:mapView viewForAnnotation:annotation];
-    view.canShowCallout = NO;
-    return view;
-}*/
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

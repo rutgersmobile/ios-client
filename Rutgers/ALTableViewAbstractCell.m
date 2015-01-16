@@ -16,7 +16,7 @@
     if (self) {
         [self.contentView autoRemoveConstraintsAffectingView];
         
-        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        //self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
      
         [self initializeSubviews];
         

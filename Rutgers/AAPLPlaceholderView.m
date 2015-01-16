@@ -49,8 +49,7 @@
         _buttonAction = [buttonAction copy];
     }
 
-    _containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    _containerView.translatesAutoresizingMaskIntoConstraints = NO;
+    _containerView = [[UIView alloc] initForAutoLayout];
 
     UIColor *textColor = [UIColor colorWithWhite:172/255.0 alpha:1];
 
@@ -58,24 +57,21 @@
     _imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [_containerView addSubview:_imageView];
 
-    _titleLabel = [[RULabel alloc] initWithFrame:CGRectZero];
+    _titleLabel = [[RULabel alloc] initForAutoLayout];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     _titleLabel.backgroundColor = nil;
     _titleLabel.opaque = NO;
-    _titleLabel.font = [UIFont systemFontOfSize:22.0];
     _titleLabel.numberOfLines = 0;
-    _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _titleLabel.textColor = textColor;
     [_titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [_titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
-    _messageLabel = [[RULabel alloc] initWithFrame:CGRectZero];
+    _messageLabel = [[RULabel alloc] initForAutoLayout];
     _messageLabel.textAlignment = NSTextAlignmentCenter;
     _messageLabel.opaque = NO;
     _messageLabel.backgroundColor = nil;
-    _messageLabel.font = [UIFont systemFontOfSize:14];
+
     _messageLabel.numberOfLines = 0;
-    _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _messageLabel.textColor = textColor;
     [_messageLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [_messageLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
@@ -83,7 +79,6 @@
     _actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [_actionButton addTarget:self action:@selector(_actionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [_actionButton setFrame:CGRectMake(0, 0, 124, 29)];
-    _actionButton.titleLabel.font = [UIFont systemFontOfSize:14];
     _actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     _actionButton.contentEdgeInsets = UIEdgeInsetsMake(0, 16, 0, 16);
     [_actionButton setBackgroundImage:[self _buttonBackgroundImageWithColor:textColor] forState:UIControlStateNormal];
@@ -91,24 +86,23 @@
 
     [self addSubview:_containerView];
 
+    [self updateFonts];
     [self _updateViewHierarchy];
 
-    
     // Constrain the container to the host view. The height of the container will be determined by the contents.
     [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
     [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
     [self.containerView autoCenterInSuperview];
     
-  
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    if (iPad()) {
         // _containerView should be no more than 418pt and the left and right padding should be no less than 30pt on both sides
         [self.containerView autoSetDimension:ALDimensionWidth toSize:418 relation:NSLayoutRelationLessThanOrEqual];
-    } else {
         [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:30 relation:NSLayoutRelationGreaterThanOrEqual];
         [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30 relation:NSLayoutRelationGreaterThanOrEqual];
+    } else {
+        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:30];
+        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30];
     }
-
     
     return self;
 }
@@ -178,6 +172,12 @@
         [_containerView removeConstraints:_constraints];
     _constraints = nil;
     [self setNeedsUpdateConstraints];
+}
+
+-(void)updateFonts{
+    self.titleLabel.font = [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] fontByScalingPointSize:1.3];
+    self.messageLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 }
 
 - (void)setImage:(UIImage *)image
@@ -292,58 +292,86 @@
 
 @end
 
-@interface AAPLPlaceholderCell ()
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+@interface ALPlaceholderCell ()
 @end
 
-@implementation AAPLPlaceholderCell
+@implementation ALPlaceholderCell
+
+-(void)initializeSubviews{
+    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:self.contentView.bounds title:nil message:nil image:nil buttonTitle:nil buttonAction:nil];
+    self.placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.contentView addSubview:self.placeholderView];
+}
+
+-(void)initializeConstraints{
+    [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+}
+
+-(void)updateFonts{
+    [self.placeholderView updateFonts];
+}
+
+-(NSString *)title{
+    return self.placeholderView.title;
+}
+
+-(void)setTitle:(NSString *)title{
+    self.placeholderView.title = title;
+}
+
+-(NSString *)message{
+    return self.placeholderView.message;
+}
+
+-(void)setMessage:(NSString *)message{
+    self.placeholderView.message = message;
+}
+
+-(UIImage *)image{
+    return self.placeholderView.image;
+}
+
+-(void)setImage:(UIImage *)image{
+    self.placeholderView.image = image;
+}
+
+-(NSString *)buttonTitle{
+    return self.placeholderView.buttonTitle;
+}
+
+-(void)setButtonTitle:(NSString *)buttonTitle{
+    self.placeholderView.buttonTitle = buttonTitle;
+}
+
+-(void (^)(void))buttonAction{
+    return self.placeholderView.buttonAction;
+}
+
+-(void)setButtonAction:(void (^)(void))buttonAction{
+    self.placeholderView.buttonAction = buttonAction;
+}
+
+@end
+
+@interface ALActivityIndicatorCell ()
+@property (nonatomic) UIActivityIndicatorView *activityIndicatorView;
+@end
+
+@implementation ALActivityIndicatorCell
 
 -(void)initializeSubviews{
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activityIndicatorView.color = [UIColor lightGrayColor];
-    
-    self.placeholderView = [[AAPLPlaceholderView alloc] initWithFrame:self.contentView.bounds title:nil message:nil image:nil buttonTitle:nil buttonAction:nil];
-    self.placeholderView.translatesAutoresizingMaskIntoConstraints = NO;
-    
+
     [self.contentView addSubview:self.activityIndicatorView];
-    [self.contentView addSubview:self.placeholderView];
 }
 
 -(void)initializeConstraints{
     [self.activityIndicatorView autoCenterInSuperview];
     [self.activityIndicatorView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     [self.activityIndicatorView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-
-    [self.placeholderView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-}
-
-- (void)showActivityIndicator:(BOOL)show
-{
-    if (show){
-        [_activityIndicatorView startAnimating];
-        [self hidePlaceholder];
-    } else {
-        [_activityIndicatorView stopAnimating];
-    }
-}
-
-- (void)hidePlaceholder{
-    self.placeholderView.alpha = 0.0;
-}
-
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction{
-    [self showActivityIndicator:NO];
-    self.placeholderView.alpha = 1.0;
-    if ([self.placeholderView.title isEqualToString:title] && [self.placeholderView.message isEqualToString:message])
-        return;
-    else {
-        self.placeholderView.title = title;
-        self.placeholderView.message = message;
-        self.placeholderView.image = image;
-        self.placeholderView.buttonTitle = buttonTitle;
-        self.placeholderView.buttonAction = buttonAction;
-    }
 }
 
 @end

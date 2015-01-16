@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DataSource.h"
 
-@interface CollectionViewController : UICollectionViewController
+@interface CollectionViewController : UICollectionViewController <DataSourceDelegate>
 -(DataSource *)dataSource;
 -(void)setDataSource:(DataSource *)dataSource;
 

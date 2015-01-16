@@ -13,6 +13,7 @@
 -(id)init{
     self = [super init];
     if (self) {
+        self.noContentTitle = @"No matching places";
         self.itemLimit = 35;
     }
     return self;
@@ -25,10 +26,13 @@
                 [loading ignore];
                 return;
             }
-            
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = results;
-            }];
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = results;
+                }];
+            } else {
+                [loading doneWithError:error];
+            }
         }];
     }];
 }

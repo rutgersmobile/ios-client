@@ -9,6 +9,7 @@
 #import "MenuBasicDataSource.h"
 #import "RUMenuTableViewCell.h"
 #import "AAPLPlaceholderView.h"
+#import "DataSource_Private.h"
 
 @implementation MenuBasicDataSource
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
@@ -26,7 +27,7 @@
     cell.channelImage.image = [channel channelIcon];
 }
 
--(void)configurePlaceholderCell:(AAPLPlaceholderCell *)cell{
+-(void)configurePlaceholderCell:(ALPlaceholderCell *)cell{
     [super configurePlaceholderCell:cell];
     cell.backgroundColor = [UIColor clearColor];
 }

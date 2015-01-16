@@ -8,6 +8,7 @@
 
 #import "DynamicDataSource.h"
 #import "ALTableViewTextCell.h"
+#import "DataSource_Private.h"
 
 @interface DynamicDataSource ()
 @property NSDictionary *channel;
@@ -47,7 +48,9 @@
                     me.items = items;
                 }];
             } else {
-                [loading doneWithError:nil];
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = nil;
+                }];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             if (!loading.current) {

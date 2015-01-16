@@ -7,9 +7,8 @@
 //
 
 #import "CollectionViewController.h"
-#import "DataSource_Private.h"
 
-@interface CollectionViewController () <DataSourceDelegate>
+@interface CollectionViewController ()
 @property (nonatomic) DataSource *dataSource;
 @end
 

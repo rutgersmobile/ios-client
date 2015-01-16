@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewController.h"
+#import "TableViewController.h"
 
 @interface RUSOCSubjectViewController : TableViewController
 -(id)initWithSubject:(NSDictionary *)subject;

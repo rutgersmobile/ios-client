@@ -8,6 +8,7 @@
 
 #import "FAQSectionDataSource.h"
 #import "ALTableViewTextCell.h"
+#import "DataSource_Private.h"
 
 @interface FAQSectionDataSource ()
 @property NSDictionary *item;

@@ -16,6 +16,9 @@
 #import "AAPLPlaceholderView.h"
 #import "NSIndexPath+RowExtensions.h"
 
+#import "ComposedDataSource.h"
+
+
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
 
@@ -38,17 +41,29 @@
         self.sizingCells = [NSMutableDictionary dictionary];
         self.rowHeightCache = [[RowHeightCache alloc] init];
         
-        self.noContentTitle = @"No content available.";
-        self.errorTitle = @"Network error.";
-        self.errorMessage = @"Please check your network connection and try again.";
+        self.noContentTitle = @"No content available";
+        self.errorTitle = @"Network error";
+        self.errorMessage = @"Please check your network connection and try again";
         self.errorButtonTitle = @"Retry";
         
         __weak typeof(self) weakSelf = self;
         self.errorButtonAction = ^{
             [weakSelf setNeedsLoadContent];
         };
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:AFNetworkingReachabilityDidChangeNotification object:nil];
     }
     return self;
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)reachabilityDidChange:(NSNotification *)notification{
+    if ([AFNetworkReachabilityManager sharedManager].reachable && [self.loadingState isEqualToString:AAPLLoadStateError] && self.isRootDataSource) {
+        [self setNeedsLoadContent];
+    }
 }
 
 - (BOOL)isRootDataSource
@@ -89,7 +104,8 @@
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    [tableView registerClass:[AAPLPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+    [tableView registerClass:[ALPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([ALPlaceholderCell class])];
+    [tableView registerClass:[ALActivityIndicatorCell class] forCellReuseIdentifier:NSStringFromClass([ALActivityIndicatorCell class])];
 }
 
 #pragma mark - Cached Heights
@@ -128,26 +144,38 @@
     return nil;
 }
 
+-(NSString *)placeholderReuseIdentifier{
+    return [self.loadingState isEqualToString:AAPLLoadStateLoadingContent] ? NSStringFromClass([ALActivityIndicatorCell class]) : NSStringFromClass([ALPlaceholderCell class]);
+}
+
 -(id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier{
     return [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 }
 
--(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     
 }
 
--(void)configurePlaceholderCell:(AAPLPlaceholderCell *)cell{
-    NSString *loadingState = self.loadingState;
-    if ([loadingState isEqualToString:AAPLLoadStateLoadingContent]) {
-        [cell showActivityIndicator:YES];
-    } else {
-    
-    if ([loadingState isEqualToString:AAPLLoadStateNoContent]) {
-        [cell showPlaceholderWithTitle:self.noContentTitle message:self.noContentMessage image:self.noContentImage buttonTitle:nil buttonAction:nil];
-    } else if ([loadingState isEqualToString:AAPLLoadStateError]) {
-        [cell showPlaceholderWithTitle:self.errorTitle message:self.errorMessage image:self.errorImage buttonTitle:self.errorButtonTitle buttonAction:self.errorButtonAction];
-    } else
-        [cell hidePlaceholder];
+-(void)configurePlaceholderCell:(id)cell{
+    if ([cell isKindOfClass:[ALPlaceholderCell class]]) {
+        ALPlaceholderCell *placeholder = cell;
+        
+        if ([self.loadingState isEqualToString:AAPLLoadStateNoContent]) {
+            placeholder.title = self.noContentTitle;
+            placeholder.message = self.noContentMessage;
+            placeholder.image = self.noContentImage;
+            placeholder.buttonTitle = nil;
+            placeholder.buttonAction = nil;
+        } else if ([self.loadingState isEqualToString:AAPLLoadStateError]) {
+            placeholder.title = self.errorTitle;
+            placeholder.message = self.errorMessage;
+            placeholder.image = self.errorImage;
+            placeholder.buttonTitle = self.errorButtonTitle;
+            placeholder.buttonAction = self.errorButtonAction;
+        }
+    } else if ([cell isKindOfClass:[ALActivityIndicatorCell class]]) {
+        ALActivityIndicatorCell *activity = cell;
+        [activity.activityIndicatorView startAnimating];
     }
 }
 
@@ -164,9 +192,9 @@
     ALTableViewAbstractCell *cell;
     
     if (self.showingPlaceholder) {
-        AAPLPlaceholderCell *placeholderCell = [self tableView:tableView dequeueReusableCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
-        cell = placeholderCell;
-        [self configurePlaceholderCell:placeholderCell];
+        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier]];
+        [cell updateFonts];
+        [self configurePlaceholderCell:cell];
     } else {
         cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
         [cell updateFonts];
@@ -182,12 +210,13 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{    
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     if (cachedHeight) return [cachedHeight doubleValue];
-   
+    
     ALTableViewAbstractCell *cell;
     
     if (self.showingPlaceholder) {
-        AAPLPlaceholderCell *placeholderCell = [self tableView:tableView sizingCellWithIdentifier:NSStringFromClass([AAPLPlaceholderCell class])];
+        ALPlaceholderCell *placeholderCell = [self tableView:tableView sizingCellWithIdentifier:[self placeholderReuseIdentifier]];
         cell = placeholderCell;
+        [cell updateFonts];
         [self configurePlaceholderCell:placeholderCell];
     } else {
         cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
@@ -198,7 +227,7 @@
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
-    CGFloat height = [cell layoutSizeFittingWidth:[self.delegate tableViewWidth]].height;
+    CGFloat height = [cell layoutSizeFittingWidth:CGRectGetWidth(tableView.bounds)].height;
     [self.rowHeightCache setCachedHeight:height forRowAtIndexPath:indexPath];
     
     return height;
@@ -221,7 +250,7 @@
     [view setNeedsUpdateConstraints];
     [view updateConstraintsIfNeeded];
     
-    return [view layoutSizeFittingWidth:[self.delegate tableViewWidth]].height;
+    return [view layoutSizeFittingWidth:CGRectGetWidth(tableView.bounds)].height;
 }
 
 #pragma mark - Collection View Data Source
@@ -287,7 +316,7 @@
 - (void)beginLoading
 {
     self.loadingComplete = NO;
-    self.loadingState = (([self.loadingState isEqualToString:AAPLLoadStateInitial] || [self.loadingState isEqualToString:AAPLLoadStateLoadingContent]) ? AAPLLoadStateLoadingContent : AAPLLoadStateRefreshingContent);
+    self.loadingState = (([self.loadingState isEqualToString:AAPLLoadStateInitial] || [self.loadingState isEqualToString:AAPLLoadStateLoadingContent] || [self.loadingState isEqualToString:AAPLLoadStateError]) ? AAPLLoadStateLoadingContent : AAPLLoadStateRefreshingContent);
     
     [self notifyWillLoadContent];
 }
@@ -297,18 +326,10 @@
     self.loadingError = error;
     self.loadingState = state;
     
-    if (self.showingPlaceholder) {
+    [self notifyBatchUpdate:^{
         if (update)
-            [self enqueuePendingUpdateBlock:update];
-    }
-    else {
-        [self notifyBatchUpdate:^{
-            // Run pending updates
-            [self executePendingUpdates];
-            if (update)
-                update();
-        }];
-    }
+            update();
+    }];
     
     self.loadingComplete = YES;
     [self notifyContentLoadedWithError:error];
@@ -411,21 +432,6 @@
 
 #pragma mark - Placeholder
 
-- (BOOL)obscuredByPlaceholder
-{
-    if (self.shouldDisplayPlaceholder)
-        return YES;
-    
-    if (!self.delegate)
-        return NO;
-    
-    if ([self isRootDataSource])
-        return NO;
-    
-    DataSource *dataSource = (DataSource *)self.delegate;
-    return dataSource.obscuredByPlaceholder;
-}
-
 - (BOOL)shouldDisplayPlaceholder
 {
     NSString *loadingState = self.loadingState;
@@ -445,15 +451,20 @@
     self.showingPlaceholder = self.shouldDisplayPlaceholder;
 }
 
+
 -(void)setShowingPlaceholder:(BOOL)showingPlaceholder{
+    if ([self isKindOfClass:[ComposedDataSource class]]) {
+        
+    }
+    
     if (_showingPlaceholder == showingPlaceholder) {
         if (showingPlaceholder) {
             [self invalidateCachedHeightsForIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
             [self notifyItemsRefreshedAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
         }
     } else {
+        [self invalidateCachedHeights];
         [self notifyBatchUpdate:^{
-            [self invalidateCachedHeights];
             NSInteger oldNumberOfSections = self.numberOfSections;
             NSInteger oldNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
             
@@ -476,6 +487,7 @@
 }
 
 #pragma mark - Data Source Delegate
+/*
 - (void)executePendingUpdates
 {
     ASSERT_MAIN_THREAD;
@@ -501,7 +513,7 @@
     }
     
     self.pendingUpdateBlock = update;
-}
+}*/
 
 // Use these methods to notify the observers of changes to the dataSource.
 - (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths{

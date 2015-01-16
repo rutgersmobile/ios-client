@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewAbstractRow.h"
 
 @class RUSportsPlayer;
 
-@interface RUSportsRosterPlayerHeaderRow : EZTableViewAbstractRow
+@interface RUSportsRosterPlayerHeaderRow : NSObject
 -(instancetype)initWithPlayer:(RUSportsPlayer *)player;
 @end

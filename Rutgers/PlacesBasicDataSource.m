@@ -9,6 +9,7 @@
 #import "PlacesBasicDataSource.h"
 #import "ALTableViewTextCell.h"
 #import "RUPlace.h"
+#import "DataSource_Private.h"
 
 @implementation PlacesBasicDataSource
 

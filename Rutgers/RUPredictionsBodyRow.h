@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewTextRow.h"
-
-@interface RUPredictionsBodyRow : EZTableViewAbstractRow
+@interface RUPredictionsBodyRow : NSObject
 -(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes;
-@property (nonatomic) NSArray *predictionTimes;
+-(NSString *)minutesString;
+-(NSString *)descriptionString;
+-(NSString *)timeString;
 @end

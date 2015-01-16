@@ -14,6 +14,7 @@
 
 @interface RURecCenterHoursSection ()
 @property (nonatomic) NSDictionary *meetingAreas;
+@property (nonatomic) NSArray *dailySchedules;
 
 @property (nonatomic) NSDateComponents *currentDateComponents;
 @property (nonatomic) NSArray *allDateComponents;
@@ -24,7 +25,15 @@
 @end
 
 @implementation RURecCenterHoursSection
-
+-(instancetype)initWithDailySchedules:(NSArray *)dailySchedules{
+    self = [super init];
+    if (self) {
+        self.title = @"Hours";
+        self.dailySchedules = dailySchedules;
+    }
+    return self;
+}
+/*
 -(instancetype)initWithMeetingAreas:(NSDictionary *)meetingAreas{
     self = [super initWithSectionTitle:@"Hours"];
     if (self) {
@@ -71,7 +80,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goRight) name:@"RecCenterHeaderRight" object:nil];
     }
     return self;
-}
+}*/
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];

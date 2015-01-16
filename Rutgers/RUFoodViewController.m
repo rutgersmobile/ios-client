@@ -9,7 +9,6 @@
 #import "RUFoodViewController.h"
 #import "RUDiningHallViewController.h"
 #import "RUFoodDataSource.h"
-#import "EZTableViewRightDetailRow.h"
 #import "DataTuple.h"
 #import "TableViewController_Private.h"
 
@@ -34,6 +33,7 @@
         [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:object] animated:YES];
     }
 }
+
 -(BOOL)isDiningHallOpen:(NSDictionary *)diningHall{
     NSArray *meals = diningHall[@"meals"];
     for (NSDictionary *meal in meals) {
@@ -41,6 +41,7 @@
     }
     return NO;
 }
+
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];

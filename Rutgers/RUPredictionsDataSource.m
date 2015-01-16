@@ -14,6 +14,7 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUPredictionsBodyRow.h"
+#import "DataSource_Private.h"
 
 @interface RUPredictionsDataSource ()
 @property id item;
@@ -25,7 +26,7 @@
     self = [super init];
     if (self) {
         self.item = item;
-        self.noContentTitle = @"No predictions available.";
+        self.noContentTitle = @"No predictions available";
     }
     return self;
 }
@@ -43,7 +44,6 @@
                 }];
             } else {
                 [loading doneWithError:nil];
-
             }
         }];
     }];

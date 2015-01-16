@@ -12,8 +12,8 @@
 
 @interface RUSOCSearchDataSource()
 @property RUSOCSearchIndex *index;
-@property TupleDataSource *subjects;
-@property TupleDataSource *courses;
+@property TupleDataSource *subjectsDataSource;
+@property TupleDataSource *coursesDataSource;
 @end
 
 @implementation RUSOCSearchDataSource
@@ -22,16 +22,18 @@
 {
     self = [super init];
     if (self) {
-        self.subjects = [[TupleDataSource alloc] init];
-        self.subjects.title = @"Subjects";
-        self.subjects.itemLimit = 25;
+        self.subjectsDataSource = [[TupleDataSource alloc] init];
+        self.subjectsDataSource.title = @"Subjects";
+        self.subjectsDataSource.noContentTitle = @"No matching subjects";
+        self.subjectsDataSource.itemLimit = 25;
         
-        self.courses = [[TupleDataSource alloc] init];
-        self.courses.title = @"Courses";
-        self.courses.itemLimit = 50;
+        self.coursesDataSource = [[TupleDataSource alloc] init];
+        self.coursesDataSource.title = @"Courses";
+        self.coursesDataSource.noContentTitle = @"No matching courses";
+        self.coursesDataSource.itemLimit = 50;
         
-        [self addDataSource:self.subjects];
-        [self addDataSource:self.courses];
+        [self addDataSource:self.subjectsDataSource];
+        [self addDataSource:self.coursesDataSource];
     }
     return self;
 }
@@ -42,16 +44,29 @@
 
 -(void)updateForQuery:(NSString *)query{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [self.index resultsForQuery:query completion:^(NSArray *subjects, NSArray *courses) {
+        [self.index resultsForQuery:query completion:^(NSArray *subjects, NSArray *courses, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
             
-            [loading updateWithContent:^(typeof(self) me) {
-                me.subjects.items = subjects;
-                me.courses.items = courses;
-            }];
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me.subjectsDataSource loadContentWithBlock:^(AAPLLoading *loading) {
+                        [loading updateWithContent:^(typeof(self.subjectsDataSource) subjectsDataSource) {
+                            subjectsDataSource.items = subjects;
+                        }];
+                    }];
+                    
+                    [me.coursesDataSource loadContentWithBlock:^(AAPLLoading *loading) {
+                        [loading updateWithContent:^(typeof(self.coursesDataSource) coursesDataSource) {
+                            coursesDataSource.items = courses;
+                        }];
+                    }];
+                }];
+            } else {
+                [loading doneWithError:error];
+            }
         }];
     }];
 }

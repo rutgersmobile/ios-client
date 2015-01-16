@@ -22,18 +22,19 @@
 
 /// Initialize a placeholder view. A message is required in order to display a button.
 - (instancetype)initWithFrame:(CGRect)frame title:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction;
-
-@end
-/*
-/// A placeholder view for use in the collection view. This placeholder includes the loading indicator.
-@interface AAPLCollectionPlaceholderView : UICollectionReusableView
-
 @end
 
-*/
-@interface AAPLPlaceholderCell : ALTableViewAbstractCell
+@interface ALPlaceholderCell : ALTableViewAbstractCell
+
 @property (nonatomic) AAPLPlaceholderView *placeholderView;
-- (void)showActivityIndicator:(BOOL)show;
-- (void)showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image buttonTitle:(NSString *)buttonTitle buttonAction:(dispatch_block_t)buttonAction;
-- (void)hidePlaceholder;
+@property (nonatomic) UIImage *image;
+@property (nonatomic) NSString *title;
+@property (nonatomic) NSString *message;
+@property (nonatomic) NSString *buttonTitle;
+@property (nonatomic, copy) void (^buttonAction)(void);
+
+@end
+
+@interface ALActivityIndicatorCell : ALTableViewAbstractCell
+@property (nonatomic, readonly) UIActivityIndicatorView *activityIndicatorView;
 @end

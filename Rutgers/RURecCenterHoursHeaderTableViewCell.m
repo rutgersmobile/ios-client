@@ -50,5 +50,10 @@
     [self.dateLabel autoAlignAxisToSuperviewAxis:ALAxisVertical];
 }
 
-
+- (IBAction)goLeft:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RecCenterHeaderLeft" object:nil];
+}
+- (IBAction)goRight:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RecCenterHeaderRight" object:nil];
+}
 @end

@@ -10,6 +10,7 @@
 #import "RUPredictionsBodyTableViewCell.h"
 
 @interface RUPredictionsBodyRow ()
+@property (nonatomic) NSArray *predictionTimes;
 @property (nonatomic) NSString *minutesString;
 @property (nonatomic) NSString *descriptionString;
 @property (nonatomic) NSString *timeString;
@@ -18,17 +19,11 @@
 @implementation RUPredictionsBodyRow
 -(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes{
     
-    self = [super initWithIdentifier:@"RUPredictionsBodyTableViewCell"];
+    self = [super init];
     if (self) {
         self.predictionTimes = predictionTimes;
     }
     return self;
-}
-
--(void)setupCell:(RUPredictionsBodyTableViewCell *)cell{
-    cell.minutesLabel.text = self.minutesString;
-    cell.descriptionLabel.text = self.descriptionString;
-    cell.timeLabel.text = self.timeString;
 }
 
 -(void)setPredictionTimes:(NSArray *)predictionTimes{

@@ -9,9 +9,14 @@
 #import "NSDictionary+Channel.h"
 
 @interface RUChannelManager ()
-@property dispatch_group_t webLinksGroup;
-@property NSArray *webChannels;
 @property (readonly) NSMutableDictionary *channelsByHandle;
+
+@property dispatch_group_t webChannelsGroup;
+@property NSArray *webChannels;
+
+@property BOOL loading;
+@property BOOL finishedLoading;
+@property NSError *loadingError;
 @end
 
 @implementation RUChannelManager
@@ -28,8 +33,8 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.webLinksGroup = dispatch_group_create();
-        [self getWebChannels];
+        self.webChannelsGroup = dispatch_group_create();
+        [self loadWebChannels];
     }
     return self;
 }
@@ -60,25 +65,50 @@
     }
 }
 
--(void)webLinksWithCompletion:(void (^)(NSArray *))completion{
-    if (!self.webChannels) [self getWebChannels];
-    dispatch_group_notify(self.webLinksGroup, dispatch_get_main_queue(), ^{
-        completion(self.webChannels);
+-(void)webLinksWithCompletion:(void (^)(NSArray *, NSError *))completion{
+    [self performWhenWebChannelsLoaded:^(NSError *error) {
+        completion(self.webChannels,error);
+    }];
+}
+
+-(BOOL)webChannelsNeedLoad{
+    return !(self.loading || self.finishedLoading);
+}
+
+-(void)performWhenWebChannelsLoaded:(void (^)(NSError *error))handler{
+    if ([self webChannelsNeedLoad]) {
+        [self loadWebChannels];
+    }
+    dispatch_group_notify(self.webChannelsGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        handler(self.loadingError);
     });
 }
 
--(void)getWebChannels{
-    dispatch_group_enter(self.webLinksGroup);
+
+-(void)loadWebChannels{
+    dispatch_group_enter(self.webChannelsGroup);
+    
+    self.loading = YES;
+    self.finishedLoading = NO;
+    self.loadingError = nil;
+    
     [[RUNetworkManager sessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.webChannels = [self filterWebChannels:responseObject];
         }
-        dispatch_group_leave(self.webLinksGroup);
+        
+        self.loading = NO;
+        self.finishedLoading = YES;
+        self.loadingError = nil;
+        
+        dispatch_group_leave(self.webChannelsGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if (!self.webChannels) [self getWebChannels];
-            dispatch_group_leave(self.webLinksGroup);
-        });
+        
+        self.loading = NO;
+        self.finishedLoading = NO;
+        self.loadingError = error;
+        
+        dispatch_group_leave(self.webChannelsGroup);
     }];
 }
 

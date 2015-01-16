@@ -7,9 +7,7 @@
 //
 
 #import "RUDiningHallViewController.h"
-#import "RUMealViewController.h"
 #import "RUDiningHallDataSource.h"
-#import "EZTableViewRightDetailRow.h"
 #import "TableViewController_Private.h"
 
 @interface RUDiningHallViewController ()

@@ -17,7 +17,7 @@
 #import <MapKit/MapKit.h>
 #import "RUMultiStop.h"
 #import "RUMapsViewController.h"
-#import "EZTableViewMapsSection.h"
+#import "MiniMapDataSource.h"
 
 #import <AddressBookUI/AddressBookUI.h>
 
@@ -42,11 +42,9 @@
             [self addDataSource:addressDataSource];
         }
         
-        if (place.location) {
-            EZTableViewMapsSection *mapsSection = [[EZTableViewMapsSection alloc] initWithSectionTitle:@"Maps" place:place];
-            [self addDataSource:mapsSection];
+        if (place.location) {// || place.address || place.addressString) {
+            [self addDataSource:[[MiniMapDataSource alloc] initWithPlace:place]];
         }
-        
         
         if (place.location) {
             NearbyActiveStopsDataSource *nearbyActiveStopsDataSource = [[NearbyActiveStopsDataSource alloc] init];

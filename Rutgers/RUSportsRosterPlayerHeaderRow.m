@@ -15,7 +15,7 @@
 
 @implementation RUSportsRosterPlayerHeaderRow
 -(instancetype)initWithPlayer:(RUSportsPlayer *)player{
-    self = [super initWithIdentifier:@"RUSportsRosterPlayerHeaderCell"];
+    self = [super init];
     if (self) {
         self.player = player;
     }

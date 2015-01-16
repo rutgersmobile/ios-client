@@ -12,6 +12,7 @@
 #import "RUSOCCourseSectionsDataSource.h"
 #import "RUSOCDataLoadingManager.h"
 #import "RUSOCCourseHeaderDataSource.h"
+#import "DataSource_Private.h"
 
 @interface RUSOCCourseDataSource ()
 @property (nonatomic) NSDictionary *course;
@@ -38,12 +39,19 @@
                 [me updateWithCourse:me.course];
             }];
         } else {
-            [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:self.course[@"subjectCode"] courseCode:self.course[@"courseNumber"] withSuccess:^(NSDictionary *course) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    [me updateWithCourse:course];
-                }];
-            } failure:^{
-                [loading doneWithError:nil];
+            [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:self.course[@"subjectCode"] courseCode:self.course[@"courseNumber"] completion:^(NSDictionary *course, NSError *error) {
+                if (!loading.current) {
+                    [loading ignore];
+                    return;
+                }
+                
+                if (!error) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        [me updateWithCourse:course];
+                    }];
+                } else {
+                    [loading doneWithError:error];
+                }
             }];
         }
     }];
@@ -51,6 +59,7 @@
 
 -(void)updateWithCourse:(NSDictionary *)course{
     self.course = course;
+    [self removeAllDataSources];
     
     NSMutableDictionary *headerItems = [NSMutableDictionary dictionary];
     for (NSString *key in @[@"subjectNotes",@"preReqNotes",@"synopsisUrl"]) {
@@ -63,7 +72,11 @@
         [self addDataSource:self.headerDataSource];
     }
     
-    self.sectionsDataSource.items = course[@"sections"];
+    [self.sectionsDataSource loadContentWithBlock:^(AAPLLoading *loading) {
+       [loading updateWithContent:^(typeof(self.sectionsDataSource) sectionsDataSource) {
+           sectionsDataSource.items = course[@"sections"];
+       }];
+    }];
     [self addDataSource:self.sectionsDataSource];
 }
 

@@ -28,6 +28,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     NSDictionary *campus = [self currentCampus];
     NSString *tag = campus[@"tag"];
     
+    //in case the inputs were nil
     newBrunswickBlock = ^{ if (newBrunswickBlock) newBrunswickBlock(); };
     newarkBlock = ^{ if (newarkBlock) newarkBlock(); };
     camdenBlock = ^{ if (camdenBlock) camdenBlock(); };

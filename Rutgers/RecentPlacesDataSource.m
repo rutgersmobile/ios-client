@@ -17,8 +17,8 @@
     if (self) {
         self.title = @"Recently Viewed";
         
-        self.noContentTitle = @"No recent places.";
-       self.noContentMessage = @"Search for places using the search bar. Search for places using the search bar. ";
+        self.noContentTitle = @"No recent places";
+        self.noContentMessage = @"Search for places using the search bar";
 
         self.itemLimit = 8;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:PlacesDataDidUpdateRecentPlacesKey object:nil];
@@ -32,14 +32,19 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUPlacesDataLoadingManager sharedInstance] getRecentPlacesWithCompletion:^(NSArray *recentPlaces) {
+        [[RUPlacesDataLoadingManager sharedInstance] getRecentPlacesWithCompletion:^(NSArray *recentPlaces, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = recentPlaces;
-            }];
+            
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = recentPlaces;
+                }];
+            } else {
+                [loading doneWithError:error];
+            }
         }];
     }];
 }

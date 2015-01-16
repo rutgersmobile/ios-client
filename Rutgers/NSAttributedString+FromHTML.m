@@ -12,7 +12,10 @@
 @implementation NSAttributedString (FromHTML)
 +(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString preferedTextStyle:(NSString *)textStyle{
     NSDictionary *docattrs = nil;
-    HTMLString = [HTMLString stringWithNewLinesAsBRs];
+    
+    HTMLString = [[HTMLString stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    HTMLString = [HTMLString stringByReplacingOccurrencesOfString:@"<p></p>" withString:@""];
+    HTMLString = [HTMLString stringByReplacingOccurrencesOfString:@"<p>&nbsp;</p>" withString:@""];
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithData:[HTMLString dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,

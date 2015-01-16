@@ -32,12 +32,14 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        [self.navigationController pushViewController:[[RUPreferencesViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
-    } else if (indexPath.section == 1) {
+    if (indexPath.section == 3) {
         [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
-    } else if (indexPath.section == 2) {
-        [((AlertDataSource *)[((ComposedDataSource *)self.dataSource) dataSourceAtIndex:indexPath.section]) showAlertInView:tableView];
+    } else {
+        DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
+        if ([dataSource isKindOfClass:[AlertDataSource class]]) {
+            AlertDataSource *alertDataSource = (AlertDataSource *)dataSource;
+            [alertDataSource showAlertInView:tableView];
+        }
     }
 }
 

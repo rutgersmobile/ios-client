@@ -22,24 +22,61 @@
 
 @property (nonatomic) NSDictionary *abbreviations;
 
-@property dispatch_group_t loadingGroup;
+@property dispatch_group_t indexGroup;
+
+@property BOOL loading;
+@property BOOL finishedLoading;
+@property NSError *loadingError;
+
 @end
 
 @implementation RUSOCSearchIndex
 -(id)init{
     self = [super init];
     if (self) {
-        self.loadingGroup = dispatch_group_create();
-        
-        dispatch_group_enter(self.loadingGroup);
-        [[RUSOCDataLoadingManager sharedInstance] getSearchIndexWithSuccess:^(NSDictionary *index) {
-            [self parseIndex:index];
-            dispatch_group_leave(self.loadingGroup);
-        } failure:^(NSError *error) {
-            dispatch_group_leave(self.loadingGroup);
-        }];
+        self.indexGroup = dispatch_group_create();
+        [self loadIndex];
     }
     return self;
+}
+
+-(void)performWhenIndexLoaded:(void(^)(NSError *error))handler{
+    if ([self indexNeedsLoad]) {
+        [self loadIndex];
+    }
+    dispatch_group_notify(self.indexGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        handler(self.loadingError);
+    });
+}
+
+-(BOOL)indexNeedsLoad{
+    return !(self.loading || self.finishedLoading);
+}
+
+-(void)loadIndex{
+    dispatch_group_enter(self.indexGroup);
+
+    self.loading = YES;
+    self.finishedLoading = NO;
+    self.loadingError = nil;
+    
+    [[RUSOCDataLoadingManager sharedInstance] getSearchIndexWithCompletion:^(NSDictionary *index, NSError *error) {
+        if (!error) {
+            [self parseIndex:index];
+            
+            self.loading = NO;
+            self.finishedLoading = YES;
+            self.loadingError = nil;
+            
+        } else {
+            
+            self.loading = NO;
+            self.finishedLoading = NO;
+            self.loadingError = error;
+            
+        }
+        dispatch_group_leave(self.indexGroup);
+    }];
 }
 
 -(void)parseIndex:(NSDictionary *)index{
@@ -64,56 +101,60 @@
     self.subjects = index[@"names"];
 }
 
--(void)resultsForQuery:(NSString *)query completion:(void (^)(NSArray *, NSArray *))handler{
-    dispatch_group_notify(self.loadingGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSMutableArray *words = [[query wordsInString] mutableCopy];
-        
-        NSMutableOrderedSet *subjects = [NSMutableOrderedSet orderedSet];
-        NSMutableOrderedSet *courses = [NSMutableOrderedSet orderedSet];
-
-        if (words.count){
+-(void)resultsForQuery:(NSString *)query completion:(void (^)(NSArray *, NSArray *, NSError *))handler{
+    [self performWhenIndexLoaded:^(NSError *error) {
+        if (error) {
+            handler(nil,nil,error);
+        } else {
+            NSMutableArray *words = [[query wordsInString] mutableCopy];
             
-            //try to match first word to subject id
-            NSString *subjectID;
-            if ([self stringIsNumericalCode:[words firstObject]]) {
-                DataTuple *subject = [self subjectWithSubjectID:[words firstObject]];
-                if (subject){
-                    subjectID = [words firstObject];
-                    [words removeObjectAtIndex:0];
-                    [subjects addObject:subject];
-                }
-            } else {
-                //try to match first word to abbreviation
-                [subjects addObjectsFromArray:[self subjectsWithAbbreviation:[words firstObject]]];
-            }
+            NSMutableOrderedSet *subjects = [NSMutableOrderedSet orderedSet];
+            NSMutableOrderedSet *courses = [NSMutableOrderedSet orderedSet];
             
-            NSString *courseID;
-            if ([self stringIsNumericalCode:[words lastObject]]) {
-                courseID = [words lastObject];
-                [words removeLastObject];
-            }
-            
-            NSString *newQuery = [words componentsJoinedByString:@" "];
-          
-            if (!subjectID && newQuery.length > 1) [subjects addObjectsFromArray:[self subjectsWithQuery:newQuery]];
-            
-            if (courseID) {
+            if (words.count){
                 
-                [courses addObjectsFromArray:[self coursesInSubjects:subjects.array withCourseID:courseID]];
-                
-                if (subjectID) {
-                    //[courses addObjectsFromArray:[self coursesInSubjects:newQuery withQuery:courseID]];
+                //try to match first word to subject id
+                NSString *subjectID;
+                if ([self stringIsNumericalCode:[words firstObject]]) {
+                    DataTuple *subject = [self subjectWithSubjectID:[words firstObject]];
+                    if (subject){
+                        subjectID = [words firstObject];
+                        [words removeObjectAtIndex:0];
+                        [subjects addObject:subject];
+                    }
                 } else {
-                    [courses addObjectsFromArray:[self coursesWithQuery:newQuery courseID:courseID]];
+                    //try to match first word to abbreviation
+                    [subjects addObjectsFromArray:[self subjectsWithAbbreviation:[words firstObject]]];
                 }
-                //[subjects removeAllObjects];
-            } else {
-                if (!subjectID) [courses addObjectsFromArray:[self coursesWithQuery:newQuery]];
+                
+                NSString *courseID;
+                if ([self stringIsNumericalCode:[words lastObject]]) {
+                    courseID = [words lastObject];
+                    [words removeLastObject];
+                }
+                
+                NSString *newQuery = [words componentsJoinedByString:@" "];
+                
+                if (!subjectID && newQuery.length > 1) [subjects addObjectsFromArray:[self subjectsWithQuery:newQuery]];
+                
+                if (courseID) {
+                    
+                    [courses addObjectsFromArray:[self coursesInSubjects:subjects.array withCourseID:courseID]];
+                    
+                    if (subjectID) {
+                        //[courses addObjectsFromArray:[self coursesInSubjects:newQuery withQuery:courseID]];
+                    } else {
+                        [courses addObjectsFromArray:[self coursesWithQuery:newQuery courseID:courseID]];
+                    }
+                    //[subjects removeAllObjects];
+                } else {
+                    if (!subjectID) [courses addObjectsFromArray:[self coursesWithQuery:newQuery]];
+                }
             }
+            
+            handler([subjects.array copy],[courses.array copy],nil);
         }
-
-        handler([subjects.array copy],[courses.array copy]);
-    });
+    }];
 }
 
 #pragma mark - code parsing
@@ -196,6 +237,7 @@
     }];
     return [results sortByKeyPath:@"title"];
 }
+
 -(NSArray *)coursesWithQuery:(NSString *)query courseID:(NSString *)courseID{
     NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
     NSMutableArray *results = [NSMutableArray array];
@@ -211,7 +253,6 @@
         if (result != NSOrderedSame) return result;
         return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
     }];
-    return [results sortByKeyPath:@"title"];
 }
 
 -(NSArray *)subjectsWithQuery:(NSString *)query{

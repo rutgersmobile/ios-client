@@ -107,34 +107,13 @@
 #pragma mark - Cached Heights
 
 -(void)invalidateCachedHeights{
+    [super invalidateCachedHeights];
     for (DataSource *dataSource in self.dataSources) {
         [dataSource invalidateCachedHeights];
     }
 }
 
--(void)invalidateCachedHeightsForSection:(NSInteger)section{
-    DataSource *dataSource = [self dataSourceForGlobalSection:section];
-    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
-    [dataSource invalidateCachedHeightsForSection:localSection];
-}
-
--(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
-    for (NSIndexPath *indexPath in indexPaths) {
-        [self invalidateCachedHeightForIndexPath:indexPath];
-    }
-}
-
--(void)invalidateCachedHeightForIndexPath:(NSIndexPath *)indexPath{
-    DataSource *dataSource = [self dataSourceForGlobalSection:indexPath.section];
-    NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
-    [dataSource invalidateCachedHeightsForIndexPaths:@[localIndexPath]];
-}
-
 #pragma mark - Table View Data Source
--(CGFloat)tableViewWidth{
-    return  [self.delegate tableViewWidth];
-}
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.showingPlaceholder) return [super tableView:tableView cellForRowAtIndexPath:indexPath];
     NSInteger globalSection = indexPath.section;
@@ -145,12 +124,16 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (self.showingPlaceholder) return nil;
-    return [self dataSourceForGlobalSection:section].title;
+    DataSource *dataSource = [self dataSourceForGlobalSection:section];
+    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
+    return [dataSource tableView:tableView titleForHeaderInSection:localSection];
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     if (self.showingPlaceholder) return nil;
-    return [self dataSourceForGlobalSection:section].footer;
+    DataSource *dataSource = [self dataSourceForGlobalSection:section];
+    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
+    return [dataSource tableView:tableView titleForFooterInSection:localSection];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -196,31 +179,38 @@
     for (NSString *state in loadingStates) {
         if ([state isEqualToString:AAPLLoadStateLoadingContent])
             numberOfLoading++;
-        else if ([state isEqualToString:AAPLLoadStateRefreshingContent])
-            numberOfRefreshing++;
         else if ([state isEqualToString:AAPLLoadStateError])
             numberOfError++;
+        else if ([state isEqualToString:AAPLLoadStateRefreshingContent])
+            numberOfRefreshing++;
         else if ([state isEqualToString:AAPLLoadStateContentLoaded])
             numberOfLoaded++;
         else if ([state isEqualToString:AAPLLoadStateNoContent])
             numberOfNoContent++;
     }
     
-    //    NSLog(@"Composed.loadingState: loading = %d  refreshing = %d  error = %d  no content = %d  loaded = %d", numberOfLoading, numberOfRefreshing, numberOfError, numberOfNoContent, numberOfLoaded);
-    
     // Always prefer loading
-    if (numberOfLoading)
+    if (numberOfLoading > 1)
         _aggregateLoadingState = AAPLLoadStateLoadingContent;
+    else if (numberOfError > 1)
+        _aggregateLoadingState = AAPLLoadStateError;
+    
     else if (numberOfRefreshing)
         _aggregateLoadingState = AAPLLoadStateRefreshingContent;
+    else if (numberOfLoaded)
+        _aggregateLoadingState = AAPLLoadStateContentLoaded;
+
+    else if (numberOfLoading)
+        _aggregateLoadingState = AAPLLoadStateLoadingContent;
     else if (numberOfError)
         _aggregateLoadingState = AAPLLoadStateError;
     else if (numberOfNoContent)
         _aggregateLoadingState = AAPLLoadStateNoContent;
-    else if (numberOfLoaded)
-        _aggregateLoadingState = AAPLLoadStateContentLoaded;
+    
     else
         _aggregateLoadingState = AAPLLoadStateInitial;
+    
+    [self updatePlaceholderState];
 }
 
 - (NSString *)loadingState
@@ -252,9 +242,11 @@
 
 - (void)stateDidChange
 {
-    [super stateDidChange];
     [self updateLoadingState];
+    [super stateDidChange];
 }
+
+#pragma mark - Placeholders
 
 -(BOOL)shouldDisplayPlaceholder{
     BOOL should = [super shouldDisplayPlaceholder];
@@ -265,31 +257,31 @@
 #pragma mark - Data Source Delegate
 
 -(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction{
-    [self notifyItemsInsertedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:insertedIndexPaths inDataSource:dataSource] direction:direction];
+    if (!self.showingPlaceholder) [self notifyItemsInsertedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:insertedIndexPaths inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction{
-    [self notifyItemsRemovedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:removedIndexPaths inDataSource:dataSource] direction:direction];
+    if (!self.showingPlaceholder) [self notifyItemsRemovedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:removedIndexPaths inDataSource:dataSource] direction:direction];
 
 }
 -(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction{
-    [self notifyItemsRefreshedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:refreshedIndexPaths inDataSource:dataSource] direction:direction];
+    if (!self.showingPlaceholder) [self notifyItemsRefreshedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:refreshedIndexPaths inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
-    [self notifyItemMovedFromIndexPath:[self globalIndexPathForLocalIndexPath:indexPath inDataSource:dataSource]
+    if (!self.showingPlaceholder) [self notifyItemMovedFromIndexPath:[self globalIndexPathForLocalIndexPath:indexPath inDataSource:dataSource]
                            toIndexPath:[self globalIndexPathForLocalIndexPath:newIndexPath inDataSource:dataSource]];
 }
 
 -(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
-    [self notifySectionsRefreshed:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
+    if (!self.showingPlaceholder) [self notifySectionsRefreshed:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
-    [self notifySectionsInserted:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
+    if (!self.showingPlaceholder) [self notifySectionsInserted:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
-    [self notifySectionsRemoved:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
+    if (!self.showingPlaceholder) [self notifySectionsRemoved:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection{
-    [self notifySectionMovedFrom:[self globalSectionForLocalSection:section inDataSource:dataSource] to:[self globalSectionForLocalSection:newSection inDataSource:dataSource]];
+    if (!self.showingPlaceholder) [self notifySectionMovedFrom:[self globalSectionForLocalSection:section inDataSource:dataSource] to:[self globalSectionForLocalSection:newSection inDataSource:dataSource]];
 }
 
 -(void)dataSourceDidReloadData:(DataSource *)dataSource{
@@ -303,15 +295,7 @@
 /// If the content was loaded successfully, the error will be nil.
 - (void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error
 {
-    BOOL showingPlaceholder = self.showingPlaceholder;
     [self updateLoadingState];
-    
-    // We were showing the placehoder and now we're not
-    if (showingPlaceholder && !self.showingPlaceholder)
-        [self notifyBatchUpdate:^{
-            [self executePendingUpdates];
-        }];
-    
     [self notifyContentLoadedWithError:error];
 }
 

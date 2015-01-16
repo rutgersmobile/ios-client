@@ -41,18 +41,6 @@ NSString * const newarkAgency = @"rutgers-newark";
     return self;
 }
 
--(void)performWhenAgenciesLoaded:(dispatch_block_t)block{
-    dispatch_group_t group = dispatch_group_create();
-    [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
-        dispatch_group_enter(group);
-        [agencyManager performWhenAgencyLoaded:^{
-            dispatch_group_leave(group);
-        }];
-    }];
-    dispatch_group_notify(group, dispatch_get_main_queue(), block);
-}
-
-
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler{
     [self.agencyManagers[agency] fetchAllStopsWithCompletion:handler];
 }
@@ -92,10 +80,6 @@ NSString * const newarkAgency = @"rutgers-newark";
 
 #pragma mark - predictions api
 -(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *, NSError *))handler{
-    if (!([item isKindOfClass:[RUBusRoute class]] || [item isKindOfClass:[RUMultiStop class]])) {
-        handler(nil,nil);
-        return;
-    }
     [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             id predictions = responseObject[@"predictions"];
@@ -116,29 +100,30 @@ NSString * const newarkAgency = @"rutgers-newark";
 
 
 #pragma mark - search
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
         dispatch_group_t group = dispatch_group_create();
         
         NSMutableArray *allRoutes = [NSMutableArray array];
         NSMutableArray *allStops = [NSMutableArray array];
         
+        __block NSError *outerError;
+        
         [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
             dispatch_group_enter(group);
-            [agencyManager queryStopsAndRoutesWithString:query completion:^(NSArray *routes, NSArray *stops) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [allRoutes addObjectsFromArray:routes];
-                    [allStops addObjectsFromArray:stops];
-                    dispatch_group_leave(group);
-                });
+            [agencyManager queryStopsAndRoutesWithString:query completion:^(NSArray *routes, NSArray *stops, NSError *error) {
+                if (error) outerError = error;
+                [allRoutes addObjectsFromArray:routes];
+                [allStops addObjectsFromArray:stops];
+                dispatch_group_leave(group);
             }];
         }];
         
-        dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSArray *sortedRoutes = [self sortSearchResults:allRoutes forQuery:query];
             NSArray *sortedStops = [self sortSearchResults:allStops forQuery:query];
-            handler(sortedRoutes,sortedStops);
+            handler(sortedRoutes,sortedStops,outerError);
         });
     });
 }

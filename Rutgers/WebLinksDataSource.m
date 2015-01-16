@@ -11,14 +11,19 @@
 @implementation WebLinksDataSource
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUChannelManager sharedInstance] webLinksWithCompletion:^(NSArray *webLinks) {
+        [[RUChannelManager sharedInstance] webLinksWithCompletion:^(NSArray *webLinks, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = webLinks;
-            }];
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = webLinks;
+                }];
+            } else {
+                [loading doneWithError:error];
+            }
+
         }];
     }];
 }

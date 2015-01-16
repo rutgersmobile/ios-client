@@ -9,6 +9,7 @@
 #import "RULabel.h"
 
 @implementation RULabel
+
 -(void)setBounds:(CGRect)bounds{
     CGRect oldBounds = self.bounds;
     [super setBounds:bounds];

@@ -12,6 +12,7 @@
 @interface SegmentedDataSource () <DataSourceDelegate>
 @property (nonatomic) NSMutableArray *dataSources;
 @property (nonatomic) DataSource *selectedDataSource;
+@property (nonatomic, strong) NSString *aggregateLoadingState;
 @end
 
 @implementation SegmentedDataSource
@@ -177,10 +178,6 @@
 }
 
 #pragma mark - Table View Data Source
--(CGFloat)tableViewWidth{
-    return [self.delegate tableViewWidth];
-}
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self.selectedDataSource tableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -205,41 +202,100 @@
 #pragma mark - Cached Heights
 
 -(void)invalidateCachedHeights{
+    [super invalidateCachedHeights];
     for (DataSource *dataSource in self.dataSources) {
         [dataSource invalidateCachedHeights];
     }
 }
--(void)invalidateCachedHeightsForSection:(NSInteger)section{
-    [self.selectedDataSource invalidateCachedHeightsForSection:section];
-}
-
--(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
-    [self.selectedDataSource invalidateCachedHeightsForIndexPaths:indexPaths];
-}
-
 
 #pragma mark - AAPLContentLoading
 
+- (void)updateLoadingState
+{
+    // let's find out what our state should be by asking our data sources
+    NSInteger numberOfLoading = 0;
+    NSInteger numberOfRefreshing = 0;
+    NSInteger numberOfError = 0;
+    NSInteger numberOfLoaded = 0;
+    NSInteger numberOfNoContent = 0;
+    
+    NSArray *loadingStates = [self.dataSources valueForKey:@"loadingState"];
+    loadingStates = [loadingStates arrayByAddingObject:[super loadingState]];
+    
+    for (NSString *state in loadingStates) {
+        if ([state isEqualToString:AAPLLoadStateLoadingContent])
+            numberOfLoading++;
+        else if ([state isEqualToString:AAPLLoadStateError])
+            numberOfError++;
+        else if ([state isEqualToString:AAPLLoadStateRefreshingContent])
+            numberOfRefreshing++;
+        else if ([state isEqualToString:AAPLLoadStateContentLoaded])
+            numberOfLoaded++;
+        else if ([state isEqualToString:AAPLLoadStateNoContent])
+            numberOfNoContent++;
+    }
+    
+    // Always prefer loading
+    if (numberOfLoading > 1)
+        _aggregateLoadingState = AAPLLoadStateLoadingContent;
+    else if (numberOfError > 1)
+        _aggregateLoadingState = AAPLLoadStateError;
+    
+    else if (numberOfRefreshing)
+        _aggregateLoadingState = AAPLLoadStateRefreshingContent;
+    else if (numberOfLoaded)
+        _aggregateLoadingState = AAPLLoadStateContentLoaded;
+    
+    else if (numberOfLoading)
+        _aggregateLoadingState = AAPLLoadStateLoadingContent;
+    else if (numberOfError)
+        _aggregateLoadingState = AAPLLoadStateError;
+    else if (numberOfNoContent)
+        _aggregateLoadingState = AAPLLoadStateNoContent;
+    
+    else
+        _aggregateLoadingState = AAPLLoadStateInitial;
+    
+    [self updatePlaceholderState];
+
+}
+
+- (NSString *)loadingState
+{
+    if (!_aggregateLoadingState)
+        [self updateLoadingState];
+    return _aggregateLoadingState;
+}
+
+- (void)setLoadingState:(NSString *)loadingState
+{
+    _aggregateLoadingState = nil;
+    [super setLoadingState:loadingState];
+}
+
 - (void)loadContent
 {
-    //[_selectedDataSource loadContent];
-    
     for (DataSource *dataSource in self.dataSources)
         [dataSource loadContent];
 }
 
 - (void)resetContent
 {
+    _aggregateLoadingState = nil;
+    [super resetContent];
     for (DataSource *dataSource in self.dataSources)
         [dataSource resetContent];
-    [super resetContent];
 }
 
+- (void)stateDidChange
+{
+    [self updateLoadingState];
+    [super stateDidChange];
+}
 
 #pragma mark - Placeholders
 
-- (BOOL)shouldDisplayPlaceholder
-{
+-(BOOL)shouldDisplayPlaceholder{
     return NO;
 }
 
@@ -300,33 +356,17 @@
 }
 
 -(void)dataSourceWillLoadContent:(DataSource *)dataSource{
+    [self updateLoadingState];
     if (self.selectedDataSource == dataSource) {
         [self notifyWillLoadContent];
     }
 }
 
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
+    [self updateLoadingState];
     if (self.selectedDataSource == dataSource) {
         [self notifyContentLoadedWithError:error];
     }
 }
-/*
-- (void)dataSource:(DataSource *)dataSource didShowActivityIndicator:(BOOL)show{
-    if (self.selectedDataSource == dataSource) {
-        [self notifyActivityIndicatorShown:show];
-    }
-}
-
-- (void)dataSource:(DataSource *)dataSource showPlaceholderWithTitle:(NSString *)title message:(NSString *)message image:(UIImage *)image animated:(BOOL)animated{
-    if (self.selectedDataSource == dataSource) {
-        [self notifyShowPlaceholderWithTitle:title message:message image:image animated:animated];
-    }
-}
-
-- (void)dataSource:(DataSource *)dataSource hidePlaceholderAnimated:(BOOL)animated{
-    if (self.selectedDataSource == dataSource) {
-        [self notifyHidePlaceholderAnimated:YES];
-    }
-}*/
 
 @end

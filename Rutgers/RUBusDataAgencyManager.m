@@ -21,6 +21,15 @@
 @interface RUBusDataAgencyManager ()
 @property NSString *agency;
 
+@property BOOL agencyLoading;
+@property BOOL agencyFinishedLoading;
+@property NSError *agencyLoadingError;
+
+@property BOOL activeLoading;
+@property BOOL activeFinishedLoading;
+@property NSError *activeLoadingError;
+@property NSDate *lastActiveTaskDate;
+
 @property NSDictionary *stops;
 @property NSDictionary *routes;
 
@@ -30,7 +39,6 @@
 @property dispatch_group_t agencyGroup;
 @property dispatch_group_t activeGroup;
 
-@property NSDate *lastTaskDate;
 @end
 
 @implementation RUBusDataAgencyManager
@@ -41,8 +49,6 @@
 
         self.agencyGroup = dispatch_group_create();
         self.activeGroup = dispatch_group_create();
-        
-        [self getAgencyConfig];
     }
     return self;
 }
@@ -51,42 +57,59 @@
     return [[self alloc] initWithAgency:agency];
 }
 
--(BOOL)activeStopsAndRoutesNeedsRefresh{
-    return (!self.lastTaskDate || [[NSDate date] timeIntervalSinceDate:self.lastTaskDate] > 45);
+-(BOOL)agencyConfigNeedsLoad{
+    return !(self.agencyLoading || self.agencyFinishedLoading);
 }
 
--(void)performWhenAgencyLoaded:(dispatch_block_t)block{
-    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block);
-}
-
--(void)performBlockWhenActiveLoaded:(dispatch_block_t)block{
-    if ([self activeStopsAndRoutesNeedsRefresh]) [self getActiveStopsAndRoutes];
-    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block);
+-(void)performWhenAgencyLoaded:(void(^)(NSError *error))handler{
+    if ([self agencyConfigNeedsLoad]) {
+        [self loadAgencyConfig];
+    }
+    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        handler(self.agencyLoadingError);
     });
 }
 
+-(BOOL)activeStopsAndRoutesNeedLoad{
+    return (!(self.activeLoading || self.activeFinishedLoading) || [[NSDate date] timeIntervalSinceDate:self.lastActiveTaskDate] > 45);
+}
+
+-(void)performWhenActiveLoaded:(void(^)(NSError *error))handler{
+    [self performWhenAgencyLoaded:^(NSError *error) {
+        if (error) {
+            handler(error);
+        } else {
+            if ([self activeStopsAndRoutesNeedLoad]) {
+                [self loadActiveStopsAndRoutes];
+            }
+            dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                handler(self.activeLoadingError);
+            });
+        }
+    }];
+}
+
 -(void)fetchAllStopsWithCompletion:(void(^)(NSArray *stops, NSError *error))handler{
-    [self performBlockWhenActiveLoaded:^{
-        handler([[self.stops allValues] sortByKeyPath:@"title"],nil);
+    [self performWhenActiveLoaded:^(NSError *error) {
+        handler([[self.stops allValues] sortByKeyPath:@"title"], error);
     }];
 }
 
 -(void)fetchAllRoutesWithCompletion:(void(^)(NSArray *routes, NSError *error))handler{
-    [self performBlockWhenActiveLoaded:^{
-        handler([[self.routes allValues] sortByKeyPath:@"title"],nil);
+    [self performWhenActiveLoaded:^(NSError *error) {
+        handler([[self.routes allValues] sortByKeyPath:@"title"], error);
     }];
 }
 
 -(void)fetchActiveStopsWithCompletion:(void(^)(NSArray *stops, NSError *error))handler{
-    [self performBlockWhenActiveLoaded:^{
-        handler(self.activeStops,nil);
+    [self performWhenActiveLoaded:^(NSError *error) {
+        handler(self.activeStops, error);
     }];
 }
 
 -(void)fetchActiveRoutesWithCompletion:(void(^)(NSArray *routes, NSError *error))handler{
-    [self performBlockWhenActiveLoaded:^{
-        handler(self.activeRoutes,nil);
+    [self performWhenActiveLoaded:^(NSError *error) {
+        handler(self.activeRoutes, error);
     }];
 }
 
@@ -97,26 +120,21 @@
         return;
     }
     
-    [self performBlockWhenActiveLoaded:^{
-        NSMutableArray *nearbyStops = [NSMutableArray array];
+    [self performWhenActiveLoaded:^(NSError *error) {
         
-        [self.stops enumerateKeysAndObjectsUsingBlock:^(id key, RUMultiStop *stop, BOOL *end) {
-            if ([stop active]) {
-                CLLocationDistance distance = [self distanceOfStop:stop fromLocation:location];
-                if (distance < NEARBY_DISTANCE) [nearbyStops addObject:stop];
-            }
-        }];
-        
-        NSArray *sortedNearbyStops = [nearbyStops sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CLLocationDistance distanceOne = [self distanceOfStop:obj1 fromLocation:location];
-            CLLocationDistance distanceTwo = [self distanceOfStop:obj2 fromLocation:location];
+        NSArray *sortedNearbyStops = [[self.stops.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUMultiStop *stop, NSDictionary *bindings) {
+            return (stop.active && [self distanceOfStop:stop fromLocation:location] < NEARBY_DISTANCE);
+        }]] sortedArrayUsingComparator:^NSComparisonResult(RUMultiStop *stopOne, RUMultiStop *stopTwo) {
+            CLLocationDistance distanceOne = [self distanceOfStop:stopOne fromLocation:location];
+            CLLocationDistance distanceTwo = [self distanceOfStop:stopTwo fromLocation:location];
             
             if (distanceOne < distanceTwo) return NSOrderedAscending;
             else if (distanceOne > distanceTwo) return NSOrderedDescending;
             return NSOrderedSame;
         }];
         
-        handler(sortedNearbyStops,nil);
+        handler(sortedNearbyStops, error);
+
     }];
 }
 
@@ -133,54 +151,67 @@
 
 #pragma mark - searching
 
--(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops))handler{
-    [self performWhenAgencyLoaded:^{
-        
+-(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
+    [self performWhenAgencyLoaded:^(NSError *error) {
         NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
-        
+
         NSArray *routes = [self.routes.allValues filteredArrayUsingPredicate:predicate];
         NSArray *stops = [self.stops.allValues filteredArrayUsingPredicate:predicate];
         
-        handler(routes,stops);
+        handler(routes,stops,error);
     }];
 }
 
 #pragma mark - api requests
 
--(void)getAgencyConfig{
+-(void)loadAgencyConfig{
     dispatch_group_enter(self.agencyGroup);
+    
+    self.agencyLoading = YES;
+    self.agencyFinishedLoading = NO;
+    self.agencyLoadingError = nil;
+    
     [[RUNetworkManager sessionManager] GET:URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-       
         [self parseRouteConfig:responseObject];
+        
+        self.agencyLoading = NO;
+        self.agencyFinishedLoading = YES;
+        self.agencyLoadingError = nil;
+        
         dispatch_group_leave(self.agencyGroup);
-        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-       
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self getAgencyConfig];
-            dispatch_group_leave(self.agencyGroup);
-        });
         
+        self.agencyLoading = NO;
+        self.agencyFinishedLoading = NO;
+        self.agencyLoadingError = error;
+        
+        dispatch_group_leave(self.agencyGroup);
     }];
 }
 
--(void)getActiveStopsAndRoutes{
+-(void)loadActiveStopsAndRoutes{
     dispatch_group_enter(self.activeGroup);
-    self.lastTaskDate = [NSDate date];
+    
+    self.activeLoading = YES;
+    self.activeFinishedLoading = NO;
+    self.activeLoadingError = nil;
+    
     [[RUNetworkManager sessionManager] GET:ACTIVE_URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-      
-        [self performWhenAgencyLoaded:^{
-            [self parseActiveStopsAndRoutes:responseObject];
-            dispatch_group_leave(self.activeGroup);
-        }];
-
+        [self parseActiveStopsAndRoutes:responseObject];
+        
+        self.activeLoading = NO;
+        self.activeFinishedLoading = YES;
+        self.activeLoadingError = nil;
+        self.lastActiveTaskDate = [NSDate date];
+        
+        dispatch_group_leave(self.activeGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self getActiveStopsAndRoutes];
-            dispatch_group_leave(self.activeGroup);
-        });
-
+        self.activeLoading = NO;
+        self.activeFinishedLoading = NO;
+        self.activeLoadingError = error;
+        
+        dispatch_group_leave(self.activeGroup);
     }];
 }
 

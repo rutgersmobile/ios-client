@@ -14,7 +14,9 @@
 #import "TableViewController_Private.h"
 
 @interface RURootController () <RUMenuDelegate, SWRevealViewControllerDelegate>
-@property (nonatomic) SWRevealViewController *containerController;
+@property (nonatomic) SWRevealViewController *revealViewController;
+@property (nonatomic) RUMenuViewController *menuViewController;
+
 //@property (nonatomic) UISplitViewController *splitViewController;
 
 @property (nonatomic) NSHashTable *managedScrollViews;
@@ -33,56 +35,52 @@
     return self;
 }
 #pragma initialization
--(UIViewController *)makeRootViewController{
-    RUMenuViewController *menu = [[RUMenuViewController alloc] init];
-    menu.delegate = self;
-    /*
-     if (iPad()) {
-     
-     self.splitViewController = [[UISplitViewController alloc] init];
-     self.splitViewController.viewControllers = @[menu,defaultScreen];
-     self.splitViewController.delegate = self;
-     self.splitViewController.view.backgroundColor = [UIColor clearColor];
-     
-     return self.splitViewController;
-     } else {*/
+-(UIViewController *)containerViewController{
+    return self.revealViewController;
+}
+
+-(RUMenuViewController *)menuViewController{
+    if (!_menuViewController) {
+        _menuViewController = [[RUMenuViewController alloc] init];
+        _menuViewController.delegate = self;
+    }
+    return _menuViewController;
+}
+
+-(SWRevealViewController *)revealViewController{
+    if (!_revealViewController) {
+        
+        self.revealViewController = [[SWRevealViewController alloc] initWithRearViewController:self.menuViewController frontViewController:nil];
+        self.revealViewController.delegate = self;
+        
+        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
+        
+        self.revealViewController.rearViewRevealWidth = round(iPad() ? 260 * IPAD_SCALE : 260);
+        self.revealViewController.rearViewRevealOverdraw = 0;
+        self.revealViewController.rearViewRevealDisplacement = 55;
+        self.revealViewController.clipsViewsToBounds = YES;
+        self.revealViewController.view.backgroundColor = [UIColor clearColor];
+        self.revealViewController.frontViewShadowOpacity = 0;
+        self.revealViewController.replaceViewAnimationDuration = 0.4;
+        self.revealViewController.toggleAnimationDuration = 0.4;
+        
+        [self.revealViewController panGestureRecognizer];
+        [self.revealViewController tapGestureRecognizer];
+        
+        NSDictionary *lastChannel = [RUChannelManager sharedInstance].lastChannel;
+        
+        [self setCenterChannel:lastChannel];
+    }
     
-    self.containerController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:nil];
-    self.containerController.delegate = self;
-    
-    self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
-  //self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"slider"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
-    
-    self.containerController.rearViewRevealWidth = round(iPad() ? 260 * IPAD_SCALE : 260);
-    self.containerController.rearViewRevealOverdraw = 0;
-    self.containerController.rearViewRevealDisplacement = 55;
-    //self.containerController.draggableBorderWidth = 20.0;
-    
-    //self.containerController.bounceBackOnOverdraw = NO;
-    self.containerController.clipsViewsToBounds = YES;
-    
-    self.containerController.view.backgroundColor = [UIColor clearColor];
-    self.containerController.frontViewShadowOpacity = 0;
-    
-    self.containerController.replaceViewAnimationDuration = 0.4;
-    self.containerController.toggleAnimationDuration = 0.4;
-    
-    [self.containerController panGestureRecognizer];
-    [self.containerController tapGestureRecognizer];
-    
-    NSDictionary *lastChannel = [RUChannelManager sharedInstance].lastChannel;
-    
-    [self setCenterChannel:lastChannel];
-    
-    return self.containerController;
+    return _revealViewController;
 }
 
 -(UIViewController *)centerViewController{
-    return self.containerController.frontViewController;
+    return self.revealViewController.frontViewController;
 }
 
 -(void)setCenterViewController:(UIViewController *)centerViewController{
-    [self.containerController pushFrontViewController:centerViewController animated:NO];
+    [self.revealViewController pushFrontViewController:centerViewController animated:NO];
     [self placeButtonInCenterViewController];
 }
 
@@ -98,18 +96,6 @@
     UINavigationItem *navigationItem = viewController.navigationItem;
     if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
-
-/*
-- (void)removeButtonFromCenterViewController{
-    UIViewController *viewController = [self centerViewController];
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = (UINavigationController *)viewController;
-        if ([nav.viewControllers count] > 0) viewController = [nav.viewControllers objectAtIndex:0];
-    }
-
-    UINavigationItem *navigationItem = viewController.navigationItem;
-    if ([navigationItem.leftBarButtonItem isEqual:self.menuBarButtonItem]) navigationItem.leftBarButtonItem = nil;
-}*/
 
 #pragma channel selection
 -(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
@@ -136,20 +122,20 @@
 }
 
 -(void)toggleLeftPanel:(id)sender{
-    [self.containerController revealToggle:sender];
+    [self.revealViewController revealToggle:sender];
 }
 
 -(void)closeDrawer{
-    [self.containerController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+    [self.revealViewController setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
 
 -(void)openDrawerIfNeeded{
-    if (![RUChannelManager sharedInstance].lastChannel) {
+    if ([[[RUChannelManager sharedInstance].lastChannel channelView] isEqualToString:@"splash"]) {
         [self openDrawer];
     }
 }
 -(void)openDrawer{
-    [self.containerController setFrontViewPosition:FrontViewPositionRight animated:YES];
+    [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
 }
     
 #pragma scroll view scrolls to top

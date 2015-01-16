@@ -35,6 +35,24 @@
     self.tableView.rowHeight = 135;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.dataSource = [[RUReaderDataSource alloc] initWithUrl:[self.channel channelURL]];
+
+}
+
+-(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
+    if (!self.refreshControl && !error) {
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self.dataSource action:@selector(setNeedsLoadContent) forControlEvents:UIControlEventValueChanged];
+    }
+    [self.refreshControl endRefreshing];
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    BOOL should = [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
+    if (!should) return NO;
+    
+    RUReaderTableViewRow *row = [self.dataSource itemAtIndexPath:indexPath];
+    
+    return row.url ? YES : NO;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

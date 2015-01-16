@@ -85,7 +85,7 @@
     if (!animated) {
         _items = [items copy];
         [self invalidateCachedHeightsForSection:0];
-        [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
+        [self notifyDidReloadData];
         [self updateLoadingStateFromItems];
         return;
     }
@@ -119,9 +119,10 @@
         [toMovedIndexPaths addObject:[NSIndexPath indexPathForItem:[newItemSet indexOfObject:movedItem] inSection:0]];
     }
     
-    
+    _items = [items copy];
+    [self updateLoadingStateFromItems];
+
     [self notifyBatchUpdate:^{
-        _items = [items copy];
         
         [self invalidateCachedHeightsForSection:0];
         
@@ -137,7 +138,6 @@
             NSIndexPath *toIndexPath = toMovedIndexPaths[i];
             [self notifyItemMovedFromIndexPath:fromIndexPath toIndexPath:toIndexPath];
         }
-        [self updateLoadingStateFromItems];
     }];
 }
 
@@ -147,7 +147,7 @@
     NSUInteger numberOfItems = [_items count];
     if (numberOfItems && [loadingState isEqualToString:AAPLLoadStateNoContent])
         self.loadingState = AAPLLoadStateContentLoaded;
-    else if (!numberOfItems && [loadingState isEqualToString:AAPLLoadStateContentLoaded])
+    else if (!numberOfItems && ([loadingState isEqualToString:AAPLLoadStateContentLoaded]))
         self.loadingState = AAPLLoadStateNoContent;
 }
 

@@ -1,16 +1,16 @@
 //
-//  EZTableViewMapsRow.h
+//  EZTableViewMapsSection.h
 //  Rutgers
 //
 //  Created by Kyle Bailey on 6/12/14.
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "EZTableViewAbstractRow.h"
-#import <MapKit/MapKit.h> 
+#import "DataSource.h"
+#import <MapKit/MapKit.h>
+
 @class RUPlace;
 
-@interface EZTableViewMapsRow : EZTableViewAbstractRow
+@interface MiniMapDataSource : DataSource
 -(instancetype)initWithPlace:(RUPlace *)place;
-
 @end

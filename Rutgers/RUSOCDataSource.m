@@ -23,22 +23,19 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUSOCDataLoadingManager sharedInstance] getSubjectsWithSuccess:^(NSArray *subjects) {
+        [[RUSOCDataLoadingManager sharedInstance] getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
             
-            [loading updateWithContent:^(typeof(self) me) {
-                [me parseResponse:subjects];
-            }];
-        } failure:^{
-            if (!loading.current) {
-                [loading ignore];
-                return;
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me parseResponse:subjects];
+                }];
+            } else {
+                [loading doneWithError:error];
             }
-            
-            [loading doneWithError:nil];
         }];
     }];
 }

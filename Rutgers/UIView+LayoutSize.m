@@ -10,15 +10,23 @@
 
 @implementation UIView (LayoutSize)
 -(CGSize)layoutSizeFittingWidth:(CGFloat)width{
-    CGRect bounds = self.bounds;
-    bounds.size.width = width;
-    self.bounds = bounds;
-    
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    
     // Get the actual height required for the cell
-    UIView *contentView = [self respondsToSelector:@selector(contentView)] ? [self performSelector:@selector(contentView)] : self;
+    UIView *contentView = self;
+    
+    
+    CGRect bounds = self.bounds;
+    
+    if ([self isKindOfClass:[UITableViewCell class]]) {
+        UITableViewCell *cell = (UITableViewCell *)self;
+        contentView = cell.contentView;
+        if (cell.accessoryType != UITableViewCellAccessoryNone) width -= 34;
+    }
+    
+    bounds.size.width = width;
+    contentView.bounds = bounds;
+    
+    [contentView setNeedsLayout];
+    [contentView layoutIfNeeded];
     
     CGSize fittingSize = [contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     fittingSize.height++;

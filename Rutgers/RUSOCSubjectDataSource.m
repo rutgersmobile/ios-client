@@ -10,8 +10,7 @@
 #import "RUSOCCourseRow.h"
 #import "RUSOCDataLoadingManager.h"
 #import "RUSOCCourseCell.h"
-
-
+#import "DataSource_Private.h"
 
 @implementation RUSOCSubjectDataSource
 -(id)initWithSubjectCode:(NSString *)subjectCode{
@@ -25,16 +24,18 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode withSuccess:^(NSArray *courses) {
+        [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode completion:^(NSArray *courses, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
-            [loading updateWithContent:^(typeof(self) me) {
-                me.items = courses;
-            }];
-        } failure:^{
-            [loading doneWithError:nil];
+            if (!error) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    me.items = courses;
+                }];
+            } else {
+                [loading doneWithError:error];
+            }
         }];
     }];
 }
