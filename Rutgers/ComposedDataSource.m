@@ -1,4 +1,4 @@
-//
+        //
 //  ComposedDataSource.m
 //  
 //
@@ -18,7 +18,7 @@
 {
     self = [super init];
     if (self) {
-        self.dataSources = [NSMutableArray array];
+        _dataSources = [NSMutableArray array];
     }
     return self;
 }
@@ -33,6 +33,7 @@
     dataSource.delegate = self;
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataSource.numberOfSections)];
     [dataSource notifySectionsInserted:sections];
+  //  [self updateLoadingState];
 }
 
 -(void)insertDataSource:(DataSource *)dataSource atIndex:(NSInteger)index{
@@ -40,6 +41,7 @@
     dataSource.delegate = self;
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataSource.numberOfSections)];
     [dataSource notifySectionsInserted:sections];
+  ///  [self updateLoadingState];
 }
 
 -(void)removeDataSource:(DataSource *)dataSource{
@@ -49,6 +51,7 @@
     dataSource.delegate = nil;
     
     [self notifySectionsRemoved:sections];
+  //  [self updateLoadingState];
 }
 
 -(void)removeAllDataSources{
@@ -58,6 +61,24 @@
     }
     [self.dataSources removeAllObjects];
     [self notifySectionsRemoved:sections];
+}
+
+-(void)setDataSources:(NSMutableArray *)dataSources{
+    NSInteger oldNumberOfSections = [self numberOfSections];
+    _dataSources = dataSources;
+    for (DataSource *dataSource in dataSources) {
+        dataSource.delegate = self;
+    }
+    NSInteger newNumberOfSections = [self numberOfSections];
+    if (oldNumberOfSections > newNumberOfSections) {
+        [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
+        [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(newNumberOfSections, oldNumberOfSections - newNumberOfSections)]];
+    } if (newNumberOfSections > oldNumberOfSections) {
+        [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
+        [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(oldNumberOfSections, newNumberOfSections - oldNumberOfSections)]];
+    } else {
+        [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
+    }
 }
 
 #pragma mark - Composed Data Source Implementation
@@ -137,7 +158,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.showingPlaceholder) return [super tableView:tableView heightForRowAtIndexPath:indexPath];;
+    if (self.showingPlaceholder) return [super tableView:tableView heightForRowAtIndexPath:indexPath];
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
@@ -166,6 +187,7 @@
 
 - (void)updateLoadingState
 {
+    
     // let's find out what our state should be by asking our data sources
     NSInteger numberOfLoading = 0;
     NSInteger numberOfRefreshing = 0;
@@ -194,7 +216,7 @@
         _aggregateLoadingState = AAPLLoadStateLoadingContent;
     else if (numberOfError > 1)
         _aggregateLoadingState = AAPLLoadStateError;
-    
+
     else if (numberOfRefreshing)
         _aggregateLoadingState = AAPLLoadStateRefreshingContent;
     else if (numberOfLoaded)
@@ -206,7 +228,6 @@
         _aggregateLoadingState = AAPLLoadStateError;
     else if (numberOfNoContent)
         _aggregateLoadingState = AAPLLoadStateNoContent;
-    
     else
         _aggregateLoadingState = AAPLLoadStateInitial;
     
@@ -256,14 +277,14 @@
 
 #pragma mark - Data Source Delegate
 
--(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimationDirection)direction{
     if (!self.showingPlaceholder) [self notifyItemsInsertedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:insertedIndexPaths inDataSource:dataSource] direction:direction];
 }
--(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimationDirection)direction{
     if (!self.showingPlaceholder) [self notifyItemsRemovedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:removedIndexPaths inDataSource:dataSource] direction:direction];
 
 }
--(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimationDirection)direction{
     if (!self.showingPlaceholder) [self notifyItemsRefreshedAtIndexPaths:[self globalIndexPathsForLocalIndexPaths:refreshedIndexPaths inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
@@ -271,13 +292,13 @@
                            toIndexPath:[self globalIndexPathForLocalIndexPath:newIndexPath inDataSource:dataSource]];
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     if (!self.showingPlaceholder) [self notifySectionsRefreshed:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
--(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     if (!self.showingPlaceholder) [self notifySectionsInserted:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
--(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     if (!self.showingPlaceholder) [self notifySectionsRemoved:[self globalSectionsForLocalSections:sections inDataSource:dataSource] direction:direction];
 }
 -(void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection{

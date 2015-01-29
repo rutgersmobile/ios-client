@@ -48,7 +48,7 @@ typedef void (^AAPLLoadingUpdateBlock)(id object);
 /// Signals that loading is complete, transitions into the Loaded state and then runs the update block.
 - (void)updateWithContent:(AAPLLoadingUpdateBlock)update;
 /// Signals that loading completed with no content, transitions to the No Content state and then runs the update block.
-//- (void)updateWithNoContent:(AAPLLoadingUpdateBlock)update;
+- (void)updateWithNoContent:(AAPLLoadingUpdateBlock)update;
 
 /// Is this the current loading operation? When -loadContentWithBlock: is called it should inform previous instances of AAPLLoading that they are no longer the current instance.
 @property (nonatomic, getter=isCurrent) BOOL current;

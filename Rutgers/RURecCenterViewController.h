@@ -9,5 +9,5 @@
 #import "TableViewController.h"
 
 @interface RURecCenterViewController : TableViewController
-- (instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter;
+-(instancetype)initWithTitle:(NSString *)title recCenter:(NSDictionary *)recCenter;
 @end

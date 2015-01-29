@@ -53,15 +53,15 @@
     [dataSource setNeedsLoadContent];
 }
 
--(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceAnimation)direction{
+-(UITableViewRowAnimation)rowAnimationForSectionOperationDirection:(DataSourceAnimationDirection)direction{
     switch (direction) {
-        case DataSourceAnimationFade:
+        case DataSourceAnimationDirectionNone:
             return UITableViewRowAnimationFade;
             break;
-        case DataSourceAnimationLeft:
+        case DataSourceAnimationDirectionLeft:
             return UITableViewRowAnimationLeft;
             break;
-        case DataSourceAnimationRight:
+        case DataSourceAnimationDirectionRight:
             return UITableViewRowAnimationRight;
             break;
     }
@@ -83,15 +83,15 @@
     [self.collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     [self.collectionView reloadSections:sections];
 }
 
--(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     [self.collectionView insertSections:sections];
 }
 
--(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     [self.collectionView deleteSections:sections];
 }
 

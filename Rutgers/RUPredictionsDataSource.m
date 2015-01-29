@@ -39,9 +39,16 @@
                 return;
             }
             if (!error) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    [me parseResponse:predictions];
-                }];
+                if (predictions.count) {
+                    [loading updateWithContent:^(typeof(self) me) {
+                        [me parseResponse:predictions];
+                    }];
+                } else {
+                    [loading updateWithNoContent:^(typeof(self) me) {
+                        self.sections = nil;
+                    }];
+                }
+
             } else {
                 [loading doneWithError:nil];
             }

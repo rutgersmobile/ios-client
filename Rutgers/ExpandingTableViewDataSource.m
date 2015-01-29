@@ -9,99 +9,27 @@
 #import "ExpandingTableViewDataSource.h"
 #import "ExpandingTableViewSection.h"
 #import "ComposedDataSource_Private.h"
+#import "DataSource_Private.h"
 
 @interface ExpandingTableViewDataSource ()
 @end
 
 @implementation ExpandingTableViewDataSource
--(void)setSections:(NSArray *)sections{
-    [self setSections:sections animated:YES];
+-(instancetype)init{
+    self = [super init];
+    if (self) {
+
+    }
+    return self;
 }
 
 -(NSArray *)sections{
     return self.dataSources;
 }
 
--(void)setSections:(NSArray *)sections animated:(BOOL)animated{
-    if (self.sections == sections || [self.sections isEqualToArray:sections]) {
-        [self updateLoadingStateFromSections];
-        return;
-    }
-    
-    if (!animated) {
-        self.sections = [sections copy];
-        [self invalidateCachedHeights];
-        [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sections.count)]];
-        [self updateLoadingStateFromSections];
-        return;
-    }
-    
-    NSOrderedSet *oldSectionSet = [NSOrderedSet orderedSetWithArray:self.sections];
-    NSOrderedSet *newSectionSet = [NSOrderedSet orderedSetWithArray:sections];
-    
-    NSMutableOrderedSet *deletedSections = [oldSectionSet mutableCopy];
-    [deletedSections minusOrderedSet:newSectionSet];
-    
-    NSMutableOrderedSet *newSections = [newSectionSet mutableCopy];
-    [newSections minusOrderedSet:oldSectionSet];
-    
-    NSMutableOrderedSet *movedSections = [newSectionSet mutableCopy];
-    [movedSections intersectOrderedSet:oldSectionSet];
-    
-    NSIndexSet *deletedIndexes = [oldSectionSet indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [deletedSections containsObject:obj];
-    }];
-    
-    NSIndexSet *insertedIndexes = [newSectionSet indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [newSections containsObject:obj];
-    }];
-    
-    NSIndexSet *fromMovedIndexes = [movedSections indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [oldSectionSet containsObject:obj];
-    }];
-    
-    NSIndexSet *toMovedIndexes = [movedSections indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        return [newSectionSet containsObject:obj];
-    }];
-    
-    [sections enumerateObjectsUsingBlock:^(DataSource *dataSource, NSUInteger idx, BOOL *stop) {
-        dataSource.delegate = self;
-    }];
-    
-    [self notifyBatchUpdate:^{
-        [self invalidateCachedHeights];
-
-        self.dataSources = [sections copy];
-        
-        if ([deletedIndexes count])
-            [self notifySectionsRemoved:deletedIndexes direction:DataSourceAnimationRight];
-        
-        if ([insertedIndexes count])
-            [self notifySectionsInserted:insertedIndexes direction:DataSourceAnimationLeft];
-        
-        NSUInteger fromIndex = [fromMovedIndexes firstIndex];
-        NSUInteger toIndex = [toMovedIndexes firstIndex];
-
-        while (fromIndex != NSNotFound && toIndex != NSNotFound) {
-            [self notifySectionMovedFrom:fromIndex to:toIndex];
-            
-            fromIndex = [fromMovedIndexes indexGreaterThanIndex:fromIndex];
-            toIndex = [toMovedIndexes indexGreaterThanIndex:toIndex];
-        }
-        [self updateLoadingStateFromSections];
-    }];
+-(void)setSections:(NSArray *)sections{
+    self.dataSources = [sections mutableCopy];
 }
-
-- (void)updateLoadingStateFromSections
-{
-    NSString *loadingState = self.loadingState;
-    NSUInteger numberOfSections = [self.sections count];
-    if (numberOfSections && [loadingState isEqualToString:AAPLLoadStateNoContent])
-        self.loadingState = AAPLLoadStateContentLoaded;
-    else if (!numberOfSections && [loadingState isEqualToString:AAPLLoadStateContentLoaded])
-        self.loadingState = AAPLLoadStateNoContent;
-}
-
 
 -(ExpandingTableViewSection *)sectionAtIndex:(NSInteger)index{
     return self.sections[index];

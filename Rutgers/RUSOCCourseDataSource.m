@@ -32,13 +32,12 @@
 }
 
 -(void)loadContent{
-    [self loadContentWithBlock:^(AAPLLoading *loading) {
-        NSArray *sections = self.course[@"sections"];
-        if (sections) {
-            [loading updateWithContent:^(typeof(self) me) {
-                [me updateWithCourse:me.course];
-            }];
-        } else {
+    NSArray *sections = self.course[@"sections"];
+    if (sections) {
+        [self updateWithCourse:self.course];
+    } else {
+        [self loadContentWithBlock:^(AAPLLoading *loading) {
+            
             [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:self.course[@"subjectCode"] courseCode:self.course[@"courseNumber"] completion:^(NSDictionary *course, NSError *error) {
                 if (!loading.current) {
                     [loading ignore];
@@ -53,8 +52,9 @@
                     [loading doneWithError:error];
                 }
             }];
-        }
-    }];
+            
+        }];
+    }
 }
 
 -(void)updateWithCourse:(NSDictionary *)course{

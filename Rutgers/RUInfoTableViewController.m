@@ -19,7 +19,7 @@
 @implementation RUInfoTableViewController
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RUInfoTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 -(void)viewDidLoad{

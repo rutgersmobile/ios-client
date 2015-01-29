@@ -44,7 +44,7 @@
     @synchronized(self) {
         if (!_nativeChannels) {
             NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
-            _nativeChannels =  [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            _nativeChannels =  [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         }
         return _nativeChannels;
     }

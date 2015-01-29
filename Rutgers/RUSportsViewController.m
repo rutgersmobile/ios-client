@@ -19,7 +19,7 @@
 
 @implementation RUSportsViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RUSportsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 -(void)viewDidLoad{

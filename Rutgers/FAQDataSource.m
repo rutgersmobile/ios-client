@@ -34,10 +34,11 @@
 }
 
 -(void)updateWithItems:(NSArray *)items{
-    [self removeAllDataSources];
+    NSMutableArray *sections = [NSMutableArray array];
     for (NSDictionary *item in items) {
-        [self addDataSource:[[FAQSectionDataSource alloc] initWithItem:item]];
+        [sections addObject:[[FAQSectionDataSource alloc] initWithItem:item]];
     }
+    self.sections = sections;
 }
 
 -(void)loadContent{

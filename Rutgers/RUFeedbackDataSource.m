@@ -136,10 +136,9 @@
     }
     
     NSString *url = @"feedback.php";
-    if (betaStage) {
-        
+    if (BETA) {
+        url = @"http://sauron.rutgers.edu/~jamchamb/feedback.php";
     }
-    url = @"http://sauron.rutgers.edu/~jamchamb/feedback.php";
     
     [[RUNetworkManager sessionManager] POST:url parameters:feedback success:^(NSURLSessionDataTask *task, id responseObject) {
         //NSLog(@"%@",responseObject);

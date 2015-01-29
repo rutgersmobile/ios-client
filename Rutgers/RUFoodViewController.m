@@ -12,15 +12,25 @@
 #import "DataTuple.h"
 #import "TableViewController_Private.h"
 
+@interface RUFoodViewController ()
+@property MSWeakTimer *timer;
+@end
+
 @implementation RUFoodViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RUFoodViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.dataSource = [[RUFoodDataSource alloc] init];
+    self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:2*60*60 target:self selector:@selector(timerDidFire) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+}
+
+-(void)timerDidFire{
+    [self.dataSource setNeedsLoadContent];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -14,31 +14,31 @@
     self.areaLabel = [RULabel newAutoLayoutView];
     self.areaLabel.numberOfLines = 0;
 
-    self.timesLabel = [RULabel newAutoLayoutView];
-    self.timesLabel.numberOfLines = 0;
+    self.hoursLabel = [RULabel newAutoLayoutView];
+    self.hoursLabel.numberOfLines = 0;
     
     [self.contentView addSubview:self.areaLabel];
-    [self.contentView addSubview:self.timesLabel];
+    [self.contentView addSubview:self.hoursLabel];
     
 }
 
 -(void)updateFonts{
     self.areaLabel.font = [UIFont ruPreferredBoldFontForTextStyle:UIFontTextStyleFootnote];
-    self.timesLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleFootnote];
+    self.hoursLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 -(void)initializeConstraints{
-    [@[self.areaLabel,self.timesLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllTop];
+    [@[self.areaLabel,self.hoursLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllTop];
     
     [self.areaLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     
     [self.areaLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
     [self.areaLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     
-    [self.timesLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [self.hoursLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
   
-    [self.timesLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
-    [self.timesLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+    [self.hoursLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
+    [self.hoursLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
 

@@ -40,14 +40,14 @@
         jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/json",@"text/html",nil];
         jsonSerializer.removesKeysWithNullValues = YES;
     
-        AFHTTPResponseSerializer *xmlSerializer = [AFXMLResponseSerializer serializer];
+        AFXMLResponseSerializer *xmlSerializer = [AFXMLResponseSerializer serializer];
         xmlSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
         
         NSString *urlString = @"https://rumobile.rutgers.edu/1/";
         
         self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
         self.sessionManager.responseSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[jsonSerializer,xmlSerializer]];
-        self.sessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        self.sessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
         
     }
     return self;

@@ -44,9 +44,35 @@
     }
 }
 
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+-(BOOL)showMenuForItem:(id)item{
+    return [item isKindOfClass:[NSString class]] || [item isKindOfClass:[NSAttributedString class]];
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
-    return [item isKindOfClass:[DataTuple class]];
+    return [self showMenuForItem:item];
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
+    return NO;
+}
+
+-(BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+    id item = [self.dataSource itemAtIndexPath:indexPath];
+    return action == @selector(copy:) && [self showMenuForItem:item];
+}
+
+-(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
+    if (action != @selector(copy:)) return;
+    
+    id item = [self.dataSource itemAtIndexPath:indexPath];
+    
+    if ([item isKindOfClass:[NSString class]]) {
+        [UIPasteboard generalPasteboard].string = item;
+    } else if ([item isKindOfClass:[NSAttributedString class]]) {
+        [UIPasteboard generalPasteboard].string = ((NSAttributedString *)item).string;
+    }
 }
 
 @end

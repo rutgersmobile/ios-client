@@ -23,7 +23,7 @@
 
 @implementation RUSOCViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RUSOCViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 - (void)viewDidLoad

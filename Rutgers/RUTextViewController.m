@@ -8,6 +8,7 @@
 
 #import "RUTextViewController.h"
 #import "ALTableViewTextCell.h"
+#import <NSString+HTML.h>
 #import "NSAttributedString+FromHTML.h"
 
 @interface RUTextViewController ()
@@ -37,7 +38,6 @@
     self.textView.selectable = NO;
     self.textView.textContainerInset = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsetsSmall, kLabelVerticalInsets, kLabelHorizontalInsetsSmall);
     self.textView.alwaysBounceVertical = YES;
-    self.textView.textAlignment = self.centersText ? NSTextAlignmentCenter : NSTextAlignmentLeft;
     
     [self.view addSubview:self.textView];
     [self.textView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
@@ -47,15 +47,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loadText)
-                                                 name:UIContentSizeCategoryDidChangeNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadText) name:UIContentSizeCategoryDidChangeNotification object:nil];
+    
     [self loadText];
 }
 
 -(void)loadText{
-    NSMutableAttributedString *attributedText = [NSMutableAttributedString attributedStringFromHTMLString:self.data preferedTextStyle:UIFontTextStyleBody];
+    NSMutableAttributedString *attributedText = [NSMutableAttributedString attributedStringFromHTMLString:[self.data stringWithNewLinesAsBRs] preferedTextStyle:UIFontTextStyleBody];
     if (self.centersText) {
         [attributedText enumerateAttributesInRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
             NSMutableParagraphStyle *paragraphStyle = [attrs[NSParagraphStyleAttributeName] mutableCopy];
@@ -65,11 +63,6 @@
     }
     
     self.textView.attributedText = attributedText;
-}
-
-
--(void)preferredContentSizeChanged{
-    [self loadText];
 }
 
 -(void)dealloc{

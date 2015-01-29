@@ -27,6 +27,7 @@
 
 -(UIImage *)channelIcon{
     NSString *iconName = self[@"icon"];
+    if (!iconName) return nil;
     UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     return image;
 }

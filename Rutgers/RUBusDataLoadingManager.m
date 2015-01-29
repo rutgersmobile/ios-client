@@ -72,7 +72,7 @@ NSString * const newarkAgency = @"rutgers-newark";
         }];
     }];
     
-    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         handler(allStops,outerError);
     });
 }

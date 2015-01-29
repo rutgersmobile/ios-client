@@ -11,9 +11,11 @@
 #import "DataTuple.h"
 #import "StringDataSource.h"
 #import "NSAttributedString+FromHTML.h"
+#import "KeyValueDataSource.h"
 
 @interface RURecCenterDataSource ()
 @property (nonatomic) NSDictionary *recCenter;
+@property (nonatomic) StringDataSource *descriptionDataSource;
 @end
 
 @implementation RURecCenterDataSource
@@ -30,42 +32,45 @@
         }
         
         NSString *address = self.recCenter[@"address"];
-        if (address.length) {
-            
-            RUPlace *place = [[RUPlace alloc] initWithTitle:self.title addressString:address];
-            DataTuple *placeTuple = [[DataTuple alloc] initWithTitle:address object:place];
-            
-            TupleDataSource *addressDataSource = [[TupleDataSource alloc] initWithItems:@[placeTuple]];
-            addressDataSource.title = @"Address";
-            
-            [self addDataSource:addressDataSource];
-        }
-        
         NSString *informationNumber = self.recCenter[@"information_number"];
-        if (informationNumber.length) {
-            StringDataSource *informationDataSource = [[StringDataSource alloc] initWithItems:@[informationNumber]];
-            informationDataSource.title = @"Information Desk";
-            [self addDataSource:informationDataSource];
-        }
-        
         NSString *businessNumber = self.recCenter[@"business_number"];
-        if (businessNumber.length) {
-            StringDataSource *businessDataSource = [[StringDataSource alloc] initWithItems:@[businessNumber]];
-            businessDataSource.title = @"Business Office";
-            [self addDataSource:businessDataSource];
+
+        if (address.length || informationNumber.length || businessNumber.length) {
+            KeyValueDataSource *infoSection = [[KeyValueDataSource alloc] initWithObject:recCenter];
+            infoSection.title = @"Info";
+            infoSection.items = @[
+                                  @{@"keyPath" : @"address", @"label" : @""},
+                                  @{@"keyPath" : @"information_number", @"label" : @"Information Desk"},
+                                  @{@"keyPath" : @"business_number", @"label" : @"Business Office"},
+                                  ];
+            
+            [self addDataSource:infoSection];
         }
-        
+
         NSString *description = self.recCenter[@"full_description"];
         if (description.length) {
+            StringDataSource *descriptionDataSource = [[StringDataSource alloc] init];
+            self.descriptionDataSource = descriptionDataSource;
             
-            NSAttributedString *string = [NSAttributedString attributedStringFromHTMLString:description preferedTextStyle:UIFontTextStyleBody];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDescription) name:UIContentSizeCategoryDidChangeNotification object:nil];
+            [self loadDescription];
             
-            StringDataSource *descriptionDataSource = [[StringDataSource alloc] initWithItems:@[string]];
             descriptionDataSource.title = @"Business Office";
             [self addDataSource:descriptionDataSource];
     
         }
     }
     return self;
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+-(void)loadDescription{
+    NSString *description = self.recCenter[@"full_description"];
+    NSAttributedString *string = [NSAttributedString attributedStringFromHTMLString:description preferedTextStyle:UIFontTextStyleBody];
+    self.descriptionDataSource.items = @[string];
 }
 @end

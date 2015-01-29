@@ -19,7 +19,7 @@
     if (self) {
         
         NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RUInfo" ofType:@"json"]];
-        NSArray *info = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        NSArray *info = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
       
         for (NSDictionary *sectionDictionary in info) {
             RUInfoTableSection *section = [[RUInfoTableSection alloc] init];

@@ -7,21 +7,15 @@
 //
 
 #import "RURecCenterHoursSection.h"
-#import "RURecCenterHoursHeaderRow.h"
-#import "RURecCenterMeetingAreaRow.h"
+#import "RURecCenterHoursHeaderTableViewCell.h"
+#import "RURecCenterMeetingAreaTableViewCell.h"
 #import "DataSource_Private.h"
 #import "NSIndexPath+RowExtensions.h"
 
 @interface RURecCenterHoursSection ()
-@property (nonatomic) NSDictionary *meetingAreas;
 @property (nonatomic) NSArray *dailySchedules;
-
-@property (nonatomic) NSDateComponents *currentDateComponents;
-@property (nonatomic) NSArray *allDateComponents;
 @property (nonatomic) NSInteger todaysDateIndex;
 @property (nonatomic) NSInteger selectedDateIndex;
-
-@property (nonatomic) RURecCenterHoursHeaderRow *headerRow;
 @end
 
 @implementation RURecCenterHoursSection
@@ -30,129 +24,131 @@
     if (self) {
         self.title = @"Hours";
         self.dailySchedules = dailySchedules;
-    }
-    return self;
-}
-/*
--(instancetype)initWithMeetingAreas:(NSDictionary *)meetingAreas{
-    self = [super initWithSectionTitle:@"Hours"];
-    if (self) {
-        self.meetingAreas = meetingAreas;
         
-        NSArray *areaLabels = [[meetingAreas allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-        
-        RURecCenterHoursHeaderRow *header = [[RURecCenterHoursHeaderRow alloc] init];
-        header.shouldHighlight = NO;
-        header.date = NSStringFromDateComponents(self.currentDateComponents);
-        [self addItem:header];
-        self.headerRow = header;
-        
-        for (NSString *meetingArea in areaLabels) {
-            NSDictionary *datesForArea = meetingAreas[meetingArea];
-            RURecCenterMeetingAreaRow *row = [[RURecCenterMeetingAreaRow alloc] initWithArea:meetingArea times:datesForArea];
-            row.shouldHighlight = NO;
-            [self addItem:row];
-        }
-        
-        NSMutableSet *dates = [NSMutableSet set];
-        
-        [meetingAreas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [dates addObjectsFromArray:[obj allKeys]];
-        }];
-
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        self.currentDateComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+        NSDateComponents *todaysDateComponents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
         
-        self.allDateComponents = componentsForDateStrings(dates);
-        if (!self.allDateComponents.count) self.allDateComponents = @[self.currentDateComponents];
-        
-        self.todaysDateIndex = [self.allDateComponents indexOfObject:self.currentDateComponents inSortedRange:NSMakeRange(0, self.allDateComponents.count) options:NSBinarySearchingFirstEqual usingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return compareComponents(obj1, obj2);
+        NSString *todaysDateString = NSStringFromDateComponents(todaysDateComponents);
+      
+        self.todaysDateIndex = 0;
+        [self.dailySchedules enumerateObjectsUsingBlock:^(NSDictionary *dailySchedule, NSUInteger idx, BOOL *stop) {
+            NSString *date = dailySchedule[@"date"];
+            if ([date isEqualToString:todaysDateString]) {
+                self.todaysDateIndex = idx;
+                *stop = YES;
+            }
         }];
-        
-        if (self.todaysDateIndex != NSNotFound) {
-            self.selectedDateIndex = self.todaysDateIndex;
-        } else {
-            self.selectedDateIndex = self.allDateComponents.count-1;
-        }
+        _selectedDateIndex = self.todaysDateIndex;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goLeft) name:@"RecCenterHeaderLeft" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goRight) name:@"RecCenterHeaderRight" object:nil];
     }
     return self;
-}*/
+}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+-(NSDictionary *)selectedDailySchedule{
+    return self.dailySchedules[self.selectedDateIndex];
+}
+
+-(NSArray *)selectedMeetingAreaHours{
+    return [self selectedDailySchedule][@"meeting_area_hours"];
+}
+
+-(NSInteger)numberOfItems{
+    return [self selectedMeetingAreaHours].count + 1;
+}
+
+-(id)itemAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        return nil;
+    } else {
+        return [self selectedMeetingAreaHours][indexPath.row - 1];
+    }
+}
+
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView{
+    [super registerReusableViewsWithTableView:tableView];
+    [tableView registerClass:[RURecCenterHoursHeaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RURecCenterHoursHeaderTableViewCell class])];
+    [tableView registerClass:[RURecCenterMeetingAreaTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RURecCenterMeetingAreaTableViewCell class])];
+}
+
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        return NSStringFromClass([RURecCenterHoursHeaderTableViewCell class]);
+    } else {
+        return NSStringFromClass([RURecCenterMeetingAreaTableViewCell class]);
+    }
+}
+
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        RURecCenterHoursHeaderTableViewCell *headerCell = cell;
+        
+        NSString *title;
+        if (self.selectedDateIndex == self.todaysDateIndex) {
+            title = @"Today";
+        } else if (self.selectedDateIndex == self.todaysDateIndex - 1) {
+            title = @"Yesterday";
+        } else if (self.selectedDateIndex == self.todaysDateIndex + 1) {
+            title = @"Tomorrow";
+        } else {
+            title = [self selectedDailySchedule][@"date"];
+        }
+        
+        headerCell.dateLabel.text = title;
+        
+        headerCell.leftButton.enabled = (self.selectedDateIndex > 0);
+        headerCell.rightButton.enabled = (self.selectedDateIndex < self.dailySchedules.count - 1);
+        
+    } else {
+        RURecCenterMeetingAreaTableViewCell *meetingAreaCell = cell;
+        NSDictionary *item = [self itemAtIndexPath:indexPath];
+        
+        meetingAreaCell.areaLabel.text = item[@"area"];
+        meetingAreaCell.hoursLabel.text = item[@"hours"];
+    }
+}
+
 -(void)goLeft{
     if (self.selectedDateIndex == 0) return;
     self.selectedDateIndex--;
-    [self updateDateWithDirection:DataSourceAnimationRight];
 }
 
 -(void)goRight{
-    if (self.selectedDateIndex == self.allDateComponents.count - 1) return;
+    if (self.selectedDateIndex == self.dailySchedules.count - 1) return;
     self.selectedDateIndex++;
-    [self updateDateWithDirection:DataSourceAnimationLeft];
 }
 
 -(void)setSelectedDateIndex:(NSInteger)selectedDateIndex{
-    _selectedDateIndex = selectedDateIndex;
-    NSString *date = NSStringFromDateComponents(self.allDateComponents[self.selectedDateIndex]);
-    [self.items makeObjectsPerformSelector:@selector(setDate:) withObject:date];
-    
-    if (self.selectedDateIndex == self.todaysDateIndex) {
-        self.headerRow.date = @"Today";
-    } else if (self.selectedDateIndex == self.todaysDateIndex - 1) {
-        self.headerRow.date = @"Yesterday";
-    } else if (self.selectedDateIndex == self.todaysDateIndex + 1) {
-        self.headerRow.date = @"Tomorrow";
+    DataSourceAnimationDirection direction = DataSourceAnimationDirectionNone;
+    if (selectedDateIndex > _selectedDateIndex) {
+        direction = DataSourceAnimationDirectionLeft;
+    } else {
+        direction = DataSourceAnimationDirectionRight;
     }
     
-    self.headerRow.leftButtonEnabled = !(self.selectedDateIndex == 0);
-    self.headerRow.rightButtonEnabled = !(self.selectedDateIndex == self.allDateComponents.count - 1);
-}
-
--(void)updateDateWithDirection:(DataSourceAnimation)direction{
+    NSInteger oldNumberOfItems = self.numberOfItems;
+    _selectedDateIndex = selectedDateIndex;
+    NSInteger newNumberOfItems = self.numberOfItems;
+    
     [self invalidateCachedHeightsForSection:0];
-    [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, [self numberOfItemsInSection:0]) inSection:0] direction:direction];
+    if (oldNumberOfItems > newNumberOfItems) {
+        [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItems) inSection:0] direction:direction];
+        [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldNumberOfItems, oldNumberOfItems - newNumberOfItems) inSection:0] direction:direction];
+    } else if (newNumberOfItems > oldNumberOfItems) {
+        [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItems) inSection:0] direction:direction];
+        [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newNumberOfItems, newNumberOfItems - oldNumberOfItems) inSection:0] direction:direction];
+    } else {
+        [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItems) inSection:0] direction:direction];
+    }
 }
 
 NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
     return [NSString stringWithFormat:@"%ld/%ld/%ld",(long)dateComponents.month,(long)dateComponents.day,(long)dateComponents.year];
-}
-
-NSArray *componentsForDateStrings(NSSet *dateStrings){
-    NSMutableArray *allDateComponents = [NSMutableArray array];
-    for (NSString *dateString in dateStrings) {
-        NSArray *components = [dateString componentsSeparatedByString:@"/"];
-        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-        
-        [dateComponents setDay:[components[1] integerValue]];
-        [dateComponents setMonth:[components[0] integerValue]];
-        [dateComponents setYear:[components[2] integerValue]];
-        
-        [allDateComponents addObject:dateComponents];
-    }
-    return [allDateComponents sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return compareComponents(obj1, obj2);
-    }];
-}
-
-NSComparisonResult compareComponents(NSDateComponents *comps1, NSDateComponents *comps2){
-
-    NSComparisonResult year = compare(comps1.year,comps2.year);
-    if (year != NSOrderedSame) return year;
-    
-    NSComparisonResult month = compare(comps1.month,comps2.month);
-    if (month != NSOrderedSame) return month;
-    
-    NSComparisonResult day = compare(comps1.day,comps2.day);
-    if (day != NSOrderedSame) return day;
-    
-    return NSOrderedSame;
 }
 
 @end

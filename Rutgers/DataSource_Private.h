@@ -48,18 +48,18 @@
 - (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths;
 - (void)notifyItemMovedFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
-- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction;
-- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction;
-- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction;
+- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimationDirection)direction;
+- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimationDirection)direction;
+- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimationDirection)direction;
 
 - (void)notifySectionsInserted:(NSIndexSet *)sections;
 - (void)notifySectionsRemoved:(NSIndexSet *)sections;
 - (void)notifySectionsRefreshed:(NSIndexSet *)sections;
 - (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection;
 
-- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
-- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceAnimation)direction;
+- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction;
+- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction;
+- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction;
 
 - (void)notifyDidReloadData;
 

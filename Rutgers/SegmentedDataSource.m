@@ -83,8 +83,8 @@
     NSInteger oldIndex = [_dataSources indexOfObjectIdenticalTo:oldDataSource];
     NSInteger newIndex = [_dataSources indexOfObjectIdenticalTo:selectedDataSource];
     
-    DataSourceAnimation removalDirection = (oldIndex < newIndex) ? DataSourceAnimationLeft : DataSourceAnimationRight;
-    DataSourceAnimation insertionDirection = (oldIndex < newIndex) ? DataSourceAnimationRight : DataSourceAnimationLeft;
+    DataSourceAnimationDirection removalDirection = (oldIndex < newIndex) ? DataSourceAnimationDirectionLeft : DataSourceAnimationDirectionRight;
+    DataSourceAnimationDirection insertionDirection = (oldIndex < newIndex) ? DataSourceAnimationDirectionRight : DataSourceAnimationDirectionLeft;
     
     NSIndexSet *removedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfOldSections)];;
     NSIndexSet *insertedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfNewSections)];
@@ -301,17 +301,17 @@
 
 #pragma mark - Data Source Delegate
 
--(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
         [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:direction];
     }
 }
--(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRemoveItemsAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
         [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:direction];
     }
 }
--(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRefreshItemsAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
         [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:direction];
     }
@@ -322,17 +322,17 @@
     }
 }
 
--(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
         [self notifySectionsRefreshed:sections direction:direction];
     }
 }
--(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didInsertSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
         [self notifySectionsInserted:sections direction:direction];
     }
 }
--(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didRemoveSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
         [self notifySectionsRemoved:sections direction:direction];
     }

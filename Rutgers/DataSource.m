@@ -159,7 +159,7 @@
 -(void)configurePlaceholderCell:(id)cell{
     if ([cell isKindOfClass:[ALPlaceholderCell class]]) {
         ALPlaceholderCell *placeholder = cell;
-        
+        NSLog(@"%@",self.loadingState);
         if ([self.loadingState isEqualToString:AAPLLoadStateNoContent]) {
             placeholder.title = self.noContentTitle;
             placeholder.message = self.noContentMessage;
@@ -453,10 +453,6 @@
 
 
 -(void)setShowingPlaceholder:(BOOL)showingPlaceholder{
-    if ([self isKindOfClass:[ComposedDataSource class]]) {
-        
-    }
-    
     if (_showingPlaceholder == showingPlaceholder) {
         if (showingPlaceholder) {
             [self invalidateCachedHeightsForIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
@@ -517,19 +513,19 @@
 
 // Use these methods to notify the observers of changes to the dataSource.
 - (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths{
-    [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceAnimationFade];
+    [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceAnimationDirectionNone];
 }
 
 - (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths{
-    [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceAnimationFade];
+    [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceAnimationDirectionNone];
 }
 
 - (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths{
-    [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:DataSourceAnimationFade];
+    [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:DataSourceAnimationDirectionNone];
 }
 
 // Use these methods to notify the observers of changes to the dataSource.
-- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimation)direction{
+- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
@@ -539,7 +535,7 @@
     
 }
 
-- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimation)direction{
+- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
@@ -549,7 +545,7 @@
     
 }
 
-- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimation)direction{
+- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
@@ -570,15 +566,15 @@
 }
 
 - (void)notifySectionsInserted:(NSIndexSet *)sections{
-    [self notifySectionsInserted:sections direction:DataSourceAnimationFade];
+    [self notifySectionsInserted:sections direction:DataSourceAnimationDirectionNone];
 }
 
 - (void)notifySectionsRemoved:(NSIndexSet *)sections{
-    [self notifySectionsRemoved:sections direction:DataSourceAnimationFade];
+    [self notifySectionsRemoved:sections direction:DataSourceAnimationDirectionNone];
 }
 
 - (void)notifySectionsRefreshed:(NSIndexSet *)sections{
-    [self notifySectionsRefreshed:sections direction:DataSourceAnimationFade];
+    [self notifySectionsRefreshed:sections direction:DataSourceAnimationDirectionNone];
 }
 
 - (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection{
@@ -589,7 +585,7 @@
     }
 }
 
-- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+- (void)notifySectionsInserted:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -598,7 +594,7 @@
     }
 }
 
-- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+- (void)notifySectionsRemoved:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -608,7 +604,7 @@
     
 }
 
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceAnimation)direction{
+- (void)notifySectionsRefreshed:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;

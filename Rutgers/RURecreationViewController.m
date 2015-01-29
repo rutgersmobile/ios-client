@@ -18,7 +18,7 @@
 
 @implementation RURecreationViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RURecreationViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
 - (void)viewDidLoad

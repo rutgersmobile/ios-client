@@ -33,7 +33,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 3) {
-        [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
+        [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStylePlain] animated:YES];
     } else {
         DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
         if ([dataSource isKindOfClass:[AlertDataSource class]]) {

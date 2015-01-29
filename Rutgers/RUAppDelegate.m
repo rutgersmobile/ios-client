@@ -1,4 +1,3 @@
-
 //
 //  RUAppDelegate.m
 //  Rutgers
@@ -25,7 +24,7 @@
  *  Setup application wide appearance, application wide cache, drawer, and also ask the user for their information if this is the first run
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+{    
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     

@@ -29,5 +29,5 @@
 -(void)preferredContentSizeChanged NS_REQUIRES_SUPER;
 -(void)reloadTablePreservingSelectionState:(UITableView *)tableView;
 
--(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimation)direction;
+-(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimationDirection)direction;
 @end

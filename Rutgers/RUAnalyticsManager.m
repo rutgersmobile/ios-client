@@ -150,9 +150,10 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(void)postAnalyticsEvents:(NSArray *)events{
-    
     NSString *url = @"analytics.php";
-    url = @"http://sauron.rutgers.edu/~jamchamb/analytics.php";
+    if (BETA) {
+        url = @"http://sauron.rutgers.edu/~jamchamb/analytics.php";
+    }
     
     [[RUNetworkManager sessionManager] POST:url parameters:@{@"payload" : [self payloadStringForEvents:events]} success:nil failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self queueAnalyticsEvents:events];

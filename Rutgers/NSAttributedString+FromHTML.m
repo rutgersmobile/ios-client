@@ -13,9 +13,7 @@
 +(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString preferedTextStyle:(NSString *)textStyle{
     NSDictionary *docattrs = nil;
     
-    HTMLString = [[HTMLString stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    HTMLString = [HTMLString stringByReplacingOccurrencesOfString:@"<p></p>" withString:@""];
-    HTMLString = [HTMLString stringByReplacingOccurrencesOfString:@"<p>&nbsp;</p>" withString:@""];
+    HTMLString = [HTMLString stringByDecodingHTMLEntities];
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithData:[HTMLString dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
@@ -29,7 +27,9 @@
         UIFont *preferredFont = [UIFont ruPreferredFontForTextStyle:textStyle symbolicTraits:font.fontDescriptor.symbolicTraits];
         [string addAttributes:@{NSFontAttributeName : preferredFont} range:range];
     }];
-  
+    
+    CFStringTrimWhitespace((CFMutableStringRef)string.mutableString);
+    
     return string;
 }
 @end

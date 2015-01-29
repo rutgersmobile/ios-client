@@ -175,9 +175,9 @@
 }
 
 -(void)updateFonts{
-    self.titleLabel.font = [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] fontByScalingPointSize:1.3];
-    self.messageLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    self.actionButton.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.titleLabel.font = [[UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody] fontByScalingPointSize:1.3];
+    self.messageLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
+    self.actionButton.titleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
 }
 
 - (void)setImage:(UIImage *)image

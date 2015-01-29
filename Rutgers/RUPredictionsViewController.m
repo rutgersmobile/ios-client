@@ -42,9 +42,17 @@
     self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
 }
 
--(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimation)direction{
+-(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
+    if (!self.refreshControl && !error) {
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self.dataSource action:@selector(setNeedsLoadContent) forControlEvents:UIControlEventValueChanged];
+    }
+    [self.refreshControl endRefreshing];
+}
+
+-(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimationDirection)direction{
     switch (direction) {
-        case DataSourceAnimationFade:
+        case DataSourceAnimationDirectionNone:
             return UITableViewRowAnimationAutomatic;
             break;
         default:

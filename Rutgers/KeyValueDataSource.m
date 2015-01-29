@@ -41,8 +41,8 @@ static NSString * const AAPLKeyValueDataSourceLabelKey = @"label";
     // Filter out any items that don't have a value, because it looks sloppy when rows have a label but no value
     NSMutableArray *newItems = [NSMutableArray array];
     for (NSDictionary *dictionary in items) {
-        id value = [self.object valueForKeyPath:dictionary[AAPLKeyValueDataSourceKeyPathKey]];
-        if (value)
+        NSString *value = [self.object valueForKeyPath:dictionary[AAPLKeyValueDataSourceKeyPathKey]];
+        if (value.length)
             [newItems addObject:dictionary];
     }
     [super setItems:newItems];
@@ -67,12 +67,8 @@ static NSString * const AAPLKeyValueDataSourceLabelKey = @"label";
     
     cell.detailTextLabel.text = dictionary[AAPLKeyValueDataSourceLabelKey];
 
-    NSString *valueString;
-    id value = [self.object valueForKeyPath:dictionary[AAPLKeyValueDataSourceKeyPathKey]];
-    
-    valueString = value;
-
-    cell.textLabel.text = valueString;
+    NSString *value = [self.object valueForKeyPath:dictionary[AAPLKeyValueDataSourceKeyPathKey]];
+    cell.textLabel.text = value;
 }
 
 @end

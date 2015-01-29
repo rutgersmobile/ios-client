@@ -29,6 +29,11 @@
     return self;
 }
 
+- (UIEdgeInsets)layoutMargins
+{
+    return UIEdgeInsetsZero;
+}
+
 -(void)initializeSubviews{
     
 }

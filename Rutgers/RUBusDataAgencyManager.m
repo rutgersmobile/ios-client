@@ -152,6 +152,7 @@
 #pragma mark - searching
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
+    
     [self performWhenAgencyLoaded:^(NSError *error) {
         NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
 

@@ -32,10 +32,12 @@
         ComposedDataSource *routes = [[ComposedDataSource alloc] init];
         routes.title = @"Routes";
         routes.singleLoadingIndicator = YES;
+        routes.noContentTitle = @"No Active Routes";
         
         ComposedDataSource *stops = [[ComposedDataSource alloc] init];
         stops.title = @"Stops";
         stops.singleLoadingIndicator = YES;
+        routes.noContentTitle = @"No Active Stops";
         
         ComposedDataSource *all = [[ComposedDataSource alloc] init];
         all.title = @"All";

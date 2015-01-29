@@ -18,7 +18,7 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
 @implementation RUMapsComponent
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[RUMapsComponent alloc] init];
+    return [[self alloc] init];
 }
 - (void)viewDidLoad
 {

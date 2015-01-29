@@ -8,6 +8,7 @@
 
 #import "RUUserInfoManager.h"
 
+NSString *const userInfoManagerDidChangeCampusKey = @"userInfoManagerDidChangeCampusKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
 static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey";
 
@@ -64,6 +65,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 +(void)setCurrentCampus:(NSDictionary *)currentCampus{
     [[NSUserDefaults standardUserDefaults] setObject:currentCampus forKey:userInfoManagerCampusKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeCampusKey object:nil];
 }
 
 +(NSArray *)userRoles{
@@ -88,8 +90,6 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 -(BOOL)hasUserInformation{
     return [[self class] currentCampus] && [[self class] currentUserRole];
 }
-
-
 
 -(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion{
     if (![self hasUserInformation]) {

@@ -12,5 +12,5 @@
 
 @interface RURecCenterMeetingAreaTableViewCell : RURecCenterTableViewCell
 @property (nonatomic) UILabel *areaLabel;
-@property (nonatomic) UILabel *timesLabel;
+@property (nonatomic) UILabel *hoursLabel;
 @end
