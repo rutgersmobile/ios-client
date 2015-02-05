@@ -55,7 +55,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadDescription) name:UIContentSizeCategoryDidChangeNotification object:nil];
             [self loadDescription];
             
-            descriptionDataSource.title = @"Business Office";
+            descriptionDataSource.title = @"Description";
             [self addDataSource:descriptionDataSource];
     
         }
