@@ -8,6 +8,7 @@
 
 #import "RUPredictionsBodyRow.h"
 #import "RUPredictionsBodyTableViewCell.h"
+#import "NSDate+EpochTime.h"
 
 @interface RUPredictionsBodyRow ()
 @property (nonatomic) NSArray *predictionTimes;
@@ -37,6 +38,10 @@
         NSString *minutes = prediction[@"_minutes"];
         NSString *seconds = prediction[@"_seconds"];
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[seconds integerValue]];
+        /*
+        NSDate *otherDate = [NSDate dateWithEpochTime:prediction[@"_epochTime"]];
+        NSLog(@"%f",[date timeIntervalSinceDate:otherDate]);
+         */
         
         if (idx != 0) {
             [minutesString appendString:@"\n"];
