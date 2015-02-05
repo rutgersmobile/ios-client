@@ -14,12 +14,16 @@
     NSDictionary *docattrs = nil;
     
     HTMLString = [HTMLString stringByDecodingHTMLEntities];
-    
+    HTMLString = [HTMLString stringByReplacingOccurrencesOfString:@"<p></p>" withString:@""];
+    HTMLString = [HTMLString stringByReplacingOccurrencesOfString:@"<p>&nbsp;</p>" withString:@""];
+
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithData:[HTMLString dataUsingEncoding:NSUTF8StringEncoding]
                                                     options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                                               NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)
-                                                              }
+                                                               NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
                                          documentAttributes:&docattrs error:nil];
+    
+    //[string.mutableString replaceOccurrencesOfString:@" \n" withString:@"\n" options:0 range:NSMakeRange(0, string.length)];
+    //[string.mutableString replaceOccurrencesOfString:@"\n\n" withString:@"\n" options:0 range:NSMakeRange(0, string.length)];
     
     [string enumerateAttributesInRange:NSMakeRange(0, string.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
         if (attrs[NSBackgroundColorAttributeName]) [string removeAttribute:NSBackgroundColorAttributeName range:range];
@@ -27,7 +31,7 @@
         UIFont *preferredFont = [UIFont ruPreferredFontForTextStyle:textStyle symbolicTraits:font.fontDescriptor.symbolicTraits];
         [string addAttributes:@{NSFontAttributeName : preferredFont} range:range];
     }];
-    
+
     CFStringTrimWhitespace((CFMutableStringRef)string.mutableString);
     
     return string;
