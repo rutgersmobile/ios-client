@@ -7,7 +7,7 @@
 //
 
 #import "RUReaderViewController.h"
-#import "RUReaderTableViewRow.h"
+#import "RUReaderItem.h"
 #import "RUReaderDataSource.h"
 #import "TableViewController_Private.h"
 
@@ -50,13 +50,13 @@
     BOOL should = [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
     if (!should) return NO;
     
-    RUReaderTableViewRow *row = [self.dataSource itemAtIndexPath:indexPath];
+    RUReaderItem *row = [self.dataSource itemAtIndexPath:indexPath];
     
     return row.url ? YES : NO;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUReaderTableViewRow *row = [self.dataSource itemAtIndexPath:indexPath];
+    RUReaderItem *row = [self.dataSource itemAtIndexPath:indexPath];
     
     if (!row.url) return;
     

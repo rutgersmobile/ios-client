@@ -8,7 +8,7 @@
 
 #import "RUReaderDataSource.h"
 #import "RUReaderTableViewCell.h"
-#import "RUReaderTableViewRow.h"
+#import "RUReaderItem.h"
 #import "DataSource_Private.h"
 #import <UIKit+AFNetworking.h>
 
@@ -53,7 +53,7 @@
 -(void)parseResponse:(NSArray *)response{
     NSMutableArray *parsedItems = [NSMutableArray array];
     for (NSDictionary *item in response) {
-        RUReaderTableViewRow *row = [[RUReaderTableViewRow alloc] initWithItem:item];
+        RUReaderItem *row = [[RUReaderItem alloc] initWithItem:item];
         [parsedItems addObject:row];
     }
     self.items = parsedItems;
@@ -70,7 +70,7 @@
 
 -(void)configureCell:(RUReaderTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    RUReaderTableViewRow *row = [self itemAtIndexPath:indexPath];
+    RUReaderItem *row = [self itemAtIndexPath:indexPath];
     
     cell.titleLabel.text = row.title;
     cell.timeLabel.text = row.date;

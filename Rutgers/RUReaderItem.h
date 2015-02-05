@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-@interface RUReaderTableViewRow : NSObject
+@interface RUReaderItem : NSObject
 -(instancetype)initWithItem:(NSDictionary *)item;
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *date;

@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUReaderTableViewRow.h"
+#import "RUReaderItem.h"
 #import <NSString+HTML.h>
 #import "RUReaderTableViewCell.h"
 
-@interface RUReaderTableViewRow ()
+@interface RUReaderItem ()
 
 @end
 
-@implementation RUReaderTableViewRow
+@implementation RUReaderItem
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
