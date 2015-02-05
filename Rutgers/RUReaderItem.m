@@ -11,13 +11,14 @@
 #import "RUReaderTableViewCell.h"
 
 @interface RUReaderItem ()
-
+@property (nonatomic) NSDictionary *item;
 @end
 
 @implementation RUReaderItem
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
+        self.item = item;
         id title = [item[@"title"] firstObject];
         if ([title isKindOfClass:[NSString class]]) {
             self.title = [title stringByDecodingHTMLEntities];
@@ -103,7 +104,11 @@
     }
 }
 
-
-
+-(BOOL)isEqual:(id)object{
+    if (object == self) return YES;
+    if (![object isMemberOfClass:[self class]]) return NO;
+    RUReaderItem *otherItem = object;
+    return [otherItem.item isEqualToDictionary:self.item];
+}
 
 @end
