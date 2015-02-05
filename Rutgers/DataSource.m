@@ -159,7 +159,6 @@
 -(void)configurePlaceholderCell:(id)cell{
     if ([cell isKindOfClass:[ALPlaceholderCell class]]) {
         ALPlaceholderCell *placeholder = cell;
-        NSLog(@"%@",self.loadingState);
         if ([self.loadingState isEqualToString:AAPLLoadStateNoContent]) {
             placeholder.title = self.noContentTitle;
             placeholder.message = self.noContentMessage;
