@@ -44,6 +44,9 @@
         reset.alertTitle = @"Are you sure you wish to reset the app?";
         reset.updatesInitialText = NO;
         reset.showsDisclosureIndicator = YES;
+        reset.footer = [NSString stringWithFormat:@"Rutgers Mobile Application\nVersion: %@\nAPI: %@",
+                        @"4.0.0",
+                        @"1.1"];
         
         __weak typeof(self) weakSelf = self;
         reset.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
@@ -54,6 +57,7 @@
         
         StringDataSource *legal = [[StringDataSource alloc] initWithItems:@[@"Legal Notices"]];
         legal.showsDisclosureIndicator = YES;
+        
         [self addDataSource:legal];
 
     }
