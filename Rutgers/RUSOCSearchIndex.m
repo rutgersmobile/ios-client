@@ -112,43 +112,58 @@
             NSMutableOrderedSet *courses = [NSMutableOrderedSet orderedSet];
             
             if (words.count){
-                
+                /// setup
                 //try to match first word to subject id
-                NSString *subjectID;
                 if ([self stringIsNumericalCode:[words firstObject]]) {
                     DataTuple *subject = [self subjectWithSubjectID:[words firstObject]];
                     if (subject){
-                        subjectID = [words firstObject];
                         [words removeObjectAtIndex:0];
                         [subjects addObject:subject];
                     }
-                } else {
-                    //try to match first word to abbreviation
-                    [subjects addObjectsFromArray:[self subjectsWithAbbreviation:[words firstObject]]];
                 }
                 
                 NSString *courseID;
                 if ([self stringIsNumericalCode:[words lastObject]]) {
                     courseID = [words lastObject];
                     [words removeLastObject];
+                } else if ([self stringIsNumericalCode:[words firstObject]]){
+                    courseID = [words firstObject];
+                    [words removeObjectAtIndex:0];
                 }
                 
-                NSString *newQuery = [words componentsJoinedByString:@" "];
-                
-                if (!subjectID && newQuery.length > 1) [subjects addObjectsFromArray:[self subjectsWithQuery:newQuery]];
-                
-                if (courseID) {
-                    
-                    [courses addObjectsFromArray:[self coursesInSubjects:subjects.array withCourseID:courseID]];
-                    
-                    if (subjectID) {
-                        //[courses addObjectsFromArray:[self coursesInSubjects:newQuery withQuery:courseID]];
-                    } else {
-                        [courses addObjectsFromArray:[self coursesWithQuery:newQuery courseID:courseID]];
+                if (!courseID) {
+                    //try to match first word to abbreviation
+                    NSArray *subjectsForAbbreviation = [self subjectsWithAbbreviation:[words firstObject]];
+                    if (subjectsForAbbreviation.count) {
+                        [words removeObjectAtIndex:0];
+                        [subjects addObjectsFromArray:subjectsForAbbreviation];
                     }
-                    //[subjects removeAllObjects];
+                }
+                
+                NSString *query = [words componentsJoinedByString:@" "];
+                [subjects addObjectsFromArray:[self subjectsWithQuery:query]];
+
+                /// main body
+                if (subjects.count) {
+                    if (courseID) {
+                        [courses addObjectsFromArray:[self coursesWithCourseID:courseID inSubjects:subjects.array]];
+                    } else if (query.length > 1) {
+                        [courses addObjectsFromArray:[self coursesWithQuery:query inSubjects:subjects.array]];
+                    } else if (subjects.count == 1) {
+                        [courses addObjectsFromArray:[self coursesInSubjects:subjects.array]];
+                    }
                 } else {
-                    if (!subjectID) [courses addObjectsFromArray:[self coursesWithQuery:newQuery]];
+                    if (courseID) {
+                        if (query.length > 1) {
+                            [courses addObjectsFromArray:[self coursesWithCourseID:courseID query:query]];
+                        } else {
+                            [courses addObjectsFromArray:[self coursesWithCourseID:courseID]];
+                        }
+                    } else {
+                        if (query.length > 1) {
+                            [courses addObjectsFromArray:[self coursesWithQuery:query]];
+                        }
+                    }
                 }
             }
             
@@ -171,16 +186,19 @@
     return YES;
 }
 
+
 -(BOOL)numericalCode:(NSString *)code matchesFullCode:(NSString *)fullCode{
-    NSNumberFormatter *numberFormatter = [self numberFormatter];
+    NSInteger location = [fullCode rangeOfString:code options:NSNumericSearch].location;
+    if (location == NSNotFound) return false;
     
-    NSNumber *fullNumber = [numberFormatter numberFromString:fullCode];
-    NSNumber *number = [numberFormatter numberFromString:code];
+    NSInteger sizeDiff = fullCode.length-code.length;
+    if (location == 0) return true;
+    if (sizeDiff > 0 && [fullCode characterAtIndex:sizeDiff-1] == '0') return true;
     
-    return ([[numberFormatter stringFromNumber:fullNumber] rangeOfString:[numberFormatter stringFromNumber:number]].location == 0);
+    return false;
 }
 
-#pragma mark - primitives
+#pragma mark - accessors
 -(DataTuple *)subjectWithSubjectID:(NSString *)subjectID{
     return self.ids[subjectID];
 }
@@ -194,55 +212,27 @@
     return [results sortByKeyPath:@"description"];
 }
 
-#pragma mark - numerical course codes
--(NSArray *)coursesInSubject:(DataTuple *)subject withCourseID:(NSString *)numericalCode{
-    NSMutableArray *results = [NSMutableArray array];
-    [subject.object[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
-        if ([self numericalCode:numericalCode matchesFullCode:courseID]) {
-            [results addObject:course];
-        }
-    }];
-    
-    return [results sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
-        NSComparisonResult result = [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
-        return result;
-    }];
-}
-
--(NSArray *)coursesInSubjects:(NSArray *)subjects withCourseID:(NSString *)numericalCode{
-    NSMutableArray *results = [NSMutableArray array];
-    for (DataTuple *subject in subjects) {
-        [results addObjectsFromArray:[self coursesInSubject:subject withCourseID:numericalCode]];
-    }
-    return results;
-}
-
-#pragma mark - abbreviation
 -(NSArray *)subjectsWithAbbreviation:(NSString *)abbreviation{
     abbreviation = [abbreviation uppercaseString];
     NSArray *subjectIDs = self.abbreviations[abbreviation];
     return [self subjectsWithSubjectIDs:subjectIDs];
 }
 
-#pragma mark - searches
--(NSArray *)coursesWithQuery:(NSString *)query{
-    NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
-    NSMutableArray *results = [NSMutableArray array];
-    [self.courses enumerateKeysAndObjectsUsingBlock:^(NSString *courseName, NSDictionary *courseDict, BOOL *stop) {
-        if ([predicate evaluateWithObject:courseName]) {
-            DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
-            DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
-            if (course) [results addObject:course];
-        }
-    }];
-    return [results sortByKeyPath:@"title"];
+#pragma mark - courses
+-(NSArray *)coursesInSubjects:(NSArray *)subjects{
+    NSMutableArray *courses = [NSMutableArray array];
+    for (DataTuple *subject in subjects) {
+        [courses addObjectsFromArray:[[subject.object[@"courses"] allValues] sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
+            return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+        }]];
+    }
+    return courses;
 }
 
--(NSArray *)coursesWithQuery:(NSString *)query courseID:(NSString *)courseID{
-    NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
+-(NSArray *)coursesWithCourseID:(NSString *)courseID{
     NSMutableArray *results = [NSMutableArray array];
     [self.courses enumerateKeysAndObjectsUsingBlock:^(NSString *courseName, NSDictionary *courseDict, BOOL *stop) {
-        if ([predicate evaluateWithObject:courseName] && [self numericalCode:courseID matchesFullCode:courseDict[@"course"]] ) {
+        if ([self numericalCode:courseID matchesFullCode:courseDict[@"course"]] ) {
             DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
             DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
             if (course) [results addObject:course];
@@ -253,6 +243,77 @@
         if (result != NSOrderedSame) return result;
         return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
     }];
+}
+
+-(NSArray *)coursesWithCourseID:(NSString *)numericalCode inSubject:(DataTuple *)subject{
+    NSMutableArray *results = [NSMutableArray array];
+    [subject.object[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
+        if ([self numericalCode:numericalCode matchesFullCode:courseID]) {
+            [results addObject:course];
+        }
+    }];
+    
+    return [results sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
+        return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+    }];
+}
+
+-(NSArray *)coursesWithCourseID:(NSString *)numericalCode inSubjects:(NSArray *)subjects{
+    NSMutableArray *results = [NSMutableArray array];
+    for (DataTuple *subject in subjects) {
+        [results addObjectsFromArray:[self coursesWithCourseID:numericalCode inSubject:subject]];
+    }
+    return results;
+}
+
+#pragma mark - searches
+-(NSArray *)coursesWithQuery:(NSString *)query{
+    NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
+    NSMutableArray *results = [NSMutableArray array];
+    [self.courses enumerateKeysAndObjectsUsingBlock:^(NSString *courseName, NSDictionary *courseDict, BOOL *stop) {
+        DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
+        DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
+        if ([predicate evaluateWithObject:course.title]) {
+            [results addObject:course];
+        }
+    }];
+    return [results sortByKeyPath:@"title"];
+}
+
+-(NSArray *)coursesWithCourseID:(NSString *)numericalCode query:(NSString *)query{
+    NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
+    NSMutableArray *results = [NSMutableArray array];
+    [self.courses enumerateKeysAndObjectsUsingBlock:^(NSString *courseName, NSDictionary *courseDict, BOOL *stop) {
+        DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
+        DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
+        if ([predicate evaluateWithObject:course.title] && [self numericalCode:numericalCode matchesFullCode:courseDict[@"course"]]) {
+            [results addObject:course];
+        }
+    }];
+    return [results sortByKeyPath:@"title"];
+}
+
+-(NSArray *)coursesWithQuery:(NSString *)query inSubject:(DataTuple *)subject{
+    NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
+    NSMutableArray *results = [NSMutableArray array];
+    [subject.object[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
+        if ([predicate evaluateWithObject:course[@"title"]]) {
+            [results addObject:course];
+        }
+    }];
+    
+    return [results sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
+        NSComparisonResult result = [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+        return result;
+    }];
+}
+
+-(NSArray *)coursesWithQuery:(NSString *)query inSubjects:(NSArray *)subjects{
+    NSMutableArray *results = [NSMutableArray array];
+    for (DataTuple *subject in subjects) {
+        [results addObjectsFromArray:[self coursesWithQuery:query inSubject:subject]];
+    }
+    return results;
 }
 
 -(NSArray *)subjectsWithQuery:(NSString *)query{
