@@ -12,6 +12,7 @@
 #import "RULegalViewController.h"
 #import "AlertDataSource.h"
 #import "TableViewController_Private.h"
+#import "RUAppDelegate.h"
 
 @interface RUOptionsViewController ()
 @property NSDictionary *channel;
@@ -58,7 +59,7 @@
 
 -(void)deviceShaken{
     [[[UIAlertView alloc] initWithTitle:@"Cache Cleared" message:@"Your cache has been cleared." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [((RUAppDelegate *)[UIApplication sharedApplication].delegate) clearCache];
 }
 
 @end

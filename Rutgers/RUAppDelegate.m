@@ -19,9 +19,8 @@
 
 @implementation RUAppDelegate
 
-
 /**
- *  Setup application wide appearance, application wide cache, drawer, and also ask the user for their information if this is the first run
+ *  Setup application wide appearance, application wide cache, drawer, network monitoring, ask the user for their information if this is the first run, and send the proper analytics events.
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
@@ -80,6 +79,22 @@
         _windowBackground.contentMode = UIViewContentModeScaleToFill;
     }
     return _windowBackground;
+}
+
+/**
+ *  Resets the app, clearing the cache, the saved information in NSUserDefaults, and then prompts the user to reenter their campus and role.
+ */
+-(void)resetApp{
+    [self clearCache];
+    
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.userInfoManager getUserInfoIfNeededWithCompletion:nil];
+}
+
+-(void)clearCache{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -13,6 +13,11 @@
 #import "PreferencesDataSource.h"
 
 @implementation OptionsDataSource
+/**
+ *  Initializes the Options Data Source
+ *
+ *  @return The initialized Options Data Source
+ */
 - (instancetype)init
 {
     self = [super init];
@@ -48,9 +53,8 @@
                         @"4.0.0",
                         @"1.1"];
         
-        __weak typeof(self) weakSelf = self;
         reset.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
-            [weakSelf resetApp];
+            [((RUAppDelegate *)[UIApplication sharedApplication].delegate) resetApp];
         };
         [self addDataSource:reset];
 
@@ -64,12 +68,4 @@
     return self;
 }
 
--(void)resetApp{
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    
-    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [((RUAppDelegate *)[UIApplication sharedApplication].delegate).userInfoManager getUserInfoIfNeededWithCompletion:nil];
-}
 @end

@@ -13,4 +13,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic) RUUserInfoManager *userInfoManager;
 
+-(void)resetApp;
+-(void)clearCache;
 @end
