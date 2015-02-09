@@ -94,15 +94,8 @@
     [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
     [self.containerView autoCenterInSuperview];
     
-    if (iPad()) {
-        // _containerView should be no more than 418pt and the left and right padding should be no less than 30pt on both sides
-        [self.containerView autoSetDimension:ALDimensionWidth toSize:418 relation:NSLayoutRelationLessThanOrEqual];
-        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:30 relation:NSLayoutRelationGreaterThanOrEqual];
-        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30 relation:NSLayoutRelationGreaterThanOrEqual];
-    } else {
-        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:30];
-        [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30];
-    }
+    [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:30];
+    [self.containerView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:30];
     
     return self;
 }
