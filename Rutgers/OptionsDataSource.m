@@ -10,7 +10,6 @@
 #import "StringDataSource.h"
 #import "AlertDataSource.h"
 #import "RUAppDelegate.h"
-#import "PreferencesDataSource.h"
 
 @implementation OptionsDataSource
 /**
@@ -23,18 +22,18 @@
     self = [super init];
     if (self) {
         
-        NSString *campusPlaceholderText = [RUUserInfoManager currentCampus][@"title"];
-        if (!campusPlaceholderText) campusPlaceholderText = @"Please choose your campus";
-        AlertDataSource *campuses = [[AlertDataSource alloc] initWithInitialText:campusPlaceholderText alertButtonTitles:[[RUUserInfoManager campuses] valueForKey:@"title"]];
+        NSString *campusInitialText = [RUUserInfoManager currentCampus][@"title"];
+        if (!campusInitialText) campusInitialText = @"Please choose your campus";
+        AlertDataSource *campuses = [[AlertDataSource alloc] initWithInitialText:campusInitialText alertButtonTitles:[[RUUserInfoManager campuses] valueForKey:@"title"]];
         campuses.title = @"Select Campus";
         campuses.alertTitle = @"Please choose your campus";
         campuses.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
             [RUUserInfoManager setCurrentCampus:[RUUserInfoManager campuses][buttonIndex]];
         };
         
-        NSString *userRolesPlaceholderText = [RUUserInfoManager currentUserRole][@"title"];
-        if (!userRolesPlaceholderText) userRolesPlaceholderText = @"Please indicate your role at the university";
-        AlertDataSource *userRoles = [[AlertDataSource alloc] initWithInitialText:userRolesPlaceholderText alertButtonTitles:[[RUUserInfoManager userRoles] valueForKey:@"title"]];
+        NSString *userRolesInitialText = [RUUserInfoManager currentUserRole][@"title"];
+        if (!userRolesInitialText) userRolesInitialText = @"Please indicate your role at the university";
+        AlertDataSource *userRoles = [[AlertDataSource alloc] initWithInitialText:userRolesInitialText alertButtonTitles:[[RUUserInfoManager userRoles] valueForKey:@"title"]];
         userRoles.title = @"Select Role";
         userRoles.alertTitle = @"Please indicate your role at the university";
         userRoles.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
@@ -43,7 +42,6 @@
         
         [self addDataSource:campuses];
         [self addDataSource:userRoles];
-        
         
         AlertDataSource *reset = [[AlertDataSource alloc] initWithInitialText:@"Reset App" alertButtonTitles:@[@"Yes, I am sure."]];
         reset.alertTitle = @"Are you sure you wish to reset the app?";

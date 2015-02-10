@@ -8,7 +8,6 @@
 
 #import "RUOptionsViewController.h"
 #import "OptionsDataSource.h"
-#import "RUPreferencesViewController.h"
 #import "RULegalViewController.h"
 #import "AlertDataSource.h"
 #import "TableViewController_Private.h"
