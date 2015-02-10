@@ -11,6 +11,7 @@
 #import "UITableView+Selection.h"
 #import "TableViewController_Private.h"
 #import "AAPLPlaceholderView.h"
+#import "RUAnalyticsManager.h"
 
 @interface TableViewController () 
 @property (nonatomic) DataSource *dataSource;
@@ -188,6 +189,16 @@
 }
 
 #pragma mark - TableView Delegate
+-(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [[RUAnalyticsManager sharedManager] queueEventForUserInteraction:[self userInteractionForRowAtIndexPath:indexPath]];
+    return indexPath;
+}
+
+-(NSDictionary *)userInteractionForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @{@"indexPath" : indexPath.description,
+             @"description" : [[self.dataSource itemAtIndexPath:indexPath] description]};
+}
+
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView{
     if ([tableView.dataSource isKindOfClass:[DataSource class]]) return (DataSource *)tableView.dataSource;
     return nil;

@@ -9,6 +9,7 @@
 #import "SegmentedTableViewController.h"
 #import "SegmentedDataSource.h"
 #import "TableViewController_Private.h"
+#import "RUAnalyticsManager.h"
 
 @interface SegmentedTableViewController ()
 @end
@@ -40,10 +41,15 @@
 }
 
 #pragma mark - Segmented Control
+-(NSDictionary *)userInteractionForSegmentAtIndex:(NSInteger)segmentIndex{
+    return @{@"segmentIndex" : @(segmentIndex),
+             @"title" : [self.segmentedControl titleForSegmentAtIndex:segmentIndex]};
+}
 
 -(void)segmentedControlIndexChanged:(UISegmentedControl *)segmentedControl{
     NSString *selectedTitle = [segmentedControl titleForSegmentAtIndex:segmentedControl.selectedSegmentIndex];
     [[NSUserDefaults standardUserDefaults] setObject:selectedTitle forKey:[self segmentRestorationKey]];
+    [[RUAnalyticsManager sharedManager] queueEventForUserInteraction:[self userInteractionForSegmentAtIndex:segmentedControl.selectedSegmentIndex]];
 }
 
 -(NSString *)segmentRestorationKey{

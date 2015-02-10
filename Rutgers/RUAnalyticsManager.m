@@ -88,6 +88,12 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
+-(void)queueEventForUserInteraction:(NSDictionary *)userInteraction{
+    NSMutableDictionary *event = [self baseEvent];
+    event[@"userInteraction"] = userInteraction;
+    [self queueAnalyticsEvent:event];
+}
+
 -(NSMutableDictionary *)baseEvent{
     NSMutableDictionary *baseEvent = [@{
                                        @"date" : [NSString stringWithFormat:@"@%ld",((long)[NSDate date].timeIntervalSince1970)],
@@ -122,6 +128,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(void)queueAnalyticsEvents:(NSArray *)events{
+    NSLog(@"%@",events);
     @synchronized (self) {
         [self.queue addObjectsFromArray:events];
         if (self.queue.count < 10) {

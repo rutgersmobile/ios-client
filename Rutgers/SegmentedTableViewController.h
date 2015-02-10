@@ -10,4 +10,5 @@
 
 @interface SegmentedTableViewController : TableViewController
 @property (nonatomic) UISegmentedControl *segmentedControl;
+-(NSDictionary *)userInteractionForSegmentAtIndex:(NSInteger)segmentIndex;
 @end
