@@ -91,7 +91,8 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction{
     NSMutableDictionary *event = [self baseEvent];
     event[@"userInteraction"] = userInteraction;
-    [self queueAnalyticsEvent:event];
+    //[self queueAnalyticsEvent:event];
+    NSLog(@"%@",event);
 }
 
 -(NSMutableDictionary *)baseEvent{
@@ -128,7 +129,6 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(void)queueAnalyticsEvents:(NSArray *)events{
-    NSLog(@"%@",events);
     @synchronized (self) {
         [self.queue addObjectsFromArray:events];
         if (self.queue.count < 10) {
