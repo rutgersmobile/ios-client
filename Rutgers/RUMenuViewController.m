@@ -8,7 +8,6 @@
 
 #import "RUMenuViewController.h"
 #import "MenuDataSource.h"
-#import <SWRevealViewController.h>
 #import "UITableView+Selection.h"
 #import "UIApplication+StatusBarHeight.h"
 #import "TableViewController_Private.h"
