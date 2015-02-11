@@ -27,17 +27,19 @@
     NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
     self.toolbarItems = barArray;
     
-    if (![[self.navigationController.viewControllers firstObject] isEqual:self]) {
-        UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
-        leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-        
-        UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
-        rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-        
-        [self.tableView addGestureRecognizer:leftSwipe];
-        [self.tableView addGestureRecognizer:rightSwipe];
-    }
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
+    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
     
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
+    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    
+    [self.tableView addGestureRecognizer:leftSwipe];
+    [self.tableView addGestureRecognizer:rightSwipe];
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    [self setupSegmentedControlWidth:self.segmentedControl];
 }
 
 #pragma mark - Segmented Control
@@ -130,14 +132,12 @@
 }
 
 -(void)setupSegmentedControlWidth:(UISegmentedControl *)segmentedControl{
-    
-    CGFloat minimumWidth = iPad() ? 240 : 160;
-    if (segmentedControl.numberOfSegments >= 2) minimumWidth += iPad() ? 40 : 30;
-    if (segmentedControl.numberOfSegments >= 3) minimumWidth += iPad() ? 40 : 30;
-    
     CGRect viewBounds = self.view.bounds;
-    CGFloat maximumWidth = MIN(CGRectGetHeight(viewBounds), CGRectGetWidth(viewBounds))-16;
+
+    CGFloat maximumWidth = CGRectGetWidth(viewBounds)-16;
+    CGFloat minimumWidth = maximumWidth * 0.7;
     
+    segmentedControl.apportionsSegmentWidthsByContent = NO;
     [segmentedControl sizeToFit];
     CGRect controlBounds = segmentedControl.bounds;
     
@@ -148,9 +148,6 @@
         controlBounds.size.width = maximumWidth;
     }
     
-    if (!CGRectEqualToRect(controlBounds, segmentedControl.bounds)) {
-        segmentedControl.bounds = controlBounds;
-    }
-
+    segmentedControl.bounds = controlBounds;
 }
 @end
