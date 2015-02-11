@@ -18,7 +18,7 @@
 @end
 
 @implementation RUAppDelegate
-
+#pragma mark Initialization
 /**
  *  Setup application wide appearance, application wide cache, drawer, network monitoring, ask the user for their information if this is the first run, and send the proper analytics events.
  */
@@ -69,6 +69,8 @@
     [self.window addSubview:self.windowBackground];
     [self.windowBackground autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     [self.window sendSubviewToBack:self.windowBackground];
+    
+    self.rootController.containerViewController.view.backgroundColor = [UIColor clearColor];
 }
 
 - (UIImageView *)windowBackground
@@ -96,6 +98,8 @@
 -(void)clearCache{
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
+
+#pragma mark Lifecycle
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
