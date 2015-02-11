@@ -170,6 +170,7 @@
         }
         NSString *title = [channel channelTitle];
         vc.title = title;
+        
         return vc;
     } else {
         NSLog(@"No way to handle view type %@, \n%@",view,channel);

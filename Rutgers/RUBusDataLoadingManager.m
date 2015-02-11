@@ -98,7 +98,6 @@ NSString * const newarkAgency = @"rutgers-newark";
     return [self.agencyManagers[agency] urlStringForItem:item];
 }
 
-
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
