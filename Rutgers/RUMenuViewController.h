@@ -7,8 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RURootController.h"
 #import "TableViewController.h"
+
+@class RUMenuViewController;
+
+@protocol RUMenuDelegate <NSObject>
+@required
+-(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel;
+-(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu;
+@end
 
 @interface RUMenuViewController : TableViewController
 @property id <RUMenuDelegate> delegate;
