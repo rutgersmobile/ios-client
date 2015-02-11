@@ -9,34 +9,48 @@
 #import "RURootController.h"
 #import "RUMenuViewController.h"
 #import <SWRevealViewController.h>
+#import <MMDrawerController.h>
 #import "RUUserInfoManager.h"
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
 
+typedef enum : NSUInteger {
+    DrawerImplementationSWReveal,
+    DrawerImplementationMMDrawer
+} DrawerImplementation;
+
 @interface RURootController () <RUMenuDelegate, SWRevealViewControllerDelegate>
 @property (nonatomic) SWRevealViewController *revealViewController;
+@property (nonatomic) MMDrawerController *mmDrawerViewController;
+
 @property (nonatomic) RUMenuViewController *menuViewController;
-
-//@property (nonatomic) UISplitViewController *splitViewController;
-
 @property (nonatomic) NSHashTable *managedScrollViews;
 
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @property (nonatomic) UIViewController *centerViewController;
+@property (nonatomic) DrawerImplementation drawerImplementation;
 @end
 
 @implementation RURootController
+-(DrawerImplementation)drawerImplementation{
+    return DrawerImplementationMMDrawer;
+}
+
+#pragma mark initialization
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.managedScrollViews = [NSHashTable weakObjectsHashTable];
+        
+        UIViewController *centerViewController = [self topViewControllerForChannel:[RUChannelManager sharedInstance].lastChannel];
+        _containerViewController = [self makeContainerViewControllerWithCenterViewController:centerViewController leftViewController:self.menuViewController];
+
+        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleDrawer:)];
+        [self placeButtonInCenterViewController];
     }
     return self;
-}
-#pragma initialization
--(UIViewController *)containerViewController{
-    return self.revealViewController;
 }
 
 -(RUMenuViewController *)menuViewController{
@@ -47,45 +61,52 @@
     return _menuViewController;
 }
 
--(SWRevealViewController *)revealViewController{
-    if (!_revealViewController) {
-        
-        self.revealViewController = [[SWRevealViewController alloc] initWithRearViewController:self.menuViewController frontViewController:nil];
-        self.revealViewController.delegate = self;
-        
-        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleLeftPanel:)];
-        
-        self.revealViewController.rearViewRevealWidth = round(iPad() ? 260 * IPAD_SCALE : 260);
-        self.revealViewController.rearViewRevealOverdraw = 0;
-        self.revealViewController.rearViewRevealDisplacement = 55;
-        self.revealViewController.clipsViewsToBounds = YES;
-        self.revealViewController.view.backgroundColor = [UIColor clearColor];
-        self.revealViewController.frontViewShadowOpacity = 0;
-        self.revealViewController.replaceViewAnimationDuration = 0.4;
-        self.revealViewController.toggleAnimationDuration = 0.4;
-        
-        [self.revealViewController panGestureRecognizer];
-        [self.revealViewController tapGestureRecognizer];
-        
-        NSDictionary *lastChannel = [RUChannelManager sharedInstance].lastChannel;
-        
-        [self setCenterChannel:lastChannel];
-    }
+-(UIViewController *)makeContainerViewControllerWithCenterViewController:(UIViewController *)centerViewController leftViewController:(UIViewController *)leftViewController{
     
-    return _revealViewController;
+    CGFloat revealWidth = iPad() ? round(260 * IPAD_SCALE) : 260;
+    CGFloat revealDisplacement = 55;
+    NSTimeInterval animationDuration = 0.35;
+    
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSWReveal:
+            self.revealViewController = [[SWRevealViewController alloc] initWithRearViewController:leftViewController frontViewController:centerViewController];
+            self.revealViewController.delegate = self;
+            
+            self.revealViewController.rearViewRevealWidth = revealWidth;
+            self.revealViewController.rearViewRevealOverdraw = 0;
+            self.revealViewController.rearViewRevealDisplacement = revealDisplacement;
+            self.revealViewController.clipsViewsToBounds = YES;
+            self.revealViewController.frontViewShadowOpacity = 0;
+            self.revealViewController.replaceViewAnimationDuration = animationDuration;
+            self.revealViewController.toggleAnimationDuration = animationDuration;
+            
+            [self.revealViewController panGestureRecognizer];
+            [self.revealViewController tapGestureRecognizer];
+            
+            return self.revealViewController;
+
+        case DrawerImplementationMMDrawer:
+            self.mmDrawerViewController = [[MMDrawerController alloc] initWithCenterViewController:centerViewController leftDrawerViewController:leftViewController];
+            self.mmDrawerViewController.openDrawerGestureModeMask = MMOpenDrawerGestureModeBezelPanningCenterView | MMOpenDrawerGestureModePanningNavigationBar | MMOpenDrawerGestureModeCustom;
+            self.mmDrawerViewController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
+            self.mmDrawerViewController.centerHiddenInteractionMode = MMDrawerOpenCenterInteractionModeNavigationBarOnly;
+            self.mmDrawerViewController.maximumLeftDrawerWidth = revealWidth;
+            self.mmDrawerViewController.animationVelocity = revealWidth/animationDuration;
+            
+            [self.mmDrawerViewController setDrawerVisualStateBlock:^(MMDrawerController *drawerController, MMDrawerSide drawerSide, CGFloat percentVisible) {
+                drawerController.leftDrawerViewController.view.transform = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement, 0);
+            }];
+            
+            __weak typeof(self) weakSelf = self;
+            [self.mmDrawerViewController setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
+                return [touch.view isEqual:drawerController.centerViewController.view] && [weakSelf shouldPan];
+            }];
+            
+            return self.mmDrawerViewController;
+    }
 }
 
--(UIViewController *)centerViewController{
-    return self.revealViewController.frontViewController;
-}
-
--(void)setCenterViewController:(UIViewController *)centerViewController{
-    [self.revealViewController pushFrontViewController:centerViewController animated:NO];
-    [self placeButtonInCenterViewController];
-}
-
-
-#pragma managing buttons
+#pragma mark Managing Buttons
 - (void)placeButtonInCenterViewController{
     UIViewController *viewController = [self centerViewController];
     if ([viewController isKindOfClass:[UINavigationController class]]) {
@@ -97,7 +118,7 @@
     if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
 
-#pragma channel selection
+#pragma mark Menu Delegate
 -(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
     [self closeDrawer];
 }
@@ -108,25 +129,64 @@
     [self closeDrawer];
 }
 
--(void)setCenterChannel:(NSDictionary *)channel{
-    UIViewController * vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+#pragma mark Drawer Interface
+-(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
+    UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
     
     if (![[channel channelView] isEqualToString:@"splash"]) {
         UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
-        
         [RUAppearance applyAppearanceToNavigationController:navController];
         vc = navController;
     }
-
-    self.centerViewController = vc;
+    
+    return vc;
+}
+-(void)setCenterChannel:(NSDictionary *)channel{
+    self.centerViewController = [self topViewControllerForChannel:channel];
 }
 
--(void)toggleLeftPanel:(id)sender{
-    [self.revealViewController revealToggle:sender];
+-(UIViewController *)centerViewController{
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSWReveal:
+            return self.revealViewController.frontViewController;
+        case DrawerImplementationMMDrawer:
+            return self.mmDrawerViewController.centerViewController;
+    }
+}
+
+-(void)setCenterViewController:(UIViewController *)centerViewController{
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSWReveal:
+            [self.revealViewController pushFrontViewController:centerViewController animated:NO];
+            break;
+        case DrawerImplementationMMDrawer:
+            [self.mmDrawerViewController setCenterViewController:centerViewController withCloseAnimation:NO completion:nil];
+            break;
+    }
+    [self placeButtonInCenterViewController];
+}
+
+
+-(void)toggleDrawer:(id)sender{
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSWReveal:
+            [self.revealViewController revealToggle:sender];
+            break;
+        case DrawerImplementationMMDrawer:
+            [self.mmDrawerViewController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+            break;
+    }
 }
 
 -(void)closeDrawer{
-    [self.revealViewController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSWReveal:
+            [self.revealViewController setFrontViewPosition:FrontViewPositionLeft animated:YES];
+            break;
+        case DrawerImplementationMMDrawer:
+            [self.mmDrawerViewController closeDrawerAnimated:YES completion:nil];
+            break;
+    }
 }
 
 -(void)openDrawerIfNeeded{
@@ -134,11 +194,30 @@
         [self openDrawer];
     }
 }
+
 -(void)openDrawer{
-    [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSWReveal:
+            [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
+            break;
+        case DrawerImplementationMMDrawer:
+            [self.mmDrawerViewController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+            break;
+    }
+}
+
+-(BOOL)shouldPan{
+    id viewController = self.centerViewController;
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = viewController;
+        if ([nav.viewControllers count] > 1) return false;
+        viewController = nav.topViewController;
+    }
+    if ([viewController isKindOfClass:[TableViewController class]]) return ![viewController isSearching];
+    return true;
 }
     
-#pragma scroll view scrolls to top
+#pragma mark Scroll View Scrolling to Top
 -(void)recursivelyRemoveScrollingToTop:(UIView *)view{
     [self removeScrollingToTop:view];
     for (UIView *subview in view.subviews) {
@@ -161,7 +240,8 @@
     [self.managedScrollViews removeAllObjects];
 }
 
-#pragma split view delegate
+#pragma mark - Delegation
+#pragma mark Split View Delegate
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc{
     self.menuBarButtonItem = barButtonItem;
     [self placeButtonInCenterViewController];
@@ -172,17 +252,9 @@
     
 }
 
-#pragma reveal view controller
-
+#pragma mark Reveal View Controller Delegate
 -(BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController{
-    id viewController = revealController.frontViewController;
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = viewController;
-        if ([nav.viewControllers count] > 1) return false;
-        viewController = nav.topViewController;
-    }
-    if ([viewController isKindOfClass:[TableViewController class]]) return ![viewController isSearching];
-    return true;
+    return [self shouldPan];
 }
 
 - (void)revealController:(SWRevealViewController *)revealController willMoveToPosition:(FrontViewPosition)position{
