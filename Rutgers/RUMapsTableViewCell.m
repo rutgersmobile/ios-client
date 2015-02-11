@@ -34,7 +34,7 @@
 }
 
 +(CGFloat)rowHeight{
-    return (iPad() ? 180*IPAD_SCALE : 180);
+    return (iPad() ? round(180*IPAD_SCALE) : 180);
 }
 
 @end
