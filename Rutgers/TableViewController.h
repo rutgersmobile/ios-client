@@ -13,5 +13,5 @@
 @interface TableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, DataSourceDelegate>
 -(UITableView *)searchTableView;
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath NS_REQUIRES_SUPER;
--(NSDictionary *)userInteractionForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(NSDictionary *)userInteractionForTableView:(UITableView *)tableView rowAtIndexPath:(NSIndexPath *)indexPath;
 @end

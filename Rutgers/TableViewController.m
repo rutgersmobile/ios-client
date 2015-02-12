@@ -190,13 +190,13 @@
 
 #pragma mark - TableView Delegate
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [[RUAnalyticsManager sharedManager] queueEventForUserInteraction:[self userInteractionForRowAtIndexPath:indexPath]];
+    [[RUAnalyticsManager sharedManager] queueEventForUserInteraction:[self userInteractionForTableView:tableView rowAtIndexPath:indexPath]];
     return indexPath;
 }
 
--(NSDictionary *)userInteractionForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(NSDictionary *)userInteractionForTableView:(UITableView *)tableView rowAtIndexPath:(NSIndexPath *)indexPath{
     return @{@"indexPath" : indexPath.description,
-             @"description" : [[self.dataSource itemAtIndexPath:indexPath] description]};
+             @"description" : [[[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath] description]?: @"null"};
 }
 
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView{
