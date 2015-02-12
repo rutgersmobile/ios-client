@@ -1181,7 +1181,7 @@
                   symbolName = "-[RUInfoTableViewController presentMessageComposeViewControllerWithRecipients:body:]"
                   moduleName = "Rutgers"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUInfoTableViewController.m"
-                  timestampString = "445388062.10531"
+                  timestampString = "445468237.72887"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "71"
@@ -1195,7 +1195,7 @@
                   symbolName = "__84-[RUInfoTableViewController presentMessageComposeViewControllerWithRecipients:body:]_block_invoke"
                   moduleName = "Rutgers"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUInfoTableViewController.m"
-                  timestampString = "445388062.105521"
+                  timestampString = "445468237.729035"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "73"
@@ -2086,11 +2086,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/RURootController.m"
-            timestampString = "445389222.749786"
+            timestampString = "445468916.478575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
             landmarkName = "-openDrawerIfNeeded"
             landmarkType = "5">
          </BreakpointContent>
@@ -5408,11 +5408,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/RURootController.m"
-            timestampString = "445387014.538269"
+            timestampString = "445468916.478575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-setCenterChannel:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5526,6 +5526,70 @@
             startingLineNumber = "271"
             endingLineNumber = "271"
             landmarkName = "-closeDrawerAnimated:velocity:animationOptions:completion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURootController.m"
+            timestampString = "445468916.478575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
+            landmarkName = "-shouldPan"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURootController.m"
+            timestampString = "445468916.478575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
+            landmarkName = "-shouldPan"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURootController.m"
+            timestampString = "445468916.478575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "-shouldPan"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURootController.m"
+            timestampString = "445468916.478575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "-shouldPan"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
