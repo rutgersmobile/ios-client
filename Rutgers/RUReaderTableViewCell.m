@@ -27,7 +27,7 @@
 -(void)initializeSubviews{
     self.imageDisplayView = [UIImageView newAutoLayoutView];
     self.imageDisplayView.clipsToBounds = YES;
-    self.imageDisplayView.contentMode = UIViewContentModeScaleAspectFill;
+    self.imageDisplayView.contentMode = UIViewContentModeTop;
     self.imageDisplayView.layer.cornerRadius = 2;
     
     self.containerView = [UIView newAutoLayoutView];
