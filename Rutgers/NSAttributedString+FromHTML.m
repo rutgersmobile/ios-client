@@ -10,6 +10,14 @@
 #import <NSString+HTML.h>
 
 @implementation NSAttributedString (FromHTML)
+/**
+ *  <#Description#>
+ *
+ *  @param HTMLString <#HTMLString description#>
+ *  @param textStyle  <#textStyle description#>
+ *
+ *  @return <#return value description#>
+ */
 +(instancetype)attributedStringFromHTMLString:(NSString *)HTMLString preferedTextStyle:(NSString *)textStyle{
     NSDictionary *docattrs = nil;
     
