@@ -63,9 +63,9 @@ typedef enum : NSUInteger {
 
 -(UIViewController *)makeContainerViewControllerWithCenterViewController:(UIViewController *)centerViewController leftViewController:(UIViewController *)leftViewController{
     
-    CGFloat revealWidth = iPad() ? round(260 * IPAD_SCALE) : 260;
+    CGFloat revealWidth = iPad() ? round(270 * IPAD_SCALE) : 270;
     CGFloat revealDisplacement = 55;
-    NSTimeInterval animationDuration = 0.35;
+    NSTimeInterval animationDuration = 0.24;
     
     switch (self.drawerImplementation) {
         case DrawerImplementationSWReveal:
@@ -87,19 +87,32 @@ typedef enum : NSUInteger {
 
         case DrawerImplementationMMDrawer:
             self.mmDrawerViewController = [[MMDrawerController alloc] initWithCenterViewController:centerViewController leftDrawerViewController:leftViewController];
-            self.mmDrawerViewController.openDrawerGestureModeMask = MMOpenDrawerGestureModeBezelPanningCenterView | MMOpenDrawerGestureModePanningNavigationBar | MMOpenDrawerGestureModeCustom;
-            self.mmDrawerViewController.closeDrawerGestureModeMask = MMCloseDrawerGestureModeAll;
-            self.mmDrawerViewController.centerHiddenInteractionMode = MMDrawerOpenCenterInteractionModeNavigationBarOnly;
+            
+            self.mmDrawerViewController.openDrawerGestureModeMask =
+            MMOpenDrawerGestureModeBezelPanningCenterView |
+            MMOpenDrawerGestureModePanningNavigationBar |
+            MMOpenDrawerGestureModeCustom;
+            
+            self.mmDrawerViewController.closeDrawerGestureModeMask =
+            MMCloseDrawerGestureModePanningNavigationBar    |
+            MMCloseDrawerGestureModePanningCenterView       |
+            MMCloseDrawerGestureModeBezelPanningCenterView  |
+            MMCloseDrawerGestureModeTapNavigationBar        |
+            MMCloseDrawerGestureModeTapCenterView;
+            
+            self.mmDrawerViewController.centerHiddenInteractionMode = MMDrawerOpenCenterInteractionModeNone;
             self.mmDrawerViewController.maximumLeftDrawerWidth = revealWidth;
             self.mmDrawerViewController.animationVelocity = revealWidth/animationDuration;
+            self.mmDrawerViewController.showsShadow = NO;
             
             [self.mmDrawerViewController setDrawerVisualStateBlock:^(MMDrawerController *drawerController, MMDrawerSide drawerSide, CGFloat percentVisible) {
-                drawerController.leftDrawerViewController.view.transform = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement, 0);
-            }];
-            
-            __weak typeof(self) weakSelf = self;
-            [self.mmDrawerViewController setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
-                return [touch.view isEqual:drawerController.centerViewController.view] && [weakSelf shouldPan];
+                if (percentVisible <= 1.0) {
+                    drawerController.leftDrawerViewController.view.transform = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement, 0);
+                } else {
+                    CGAffineTransform translate = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement*2, 0);
+                    CGAffineTransform scale = CGAffineTransformMakeScale(percentVisible, 1);
+                    drawerController.leftDrawerViewController.view.transform = CGAffineTransformConcat(translate, scale);
+                }
             }];
             
             return self.mmDrawerViewController;
@@ -210,7 +223,9 @@ typedef enum : NSUInteger {
     id viewController = self.centerViewController;
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = viewController;
-        if ([nav.viewControllers count] > 1) return false;
+        if ([nav.viewControllers count] > 1) {
+           return false;
+        }
         viewController = nav.topViewController;
     }
     if ([viewController isKindOfClass:[TableViewController class]]) return ![viewController isSearching];
