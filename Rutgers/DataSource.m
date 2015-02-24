@@ -482,34 +482,6 @@
 }
 
 #pragma mark - Data Source Delegate
-/*
-- (void)executePendingUpdates
-{
-    ASSERT_MAIN_THREAD;
-    dispatch_block_t block = _pendingUpdateBlock;
-    _pendingUpdateBlock = nil;
-    if (block)
-        block();
-}
-
-- (void)enqueuePendingUpdateBlock:(dispatch_block_t)block
-{
-    dispatch_block_t update;
-    
-    if (_pendingUpdateBlock) {
-        dispatch_block_t oldPendingUpdate = _pendingUpdateBlock;
-        update = ^{
-            oldPendingUpdate();
-            block();
-        };
-    }
-    else {
-        update = block;
-    }
-    
-    self.pendingUpdateBlock = update;
-}*/
-
 // Use these methods to notify the observers of changes to the dataSource.
 - (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths{
     [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceAnimationDirectionNone];
