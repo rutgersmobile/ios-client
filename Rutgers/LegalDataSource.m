@@ -23,12 +23,36 @@
             NSString *text;
             [NSString stringEncodingForData:data encodingOptions:nil convertedString:&text usedLossyConversion:nil];
             if (text) {
-                StringDataSource *dataSource = [[StringDataSource alloc] initWithItems:@[text]];
+                StringDataSource *dataSource = [[StringDataSource alloc] initWithItems:@[[self processLegalText:text]]];
                 dataSource.title = [[legalNoticeURL lastPathComponent] stringByDeletingPathExtension];
                 [self addDataSource:dataSource];
             }
         }
     }
     return self;
+}
+
+-(NSString *)processLegalText:(NSString *)string{
+    NSMutableString *processedString = [NSMutableString string];
+    __block BOOL newLine = YES;
+    [string enumerateSubstringsInRange:NSMakeRange(0, string.length) options:NSStringEnumerationByLines usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+        substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([substring isEqualToString:@""]) {
+            [processedString appendString:@"\n\n"];
+            newLine  = YES;
+        } else {
+            if (newLine) {
+                [processedString appendString:substring];
+            } else {
+                if ([substring substringToIndex:1].integerValue) {
+                    [processedString appendFormat:@"\n%@",substring];
+                } else {
+                    [processedString appendFormat:@" %@",substring];
+                }
+            }
+            newLine = NO;
+        }
+    }];
+    return processedString;
 }
 @end
