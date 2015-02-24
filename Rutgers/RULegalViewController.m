@@ -20,8 +20,13 @@
 {
     [super viewDidLoad];
     self.title = @"Legal Notices";
-    self.tableView.estimatedRowHeight = 1000;
+    self.tableView.estimatedRowHeight = 0;
     self.dataSource = [[LegalDataSource alloc] init];
+}
+
+-(BOOL)respondsToSelector:(SEL)aSelector{
+    if (aSelector == @selector(tableView:estimatedHeightForRowAtIndexPath:)) return NO;
+    return [super respondsToSelector:aSelector];
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
