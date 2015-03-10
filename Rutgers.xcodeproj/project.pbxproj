@@ -128,7 +128,6 @@
 		A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C3E9194F651000D27B5F /* NSIndexPath+RowExtensions.m */; };
 		A7910E5819181847002DA45F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7910E5719181847002DA45F /* MessageUI.framework */; };
 		A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A794EBE919005D91006E040C /* RUReaderTableViewCell.m */; };
-		A79A420D1958936B00CF81BD /* UIImage+Icons.m in Sources */ = {isa = PBXBuildFile; fileRef = A79A420C1958936B00CF81BD /* UIImage+Icons.m */; };
 		A79B5DDA199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = A79B5DD9199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.m */; };
 		A79B5DE3199C23C900DAEFC1 /* CLLocation+Centroid.m in Sources */ = {isa = PBXBuildFile; fileRef = A79B5DE2199C23C900DAEFC1 /* CLLocation+Centroid.m */; };
 		A79BBE3318FF1085007136B0 /* RUReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79BBE3218FF1085007136B0 /* RUReaderViewController.m */; };
@@ -455,8 +454,6 @@
 		A7910E5719181847002DA45F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A794EBE819005D91006E040C /* RUReaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderTableViewCell.h; sourceTree = "<group>"; };
 		A794EBE919005D91006E040C /* RUReaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderTableViewCell.m; sourceTree = "<group>"; wrapsLines = 0; };
-		A79A420B1958936B00CF81BD /* UIImage+Icons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Icons.h"; sourceTree = "<group>"; };
-		A79A420C1958936B00CF81BD /* UIImage+Icons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Icons.m"; sourceTree = "<group>"; };
 		A79B5DD8199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPredicate+SearchPredicate.h"; sourceTree = "<group>"; };
 		A79B5DD9199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPredicate+SearchPredicate.m"; sourceTree = "<group>"; };
 		A79B5DE1199C23C900DAEFC1 /* CLLocation+Centroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+Centroid.h"; sourceTree = "<group>"; };
@@ -1385,8 +1382,6 @@
 			children = (
 				A7E8E131192480A60089F166 /* RUWebViewController.h */,
 				A7E8E132192480A60089F166 /* RUWebViewController.m */,
-				A79A420B1958936B00CF81BD /* UIImage+Icons.h */,
-				A79A420C1958936B00CF81BD /* UIImage+Icons.m */,
 			);
 			name = ruwebview;
 			sourceTree = "<group>";
@@ -1844,7 +1839,6 @@
 				04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */,
 				A7241A1B1988168800304436 /* RUFoodDataSource.m in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
-				A79A420D1958936B00CF81BD /* UIImage+Icons.m in Sources */,
 				A771A27F199AB790000CD174 /* RUSOCSearchIndex.m in Sources */,
 				A74668AC1983783300A5EBE0 /* UIMotionEffect+FloatingMotionEffect.m in Sources */,
 				A70C2BE2198C2C60004F82D4 /* ALTableViewRightDetailCell.m in Sources */,
