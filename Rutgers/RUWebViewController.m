@@ -15,6 +15,7 @@
 
 @implementation RUWebViewController
 
+//Global cache holding RUWebViewController objects
 +(NSCache *)storedChannels{
     static NSCache * storedChannels = nil;
     static dispatch_once_t onceToken;
@@ -54,6 +55,11 @@
     self.showUrlWhileLoading = NO;
 }
 
+/**
+ *  After the webview finshes loading
+ *
+ *  @param webView The webview
+ */
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     [super webViewDidFinishLoad:webView];
     

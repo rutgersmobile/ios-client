@@ -32,18 +32,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
     self.dataSource = [[DynamicDataSource alloc] initWithChannel:self.channel];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    //Get the item tapped on
     id item = [self.dataSource itemAtIndexPath:indexPath];
     
+    //Either the item is the channel or has a channel
     NSDictionary *channel = item[@"channel"];
     if (!channel) channel = item;
     
+    //Get view controller for channel
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
     if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];
     

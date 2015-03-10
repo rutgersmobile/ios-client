@@ -24,11 +24,13 @@
     self.dataSource = [[LegalDataSource alloc] init];
 }
 
+//Force row height calculations because these rows are huge
 -(BOOL)respondsToSelector:(SEL)aSelector{
     if (aSelector == @selector(tableView:estimatedHeightForRowAtIndexPath:)) return NO;
     return [super respondsToSelector:aSelector];
 }
 
+//Dont allow selection
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     return NO;

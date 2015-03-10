@@ -21,6 +21,7 @@
     if (self) {
         self.channel = channel;
         
+        //If the channel has children load them right away
         NSArray *children = channel[@"children"];
         if (children) {
             [self loadContentWithBlock:^(AAPLLoading *loading) {
@@ -34,7 +35,9 @@
 }
 
 -(void)loadContent{
+    //If the channel doesnt have a url it was already loaded in init
     if (![self.channel channelURL]) return;
+    
     [self loadContentWithBlock:^(AAPLLoading *loading) {
     
         [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -48,7 +51,7 @@
                     me.items = items;
                 }];
             } else {
-                [loading updateWithContent:^(typeof(self) me) {
+                [loading updateWithNoContent:^(typeof(self) me) {
                     me.items = nil;
                 }];
             }
@@ -78,10 +81,12 @@
     id itemForIndex = [self itemAtIndexPath:indexPath];
     
     if ([itemForIndex isKindOfClass:[NSString class]]) {
+        //If it is a string display it
         stringForIndex = itemForIndex;
         cell.accessoryType = UITableViewCellAccessoryNone;
         
     } else if ([itemForIndex isKindOfClass:[NSDictionary class]]) {
+        //If it is a channel display its title with a disclosure indicator
         stringForIndex = [itemForIndex channelTitle];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }

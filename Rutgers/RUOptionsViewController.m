@@ -25,16 +25,17 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+    [super viewDidLoad];    
     self.dataSource = [[OptionsDataSource alloc] init];
 }
 
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 3) {
+        // Open the legal view controller
         [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStylePlain] animated:YES];
     } else {
+        // Trigger the alert action
         DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
         if ([dataSource isKindOfClass:[AlertDataSource class]]) {
             AlertDataSource *alertDataSource = (AlertDataSource *)dataSource;
@@ -57,6 +58,7 @@
 
 
 -(void)deviceShaken{
+    //Aarons special cache clearing shake
     [[[UIAlertView alloc] initWithTitle:@"Cache Cleared" message:@"Your cache has been cleared." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
     [((RUAppDelegate *)[UIApplication sharedApplication].delegate) clearCache];
 }

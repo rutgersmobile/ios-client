@@ -21,6 +21,7 @@
     if (self) {
         self.channel = channel;
         
+        //If the channel has children load them right away
         NSArray *children = channel[@"children"];
         if (children) {
             [self loadContentWithBlock:^(AAPLLoading *loading) {
@@ -42,8 +43,11 @@
 }
 
 -(void)loadContent{
+    //If the channel doesnt have a url it was already loaded in init
     if (![self.channel channelURL]) return;
+    
     [self loadContentWithBlock:^(AAPLLoading *loading) {
+        
         [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
                 [loading ignore];
@@ -54,7 +58,7 @@
                     [me updateWithItems:responseObject[@"children"]];
                 }];
             } else {
-                [loading updateWithContent:^(typeof(self) me) {
+                [loading updateWithNoContent:^(typeof(self) me) {
                     [me updateWithItems:nil];
                 }];
             }

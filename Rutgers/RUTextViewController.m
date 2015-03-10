@@ -52,6 +52,9 @@
     [self loadText];
 }
 
+/**
+ *  Makes formatted string with current text settings and puts it in the text field
+ */
 -(void)loadText{
     NSMutableAttributedString *attributedText = [NSMutableAttributedString attributedStringFromHTMLString:[self.data stringWithNewLinesAsBRs] preferedTextStyle:UIFontTextStyleBody];
     if (self.centersText) {

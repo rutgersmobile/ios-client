@@ -10,14 +10,15 @@
 #import "StringDataSource.h"
 
 @implementation LegalDataSource
+
 -(instancetype)init{
     self = [super init];
     if (self) {
-        
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSURL *legalURL = [[[NSBundle mainBundle] bundleURL] URLByAppendingPathComponent:@"legal" isDirectory:YES];
         NSArray *contents = [fileManager contentsOfDirectoryAtURL:legalURL includingPropertiesForKeys:@[] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
         
+        //Make a seperate section for each file in the legal folder
         for (NSURL *legalNoticeURL in contents) {
             NSData *data = [NSData dataWithContentsOfURL:legalNoticeURL];
             NSString *text;
@@ -32,6 +33,13 @@
     return self;
 }
 
+/**
+ *  Algorithm for removing excess line breaks in legal text files
+ *
+ *  @param string The contents of a legal text file
+ *
+ *  @return The contents with line breaks removed.
+ */
 -(NSString *)processLegalText:(NSString *)string{
     NSMutableString *processedString = [NSMutableString string];
     __block BOOL newLine = YES;
