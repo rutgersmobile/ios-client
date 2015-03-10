@@ -19,7 +19,7 @@ typedef enum : NSUInteger {
     DrawerImplementationMMDrawer
 } DrawerImplementation;
 
-@interface RURootController () <RUMenuDelegate, SWRevealViewControllerDelegate>
+@interface RURootController () <RUMenuDelegate, SWRevealViewControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic) SWRevealViewController *revealViewController;
 @property (nonatomic) MMDrawerController *mmDrawerViewController;
 
@@ -90,8 +90,7 @@ typedef enum : NSUInteger {
             
             self.mmDrawerViewController.openDrawerGestureModeMask =
             MMOpenDrawerGestureModeBezelPanningCenterView |
-            MMOpenDrawerGestureModePanningNavigationBar |
-            MMOpenDrawerGestureModeCustom;
+            MMOpenDrawerGestureModePanningNavigationBar;
             
             self.mmDrawerViewController.closeDrawerGestureModeMask =
             MMCloseDrawerGestureModePanningNavigationBar    |
@@ -119,6 +118,14 @@ typedef enum : NSUInteger {
     }
 }
 
+-(void)updateDrawerGestureMask{
+    if (self.drawerImplementation == DrawerImplementationMMDrawer) {
+        MMOpenDrawerGestureMode mask = MMOpenDrawerGestureModePanningNavigationBar;
+        if ([self drawerShouldOpen]) mask |= MMOpenDrawerGestureModeBezelPanningCenterView;
+        self.mmDrawerViewController.openDrawerGestureModeMask = mask;
+    }
+}
+
 #pragma mark Managing Buttons
 - (void)placeButtonInCenterViewController{
     UIViewController *viewController = [self centerViewController];
@@ -131,23 +138,13 @@ typedef enum : NSUInteger {
     if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
 
-#pragma mark Menu Delegate
--(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
-    [self closeDrawer];
-}
-
--(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
-    [self setCenterChannel:channel];
-    [RUChannelManager sharedInstance].lastChannel = channel;
-    [self closeDrawer];
-}
-
 #pragma mark Drawer Interface
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
     
     if (![[channel channelView] isEqualToString:@"splash"]) {
         UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
+        navController.delegate = self;
         [RUAppearance applyAppearanceToNavigationController:navController];
         vc = navController;
     }
@@ -203,9 +200,13 @@ typedef enum : NSUInteger {
 }
 
 -(void)openDrawerIfNeeded{
-    if ([[[RUChannelManager sharedInstance].lastChannel channelView] isEqualToString:@"splash"]) {
+    if ([self channelIsSplashChannel:[RUChannelManager sharedInstance].lastChannel]){
         [self openDrawer];
     }
+}
+
+-(BOOL)channelIsSplashChannel:(NSDictionary *)channel{
+    return [[channel channelView] isEqualToString:@"splash"];
 }
 
 -(void)openDrawer{
@@ -219,7 +220,7 @@ typedef enum : NSUInteger {
     }
 }
 
--(BOOL)shouldPan{
+-(BOOL)drawerShouldOpen{
     id viewController = self.centerViewController;
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = viewController;
@@ -269,7 +270,7 @@ typedef enum : NSUInteger {
 
 #pragma mark Reveal View Controller Delegate
 -(BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController{
-    return [self shouldPan];
+    return [self drawerShouldOpen];
 }
 
 - (void)revealController:(SWRevealViewController *)revealController willMoveToPosition:(FrontViewPosition)position{
@@ -282,4 +283,21 @@ typedef enum : NSUInteger {
         frontView.userInteractionEnabled = YES;
     }
 }
+
+#pragma mark Menu Delegate
+-(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
+    [self closeDrawer];
+}
+
+-(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
+    [self setCenterChannel:channel];
+    [RUChannelManager sharedInstance].lastChannel = channel;
+    [self closeDrawer];
+}
+
+#pragma mark Navigation Controller Delegate
+-(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+    [self updateDrawerGestureMask];
+}
+
 @end
