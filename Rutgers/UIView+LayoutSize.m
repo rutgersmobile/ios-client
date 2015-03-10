@@ -13,14 +13,7 @@
     // Get the actual height required for the cell
     UIView *contentView = self;
     
-    
     CGRect bounds = self.bounds;
-    
-    if ([self isKindOfClass:[UITableViewCell class]]) {
-        UITableViewCell *cell = (UITableViewCell *)self;
-        contentView = cell.contentView;
-        if (cell.accessoryType != UITableViewCellAccessoryNone) width -= 34;
-    }
     
     bounds.size.width = width;
     contentView.bounds = bounds;
