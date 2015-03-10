@@ -32,11 +32,11 @@
 
 -(void)initializeConstraints{
     [self.realTextLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeRight];
-    self.rightConstraint = [self.realTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
+    self.rightConstraint = [self.realTextLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self];
 }
 
 -(void)updateConstraints{
     [super updateConstraints];
-    self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? 0 : -kLabelHorizontalInsets;
+    self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? -34 : -kLabelHorizontalInsets;
 }
 @end
