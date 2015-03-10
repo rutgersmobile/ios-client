@@ -196,7 +196,7 @@
 
 -(NSDictionary *)userInteractionForTableView:(UITableView *)tableView rowAtIndexPath:(NSIndexPath *)indexPath{
     return @{@"indexPath" : indexPath.description,
-             @"description" : [[[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath] description]?: @"null"};
+             @"description" : [[[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath] description]? : @"null"};
 }
 
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView{

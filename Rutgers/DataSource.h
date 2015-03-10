@@ -39,6 +39,7 @@ typedef enum {
 
 @end
 
+
 @interface DataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource, AAPLContentLoading>
 
 /// A delegate object that will receive change notifications from this data source.

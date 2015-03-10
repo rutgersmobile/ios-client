@@ -13,7 +13,6 @@
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
 
 @property (readonly) NSArray *nativeChannels;
-
 -(void)webLinksWithCompletion:(void(^)(NSArray *webLinks, NSError *error))completion;
 @property (readonly) NSArray *allChannels;
 
