@@ -11,14 +11,12 @@
 #import "DataSource_Private.h"
 
 @interface FAQSectionDataSource ()
-@property NSDictionary *item;
-
 @end
 
 @implementation FAQSectionDataSource
 
--(instancetype)initWithItem:(NSDictionary *)item{
 
+-(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
         NSArray *items;
@@ -32,7 +30,6 @@
         
         self.items = items;
 
-        self.item = item;
     }
     return self;
 }
