@@ -19,7 +19,7 @@ typedef enum : NSUInteger {
     DrawerImplementationMMDrawer
 } DrawerImplementation;
 
-@interface RURootController () <RUMenuDelegate, SWRevealViewControllerDelegate, UINavigationControllerDelegate>
+@interface RURootController () <RUMenuDelegate, UINavigationControllerDelegate>
 @property (nonatomic) SWRevealViewController *revealViewController;
 @property (nonatomic) MMDrawerController *mmDrawerViewController;
 
@@ -29,6 +29,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @property (nonatomic) UIViewController *centerViewController;
 @property (nonatomic) DrawerImplementation drawerImplementation;
+@property (nonatomic) BOOL drawerShouldOpen;
 @end
 
 @implementation RURootController
@@ -47,7 +48,7 @@ typedef enum : NSUInteger {
         UIViewController *centerViewController = [self topViewControllerForChannel:[RUChannelManager sharedInstance].lastChannel];
         _containerViewController = [self makeContainerViewControllerWithCenterViewController:centerViewController leftViewController:self.menuViewController];
 
-        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(toggleDrawer:)];
+        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
         [self placeButtonInCenterViewController];
     }
     return self;
@@ -70,7 +71,6 @@ typedef enum : NSUInteger {
     switch (self.drawerImplementation) {
         case DrawerImplementationSWReveal:
             self.revealViewController = [[SWRevealViewController alloc] initWithRearViewController:leftViewController frontViewController:centerViewController];
-            self.revealViewController.delegate = self;
             
             self.revealViewController.rearViewRevealWidth = revealWidth;
             self.revealViewController.rearViewRevealOverdraw = 0;
@@ -88,10 +88,9 @@ typedef enum : NSUInteger {
         case DrawerImplementationMMDrawer:
             self.mmDrawerViewController = [[MMDrawerController alloc] initWithCenterViewController:centerViewController leftDrawerViewController:leftViewController];
             
-            self.mmDrawerViewController.openDrawerGestureModeMask =
-            MMOpenDrawerGestureModeBezelPanningCenterView |
-            MMOpenDrawerGestureModePanningNavigationBar;
-            
+            self.mmDrawerViewController.openDrawerGestureModeMask = MMOpenDrawerGestureModeCustom;
+            [self updateDrawerShouldOpen];
+
             self.mmDrawerViewController.closeDrawerGestureModeMask =
             MMCloseDrawerGestureModePanningNavigationBar    |
             MMCloseDrawerGestureModePanningCenterView       |
@@ -114,16 +113,33 @@ typedef enum : NSUInteger {
                 }
             }];
             
+            __weak typeof(self) weakSelf = self;
+            [self.mmDrawerViewController setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
+                if ([touch locationInView:drawerController.view.window].x <= 13.0 && weakSelf.drawerShouldOpen) {
+                    return YES;
+                }
+                return NO;
+            }];
+            
             return self.mmDrawerViewController;
     }
 }
 
--(void)updateDrawerGestureMask{
-    if (self.drawerImplementation == DrawerImplementationMMDrawer) {
-        MMOpenDrawerGestureMode mask = MMOpenDrawerGestureModePanningNavigationBar;
-        if ([self drawerShouldOpen]) mask |= MMOpenDrawerGestureModeBezelPanningCenterView;
-        self.mmDrawerViewController.openDrawerGestureModeMask = mask;
+-(void)updateDrawerShouldOpen{
+    id viewController = self.centerViewController;
+    if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nav = viewController;
+        if ([nav.viewControllers count] > 1) {
+            self.drawerShouldOpen = NO;
+            return;
+        }
+        viewController = nav.topViewController;
     }
+    if ([viewController isKindOfClass:[TableViewController class]]) {
+        self.drawerShouldOpen = ![viewController isSearching];
+        return;
+    }
+    self.drawerShouldOpen = NO;
 }
 
 #pragma mark Managing Buttons
@@ -176,18 +192,6 @@ typedef enum : NSUInteger {
     [self placeButtonInCenterViewController];
 }
 
-
--(void)toggleDrawer:(id)sender{
-    switch (self.drawerImplementation) {
-        case DrawerImplementationSWReveal:
-            [self.revealViewController revealToggle:sender];
-            break;
-        case DrawerImplementationMMDrawer:
-            [self.mmDrawerViewController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-            break;
-    }
-}
-
 -(void)closeDrawer{
     switch (self.drawerImplementation) {
         case DrawerImplementationSWReveal:
@@ -197,6 +201,7 @@ typedef enum : NSUInteger {
             [self.mmDrawerViewController closeDrawerAnimated:YES completion:nil];
             break;
     }
+    [self restoreScrollingToTop:self.centerViewController.view];
 }
 
 -(void)openDrawerIfNeeded{
@@ -218,21 +223,9 @@ typedef enum : NSUInteger {
             [self.mmDrawerViewController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
             break;
     }
+    [self recursivelyRemoveScrollingToTop:self.centerViewController.view];
 }
 
--(BOOL)drawerShouldOpen{
-    id viewController = self.centerViewController;
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nav = viewController;
-        if ([nav.viewControllers count] > 1) {
-           return false;
-        }
-        viewController = nav.topViewController;
-    }
-    if ([viewController isKindOfClass:[TableViewController class]]) return ![viewController isSearching];
-    return true;
-}
-    
 #pragma mark Scroll View Scrolling to Top
 -(void)recursivelyRemoveScrollingToTop:(UIView *)view{
     [self removeScrollingToTop:view];
@@ -268,22 +261,6 @@ typedef enum : NSUInteger {
     
 }
 
-#pragma mark Reveal View Controller Delegate
--(BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController{
-    return [self drawerShouldOpen];
-}
-
-- (void)revealController:(SWRevealViewController *)revealController willMoveToPosition:(FrontViewPosition)position{
-    UIView *frontView = revealController.frontViewController.view;
-    if (position == FrontViewPositionRight) {
-        [self recursivelyRemoveScrollingToTop:frontView];
-        frontView.userInteractionEnabled = NO;
-    } else if (position == FrontViewPositionLeft) {
-        [self restoreScrollingToTop:frontView];
-        frontView.userInteractionEnabled = YES;
-    }
-}
-
 #pragma mark Menu Delegate
 -(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
     [self closeDrawer];
@@ -297,7 +274,7 @@ typedef enum : NSUInteger {
 
 #pragma mark Navigation Controller Delegate
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    [self updateDrawerGestureMask];
+    [self updateDrawerShouldOpen];
 }
 
 @end
