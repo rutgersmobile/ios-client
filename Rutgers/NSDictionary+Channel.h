@@ -13,6 +13,7 @@
 -(NSString *)channelTitle;
 
 -(UIImage *)channelIcon;
+-(UIImage *)filledChannelIcon;
 
 -(NSString *)channelHandle;
 
