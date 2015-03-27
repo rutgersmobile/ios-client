@@ -10,6 +10,7 @@
 #import "RULabel.h"
 
 @interface RUMenuTableViewCell ()
+@property (nonatomic) NSDictionary *channel;
 @end
 
 @implementation RUMenuTableViewCell
@@ -29,7 +30,7 @@
     self.channelImage = [UIImageView newAutoLayoutView];
     self.channelImage.tintColor = [UIColor iconDeselectedColor];
     [self.contentView addSubview:self.channelImage];
-    self.channelImage.contentMode = UIViewContentModeTopLeft;
+    self.channelImage.contentMode = UIViewContentModeScaleAspectFit;
     
     self.channelTitleLabel = [RULabel newAutoLayoutView];
     self.channelTitleLabel.numberOfLines = 2;
@@ -41,7 +42,7 @@
 }
 
 -(void)initializeConstraints {
-    [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 30)];
+    [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 32)];
     [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.channelImage autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     
@@ -73,6 +74,13 @@
     self.channelImage.tintColor = state ? [UIColor whiteColor] : [UIColor iconDeselectedColor];
     self.channelTitleLabel.textColor = state ? [UIColor whiteColor] : [UIColor menuDeselectedColor];
     self.backgroundColor = state ? [[UIColor blackColor] colorWithAlphaComponent:0.25] : nil;
+    self.channelImage.image = state ? [self.channel filledChannelIcon] : [self.channel channelIcon];
+}
+
+-(void)setupForChannel:(NSDictionary *)channel{
+    self.channel = channel;
+    self.channelTitleLabel.text = [channel channelTitle];
+    self.channelImage.image = [channel channelIcon];
 }
 
 
