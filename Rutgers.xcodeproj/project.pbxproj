@@ -317,7 +317,7 @@
 		A70C2BE4198C4859004F82D4 /* RURecCenterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RURecCenterTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		A70C2BE5198C4859004F82D4 /* RURecCenterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RURecCenterTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		A7177BAC199DC0CD0092126F /* RUNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNavigationController.h; sourceTree = "<group>"; };
-		A7177BAD199DC0CD0092126F /* RUNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNavigationController.m; sourceTree = "<group>"; };
+		A7177BAD199DC0CD0092126F /* RUNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUNavigationController.m; sourceTree = "<group>"; };
 		A7177BAF199E80B70092126F /* RUSOCCourseDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseDataSource.h; sourceTree = "<group>"; };
 		A7177BB0199E80B70092126F /* RUSOCCourseDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCCourseDataSource.m; sourceTree = "<group>"; };
 		A7177BB2199E86660092126F /* RUSOCCourseSectionsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseSectionsDataSource.h; sourceTree = "<group>"; };
