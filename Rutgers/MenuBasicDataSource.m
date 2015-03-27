@@ -23,8 +23,7 @@
 
 -(void)configureCell:(RUMenuTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *channel = [self itemAtIndexPath:indexPath];
-    cell.channelTitleLabel.text = [channel channelTitle];
-    cell.channelImage.image = [channel channelIcon];
+    [cell setupForChannel:channel];
 }
 
 -(void)configurePlaceholderCell:(ALPlaceholderCell *)cell{
