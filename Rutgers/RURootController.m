@@ -88,8 +88,9 @@ typedef enum : NSUInteger {
         case DrawerImplementationMMDrawer:
             self.mmDrawerViewController = [[MMDrawerController alloc] initWithCenterViewController:centerViewController leftDrawerViewController:leftViewController];
             
-            self.mmDrawerViewController.openDrawerGestureModeMask = MMOpenDrawerGestureModeCustom;
-            [self updateDrawerShouldOpen];
+            self.mmDrawerViewController.openDrawerGestureModeMask =
+            MMOpenDrawerGestureModeBezelPanningCenterView |
+            MMOpenDrawerGestureModePanningNavigationBar;
 
             self.mmDrawerViewController.closeDrawerGestureModeMask =
             MMCloseDrawerGestureModePanningNavigationBar    |
@@ -114,11 +115,12 @@ typedef enum : NSUInteger {
             }];
             
             __weak typeof(self) weakSelf = self;
-            [self.mmDrawerViewController setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
-                if ([touch locationInView:drawerController.view.window].x <= 13.0 && weakSelf.drawerShouldOpen) {
-                    return YES;
+            [self.mmDrawerViewController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
+                if (drawerController.openSide == MMDrawerSideLeft) {
+                    [weakSelf recursivelyRemoveScrollingToTop:drawerController.centerViewController.view];
+                } else {
+                    [weakSelf restoreScrollingToTop:drawerController.centerViewController.view];
                 }
-                return NO;
             }];
             
             return self.mmDrawerViewController;
