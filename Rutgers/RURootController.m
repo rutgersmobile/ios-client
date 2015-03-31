@@ -104,13 +104,7 @@ typedef enum : NSUInteger {
             self.mmDrawerViewController.showsShadow = NO;
             
             [self.mmDrawerViewController setDrawerVisualStateBlock:^(MMDrawerController *drawerController, MMDrawerSide drawerSide, CGFloat percentVisible) {
-                if (percentVisible <= 1.0) {
-                    drawerController.leftDrawerViewController.view.transform = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement, 0);
-                } else {
-                    CGAffineTransform translate = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement*2.25, 0);
-                    CGAffineTransform scale = CGAffineTransformMakeScale(percentVisible, 1);
-                    drawerController.leftDrawerViewController.view.transform = CGAffineTransformConcat(translate, scale);
-                }
+                drawerController.leftDrawerViewController.view.transform = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement, 0);
             }];
             
             __weak typeof(self) weakSelf = self;
@@ -121,8 +115,6 @@ typedef enum : NSUInteger {
                     [weakSelf restoreScrollingToTop:drawerController.centerViewController.view];
                 }
             }];
-            
-
             
             return self.mmDrawerViewController;
     }
