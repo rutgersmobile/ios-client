@@ -29,7 +29,6 @@ typedef enum : NSUInteger {
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @property (nonatomic) UIViewController *centerViewController;
 @property (nonatomic) DrawerImplementation drawerImplementation;
-@property (nonatomic) BOOL drawerShouldOpen;
 @end
 
 @implementation RURootController
@@ -108,7 +107,7 @@ typedef enum : NSUInteger {
                 if (percentVisible <= 1.0) {
                     drawerController.leftDrawerViewController.view.transform = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement, 0);
                 } else {
-                    CGAffineTransform translate = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement*2, 0);
+                    CGAffineTransform translate = CGAffineTransformMakeTranslation((percentVisible-1)*revealDisplacement*2.25, 0);
                     CGAffineTransform scale = CGAffineTransformMakeScale(percentVisible, 1);
                     drawerController.leftDrawerViewController.view.transform = CGAffineTransformConcat(translate, scale);
                 }
@@ -123,25 +122,25 @@ typedef enum : NSUInteger {
                 }
             }];
             
+
+            
             return self.mmDrawerViewController;
     }
 }
 
--(void)updateDrawerShouldOpen{
+-(BOOL)drawerShouldOpen{
     id viewController = self.centerViewController;
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = viewController;
         if ([nav.viewControllers count] > 1) {
-            self.drawerShouldOpen = NO;
-            return;
+            return NO;
         }
         viewController = nav.topViewController;
     }
     if ([viewController isKindOfClass:[TableViewController class]]) {
-        self.drawerShouldOpen = ![viewController isSearching];
-        return;
+        return ![viewController isSearching];
     }
-    self.drawerShouldOpen = NO;
+    return NO;
 }
 
 #pragma mark Managing Buttons
@@ -273,10 +272,10 @@ typedef enum : NSUInteger {
     [RUChannelManager sharedInstance].lastChannel = channel;
     [self closeDrawer];
 }
-
+/*
 #pragma mark Navigation Controller Delegate
 -(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
     [self updateDrawerShouldOpen];
-}
+}*/
 
 @end
