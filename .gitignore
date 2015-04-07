@@ -2,9 +2,5 @@ Pods
 .DS_Store
 *.lock
 *.xcuserstate
-
 *.xcbkptlist
 
-*.xcbkptlist
-
-*.xcbkptlist
