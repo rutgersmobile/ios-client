@@ -43,7 +43,7 @@
 
 -(void)initializeConstraints {
     [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 32)];
-    [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
+    [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:iPad() ? 20 : kLabelHorizontalInsets];
     [self.channelImage autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
     
     [self.channelTitleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.channelImage withOffset:kLabelHorizontalInsets];
