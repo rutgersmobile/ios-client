@@ -47,7 +47,7 @@
         substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if ([substring isEqualToString:@""]) {
             [processedString appendString:@"\n\n"];
-            newLine  = YES;
+            newLine = YES;
         } else {
             if (newLine) {
                 [processedString appendString:substring];
