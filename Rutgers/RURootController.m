@@ -151,12 +151,10 @@ typedef enum : NSUInteger {
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
     
-    if (![[channel channelView] isEqualToString:@"splash"]) {
-        UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
-        navController.delegate = self;
-        [RUAppearance applyAppearanceToNavigationController:navController];
-        vc = navController;
-    }
+    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
+    navController.delegate = self;
+    [RUAppearance applyAppearanceToNavigationController:navController];
+    vc = navController;
     
     return vc;
 }
