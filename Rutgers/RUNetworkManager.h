@@ -11,4 +11,5 @@
 
 @interface RUNetworkManager : NSObject
 +(AFHTTPSessionManager *)sessionManager;
++(AFHTTPSessionManager *)readerSessionManager;
 @end

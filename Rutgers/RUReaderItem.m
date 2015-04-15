@@ -24,11 +24,12 @@
             self.title = [title stringByDecodingHTMLEntities];
         }
        
-        NSString *date = [item[@"pubDate"] firstObject];
-        if (!date) {
-            date = [item[@"event:beginDateTime"] firstObject];
+        NSString *dateString = [item[@"pubDate"] firstObject];
+        if (!dateString) {
+            dateString = [item[@"event:beginDateTime"] firstObject];
         }
-        self.date = [self formatDateString:date];
+        NSDate *date = [self dateFromString:dateString];
+        self.dateString = [self formatDate:date];
         
         NSString *urlString = [item[@"enclosure"] firstObject][@"_url"];
         if (!urlString) urlString = [item[@"media:thumbnail"] firstObject][@"_url"];
@@ -44,23 +45,12 @@
     return self;
 }
 
-/**
- *  Tries to parse a date string with many different formats untill it is successful
- *
- *  @param dateString The string representing the date as retrieved from the internet
- *
- *  @return A string representing the same date, in a human readable format. If parsing is unsuccessful, returns the input string
- */
--(NSString *)formatDateString:(NSString *)dateString{
-    static NSDateFormatter *outputFormatter;
+
+-(NSDate *)dateFromString:(NSString *)string{
     static NSMutableArray *inputFormatters;
-  
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        //ex Wednesday, July 2, 2014
-        outputFormatter = [[NSDateFormatter alloc] init];
-        outputFormatter.dateStyle = NSDateFormatterMediumStyle;
-        outputFormatter.timeStyle = NSDateFormatterNoStyle;
+        
         /*
          Wednesday, July 2, 2014
          EEEE, MMMM d, yyyy
@@ -77,7 +67,7 @@
          Sun, 29 Jun 2014
          EEE, dd MMM yyyy
          */
-
+        
         inputFormatters = [NSMutableArray array];
         for (NSString *dateFormatString in @[@"EEEE, MMMM d, yyyy",
                                              @"EEE, d MMM yyyy HH:mm:ss zzz",
@@ -93,15 +83,31 @@
     
     NSDate *dateRepresentation;
     for (NSDateFormatter *dateFormatter in inputFormatters) {
-        dateRepresentation = [dateFormatter dateFromString:dateString];
+        dateRepresentation = [dateFormatter dateFromString:string];
         if (dateRepresentation) break;
     }
+    return dateRepresentation;
     
-    if (dateRepresentation) {
-        return [outputFormatter stringFromDate:dateRepresentation];
-    } else {
-        return dateString;
-    }
+}
+
+-(NSString *)formatDate:(NSDate *)date{
+    if (!date) return nil;
+    
+
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:date];
+    
+    if (components.year < 2000) return nil;
+    
+    NSDateFormatterStyle timeStyle = NSDateFormatterShortStyle;
+    if (components.hour == 0 && components.minute == 0) timeStyle = NSDateFormatterNoStyle;
+    
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    outputFormatter.dateStyle = NSDateFormatterMediumStyle;
+    outputFormatter.timeStyle = timeStyle;
+
+    return [outputFormatter stringFromDate:date];
 }
 
 -(BOOL)isEqual:(id)object{

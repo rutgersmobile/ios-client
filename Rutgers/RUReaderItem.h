@@ -9,7 +9,7 @@
 @interface RUReaderItem : NSObject
 -(instancetype)initWithItem:(NSDictionary *)item;
 @property (nonatomic) NSString *title;
-@property (nonatomic) NSString *date;
+@property (nonatomic) NSString *dateString;
 @property (nonatomic) NSURL *imageURL;
 @property (nonatomic) NSString *url;
 @property (nonatomic) NSString *descriptionText;

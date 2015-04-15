@@ -29,7 +29,7 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUNetworkManager sessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager readerSessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
                 [loading ignore];
                 return;
@@ -73,7 +73,7 @@
     RUReaderItem *row = [self itemAtIndexPath:indexPath];
     
     cell.titleLabel.text = row.title;
-    cell.timeLabel.text = row.date;
+    cell.timeLabel.text = row.dateString;
     
     cell.hasImage = row.imageURL ? YES : NO;
     cell.imageDisplayView.backgroundColor = [UIColor grayColor];
