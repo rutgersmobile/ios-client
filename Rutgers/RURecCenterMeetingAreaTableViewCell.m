@@ -28,7 +28,7 @@
 }
 
 -(void)initializeConstraints{
-    [@[self.areaLabel,self.hoursLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllTop];
+    [@[self.areaLabel,self.hoursLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeTop withFixedSpacing:15];
     
     [self.areaLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     

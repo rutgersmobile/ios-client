@@ -37,7 +37,7 @@
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeBottom];
     
-    NSArray *constraints = [@[self.creditsLabel,self.sectionsLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:15 alignment:NSLayoutFormatAlignAllBottom];
+    NSArray *constraints = [@[self.creditsLabel,self.sectionsLabel] autoDistributeViewsAlongAxis:ALAxisHorizontal alignedTo:ALAttributeBottom withFixedSpacing:15];
     
     for (NSLayoutConstraint *constraint in constraints) {
         if ([constraint.secondItem isEqual:self.contentView] && [constraint.firstItem isEqual:self.sectionsLabel]) {
