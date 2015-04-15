@@ -160,6 +160,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 -(void)postAnalyticsEvents:(NSArray *)events{
     NSString *url = @"analytics.php";
+    
     if (BETA) {
         url = @"http://sauron.rutgers.edu/~jamchamb/analytics.php";
     }

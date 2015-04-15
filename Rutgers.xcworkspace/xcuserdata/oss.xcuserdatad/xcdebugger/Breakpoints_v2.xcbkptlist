@@ -230,6 +230,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[NearbyPlacesDataSource loadContent]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NearbyPlacesDataSource.m"
                   timestampString = "434398190.251048"
                   startingColumnNumber = "9223372036854775807"
@@ -244,6 +245,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__37-[NearbyPlacesDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NearbyPlacesDataSource.m"
                   timestampString = "434398190.251174"
                   startingColumnNumber = "9223372036854775807"
@@ -516,6 +518,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[AAPLLoading _doneWithNewState:error:update:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/AAPLContentLoading.m"
                   timestampString = "436214062.04146"
                   startingColumnNumber = "9223372036854775807"
@@ -530,6 +533,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__46-[AAPLLoading _doneWithNewState:error:update:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/AAPLContentLoading.m"
                   timestampString = "436214062.041571"
                   startingColumnNumber = "9223372036854775807"
@@ -672,6 +676,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[TableViewController tableView]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/TableViewController.h"
                   timestampString = "436823339.158104"
                   startingColumnNumber = "9223372036854775807"
@@ -686,6 +691,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[TableViewController setTableView:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/TableViewController.h"
                   timestampString = "436823339.15825"
                   startingColumnNumber = "9223372036854775807"
@@ -720,7 +726,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/RUReaderItem.m"
-            timestampString = "444864378.971984"
+            timestampString = "450819192.288724"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
@@ -910,6 +916,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[SegmentedDataSource setSelectedDataSource:animated:completion:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/SegmentedDataSource.m"
                   timestampString = "437091782.341532"
                   startingColumnNumber = "9223372036854775807"
@@ -924,6 +931,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__65-[SegmentedDataSource setSelectedDataSource:animated:completion:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/SegmentedDataSource.m"
                   timestampString = "437091782.341663"
                   startingColumnNumber = "9223372036854775807"
@@ -1180,13 +1188,14 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUInfoTableViewController presentMessageComposeViewControllerWithRecipients:body:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUInfoTableViewController.m"
-                  timestampString = "450304975.450383"
+                  timestampString = "450823691.809357"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "71"
                   endingLineNumber = "71"
-                  offsetFromSymbolStart = "304">
+                  offsetFromSymbolStart = "227">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1194,13 +1203,14 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__84-[RUInfoTableViewController presentMessageComposeViewControllerWithRecipients:body:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUInfoTableViewController.m"
-                  timestampString = "450304975.450489"
+                  timestampString = "450823691.809565"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "73"
                   endingLineNumber = "73"
-                  offsetFromSymbolStart = "8">
+                  offsetFromSymbolStart = "12">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1226,6 +1236,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUInfoTableViewController presentMailCompseViewControllerWithRecipients:body:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUInfoTableViewController.m"
                   timestampString = "442257192.051589"
                   startingColumnNumber = "9223372036854775807"
@@ -1240,6 +1251,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__80-[RUInfoTableViewController presentMailCompseViewControllerWithRecipients:body:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUInfoTableViewController.m"
                   timestampString = "442257192.051706"
                   startingColumnNumber = "9223372036854775807"
@@ -1576,6 +1588,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__42-[NearbyActiveStopsDataSource loadContent]_block_invoke_2"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NearbyActiveStopsDataSource.m"
                   timestampString = "442275857.883177"
                   startingColumnNumber = "9223372036854775807"
@@ -1590,6 +1603,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__42-[NearbyActiveStopsDataSource loadContent]_block_invoke_3"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NearbyActiveStopsDataSource.m"
                   timestampString = "442275857.883303"
                   startingColumnNumber = "9223372036854775807"
@@ -1622,6 +1636,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__42-[NearbyActiveStopsDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NearbyActiveStopsDataSource.m"
                   timestampString = "442273771.443789"
                   startingColumnNumber = "9223372036854775807"
@@ -1636,6 +1651,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__42-[NearbyActiveStopsDataSource loadContent]_block_invoke_2"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NearbyActiveStopsDataSource.m"
                   timestampString = "442273771.443912"
                   startingColumnNumber = "9223372036854775807"
@@ -2372,6 +2388,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[DataSource setShowingPlaceholder:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/DataSource.m"
                   timestampString = "442874926.642056"
                   startingColumnNumber = "9223372036854775807"
@@ -2386,6 +2403,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__36-[DataSource setShowingPlaceholder:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/DataSource.m"
                   timestampString = "442874926.642148"
                   startingColumnNumber = "9223372036854775807"
@@ -2530,6 +2548,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUBusDataAgencyManager loadActiveStopsAndRoutes]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442881282.262169"
                   startingColumnNumber = "9223372036854775807"
@@ -2544,6 +2563,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[RUBusDataAgencyManager loadActiveStopsAndRoutes]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442881282.262277"
                   startingColumnNumber = "9223372036854775807"
@@ -2576,6 +2596,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[RUBusDataAgencyManager performWhenActiveLoaded:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442881513.832851"
                   startingColumnNumber = "9223372036854775807"
@@ -2590,6 +2611,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[RUBusDataAgencyManager performWhenActiveLoaded:]_block_invoke_2"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442881513.832938"
                   startingColumnNumber = "9223372036854775807"
@@ -2686,6 +2708,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUBusDataAgencyManager loadAgencyConfig]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442882862.838926"
                   startingColumnNumber = "9223372036854775807"
@@ -2700,6 +2723,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__42-[RUBusDataAgencyManager loadAgencyConfig]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442882862.839016"
                   startingColumnNumber = "9223372036854775807"
@@ -2746,6 +2770,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUBusDataAgencyManager agency]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442882112.43412"
                   startingColumnNumber = "9223372036854775807"
@@ -2760,6 +2785,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUBusDataAgencyManager setAgency:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442882112.434259"
                   startingColumnNumber = "9223372036854775807"
@@ -2808,6 +2834,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUBusDataAgencyManager performWhenAgencyLoaded:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442882123.171568"
                   startingColumnNumber = "9223372036854775807"
@@ -2822,6 +2849,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[RUBusDataAgencyManager performWhenAgencyLoaded:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUBusDataAgencyManager.m"
                   timestampString = "442882123.171675"
                   startingColumnNumber = "9223372036854775807"
@@ -3094,6 +3122,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__37-[RecentPlacesDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RecentPlacesDataSource.m"
                   timestampString = "442968277.315209"
                   startingColumnNumber = "9223372036854775807"
@@ -3108,6 +3137,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__37-[RecentPlacesDataSource loadContent]_block_invoke_2"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RecentPlacesDataSource.m"
                   timestampString = "442968277.31537"
                   startingColumnNumber = "9223372036854775807"
@@ -3460,6 +3490,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[DynamicDataSource loadContent]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/DynamicDataSource.m"
                   timestampString = "443132507.691887"
                   startingColumnNumber = "9223372036854775807"
@@ -3474,6 +3505,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__32-[DynamicDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/DynamicDataSource.m"
                   timestampString = "443132507.691981"
                   startingColumnNumber = "9223372036854775807"
@@ -3586,6 +3618,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[NewBrunswickFoodDataSource loadContent]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NewBrunswickFoodDataSource.m"
                   timestampString = "443481938.484491"
                   startingColumnNumber = "9223372036854775807"
@@ -3600,6 +3633,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__41-[NewBrunswickFoodDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NewBrunswickFoodDataSource.m"
                   timestampString = "443481938.484593"
                   startingColumnNumber = "9223372036854775807"
@@ -3682,11 +3716,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/RURecCenterHoursSection.m"
-            timestampString = "443565488.730373"
+            timestampString = "450737609.697969"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "-numberOfItems"
             landmarkType = "5">
          </BreakpointContent>
@@ -3698,11 +3732,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/RURecCenterHoursSection.m"
-            timestampString = "443565488.730373"
+            timestampString = "450737609.697969"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "-configureCell:forRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3714,43 +3748,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Rutgers/RURecCenterHoursSection.m"
-            timestampString = "443565488.730373"
+            timestampString = "450737609.697969"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
-            landmarkName = "-configureCell:forRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/RURecCenterHoursSection.m"
-            timestampString = "443565488.730373"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "-configureCell:forRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Rutgers/RURecCenterHoursSection.m"
-            timestampString = "443565488.730373"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "-configureCell:forRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3886,6 +3888,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[ExpandingTableViewDataSource setSections:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/ExpandingTableViewDataSource.m"
                   timestampString = "443562302.268159"
                   startingColumnNumber = "9223372036854775807"
@@ -3900,6 +3903,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__44-[ExpandingTableViewDataSource setSections:]_block_invoke61"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/ExpandingTableViewDataSource.m"
                   timestampString = "443562302.268254"
                   startingColumnNumber = "9223372036854775807"
@@ -4166,6 +4170,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__37-[RURecreationDataSource loadContent]_block_invoke_2"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/RURecreationDataSource.m"
                   timestampString = "443568186.34178"
                   startingColumnNumber = "9223372036854775807"
@@ -4180,6 +4185,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__37-[RURecreationDataSource loadContent]_block_invoke_3"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/RURecreationDataSource.m"
                   timestampString = "443568186.341899"
                   startingColumnNumber = "9223372036854775807"
@@ -4212,6 +4218,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RURecreationDataSource loadContent]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/RURecreationDataSource.m"
                   timestampString = "443568186.342658"
                   startingColumnNumber = "9223372036854775807"
@@ -4226,6 +4233,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__37-[RURecreationDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/RURecreationDataSource.m"
                   timestampString = "443568186.342772"
                   startingColumnNumber = "9223372036854775807"
@@ -4434,6 +4442,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__38-[RUPredictionsDataSource loadContent]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUPredictionsDataSource.m"
                   timestampString = "444171610.012225"
                   startingColumnNumber = "9223372036854775807"
@@ -4448,6 +4457,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__38-[RUPredictionsDataSource loadContent]_block_invoke_2"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUPredictionsDataSource.m"
                   timestampString = "444171610.012378"
                   startingColumnNumber = "9223372036854775807"
@@ -4528,6 +4538,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[LegalDataSource init]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/LegalDataSource.m"
                   timestampString = "444168538.059145"
                   startingColumnNumber = "9223372036854775807"
@@ -4542,6 +4553,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[LegalDataSource init]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/LegalDataSource.m"
                   timestampString = "444168538.059324"
                   startingColumnNumber = "9223372036854775807"
@@ -4574,6 +4586,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[LegalDataSource init]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/LegalDataSource.m"
                   timestampString = "444168538.083685"
                   startingColumnNumber = "9223372036854775807"
@@ -4588,6 +4601,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[LegalDataSource init]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/LegalDataSource.m"
                   timestampString = "444168538.083893"
                   startingColumnNumber = "9223372036854775807"
@@ -5034,6 +5048,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[RUSOCSearchIndex coursesWithCourseID:inSubject:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUSOCSearchIndex.m"
                   timestampString = "444605788.406908"
                   startingColumnNumber = "9223372036854775807"
@@ -5048,6 +5063,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__50-[RUSOCSearchIndex coursesWithCourseID:inSubject:]_block_invoke199"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/RUSOCSearchIndex.m"
                   timestampString = "444605788.40704"
                   startingColumnNumber = "9223372036854775807"
@@ -5256,6 +5272,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "+[NSAttributedString(FromHTML) attributedStringFromHTMLString:preferedTextStyle:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NSAttributedString+FromHTML.m"
                   timestampString = "444781291.356015"
                   startingColumnNumber = "9223372036854775807"
@@ -5270,6 +5287,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "__81+[NSAttributedString(FromHTML) attributedStringFromHTMLString:preferedTextStyle:]_block_invoke"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/NSAttributedString+FromHTML.m"
                   timestampString = "444781291.356141"
                   startingColumnNumber = "9223372036854775807"
@@ -5564,6 +5582,7 @@
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
+                  usesParentBreakpointCondition = "Yes"
                   offsetFromSymbolStart = "0">
                </Location>
                <Location
@@ -5572,6 +5591,7 @@
                   continueAfterRunningActions = "No"
                   symbolName = "-[LegalDataSource processLegalText:]"
                   moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/oss/ios-client/Rutgers/LegalDataSource.m"
                   timestampString = "450216573.12824"
                   startingColumnNumber = "9223372036854775807"
@@ -5788,6 +5808,342 @@
             startingLineNumber = "69"
             endingLineNumber = "69"
             landmarkName = "-setSelected:animated:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURecCenterHoursSection.m"
+            timestampString = "450737609.697969"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "-initWithDailySchedules:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURecCenterHoursSection.m"
+            timestampString = "450737609.697969"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "-initWithDailySchedules:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RURecCenterHoursSection.m"
+            timestampString = "450737609.697969"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "-initWithDailySchedules:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RURecreationDataSource.m"
+            timestampString = "450817688.74875"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "-parseResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RURecreationDataSource.m"
+            timestampString = "450817706.815767"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "-parseResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RURecreationDataSource.m"
+            timestampString = "450817710.168625"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "-parseResponse:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RURecreationDataSource.m"
+            timestampString = "450817762.942457"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "-loadContent"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__37-[RURecreationDataSource loadContent]_block_invoke_2"
+                  moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/oss/ios-client/RURecreationDataSource.m"
+                  timestampString = "450817766.349645"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "175">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__37-[RURecreationDataSource loadContent]_block_invoke_3"
+                  moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/oss/ios-client/RURecreationDataSource.m"
+                  timestampString = "450817766.349742"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderItem.m"
+            timestampString = "450821576.388333"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "-initWithItem:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderItem.m"
+            timestampString = "450821576.388333"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "-initWithItem:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderDataSource.m"
+            timestampString = "450819398.666448"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "-loadContent"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__33-[RUReaderDataSource loadContent]_block_invoke_2"
+                  moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/oss/ios-client/Rutgers/RUReaderDataSource.m"
+                  timestampString = "450820461.407569"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "317">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__33-[RUReaderDataSource loadContent]_block_invoke_3"
+                  moduleName = "Rutgers"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/oss/ios-client/Rutgers/RUReaderDataSource.m"
+                  timestampString = "450820461.4077"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "39"
+                  endingLineNumber = "39"
+                  offsetFromSymbolStart = "43">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderDataSource.m"
+            timestampString = "450819402.154803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "-loadContent"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/AFXMLResponseSerializer.m"
+            timestampString = "450819817.23601"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "-responseObjectForResponse:data:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderResponseSerializer.m"
+            timestampString = "450822675.188942"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "-responseObjectForResponse:data:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/AFXMLResponseSerializer.m"
+            timestampString = "450821105.873573"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "-responseObjectForResponse:data:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderResponseSerializer.m"
+            timestampString = "450822675.188942"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "-responseObjectForResponse:data:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderItem.m"
+            timestampString = "450823274.002556"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "-formatDate:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Rutgers/RUReaderItem.m"
+            timestampString = "450823274.002556"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "-formatDate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
