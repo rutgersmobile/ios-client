@@ -9,8 +9,6 @@
 #import "TableViewController.h"
 @interface TableViewController ()
 
-@property(nonatomic) BOOL clearsSelectionOnViewWillAppear;
-
 -(DataSource *)dataSource;
 -(void)setDataSource:(DataSource *)dataSource;
 
