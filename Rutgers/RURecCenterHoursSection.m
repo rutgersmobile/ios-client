@@ -30,15 +30,16 @@
         
         NSString *todaysDateString = NSStringFromDateComponents(todaysDateComponents);
       
-        self.todaysDateIndex = 0;
+        self.todaysDateIndex = -1;
+        _selectedDateIndex = 0;
         [self.dailySchedules enumerateObjectsUsingBlock:^(NSDictionary *dailySchedule, NSUInteger idx, BOOL *stop) {
             NSString *date = dailySchedule[@"date"];
             if ([date isEqualToString:todaysDateString]) {
                 self.todaysDateIndex = idx;
+                self.selectedDateIndex = idx;
                 *stop = YES;
             }
         }];
-        _selectedDateIndex = self.todaysDateIndex;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goLeft) name:@"RecCenterHeaderLeft" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goRight) name:@"RecCenterHeaderRight" object:nil];
@@ -88,15 +89,16 @@
     if (indexPath.row == 0) {
         RURecCenterHoursHeaderTableViewCell *headerCell = cell;
         
-        NSString *title;
-        if (self.selectedDateIndex == self.todaysDateIndex) {
-            title = @"Today";
-        } else if (self.selectedDateIndex == self.todaysDateIndex - 1) {
-            title = @"Yesterday";
-        } else if (self.selectedDateIndex == self.todaysDateIndex + 1) {
-            title = @"Tomorrow";
-        } else {
-            title = [self selectedDailySchedule][@"date"];
+        NSString *title = [self selectedDailySchedule][@"date"];
+        
+        if (self.todaysDateIndex > 0) {
+            if (self.selectedDateIndex == self.todaysDateIndex) {
+                title = @"Today";
+            } else if (self.selectedDateIndex == self.todaysDateIndex - 1) {
+                title = @"Yesterday";
+            } else if (self.selectedDateIndex == self.todaysDateIndex + 1) {
+                title = @"Tomorrow";
+            }
         }
         
         headerCell.dateLabel.text = title;
