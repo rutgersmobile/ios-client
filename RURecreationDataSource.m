@@ -18,7 +18,7 @@
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         NSString *url = @"gyms.txt";
         if (BETA) {
-            url = @"http://sauron.rutgers.edu/~jamchamb/gyms_array.txt";
+            url = @"gyms_array.txt";
         }
         
         [[RUNetworkManager sessionManager] GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
