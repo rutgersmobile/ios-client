@@ -15,7 +15,6 @@
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
-		049DCFE21AD46AFC00EAC98A /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 049DCFE11AD46AFC00EAC98A /* Media.xcassets */; };
 		04A1EFD31A5C508300DE0351 /* RUPredictionsBodyRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */; };
 		04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFC81A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m */; };
 		04A1EFD51A5C508300DE0351 /* RUPredictionsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFCA1A5C508300DE0351 /* RUPredictionsDataSource.m */; };
@@ -237,7 +236,6 @@
 		0465D0821ADEF7D1001C30FE /* RUResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUResponseSerializer.h; sourceTree = "<group>"; };
 		0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUResponseSerializer.m; sourceTree = "<group>"; };
 		047C2EF11A646FCC00B172E5 /* RUInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RUInfo.json; sourceTree = "<group>"; };
-		049DCFE11AD46AFC00EAC98A /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyRow.h; sourceTree = "<group>"; };
 		04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsBodyRow.m; sourceTree = "<group>"; };
 		04A1EFC71A5C508300DE0351 /* RUPredictionsBodyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyTableViewCell.h; sourceTree = "<group>"; };
@@ -1485,7 +1483,6 @@
 				A770EDC41948AC0100DD5866 /* ruinfo */,
 				A7B3F7B51954A66500458B19 /* rufeedback */,
 				A7E8E14319255E580089F166 /* menu and drawer */,
-				049DCFE11AD46AFC00EAC98A /* Media.xcassets */,
 				C262EFBD188345D10035C8F5 /* Images.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 			);
@@ -1606,7 +1603,6 @@
 			files = (
 				A704C7861922AF7F00ED9E36 /* Channels.json in Resources */,
 				A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */,
-				049DCFE21AD46AFC00EAC98A /* Media.xcassets in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				042C302E1A7977AA0034F89E /* legal in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
