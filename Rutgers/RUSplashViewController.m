@@ -13,8 +13,14 @@
 @end
 
 @implementation RUSplashViewController
++(id)channelWithConfiguration:(NSDictionary *)channel{
+    return [[self alloc] init];
+}
+
 -(void)loadView{
     [super loadView];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"Splash Screen" owner:nil options:nil];
