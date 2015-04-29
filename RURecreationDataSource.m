@@ -47,6 +47,8 @@
 }
 
 -(void)parseResponse:(id)responseObject{
+    if (!BETA) return;
+    
     NSArray *campuses = responseObject;
     for (NSDictionary *campus in campuses) {
         
