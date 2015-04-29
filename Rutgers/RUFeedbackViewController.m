@@ -19,7 +19,7 @@
 
 @implementation RUFeedbackViewController
 
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)newWithOptions:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 

@@ -19,7 +19,7 @@
 
 @implementation RUOptionsViewController
 
-+(id)channelWithConfiguration:(NSDictionary *)channel{
++(id)newWithOptions:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 

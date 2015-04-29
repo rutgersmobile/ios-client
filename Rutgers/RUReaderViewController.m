@@ -16,7 +16,7 @@
 @end
 
 @implementation RUReaderViewController
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)newWithOptions:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }
 

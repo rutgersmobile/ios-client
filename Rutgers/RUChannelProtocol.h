@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @protocol RUChannelProtocol <NSObject>
-+(id)channelWithConfiguration:(NSDictionary *)channel;
+@required
++(id)newWithOptions:(NSDictionary *)channel;
 @end

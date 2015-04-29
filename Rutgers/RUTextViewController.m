@@ -17,7 +17,7 @@
 @end
 
 @implementation RUTextViewController
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)newWithOptions:(NSDictionary *)channel{
     return [[RUTextViewController alloc] initWithChannel:channel];
 }
 

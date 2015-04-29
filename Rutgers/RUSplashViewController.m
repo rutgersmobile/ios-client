@@ -13,7 +13,7 @@
 @end
 
 @implementation RUSplashViewController
-+(id)channelWithConfiguration:(NSDictionary *)channel{
++(id)newWithOptions:(NSDictionary *)channel{
     return [[self alloc] init];
 }
 

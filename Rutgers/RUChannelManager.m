@@ -154,7 +154,10 @@
 }
 
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
-    [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];
+    });
+    
     NSString *view = channel[@"view"];
     if (!view) view = [self defaultViewForChannel:channel];
     
@@ -162,8 +165,8 @@
     
     if (class) {
         UIViewController * vc;
-        if ([class respondsToSelector:@selector(channelWithConfiguration:)]) {
-            vc = [class channelWithConfiguration:channel];
+        if ([class respondsToSelector:@selector(newWithOptions:)]) {
+            vc = [class newWithOptions:channel];
         } else {
             NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
             vc = [class new];
@@ -195,7 +198,7 @@ static NSString *const kChannelManagerLastChannelKey = @"kChannelManagerLastChan
 -(NSDictionary *)lastChannel{
     NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kChannelManagerLastChannelKey];
     if (lastChannel && ![lastChannel channelIsWebLink] && !self.channelsByHandle[[lastChannel channelHandle]]) lastChannel = nil;
-    if (!lastChannel) lastChannel = @{@"view" : @"splash"};
+    if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};
     return lastChannel;
 }
 
