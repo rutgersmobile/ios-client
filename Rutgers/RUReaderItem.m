@@ -24,12 +24,17 @@
             self.title = [title stringByDecodingHTMLEntities];
         }
        
-        NSString *dateString = [item[@"pubDate"] firstObject];
-        if (!dateString) {
-            dateString = [item[@"event:beginDateTime"] firstObject];
+        NSString *startDateString = [item[@"pubDate"] firstObject];
+        if (!startDateString) {
+            startDateString = [item[@"event:beginDateTime"] firstObject];
         }
-        NSDate *date = [self dateFromString:dateString];
-        self.dateString = [self formatDate:date];
+        
+        NSString *endDateString = [item[@"event:endDateTime"] firstObject];
+        
+        NSDate *startDate = [self dateFromString:startDateString];
+        NSDate *endDate = [self dateFromString:endDateString];
+
+        self.dateString = [self dateStringWithStartDate:startDate endDate:endDate];
         
         NSString *urlString = [item[@"enclosure"] firstObject][@"_url"];
         if (!urlString) urlString = [item[@"media:thumbnail"] firstObject][@"_url"];
@@ -90,24 +95,36 @@
     
 }
 
--(NSString *)formatDate:(NSDate *)date{
-    if (!date) return nil;
-    
-
+-(NSString *)dateStringWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate{
+    if (!startDate) return nil;
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *components = [calendar components:(NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:date];
-    
-    if (components.year < 2000) return nil;
-    
-    NSDateFormatterStyle timeStyle = NSDateFormatterShortStyle;
-    if (components.hour == 0 && components.minute == 0) timeStyle = NSDateFormatterNoStyle;
+
+    NSDateComponents *startComponents = [calendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:startDate];
+
+    if (startComponents.year < 2000) return nil;
     
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
     outputFormatter.dateStyle = NSDateFormatterMediumStyle;
-    outputFormatter.timeStyle = timeStyle;
+    outputFormatter.timeStyle = (startComponents.hour == 0 && startComponents.minute == 0) ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
+    
+    NSString *startString = [outputFormatter stringFromDate:startDate];
+    
+    if (!endDate) return startString;
+    
+    NSDateComponents *endComponents = [calendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:endDate];
 
-    return [outputFormatter stringFromDate:date];
+    if (endComponents.hour == 23 && endComponents.minute > 50) return startString;
+    
+    outputFormatter.dateStyle = (startComponents.day == endComponents.day && startComponents.month == endComponents.month && startComponents.year == endComponents.year) ? NSDateFormatterNoStyle : NSDateFormatterMediumStyle;
+    outputFormatter.timeStyle = (endComponents.hour == 0 && endComponents.minute == 0) ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
+    
+    NSString *endString = [outputFormatter stringFromDate:endDate];
+
+    if (!endString) return startString;
+    
+    return [NSString stringWithFormat:@"%@ - %@", startString, endString];
+
 }
 
 -(BOOL)isEqual:(id)object{
