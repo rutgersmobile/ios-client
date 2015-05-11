@@ -18,6 +18,14 @@
         [self addDataSource:[[NativeChannelsDataSource alloc] init]];
         [self addDataSource:[[WebLinksDataSource alloc] init]];
         
+        NSDictionary *optionsChannel = @{@"handle" : @"options",
+                                        @"title" : @"Options",
+                                        @"view" : @"options",
+                                        @"icon" : @"gear"
+                                         };
+        
+        [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:@[optionsChannel]]];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyDidReloadData) name:userInfoManagerDidChangeCampusKey object:nil];
     }
     return self;

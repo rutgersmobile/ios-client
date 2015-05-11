@@ -1,11 +1,5 @@
  [
   {
-  "handle" : "options",
-  "title" : "Options",
-  "view" : "options",
-  "icon" : "gear"
-  },
-  {
   "handle" : "bus",
   "title": "Bus",
   "view" : "bus",
