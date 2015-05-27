@@ -219,6 +219,7 @@
         [self configurePlaceholderCell:placeholderCell];
     } else {
         cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        cell.bounds = tableView.bounds;
         [cell updateFonts];
         [self configureCell:cell forRowAtIndexPath:indexPath];
     }

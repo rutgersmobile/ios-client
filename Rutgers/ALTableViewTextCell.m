@@ -11,7 +11,7 @@
 
 @interface ALTableViewTextCell ()
 @property (strong, nonatomic) IBOutlet UILabel *realTextLabel;
-@property (nonatomic) NSLayoutConstraint *rightConstraint;
+@property (nonatomic) NSArray *rightConstraints;
 @end
 
 @implementation ALTableViewTextCell
@@ -32,11 +32,13 @@
 
 -(void)initializeConstraints{
     [self.realTextLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeRight];
-    self.rightConstraint = [self.realTextLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self];
+    self.rightConstraints = @[[self.realTextLabel autoPinEdge:ALEdgeRight toEdge:ALEdgeRight ofView:self],[self.realTextLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0 relation:NSLayoutRelationGreaterThanOrEqual]];
 }
 
 -(void)updateConstraints{
     [super updateConstraints];
-    self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? -34 : -kLabelHorizontalInsets;
+    for (NSLayoutConstraint *constraint in self.rightConstraints) {
+        constraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? -34 : -kLabelHorizontalInsets;
+    }
 }
 @end

@@ -11,10 +11,11 @@
 @implementation UIView (LayoutSize)
 -(CGSize)layoutSizeFittingWidth:(CGFloat)width{
     // Get the actual height required for the cell
-    UIView *contentView = self;
+    UIView *contentView = [self respondsToSelector:@selector(contentView)] ? [self performSelector:@selector(contentView)] : self;
     
     CGRect bounds = self.bounds;
-    
+
+    bounds.origin = CGPointZero;
     bounds.size.width = width;
     contentView.bounds = bounds;
     
