@@ -14,8 +14,8 @@
 
 typedef enum {
     DataSourceAnimationDirectionNone = 0,
-    DataSourceAnimationDirectionLeft,
-    DataSourceAnimationDirectionRight,
+    DataSourceAnimationDirectionLeft = -1,
+    DataSourceAnimationDirectionRight = 1,
     
 } DataSourceAnimationDirection;
 
