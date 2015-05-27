@@ -8,15 +8,13 @@
 
 #import "MenuDataSource.h"
 #import "DataSource_Private.h"
-#import "NativeChannelsDataSource.h"
-#import "WebLinksDataSource.h"
+#import "ChannelsDataSource.h"
 
 @implementation MenuDataSource
 -(id)init{
     self = [super init];
     if (self) {
-        [self addDataSource:[[NativeChannelsDataSource alloc] init]];
-        [self addDataSource:[[WebLinksDataSource alloc] init]];
+        [self addDataSource:[[ChannelsDataSource alloc] init]];
         
         NSDictionary *optionsChannel = @{@"handle" : @"options",
                                         @"title" : @"Options",

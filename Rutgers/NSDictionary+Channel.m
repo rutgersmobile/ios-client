@@ -45,7 +45,7 @@
 }
 
 -(NSString *)channelURL{
-    return self[@"url"];
+    return self[@"api"] ? self[@"api"] : self[@"url"];
 }
 
 -(NSString *)channelView{

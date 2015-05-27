@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const ChannelManagerDidUpdateChannelsKey;
+
 @interface RUChannelManager : NSObject
 +(RUChannelManager *)sharedInstance;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
-
-@property (readonly) NSArray *nativeChannels;
--(void)webLinksWithCompletion:(void(^)(NSArray *webLinks, NSError *error))completion;
 @property (readonly) NSArray *allChannels;
-
 @property NSDictionary *lastChannel;
+-(NSString *)documentPath;
 @end

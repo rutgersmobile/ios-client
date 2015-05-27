@@ -8,6 +8,6 @@
 
 #import "MenuBasicDataSource.h"
 
-@interface NativeChannelsDataSource : MenuBasicDataSource
+@interface ChannelsDataSource : MenuBasicDataSource
 
 @end

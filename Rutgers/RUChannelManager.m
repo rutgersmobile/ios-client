@@ -8,11 +8,13 @@
 
 #import "NSDictionary+Channel.h"
 
+NSString *const ChannelManagerJsonFileName = @"ordered_content";
+NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
+
 @interface RUChannelManager ()
 @property (readonly) NSMutableDictionary *channelsByHandle;
 
-@property dispatch_group_t webChannelsGroup;
-@property NSArray *webChannels;
+@property dispatch_group_t loadingGroup;
 
 @property BOOL loading;
 @property BOOL finishedLoading;
@@ -33,99 +35,112 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.webChannelsGroup = dispatch_group_create();
-        [self loadWebChannels];
+        self.loadingGroup = dispatch_group_create();
+        if ([self orderedContentNeedsLoad]) {
+            [self loadOrderedContent];
+        }
     }
     return self;
 }
 
-@synthesize nativeChannels = _nativeChannels;
--(NSArray *)nativeChannels{
+@synthesize allChannels = _allChannels;
+-(NSArray *)allChannels{
     @synchronized(self) {
-        if (!_nativeChannels) {
-            NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Channels" ofType:@"json"]];
-            _nativeChannels =  [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        }
-        return _nativeChannels;
-    }
-}
-
-@synthesize channelsByHandle = _channelsByHandle;
--(NSMutableDictionary *)channelsByHandle{
-    @synchronized(self) {
-        if (!_channelsByHandle) {
-            NSMutableDictionary *channelsByTag = [NSMutableDictionary dictionary];
-            for (NSDictionary *channel in self.nativeChannels) {
-                NSString *handle = [channel channelHandle];
-                if (handle) channelsByTag[handle] = channel;
+        if (!_allChannels) {
+            NSArray *paths = @[[self documentPath],[self bundlePath]];
+            for (NSString *path in paths) {
+                NSData *data = [NSData dataWithContentsOfFile:path];
+                if (data) {
+                    NSError *error;
+                    NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    if (channels && !error) {
+                        _allChannels = channels;
+                        break;
+                    }
+                }
             }
-            _channelsByHandle = channelsByTag;
         }
-        return _channelsByHandle;
+        return _allChannels;
     }
 }
 
--(void)webLinksWithCompletion:(void (^)(NSArray *, NSError *))completion{
-    [self performWhenWebChannelsLoaded:^(NSError *error) {
-        completion(self.webChannels,error);
-    }];
+-(void)setAllChannels:(NSArray *)allChannels{
+    @synchronized(self) {
+        
+        if ([_allChannels isEqual:allChannels]) return;
+        
+        _allChannels = allChannels;
+        
+        NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
+        
+        if (data) {
+            [data writeToFile:[self documentPath] atomically:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:ChannelManagerDidUpdateChannelsKey object:self];
+            });
+        }
+    }
 }
 
--(BOOL)webChannelsNeedLoad{
-    return !(self.loading || self.finishedLoading);
+-(NSString *)documentPath{
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *pathForFile = [documentsDir stringByAppendingPathComponent:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"]];
+    return pathForFile;
+}
+
+-(NSString *)bundlePath{
+    return [[NSBundle mainBundle] pathForResource:ChannelManagerJsonFileName ofType:@"json"];
+}
+
+-(BOOL)orderedContentNeedsLoad{
+    return !(self.loading || self.finishedLoading) && [self cacheNeedsReload];
+}
+
+-(BOOL)cacheNeedsReload{
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self documentPath] error:nil];
+    NSDate *date = [attributes fileModificationDate];
+    BOOL needsReload = ([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
+    return needsReload;
 }
 
 -(void)performWhenWebChannelsLoaded:(void (^)(NSError *error))handler{
-    if ([self webChannelsNeedLoad]) {
-        [self loadWebChannels];
+    if ([self orderedContentNeedsLoad]) {
+        [self loadOrderedContent];
     }
-    dispatch_group_notify(self.webChannelsGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_group_notify(self.loadingGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         handler(self.loadingError);
     });
 }
 
 
--(void)loadWebChannels{
-    dispatch_group_enter(self.webChannelsGroup);
+-(void)loadOrderedContent{
+    dispatch_group_enter(self.loadingGroup);
     
     self.loading = YES;
     self.finishedLoading = NO;
     self.loadingError = nil;
     
-    [[RUNetworkManager sessionManager] GET:@"shortcuts.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    #warning change this url
+    [[RUNetworkManager sessionManager] GET:@"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.webChannels = [self filterWebChannels:responseObject];
+            self.allChannels = responseObject;
         }
         
         self.loading = NO;
         self.finishedLoading = YES;
         self.loadingError = nil;
         
-        dispatch_group_leave(self.webChannelsGroup);
+        dispatch_group_leave(self.loadingGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         self.loading = NO;
         self.finishedLoading = NO;
         self.loadingError = error;
         
-        dispatch_group_leave(self.webChannelsGroup);
+        dispatch_group_leave(self.loadingGroup);
     }];
 }
 
--(NSArray *)filterWebChannels:(NSArray *)webChannels{
-    NSMutableArray *filteredWebChannels = [NSMutableArray array];
-    for (NSDictionary *channel in webChannels) {
-        NSString *handle = [channel channelHandle];
-        if (!self.channelsByHandle[handle]) {
-            self.channelsByHandle[handle] = channel;
-            NSMutableDictionary *modifiedWebChannel = [channel mutableCopy];
-            modifiedWebChannel[@"view"] = @"www";
-            modifiedWebChannel[@"weblink"] = @YES;
-            [filteredWebChannels addObject:modifiedWebChannel];
-        }
-    }
-    return filteredWebChannels;
-}
 
 -(Class)classForViewTag:(NSString *)viewTag{
     static NSDictionary *viewTagsToClassNameMapping = nil;
@@ -189,20 +204,16 @@
     return @"dtable";
 }
 
--(NSArray *)allChannels{
-    return [self.nativeChannels arrayByAddingObjectsFromArray:self.webChannels];
-}
-
-static NSString *const kChannelManagerLastChannelKey = @"kChannelManagerLastChannelKey";
+static NSString *const ChannelManagerLastChannelKey = @"ChannelManagerLastChannelKey";
 
 -(NSDictionary *)lastChannel{
-    NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kChannelManagerLastChannelKey];
+    NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ChannelManagerLastChannelKey];
     if (lastChannel && ![lastChannel channelIsWebLink] && !self.channelsByHandle[[lastChannel channelHandle]]) lastChannel = nil;
     if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};
     return lastChannel;
 }
 
 -(void)setLastChannel:(NSDictionary *)lastChannel{
-    [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:kChannelManagerLastChannelKey];
+    [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:ChannelManagerLastChannelKey];
 }
 @end
