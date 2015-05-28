@@ -44,12 +44,34 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
     self = [super init];
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.distanceFilter = 15;  // updates whenever we move 15 m
+        self.locationManager.distanceFilter = 10;  // updates whenever we move 10 m
         self.locationManager.activityType = CLActivityTypeFitness; 	// docs say that this includes any pedestrian activities
         self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters; //middle ground between accuracy and power usage, 100 meters is probably too inaccurate
         self.locationManager.delegate = self;
     }
     return self;
+}
+
+- (void)startUpdatingLocation{
+    @synchronized(self) {
+        if (self.numberOfUpdates == 0) [self _startUpdatingLocation];
+        self.numberOfUpdates++;
+    }
+}
+
+-(void)_startUpdatingLocation{
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        [self.locationManager performSelector:@selector(requestWhenInUseAuthorization)];
+    } else {
+        [self.locationManager startUpdatingLocation];
+    }
+}
+
+- (void)stopUpdatingLocation{
+    @synchronized(self) {
+        self.numberOfUpdates--;
+        if (self.numberOfUpdates == 0) [self.locationManager stopUpdatingLocation];
+    }
 }
 
 /**
@@ -84,27 +106,5 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
 
 -(CLLocation *)location{
     return self.locationManager.location;
-}
-
-- (void)startUpdatingLocation{
-    @synchronized(self) {
-        if (self.numberOfUpdates == 0) [self _startUpdatingLocation];
-        self.numberOfUpdates++;
-    }
-}
-
--(void)_startUpdatingLocation{
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        [self.locationManager performSelector:@selector(requestWhenInUseAuthorization)];
-    } else {
-        [self.locationManager startUpdatingLocation];
-    }
-}
-
-- (void)stopUpdatingLocation{
-    @synchronized(self) {
-        self.numberOfUpdates--;
-        if (self.numberOfUpdates == 0) [self.locationManager stopUpdatingLocation];
-    }
 }
 @end
