@@ -91,7 +91,7 @@
         
         NSString *title = [self selectedDailySchedule][@"date"];
         
-        if (self.todaysDateIndex > 0) {
+        if (self.todaysDateIndex >= 0) {
             if (self.selectedDateIndex == self.todaysDateIndex) {
                 title = @"Today";
             } else if (self.selectedDateIndex == self.todaysDateIndex - 1) {
@@ -116,16 +116,16 @@
 }
 
 -(void)goLeft{
-    if (self.selectedDateIndex == 0) return;
     self.selectedDateIndex--;
 }
 
 -(void)goRight{
-    if (self.selectedDateIndex == self.dailySchedules.count - 1) return;
     self.selectedDateIndex++;
 }
 
 -(void)setSelectedDateIndex:(NSInteger)selectedDateIndex{
+    selectedDateIndex = MIN(MAX(selectedDateIndex, 0), self.dailySchedules.count - 1);
+    
     DataSourceAnimationDirection direction = DataSourceAnimationDirectionNone;
     if (selectedDateIndex > _selectedDateIndex) {
         direction = DataSourceAnimationDirectionLeft;
@@ -138,15 +138,18 @@
     NSInteger newNumberOfItems = self.numberOfItems;
     
     [self invalidateCachedHeightsForSection:0];
-    if (oldNumberOfItems > newNumberOfItems) {
-        [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItems) inSection:0] direction:direction];
-        [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldNumberOfItems, oldNumberOfItems - newNumberOfItems) inSection:0] direction:direction];
-    } else if (newNumberOfItems > oldNumberOfItems) {
-        [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItems) inSection:0] direction:direction];
-        [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newNumberOfItems, newNumberOfItems - oldNumberOfItems) inSection:0] direction:direction];
-    } else {
-        [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItems) inSection:0] direction:direction];
-    }
+    
+    [self notifyBatchUpdate:^{
+        if (oldNumberOfItems > newNumberOfItems) {
+            [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItems) inSection:0] direction:direction];
+            [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newNumberOfItems, oldNumberOfItems - newNumberOfItems) inSection:0] direction:direction];
+        } else if (newNumberOfItems > oldNumberOfItems) {
+            [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItems) inSection:0] direction:direction];
+            [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldNumberOfItems, newNumberOfItems - oldNumberOfItems) inSection:0] direction:direction*-1];
+        } else {
+            [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItems) inSection:0] direction:direction];
+        }
+    }];
 }
 
 NSString *NSStringFromDateComponents(NSDateComponents *dateComponents){
