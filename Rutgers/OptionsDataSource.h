@@ -8,7 +8,9 @@
 
 #import "ComposedDataSource.h"
 
-
+/**
+ *  This is the data source for the options menu
+ */
 @interface OptionsDataSource : ComposedDataSource
 
 @end

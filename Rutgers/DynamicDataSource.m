@@ -42,15 +42,19 @@
     
         [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
+                //If we have started another load, we should ignore this one
                 [loading ignore];
                 return;
             }
+            
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                //Update with the response
                 NSArray *items = responseObject[@"children"];
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = items;
                 }];
             } else {
+                //Clear the items
                 [loading updateWithNoContent:^(typeof(self) me) {
                     me.items = nil;
                 }];
@@ -77,21 +81,18 @@
 
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSString *stringForIndex;
     id itemForIndex = [self itemAtIndexPath:indexPath];
     
     if ([itemForIndex isKindOfClass:[NSString class]]) {
         //If it is a string display it
-        stringForIndex = itemForIndex;
+        cell.textLabel.text = itemForIndex;
         cell.accessoryType = UITableViewCellAccessoryNone;
-        
     } else if ([itemForIndex isKindOfClass:[NSDictionary class]]) {
         //If it is a channel display its title with a disclosure indicator
-        stringForIndex = [itemForIndex channelTitle];
+        cell.textLabel.text = [itemForIndex channelTitle];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = stringForIndex;
 }
 
 @end

@@ -19,17 +19,16 @@
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
-        NSArray *items;
         id answer = item[@"answer"];
-        
+
         if (answer) {
-            items = @[item[@"title"],answer];
+            //If theres an answer, show the question and answer
+            self.items = @[item[@"title"],answer];
         } else {
-            items = @[item];
+            //If no answer, this is just an item that will lead to another view
+            self.items = @[item];
         }
         
-        self.items = items;
-
     }
     return self;
 }
@@ -39,16 +38,19 @@
 }
 
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    //ExpandingTableViewSection configures some general appearance
     [super configureCell:cell forRowAtIndexPath:indexPath];
     
     NSString *stringForIndex;
     id itemForIndex = [self itemAtIndexPath:indexPath];
     
     if ([itemForIndex isKindOfClass:[NSString class]]) {
+        //If just text
         stringForIndex = itemForIndex;
         cell.accessoryType = UITableViewCellAccessoryNone;
         
     } else if ([itemForIndex isKindOfClass:[NSDictionary class]]) {
+        //If this will segue to another view
         stringForIndex = [itemForIndex channelTitle];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
@@ -56,7 +58,7 @@
     cell.textLabel.text = stringForIndex;
     
     if (indexPath.row == 0){
-        cell.textLabel.font =  [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+        cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
         if (self.expanded) {
             cell.textLabel.textColor = cell.tintColor;
         } else {

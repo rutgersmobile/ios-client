@@ -26,11 +26,11 @@
     return self;
 }
 
-
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUNetworkManager readerSessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
+                //If we have started another load, we should ignore this one
                 [loading ignore];
                 return;
             }

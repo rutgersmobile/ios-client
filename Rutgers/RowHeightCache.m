@@ -52,6 +52,8 @@
 -(NSNumber *)cachedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [self cacheForSection:indexPath.section][@(indexPath.row)];
     
+    //The below code is for logging purposes and has been disabled
+    /*
     static int64_t hits = 0;
     static int64_t misses = 0;
     
@@ -63,7 +65,7 @@
         NSLog(@"Hits: %lld, Misses: %lld, Rate: %f",hits,misses,((CGFloat)hits/(hits+misses))*100.0);
     }
     
-    return cachedHeight;
+    return cachedHeight;*/
 }
 
 -(void)setCachedHeight:(CGFloat)height forRowAtIndexPath:(NSIndexPath *)indexPath{

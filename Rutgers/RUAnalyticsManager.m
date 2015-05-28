@@ -88,13 +88,14 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
+#warning this is a stub that must be expanded
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction{
     return;
-    
+    /*
     NSMutableDictionary *event = [self baseEvent];
     event[@"userInteraction"] = userInteraction;
     [self queueAnalyticsEvent:event];
-    NSLog(@"%@",event);
+    NSLog(@"%@",event);*/
 }
 
 -(NSMutableDictionary *)baseEvent{

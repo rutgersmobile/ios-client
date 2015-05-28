@@ -8,6 +8,9 @@
 
 #import "BasicDataSource.h"
 
+/**
+ This is the class used to model the infomation for the dynamic tbvc
+ */
 @interface DynamicDataSource : BasicDataSource
 -(instancetype)initWithChannel:(NSDictionary *)channel;
 @end

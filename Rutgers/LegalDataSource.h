@@ -8,6 +8,9 @@
 
 #import "ComposedDataSource.h"
 
+/**
+ *  The data source for the legal information view
+ */
 @interface LegalDataSource : ComposedDataSource
 
 @end

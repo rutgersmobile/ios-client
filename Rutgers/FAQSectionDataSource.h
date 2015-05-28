@@ -8,6 +8,9 @@
 
 #import "ExpandingTableViewSection.h"
 
+/**
+ This class models a single question and answer in the FAQDataSource
+ */
 @interface FAQSectionDataSource : ExpandingTableViewSection
 -(instancetype)initWithItem:(NSDictionary *)item;
 @end

@@ -8,6 +8,9 @@
 
 #import "ExpandingTableViewController.h"
 
+/**
+ This view controller shows faq style question answer information
+ */
 @interface FAQViewController : ExpandingTableViewController <RUChannelProtocol>
 -(instancetype)initWithChannel:(NSDictionary *)channel;
 @end
