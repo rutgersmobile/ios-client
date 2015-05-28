@@ -36,12 +36,13 @@
             }
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
+                NSArray *parsedResponse = [self parseResponse:channel[@"item"]];
                 [loading updateWithContent:^(typeof(self) me) {
-                    [me parseResponse:channel[@"item"]];
+                    me.items = parsedResponse;
                 }];
             } else {
                 [loading updateWithContent:^(typeof(self) me) {
-                    [me parseResponse:nil];
+                    me.items = nil;
                 }];
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -50,13 +51,13 @@
     }];
 }
 
--(void)parseResponse:(NSArray *)response{
+-(NSArray *)parseResponse:(NSArray *)response{
     NSMutableArray *parsedItems = [NSMutableArray array];
     for (NSDictionary *item in response) {
         RUReaderItem *row = [[RUReaderItem alloc] initWithItem:item];
         [parsedItems addObject:row];
     }
-    self.items = parsedItems;
+    return parsedItems;
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{

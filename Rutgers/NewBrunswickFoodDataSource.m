@@ -28,9 +28,11 @@
                 [loading ignore];
                 return;
             }
+            
             if ([responseObject isKindOfClass:[NSArray class]]) {
+                NSArray *parsedDiningHalls = [self parseResponse:responseObject];
                 [loading updateWithContent:^(typeof(self) me) {
-                    [me parseResponse:responseObject];
+                    me.items = parsedDiningHalls;
                 }];
             } else {
                 [loading doneWithError:nil];
@@ -45,13 +47,13 @@
     }];
 }
 
--(void)parseResponse:(NSArray *)response{
+-(NSArray *)parseResponse:(NSArray *)response{
     NSMutableArray *parsedDiningHalls = [NSMutableArray array];
     for (NSDictionary *diningHall in response) {
         DataTuple *parsedDiningHall = [[DataTuple alloc] initWithTitle:diningHall[@"location_name"] object:diningHall];
         [parsedDiningHalls addObject:parsedDiningHall];
     }
-    self.items = parsedDiningHalls;
+    return parsedDiningHalls;
 }
 
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{

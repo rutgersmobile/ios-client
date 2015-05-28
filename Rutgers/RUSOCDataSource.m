@@ -30,8 +30,9 @@
             }
             
             if (!error) {
+                NSArray *parsedSubjects = [self parseResponse:subjects];
                 [loading updateWithContent:^(typeof(self) me) {
-                    [me parseResponse:subjects];
+                    me.items = parsedSubjects;
                 }];
             } else {
                 [loading doneWithError:error];
@@ -40,16 +41,15 @@
     }];
 }
 
--(void)parseResponse:(NSArray *)response{
+-(NSArray *)parseResponse:(NSArray *)response{
     NSMutableArray *subjects = [NSMutableArray array];
     
     for (NSDictionary *subject in response) {
         NSString *subjectTitle = [NSString stringWithFormat:@"%@ (%@)",[subject[@"description"] capitalizedString],subject[@"code"]];
-        
         [subjects addObject:[DataTuple tupleWithTitle:subjectTitle object:subject]];
     }
     
-    self.items = subjects;
+    return subjects;
 }
 
 
