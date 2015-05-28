@@ -11,6 +11,7 @@
 #endif
 
 #ifdef __OBJC__
+
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 
@@ -39,28 +40,19 @@
     #import "RUAnalyticsManager.h"
     #import "RUUserInfoManager.h"
 
+    #define IPAD_SCALE 1.125
+
+    #define BETA true
+
+    #define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
+
+    extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
+
+    static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
+        if (int1 < int2) return NSOrderedAscending;
+        if (int1 > int2) return NSOrderedDescending;
+        return NSOrderedSame;
+    };
+
 #endif
 
-#define IPAD_SCALE 1.125
-
-#define BETA true
-
-#define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
-extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
-
-static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
-    if (int1 < int2) return NSOrderedAscending;
-    if (int1 > int2) return NSOrderedDescending;
-    return NSOrderedSame;
-};
-/*
-#define NEW_TABLEVIEW_HEIGHT_CALCULATIONS __newHeightCalculations()
-
-static BOOL __newHeightCalculations() {
-    static BOOL newHeightCalculations;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        newHeightCalculations = [[UITableView class] instancesRespondToSelector:@selector(separatorEffect)];
-    });
-    return newHeightCalculations;
-}*/
