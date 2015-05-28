@@ -15,7 +15,7 @@
 @end
 
 @implementation DynamicTableViewController
-+(id)newWithOptions:(NSDictionary *)channel{
++(id)newWithChannel:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }
 
@@ -27,7 +27,6 @@
     }
     return self;
 }
-
 
 - (void)viewDidLoad
 {
@@ -43,8 +42,10 @@
     NSDictionary *channel = item[@"channel"];
     if (!channel) channel = item;
     
-    //Get view controller for channel
+    //Get view controller to display
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+    
+    //Sometimes the title is on the item and not its channel
     if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];
     
     [self.navigationController pushViewController:vc animated:YES];

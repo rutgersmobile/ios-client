@@ -19,7 +19,7 @@
 
 @implementation RUOptionsViewController
 
-+(id)newWithOptions:(NSDictionary *)channel{
++(id)newWithChannel:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -28,7 +28,6 @@
     [super viewDidLoad];    
     self.dataSource = [[OptionsDataSource alloc] init];
 }
-
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 3) {
@@ -44,11 +43,7 @@
     }
 }
 
-- (BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-
+//Below are methods relating to Aarons special request of shaking your device to clear the cache while on the options screen
 -(void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event{
     if (motion == UIEventSubtypeMotionShake)
     {
@@ -56,7 +51,15 @@
     }
 }
 
+//This needs to be implemented to recieve the above message
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
 
+/**
+ *  This function will clear the cache, called when the device is shaken
+ */
 -(void)deviceShaken{
     //Aarons special cache clearing shake
     [[[UIAlertView alloc] initWithTitle:@"Cache Cleared" message:@"Your cache has been cleared." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];

@@ -180,8 +180,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     if (class) {
         UIViewController * vc;
-        if ([class respondsToSelector:@selector(newWithOptions:)]) {
-            vc = [class newWithOptions:channel];
+        if ([class respondsToSelector:@selector(newWithChannel:)]) {
+            vc = [class newWithChannel:channel];
         } else {
             NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
             vc = [class new];

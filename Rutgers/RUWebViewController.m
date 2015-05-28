@@ -26,7 +26,7 @@
     return storedChannels;
 }
 
-+(RUWebViewController *)newWithOptions:(NSDictionary *)channel{
++(RUWebViewController *)newWithChannel:(NSDictionary *)channel{
     if ([channel[@"weblink"] boolValue]) {
         RUWebViewController *webViewController = [self.storedChannels objectForKey:channel];
         if (!webViewController) {
