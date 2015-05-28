@@ -10,9 +10,11 @@
 
 @implementation RUReaderResponseSerializer
 -(id)responseObjectForResponse:(NSURLResponse *)response data:(NSData *)data error:(NSError *__autoreleasing *)error{
-    NSString *convertedString;
-    [NSString stringEncodingForData:data encodingOptions:nil convertedString:&convertedString usedLossyConversion:nil];
-    data = [convertedString dataUsingEncoding:NSUTF8StringEncoding];
+    if ([NSString respondsToSelector:@selector(stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:)]) {
+        NSString *convertedString;
+        [NSString stringEncodingForData:data encodingOptions:nil convertedString:&convertedString usedLossyConversion:nil];
+        data = [convertedString dataUsingEncoding:NSUTF8StringEncoding];
+    }
     return [super responseObjectForResponse:response data:data error:error];
 }
 @end
