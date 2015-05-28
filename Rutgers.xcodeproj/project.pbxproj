@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
+		04203AF71B15147E005A7099 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = 04203AF61B15147E005A7099 /* ordered_content.json */; };
 		0422C9841A69C3C100344828 /* RURecCenterDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9831A69C3C100344828 /* RURecCenterDataSource.m */; };
 		0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9881A69C95500344828 /* MiniMapDataSource.m */; };
 		042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 042C302A1A7974E10034F89E /* LegalDataSource.m */; };
@@ -43,7 +44,6 @@
 		04AF8B431A82B57400619AFC /* NSDate+EpochTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */; };
 		6862BA48665649378AC0462B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
 		A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */; };
-		A704C7861922AF7F00ED9E36 /* Channels.json in Resources */ = {isa = PBXBuildFile; fileRef = A704C7851922AF7F00ED9E36 /* Channels.json */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
 		A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; };
@@ -91,8 +91,7 @@
 		A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75D6AA8199A73D5009E94D3 /* RUSOCSearchDataSource.m */; };
 		A75E7EB619A3C44B00782AE5 /* MenuBasicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EB519A3C44B00782AE5 /* MenuBasicDataSource.m */; };
 		A75E7EB919A3C6C300782AE5 /* MenuDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EB819A3C6C300782AE5 /* MenuDataSource.m */; };
-		A75E7EBC19A3C6FD00782AE5 /* NativeChannelsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EBB19A3C6FD00782AE5 /* NativeChannelsDataSource.m */; };
-		A75E7EBF19A3C70700782AE5 /* WebLinksDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EBE19A3C70700782AE5 /* WebLinksDataSource.m */; };
+		A75E7EBC19A3C6FD00782AE5 /* ChannelsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EBB19A3C6FD00782AE5 /* ChannelsDataSource.m */; };
 		A75E7EC219A3E18D00782AE5 /* UITableView+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EC119A3E18D00782AE5 /* UITableView+Selection.m */; };
 		A75E7EC819A3F2F300782AE5 /* NewBrunswickFoodDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EC719A3F2F300782AE5 /* NewBrunswickFoodDataSource.m */; };
 		A7600E371950E752008DA667 /* RUSOCSectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7600E361950E752008DA667 /* RUSOCSectionCell.m */; };
@@ -224,6 +223,7 @@
 /* Begin PBXFileReference section */
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
 		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
+		04203AF61B15147E005A7099 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ordered_content.json; sourceTree = "<group>"; };
 		0422C9821A69C3C100344828 /* RURecCenterDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterDataSource.h; path = Rutgers/RURecCenterDataSource.h; sourceTree = SOURCE_ROOT; };
 		0422C9831A69C3C100344828 /* RURecCenterDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterDataSource.m; path = Rutgers/RURecCenterDataSource.m; sourceTree = SOURCE_ROOT; };
 		0422C9871A69C95500344828 /* MiniMapDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMapDataSource.h; sourceTree = "<group>"; };
@@ -290,7 +290,6 @@
 		A704909F19478CB2003B99DC /* RUSportsRosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsRosterViewController.h; sourceTree = "<group>"; };
 		A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSportsRosterViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
-		A704C7851922AF7F00ED9E36 /* Channels.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Channels.json; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A70C2BD1198BF498004F82D4 /* RULabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RULabel.h; sourceTree = "<group>"; };
 		A70C2BD2198BF498004F82D4 /* RULabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RULabel.m; sourceTree = "<group>"; };
@@ -381,10 +380,8 @@
 		A75E7EB519A3C44B00782AE5 /* MenuBasicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuBasicDataSource.m; sourceTree = "<group>"; };
 		A75E7EB719A3C6C300782AE5 /* MenuDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDataSource.h; sourceTree = "<group>"; };
 		A75E7EB819A3C6C300782AE5 /* MenuDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDataSource.m; sourceTree = "<group>"; };
-		A75E7EBA19A3C6FD00782AE5 /* NativeChannelsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeChannelsDataSource.h; sourceTree = "<group>"; };
-		A75E7EBB19A3C6FD00782AE5 /* NativeChannelsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeChannelsDataSource.m; sourceTree = "<group>"; };
-		A75E7EBD19A3C70700782AE5 /* WebLinksDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebLinksDataSource.h; sourceTree = "<group>"; };
-		A75E7EBE19A3C70700782AE5 /* WebLinksDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebLinksDataSource.m; sourceTree = "<group>"; };
+		A75E7EBA19A3C6FD00782AE5 /* ChannelsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelsDataSource.h; sourceTree = "<group>"; };
+		A75E7EBB19A3C6FD00782AE5 /* ChannelsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelsDataSource.m; sourceTree = "<group>"; };
 		A75E7EC019A3E18D00782AE5 /* UITableView+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Selection.h"; sourceTree = "<group>"; };
 		A75E7EC119A3E18D00782AE5 /* UITableView+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Selection.m"; sourceTree = "<group>"; };
 		A75E7EC619A3F2F300782AE5 /* NewBrunswickFoodDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewBrunswickFoodDataSource.h; sourceTree = "<group>"; };
@@ -886,6 +883,8 @@
 		A731C38D193FBC5600E9E7E0 /* objects */ = {
 			isa = PBXGroup;
 			children = (
+				A7B970D01921603E0070A414 /* RUChannelManager.h */,
+				A7B970D11921603E0070A414 /* RUChannelManager.m */,
 				A7D4B6E119ACD5F20087A8BC /* RUAnalyticsManager.h */,
 				A7D4B6E219ACD5F20087A8BC /* RUAnalyticsManager.m */,
 				A748ECEB191602C400CB91FF /* RULocationManager.h */,
@@ -894,10 +893,6 @@
 				A7B970CC19215F910070A414 /* RUNetworkManager.m */,
 				A72F001A193A5D8A00016C89 /* RUUserInfoManager.h */,
 				A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */,
-				041AE337193D2E32002ED85C /* RUAppearance.h */,
-				041AE338193D2E32002ED85C /* RUAppearance.m */,
-				A7177BAC199DC0CD0092126F /* RUNavigationController.h */,
-				A7177BAD199DC0CD0092126F /* RUNavigationController.m */,
 			);
 			name = objects;
 			sourceTree = "<group>";
@@ -1003,10 +998,8 @@
 				A75E7EB519A3C44B00782AE5 /* MenuBasicDataSource.m */,
 				A75E7EB719A3C6C300782AE5 /* MenuDataSource.h */,
 				A75E7EB819A3C6C300782AE5 /* MenuDataSource.m */,
-				A75E7EBA19A3C6FD00782AE5 /* NativeChannelsDataSource.h */,
-				A75E7EBB19A3C6FD00782AE5 /* NativeChannelsDataSource.m */,
-				A75E7EBD19A3C70700782AE5 /* WebLinksDataSource.h */,
-				A75E7EBE19A3C70700782AE5 /* WebLinksDataSource.m */,
+				A75E7EBA19A3C6FD00782AE5 /* ChannelsDataSource.h */,
+				A75E7EBB19A3C6FD00782AE5 /* ChannelsDataSource.m */,
 			);
 			name = "Data source";
 			sourceTree = "<group>";
@@ -1168,12 +1161,7 @@
 				A7B970CE192160180070A414 /* rureader */,
 				A7E8E1341924846F0089F166 /* rutext */,
 				A7E8E13919249FEB0089F166 /* ruwebview */,
-				A7B970D01921603E0070A414 /* RUChannelManager.h */,
-				A7B970D11921603E0070A414 /* RUChannelManager.m */,
-				A7E8E13D192554260089F166 /* NSDictionary+Channel.h */,
-				A7E8E13E192554260089F166 /* NSDictionary+Channel.m */,
-				A704C7851922AF7F00ED9E36 /* Channels.json */,
-				A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */,
+				04203AF61B15147E005A7099 /* ordered_content.json */,
 			);
 			name = channels;
 			sourceTree = "<group>";
@@ -1288,6 +1276,8 @@
 		A7DDA0181999370600F6C102 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				A7E8E13D192554260089F166 /* NSDictionary+Channel.h */,
+				A7E8E13E192554260089F166 /* NSDictionary+Channel.m */,
 				A7907CCF19A2B83700711DCB /* UIFont+DynamicType.h */,
 				A7907CD019A2B83700711DCB /* UIFont+DynamicType.m */,
 				A79B5DE1199C23C900DAEFC1 /* CLLocation+Centroid.h */,
@@ -1337,6 +1327,11 @@
 				A7C92C9E1946477D00609549 /* iPadCheck.m */,
 				A70C2BD1198BF498004F82D4 /* RULabel.h */,
 				A70C2BD2198BF498004F82D4 /* RULabel.m */,
+				A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */,
+				041AE337193D2E32002ED85C /* RUAppearance.h */,
+				041AE338193D2E32002ED85C /* RUAppearance.m */,
+				A7177BAC199DC0CD0092126F /* RUNavigationController.h */,
+				A7177BAD199DC0CD0092126F /* RUNavigationController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1601,7 +1596,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A704C7861922AF7F00ED9E36 /* Channels.json in Resources */,
 				A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				042C302E1A7977AA0034F89E /* legal in Resources */,
@@ -1610,6 +1604,7 @@
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
+				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
@@ -1673,7 +1668,6 @@
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				A7907CD119A2B83700711DCB /* UIFont+DynamicType.m in Sources */,
 				A72FFFAB1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m in Sources */,
-				A75E7EBF19A3C70700782AE5 /* WebLinksDataSource.m in Sources */,
 				04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
@@ -1771,7 +1765,7 @@
 				A769931A1934F10E008C64EE /* RURecCenterViewController.m in Sources */,
 				A7D4B6E919AD0B370087A8BC /* NSAttributedString+FromHTML.m in Sources */,
 				A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */,
-				A75E7EBC19A3C6FD00782AE5 /* NativeChannelsDataSource.m in Sources */,
+				A75E7EBC19A3C6FD00782AE5 /* ChannelsDataSource.m in Sources */,
 				A72795EB195B5FD900C21165 /* RUFeedbackViewController.m in Sources */,
 				04A1EFD51A5C508300DE0351 /* RUPredictionsDataSource.m in Sources */,
 				04A1EFDF1A5C508D00DE0351 /* BusSearchDataSource.m in Sources */,
@@ -1957,10 +1951,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -1969,6 +1965,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1979,10 +1976,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -1991,6 +1990,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
