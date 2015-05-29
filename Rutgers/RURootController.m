@@ -28,7 +28,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @property (nonatomic) UIViewController *centerViewController;
-@property (nonatomic) DrawerImplementation drawerImplementation;
+@property (nonatomic, readonly) DrawerImplementation drawerImplementation;
 @end
 
 @implementation RURootController
@@ -219,15 +219,14 @@ typedef enum : NSUInteger {
 
 #pragma mark Scroll View Scrolling to Top
 -(void)recursivelyRemoveScrollingToTop:(UIView *)view{
-    [self removeScrollingToTop:view];
+    if ([view isKindOfClass:[UIScrollView class]]) [self removeScrollingToTop:(UIScrollView *)view];
     for (UIView *subview in view.subviews) {
         [self recursivelyRemoveScrollingToTop:subview];
     }
 }
 
--(void)removeScrollingToTop:(UIView *)view{
-    UIScrollView *scrollView = ((UIScrollView *)view);
-    if ([scrollView isKindOfClass:[UIScrollView class]] && scrollView.scrollsToTop){
+-(void)removeScrollingToTop:(UIScrollView *)scrollView{
+    if (scrollView.scrollsToTop){
         [self.managedScrollViews addObject:scrollView];
         scrollView.scrollsToTop = NO;
     }
@@ -262,10 +261,6 @@ typedef enum : NSUInteger {
     [RUChannelManager sharedInstance].lastChannel = channel;
     [self closeDrawer];
 }
-/*
-#pragma mark Navigation Controller Delegate
--(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    [self updateDrawerShouldOpen];
-}*/
+
 
 @end
