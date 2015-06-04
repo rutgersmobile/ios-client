@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+/**
+ The class models a single item in the rureader data source
+ */
 @interface RUReaderItem : NSObject
 -(instancetype)initWithItem:(NSDictionary *)item;
 @property (nonatomic) NSString *title;

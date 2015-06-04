@@ -58,6 +58,7 @@
     cell.textLabel.text = stringForIndex;
     
     if (indexPath.row == 0){
+        //The top 'header' row is stylized in one way
         cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
         if (self.expanded) {
             cell.textLabel.textColor = cell.tintColor;
@@ -65,6 +66,7 @@
             cell.textLabel.textColor = [UIColor blackColor];
         }
     } else {
+        //And the answer in another
         cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
         cell.textLabel.textColor = [UIColor blackColor];
     }
