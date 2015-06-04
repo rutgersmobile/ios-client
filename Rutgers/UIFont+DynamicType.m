@@ -21,14 +21,40 @@
     return [self ruPreferredFontForTextStyle:style symbolicTraits:0];
 }
 
-+(UIFont *)ruPreferredFontForTextStyle:(NSString *)style symbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits{
-    UIFontDescriptor *descriptor = [[UIFontDescriptor preferredFontDescriptorWithTextStyle:style] fontDescriptorWithSymbolicTraits:symbolicTraits];
-    CGFloat pointSize = descriptor.pointSize;
-    return [UIFont fontWithDescriptor:descriptor size:(iPad() ? pointSize * IPAD_SCALE : pointSize)];
-}
-
 -(UIFont *)fontByScalingPointSize:(CGFloat)scalingRatio{
     return [self fontWithSize:self.fontDescriptor.pointSize*scalingRatio];
+}
+
++(UIFont *)ruPreferredFontForTextStyle:(NSString *)style symbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits{
+    static NSMutableDictionary *fontCache = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        fontCache = [NSMutableDictionary dictionary];
+    });
+    
+    NSString *sizeCategory = [UIApplication sharedApplication].preferredContentSizeCategory;
+    
+    NSMutableDictionary *cacheForSize = fontCache[sizeCategory];
+    if (!cacheForSize) {
+        cacheForSize = [NSMutableDictionary dictionary];
+        fontCache[sizeCategory] = cacheForSize;
+    }
+    
+    NSMutableDictionary *cacheForStyle = cacheForSize[style];
+    if (!cacheForStyle) {
+        cacheForStyle = [NSMutableDictionary dictionary];
+        cacheForSize[style] = cacheForStyle;
+    }
+    
+    UIFont *font = cacheForStyle[@(symbolicTraits)];
+    if (!font) {
+        UIFontDescriptor *descriptor = [[UIFontDescriptor preferredFontDescriptorWithTextStyle:style] fontDescriptorWithSymbolicTraits:symbolicTraits];
+        CGFloat pointSize = descriptor.pointSize;
+        font = [UIFont fontWithDescriptor:descriptor size:(iPad() ? pointSize * IPAD_SCALE : pointSize)];
+        cacheForStyle[@(symbolicTraits)] = font;
+    }
+    
+    return font;
 }
 @end
 
