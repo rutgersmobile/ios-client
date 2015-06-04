@@ -239,6 +239,7 @@
     return tableView.estimatedRowHeight;
 }
 
+/*
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     return nil;
 }
@@ -251,7 +252,7 @@
     [view updateConstraintsIfNeeded];
     
     return [view layoutSizeFittingWidth:CGRectGetWidth(tableView.bounds)].height;
-}
+}*/
 
 #pragma mark - Collection View Data Source
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
