@@ -12,8 +12,6 @@ NSString *const ChannelManagerJsonFileName = @"ordered_content";
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
 
 @interface RUChannelManager ()
-@property (readonly) NSMutableDictionary *channelsByHandle;
-
 @property dispatch_group_t loadingGroup;
 
 @property BOOL loading;
@@ -51,9 +49,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
             for (NSString *path in paths) {
                 NSData *data = [NSData dataWithContentsOfFile:path];
                 if (data) {
-                    NSError *error;
-                    NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                    if (channels && !error) {
+                    NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    if (channels) {
                         _allChannels = channels;
                         break;
                     }
@@ -71,14 +68,9 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         
         _allChannels = allChannels;
         
-        NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
-        
-        if (data) {
-            [data writeToFile:[self documentPath] atomically:YES];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:ChannelManagerDidUpdateChannelsKey object:self];
-            });
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:ChannelManagerDidUpdateChannelsKey object:self];
+        });
     }
 }
 
@@ -99,19 +91,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 -(BOOL)cacheNeedsReload{
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self documentPath] error:nil];
     NSDate *date = [attributes fileModificationDate];
+    if (!date) return YES;
+    
     BOOL needsReload = ([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
     return needsReload;
 }
-
--(void)performWhenWebChannelsLoaded:(void (^)(NSError *error))handler{
-    if ([self orderedContentNeedsLoad]) {
-        [self loadOrderedContent];
-    }
-    dispatch_group_notify(self.loadingGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        handler(self.loadingError);
-    });
-}
-
 
 -(void)loadOrderedContent{
     dispatch_group_enter(self.loadingGroup);
@@ -123,6 +107,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     #warning change this url
     [[RUNetworkManager sessionManager] GET:@"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
+            NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:0 error:nil];
+            if (data) [data writeToFile:[self documentPath] atomically:YES];
             self.allChannels = responseObject;
         }
         
@@ -208,7 +194,7 @@ static NSString *const ChannelManagerLastChannelKey = @"ChannelManagerLastChanne
 
 -(NSDictionary *)lastChannel{
     NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ChannelManagerLastChannelKey];
-    if (lastChannel && ![lastChannel channelIsWebLink] && !self.channelsByHandle[[lastChannel channelHandle]]) lastChannel = nil;
+    if (![self.allChannels containsObject:lastChannel]) lastChannel = nil;
     if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};
     return lastChannel;
 }

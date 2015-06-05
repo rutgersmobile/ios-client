@@ -15,5 +15,4 @@ extern NSString *const ChannelManagerDidUpdateChannelsKey;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
 @property (readonly) NSArray *allChannels;
 @property NSDictionary *lastChannel;
--(NSString *)documentPath;
 @end
