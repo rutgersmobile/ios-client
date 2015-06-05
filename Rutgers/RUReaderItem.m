@@ -19,15 +19,15 @@
     self = [super init];
     if (self) {
         self.item = item;
+        
         id title = [item[@"title"] firstObject];
         if ([title isKindOfClass:[NSString class]]) {
             self.title = [title stringByDecodingHTMLEntities];
         }
        
+        //The date may be in one of two fields
         NSString *startDateString = [item[@"pubDate"] firstObject];
-        if (!startDateString) {
-            startDateString = [item[@"event:beginDateTime"] firstObject];
-        }
+        if (!startDateString) startDateString = [item[@"event:beginDateTime"] firstObject];
         
         NSString *endDateString = [item[@"event:endDateTime"] firstObject];
         
@@ -36,14 +36,16 @@
 
         self.dateString = [self dateStringWithStartDate:startDate endDate:endDate];
         
-        NSString *urlString = [item[@"enclosure"] firstObject][@"_url"];
-        if (!urlString) urlString = [item[@"media:thumbnail"] firstObject][@"_url"];
+        //The image url may be in one of two fields
+        NSString *imageUrl = [item[@"enclosure"] firstObject][@"_url"];
+        if (!imageUrl) imageUrl = [item[@"media:thumbnail"] firstObject][@"_url"];
         
-        self.imageURL = [NSURL URLWithString:urlString];
+        self.imageURL = [NSURL URLWithString:imageUrl];
         self.url = [item[@"link"] firstObject];
         
         id description = [item[@"description"] firstObject];
         if ([description isKindOfClass:[NSString class]]) {
+            //strip out all the weird characters we can
             self.descriptionText = [[description stringByDecodingHTMLEntities] stringByConvertingHTMLToPlainText];
         }
     }
@@ -51,6 +53,14 @@
 }
 
 
+/**
+ *  Parses the given string representation of a date
+ *  A variety of different formats are tried, and the first
+ *
+ *  @param string The string recieved from xml
+ *
+ *  @return An nsdate object representing the input date and time
+ */
 -(NSDate *)dateFromString:(NSString *)string{
     static NSMutableArray *inputFormatters;
     static dispatch_once_t onceToken;
@@ -78,23 +88,29 @@
                                              @"EEE, d MMM yyyy HH:mm:ss zzz",
                                              @"EEE, dd MMM yyyy -HHmm",
                                              @"yyyy-MM-dd HH:mm:ss EEE",
-                                             @"EEE, dd MMM yyyy"])
-        {
+                                             @"EEE, dd MMM yyyy"]){
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             dateFormatter.dateFormat = dateFormatString;
             [inputFormatters addObject:dateFormatter];
         }
     });
     
-    NSDate *dateRepresentation;
     for (NSDateFormatter *dateFormatter in inputFormatters) {
-        dateRepresentation = [dateFormatter dateFromString:string];
-        if (dateRepresentation) break;
+        NSDate *dateRepresentation = [dateFormatter dateFromString:string];
+        if (dateRepresentation) return dateRepresentation;
     }
-    return dateRepresentation;
+    return nil;
     
 }
 
+/**
+ *  This method takes the previously parsed dates and does a sanity check, as well as formats them properly for display
+ *
+ *  @param startDate The events start date
+ *  @param endDate   The events end date
+ *
+ *  @return A formatted string
+ */
 -(NSString *)dateStringWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate{
     if (!startDate) return nil;
     
@@ -102,18 +118,20 @@
 
     NSDateComponents *startComponents = [calendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:startDate];
 
+    //If our start date is very long ago, this is a garbage input
     if (startComponents.year < 2000) return nil;
     
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
     outputFormatter.dateStyle = NSDateFormatterMediumStyle;
+    //Display time only if we are not at midnight
     outputFormatter.timeStyle = (startComponents.hour == 0 && startComponents.minute == 0) ? NSDateFormatterNoStyle : NSDateFormatterShortStyle;
     
     NSString *startString = [outputFormatter stringFromDate:startDate];
-    
     if (!endDate) return startString;
     
     NSDateComponents *endComponents = [calendar components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:endDate];
 
+    //If we are ending this close to midnight, this is an all day event and we only want to show the starting tme
     if (endComponents.hour == 23 && endComponents.minute > 50) return startString;
     
     outputFormatter.dateStyle = (startComponents.day == endComponents.day && startComponents.month == endComponents.month && startComponents.year == endComponents.year) ? NSDateFormatterNoStyle : NSDateFormatterMediumStyle;
@@ -127,11 +145,16 @@
 
 }
 
+//The below methods implement equality checking, so when we refresh our data we can identify which articles are new
 -(BOOL)isEqual:(id)object{
     if (object == self) return YES;
     if (![object isMemberOfClass:[self class]]) return NO;
     RUReaderItem *otherItem = object;
     return [otherItem.item isEqualToDictionary:self.item];
+}
+
+-(NSUInteger)hash{
+    return self.item.hash;
 }
 
 @end
