@@ -107,36 +107,34 @@
             handler(nil,nil,error);
         } else {
             NSMutableArray *words = [[query wordsInString] mutableCopy];
-            
+
             NSMutableOrderedSet *subjects = [NSMutableOrderedSet orderedSet];
             NSMutableOrderedSet *courses = [NSMutableOrderedSet orderedSet];
             
             if (words.count){
-                /// setup
-                //try to match first word to subject id
-                if ([self stringIsNumericalCode:[words firstObject]]) {
-                    DataTuple *subject = [self subjectWithSubjectID:[words firstObject]];
-                    if (subject){
-                        [words removeObjectAtIndex:0];
-                        [subjects addObject:subject];
+                
+                NSArray *subjectsForAbbreviation = [self subjectsWithAbbreviation:[words firstObject]];
+                if (subjectsForAbbreviation.count) {
+                    [words removeObjectAtIndex:0];
+                    [subjects addObjectsFromArray:subjectsForAbbreviation];
+                }
+                
+                for (NSString *word in [words copy]) {
+                    if ([self stringIsNumericalCode:word]) {
+                        DataTuple *subject = [self subjectWithSubjectID:word];
+                        if (subject){
+                            [words removeObject:word];
+                            [subjects addObject:subject];
+                        }
                     }
                 }
-                
+
                 NSString *courseID;
-                if ([self stringIsNumericalCode:[words lastObject]]) {
-                    courseID = [words lastObject];
-                    [words removeLastObject];
-                } else if ([self stringIsNumericalCode:[words firstObject]]){
-                    courseID = [words firstObject];
-                    [words removeObjectAtIndex:0];
-                }
-                
-                if (!courseID) {
-                    //try to match first word to abbreviation
-                    NSArray *subjectsForAbbreviation = [self subjectsWithAbbreviation:[words firstObject]];
-                    if (subjectsForAbbreviation.count) {
-                        [words removeObjectAtIndex:0];
-                        [subjects addObjectsFromArray:subjectsForAbbreviation];
+                for (NSString *word in [words copy]) {
+                    if ([self stringIsNumericalCode:word]) {
+                        courseID = word;
+                        [words removeObject:word];
+                        break;
                     }
                 }
                 
@@ -167,14 +165,18 @@
                 }
             }
             
-            handler([subjects.array copy],[courses.array copy],nil);
+            handler(subjects.array,courses.array,nil);
         }
     }];
 }
 
 #pragma mark - code parsing
 -(NSNumberFormatter *)numberFormatter{
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    static NSNumberFormatter *numberFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        numberFormatter = [[NSNumberFormatter alloc] init];
+    });
     return numberFormatter;
 }
 
