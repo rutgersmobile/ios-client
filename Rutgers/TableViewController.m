@@ -41,10 +41,6 @@
     [super viewWillAppear:animated];
     
     [self invalidateCachedHeightsIfNeeded];
-    
-    if (self.clearsSelectionOnViewWillAppear) {
-        [self.tableView clearSelectionAnimated:YES];
-    }
 
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
         [self.dataSource setNeedsLoadContent];
@@ -93,8 +89,8 @@
 }
 
 -(void)invalidateCachedHeightsForTableView:(UITableView *)tableView{
-    [[self dataSourceForTableView:tableView] invalidateCachedHeights];
     [tableView beginUpdates];
+    [[self dataSourceForTableView:tableView] invalidateCachedHeights];
     [tableView endUpdates];
 }
 
@@ -287,7 +283,6 @@
     if (complete) {
         complete();
     }
-    
 }
 
 -(void)dataSourceWillLoadContent:(DataSource *)dataSource{
