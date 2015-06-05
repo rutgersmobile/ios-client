@@ -126,6 +126,8 @@
 -(void)setSelectedDateIndex:(NSInteger)selectedDateIndex{
     selectedDateIndex = MIN(MAX(selectedDateIndex, 0), self.dailySchedules.count - 1);
     
+    if (selectedDateIndex == _selectedDateIndex) return;
+    
     DataSourceAnimationDirection direction = DataSourceAnimationDirectionNone;
     if (selectedDateIndex > _selectedDateIndex) {
         direction = DataSourceAnimationDirectionLeft;
