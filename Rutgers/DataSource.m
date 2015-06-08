@@ -182,6 +182,7 @@
     id cell = self.sizingCells[identifier];
     if (!cell) {
         cell = [self tableView:tableView dequeueReusableCellWithIdentifier:identifier];
+        [cell removeFromSuperview];
         self.sizingCells[identifier] = cell;
     }
     return cell;
@@ -219,7 +220,6 @@
         [self configurePlaceholderCell:placeholderCell];
     } else {
         cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
-        cell.bounds = tableView.bounds;
         [cell updateFonts];
         [self configureCell:cell forRowAtIndexPath:indexPath];
     }
@@ -227,7 +227,7 @@
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
-    CGFloat height = [cell layoutSizeFittingWidth:CGRectGetWidth(tableView.bounds)].height;
+    CGFloat height = [cell layoutSizeFittingSize:tableView.bounds.size].height;
     [self.rowHeightCache setCachedHeight:height forRowAtIndexPath:indexPath];
     
     return height;
