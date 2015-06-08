@@ -60,7 +60,9 @@
 -(void)initializeConstraints{
     [self.containerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsets, kLabelVerticalInsets, kLabelHorizontalInsets) excludingEdge:ALEdgeRight];
     self.containerRightConstraint = [self.containerView autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:self.imageDisplayView withOffset:-kLabelHorizontalInsetsSmall];
-    
+    [self.containerView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [self.containerView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeBottom];
@@ -82,7 +84,6 @@
     [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
     [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
     self.imageRightConstraint = [self.imageDisplayView autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-
 }
 
 -(void)updateConstraints{
