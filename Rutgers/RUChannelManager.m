@@ -93,7 +93,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSDate *date = [attributes fileModificationDate];
     if (!date) return YES;
     
-    BOOL needsReload = ([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
+    BOOL needsReload = YES;//([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
     return needsReload;
 }
 
@@ -104,8 +104,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     self.finishedLoading = NO;
     self.loadingError = nil;
     
-    #warning change this url
-    [[RUNetworkManager sessionManager] GET:@"https://nstanlee.rutgers.edu/~rfranknj/mobile/1/ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:@"ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:0 error:nil];
             if (data) [data writeToFile:[self documentPath] atomically:YES];
