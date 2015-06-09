@@ -163,22 +163,17 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     Class class = [self classForViewTag:view];
     
-    if (class) {
-        UIViewController * vc;
-        if ([class respondsToSelector:@selector(newWithChannel:)]) {
-            vc = [class newWithChannel:channel];
-        } else {
-            NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
-            vc = [class new];
-        }
-        NSString *title = [channel channelTitle];
-        vc.title = title;
-        
-        return vc;
+    if (!class) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
+    
+    UIViewController * vc;
+    if ([class respondsToSelector:@selector(newWithChannel:)]) {
+        vc = [class newWithChannel:channel];
     } else {
-        NSLog(@"No way to handle view type %@, \n%@",view,channel);
+        NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
+        vc = [class new];
     }
-    return nil;
+    vc.title = [channel channelTitle];
+    return vc;
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{
