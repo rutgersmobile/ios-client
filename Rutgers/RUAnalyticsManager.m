@@ -147,8 +147,10 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(void)resetFlushTimer{
-    [self.flushTimer invalidate];
-    self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
+    @synchronized(self) {
+        [self.flushTimer invalidate];
+        self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
+    }
 }
 
 -(void)flushQueue{
