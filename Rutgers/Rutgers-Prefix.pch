@@ -40,7 +40,7 @@
     #import "RUAnalyticsManager.h"
     #import "RUUserInfoManager.h"
 
-    #define IPAD_SCALE 1.125
+    #define IPAD_SCALE 1.15
 
     #define BETA true
 
