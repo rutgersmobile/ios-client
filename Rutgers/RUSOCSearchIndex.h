@@ -9,5 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface RUSOCSearchIndex : NSObject
--(void)resultsForQuery:(NSString *)query completion:(void(^)(NSArray *subjects, NSArray *courses, NSError *error))handler;
+@property (nonatomic) NSDictionary *ids;
+@property (nonatomic) NSDictionary *subjects;
+@property (nonatomic) NSDictionary *courses;
+@property (nonatomic) NSDictionary *abbreviations;
+-(void)performWhenIndexLoaded:(void(^)(NSError *error))handler;
 @end
