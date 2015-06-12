@@ -30,6 +30,9 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         fontCache = [NSMutableDictionary dictionary];
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIContentSizeCategoryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+            [fontCache removeAllObjects];
+        }];
     });
     
     NSString *sizeCategory = [UIApplication sharedApplication].preferredContentSizeCategory;
