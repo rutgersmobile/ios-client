@@ -42,7 +42,6 @@
     self.currentChannel = [RUChannelManager sharedInstance].lastChannel;
     NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:self.currentChannel] lastObject];
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
-    
 }
 
 -(void)viewDidLayoutSubviews{
@@ -91,6 +90,7 @@
         [self.delegate menuDidSelectCurrentChannel:self];
     } else {
         self.currentChannel = channel;
+        [RUChannelManager sharedInstance].lastChannel = channel;
         [self.delegate menu:self didSelectChannel:channel];
     }
 }

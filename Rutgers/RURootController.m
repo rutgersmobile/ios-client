@@ -258,7 +258,6 @@ typedef enum : NSUInteger {
 
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
     [self setCenterChannel:channel];
-    [RUChannelManager sharedInstance].lastChannel = channel;
     [self closeDrawer];
 }
 

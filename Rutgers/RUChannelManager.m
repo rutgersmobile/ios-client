@@ -194,6 +194,8 @@ static NSString *const ChannelManagerLastChannelKey = @"ChannelManagerLastChanne
 }
 
 -(void)setLastChannel:(NSDictionary *)lastChannel{
-    [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:ChannelManagerLastChannelKey];
+    if ([self.allChannels containsObject:lastChannel]) {
+        [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:ChannelManagerLastChannelKey];
+    }
 }
 @end
