@@ -13,6 +13,9 @@
 #import "AAPLPlaceholderView.h"
 #import "RUAnalyticsManager.h"
 
+#define MIN_SEARCH_DELAY 0.3
+#define MAX_SEARCH_DELAY 0.8
+
 @interface TableViewController () 
 @property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
@@ -21,6 +24,8 @@
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
 //@property (nonatomic, readonly) UITableViewStyle style;
 @property (nonatomic) CGFloat lastValidWidth;
+@property (nonatomic) MSWeakTimer *minSearchTimer;
+@property (nonatomic) MSWeakTimer *maxSearchTimer;
 @end
 
 @implementation TableViewController
@@ -61,7 +66,6 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    
     if (self.searching) {
         [self setStatusAppearanceForSearchingState:NO];
     }
@@ -159,8 +163,34 @@
  
  #pragma mark - SearchDisplayController Delegate
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-    [self.searchDataSource updateForQuery:searchString];
+    [self updateTimersForKeyPress];
     return NO;
+}
+
+-(void)updateTimersForKeyPress{
+    [self.minSearchTimer invalidate];
+    self.minSearchTimer = nil;
+    self.minSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MIN_SEARCH_DELAY target:self selector:@selector(minSearchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
+    if (!self.maxSearchTimer) {
+        self.maxSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MAX_SEARCH_DELAY target:self selector:@selector(maxSearchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
+    }
+}
+
+-(void)minSearchTimerFired{
+    [self.searchDataSource updateForQuery:self.searchController.searchBar.text];
+    [self invalidateSearchTimers];
+}
+
+-(void)maxSearchTimerFired{
+    [self.searchDataSource updateForQuery:self.searchController.searchBar.text];
+    [self invalidateSearchTimers];
+}
+
+-(void)invalidateSearchTimers{
+    [self.minSearchTimer invalidate];
+    self.minSearchTimer = nil;
+    [self.maxSearchTimer invalidate];
+    self.maxSearchTimer = nil;
 }
 
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
@@ -171,6 +201,7 @@
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
     [self setStatusAppearanceForSearchingState:NO];
     self.searching = NO;
+    [self invalidateSearchTimers];
     [UIView performWithoutAnimation:^{
         [self.searchDataSource resetContent];
     }];
