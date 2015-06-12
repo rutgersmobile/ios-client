@@ -23,6 +23,5 @@
     parser.stripEmptyNodes = YES;
     
     return [parser dictionaryWithData:data];
-    //    return [[TBXML alloc] initWithData:data];
 }
 @end
