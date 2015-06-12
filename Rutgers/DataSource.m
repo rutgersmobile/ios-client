@@ -327,6 +327,8 @@
     self.loadingError = error;
     self.loadingState = state;
     
+    if (error) [[RUAnalyticsManager sharedManager] queueEventForError:error];
+    
     [self notifyBatchUpdate:^{
         if (update)
             update();

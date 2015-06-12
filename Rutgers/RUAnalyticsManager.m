@@ -70,7 +70,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary:@{
                                       @"type" : @"error",
-                                      @"error" : error.localizedDescription
+                                      @"error" : error.description
                                       }];
     [self queueAnalyticsEvent:event];
 }
@@ -168,13 +168,13 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
         url = @"http://sauron.rutgers.edu/~jamchamb/analytics.php";
     }
     
-    [[RUNetworkManager sessionManager] POST:url parameters:@{@"payload" : [self payloadStringForEvents:events]} success:nil failure:^(NSURLSessionDataTask *task, NSError *error) {
+    [[RUNetworkManager sessionManager] POST:url parameters:@{@"payload" : [self jsonStringForObject:events]} success:nil failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self queueAnalyticsEvents:events];
     }];
 }
 
--(NSString *)payloadStringForEvents:(NSArray *)events{
-    NSData *data = [NSJSONSerialization dataWithJSONObject:events options:0 error:nil];
+-(NSString *)jsonStringForObject:(id)object{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 @end
