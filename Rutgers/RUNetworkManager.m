@@ -23,12 +23,11 @@
 
 +(AFHTTPSessionManager *)baseManager{
     NSString *urlString = @"https://rumobile.rutgers.edu/1/";
-    if (BETA) {
-        urlString = @"https://doxa.rutgers.edu/mobile/1/";
-    }
+    if (BETA) urlString = @"https://doxa.rutgers.edu/mobile/1/";
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    if (BETA) manager.securityPolicy.allowInvalidCertificates = YES;
     
     return manager;
 }
