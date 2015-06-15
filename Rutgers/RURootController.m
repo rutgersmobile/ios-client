@@ -14,10 +14,10 @@
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     DrawerImplementationSWReveal,
     DrawerImplementationMMDrawer
-} DrawerImplementation;
+};
 
 @interface RURootController () <RUMenuDelegate, UINavigationControllerDelegate>
 @property (nonatomic) SWRevealViewController *revealViewController;
@@ -140,7 +140,7 @@ typedef enum : NSUInteger {
     UIViewController *viewController = [self centerViewController];
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)viewController;
-        if ([nav.viewControllers count] > 0) viewController = [nav.viewControllers objectAtIndex:0];
+        if ([nav.viewControllers count] > 0) viewController = (nav.viewControllers)[0];
     }
     
     UINavigationItem *navigationItem = viewController.navigationItem;

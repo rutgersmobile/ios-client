@@ -9,5 +9,5 @@
 #import "SegmentedDataSource.h"
 
 @interface RUDiningHallDataSource : SegmentedDataSource
--(id)initWithDiningHall:(NSDictionary *)diningHall;
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall NS_DESIGNATED_INITIALIZER;
 @end

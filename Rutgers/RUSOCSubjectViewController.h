@@ -9,5 +9,5 @@
 #import "TableViewController.h"
 
 @interface RUSOCSubjectViewController : TableViewController
--(id)initWithSubject:(NSDictionary *)subject;
+-(instancetype)initWithSubject:(NSDictionary *)subject;
 @end

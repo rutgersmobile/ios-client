@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface DataTuple : NSObject
--(instancetype)initWithTitle:(NSString *)title object:(id)object;
+-(instancetype)initWithTitle:(NSString *)title object:(id)object NS_DESIGNATED_INITIALIZER;
 +(instancetype)tupleWithTitle:(NSString *)title object:(id)object;
 @property NSString *title;
 @property id object;

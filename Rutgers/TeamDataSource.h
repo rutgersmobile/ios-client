@@ -10,7 +10,7 @@
 @class RUSportsPlayer;
 
 @interface TeamDataSource : ComposedDataSource
--(id)initWithSportID:(NSString *)sportID;
+-(instancetype)initWithSportID:(NSString *)sportID NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSString *sportID;
 -(void)toggleExpansionForPlayer:(RUSportsPlayer *)player;
 @end

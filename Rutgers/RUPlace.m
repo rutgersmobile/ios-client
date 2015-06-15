@@ -10,7 +10,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 
 @implementation RUPlace
--(id)initWithDictionary:(NSDictionary *)dictionary{
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
         self.title = stripString(dictionary[@"title"]);
@@ -26,7 +26,7 @@
     return self;
 }
 
--(id)initWithTitle:(NSString *)title addressString:(NSString *)addressString{
+-(instancetype)initWithTitle:(NSString *)title addressString:(NSString *)addressString{
     self = [super init];
     if (self) {
         self.title = title;

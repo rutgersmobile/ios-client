@@ -9,5 +9,5 @@
 #import "ComposedDataSource.h"
 
 @interface RUSOCCourseDataSource : ComposedDataSource
--(id)initWithCourse:(NSDictionary *)course;
+-(instancetype)initWithCourse:(NSDictionary *)course NS_DESIGNATED_INITIALIZER;
 @end

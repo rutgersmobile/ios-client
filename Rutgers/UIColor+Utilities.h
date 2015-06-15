@@ -10,5 +10,5 @@
 
 @interface UIColor (Utilities)
 -(UIColor *)colorByMultiplyingSaturation:(CGFloat)saturationMultiplier andBrightness:(CGFloat)brightnessMultiplier;
--(NSString *)colorTag;
+@property (nonatomic, readonly, copy) NSString *colorTag;
 @end

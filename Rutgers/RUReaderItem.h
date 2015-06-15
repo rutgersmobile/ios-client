@@ -11,7 +11,7 @@
  The class models a single item in the rureader data source
  */
 @interface RUReaderItem : NSObject
--(instancetype)initWithItem:(NSDictionary *)item;
+-(instancetype)initWithItem:(NSDictionary *)item NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *dateString;
 @property (nonatomic) NSURL *imageURL;

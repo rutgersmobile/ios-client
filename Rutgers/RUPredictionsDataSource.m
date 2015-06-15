@@ -22,7 +22,7 @@
 
 @implementation RUPredictionsDataSource
 
--(id)initWithItem:(id)item{
+-(instancetype)initWithItem:(id)item{
     self = [super init];
     if (self) {
         self.item = item;

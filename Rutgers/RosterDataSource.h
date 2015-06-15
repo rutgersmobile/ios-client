@@ -11,7 +11,7 @@
 
 @interface RosterDataSource : BasicDataSource
 @property (nonatomic) NSString *sportID;
--(id)initWithSportID:(NSString *)sportID;
+-(instancetype)initWithSportID:(NSString *)sportID NS_DESIGNATED_INITIALIZER;
 
 -(void)toggleExpansionForPlayer:(RUSportsPlayer *)player;
 @end

@@ -26,7 +26,7 @@
 @property (nonatomic, readonly) NSArray *campuses;
 @property (nonatomic, readonly) NSArray *levels;
 
--(NSString *)titleForCurrentConfiguration;
+@property (nonatomic, readonly, copy) NSString *titleForCurrentConfiguration;
 
 @end
 

@@ -11,6 +11,6 @@
 @interface BasicDataSource : DataSource
 -(instancetype)initWithItems:(NSArray *)items;
 @property (nonatomic) NSArray *items;
-@property NSUInteger itemLimit;
--(NSInteger)numberOfItems;
+@property (nonatomic) NSUInteger itemLimit;
+@property (nonatomic, readonly) NSInteger numberOfItems;
 @end

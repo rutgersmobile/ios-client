@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 
 @interface RUBusRoute : NSObject
--(id)initWithDictionary:(NSDictionary *)dictionary;
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *tag;

@@ -19,7 +19,7 @@
 @end
 
 @implementation RosterDataSource
--(id)initWithSportID:(NSString *)sportID{
+-(instancetype)initWithSportID:(NSString *)sportID{
     self = [super init];
     if (self) {
         self.title = @"Roster";

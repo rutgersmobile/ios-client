@@ -9,6 +9,6 @@
 #import "BasicDataSource.h"
 
 @interface RUSOCSubjectDataSource : BasicDataSource
--(id)initWithSubjectCode:(NSString *)subjectCode;
-@property NSString *subjectCode;
+-(instancetype)initWithSubjectCode:(NSString *)subjectCode NS_DESIGNATED_INITIALIZER;
+@property (nonatomic) NSString *subjectCode;
 @end

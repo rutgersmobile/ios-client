@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (WordsInString)
--(NSArray *)wordsInString;
+@property (nonatomic, readonly, copy) NSArray *wordsInString;
 @end

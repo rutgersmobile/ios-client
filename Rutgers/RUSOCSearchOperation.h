@@ -10,7 +10,7 @@
 #import "RUSOCSearchIndex.h"
 
 @interface RUSOCSearchOperation : NSOperation
--(instancetype)initWithQuery:(NSString *)query searchIndex:(RUSOCSearchIndex *)searchIndex;
-@property (nonatomic) NSArray *subjects;
-@property (nonatomic) NSArray *courses;
+-(instancetype)initWithQuery:(NSString *)query searchIndex:(RUSOCSearchIndex *)searchIndex NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly) NSArray *subjects;
+@property (nonatomic, readonly) NSArray *courses;
 @end

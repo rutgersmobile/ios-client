@@ -13,7 +13,7 @@
 #import "DataSource_Private.h"
 
 @implementation RUSOCSubjectDataSource
--(id)initWithSubjectCode:(NSString *)subjectCode{
+-(instancetype)initWithSubjectCode:(NSString *)subjectCode{
     self = [super init];
     if (self) {
         self.subjectCode = subjectCode;

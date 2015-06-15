@@ -11,13 +11,12 @@
 @implementation NSUserDefaults (MKMapRect)
 
 -(void)setMapRect:(MKMapRect)mapRect forKey:(NSString*)key{
-    NSMutableDictionary *d = [NSMutableDictionary dictionary];
-    [d setObject:[NSNumber numberWithDouble:mapRect.origin.x] forKey:@"x"];
-    [d setObject:[NSNumber numberWithDouble:mapRect.origin.y] forKey:@"y"];
-    [d setObject:[NSNumber numberWithDouble:mapRect.size.width] forKey:@"width"];
-    [d setObject:[NSNumber numberWithDouble:mapRect.size.height] forKey:@"height"];
-    
-    [self setObject:d forKey:key];
+    [self setObject:@{
+                      @"x" : @(mapRect.origin.x),
+                      @"y" : @(mapRect.origin.y),
+                      @"width" : @(mapRect.size.width),
+                      @"height" : @(mapRect.size.height)
+                      } forKey:key];
 }
 
 -(MKMapRect)mapRectForKey:(NSString*)key{
@@ -25,10 +24,10 @@
     if(!d){
         return MKMapRectWorld;
     }
-    return MKMapRectMake([[d objectForKey:@"x"] doubleValue],
-                         [[d objectForKey:@"y"] doubleValue],
-                         [[d objectForKey:@"width"] doubleValue],
-                         [[d objectForKey:@"height"] doubleValue]);
+    return MKMapRectMake([d[@"x"] doubleValue],
+                         [d[@"y"] doubleValue],
+                         [d[@"width"] doubleValue],
+                         [d[@"height"] doubleValue]);
 }
 
 @end

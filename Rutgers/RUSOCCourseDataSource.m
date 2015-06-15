@@ -21,7 +21,7 @@
 @end
 
 @implementation RUSOCCourseDataSource
--(id)initWithCourse:(NSDictionary *)course{
+-(instancetype)initWithCourse:(NSDictionary *)course{
     self = [super init];
     if (self) {
         self.course = course;

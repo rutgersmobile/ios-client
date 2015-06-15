@@ -18,7 +18,7 @@
 @end
 
 @implementation RUSOCCourseViewController
--(id)initWithCourse:(NSDictionary *)course{
+-(instancetype)initWithCourse:(NSDictionary *)course{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.course = course;

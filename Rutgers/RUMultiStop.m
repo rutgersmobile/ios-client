@@ -11,10 +11,10 @@
 #import "CLLocation+Centroid.h"
 
 @implementation RUMultiStop
--(id)init{
+-(instancetype)init{
     self = [super init];
     if (self) {
-        self.stops = [NSArray array];
+        self.stops = @[];
     }
     return self;
 }

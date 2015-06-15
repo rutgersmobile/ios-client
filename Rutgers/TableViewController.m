@@ -17,8 +17,6 @@
 #define MAX_SEARCH_DELAY 0.8
 
 @interface TableViewController () 
-@property (nonatomic) DataSource *dataSource;
-@property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 @property (nonatomic) BOOL searchEnabled;
 @property (nonatomic) UISearchDisplayController *searchController;
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;

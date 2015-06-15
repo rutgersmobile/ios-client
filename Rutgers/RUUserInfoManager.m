@@ -18,7 +18,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 @property (copy) dispatch_block_t completion;
 
--(BOOL)hasUserInformation;
+@property (nonatomic, readonly) BOOL hasUserInformation;
 -(void)getUserInformationCompletion:(dispatch_block_t)completion;
 @end
 

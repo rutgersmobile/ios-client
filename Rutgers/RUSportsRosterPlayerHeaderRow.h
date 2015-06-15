@@ -10,5 +10,5 @@
 @class RUSportsPlayer;
 
 @interface RUSportsRosterPlayerHeaderRow : NSObject
--(instancetype)initWithPlayer:(RUSportsPlayer *)player;
+-(instancetype)initWithPlayer:(RUSportsPlayer *)player NS_DESIGNATED_INITIALIZER;
 @end

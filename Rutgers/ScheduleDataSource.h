@@ -9,6 +9,6 @@
 #import "BasicDataSource.h"
 
 @interface ScheduleDataSource : BasicDataSource
--(id)initWithSportID:(NSString *)sportID;
+-(instancetype)initWithSportID:(NSString *)sportID NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSString *sportID;
 @end

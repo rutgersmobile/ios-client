@@ -9,6 +9,6 @@
 #import "StringDataSource.h"
 
 @interface ButtonDataSource : StringDataSource
--(id)initWithTitle:(NSString *)title;
+-(instancetype)initWithTitle:(NSString *)title NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) BOOL on;
 @end

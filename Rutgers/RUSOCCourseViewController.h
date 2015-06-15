@@ -9,5 +9,5 @@
 #import "TableViewController.h"
 
 @interface RUSOCCourseViewController : TableViewController
--(id)initWithCourse:(NSDictionary *)course;
+-(instancetype)initWithCourse:(NSDictionary *)course;
 @end

@@ -9,11 +9,9 @@
 #import "TableViewController.h"
 @interface TableViewController ()
 
--(DataSource *)dataSource;
--(void)setDataSource:(DataSource *)dataSource;
+@property (nonatomic) DataSource *dataSource;
 
--(DataSource<SearchDataSource> *)searchDataSource;
--(void)setSearchDataSource:(DataSource<SearchDataSource> *)searchDataSource;
+@property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView;
 -(UITableView *)tableViewForDataSource:(DataSource *)dataSource;

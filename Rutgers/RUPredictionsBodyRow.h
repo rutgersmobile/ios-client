@@ -7,8 +7,8 @@
 //
 
 @interface RUPredictionsBodyRow : NSObject
--(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes;
--(NSString *)minutesString;
--(NSString *)descriptionString;
--(NSString *)timeString;
+-(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, readonly) NSString *minutesString;
+@property (nonatomic, readonly) NSString *descriptionString;
+@property (nonatomic, readonly) NSString *timeString;
 @end

@@ -20,8 +20,8 @@
 
 @implementation RUSportsRosterViewController
 
--(id)initWithSportID:(NSString *)sportID{
-    self = [super init];
+-(instancetype)initWithSportID:(NSString *)sportID{
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.sportID = sportID;
     }

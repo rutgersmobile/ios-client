@@ -12,5 +12,5 @@
 
 @interface RURecCenterDataSource : ComposedDataSource
 @property (nonatomic) RURecCenterHoursSection *hoursSection;
--(instancetype)initWithRecCenter:(NSDictionary *)recCenter;
+-(instancetype)initWithRecCenter:(NSDictionary *)recCenter NS_DESIGNATED_INITIALIZER;
 @end

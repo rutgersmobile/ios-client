@@ -12,6 +12,5 @@
 @class RUPlace;
 
 @interface RUPlaceDetailViewController : TableViewController
--(id)initWithPlace:(RUPlace *)place;
-
+-(instancetype)initWithPlace:(RUPlace *)place;
 @end

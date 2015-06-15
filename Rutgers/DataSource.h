@@ -12,12 +12,12 @@
 @class DataSource;
 @class ALPlaceholderCell;
 
-typedef enum {
+typedef NS_ENUM(int, DataSourceAnimationDirection) {
     DataSourceAnimationDirectionNone = 0,
     DataSourceAnimationDirectionLeft = -1,
     DataSourceAnimationDirectionRight = 1,
     
-} DataSourceAnimationDirection;
+};
 
 @protocol DataSourceDelegate <NSObject>
 @optional

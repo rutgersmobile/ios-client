@@ -9,5 +9,5 @@
 #import "TableViewController.h"
 
 @interface RUSportsRosterViewController : TableViewController
--(id)initWithSportID:(NSString *)sportID;
+-(instancetype)initWithSportID:(NSString *)sportID;
 @end

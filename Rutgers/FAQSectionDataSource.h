@@ -12,5 +12,5 @@
  This class models a single question and answer in the FAQDataSource
  */
 @interface FAQSectionDataSource : ExpandingTableViewSection
--(instancetype)initWithItem:(NSDictionary *)item;
+-(instancetype)initWithItem:(NSDictionary *)item NS_DESIGNATED_INITIALIZER;
 @end

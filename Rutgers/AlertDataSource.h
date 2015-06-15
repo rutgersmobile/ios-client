@@ -10,7 +10,7 @@
 
 
 @interface AlertDataSource : StringDataSource
--(instancetype)initWithInitialText:(NSString *)initialText alertButtonTitles:(NSArray *)alertButtonTitles;
+-(instancetype)initWithInitialText:(NSString *)initialText alertButtonTitles:(NSArray *)alertButtonTitles NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSString *alertTitle;
 @property (nonatomic) NSString *text;
 @property (nonatomic) BOOL updatesInitialText;

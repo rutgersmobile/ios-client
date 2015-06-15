@@ -11,7 +11,7 @@
 #import "ChannelsDataSource.h"
 
 @implementation MenuDataSource
--(id)init{
+-(instancetype)init{
     self = [super init];
     if (self) {
         [self addDataSource:[[ChannelsDataSource alloc] init]];

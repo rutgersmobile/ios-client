@@ -12,5 +12,5 @@
 @class RUPlace;
 
 @interface MiniMapDataSource : DataSource
--(instancetype)initWithPlace:(RUPlace *)place;
+-(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
 @end

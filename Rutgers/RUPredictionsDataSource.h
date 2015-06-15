@@ -9,5 +9,5 @@
 #import "ExpandingTableViewDataSource.h"
 
 @interface RUPredictionsDataSource : ExpandingTableViewDataSource
--(id)initWithItem:(id)item;
+-(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;
 @end

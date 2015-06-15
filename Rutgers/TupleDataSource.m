@@ -12,7 +12,7 @@
 #import "DataSource_Private.h"
 
 @implementation TupleDataSource
--(id)init{
+-(instancetype)init{
     self = [super init];
     if (self) {
         self.showsDisclosureIndicator = YES;

@@ -20,7 +20,7 @@
     return [[self alloc] initWithChannel:channel];
 }
 
--(id)initWithChannel:(NSDictionary *)channel{
+-(instancetype)initWithChannel:(NSDictionary *)channel{
     self = [self initWithStyle:UITableViewStylePlain];
     if (self) {
         self.channel = channel;

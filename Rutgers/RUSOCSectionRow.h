@@ -9,7 +9,7 @@
 @class RUSOCSectionCell;
 
 @interface RUSOCSectionRow : NSObject
--(instancetype)initWithSection:(NSDictionary *)section;
+-(instancetype)initWithSection:(NSDictionary *)section NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSDictionary *section;
 
 @property (nonatomic) NSString *indexText;

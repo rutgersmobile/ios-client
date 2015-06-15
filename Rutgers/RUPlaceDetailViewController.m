@@ -21,7 +21,7 @@
 
 @implementation RUPlaceDetailViewController
 
--(id)initWithPlace:(RUPlace *)place{
+-(instancetype)initWithPlace:(RUPlace *)place{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.place = place;

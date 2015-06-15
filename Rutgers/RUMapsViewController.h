@@ -15,7 +15,7 @@
 
 @property (nonatomic) MKMapView *mapView;
 
--(id)initWithPlace:(RUPlace *)place;
+-(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) RUPlace *place;
 -(void)zoomToPlace;
 @end

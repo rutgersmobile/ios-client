@@ -10,7 +10,7 @@
 #import "DataSource_Private.h"
 
 @implementation ButtonDataSource
--(id)initWithTitle:(NSString *)title{
+-(instancetype)initWithTitle:(NSString *)title{
     self = [super initWithItems:@[title]];
     if (self) {
         

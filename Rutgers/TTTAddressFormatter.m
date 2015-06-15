@@ -27,7 +27,7 @@
 @implementation TTTAddressFormatter
 @synthesize locale = _locale;
 
-- (id)init {
+- (instancetype)init {
     self = [super init];
     if (!self) {
         return nil;
@@ -92,7 +92,7 @@
 
 #pragma mark - NSCoding
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     
     self.locale = [aDecoder decodeObjectForKey:@"locale"];

@@ -21,7 +21,7 @@
 @end
 
 @implementation RUSOCSearchIndex
--(id)init{
+-(instancetype)init{
     self = [super init];
     if (self) {
         self.indexGroup = dispatch_group_create();

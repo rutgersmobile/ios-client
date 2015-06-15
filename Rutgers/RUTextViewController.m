@@ -21,7 +21,7 @@
     return [[RUTextViewController alloc] initWithChannel:channel];
 }
 
--(id)initWithChannel:(NSDictionary *)channel{
+-(instancetype)initWithChannel:(NSDictionary *)channel{
     self = [self initWithNibName:nil bundle:nil];
     if (self) {
         self.data = channel[@"data"];

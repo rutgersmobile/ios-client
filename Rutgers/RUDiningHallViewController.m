@@ -15,7 +15,7 @@
 @end
 
 @implementation RUDiningHallViewController
--(id)initWithDiningHall:(NSDictionary *)diningHall{
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.diningHall = diningHall;

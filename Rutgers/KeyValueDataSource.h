@@ -12,6 +12,6 @@
 
 @interface KeyValueDataSource : BasicDataSource
 
-- (instancetype)initWithObject:(id)object;
+- (instancetype)initWithObject:(id)object NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -15,7 +15,7 @@
 @end
 
 @implementation RUDiningHallDataSource
--(id)initWithDiningHall:(NSDictionary *)diningHall{
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall{
     self = [super init];
     if (self) {
         self.diningHall = diningHall;

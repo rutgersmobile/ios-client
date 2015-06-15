@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 
 @interface RUBusDataAgencyManager : NSObject
--(instancetype)initWithAgency:(NSString *)agency;
+-(instancetype)initWithAgency:(NSString *)agency NS_DESIGNATED_INITIALIZER;
 +(instancetype)managerForAgency:(NSString *)agency;
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler;

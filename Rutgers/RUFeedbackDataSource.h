@@ -11,6 +11,6 @@
 
 @interface RUFeedbackDataSource : ComposedDataSource
 @property (weak) id<FeedbackDataSourceDelegate> feedbackDelegate;
--(BOOL)validateForm;
+@property (nonatomic, readonly) BOOL validateForm;
 -(void)send;
 @end

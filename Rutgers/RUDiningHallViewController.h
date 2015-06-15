@@ -10,5 +10,5 @@
 #import "SegmentedTableViewController.h"
 
 @interface RUDiningHallViewController : SegmentedTableViewController
--(id)initWithDiningHall:(NSDictionary *)diningHall;
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall;
 @end

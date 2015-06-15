@@ -10,7 +10,7 @@
 #import "RUPlacesDataLoadingManager.h"
 
 @implementation PlacesSearchDataSource
--(id)init{
+-(instancetype)init{
     self = [super init];
     if (self) {
         self.noContentTitle = @"No matching places";

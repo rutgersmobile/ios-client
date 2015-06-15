@@ -9,10 +9,10 @@
 #import "RUBusStop.h"
 
 @implementation RUBusStop
--(id)initWithDictionary:(NSDictionary *)dictionary{
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
-        self.routes = [NSArray array];
+        self.routes = @[];
         self.title = dictionary[@"title"];
         CLLocationDegrees lat = [dictionary[@"lat"] doubleValue];
         CLLocationDegrees lon = [dictionary[@"lon"] doubleValue];

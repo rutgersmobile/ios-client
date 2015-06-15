@@ -12,11 +12,11 @@
 
 @interface RUMultiStop : NSObject
 @property (nonatomic) NSArray *stops;
--(NSString *)title;
+@property (nonatomic, readonly) NSString *title;
 
--(CLLocation *)location;
+@property (nonatomic, readonly) CLLocation *location;
 @property (nonatomic) BOOL active;
--(NSString *)agency;
+@property (nonatomic, readonly) NSString *agency;
 
 -(void)addStopsObject:(RUBusStop *)object;
 @end

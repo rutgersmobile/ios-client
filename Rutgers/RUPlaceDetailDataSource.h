@@ -11,7 +11,7 @@
 @class RUPlace;
 
 @interface RUPlaceDetailDataSource : ComposedDataSource
--(id)initWithPlace:(RUPlace *)place;
+-(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
 -(void)startUpdates;
 -(void)stopUpdates;
 @end

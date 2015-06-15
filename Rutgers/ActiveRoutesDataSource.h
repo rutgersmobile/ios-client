@@ -9,5 +9,5 @@
 #import "BusBasicDataSource.h"
 
 @interface ActiveRoutesDataSource : BusBasicDataSource
-- (instancetype)initWithAgency:(NSString *)agency;
+- (instancetype)initWithAgency:(NSString *)agency NS_DESIGNATED_INITIALIZER;
 @end

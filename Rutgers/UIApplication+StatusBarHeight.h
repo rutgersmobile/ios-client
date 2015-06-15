@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIApplication (StatusBarHeight)
--(CGFloat)statusBarHeight;
+@property (nonatomic, readonly) CGFloat statusBarHeight;
 @end

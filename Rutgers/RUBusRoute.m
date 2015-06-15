@@ -9,7 +9,7 @@
 #import "RUBusRoute.h"
 
 @implementation RUBusRoute
--(id)initWithDictionary:(NSDictionary *)dictionary{
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
         self.title = dictionary[@"title"];
@@ -20,7 +20,7 @@
 }
 -(NSArray *)stops{
     if (!_stops) {
-        _stops = [NSArray array];
+        _stops = @[];
     }
     return _stops;
 }

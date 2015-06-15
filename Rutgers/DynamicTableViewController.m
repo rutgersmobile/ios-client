@@ -19,7 +19,7 @@
     return [[self alloc] initWithChannel:channel];
 }
 
--(id)initWithChannel:(NSDictionary *)channel{
+-(instancetype)initWithChannel:(NSDictionary *)channel{
     BOOL grouped = [channel[@"grouped"] boolValue];
     self = [super initWithStyle:grouped ? UITableViewStyleGrouped : UITableViewStylePlain];
     if (self) {

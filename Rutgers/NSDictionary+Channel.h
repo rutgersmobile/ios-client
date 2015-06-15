@@ -10,16 +10,16 @@
 
 @interface NSDictionary (Channel)
 
--(NSString *)channelTitle;
+@property (nonatomic, readonly) NSString *channelTitle;
 
--(UIImage *)channelIcon;
--(UIImage *)filledChannelIcon;
+@property (nonatomic, readonly) UIImage *channelIcon;
+@property (nonatomic, readonly) UIImage *filledChannelIcon;
 
--(NSString *)channelHandle;
+@property (nonatomic, readonly) NSString *channelHandle;
 
--(NSString *)channelURL;
+@property (nonatomic, readonly) NSString *channelURL;
 
--(NSString *)channelView;
+@property (nonatomic, readonly) NSString *channelView;
 
--(BOOL)channelIsWebLink;
+@property (nonatomic, readonly) BOOL channelIsWebLink;
 @end

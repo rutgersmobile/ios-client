@@ -9,7 +9,7 @@
 #import "BasicDataSource.h"
 
 @interface RURecCenterHoursSection : BasicDataSource
--(instancetype)initWithDailySchedules:(NSArray *)dailySchedules;
+-(instancetype)initWithDailySchedules:(NSArray *)dailySchedules NS_DESIGNATED_INITIALIZER;
 -(void)goLeft;
 -(void)goRight;
 @end

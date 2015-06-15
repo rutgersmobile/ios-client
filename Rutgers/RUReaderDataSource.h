@@ -9,5 +9,5 @@
 #import "BasicDataSource.h"
 
 @interface RUReaderDataSource : BasicDataSource
--(id)initWithUrl:(NSString *)url;
+-(instancetype)initWithUrl:(NSString *)url NS_DESIGNATED_INITIALIZER;
 @end

@@ -91,8 +91,8 @@
         }
     }
     
-    self.subjects = subjects.array;
-    self.courses = courses.array;
+    _subjects = subjects.array;
+    _courses = courses.array;
 }
 
 #pragma mark - code parsing

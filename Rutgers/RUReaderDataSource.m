@@ -18,7 +18,7 @@
 @end
 
 @implementation RUReaderDataSource
--(id)initWithUrl:(NSString *)url{
+-(instancetype)initWithUrl:(NSString *)url{
     self = [super init];
     if (self) {
         self.url = url;

@@ -21,7 +21,7 @@ NSString *LocationManagerNotificationLocationKey;
 
 @interface RULocationManager : NSObject
 +(RULocationManager *)sharedLocationManager;
--(CLLocation *)location;
+@property (nonatomic, readonly) CLLocation *location;
 - (void)startUpdatingLocation;
 - (void)stopUpdatingLocation;
 @end

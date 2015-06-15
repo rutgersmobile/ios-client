@@ -25,7 +25,7 @@
 
 @implementation RUMapsViewController
 
--(id)initWithPlace:(RUPlace *)place{
+-(instancetype)initWithPlace:(RUPlace *)place{
     self = [super init];
     if (self) {
         self.place = place;

@@ -17,7 +17,7 @@
 @end
 
 @implementation RUSOCSubjectViewController
--(id)initWithSubject:(NSDictionary *)subject{
+-(instancetype)initWithSubject:(NSDictionary *)subject{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.subjectCode = subject[@"code"];
