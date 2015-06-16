@@ -16,14 +16,16 @@
     if (headerItems[@"subjectNotes"]) {
         [items addObject:[[DataTuple alloc] initWithTitle:headerItems[@"subjectNotes"] object:nil]];
     }
+    if (headerItems[@"credits"]) {
+        NSNumber *number = headerItems[@"credits"];
+        [items addObject:[[DataTuple alloc] initWithTitle:[NSString stringWithFormat:@"Credits: %@",number] object:nil]];
+    }
     if (headerItems[@"synopsisUrl"]) {
         [items addObject:[[DataTuple alloc] initWithTitle:@"Synopsis" object:headerItems[@"synopsisUrl"]]];
     }
     if (headerItems[@"preReqNotes"]) {
         [items addObject:[[DataTuple alloc] initWithTitle:@"Prerequisites" object:headerItems[@"preReqNotes"]]];
     }
-
-    
     self.items = items;
 }
 

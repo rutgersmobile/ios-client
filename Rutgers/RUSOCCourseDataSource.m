@@ -62,7 +62,7 @@
     [self removeAllDataSources];
     
     NSMutableDictionary *headerItems = [NSMutableDictionary dictionary];
-    for (NSString *key in @[@"subjectNotes",@"preReqNotes",@"synopsisUrl"]) {
+    for (NSString *key in @[@"subjectNotes",@"preReqNotes",@"synopsisUrl",@"credits"]) {
         id value = course[key];
         if (value) headerItems[key] = value;
     }
