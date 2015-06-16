@@ -48,10 +48,10 @@
 }
 
 -(void)updateForQuery:(NSString *)query{
+    [self.currentOperation cancel];
+
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [self.index performWhenIndexLoaded:^(NSError *error) {
-            [self.currentOperation cancel];
-            
             if (error) {
                 [loading doneWithError:error];
             } else {

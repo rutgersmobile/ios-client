@@ -179,6 +179,7 @@
 -(NSArray *)coursesWithCourseID:(NSString *)numericalCode inSubject:(DataTuple *)subject{
     NSMutableArray *results = [NSMutableArray array];
     [subject.object[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
+        if (self.cancelled) *stop = YES;
         if ([self numericalCode:numericalCode matchesFullCode:courseID]) {
             [results addObject:course];
         }
