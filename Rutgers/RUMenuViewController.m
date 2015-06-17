@@ -11,10 +11,10 @@
 #import "UITableView+Selection.h"
 #import "UIApplication+StatusBarHeight.h"
 #import "TableViewController_Private.h"
+#import "RURootController.h"
 
 @interface RUMenuViewController ()
 @property (nonatomic) UIView *paddingView;
-@property (nonatomic) NSDictionary *currentChannel;
 @end
 
 @implementation RUMenuViewController
@@ -39,9 +39,8 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 32+kLabelHorizontalInsets*2, 0, 0);
     self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     
-    self.currentChannel = [RUChannelManager sharedInstance].lastChannel;
-    NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:self.currentChannel] lastObject];
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+    NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:[RURootController sharedInstance].currentChannel] lastObject];
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
 }
 
 -(void)viewDidLayoutSubviews{
@@ -63,7 +62,7 @@
 -(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
     if (tableView == self.tableView) {
         [self.tableView reloadData];
-        [self.tableView selectRowsAtIndexPaths:[self.dataSource indexPathsForItem:self.currentChannel] animated:NO];
+        [self.tableView selectRowsAtIndexPaths:[self.dataSource indexPathsForItem:[RURootController sharedInstance].currentChannel] animated:NO];
     } else {
         [super reloadTablePreservingSelectionState:tableView];
     }
@@ -86,13 +85,7 @@
 
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *channel = [self.dataSource itemAtIndexPath:indexPath];
-    if ([channel isEqualToDictionary:self.currentChannel]) {
-        [self.delegate menuDidSelectCurrentChannel:self];
-    } else {
-        self.currentChannel = channel;
-        [RUChannelManager sharedInstance].lastChannel = channel;
-        [self.delegate menu:self didSelectChannel:channel];
-    }
+    [self.delegate menu:self didSelectChannel:channel];
 }
 
 @end
