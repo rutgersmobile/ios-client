@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         self.agency = agency;
-        self.title = [NSString stringWithFormat:@"All %@ Stops",TITLES[agency]];
+        self.title = [NSString stringWithFormat:@"All %@ Stops",[RUBusDataLoadingManager titleForAgency:agency]];
     }
     return self;
 }

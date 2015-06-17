@@ -12,11 +12,11 @@
 extern NSString * const newBrunswickAgency;
 extern NSString * const newarkAgency;
 
-#define TITLES @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}
-
 @interface RUBusDataLoadingManager : NSObject
 
 +(instancetype)sharedInstance;
+
++(NSString *)titleForAgency:(NSString *)agency;
 
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchAllRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler;

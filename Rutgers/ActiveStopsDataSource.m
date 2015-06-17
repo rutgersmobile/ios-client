@@ -19,8 +19,8 @@
     self = [super init];
     if (self) {
         self.agency = agency;
-        self.title = [NSString stringWithFormat:@"%@ Active Stops",TITLES[agency]];
-        self.noContentTitle = [NSString stringWithFormat:@"No %@ Active Stops",TITLES[agency]];
+        self.title = [NSString stringWithFormat:@"%@ Active Stops",[RUBusDataLoadingManager titleForAgency:agency]];
+        self.noContentTitle = [NSString stringWithFormat:@"No %@ Active Stops",[RUBusDataLoadingManager titleForAgency:agency]];
     }
     return self;
 }

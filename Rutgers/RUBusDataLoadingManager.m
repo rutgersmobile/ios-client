@@ -29,6 +29,10 @@ NSString * const newarkAgency = @"rutgers-newark";
     return sharedManager;
 }
 
++(NSString *)titleForAgency:(NSString *)agency{
+    return @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}[agency];
+}
+
 - (instancetype)init
 {
     self = [super init];
