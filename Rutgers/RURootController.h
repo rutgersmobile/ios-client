@@ -10,7 +10,9 @@
 @class RUMenuViewController;
 
 @interface RURootController : NSObject
++(instancetype)sharedInstance;
 -(void)openDrawer;
 -(void)openDrawerIfNeeded;
 @property (nonatomic, readonly) UIViewController *containerViewController;
+@property (nonatomic) NSDictionary *currentChannel;
 @end

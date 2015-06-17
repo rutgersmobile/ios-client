@@ -16,24 +16,36 @@
 
 typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     DrawerImplementationSWReveal,
-    DrawerImplementationMMDrawer
+    DrawerImplementationMMDrawer,
+    DrawerImplementationSplitView,
 };
 
 @interface RURootController () <RUMenuDelegate, UINavigationControllerDelegate>
 @property (nonatomic) SWRevealViewController *revealViewController;
 @property (nonatomic) MMDrawerController *mmDrawerViewController;
+@property (nonatomic) UISplitViewController *splitViewController;
 
 @property (nonatomic) RUMenuViewController *menuViewController;
 @property (nonatomic) NSHashTable *managedScrollViews;
 
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
+
 @property (nonatomic) UIViewController *centerViewController;
 @property (nonatomic, readonly) DrawerImplementation drawerImplementation;
 @end
 
 @implementation RURootController
++(instancetype)sharedInstance{
+    static RURootController *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
+}
+
 -(DrawerImplementation)drawerImplementation{
-    return DrawerImplementationMMDrawer;
+    return iPad() ? DrawerImplementationSplitView : DrawerImplementationMMDrawer;
 }
 
 #pragma mark initialization
@@ -43,14 +55,20 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     self = [super init];
     if (self) {
         self.managedScrollViews = [NSHashTable weakObjectsHashTable];
-        
-        UIViewController *centerViewController = [self topViewControllerForChannel:[RUChannelManager sharedInstance].lastChannel];
-        _containerViewController = [self makeContainerViewControllerWithCenterViewController:centerViewController leftViewController:self.menuViewController];
-
+        self.currentChannel = [RUChannelManager sharedInstance].lastChannel;
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
-        [self placeButtonInCenterViewController];
     }
     return self;
+}
+
+@synthesize containerViewController = _containerViewController;
+-(UIViewController *)containerViewController{
+    if (!_containerViewController) {
+        UIViewController *centerViewController = [self topViewControllerForChannel:self.currentChannel];
+        _containerViewController = [self makeContainerViewControllerWithCenterViewController:centerViewController leftViewController:self.menuViewController];
+        [self placeButtonInCenterViewController];
+    }
+    return _containerViewController;
 }
 
 -(RUMenuViewController *)menuViewController{
@@ -68,9 +86,16 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     NSTimeInterval animationDuration = 0.24;
     
     switch (self.drawerImplementation) {
+        case DrawerImplementationSplitView:
+            self.splitViewController = [[UISplitViewController alloc] init];
+            self.splitViewController.viewControllers = @[leftViewController,centerViewController];
+            self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+            self.splitViewController.maximumPrimaryColumnWidth = revealWidth;
+            
+            return self.splitViewController;
+            
         case DrawerImplementationSWReveal:
             self.revealViewController = [[SWRevealViewController alloc] initWithRearViewController:leftViewController frontViewController:centerViewController];
-            
             self.revealViewController.rearViewRevealWidth = revealWidth;
             self.revealViewController.rearViewRevealOverdraw = 0;
             self.revealViewController.rearViewRevealDisplacement = revealDisplacement;
@@ -144,7 +169,7 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     }
     
     UINavigationItem *navigationItem = viewController.navigationItem;
-    if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
+    if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = (self.drawerImplementation == DrawerImplementationSplitView) ? self.splitViewController.displayModeButtonItem : self.menuBarButtonItem;
 }
 
 #pragma mark Drawer Interface
@@ -159,11 +184,15 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     return vc;
 }
 -(void)setCenterChannel:(NSDictionary *)channel{
+    self.currentChannel = channel;
+    [RUChannelManager sharedInstance].lastChannel = channel;
     self.centerViewController = [self topViewControllerForChannel:channel];
 }
 
 -(UIViewController *)centerViewController{
     switch (self.drawerImplementation) {
+        case DrawerImplementationSplitView:
+            return self.splitViewController.viewControllers[1];
         case DrawerImplementationSWReveal:
             return self.revealViewController.frontViewController;
         case DrawerImplementationMMDrawer:
@@ -173,6 +202,9 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 
 -(void)setCenterViewController:(UIViewController *)centerViewController{
     switch (self.drawerImplementation) {
+        case DrawerImplementationSplitView:
+            self.splitViewController.viewControllers = @[self.splitViewController.viewControllers.firstObject, centerViewController];
+            break;
         case DrawerImplementationSWReveal:
             [self.revealViewController pushFrontViewController:centerViewController animated:NO];
             break;
@@ -185,6 +217,8 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 
 -(void)closeDrawer{
     switch (self.drawerImplementation) {
+        case DrawerImplementationSplitView:
+            break;
         case DrawerImplementationSWReveal:
             [self.revealViewController setFrontViewPosition:FrontViewPositionLeft animated:YES];
             break;
@@ -193,6 +227,20 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
             break;
     }
     [self restoreScrollingToTop:self.centerViewController.view];
+}
+
+-(void)openDrawer{
+    switch (self.drawerImplementation) {
+        case DrawerImplementationSplitView:
+            break;
+        case DrawerImplementationSWReveal:
+            [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
+            break;
+        case DrawerImplementationMMDrawer:
+            [self.mmDrawerViewController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+            break;
+    }
+    [self recursivelyRemoveScrollingToTop:self.centerViewController.view];
 }
 
 -(void)openDrawerIfNeeded{
@@ -205,17 +253,7 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     return [[channel channelView] isEqualToString:@"splash"];
 }
 
--(void)openDrawer{
-    switch (self.drawerImplementation) {
-        case DrawerImplementationSWReveal:
-            [self.revealViewController setFrontViewPosition:FrontViewPositionRight animated:YES];
-            break;
-        case DrawerImplementationMMDrawer:
-            [self.mmDrawerViewController openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-            break;
-    }
-    [self recursivelyRemoveScrollingToTop:self.centerViewController.view];
-}
+
 
 #pragma mark Scroll View Scrolling to Top
 -(void)recursivelyRemoveScrollingToTop:(UIView *)view{
@@ -252,12 +290,9 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 }
 
 #pragma mark Menu Delegate
--(void)menuDidSelectCurrentChannel:(RUMenuViewController *)menu{
-    [self closeDrawer];
-}
 
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
-    [self setCenterChannel:channel];
+    if (![channel isEqualToDictionary:self.currentChannel]) [self setCenterChannel:channel];
     [self closeDrawer];
 }
 
