@@ -51,7 +51,7 @@
     [self.currentOperation cancel];
 
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [self.index performWhenIndexLoaded:^(NSError *error) {
+        [self.index performWhenLoaded:^(NSError *error) {
             if (error) {
                 [loading doneWithError:error];
             } else {

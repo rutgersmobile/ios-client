@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUDataLoadingManager.h"
 
 @class CLLocation;
 @class RUPlace;
 
 extern NSString *PlacesDataDidUpdateRecentPlacesKey;
 
-@interface RUPlacesDataLoadingManager : NSObject
+@interface RUPlacesDataLoadingManager : RUDataLoadingManager
 +(RUPlacesDataLoadingManager *)sharedInstance;
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results, NSError *error))completionBlock;

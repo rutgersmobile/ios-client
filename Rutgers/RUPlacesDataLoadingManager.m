@@ -14,6 +14,7 @@
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
 #import "NSArray+LimitedToCount.h"
+#import "RUDataLoadingManager_Private.h"
 
 NSString *PlacesDataDidUpdateRecentPlacesKey = @"PlacesDataDidUpdateRecentPlacesKey";
 static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
@@ -45,48 +46,19 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     self = [super init];
     if (self) {
         [[NSUserDefaults standardUserDefaults] registerDefaults:@{PlacesRecentPlacesKey: @[]}];
-        self.placesGroup =  dispatch_group_create();
     }
     return self;
 }
 
--(BOOL)placesNeedLoad{
-    return !(self.loading || self.finishedLoading);
-}
-
--(void)performWhenPlacesLoaded:(void (^)(NSError *error))handler{
-    if ([self placesNeedLoad]) {
-        [self loadPlaces];
-    }
-    dispatch_group_notify(self.placesGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        handler(self.loadingError);
-    });
-}
-
--(void)loadPlaces{
-    dispatch_group_enter(self.placesGroup);
-    
-    self.loading = YES;
-    self.finishedLoading = NO;
-    self.loadingError = nil;
-    
+-(void)load{
+    [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
         }
-        
-        self.loading = NO;
-        self.finishedLoading = YES;
-        self.loadingError = nil;
-        
-        dispatch_group_leave(self.placesGroup);
+        [self didEndLoad:YES withError:nil];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-        self.loading = NO;
-        self.finishedLoading = NO;
-        self.loadingError = error;
-        
-        dispatch_group_leave(self.placesGroup);
+        [self didEndLoad:NO withError:error];
     }];
 }
 
@@ -102,7 +74,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 }
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results, NSError *error))completionBlock{
-    [self performWhenPlacesLoaded:^(NSError *error) {
+    [self performWhenLoaded:^(NSError *error) {
         NSPredicate *searchPredicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
         NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
         results = [results sortByKeyPath:@"title"];
@@ -111,7 +83,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 }
 
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents, NSError *error))completionBlock{
-    [self performWhenPlacesLoaded:^(NSError *error){
+    [self performWhenLoaded:^(NSError *error){
         NSArray *recentPlaces = [[NSUserDefaults standardUserDefaults] arrayForKey:PlacesRecentPlacesKey];
         NSArray *recentPlacesDetails = [self.places objectsForKeysIgnoringNotFound:recentPlaces];
         completionBlock(recentPlacesDetails,error);
@@ -143,7 +115,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
         return;
     }
     
-    [self performWhenPlacesLoaded:^(NSError *error) {
+    [self performWhenLoaded:^(NSError *error) {
         NSArray *nearbyPlaces = [[[self.places allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
             if (!place.location) return NO;
             return ([place.location distanceFromLocation:location] < NEARBY_DISTANCE);

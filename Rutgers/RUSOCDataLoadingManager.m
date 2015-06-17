@@ -10,6 +10,7 @@
 #import <AFNetworking.h>
 #import "RUUserInfoManager.h"
 #import "RUSOCCourseRow.h"
+#import "RUDataLoadingManager_Private.h"
 
 static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
 
@@ -22,12 +23,6 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 @property (nonatomic) NSArray *campuses;
 @property (nonatomic) NSArray *levels;
 @property (nonatomic) NSInteger defaultSemesterIndex;
-
-@property dispatch_group_t semesterGroup;
-
-@property BOOL loading;
-@property BOOL finishedLoading;
-@property NSError *loadingError;
 @end
 
 @implementation RUSOCDataLoadingManager
@@ -63,47 +58,19 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
                       @{@"title": @"Graduate", @"tag": @"G"}
                       ];
             
-        self.semesterGroup = dispatch_group_create();
     }
     return self;
 }
 
--(BOOL)semesterIndexNeedsLoad{
-    return !(self.loading || self.finishedLoading);
-}
 
--(void)performOnSemestersLoaded:(void (^)(NSError *error))block{
-    if ([self semesterIndexNeedsLoad]) {
-        [self loadSemesterIndex];
-    }
-    dispatch_group_notify(self.semesterGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        block(self.loadingError);
-    });
-}
-
--(void)loadSemesterIndex{
-    dispatch_group_enter(self.semesterGroup);
-    
-    self.loading = YES;
-    self.finishedLoading = NO;
-    self.loadingError = nil;
-    
+-(void)load{
+    [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         self.semesters = [self parseSemesters:responseObject[@"semesters"]];
         self.defaultSemesterIndex = [responseObject[@"defaultSemester"] integerValue];
-        
-        self.loading = NO;
-        self.finishedLoading = YES;
-        self.loadingError = nil;
-        
-        dispatch_group_leave(self.semesterGroup);
+        [self didEndLoad:YES withError:nil];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-        self.loading = NO;
-        self.finishedLoading = NO;
-        self.loadingError = error;
-        
-        dispatch_group_leave(self.semesterGroup);
+        [self didEndLoad:NO withError:error];
     }];
 }
 
@@ -143,7 +110,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *, NSError *))handler{
-    [self performOnSemestersLoaded:^(NSError *error) {
+    [self performWhenLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -157,7 +124,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *, NSError *))handler{
-    [self performOnSemestersLoaded:^(NSError *error) {
+    [self performWhenLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -176,7 +143,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode completion:(void (^)(NSDictionary *, NSError *))handler{
-    [self performOnSemestersLoaded:^(NSError *error) {
+    [self performWhenLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -190,7 +157,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSearchIndexWithCompletion:(void (^)(NSDictionary *, NSError *))handler{
-    [self performOnSemestersLoaded:^(NSError *error) {
+    [self performWhenLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {

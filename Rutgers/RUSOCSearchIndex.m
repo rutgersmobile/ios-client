@@ -10,63 +10,28 @@
 #import "RUSOCDataLoadingManager.h"
 #import "DataTuple.h"
 #import "RUSOCSearchOperation.h"
-
-@interface RUSOCSearchIndex()
-@property dispatch_group_t indexGroup;
-
-@property BOOL loading;
-@property BOOL finishedLoading;
-@property NSError *loadingError;
-
-@end
+#import "RUDataLoadingManager_Private.h"
 
 @implementation RUSOCSearchIndex
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.indexGroup = dispatch_group_create();
-        [self loadIndex];
+        [self load];
     }
     return self;
 }
 
--(void)performWhenIndexLoaded:(void(^)(NSError *error))handler{
-    if ([self indexNeedsLoad]) {
-        [self loadIndex];
-    }
-    dispatch_group_notify(self.indexGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        handler(self.loadingError);
-    });
-}
-
--(BOOL)indexNeedsLoad{
-    return !(self.loading || self.finishedLoading);
-}
-
--(void)loadIndex{
-    dispatch_group_enter(self.indexGroup);
-
-    self.loading = YES;
-    self.finishedLoading = NO;
-    self.loadingError = nil;
-    
+-(void)load{
+    [self willBeginLoad];
     [[RUSOCDataLoadingManager sharedInstance] getSearchIndexWithCompletion:^(NSDictionary *index, NSError *error) {
-        if (!error) {
+        if (index) {
             [self parseIndex:index];
-            
-            self.loading = NO;
-            self.finishedLoading = YES;
-            self.loadingError = nil;
-            
+            [self didEndLoad:YES withError:nil];
         } else {
-            
-            self.loading = NO;
-            self.finishedLoading = NO;
-            self.loadingError = error;
-            
+            [self didEndLoad:NO withError:error];
         }
-        dispatch_group_leave(self.indexGroup);
     }];
+
 }
 
 -(void)parseIndex:(NSDictionary *)index{

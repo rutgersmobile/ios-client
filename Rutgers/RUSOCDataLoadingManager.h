@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUDataLoadingManager.h"
 
-@interface RUSOCDataLoadingManager : NSObject
+@interface RUSOCDataLoadingManager : RUDataLoadingManager
 +(RUSOCDataLoadingManager *)sharedInstance;
 
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *subjects, NSError *error))handler;
