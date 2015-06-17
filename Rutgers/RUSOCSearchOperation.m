@@ -151,8 +151,8 @@
     NSMutableArray *courses = [NSMutableArray array];
     for (DataTuple *subject in subjects) {
         if (self.cancelled) return nil;
-        [courses addObjectsFromArray:[[subject.object[@"courses"] allValues] sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
-            return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+        [courses addObjectsFromArray:[[subject[@"courses"] allValues] sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
+            return [courseOne[@"courseNumber"] compare:courseTwo[@"courseNumber"] options:NSNumericSearch];
         }]];
     }
     return courses;
@@ -164,7 +164,7 @@
         if (self.cancelled) *stop = YES;
         if ([self numericalCode:courseID matchesFullCode:courseDict[@"course"]] ) {
             DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
-            DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
+            DataTuple *course = subject[@"courses"][courseDict[@"course"]];
             if (course) [results addObject:course];
         }
     }];
@@ -172,13 +172,13 @@
     return [results sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
         NSComparisonResult result = [courseOne[@"subjectTitle"] compare:courseTwo[@"subjectTitle"] options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSNumericSearch];
         if (result != NSOrderedSame) return result;
-        return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+        return [courseOne[@"courseNumber"] compare:courseTwo[@"courseNumber"] options:NSNumericSearch];
     }];
 }
 
 -(NSArray *)coursesWithCourseID:(NSString *)numericalCode inSubject:(DataTuple *)subject{
     NSMutableArray *results = [NSMutableArray array];
-    [subject.object[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
+    [subject[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
         if (self.cancelled) *stop = YES;
         if ([self numericalCode:numericalCode matchesFullCode:courseID]) {
             [results addObject:course];
@@ -186,7 +186,7 @@
     }];
     if (self.cancelled) return nil;
     return [results sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
-        return [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+        return [courseOne[@"courseNumber"] compare:courseTwo[@"courseNumber"] options:NSNumericSearch];
     }];
 }
 
@@ -206,7 +206,7 @@
     [self.searchIndex.courses enumerateKeysAndObjectsUsingBlock:^(NSString *courseName, NSDictionary *courseDict, BOOL *stop) {
         if (self.cancelled) *stop = YES;
         DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
-        DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
+        DataTuple *course = subject[@"courses"][courseDict[@"course"]];
         if ([predicate evaluateWithObject:course.title]) {
             [results addObject:course];
         }
@@ -221,7 +221,7 @@
     [self.searchIndex.courses enumerateKeysAndObjectsUsingBlock:^(NSString *courseName, NSDictionary *courseDict, BOOL *stop) {
         if (self.cancelled) *stop = YES;
         DataTuple *subject = [self subjectWithSubjectID:courseDict[@"subj"]];
-        DataTuple *course = subject.object[@"courses"][courseDict[@"course"]];
+        DataTuple *course = subject[@"courses"][courseDict[@"course"]];
         if ([predicate evaluateWithObject:course.title] && [self numericalCode:numericalCode matchesFullCode:courseDict[@"course"]]) {
             [results addObject:course];
         }
@@ -233,7 +233,7 @@
 -(NSArray *)coursesWithQuery:(NSString *)query inSubject:(DataTuple *)subject{
     NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"self"];
     NSMutableArray *results = [NSMutableArray array];
-    [subject.object[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
+    [subject[@"courses"] enumerateKeysAndObjectsUsingBlock:^(NSString *courseID, DataTuple *course, BOOL *stop) {
         if (self.cancelled) *stop = YES;
         if ([predicate evaluateWithObject:course[@"title"]]) {
             [results addObject:course];
@@ -241,7 +241,7 @@
     }];
     if (self.cancelled) return nil;
     return [results sortedArrayUsingComparator:^NSComparisonResult(DataTuple *courseOne, DataTuple *courseTwo) {
-        NSComparisonResult result = [courseOne.object[@"courseNumber"] compare:courseTwo.object[@"courseNumber"] options:NSNumericSearch];
+        NSComparisonResult result = [courseOne[@"courseNumber"] compare:courseTwo[@"courseNumber"] options:NSNumericSearch];
         return result;
     }];
 }
