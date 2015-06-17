@@ -20,7 +20,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.opaque = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+      //  self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return self;
 }
@@ -58,8 +58,8 @@
 
 -(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
     
-    [super setHighlighted:highlighted animated:animated];
     if (!self.selected) {
+        [super setHighlighted:highlighted animated:animated];
         [self applyStyleForHighlightedState:highlighted];
     }
 }
