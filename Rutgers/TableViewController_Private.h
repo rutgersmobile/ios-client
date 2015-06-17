@@ -9,15 +9,17 @@
 #import "TableViewController.h"
 @interface TableViewController ()
 
-@property (nonatomic) DataSource *dataSource;
+@property (nonatomic) BOOL searchEnabled;
+-(void)enableSearch;
 
+-(void)presentSearch NS_REQUIRES_SUPER;
+-(void)dismissSearch NS_REQUIRES_SUPER;
+
+@property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView;
 -(UITableView *)tableViewForDataSource:(DataSource *)dataSource;
-
--(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
--(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller NS_REQUIRES_SUPER;
 
 @property (nonatomic, getter = isSearching) BOOL searching;
 @property (nonatomic) UISearchBar *searchBar;

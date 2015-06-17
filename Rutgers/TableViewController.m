@@ -16,9 +16,11 @@
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8
 
-@interface TableViewController () 
-@property (nonatomic) BOOL searchEnabled;
-@property (nonatomic) UISearchDisplayController *searchController;
+@interface TableViewController () <UISearchResultsUpdating, UISearchDisplayDelegate, UISearchControllerDelegate>
+@property (nonatomic) UISearchDisplayController *mySearchDisplayController;
+@property (nonatomic) UISearchController *searchController;
+@property (nonatomic) TableViewController *searchResultsController;
+
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
 //@property (nonatomic, readonly) UITableViewStyle style;
 @property (nonatomic) CGFloat lastValidWidth;
@@ -70,9 +72,17 @@
 }
 
 -(void)dealloc{
-    self.dataSource.delegate = nil;
-    self.searchDataSource.delegate = nil;
+    [self resetDataSource:self.dataSource];
+    [self resetDataSource:self.searchDataSource];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)resetDataSource:(DataSource *)dataSource{
+    dataSource.delegate = nil;
+    [dataSource resetContent];
+    UITableView *tableView = [self tableViewForDataSource:dataSource];
+    tableView.dataSource = nil;
 }
 
 -(void)viewWillLayoutSubviews{
@@ -91,9 +101,13 @@
 }
 
 -(void)invalidateCachedHeightsForTableView:(UITableView *)tableView{
-    [tableView beginUpdates];
     [[self dataSourceForTableView:tableView] invalidateCachedHeights];
-    [tableView endUpdates];
+    if (tableView.window) {
+        [tableView beginUpdates];
+        [tableView endUpdates];
+    } else {
+        [tableView reloadData];
+    }
 }
 
 -(void)preferredContentSizeChanged{
@@ -118,35 +132,63 @@
 }
 
 #pragma mark - Search Data Source
+@synthesize searchDataSource = _searchDataSource;
+
 -(void)setSearchDataSource:(DataSource<SearchDataSource> *)searchDataSource{
     if (searchDataSource && !self.searchEnabled) {
         [self enableSearch];
     }
     
-    if (!_searchDataSource && searchDataSource) {
+    if (searchDataSource) {
         self.tableView.tableHeaderView = self.searchBar;
     }
     
-    if (_searchDataSource && !searchDataSource) {
-        [self.searchBar removeFromSuperview];
+    if (!searchDataSource) {
+        self.tableView.tableHeaderView = nil;
     }
     
-    _searchDataSource.delegate = nil;
-    _searchDataSource = searchDataSource;
-    searchDataSource.delegate = self;
-    [self setupTableView:self.searchTableView withDataSource:searchDataSource];
+    if (self.searchController) {
+        self.searchResultsController.dataSource = searchDataSource;
+    } else {
+        _searchDataSource.delegate = nil;
+        _searchDataSource = searchDataSource;
+        searchDataSource.delegate = self;
+        [self setupTableView:self.searchTableView withDataSource:searchDataSource];
+    }
+}
+
+-(DataSource<SearchDataSource> *)searchDataSource{
+    if (self.searchController) {
+        return (DataSource<SearchDataSource> *)self.searchResultsController.dataSource;
+    } else {
+        return _searchDataSource;
+    }
 }
 
 -(void)enableSearch{
-     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-     [RUAppearance applyAppearanceToSearchBar:self.searchBar];
-     
-     self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-     self.searchController.searchResultsDelegate = self;
-     self.searchController.delegate = self;
-     self.searchController.searchResultsTableView.estimatedRowHeight = 44.0;
-    
-     self.searchEnabled = YES;
+    if ([UISearchController class]) {
+        self.definesPresentationContext = YES;
+        TableViewController *searchResultsController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
+        self.searchResultsController = searchResultsController;
+        searchResultsController.tableView.delegate = self;
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:[[UINavigationController alloc] initWithRootViewController:searchResultsController]];
+        self.searchBar = self.searchController.searchBar;
+        self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+        [RUAppearance applyAppearanceToSearchBar:self.searchBar];
+        
+        self.searchController.delegate = self;
+        self.searchController.searchResultsUpdater = self;
+        
+    } else {
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+        [RUAppearance applyAppearanceToSearchBar:self.searchBar];
+        
+        self.mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        self.mySearchDisplayController.searchResultsDelegate = self;
+        self.mySearchDisplayController.delegate = self;
+        self.mySearchDisplayController.searchResultsTableView.estimatedRowHeight = 44.0;
+    }
+    self.searchEnabled = YES;
 }
 
 -(void)setupTableView:(UITableView *)tableView withDataSource:(DataSource *)dataSource{
@@ -156,7 +198,8 @@
 }
 
 -(UITableView *)searchTableView{
-    return self.searchController.searchResultsTableView;
+    if (self.searchController) return self.searchResultsController.tableView;
+    else return self.mySearchDisplayController.searchResultsTableView;
 }
  
  #pragma mark - SearchDisplayController Delegate
@@ -165,22 +208,29 @@
     return NO;
 }
 
+-(void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+    [self updateTimersForKeyPress];
+}
+
 -(void)updateTimersForKeyPress{
     [self.minSearchTimer invalidate];
     self.minSearchTimer = nil;
-    self.minSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MIN_SEARCH_DELAY target:self selector:@selector(minSearchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
+    self.minSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MIN_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
     if (!self.maxSearchTimer) {
-        self.maxSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MAX_SEARCH_DELAY target:self selector:@selector(maxSearchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
+        self.maxSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MAX_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
     }
 }
 
--(void)minSearchTimerFired{
-    [self.searchDataSource updateForQuery:self.searchController.searchBar.text];
-    [self invalidateSearchTimers];
-}
-
--(void)maxSearchTimerFired{
-    [self.searchDataSource updateForQuery:self.searchController.searchBar.text];
+-(void)searchTimerFired{
+    if (self.searchController) {
+        DataSource *dataSource = self.searchResultsController.dataSource;
+        if ([dataSource conformsToProtocol:@protocol(SearchDataSource)]) {
+            DataSource<SearchDataSource> *searchDataSource = (DataSource<SearchDataSource>*)dataSource;
+            [searchDataSource updateForQuery:self.searchBar.text];
+        }
+    } else {
+        [self.searchDataSource updateForQuery:self.searchBar.text];
+    }
     [self invalidateSearchTimers];
 }
 
@@ -192,11 +242,26 @@
 }
 
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
+    [self presentSearch];
+}
+
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
+    [self dismissSearch];
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController{
+    [self presentSearch];
+}
+- (void)willDismissSearchController:(UISearchController *)searchController{
+    [self dismissSearch];
+}
+
+-(void)presentSearch{
     [self setStatusAppearanceForSearchingState:YES];
     self.searching = YES;
 }
 
--(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
+-(void)dismissSearch{
     [self setStatusAppearanceForSearchingState:NO];
     self.searching = NO;
     [self invalidateSearchTimers];

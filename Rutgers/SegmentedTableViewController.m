@@ -88,15 +88,16 @@
     }
 }
 
--(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
-    [super searchDisplayControllerWillBeginSearch:controller];
+-(void)presentSearch{
+    [super presentSearch];
     [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
--(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
-    [super searchDisplayControllerWillEndSearch:controller];
+-(void)dismissSearch{
+    [super dismissSearch];
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
+
 
 -(void)swipeLeft{
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
