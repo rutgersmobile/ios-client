@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zff-qY-ccK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zff-qY-ccK">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8101.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,40 +17,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8N-JE-pFC">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ymF-hU-4hX">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Qwc-5P-uyl">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="xLa-G2-rph">
                                         <rect key="frame" x="140" y="94" width="320" height="299"/>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="755" image="copyright" translatesAutoresizingMaskIntoConstraints="NO" id="Mtm-9T-UyE">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="755" image="copyright" translatesAutoresizingMaskIntoConstraints="NO" id="kKh-zp-RAj">
                                         <rect key="frame" x="140" y="492" width="320" height="44"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="Qwc-5P-uyl" secondAttribute="centerX" id="0f9-KW-uej"/>
-                                    <constraint firstItem="Mtm-9T-UyE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Qwc-5P-uyl" secondAttribute="bottom" id="21T-un-3xy"/>
-                                    <constraint firstAttribute="centerY" secondItem="Qwc-5P-uyl" secondAttribute="centerY" priority="999" constant="25" id="X6w-Ad-Bvj"/>
-                                    <constraint firstAttribute="bottom" secondItem="Mtm-9T-UyE" secondAttribute="bottom" id="bOT-1c-TEc"/>
-                                    <constraint firstAttribute="centerX" secondItem="Mtm-9T-UyE" secondAttribute="centerX" id="unA-Da-8Zx"/>
-                                    <constraint firstItem="Qwc-5P-uyl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="K8N-JE-pFC" secondAttribute="top" id="veX-yr-gGT"/>
+                                    <constraint firstItem="xLa-G2-rph" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ymF-hU-4hX" secondAttribute="leading" constant="11" id="3Ei-SU-eh9"/>
+                                    <constraint firstAttribute="centerX" secondItem="xLa-G2-rph" secondAttribute="centerX" id="Btz-ob-4Ye"/>
+                                    <constraint firstAttribute="centerX" secondItem="kKh-zp-RAj" secondAttribute="centerX" id="EtM-Ou-F4d"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kKh-zp-RAj" secondAttribute="trailing" constant="11" id="PhO-Z1-hc7"/>
+                                    <constraint firstAttribute="centerY" secondItem="xLa-G2-rph" secondAttribute="centerY" priority="999" constant="25" id="S65-aM-5dd"/>
+                                    <constraint firstItem="xLa-G2-rph" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ymF-hU-4hX" secondAttribute="top" id="Y6F-zt-QCo"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xLa-G2-rph" secondAttribute="trailing" constant="11" id="YNb-9T-YB6"/>
+                                    <constraint firstItem="kKh-zp-RAj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xLa-G2-rph" secondAttribute="bottom" id="Z32-Y9-f6U"/>
+                                    <constraint firstItem="kKh-zp-RAj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ymF-hU-4hX" secondAttribute="leading" constant="11" id="rbN-7q-29y"/>
+                                    <constraint firstAttribute="bottom" secondItem="kKh-zp-RAj" secondAttribute="bottom" id="yAv-Yh-mcj"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="K8N-JE-pFC" secondAttribute="trailing" id="AiF-mf-ynJ"/>
-                            <constraint firstItem="K8N-JE-pFC" firstAttribute="top" secondItem="kt4-Kx-AAk" secondAttribute="bottom" id="Gf6-Ar-ucq"/>
-                            <constraint firstItem="5c2-PQ-8J4" firstAttribute="top" secondItem="K8N-JE-pFC" secondAttribute="bottom" id="ZkG-Rq-rHc"/>
-                            <constraint firstItem="K8N-JE-pFC" firstAttribute="leading" secondItem="Ee6-Ka-8PN" secondAttribute="leading" id="zxN-BN-TMK"/>
+                            <constraint firstItem="ymF-hU-4hX" firstAttribute="top" secondItem="kt4-Kx-AAk" secondAttribute="bottom" id="OE0-Y6-VrW"/>
+                            <constraint firstItem="ymF-hU-4hX" firstAttribute="leading" secondItem="Ee6-Ka-8PN" secondAttribute="leading" id="ZCn-DM-wdf"/>
+                            <constraint firstItem="5c2-PQ-8J4" firstAttribute="top" secondItem="ymF-hU-4hX" secondAttribute="bottom" id="cvF-Kl-Xvr"/>
+                            <constraint firstAttribute="trailing" secondItem="ymF-hU-4hX" secondAttribute="trailing" id="v1v-MK-XUC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="3Zg-4R-vzr">
-                        <barButtonItem key="leftBarButtonItem" title="Menu" id="av0-Uc-vQv">
-                            <color key="tintColor" red="1" green="0.99997437" blue="0.99999129769999995" alpha="1" colorSpace="calibratedRGB"/>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="3Zg-4R-vzr"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nut-hS-iKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8101.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -17,17 +17,21 @@
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="8lG-y4-fdr">
                             <rect key="frame" x="50" y="140" width="320" height="299"/>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="755" image="copyright" translatesAutoresizingMaskIntoConstraints="NO" id="zhr-Qv-nhw">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="755" image="copyright" translatesAutoresizingMaskIntoConstraints="NO" id="zhr-Qv-nhw">
                             <rect key="frame" x="50" y="585" width="320" height="44"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8lG-y4-fdr" secondAttribute="trailing" constant="11" id="17B-uH-TJb"/>
                         <constraint firstAttribute="centerX" secondItem="zhr-Qv-nhw" secondAttribute="centerX" id="4Dc-Ke-GOm"/>
                         <constraint firstItem="zhr-Qv-nhw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8lG-y4-fdr" secondAttribute="bottom" id="8am-hs-W9O"/>
                         <constraint firstAttribute="bottom" secondItem="zhr-Qv-nhw" secondAttribute="bottom" id="DIz-7d-tP1"/>
                         <constraint firstAttribute="centerX" secondItem="8lG-y4-fdr" secondAttribute="centerX" id="FYo-Ju-eSO"/>
+                        <constraint firstItem="8lG-y4-fdr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yPf-1o-GRd" secondAttribute="leading" constant="11" id="Klc-SK-Aob"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zhr-Qv-nhw" secondAttribute="trailing" constant="11" id="bWj-IC-gFf"/>
                         <constraint firstAttribute="centerY" secondItem="8lG-y4-fdr" secondAttribute="centerY" priority="999" constant="25" id="qKy-77-g6a"/>
+                        <constraint firstItem="zhr-Qv-nhw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yPf-1o-GRd" secondAttribute="leading" constant="11" id="u7b-GH-VOD"/>
                         <constraint firstItem="8lG-y4-fdr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yPf-1o-GRd" secondAttribute="top" id="xhh-Q3-nat"/>
                     </constraints>
                 </view>
