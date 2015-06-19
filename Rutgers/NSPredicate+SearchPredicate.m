@@ -31,26 +31,4 @@
     return [NSCompoundPredicate andPredicateWithSubpredicates:[self subpredicatesForWords:wordsInQuery keyPath:keyPath]];
 }
 
-/*
-+(NSPredicate *)predicateForQuery:(NSString *)query keyPath:(NSString *)keyPath{
-    NSArray *wordsInQuery = [query wordsInString];
-    if (!wordsInQuery.count) return [NSPredicate predicateWithValue:NO];
-    
-    return [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        NSString *string = [evaluatedObject valueForKeyPath:keyPath];
-        NSArray *wordsInString = [string wordsInString];
-        
-        NSMutableSet *matchedWords = [NSMutableSet set];
-        
-        for (NSString *queryWord in wordsInQuery) {
-            NSPredicate *matchPredicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH[cd] %@",@"self",queryWord];
-            for (NSString *word in wordsInString) {
-                if ([matchedWords containsObject:queryWord]) break;
-                if ([matchPredicate evaluateWithObject:word]) [matchedWords addObject:queryWord];
-            }
-        }
-        return matchedWords.count == wordsInQuery.count;
-    }];
-}*/
-
 @end
