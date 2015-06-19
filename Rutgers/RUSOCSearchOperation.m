@@ -49,6 +49,7 @@
                 if (subject){
                     [words removeObject:word];
                     [subjects addObject:subject];
+                    break;
                 }
             }
         }
