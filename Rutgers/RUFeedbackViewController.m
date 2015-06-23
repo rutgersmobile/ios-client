@@ -26,8 +26,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     
+    self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
+
     RUFeedbackDataSource *feedback = [[RUFeedbackDataSource alloc] init];
     feedback.feedbackDelegate = self;
     self.dataSource = feedback;

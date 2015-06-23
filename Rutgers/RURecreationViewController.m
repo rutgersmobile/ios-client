@@ -24,6 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.dataSource = [[RURecreationDataSource alloc] init];
 }
 

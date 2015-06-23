@@ -31,6 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.dataSource = [[DynamicDataSource alloc] initWithChannel:self.channel];
 }
 
