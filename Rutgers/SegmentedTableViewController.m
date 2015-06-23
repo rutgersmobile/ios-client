@@ -136,7 +136,7 @@
     CGRect viewBounds = self.view.bounds;
 
     CGFloat maximumWidth = CGRectGetWidth(viewBounds)-16;
-    CGFloat minimumWidth = maximumWidth * 0.7;
+    CGFloat minimumWidth = MIN(maximumWidth * 0.65, 300);
     
     segmentedControl.apportionsSegmentWidthsByContent = NO;
     [segmentedControl sizeToFit];
