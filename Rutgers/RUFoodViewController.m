@@ -11,6 +11,7 @@
 #import "RUFoodDataSource.h"
 #import "DataTuple.h"
 #import "TableViewController_Private.h"
+#import "NSDictionary+DiningHall.h"
 
 @interface RUFoodViewController ()
 @property MSWeakTimer *timer;
@@ -24,6 +25,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.dataSource = [[RUFoodDataSource alloc] init];
     self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:2*60*60 target:self selector:@selector(timerDidFire) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
 }
@@ -38,26 +40,18 @@
     NSDictionary *object = item.object;
     if (object[@"view"]) {
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:object] animated:YES];
-    } else {
-        if ([self isDiningHallOpen:object])
+    } else if ([object isDiningHallOpen]){
         [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:object] animated:YES];
     }
 }
 
--(BOOL)isDiningHallOpen:(NSDictionary *)diningHall{
-    NSArray *meals = diningHall[@"meals"];
-    for (NSDictionary *meal in meals) {
-        if ([meal[@"meal_avail"] boolValue]) return YES;
-    }
-    return NO;
-}
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];
     NSDictionary *object = item.object;
     if (!object[@"view"]) {
-        return [self isDiningHallOpen:object];
+        return [object isDiningHallOpen];
     }
     return YES;
 }

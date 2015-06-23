@@ -10,6 +10,7 @@
 #import "DataTuple.h"
 #import "ALTableViewTextCell.h"
 #import "DataSource_Private.h"
+#import "NSDictionary+DiningHall.h"
 
 @implementation NewBrunswickFoodDataSource
 - (instancetype)init
@@ -59,16 +60,9 @@
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     [super configureCell:cell forRowAtIndexPath:indexPath];
     DataTuple *diningHall = [self itemAtIndexPath:indexPath];
-    BOOL open = [self isDiningHallOpen:diningHall.object];
+    BOOL open = [diningHall.object isDiningHallOpen];
     cell.textLabel.textColor = open ? [UIColor blackColor] : [UIColor grayColor];
     cell.accessoryType = open ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
--(BOOL)isDiningHallOpen:(NSDictionary *)diningHall{
-    NSArray *meals = diningHall[@"meals"];
-    for (NSDictionary *meal in meals) {
-        if ([meal[@"meal_avail"] boolValue]) return YES;
-    }
-    return NO;
-}
 @end
