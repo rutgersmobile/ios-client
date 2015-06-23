@@ -37,7 +37,7 @@
     self.descriptionLabel = [RULabel newAutoLayoutView];
 
     self.titleLabel.numberOfLines = 4;
-    self.descriptionLabel.numberOfLines = 7;
+    self.descriptionLabel.numberOfLines = 9;
 
     self.timeLabel.adjustsFontSizeToFitWidth = YES;
     self.timeLabel.minimumScaleFactor = 0.8;
