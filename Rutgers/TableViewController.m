@@ -32,6 +32,8 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(preferredContentSizeChanged)
                                                  name:UIContentSizeCategoryDidChangeNotification
