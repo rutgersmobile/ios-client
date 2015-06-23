@@ -71,7 +71,7 @@
 }
 
 NSString *stripString(NSString *string){
-    return ![string isEqualToString:@""] ? string : nil;
+    return string.length ? string : nil;
 }
 
 -(CLLocationCoordinate2D)coordinate{
