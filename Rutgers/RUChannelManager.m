@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+Channel.h"
+#import "RUDataLoadingManager_Private.h"
 
 NSString *const ChannelManagerJsonFileName = @"ordered_content";
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
@@ -30,17 +31,6 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return manager;
 }
 
--(instancetype)init{
-    self = [super init];
-    if (self) {
-        self.loadingGroup = dispatch_group_create();
-        if ([self orderedContentNeedsLoad]) {
-            [self loadOrderedContent];
-        }
-    }
-    return self;
-}
-
 @synthesize allChannels = _allChannels;
 -(NSArray *)allChannels{
     @synchronized(self) {
@@ -57,6 +47,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                 }
             }
         }
+        if ([self needsLoad]) [self load];
         return _allChannels;
     }
 }
@@ -84,48 +75,30 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return [[NSBundle mainBundle] pathForResource:ChannelManagerJsonFileName ofType:@"json"];
 }
 
--(BOOL)orderedContentNeedsLoad{
-    return !(self.loading || self.finishedLoading) && [self cacheNeedsReload];
-}
 
--(BOOL)cacheNeedsReload{
+-(BOOL)needsLoad{
+    if (![super needsLoad]) return NO;
+    
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self documentPath] error:nil];
     NSDate *date = [attributes fileModificationDate];
     if (!date) return YES;
     
-    BOOL needsReload = YES;//([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
-    return needsReload;
+    return YES;//([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
 }
 
--(void)loadOrderedContent{
-    dispatch_group_enter(self.loadingGroup);
-    
-    self.loading = YES;
-    self.finishedLoading = NO;
-    self.loadingError = nil;
-    
+-(void)load{
+    [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:0 error:nil];
             if (data) [data writeToFile:[self documentPath] atomically:YES];
             self.allChannels = responseObject;
         }
-        
-        self.loading = NO;
-        self.finishedLoading = YES;
-        self.loadingError = nil;
-        
-        dispatch_group_leave(self.loadingGroup);
+        [self didEndLoad:YES withError:nil];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-        self.loading = NO;
-        self.finishedLoading = NO;
-        self.loadingError = error;
-        
-        dispatch_group_leave(self.loadingGroup);
+        [self didEndLoad:NO withError:error];
     }];
 }
-
 
 -(Class)classForViewTag:(NSString *)viewTag{
     static NSDictionary *viewTagsToClassNameMapping = nil;
