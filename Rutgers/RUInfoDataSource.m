@@ -40,7 +40,7 @@
 
 +(BOOL)buttonTypeEnabled:(NSString *)type{
     if ([type isEqualToString:@"callButton"]) {
-        return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"telprompt://732-445-INFO"]];
+        return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"telprompt://"]];
     } else if ([type isEqualToString:@"textButton"]) {
         return [MFMessageComposeViewController canSendText];
     } else if ([type isEqualToString:@"emailButton"]) {

@@ -24,7 +24,7 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    
+    self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     self.dataSource = [[RUInfoDataSource alloc] init];
 }
 
@@ -38,7 +38,7 @@
     }
     
     if ([type isEqualToString:@"callButton"]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:item[@"number"]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"telprompt://" stringByAppendingString:item[@"number"]]]];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if ([type isEqualToString:@"textButton"]) {
         [self presentMessageComposeViewControllerWithRecipients:@[item[@"number"]] body:item[@"body"]];

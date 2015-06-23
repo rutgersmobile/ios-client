@@ -9,7 +9,7 @@
               {
                 "type" : "callButton",
                 "text" : "Call RU-Info (732-445-INFO)",
-                "number" : "telprompt://732-445-INFO"
+                "number" : "732-445-INFO"
               }
              ],
  },
