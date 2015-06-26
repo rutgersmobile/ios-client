@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0401C4E21B38B2F30053B10B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0401C4E11B38B2F30053B10B /* Media.xcassets */; };
+		0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
 		04203AF71B15147E005A7099 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = 04203AF61B15147E005A7099 /* ordered_content.json */; };
 		0422C9841A69C3C100344828 /* RURecCenterDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9831A69C3C100344828 /* RURecCenterDataSource.m */; };
@@ -17,6 +19,7 @@
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
+		049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049425011B3A07B500BE570C /* RUSplitViewController.m */; };
 		04A1EFD31A5C508300DE0351 /* RUPredictionsBodyRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */; };
 		04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFC81A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m */; };
 		04A1EFD51A5C508300DE0351 /* RUPredictionsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFCA1A5C508300DE0351 /* RUPredictionsDataSource.m */; };
@@ -224,6 +227,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0401C4E11B38B2F30053B10B /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DiningHall.h"; sourceTree = "<group>"; };
+		0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DiningHall.m"; sourceTree = "<group>"; };
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
 		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
 		04203AF61B15147E005A7099 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ordered_content.json; sourceTree = "<group>"; };
@@ -240,6 +246,8 @@
 		0465D0821ADEF7D1001C30FE /* RUResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUResponseSerializer.h; sourceTree = "<group>"; };
 		0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUResponseSerializer.m; sourceTree = "<group>"; };
 		047C2EF11A646FCC00B172E5 /* RUInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RUInfo.json; sourceTree = "<group>"; };
+		049425001B3A07B500BE570C /* RUSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSplitViewController.h; sourceTree = "<group>"; };
+		049425011B3A07B500BE570C /* RUSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSplitViewController.m; sourceTree = "<group>"; };
 		04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyRow.h; sourceTree = "<group>"; };
 		04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsBodyRow.m; sourceTree = "<group>"; };
 		04A1EFC71A5C508300DE0351 /* RUPredictionsBodyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyTableViewCell.h; sourceTree = "<group>"; };
@@ -1109,6 +1117,8 @@
 				A7B435F11912EB29001FE8B6 /* RUDiningHallViewController.m */,
 				A7B435ED1912E286001FE8B6 /* RUFoodViewController.h */,
 				A7B435EE1912E286001FE8B6 /* RUFoodViewController.m */,
+				0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */,
+				0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */,
 				A7241A1C1988174E00304436 /* DataSources */,
 			);
 			name = rufood;
@@ -1346,6 +1356,8 @@
 				041AE338193D2E32002ED85C /* RUAppearance.m */,
 				A7177BAC199DC0CD0092126F /* RUNavigationController.h */,
 				A7177BAD199DC0CD0092126F /* RUNavigationController.m */,
+				049425001B3A07B500BE570C /* RUSplitViewController.h */,
+				049425011B3A07B500BE570C /* RUSplitViewController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1494,6 +1506,7 @@
 				A7B3F7B51954A66500458B19 /* rufeedback */,
 				A7E8E14319255E580089F166 /* menu and drawer */,
 				C262EFBD188345D10035C8F5 /* Images.xcassets */,
+				0401C4E11B38B2F30053B10B /* Media.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 			);
 			path = Rutgers;
@@ -1621,6 +1634,7 @@
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
+				0401C4E21B38B2F30053B10B /* Media.xcassets in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
@@ -1680,6 +1694,7 @@
 				A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */,
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
+				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				A7907CD119A2B83700711DCB /* UIFont+DynamicType.m in Sources */,
@@ -1771,6 +1786,7 @@
 				A7241A4519896FEF00304436 /* TupleDataSource.m in Sources */,
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
+				0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */,
 				04A1EFEB1A5C509600DE0351 /* AllStopsDataSource.m in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
 				A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */,
