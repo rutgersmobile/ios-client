@@ -65,7 +65,7 @@
     if ([self agencyConfigNeedsLoad]) {
         [self loadAgencyConfig];
     }
-    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         handler(self.agencyLoadingError);
     });
 }
@@ -82,7 +82,7 @@
             if ([self activeStopsAndRoutesNeedLoad]) {
                 [self loadActiveStopsAndRoutes];
             }
-            dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 handler(self.activeLoadingError);
             });
         }

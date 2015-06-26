@@ -33,7 +33,7 @@
 -(void)performWhenLoaded:(void (^)(NSError *error))block{
     @synchronized(self) {
         if ([self needsLoad]) [self load];
-        dispatch_group_notify(self.loadingGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        dispatch_group_notify(self.loadingGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             block(self.loadingError);
         });
     }
@@ -55,7 +55,6 @@
         self.loading = NO;
         self.finishedLoading = loaded;
         self.loadingError = error;
-        
         dispatch_group_leave(self.loadingGroup);
     }
 }

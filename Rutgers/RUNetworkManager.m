@@ -26,7 +26,7 @@
     if (BETA) urlString = @"https://doxa.rutgers.edu/mobile/1/";
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
-    manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
     if (BETA) manager.securityPolicy.allowInvalidCertificates = YES;
     
     return manager;

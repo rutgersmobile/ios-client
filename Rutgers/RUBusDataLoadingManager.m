@@ -76,7 +76,7 @@ NSString * const newarkAgency = @"rutgers-newark";
         }];
     }];
     
-    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         handler(allStops,outerError);
     });
 }
@@ -104,7 +104,7 @@ NSString * const newarkAgency = @"rutgers-newark";
 
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         dispatch_group_t group = dispatch_group_create();
         
@@ -123,7 +123,7 @@ NSString * const newarkAgency = @"rutgers-newark";
             }];
         }];
         
-        dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             NSArray *sortedRoutes = [self sortSearchResults:allRoutes forQuery:query];
             NSArray *sortedStops = [self sortSearchResults:allStops forQuery:query];
             handler(sortedRoutes,sortedStops,outerError);
