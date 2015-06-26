@@ -157,6 +157,7 @@
 }
 
 -(void)configurePlaceholderCell:(id)cell{
+    [cell setSeparatorInset:UIEdgeInsetsZero];
     if ([cell isKindOfClass:[ALPlaceholderCell class]]) {
         ALPlaceholderCell *placeholder = cell;
         if ([self.loadingState isEqualToString:AAPLLoadStateNoContent]) {
