@@ -27,7 +27,7 @@
 }
 
 +(RUWebViewController *)newWithChannel:(NSDictionary *)channel{
-    if ([channel[@"weblink"] boolValue]) {
+    if ([[RUChannelManager sharedInstance].allChannels containsObject:channel]) {
         RUWebViewController *webViewController = [self.storedChannels objectForKey:channel];
         if (!webViewController) {
             webViewController = [[RUWebViewController alloc] initWithChannel:channel];
