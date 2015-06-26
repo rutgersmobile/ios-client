@@ -45,7 +45,8 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 }
 
 -(DrawerImplementation)drawerImplementation{
-    return iPad() ? DrawerImplementationSplitView : DrawerImplementationMMDrawer;
+    return DrawerImplementationMMDrawer;
+  //  return iPad() ? DrawerImplementationSplitView : DrawerImplementationMMDrawer;
 }
 
 #pragma mark initialization
@@ -65,6 +66,10 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 -(UIViewController *)containerViewController{
     if (!_containerViewController) {
         UIViewController *centerViewController = [self topViewControllerForChannel:self.currentChannel];
+     //   RUNavigationController *navigationController = [[RUNavigationController alloc] initWithRootViewController:self.menuViewController];
+     //   navigationController.preferredStatusBarStyle = UIStatusBarStyleLightContent;
+     //   [RUAppearance applyAppearanceToNavigationController:navigationController];
+     //   navigationController.navigationBar.barTintColor = [UIColor colorWithWhite:0.3 alpha:1];
         _containerViewController = [self makeContainerViewControllerWithCenterViewController:centerViewController leftViewController:self.menuViewController];
         [self placeButtonInCenterViewController];
     }
@@ -74,6 +79,7 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 -(RUMenuViewController *)menuViewController{
     if (!_menuViewController) {
         _menuViewController = [[RUMenuViewController alloc] init];
+        _menuViewController.title = @"Menu";
         _menuViewController.delegate = self;
     }
     return _menuViewController;
@@ -81,7 +87,8 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 
 -(UIViewController *)makeContainerViewControllerWithCenterViewController:(UIViewController *)centerViewController leftViewController:(UIViewController *)leftViewController{
     
-    CGFloat revealWidth = iPad() ? round(270 * IPAD_SCALE) : 270;
+    CGFloat revealWidth = 265;
+    if (iPad()) revealWidth = round(revealWidth * IPAD_SCALE);
     CGFloat revealDisplacement = 55;
     NSTimeInterval animationDuration = 0.24;
     
@@ -103,7 +110,6 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
             self.revealViewController.frontViewShadowOpacity = 0;
             self.revealViewController.replaceViewAnimationDuration = animationDuration;
             self.revealViewController.toggleAnimationDuration = animationDuration;
-            
             [self.revealViewController panGestureRecognizer];
             [self.revealViewController tapGestureRecognizer];
             
