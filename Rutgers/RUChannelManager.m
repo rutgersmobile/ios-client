@@ -47,7 +47,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                 }
             }
         }
-        if ([self needsLoad]) [self load];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            if ([self needsLoad]) {
+                [self load];
+            }
+        });
         return _allChannels;
     }
 }
