@@ -39,8 +39,10 @@
     
     [[RUSOCDataLoadingManager sharedInstance] performWhenLoaded:^(NSError *error) {
         if (!error) {
-            self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
-            [self setInterfaceEnabled:YES animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
+                [self setInterfaceEnabled:YES animated:YES];
+            });
         }
     }];
     
