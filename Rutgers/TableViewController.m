@@ -21,11 +21,9 @@
 @property (nonatomic) UISearchController *searchController;
 @property (nonatomic) TableViewController *searchResultsController;
 
-@property (nonatomic) BOOL loadsContentOnViewWillAppear;
-//@property (nonatomic, readonly) UITableViewStyle style;
-@property (nonatomic) CGFloat lastValidWidth;
 @property (nonatomic) MSWeakTimer *minSearchTimer;
 @property (nonatomic) MSWeakTimer *maxSearchTimer;
+@property (nonatomic) CGFloat lastValidWidth;
 @end
 
 @implementation TableViewController
@@ -88,16 +86,23 @@
 }
 
 -(void)viewWillLayoutSubviews{
-    [self invalidateCachedHeightsIfNeeded];
+    CGFloat width = CGRectGetWidth(self.view.bounds);
+    if (width != self.lastValidWidth) [self viewDidChangeWidth];
+}
+
+-(void)viewDidChangeWidth{
+    self.lastValidWidth = CGRectGetWidth(self.view.bounds);
+    [self invalidateCachedHeights];
 }
 
 -(void)invalidateCachedHeightsIfNeeded{
     CGFloat width = CGRectGetWidth(self.view.bounds);
-    if (width != self.lastValidWidth) [self invalidateCachedHeights];
+    if (width != self.lastValidWidth)  {
+        [self invalidateCachedHeights];
+    }
 }
 
 -(void)invalidateCachedHeights{
-    self.lastValidWidth = CGRectGetWidth(self.view.bounds);
     [self invalidateCachedHeightsForTableView:self.tableView];
     [self invalidateCachedHeightsForTableView:self.searchTableView];
 }

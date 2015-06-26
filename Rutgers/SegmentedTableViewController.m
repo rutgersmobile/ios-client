@@ -12,6 +12,7 @@
 #import "RUAnalyticsManager.h"
 
 @interface SegmentedTableViewController ()
+
 @end
 
 @implementation SegmentedTableViewController
@@ -37,8 +38,8 @@
     [self.tableView addGestureRecognizer:rightSwipe];
 }
 
--(void)viewDidLayoutSubviews{
-    [super viewDidLayoutSubviews];
+-(void)viewDidChangeWidth{
+    [super viewDidChangeWidth];
     [self setupSegmentedControlWidth:self.segmentedControl];
 }
 
@@ -133,10 +134,11 @@
 }
 
 -(void)setupSegmentedControlWidth:(UISegmentedControl *)segmentedControl{
+
     CGRect viewBounds = self.view.bounds;
 
     CGFloat maximumWidth = CGRectGetWidth(viewBounds)-16;
-    CGFloat minimumWidth = MIN(maximumWidth * 0.65, 300);
+    CGFloat minimumWidth = MIN(maximumWidth * 0.65, 320);
     
     segmentedControl.apportionsSegmentWidthsByContent = NO;
     [segmentedControl sizeToFit];
@@ -150,5 +152,6 @@
     }
     
     segmentedControl.bounds = controlBounds;
+    NSLog(@"%f",segmentedControl.bounds.size.width);
 }
 @end

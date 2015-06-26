@@ -15,6 +15,10 @@
 -(void)presentSearch NS_REQUIRES_SUPER;
 -(void)dismissSearch NS_REQUIRES_SUPER;
 
+-(void)viewDidChangeWidth;
+
+@property (nonatomic) BOOL loadsContentOnViewWillAppear;
+
 @property (nonatomic) DataSource *dataSource;
 @property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 
