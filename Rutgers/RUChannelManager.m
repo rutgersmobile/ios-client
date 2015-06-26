@@ -35,14 +35,21 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 -(NSArray *)allChannels{
     @synchronized(self) {
         if (!_allChannels) {
+            NSDate *latestDate;
             NSArray *paths = @[[self documentPath],[self bundlePath]];
+            
             for (NSString *path in paths) {
-                NSData *data = [NSData dataWithContentsOfFile:path];
-                if (data) {
-                    NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                    if (channels) {
-                        _allChannels = channels;
-                        break;
+                NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
+                NSDate *date = [attributes fileModificationDate];
+                
+                if (!latestDate || [date compare:latestDate] == NSOrderedDescending) {
+                    NSData *data = [NSData dataWithContentsOfFile:path];
+                    if (data) {
+                        NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                        if (channels) {
+                            latestDate = date;
+                            _allChannels = channels;
+                        }
                     }
                 }
             }
