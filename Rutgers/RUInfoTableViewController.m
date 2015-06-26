@@ -38,7 +38,7 @@
     }
     
     if ([type isEqualToString:@"callButton"]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"telprompt://" stringByAppendingString:item[@"number"]]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"tel://" stringByAppendingString:item[@"number"]]]];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if ([type isEqualToString:@"textButton"]) {
         [self presentMessageComposeViewControllerWithRecipients:@[item[@"number"]] body:item[@"body"]];
