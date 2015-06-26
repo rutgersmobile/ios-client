@@ -207,8 +207,19 @@
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{    
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
+
+    
+    static int64_t hits = 0;
+    static int64_t misses = 0;
+
+    cachedHeight ? hits++ : misses++;
+    
+    if (((hits + misses) % 20) == 0) {
+        NSLog(@"Hits: %lld, Misses: %lld, Rate: %f per cent",hits,misses,((CGFloat)hits/(hits+misses))*100.0);
+    }
+
     if (cachedHeight) return [cachedHeight doubleValue];
     
     ALTableViewAbstractCell *cell;
