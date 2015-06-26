@@ -90,7 +90,7 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
 }
 
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
-    // the enum falls through to any of the positive status types including the new ios 8 types, to avoid refering to them by their enum def that isnt available in the pre ios 8 sdk
+    // the enum falls through to any of the positive status types, to avoid refering to them by their symbol that isnt available in the pre ios 8 sdk
     switch (status) {
         case kCLAuthorizationStatusNotDetermined:
         case kCLAuthorizationStatusDenied:
