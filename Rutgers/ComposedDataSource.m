@@ -231,7 +231,7 @@
     else
         _aggregateLoadingState = AAPLLoadStateInitial;
     
-    [self updatePlaceholderState];
+  //  [self updatePlaceholderState];
 }
 
 - (NSString *)loadingState
