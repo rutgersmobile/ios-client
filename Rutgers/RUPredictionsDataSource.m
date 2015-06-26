@@ -50,7 +50,7 @@
                 }
 
             } else {
-                [loading doneWithError:nil];
+                [loading doneWithError:error];
             }
         }];
     }];
