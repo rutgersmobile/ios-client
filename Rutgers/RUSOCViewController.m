@@ -37,6 +37,13 @@
     self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search Subjects and Courses";
     
+    [[RUSOCDataLoadingManager sharedInstance] performWhenLoaded:^(NSError *error) {
+        if (!error) {
+            self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
+            [self setInterfaceEnabled:YES animated:YES];
+        }
+    }];
+    
     [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
     
     [self setInterfaceEnabled:NO animated:NO];
