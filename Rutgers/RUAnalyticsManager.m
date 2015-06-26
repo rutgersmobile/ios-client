@@ -30,6 +30,8 @@
     self = [super init];
     if (self) {
         self.queue = [NSMutableArray array];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flushQueue) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flushQueue) name:UIApplicationWillTerminateNotification object:nil];
     }
     return self;
 }
@@ -66,12 +68,38 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
+-(BOOL)shouldIgnoreError:(NSError *)error{
+    static NSDictionary *ignoredErrorsByDomain;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignoredErrorsByDomain = @{
+                                  NSURLErrorDomain : @[@-1009]
+                                  };
+    });
+    
+    NSArray *ignoredErrorsForDomain = ignoredErrorsByDomain[error.domain];
+    return [ignoredErrorsForDomain containsObject:@(error.code)];
+}
+
 -(void)queueEventForError:(NSError *)error{
+    BOOL should = [self shouldIgnoreError:error];
+    if (should) return;
+    
     NSMutableDictionary *event = [self baseEvent];
+    
+    NSMutableDictionary *errorDict = [NSMutableDictionary dictionary];
+    
+    [error.userInfo enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        if ([value isKindOfClass:[NSString class]]) {
+            errorDict[key] = value;
+        }
+    }];
+    
     [event addEntriesFromDictionary:@{
                                       @"type" : @"error",
-                                      @"error" : error.description
+                                      @"error" : errorDict
                                       }];
+
     [self queueAnalyticsEvent:event];
 }
 
@@ -134,11 +162,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 -(void)queueAnalyticsEvents:(NSArray *)events{
     @synchronized (self) {
         [self.queue addObjectsFromArray:events];
-        if (self.queue.count < 10) {
-            [self resetFlushTimer];
-        } else {
-            [self flushQueue];
-        }
+        [self resetFlushTimer];
     }
 }
 
@@ -149,27 +173,32 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 -(void)resetFlushTimer{
     @synchronized(self) {
         [self.flushTimer invalidate];
-        self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
+        self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
     }
 }
 
 -(void)flushQueue{
     @synchronized(self) {
         [self.flushTimer invalidate];
-        [self postAnalyticsEvents:self.queue];
+        [self postAnalyticsEvents:[self.queue copy]];
         [self.queue removeAllObjects];
     }
 }
 
 -(void)postAnalyticsEvents:(NSArray *)events{
-    NSString *url = @"analytics.php";
+    if (!events.count) return;
     
-    if (BETA) {
-        url = @"http://sauron.rutgers.edu/~jamchamb/analytics.php";
-    }
+    UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
     
-    [[RUNetworkManager sessionManager] POST:url parameters:@{@"payload" : [self jsonStringForObject:events]} success:nil failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self queueAnalyticsEvents:events];
+    [[RUNetworkManager sessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSLog(@"Analytics sent successfully");
+        [[UIApplication sharedApplication] endBackgroundTask:identifier];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Error sending analytics, retrying");
+        [[UIApplication sharedApplication] endBackgroundTask:identifier];
+        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+            [self queueAnalyticsEvents:events];
+        }
     }];
 }
 

@@ -14,5 +14,4 @@
 -(void)queueEventForError:(NSError *)error;
 -(void)queueEventForChannelOpen:(NSDictionary *)channel;
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction;
--(void)flushQueue;
 @end
