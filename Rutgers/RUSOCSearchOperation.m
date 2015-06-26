@@ -117,13 +117,13 @@
 
 -(BOOL)numericalCode:(NSString *)code matchesFullCode:(NSString *)fullCode{
     NSInteger location = [fullCode rangeOfString:code options:NSNumericSearch].location;
-    if (location == NSNotFound) return false;
+    if (location == NSNotFound) return NO;
     
     NSInteger sizeDiff = fullCode.length-code.length;
-    if (location == 0) return true;
-    if (sizeDiff > 0 && [fullCode characterAtIndex:sizeDiff-1] == '0') return true;
+    if (location == 0) return YES;
+    if (sizeDiff > 0 && [fullCode characterAtIndex:sizeDiff-1] == '0') return YES;
     
-    return false;
+    return NO;
 }
 
 #pragma mark - accessors
