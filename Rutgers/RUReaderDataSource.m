@@ -22,6 +22,7 @@
     self = [super init];
     if (self) {
         self.url = url;
+        self.noContentTitle = @"No articles available";
     }
     return self;
 }
