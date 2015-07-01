@@ -22,7 +22,7 @@
         
         id title = [item[@"title"] firstObject];
         if ([title isKindOfClass:[NSString class]]) {
-            self.title = [title stringByDecodingHTMLEntities];
+            _title = [title stringByDecodingHTMLEntities];
         }
        
         //The date may be in one of two fields
@@ -34,19 +34,19 @@
         NSDate *startDate = [self dateFromString:startDateString];
         NSDate *endDate = [self dateFromString:endDateString];
 
-        self.dateString = [self dateStringWithStartDate:startDate endDate:endDate];
+        _dateString = [self dateStringWithStartDate:startDate endDate:endDate];
         
         //The image url may be in one of two fields
         NSString *imageUrl = [item[@"enclosure"] firstObject][@"_url"];
         if (!imageUrl) imageUrl = [item[@"media:thumbnail"] firstObject][@"_url"];
         
-        self.imageURL = [NSURL URLWithString:imageUrl];
-        self.url = [item[@"link"] firstObject];
+        _imageURL = [NSURL URLWithString:imageUrl];
+        _url = [item[@"link"] firstObject];
         
         id description = [item[@"description"] firstObject];
         if ([description isKindOfClass:[NSString class]]) {
             //strip out all the weird characters we can
-            self.descriptionText = [[description stringByDecodingHTMLEntities] stringByConvertingHTMLToPlainText];
+            _descriptionText = [[description stringByDecodingHTMLEntities] stringByConvertingHTMLToPlainText];
         }
     }
     return self;
