@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 
 -(UIViewController *)makeContainerViewControllerWithCenterViewController:(UIViewController *)centerViewController leftViewController:(UIViewController *)leftViewController{
     
-    CGFloat revealWidth = 265;
+    CGFloat revealWidth = 270;
     if (iPad()) revealWidth = round(revealWidth * IPAD_SCALE);
     CGFloat revealDisplacement = 55;
     NSTimeInterval animationDuration = 0.24;
