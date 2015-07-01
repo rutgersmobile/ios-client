@@ -49,6 +49,8 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 
 -(void)queueEventForFirstLaunch{
+    self.firstLaunch = NO;
+
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary:@{
                                       @"type" : @"fresh_launch"
@@ -59,8 +61,8 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 -(void)queueEventForApplicationLaunch{
     if (self.firstLaunch) {
         [self queueEventForFirstLaunch];
-        self.firstLaunch = NO;
     }
+    
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary:@{
                                       @"type" : @"launch"
@@ -82,15 +84,14 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 -(void)queueEventForError:(NSError *)error{
-    BOOL should = [self shouldIgnoreError:error];
-    if (should) return;
+    if ([self shouldIgnoreError:error]) return;
     
     NSMutableDictionary *event = [self baseEvent];
     
     NSMutableDictionary *errorDict = [NSMutableDictionary dictionary];
     
     [error.userInfo enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        if ([value isKindOfClass:[NSString class]]) {
+        if ([key isKindOfClass:[NSString class]] && [value isKindOfClass:[NSString class]]) {
             errorDict[key] = value;
         }
     }];
