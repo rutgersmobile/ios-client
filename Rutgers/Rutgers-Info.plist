@@ -28,6 +28,11 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Rutgers would like to use your location to find nearby places and bus stops.</string>
 	<key>UILaunchStoryboardName</key>
