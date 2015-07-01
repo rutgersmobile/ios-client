@@ -65,6 +65,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 -(void)setAllChannels:(NSArray *)allChannels{
     @synchronized(self) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
+        if (data) [data writeToFile:[self documentPath] atomically:YES];
         
         if ([_allChannels isEqual:allChannels]) return;
         
@@ -101,8 +103,6 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:0 error:nil];
-            if (data) [data writeToFile:[self documentPath] atomically:YES];
             self.allChannels = responseObject;
         }
         [self didEndLoad:YES withError:nil];
