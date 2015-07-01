@@ -38,6 +38,7 @@
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.delegate = self;
     self.mapView.opaque = YES;
+    self.mapView.showsUserLocation = YES;
     
     self.view = self.mapView;
     [self.mapView setVisibleMapRect:MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)];
