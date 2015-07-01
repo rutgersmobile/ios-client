@@ -17,7 +17,7 @@
 
 @implementation FAQViewController
 
-+(id)newWithChannel:(NSDictionary *)channel{
++(instancetype)newWithChannel:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }
 

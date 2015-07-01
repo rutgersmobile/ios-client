@@ -10,5 +10,5 @@
 
 @protocol RUChannelProtocol <NSObject>
 @required
-+(id)newWithChannel:(NSDictionary *)channel;
++(instancetype)newWithChannel:(NSDictionary *)channel;
 @end
