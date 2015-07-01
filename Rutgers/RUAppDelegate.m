@@ -30,7 +30,7 @@
     [application setStatusBarHidden:NO];
     [RUAppearance applyAppearance];
     
-    [self initializeCache];
+//    [self initializeCache];
     [self initializeDrawer];
     
     self.userInfoManager = [[RUUserInfoManager alloc] init];
@@ -41,10 +41,11 @@
     
     return YES;
 }
-
 /**
  *  Initialize the cache with the below sizes for memory and disk
  */
+/*
+
 #define MEMORY_MEGS 20
 #define DISK_MEGS 40
 
@@ -55,7 +56,7 @@
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
     [NSURLCache setSharedURLCache:URLCache];
 }
-
+*/
 /**
  *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the menu/drawer containment view controller
  */
