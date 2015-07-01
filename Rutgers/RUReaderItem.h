@@ -12,9 +12,9 @@
  */
 @interface RUReaderItem : NSObject
 -(instancetype)initWithItem:(NSDictionary *)item NS_DESIGNATED_INITIALIZER;
-@property (nonatomic) NSString *title;
-@property (nonatomic) NSString *dateString;
-@property (nonatomic) NSURL *imageURL;
-@property (nonatomic) NSString *url;
-@property (nonatomic) NSString *descriptionText;
+@property (nonatomic, readonly) NSString *title;
+@property (nonatomic, readonly) NSString *dateString;
+@property (nonatomic, readonly) NSURL *imageURL;
+@property (nonatomic, readonly) NSString *url;
+@property (nonatomic, readonly) NSString *descriptionText;
 @end
