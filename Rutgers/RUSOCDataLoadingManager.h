@@ -23,9 +23,9 @@
 @property (nonatomic) NSDictionary *level;
 @property (nonatomic) NSDictionary *semester;
 
-@property (nonatomic, readonly) NSArray *semesters;
 @property (nonatomic, readonly) NSArray *campuses;
 @property (nonatomic, readonly) NSArray *levels;
+@property (nonatomic, readonly) NSArray *semesters;
 
 @property (nonatomic, readonly, copy) NSString *titleForCurrentConfiguration;
 
