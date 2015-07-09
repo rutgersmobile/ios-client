@@ -72,9 +72,11 @@
 }
 
 -(void)dealloc{
-    [self resetDataSource:self.dataSource];
-    [self resetDataSource:self.searchDataSource];
-    
+    if (self.isViewLoaded) {
+        [self resetDataSource:self.dataSource];
+        [self resetDataSource:self.searchDataSource];
+    }
+   
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
