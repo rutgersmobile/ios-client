@@ -8,6 +8,7 @@
 
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
+#import "RUMOTDManager.h"
 #import "RURootController.h"
 #import <AFNetworkActivityIndicatorManager.h>
 
@@ -30,7 +31,6 @@
     [application setStatusBarHidden:NO];
     [RUAppearance applyAppearance];
     
-//    [self initializeCache];
     [self initializeDrawer];
     
     self.userInfoManager = [[RUUserInfoManager alloc] init];
@@ -39,24 +39,11 @@
         [self.rootController openDrawerIfNeeded];
     }];
     
+    [[RUMOTDManager sharedManager] showMOTD];
+    
     return YES;
 }
-/**
- *  Initialize the cache with the below sizes for memory and disk
- */
-/*
 
-#define MEMORY_MEGS 20
-#define DISK_MEGS 40
-
--(void)initializeCache{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachesFolder = paths[0];
-    NSString *fullPath = [cachesFolder stringByAppendingPathComponent:@"RUNetCache"];
-    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:MEMORY_MEGS * 1024 * 1024 diskCapacity:DISK_MEGS * 1024 * 1024 diskPath:fullPath];
-    [NSURLCache setSharedURLCache:URLCache];
-}
-*/
 /**
  *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the menu/drawer containment view controller
  */
