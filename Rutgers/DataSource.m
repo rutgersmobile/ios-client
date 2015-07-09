@@ -22,7 +22,8 @@
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
 
-@property (nonatomic, copy) dispatch_block_t pendingUpdateBlock;
+@property (nonatomic, copy) dispatch_block_t whenLoadedBlock;
+
 @property (nonatomic) BOOL loadingComplete;
 @property (nonatomic, weak) AAPLLoading *loadingInstance;
 
@@ -61,7 +62,7 @@
 }
 
 -(void)reachabilityDidChange:(NSNotification *)notification{
-    if ([AFNetworkReachabilityManager sharedManager].reachable && [self.loadingState isEqualToString:AAPLLoadStateError] && self.isRootDataSource) {
+    if ([AFNetworkReachabilityManager sharedManager].reachable && self.isRootDataSource && [self.loadingState isEqualToString:AAPLLoadStateError]) {
         [self setNeedsLoadContent];
     }
 }
@@ -346,6 +347,10 @@
     }];
     
     self.loadingComplete = YES;
+    if (self.whenLoadedBlock) {
+        self.whenLoadedBlock();
+        self.whenLoadedBlock = nil;
+    }
     [self notifyContentLoadedWithError:error];
 }
 
@@ -394,22 +399,18 @@
 
 - (void)whenLoaded:(dispatch_block_t)block
 {
-    __block int32_t complete = 0;
+    if (self.whenLoadedBlock) {
+        dispatch_block_t currentBlock = self.whenLoadedBlock;
+        self.whenLoadedBlock = ^{
+            currentBlock();
+            block();
+        };
+    }
     
-    [self aapl_addObserverForKeyPath:@"loadingComplete" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew withBlock:^(id obj, NSDictionary *change, id observer) {
-        
-        BOOL loadingComplete = [change[NSKeyValueChangeNewKey] boolValue];
-        if (!loadingComplete)
-            return;
-        
-        [self aapl_removeObserver:observer];
-        
-        // Already called the completion handler
-        if (!OSAtomicCompareAndSwap32(0, 1, &complete))
-            return;
-        
-        block();
-    }];
+    if (self.loadingComplete) {
+        self.whenLoadedBlock();
+        self.whenLoadedBlock = nil;
+    }
 }
 
 - (void)stateWillChange
