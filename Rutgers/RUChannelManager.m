@@ -63,6 +63,15 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
 }
 
+-(NSDictionary *)channelWithHandle:(NSString *)handle{
+    for (NSDictionary *channel in self.allChannels) {
+        if ([[channel channelHandle] isEqualToString:handle]) {
+            return channel;
+        }
+    }
+    return nil;
+}
+
 -(void)setAllChannels:(NSArray *)allChannels{
     @synchronized(self) {
         NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
@@ -144,20 +153,15 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     NSString *view = channel[@"view"];
     if (!view) view = [self defaultViewForChannel:channel];
-    
     Class class = [self classForViewTag:view];
     
     if (!class) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
+    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
     
-    UIViewController * vc;
-    if ([class respondsToSelector:@selector(newWithChannel:)]) {
-        vc = [class newWithChannel:channel];
-    } else {
-        NSLog(@"%@ does not implement RUChannelProtocol, \n%@",NSStringFromClass(class),channel);
-        vc = [class new];
-    }
+    UIViewController *vc = [class newWithChannel:channel];
     vc.title = [channel channelTitle];
     return vc;
+
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{

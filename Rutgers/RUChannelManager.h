@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "RUDataLoadingManager.h"
 
 extern NSString *const ChannelManagerDidUpdateChannelsKey;
@@ -15,5 +16,6 @@ extern NSString *const ChannelManagerDidUpdateChannelsKey;
 +(RUChannelManager *)sharedInstance;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
 @property (readonly) NSArray *allChannels;
+-(NSDictionary *)channelWithHandle:(NSString *)handle;
 @property NSDictionary *lastChannel;
 @end
