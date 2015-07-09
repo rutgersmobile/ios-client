@@ -19,6 +19,12 @@
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
+		0490DC591B4B137E00E76EEF /* RUTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC581B4B137E00E76EEF /* RUTestCase.m */; };
+		0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */; };
+		0490DC931B4C595700E76EEF /* RUDrillDownTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC921B4C595700E76EEF /* RUDrillDownTest.m */; };
+		0490DC981B4DB77C00E76EEF /* RUNewWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC971B4DB77C00E76EEF /* RUNewWebViewController.m */; };
+		0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0490DC991B4DB85A00E76EEF /* WebKit.framework */; };
+		0490DCA01B4DC39E00E76EEF /* RUMOTDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC9F1B4DC39E00E76EEF /* RUMOTDManager.m */; };
 		049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049425011B3A07B500BE570C /* RUSplitViewController.m */; };
 		04A1EFD31A5C508300DE0351 /* RUPredictionsBodyRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */; };
 		04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFC81A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m */; };
@@ -208,16 +214,11 @@
 		C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C262EFB4188345D10035C8F5 /* InfoPlist.strings */; };
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
-		C262EFC5188345D10035C8F5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFC4188345D10035C8F5 /* XCTest.framework */; };
-		C262EFC6188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
-		C262EFC7188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
-		C262EFCF188345D10035C8F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C262EFCD188345D10035C8F5 /* InfoPlist.strings */; };
-		C262EFD1188345D10035C8F5 /* RutgersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFD0188345D10035C8F5 /* RutgersTests.m */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C262EFC8188345D10035C8F5 /* PBXContainerItemProxy */ = {
+		049A4CE51B4AFC890006D1FA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C262EFA0188345D10035C8F5 /* Project object */;
 			proxyType = 1;
@@ -232,6 +233,7 @@
 		0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DiningHall.m"; sourceTree = "<group>"; };
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
 		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
+		041D5F861B4F063600BBCBFC /* WebViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewProvider.h; sourceTree = "<group>"; };
 		04203AF61B15147E005A7099 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ordered_content.json; sourceTree = "<group>"; };
 		0422C9821A69C3C100344828 /* RURecCenterDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterDataSource.h; path = Rutgers/RURecCenterDataSource.h; sourceTree = SOURCE_ROOT; };
 		0422C9831A69C3C100344828 /* RURecCenterDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterDataSource.m; path = Rutgers/RURecCenterDataSource.m; sourceTree = SOURCE_ROOT; };
@@ -246,8 +248,19 @@
 		0465D0821ADEF7D1001C30FE /* RUResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUResponseSerializer.h; sourceTree = "<group>"; };
 		0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUResponseSerializer.m; sourceTree = "<group>"; };
 		047C2EF11A646FCC00B172E5 /* RUInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RUInfo.json; sourceTree = "<group>"; };
+		0490DC571B4B137E00E76EEF /* RUTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUTestCase.h; sourceTree = "<group>"; };
+		0490DC581B4B137E00E76EEF /* RUTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUTestCase.m; sourceTree = "<group>"; };
+		0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCTest.m; sourceTree = "<group>"; };
+		0490DC921B4C595700E76EEF /* RUDrillDownTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDrillDownTest.m; sourceTree = "<group>"; };
+		0490DC961B4DB77C00E76EEF /* RUNewWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNewWebViewController.h; sourceTree = "<group>"; };
+		0490DC971B4DB77C00E76EEF /* RUNewWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNewWebViewController.m; sourceTree = "<group>"; };
+		0490DC991B4DB85A00E76EEF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		0490DC9E1B4DC39E00E76EEF /* RUMOTDManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMOTDManager.h; sourceTree = "<group>"; };
+		0490DC9F1B4DC39E00E76EEF /* RUMOTDManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMOTDManager.m; sourceTree = "<group>"; };
 		049425001B3A07B500BE570C /* RUSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSplitViewController.h; sourceTree = "<group>"; };
 		049425011B3A07B500BE570C /* RUSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSplitViewController.m; sourceTree = "<group>"; };
+		049A4CE01B4AFC890006D1FA /* Rutgers Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rutgers Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		049A4CE41B4AFC890006D1FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyRow.h; sourceTree = "<group>"; };
 		04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPredictionsBodyRow.m; sourceTree = "<group>"; };
 		04A1EFC71A5C508300DE0351 /* RUPredictionsBodyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPredictionsBodyTableViewCell.h; sourceTree = "<group>"; };
@@ -616,17 +629,20 @@
 		C262EFB9188345D10035C8F5 /* Rutgers-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rutgers-Prefix.pch"; sourceTree = "<group>"; };
 		C262EFBA188345D10035C8F5 /* RUAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUAppDelegate.h; sourceTree = "<group>"; };
 		C262EFBD188345D10035C8F5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		C262EFC3188345D10035C8F5 /* RutgersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RutgersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFC4188345D10035C8F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		C262EFCC188345D10035C8F5 /* RutgersTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RutgersTests-Info.plist"; sourceTree = "<group>"; };
-		C262EFCE188345D10035C8F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C262EFD0188345D10035C8F5 /* RutgersTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RutgersTests.m; sourceTree = "<group>"; };
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
 		F3065DFB12B2FEE170165DCB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		049A4CDD1B4AFC890006D1FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C262EFA5188345D10035C8F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -641,17 +657,8 @@
 				C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */,
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
 				C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */,
+				0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */,
 				6862BA48665649378AC0462B /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C262EFC0188345D10035C8F5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C262EFC5188345D10035C8F5 /* XCTest.framework in Frameworks */,
-				C262EFC7188345D10035C8F5 /* UIKit.framework in Frameworks */,
-				C262EFC6188345D10035C8F5 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,6 +687,18 @@
 				0422C9831A69C3C100344828 /* RURecCenterDataSource.m */,
 			);
 			name = model;
+			sourceTree = "<group>";
+		};
+		049A4CE11B4AFC890006D1FA /* Rutgers Tests */ = {
+			isa = PBXGroup;
+			children = (
+				049A4CE41B4AFC890006D1FA /* Info.plist */,
+				0490DC571B4B137E00E76EEF /* RUTestCase.h */,
+				0490DC581B4B137E00E76EEF /* RUTestCase.m */,
+				0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */,
+				0490DC921B4C595700E76EEF /* RUDrillDownTest.m */,
+			);
+			path = "Rutgers Tests";
 			sourceTree = "<group>";
 		};
 		04A1EFC41A5C506900DE0351 /* rubus */ = {
@@ -902,6 +921,8 @@
 			children = (
 				A7B970D01921603E0070A414 /* RUChannelManager.h */,
 				A7B970D11921603E0070A414 /* RUChannelManager.m */,
+				0490DC9E1B4DC39E00E76EEF /* RUMOTDManager.h */,
+				0490DC9F1B4DC39E00E76EEF /* RUMOTDManager.m */,
 				A7D4B6E119ACD5F20087A8BC /* RUAnalyticsManager.h */,
 				A7D4B6E219ACD5F20087A8BC /* RUAnalyticsManager.m */,
 				A748ECEB191602C400CB91FF /* RULocationManager.h */,
@@ -1376,6 +1397,9 @@
 			children = (
 				A7E8E131192480A60089F166 /* RUWebViewController.h */,
 				A7E8E132192480A60089F166 /* RUWebViewController.m */,
+				0490DC961B4DB77C00E76EEF /* RUNewWebViewController.h */,
+				0490DC971B4DB77C00E76EEF /* RUNewWebViewController.m */,
+				041D5F861B4F063600BBCBFC /* WebViewProvider.h */,
 			);
 			name = ruwebview;
 			sourceTree = "<group>";
@@ -1453,7 +1477,7 @@
 			isa = PBXGroup;
 			children = (
 				C262EFB1188345D10035C8F5 /* Rutgers */,
-				C262EFCA188345D10035C8F5 /* RutgersTests */,
+				049A4CE11B4AFC890006D1FA /* Rutgers Tests */,
 				C262EFAA188345D10035C8F5 /* Frameworks */,
 				C262EFA9188345D10035C8F5 /* Products */,
 				71C113FD36A753397BBAA999 /* Pods */,
@@ -1464,7 +1488,7 @@
 			isa = PBXGroup;
 			children = (
 				C262EFA8188345D10035C8F5 /* Rutgers.app */,
-				C262EFC3188345D10035C8F5 /* RutgersTests.xctest */,
+				049A4CE01B4AFC890006D1FA /* Rutgers Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1472,6 +1496,7 @@
 		C262EFAA188345D10035C8F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0490DC991B4DB85A00E76EEF /* WebKit.framework */,
 				A786C71519C8AC9F00347BBD /* CoreImage.framework */,
 				A786C71319C8AC9900347BBD /* CoreText.framework */,
 				A786C71119C8AC8E00347BBD /* libxml2.dylib */,
@@ -1525,27 +1550,27 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C262EFCA188345D10035C8F5 /* RutgersTests */ = {
-			isa = PBXGroup;
-			children = (
-				C262EFD0188345D10035C8F5 /* RutgersTests.m */,
-				C262EFCB188345D10035C8F5 /* Supporting Files */,
-			);
-			path = RutgersTests;
-			sourceTree = "<group>";
-		};
-		C262EFCB188345D10035C8F5 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C262EFCC188345D10035C8F5 /* RutgersTests-Info.plist */,
-				C262EFCD188345D10035C8F5 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		049A4CDF1B4AFC890006D1FA /* Rutgers Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 049A4CE71B4AFC890006D1FA /* Build configuration list for PBXNativeTarget "Rutgers Tests" */;
+			buildPhases = (
+				049A4CDC1B4AFC890006D1FA /* Sources */,
+				049A4CDD1B4AFC890006D1FA /* Frameworks */,
+				049A4CDE1B4AFC890006D1FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				049A4CE61B4AFC890006D1FA /* PBXTargetDependency */,
+			);
+			name = "Rutgers Tests";
+			productName = "Rutgers Tests";
+			productReference = 049A4CE01B4AFC890006D1FA /* Rutgers Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C262EFA7188345D10035C8F5 /* Rutgers */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C262EFD4188345D10035C8F5 /* Build configuration list for PBXNativeTarget "Rutgers" */;
@@ -1565,24 +1590,6 @@
 			productReference = C262EFA8188345D10035C8F5 /* Rutgers.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C262EFC2188345D10035C8F5 /* RutgersTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C262EFD7188345D10035C8F5 /* Build configuration list for PBXNativeTarget "RutgersTests" */;
-			buildPhases = (
-				C262EFBF188345D10035C8F5 /* Sources */,
-				C262EFC0188345D10035C8F5 /* Frameworks */,
-				C262EFC1188345D10035C8F5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C262EFC9188345D10035C8F5 /* PBXTargetDependency */,
-			);
-			name = RutgersTests;
-			productName = RutgersTests;
-			productReference = C262EFC3188345D10035C8F5 /* RutgersTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1593,11 +1600,12 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Rutgers;
 				TargetAttributes = {
+					049A4CDF1B4AFC890006D1FA = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = C262EFA7188345D10035C8F5;
+					};
 					C262EFA7188345D10035C8F5 = {
 						DevelopmentTeam = 43YR78874Z;
-					};
-					C262EFC2188345D10035C8F5 = {
-						TestTargetID = C262EFA7188345D10035C8F5;
 					};
 				};
 			};
@@ -1614,12 +1622,19 @@
 			projectRoot = "";
 			targets = (
 				C262EFA7188345D10035C8F5 /* Rutgers */,
-				C262EFC2188345D10035C8F5 /* RutgersTests */,
+				049A4CDF1B4AFC890006D1FA /* Rutgers Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		049A4CDE1B4AFC890006D1FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C262EFA6188345D10035C8F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1639,14 +1654,6 @@
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C262EFC1188345D10035C8F5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C262EFCF188345D10035C8F5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1686,6 +1693,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		049A4CDC1B4AFC890006D1FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */,
+				0490DC931B4C595700E76EEF /* RUDrillDownTest.m in Sources */,
+				0490DC591B4B137E00E76EEF /* RUTestCase.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C262EFA4188345D10035C8F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1836,6 +1853,7 @@
 				A7C155FD198AB6A800CDCAE3 /* FAQSectionDataSource.m in Sources */,
 				A7F95650196334890074305D /* RUSportsRosterPlayerHeaderRow.m in Sources */,
 				A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailViewController.m in Sources */,
+				0490DC981B4DB77C00E76EEF /* RUNewWebViewController.m in Sources */,
 				04A1EFEA1A5C509600DE0351 /* AllRoutesDataSource.m in Sources */,
 				A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */,
 				04A1EFE81A5C509600DE0351 /* ActiveRoutesDataSource.m in Sources */,
@@ -1843,6 +1861,7 @@
 				A7DD34951981D41C0078023A /* RecentPlacesDataSource.m in Sources */,
 				A7778D7D19A54852003BD8DE /* RUInfoDataSource.m in Sources */,
 				A7B970C8192075F40070A414 /* RUMapsData.m in Sources */,
+				0490DCA01B4DC39E00E76EEF /* RUMOTDManager.m in Sources */,
 				A70C2BE3198C2C60004F82D4 /* ALTableViewTextCell.m in Sources */,
 				04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */,
 				A79B5DE3199C23C900DAEFC1 /* CLLocation+Centroid.m in Sources */,
@@ -1869,21 +1888,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C262EFBF188345D10035C8F5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C262EFD1188345D10035C8F5 /* RutgersTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C262EFC9188345D10035C8F5 /* PBXTargetDependency */ = {
+		049A4CE61B4AFC890006D1FA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C262EFA7188345D10035C8F5 /* Rutgers */;
-			targetProxy = C262EFC8188345D10035C8F5 /* PBXContainerItemProxy */;
+			targetProxy = 049A4CE51B4AFC890006D1FA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1896,17 +1907,47 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		C262EFCD188345D10035C8F5 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C262EFCE188345D10035C8F5 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		049A4CE81B4AFC890006D1FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Rutgers Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "RU.Rutgers-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rutgers.app/Rutgers";
+			};
+			name = Debug;
+		};
+		049A4CE91B4AFC890006D1FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Rutgers Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "RU.Rutgers-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rutgers.app/Rutgers";
+			};
+			name = Release;
+		};
 		C262EFD2188345D10035C8F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2029,49 +2070,18 @@
 			};
 			name = Release;
 		};
-		C262EFD8188345D10035C8F5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Rutgers.app/Rutgers";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "RutgersTests/RutgersTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		C262EFD9188345D10035C8F5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Rutgers.app/Rutgers";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
-				INFOPLIST_FILE = "RutgersTests/RutgersTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		049A4CE71B4AFC890006D1FA /* Build configuration list for PBXNativeTarget "Rutgers Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				049A4CE81B4AFC890006D1FA /* Debug */,
+				049A4CE91B4AFC890006D1FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C262EFA3188345D10035C8F5 /* Build configuration list for PBXProject "Rutgers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2086,15 +2096,6 @@
 			buildConfigurations = (
 				C262EFD5188345D10035C8F5 /* Debug */,
 				C262EFD6188345D10035C8F5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C262EFD7188345D10035C8F5 /* Build configuration list for PBXNativeTarget "RutgersTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C262EFD8188345D10035C8F5 /* Debug */,
-				C262EFD9188345D10035C8F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
