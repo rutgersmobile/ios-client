@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     DrawerImplementationSplitView,
 };
 
-@interface RURootController () <RUMenuDelegate, UINavigationControllerDelegate>
+@interface RURootController () <RUMenuDelegate>
 @property (nonatomic) SWRevealViewController *revealViewController;
 @property (nonatomic) MMDrawerController *mmDrawerViewController;
 @property (nonatomic) UISplitViewController *splitViewController;
@@ -183,12 +183,12 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
     
     UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
-    navController.delegate = self;
     [RUAppearance applyAppearanceToNavigationController:navController];
     vc = navController;
     
     return vc;
 }
+
 -(void)setCenterChannel:(NSDictionary *)channel{
     self.currentChannel = channel;
     [RUChannelManager sharedInstance].lastChannel = channel;
