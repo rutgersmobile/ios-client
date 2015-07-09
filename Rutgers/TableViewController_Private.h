@@ -19,9 +19,6 @@
 
 @property (nonatomic) BOOL loadsContentOnViewWillAppear;
 
-@property (nonatomic) DataSource *dataSource;
-@property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
-
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView;
 -(UITableView *)tableViewForDataSource:(DataSource *)dataSource;
 
