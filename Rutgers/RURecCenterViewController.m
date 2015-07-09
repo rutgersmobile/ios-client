@@ -7,7 +7,6 @@
 //
 
 #import "RURecCenterViewController.h"
-#import "TableViewController_Private.h"
 #import "RUPlace.h"
 #import "RUMapsViewController.h"
 #import "RURecCenterDataSource.h"

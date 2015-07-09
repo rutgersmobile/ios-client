@@ -8,7 +8,6 @@
 
 #import "RUDiningHallViewController.h"
 #import "RUDiningHallDataSource.h"
-#import "TableViewController_Private.h"
 
 @interface RUDiningHallViewController ()
 @property (nonatomic) NSDictionary *diningHall;

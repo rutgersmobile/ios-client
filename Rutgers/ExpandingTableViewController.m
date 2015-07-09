@@ -8,7 +8,6 @@
 
 #import "ExpandingTableViewController.h"
 #import "ExpandingTableViewDataSource.h"
-#import "TableViewController_Private.h"
 
 @interface ExpandingTableViewController ()
 @end

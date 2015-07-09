@@ -9,7 +9,6 @@
 #import "RUInfoTableViewController.h"
 #import "DataTuple.h"
 #import "RUInfoDataSource.h"
-#import "TableViewController_Private.h"
 #import <MessageUI/MessageUI.h>
 
 @interface RUInfoTableViewController () <MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>

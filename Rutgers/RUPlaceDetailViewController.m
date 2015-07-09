@@ -13,7 +13,6 @@
 #import "RUPlaceDetailDataSource.h"
 #import "RUMultiStop.h"
 #import "RUPlace.h"
-#import "TableViewController_Private.h"
 
 @interface RUPlaceDetailViewController ()
 @property (nonatomic) RUPlace *place;

@@ -10,7 +10,6 @@
 #import "RUSOCDataLoadingManager.h"
 #import "AlertDataSource.h"
 #import "ComposedDataSource.h"
-#import "TableViewController_Private.h"
 
 @interface RUSOCOptionsViewController ()
 @property id<RUSOCOptionsDelegate> delegate;

@@ -9,7 +9,6 @@
 #import "RUReaderViewController.h"
 #import "RUReaderItem.h"
 #import "RUReaderDataSource.h"
-#import "TableViewController_Private.h"
 
 @interface RUReaderViewController ()
 @property (nonatomic) NSDictionary *channel;

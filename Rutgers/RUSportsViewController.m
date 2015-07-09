@@ -11,7 +11,6 @@
 #import "RUSportsRosterViewController.h"
 #import "TupleDataSource.h"
 #import "DataTuple.h"
-#import "TableViewController_Private.h"
 
 @interface RUSportsViewController ()
 @property RUSportsData *sportsData;

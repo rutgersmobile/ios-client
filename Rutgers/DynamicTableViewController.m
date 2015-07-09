@@ -8,7 +8,6 @@
 
 #import "DynamicTableViewController.h"
 #import "DynamicDataSource.h"
-#import "TableViewController_Private.h"
 
 @interface DynamicTableViewController ()
 @property NSDictionary *channel;

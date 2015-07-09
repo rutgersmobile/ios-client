@@ -10,7 +10,6 @@
 #import "OptionsDataSource.h"
 #import "RULegalViewController.h"
 #import "AlertDataSource.h"
-#import "TableViewController_Private.h"
 #import "RUAppDelegate.h"
 
 @interface RUOptionsViewController ()

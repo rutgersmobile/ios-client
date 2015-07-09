@@ -12,7 +12,6 @@
 #import "RUSportsPlayer.h"
 #import "RUSportsRosterSectionHeaderView.h"
 #import "RUSportsRosterPlayerHeaderCell.h"
-#import "TableViewController_Private.h"
 
 @interface RUSportsRosterViewController ()
 @property NSString *sportID;

@@ -7,7 +7,6 @@
 //
 
 #import "RULegalViewController.h"
-#import "TableViewController_Private.h"
 #import "LegalDataSource.h"
 
 @interface RULegalViewController ()

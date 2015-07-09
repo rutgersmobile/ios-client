@@ -10,7 +10,6 @@
 #import "RUFeedbackDataSource.h"
 #import "RUFeedbackDataSource.h"
 #import "AlertDataSource.h"
-#import "TableViewController_Private.h"
 #import "FeedbackDataSourceDelegate.h"
 
 @interface RUFeedbackViewController () <FeedbackDataSourceDelegate>

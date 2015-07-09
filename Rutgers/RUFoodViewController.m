@@ -10,7 +10,6 @@
 #import "RUDiningHallViewController.h"
 #import "RUFoodDataSource.h"
 #import "DataTuple.h"
-#import "TableViewController_Private.h"
 #import "NSDictionary+DiningHall.h"
 
 @interface RUFoodViewController ()
