@@ -12,6 +12,5 @@
 @interface CollectionViewController : UICollectionViewController <DataSourceDelegate>
 -(DataSource *)dataSource;
 -(void)setDataSource:(DataSource *)dataSource;
-
 -(void)preferredContentSizeChanged NS_REQUIRES_SUPER;
 @end

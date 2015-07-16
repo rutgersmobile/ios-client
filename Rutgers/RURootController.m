@@ -181,7 +181,7 @@ typedef NS_ENUM(NSUInteger, DrawerImplementation) {
 #pragma mark Drawer Interface
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
-    
+
     UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
     [RUAppearance applyAppearanceToNavigationController:navController];
     vc = navController;
