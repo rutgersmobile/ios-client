@@ -85,7 +85,7 @@
     if (!animated) {
         _items = [items copy];
         [self invalidateCachedHeightsForSection:0];
-        [self notifyDidReloadData];
+        [self notifyDidReloadDataWithDirection:DataSourceAnimationDirectionNone];
         [self updateLoadingStateFromItems];
         return;
     }

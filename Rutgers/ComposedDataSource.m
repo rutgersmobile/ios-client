@@ -231,7 +231,7 @@
     else
         _aggregateLoadingState = AAPLLoadStateInitial;
     
-  //  [self updatePlaceholderState];
+    [self updatePlaceholderState];
 }
 
 - (NSString *)loadingState
@@ -305,8 +305,8 @@
     if (!self.showingPlaceholder) [self notifySectionMovedFrom:[self globalSectionForLocalSection:section inDataSource:dataSource] to:[self globalSectionForLocalSection:newSection inDataSource:dataSource]];
 }
 
--(void)dataSourceDidReloadData:(DataSource *)dataSource{
-    [self notifyDidReloadData];
+-(void)dataSourceDidReloadData:(DataSource *)dataSource direction:(DataSourceAnimationDirection)direction{
+    [self notifyDidReloadDataWithDirection:direction];
 }
 
 -(void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete{

@@ -407,7 +407,7 @@
         };
     }
     
-    if (self.loadingComplete) {
+    if (self.loadingComplete && self.whenLoadedBlock) {
         self.whenLoadedBlock();
         self.whenLoadedBlock = nil;
     }
@@ -601,12 +601,16 @@
     
 }
 
-- (void)notifyDidReloadData{
+-(void)notifyDidReloadData{
+    [self notifyDidReloadDataWithDirection:DataSourceAnimationDirectionNone];
+}
+
+- (void)notifyDidReloadDataWithDirection:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSourceDidReloadData:)]) {
-        [delegate dataSourceDidReloadData:self];
+    if ([delegate respondsToSelector:@selector(dataSourceDidReloadData:direction:)]) {
+        [delegate dataSourceDidReloadData:self direction:direction];
     }
 }
 

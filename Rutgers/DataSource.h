@@ -31,7 +31,7 @@ typedef NS_ENUM(int, DataSourceAnimationDirection) {
 - (void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction;
 - (void)dataSource:(DataSource *)dataSource didMoveSection:(NSInteger)section toSection:(NSInteger)newSection;
 
-- (void)dataSourceDidReloadData:(DataSource *)dataSource;
+- (void)dataSourceDidReloadData:(DataSource *)dataSource direction:(DataSourceAnimationDirection)direction;
 - (void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete;
 
 - (void)dataSourceWillLoadContent:(DataSource *)dataSource;

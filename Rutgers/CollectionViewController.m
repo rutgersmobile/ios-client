@@ -99,7 +99,7 @@
     [self.collectionView moveSection:section toSection:newSection];
 }
 
--(void)dataSourceDidReloadData:(DataSource *)dataSource{
+-(void)dataSourceDidReloadData:(DataSource *)dataSource direction:(DataSourceAnimationDirection)direction{
     [self.collectionView reloadData];
 }
 

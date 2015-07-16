@@ -180,7 +180,7 @@
         TableViewController *searchResultsController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
         self.searchResultsController = searchResultsController;
         searchResultsController.tableView.delegate = self;
-        self.searchController = [[UISearchController alloc] initWithSearchResultsController:[[UINavigationController alloc] initWithRootViewController:searchResultsController]];
+        self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
         self.searchBar = self.searchController.searchBar;
         self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
         [RUAppearance applyAppearanceToSearchBar:self.searchBar];
@@ -370,8 +370,17 @@
     [[self tableViewForDataSource:dataSource] moveSection:section toSection:newSection];
 }
 
--(void)dataSourceDidReloadData:(DataSource *)dataSource{
-    [[self tableViewForDataSource:dataSource] reloadData];
+-(void)dataSourceDidReloadData:(DataSource *)dataSource direction:(DataSourceAnimationDirection)direction{
+    UITableView *tableView = [self tableViewForDataSource:dataSource];
+    [tableView reloadData];
+    if (direction != DataSourceAnimationDirectionNone) {
+        CATransition *animation = [CATransition animation];
+        [animation setType:kCATransitionPush];
+        [animation setSubtype:(direction == DataSourceAnimationDirectionLeft) ? kCATransitionFromRight : kCATransitionFromLeft];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :0 :0.3 :1]];
+        [animation setDuration:0.45];
+        [[tableView layer] addAnimation:animation forKey:@"UITableViewReloadDataAnimationKey"];
+    }
 }
 
 -(void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete{

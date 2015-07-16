@@ -77,32 +77,20 @@
     }
 
     DataSource *oldDataSource = self.selectedDataSource;
-    NSInteger numberOfOldSections = oldDataSource.numberOfSections;
-    NSInteger numberOfNewSections = selectedDataSource.numberOfSections;
     
     NSInteger oldIndex = [_dataSources indexOfObjectIdenticalTo:oldDataSource];
     NSInteger newIndex = [_dataSources indexOfObjectIdenticalTo:selectedDataSource];
-    
-    DataSourceAnimationDirection removalDirection = (oldIndex < newIndex) ? DataSourceAnimationDirectionLeft : DataSourceAnimationDirectionRight;
-    DataSourceAnimationDirection insertionDirection = (oldIndex < newIndex) ? DataSourceAnimationDirectionRight : DataSourceAnimationDirectionLeft;
-    
-    NSIndexSet *removedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfOldSections)];;
-    NSIndexSet *insertedSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfNewSections)];
     
     [self willChangeValueForKey:@"selectedDataSource"];
     [self willChangeValueForKey:@"selectedDataSourceIndex"];
     
     _selectedDataSource = selectedDataSource;
     
+#warning go here
     if (animated) {
-        [self notifyBatchUpdate:^{
-            if (removedSet)
-                [self notifySectionsRemoved:removedSet direction:removalDirection];
-            if (insertedSet)
-                [self notifySectionsInserted:insertedSet direction:insertionDirection];
-        }];
+        [self notifyDidReloadDataWithDirection:(oldIndex < newIndex) ? DataSourceAnimationDirectionLeft : DataSourceAnimationDirectionRight];
     } else {
-        [self notifyDidReloadData];
+        [self notifyDidReloadDataWithDirection:DataSourceAnimationDirectionNone];
     }
     
     [self didChangeValueForKey:@"selectedDataSource"];
@@ -338,9 +326,9 @@
     }
 }
 
--(void)dataSourceDidReloadData:(DataSource *)dataSource{
+-(void)dataSourceDidReloadData:(DataSource *)dataSource direction:(DataSourceAnimationDirection)direction{
     if (self.selectedDataSource == dataSource) {
-        [self notifyDidReloadData];
+        [self notifyDidReloadDataWithDirection:direction];
     }
 }
 
