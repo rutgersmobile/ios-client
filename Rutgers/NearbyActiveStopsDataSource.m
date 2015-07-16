@@ -16,8 +16,6 @@
     self = [super init];
     if (self) {
         self.title = @"Nearby Active Stops";
-        self.noContentTitle = @"No Nearby Active Stops";
-        self.noContentMessage = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsLoadContent) name:LocationManagerDidChangeLocationKey object:nil];
     }
     return self;
@@ -29,6 +27,12 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
+        if (self.location) {
+            self.noContentTitle = @"No Nearby Active Stops";
+        } else {
+            self.noContentTitle = @"Unable to find location";
+        }
+        
         [[RUBusDataLoadingManager sharedInstance] fetchActiveStopsNearbyLocation:self.location completion:^(NSArray *stops, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
