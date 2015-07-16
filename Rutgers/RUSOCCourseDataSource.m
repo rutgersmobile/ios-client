@@ -18,6 +18,7 @@
 @property (nonatomic) NSDictionary *course;
 @property (nonatomic) RUSOCCourseSectionsDataSource *sectionsDataSource;
 @property (nonatomic) RUSOCCourseHeaderDataSource *headerDataSource;
+@property (nonatomic) BOOL initialLoadComplete;
 @end
 
 @implementation RUSOCCourseDataSource
@@ -32,13 +33,19 @@
 }
 
 -(void)loadContent{
-    NSArray *sections = self.course[@"sections"];
-    if (sections) {
-        [self updateWithCourse:self.course];
-    } else {
-        [self loadContentWithBlock:^(AAPLLoading *loading) {
+    [self loadContentWithBlock:^(AAPLLoading *loading) {
+        NSArray *sections = self.course[@"sections"];
+        if (sections && !self.initialLoadComplete) {
+            NSDictionary *course = self.course;
+            [loading updateWithContent:^(typeof(self) me) {
+                [me updateWithCourse:course];
+            }];
+            self.initialLoadComplete = YES;
+        } else {
+            NSString *subjectCode = self.course[@"subjectCode"];
+            if (!subjectCode) subjectCode = self.course[@"subject"];
             
-            [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:self.course[@"subjectCode"] courseCode:self.course[@"courseNumber"] completion:^(NSDictionary *course, NSError *error) {
+            [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:subjectCode courseCode:self.course[@"courseNumber"] completion:^(NSDictionary *course, NSError *error) {
                 if (!loading.current) {
                     [loading ignore];
                     return;
@@ -52,9 +59,9 @@
                     [loading doneWithError:error];
                 }
             }];
-            
-        }];
-    }
+        }
+    }];
+    
 }
 
 -(void)updateWithCourse:(NSDictionary *)course{

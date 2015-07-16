@@ -34,6 +34,14 @@
     self.dataSource = [[RUSOCCourseDataSource alloc] initWithCourse:self.course];
 }
 
+-(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
+    if (!self.refreshControl && !error) {
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self.dataSource action:@selector(setNeedsLoadContent) forControlEvents:UIControlEventValueChanged];
+    }
+    [self.refreshControl endRefreshing];
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[RUSOCSectionRow class]]) {
