@@ -75,11 +75,27 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 
 -(void)queryPlacesWithString:(NSString *)query completion:(void (^)(NSArray *results, NSError *error))completionBlock{
     [self performWhenLoaded:^(NSError *error) {
-        NSPredicate *searchPredicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
-        NSArray *results = [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
-        results = [results sortByKeyPath:@"title"];
-        completionBlock(results,error);
+        NSMutableOrderedSet *results = [NSMutableOrderedSet orderedSet];
+        [results addObjectsFromArray:[self placesWithTitle:query]];
+        [results addObjectsFromArray:[self placesWithOffice:query]];
+        completionBlock([results.array sortByKeyPath:@"title"],error);
     }];
+}
+
+-(NSArray *)placesWithTitle:(NSString *)title{
+    NSPredicate *searchPredicate = [NSPredicate predicateForQuery:title keyPath:@"title"];
+    return [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
+}
+
+-(NSArray *)placesWithOffice:(NSString *)office{
+    NSPredicate *officePredicate = [NSPredicate predicateForQuery:office keyPath:@"self"];
+    NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(RUPlace *place, NSDictionary *bindings) {
+        for (NSString *office in place.offices) {
+            if ([officePredicate evaluateWithObject:office]) return YES;
+        }
+        return NO;
+    }];
+    return [self.places.allValues filteredArrayUsingPredicate:searchPredicate];
 }
 
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents, NSError *error))completionBlock{
