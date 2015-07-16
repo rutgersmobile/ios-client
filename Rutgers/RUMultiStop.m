@@ -14,7 +14,7 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.stops = @[];
+        _stops = @[];
     }
     return self;
 }
@@ -27,7 +27,7 @@
 }
 
 -(void)addStopsObject:(RUBusStop *)object{
-    self.stops = [self.stops arrayByAddingObject:object];
+    _stops = [self.stops arrayByAddingObject:object];
 }
 
 -(CLLocation *)location{

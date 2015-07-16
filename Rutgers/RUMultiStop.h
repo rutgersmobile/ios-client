@@ -11,7 +11,7 @@
 @class RUBusStop;
 
 @interface RUMultiStop : NSObject
-@property (nonatomic) NSArray *stops;
+@property (nonatomic, readonly) NSArray *stops;
 @property (nonatomic, readonly) NSString *title;
 
 @property (nonatomic, readonly) CLLocation *location;
