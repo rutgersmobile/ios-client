@@ -24,16 +24,16 @@
     if (self) {
         self.recCenter = recCenter;
         
-        NSArray *dailySchedules = self.recCenter[@"daily_schedules"];
+        NSArray *dailySchedules = recCenter[@"daily_schedules"];
         if (dailySchedules.count) {
             RURecCenterHoursSection *hoursSection = [[RURecCenterHoursSection alloc] initWithDailySchedules:dailySchedules];
             [self addDataSource:hoursSection];
             self.hoursSection = hoursSection;
         }
         
-        NSString *address = self.recCenter[@"address"];
-        NSString *informationNumber = self.recCenter[@"information_number"];
-        NSString *businessNumber = self.recCenter[@"business_number"];
+        NSString *address = recCenter[@"address"];
+        NSString *informationNumber = recCenter[@"information_number"];
+        NSString *businessNumber = recCenter[@"business_number"];
 
         if (address.length || informationNumber.length || businessNumber.length) {
             KeyValueDataSource *infoSection = [[KeyValueDataSource alloc] initWithObject:recCenter];
@@ -47,7 +47,7 @@
             [self addDataSource:infoSection];
         }
 
-        NSString *description = self.recCenter[@"full_description"];
+        NSString *description = recCenter[@"full_description"];
         if (description.length) {
             StringDataSource *descriptionDataSource = [[StringDataSource alloc] init];
             self.descriptionDataSource = descriptionDataSource;
