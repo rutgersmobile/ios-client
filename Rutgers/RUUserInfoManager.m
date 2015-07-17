@@ -59,12 +59,20 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
              ];
 }
 
++(NSDictionary *)campusWithTag:(NSString *)tag{
+    for (NSDictionary *campus in self.campuses) {
+        if ([campus[@"tag"] isEqualToString:tag]) return campus;
+    }
+    return nil;
+}
+
 +(NSDictionary *)currentCampus{
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:userInfoManagerCampusKey];
+    NSString *tag = [[NSUserDefaults standardUserDefaults] stringForKey:userInfoManagerCampusKey];
+    return [self campusWithTag:tag];
 }
 
 +(void)setCurrentCampus:(NSDictionary *)currentCampus{
-    [[NSUserDefaults standardUserDefaults] setObject:currentCampus forKey:userInfoManagerCampusKey];
+    [[NSUserDefaults standardUserDefaults] setObject:currentCampus[@"tag"] forKey:userInfoManagerCampusKey];
     [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeCampusKey object:nil];
 }
 
@@ -80,11 +88,20 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
              ];
 }
 
-+(NSDictionary *)currentUserRole{
-    return [[NSUserDefaults standardUserDefaults] dictionaryForKey:userInfoManagerUserRoleKey];
++(NSDictionary *)userRolesWithTag:(NSString *)tag{
+    for (NSDictionary *userRole in self.userRoles) {
+        if ([userRole[@"tag"] isEqualToString:tag]) return userRole;
+    }
+    return nil;
 }
+
++(NSDictionary *)currentUserRole{
+    NSString *tag = [[NSUserDefaults standardUserDefaults] stringForKey:userInfoManagerUserRoleKey];
+    return [self userRolesWithTag:tag];
+}
+
 +(void)setCurrentUserRole:(NSDictionary *)currentUserRole{
-    [[NSUserDefaults standardUserDefaults] setObject:currentUserRole forKey:userInfoManagerUserRoleKey];
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserRole[@"tag"] forKey:userInfoManagerUserRoleKey];
 }
 
 -(BOOL)hasUserInformation{
