@@ -377,8 +377,8 @@
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
         [animation setSubtype:(direction == DataSourceAnimationDirectionLeft) ? kCATransitionFromRight : kCATransitionFromLeft];
-        [animation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :0 :0.3 :1]];
-        [animation setDuration:0.45];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithControlPoints:0.1 :0 :0.2 :1]];
+        [animation setDuration:0.55];
         [[tableView layer] addAnimation:animation forKey:@"UITableViewReloadDataAnimationKey"];
     }
 }
