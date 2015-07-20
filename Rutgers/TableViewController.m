@@ -21,8 +21,8 @@
 @property (nonatomic) UISearchController *searchController;
 @property (nonatomic) TableViewController *searchResultsController;
 
-@property (nonatomic) MSWeakTimer *minSearchTimer;
-@property (nonatomic) MSWeakTimer *maxSearchTimer;
+@property (nonatomic) NSTimer *minSearchTimer;
+@property (nonatomic) NSTimer *maxSearchTimer;
 @property (nonatomic) CGFloat lastValidWidth;
 @end
 
@@ -224,9 +224,9 @@
 -(void)updateTimersForKeyPress{
     [self.minSearchTimer invalidate];
     self.minSearchTimer = nil;
-    self.minSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MIN_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
+    self.minSearchTimer = [NSTimer scheduledTimerWithTimeInterval:MIN_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO];
     if (!self.maxSearchTimer) {
-        self.maxSearchTimer = [MSWeakTimer scheduledTimerWithTimeInterval:MAX_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO dispatchQueue:dispatch_get_main_queue()];
+        self.maxSearchTimer = [NSTimer scheduledTimerWithTimeInterval:MAX_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO];
     }
 }
 
