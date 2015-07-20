@@ -8,7 +8,7 @@
 
 #import "RUUserInfoManager.h"
 
-NSString *const userInfoManagerDidChangeCampusKey = @"userInfoManagerDidChangeCampusKey";
+NSString *const userInfoManagerDidChangeInfoKey = @"userInfoManagerDidChangeInfoKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
 static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey";
 
@@ -24,6 +24,15 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 
 @implementation RUUserInfoManager
++(void)load{
+    [super load];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkIfInfoChanged) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+#warning incomplete
++(void)checkIfInfoChanged{
+    
+}
 
 +(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
     NSDictionary *campus = [self currentCampus];
@@ -73,7 +82,11 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 +(void)setCurrentCampus:(NSDictionary *)currentCampus{
     [[NSUserDefaults standardUserDefaults] setObject:currentCampus[@"tag"] forKey:userInfoManagerCampusKey];
-    [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeCampusKey object:nil];
+    [self notifyInfoDidChange];
+}
+
++(void)notifyInfoDidChange{
+    [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeInfoKey object:nil];
 }
 
 +(NSArray *)userRoles{

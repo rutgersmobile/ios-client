@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const userInfoManagerDidChangeCampusKey;
+extern NSString *const userInfoManagerDidChangeInfoKey;
 
 @interface RUUserInfoManager : NSObject
 
