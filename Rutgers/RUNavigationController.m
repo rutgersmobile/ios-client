@@ -27,7 +27,7 @@
     _preferredStatusBarStyle = preferredStatusBarStyle;
     [self setNeedsStatusBarAppearanceUpdate];
 }
-
+/*
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     [super pushViewController:viewController animated:animated];
     self.view.backgroundColor = viewController.view.backgroundColor;
@@ -37,5 +37,5 @@
     UIViewController *vc = [super popViewControllerAnimated:animated];
     self.view.backgroundColor = [self.viewControllers.lastObject view].backgroundColor;
     return vc;
-}
+}*/
 @end
