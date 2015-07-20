@@ -9,7 +9,7 @@
 #import "RUPredictionsHeaderRow.h"
 #import "RUBusRoute.h"
 #import "RUMultiStop.h"
-#import <HexColor.h>
+#import <HexColors.h>
 #import "RUPredictionsHeaderTableViewCell.h"
 
 @interface RUPredictionsHeaderRow ()
