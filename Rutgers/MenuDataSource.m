@@ -24,7 +24,7 @@
         
         [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:@[optionsChannel]]];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyDidReloadData) name:userInfoManagerDidChangeCampusKey object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyDidReloadData) name:userInfoManagerDidChangeInfoKey object:nil];
     }
     return self;
 }
