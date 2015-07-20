@@ -86,7 +86,6 @@
     
     _selectedDataSource = selectedDataSource;
     
-#warning go here
     if (animated) {
         [self notifyDidReloadDataWithDirection:(oldIndex < newIndex) ? DataSourceAnimationDirectionLeft : DataSourceAnimationDirectionRight];
     } else {
