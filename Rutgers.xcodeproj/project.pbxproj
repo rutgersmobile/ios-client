@@ -50,6 +50,7 @@
 		04A1EFFD1A5C50B700DE0351 /* RUMultiStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF91A5C50B700DE0351 /* RUMultiStop.m */; };
 		04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */; };
 		04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1F0021A5C50D400DE0351 /* NearbyActiveStopsDataSource.m */; };
+		04ABA7EE1B5D6B38000EB43C /* RUContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ABA7ED1B5D6B38000EB43C /* RUContainerController.m */; };
 		04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3519D32EB800A20D1E /* Splash Screen.xib */; };
 		04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3719D32FC000A20D1E /* rutgerscopyright@2x.png */; };
 		04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3819D32FC000A20D1E /* rutgerslogo@2x.png */; };
@@ -309,6 +310,8 @@
 		04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusDataSource.m; sourceTree = "<group>"; };
 		04A1F0011A5C50D400DE0351 /* NearbyActiveStopsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyActiveStopsDataSource.h; sourceTree = "<group>"; };
 		04A1F0021A5C50D400DE0351 /* NearbyActiveStopsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyActiveStopsDataSource.m; sourceTree = "<group>"; };
+		04ABA7ED1B5D6B38000EB43C /* RUContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUContainerController.m; sourceTree = "<group>"; };
+		04ABA7EF1B5D6B43000EB43C /* RUContainerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUContainerController.h; sourceTree = "<group>"; };
 		04AEDE3519D32EB800A20D1E /* Splash Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Splash Screen.xib"; sourceTree = "<group>"; };
 		04AEDE3719D32FC000A20D1E /* rutgerscopyright@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rutgerscopyright@2x.png"; sourceTree = "<group>"; };
 		04AEDE3819D32FC000A20D1E /* rutgerslogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rutgerslogo@2x.png"; sourceTree = "<group>"; };
@@ -1412,6 +1415,8 @@
 				A73F6580193E549F00E26449 /* menu */,
 				A7E8E13A192547190089F166 /* RURootController.h */,
 				A7E8E13B192547190089F166 /* RURootController.m */,
+				04ABA7EF1B5D6B43000EB43C /* RUContainerController.h */,
+				04ABA7ED1B5D6B38000EB43C /* RUContainerController.m */,
 				04AEDE3519D32EB800A20D1E /* Splash Screen.xib */,
 				044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */,
 			);
@@ -1774,6 +1779,7 @@
 				A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */,
 				A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */,
 				A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */,
+				04ABA7EE1B5D6B38000EB43C /* RUContainerController.m in Sources */,
 				041AE339193D2E32002ED85C /* RUAppearance.m in Sources */,
 				0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */,
 				04A1EFD31A5C508300DE0351 /* RUPredictionsBodyRow.m in Sources */,
