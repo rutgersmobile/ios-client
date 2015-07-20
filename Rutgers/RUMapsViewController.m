@@ -13,12 +13,10 @@
 #import "RUMapsData.h"
 #import <AFNetworking.h>
 #import <AFURLResponseSerialization.h>
-#import "MKMapView+ZoomLevel.h"
+#import "RUUserTrackingBarButtonItem.h"
 
-@interface RUMapsViewController () <RUMapsTileOverlayDelegate>
-
+@interface RUMapsViewController ()
 @property RUMapsData *mapsData;
-@property AFHTTPSessionManager *sessionManager;
 @property BOOL usesOSM;
 @end
 
@@ -54,12 +52,12 @@
     
     if (self.usesOSM) {
         self.mapsData = [RUMapsData sharedInstance];
-        
-        [self setupSession];
         [self setupOverlay];
     }
     
-    self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
+    if (self.navigationController) {
+        self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
+    }
     
     if (self.place) {
         [self loadPlace];
@@ -97,7 +95,6 @@
 -(void)setupOverlay{
     //add our overlay
     RUMapsTileOverlay *overlay = [[RUMapsTileOverlay alloc] init];
-    overlay.delegate = self;
     [self.mapView addOverlay:overlay
                        level:MKOverlayLevelAboveLabels];
     
@@ -109,54 +106,7 @@
     self.mapView.pitchEnabled = NO;
 }
 
--(void)setupSession{
-    self.sessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
-    
-    AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
-    serializer.acceptableContentTypes = [NSSet setWithObject:@"image/png"];
-    self.sessionManager.responseSerializer = serializer;
-    self.sessionManager.operationQueue.maxConcurrentOperationCount = 20;
-}
-
-
-- (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
-    static NSString * const template = @"http://sauron.rutgers.edu/maps/%ld/%ld/%ld.png";
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:template, (long)path.z, (long)path.x, (long)path.y]];
-    return url;
-}
-
-- (void)loadTileAtPath:(MKTileOverlayPath)path
-                result:(void (^)(NSData *data, NSError *error))result
-{
-    if (!result) {
-        return;
-    }
-    
-    NSURL *url = [self URLForTilePath:path];
-    NSData *cachedData = [self.mapsData.cache objectForKey:url];
-    if (cachedData) {
-        result(cachedData, nil);
-    } else {
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        NSURLSessionDataTask *dataTask = [self.sessionManager dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (!error && [[response MIMEType] isEqualToString:@"image/png"]) {
-                [self.mapsData.cache setObject:responseObject forKey:url cost:[((NSData *)responseObject) length]];
-                result(responseObject,error);
-            } else {
-                NSLog(@"Error loading tile: %@",[self URLForTilePath:path]);
-                result(nil,error);
-            }
-        }];
-        [dataTask resume];
-    }
-}
-
--(void)cancelAllTasks{
-    [self.sessionManager invalidateSessionCancelingTasks:YES];
-}
-
 -(void)dealloc{
-    [self cancelAllTasks];
     self.mapView.delegate = nil;
 }
 

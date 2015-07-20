@@ -11,5 +11,8 @@
 
 @interface RUMapsData : NSObject
 +(RUMapsData *)sharedInstance;
-@property NSCache *cache;
+-(NSURL *)URLForTilePath:(MKTileOverlayPath)path;
+
+-(NSData *)cachedDataForTilePath:(MKTileOverlayPath)path;
+-(void)setCachedData:(NSData *)data forTilePath:(MKTileOverlayPath)path;
 @end

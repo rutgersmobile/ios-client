@@ -9,6 +9,7 @@
 #import "RUMapsData.h"
 
 @interface RUMapsData ()
+@property NSCache *cache;
 @end
 
 @implementation RUMapsData
@@ -30,5 +31,21 @@
     return self;
 }
 
+
+- (NSURL *)URLForTilePath:(MKTileOverlayPath)path {
+    return [NSURL URLWithString:[NSString stringWithFormat:@"http://sauron.rutgers.edu/maps/%@.png", [self keyForOverlayPath:path]]];
+}
+
+-(NSString *)keyForOverlayPath:(MKTileOverlayPath)path{
+    return [NSString stringWithFormat:@"%ld/%ld/%ld", (long)path.z, (long)path.x, (long)path.y];
+}
+
+-(NSData *)cachedDataForTilePath:(MKTileOverlayPath)path{
+    return [self.cache objectForKey:[self keyForOverlayPath:path]];
+}
+
+-(void)setCachedData:(NSData *)data forTilePath:(MKTileOverlayPath)path{
+    [self.cache setObject:data forKey:[self keyForOverlayPath:path] cost:data.length];
+}
 @end
 
