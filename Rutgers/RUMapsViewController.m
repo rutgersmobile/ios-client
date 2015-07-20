@@ -13,7 +13,6 @@
 #import "RUMapsData.h"
 #import <AFNetworking.h>
 #import <AFURLResponseSerialization.h>
-#import "RUUserTrackingBarButtonItem.h"
 
 @interface RUMapsViewController ()
 @property RUMapsData *mapsData;
