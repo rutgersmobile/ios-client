@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class RUMenuViewController;
+#import "RUContainerController.h"
 
 @interface RURootController : NSObject
 +(instancetype)sharedInstance;
--(void)openDrawer;
 -(void)openDrawerIfNeeded;
-@property (nonatomic, readonly) UIViewController *containerViewController;
+@property (nonatomic) UIViewController <RUContainerController> *containerViewController;
 @property (nonatomic) NSDictionary *currentChannel;
 @end
