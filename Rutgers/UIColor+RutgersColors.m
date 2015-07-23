@@ -10,7 +10,7 @@
 
 @implementation UIColor (RutgersColors)
 
-+(UIColor *)scarletRedColor{
++(UIColor *)rutgersRedColor{
     return [UIColor colorWithRed:203/255.0 green:11/255.0 blue:47/255.0 alpha:1];
 }
 
@@ -46,9 +46,14 @@
     return [UIColor colorWithRed:177/255.0 green:198/255.0 blue:226/255.0 alpha:1];
 }
 
-+(UIColor *)modifiedRedColor{
++(UIColor *)rutgersBarRedColor{
+    #warning aaron edit the final colors here
+    //between 0 - 1
+    return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.79607843137254897 alpha:1.0];
+   
+    /*
     CGFloat hue, sat, bright, alpha;
-    [[UIColor scarletRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
+    [[UIColor rutgersRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
     
     CGFloat hueFactor = 0.32;
     CGFloat satFactor = 1.0;
@@ -57,6 +62,7 @@
     sat = (sat + (1.0 - sat)*satFactor);
     
     return [UIColor colorWithHue:hue saturation:sat brightness:bright alpha:alpha];
+     */
 }
 
 @end

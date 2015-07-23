@@ -11,6 +11,8 @@
 @implementation RUAppearance
 
 +(void)applyAppearance{
+    //global appearance, nothing right now
+  
     //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     /*
     [self applyAppearanceToNavigationBar:[UINavigationBar appearance]];
@@ -35,12 +37,12 @@
 +(void)applyAppearanceToNavigationBar:(UINavigationBar *)navigationBar{
     navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     navigationBar.tintColor = [UIColor whiteColor];
-    navigationBar.barTintColor = [UIColor modifiedRedColor];
+    navigationBar.barTintColor = [UIColor rutgersBarRedColor];
 }
 
 +(void)applyAppearanceToToolbar:(UIToolbar *)toolbar{
     toolbar.tintColor = [UIColor whiteColor];
-    toolbar.barTintColor = [UIColor modifiedRedColor];
+    toolbar.barTintColor = [UIColor rutgersBarRedColor];
 }
 
 +(void)applyAppearanceToSearchBar:(UISearchBar *)searchBar{

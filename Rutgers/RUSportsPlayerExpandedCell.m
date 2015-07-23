@@ -28,7 +28,7 @@
     
     [self.contentView addSubview:self.bioLabel];
     
-    self.contentView.backgroundColor = [UIColor scarletRedColor];
+    self.contentView.backgroundColor = [UIColor rutgersRedColor];
     self.nameLabel.textColor = [UIColor whiteColor];
     self.positionLabel.textColor = [UIColor whiteColor];
     self.jerseyNumberLabel.textColor = [UIColor whiteColor];
