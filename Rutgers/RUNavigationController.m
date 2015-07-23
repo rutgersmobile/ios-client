@@ -20,22 +20,11 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
 
 -(void)setPreferredStatusBarStyle:(UIStatusBarStyle)preferredStatusBarStyle{
     _preferredStatusBarStyle = preferredStatusBarStyle;
     [self setNeedsStatusBarAppearanceUpdate];
 }
-/*
--(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
-    [super pushViewController:viewController animated:animated];
-    self.view.backgroundColor = viewController.view.backgroundColor;
-}
-
--(UIViewController *)popViewControllerAnimated:(BOOL)animated{
-    UIViewController *vc = [super popViewControllerAnimated:animated];
-    self.view.backgroundColor = [self.viewControllers.lastObject view].backgroundColor;
-    return vc;
-}*/
 @end
