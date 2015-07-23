@@ -10,6 +10,7 @@
 
 @protocol RUContainerController <NSObject>
 +(id<RUContainerController>)containerWithContainedViewController:(UIViewController *)containedViewController drawerViewController:(UIViewController *)drawerViewController;
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block;
 @property (nonatomic) UIViewController *containedViewController;
 -(void)closeDrawer;
 -(void)openDrawer;

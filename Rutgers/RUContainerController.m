@@ -41,7 +41,9 @@
 -(void)closeDrawer{
     
 }
-
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
+    
+}
 @end
 
 @interface SWRevealViewController (RUContainer) <RUContainerController>
@@ -75,6 +77,9 @@
 -(void)closeDrawer{
     [self setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
+
+}
 @end
 
 @interface MMDrawerController (RUContainer) <RUContainerController>
@@ -87,7 +92,8 @@
     
     drawerController.openDrawerGestureModeMask =
     MMOpenDrawerGestureModeBezelPanningCenterView |
-    MMOpenDrawerGestureModePanningNavigationBar;
+    MMOpenDrawerGestureModePanningNavigationBar |
+    MMOpenDrawerGestureModeCustom;
     
     drawerController.closeDrawerGestureModeMask =
     MMCloseDrawerGestureModePanningNavigationBar    |
@@ -107,17 +113,28 @@
     
     return drawerController;
 }
+
 -(UIViewController *)containedViewController{
-    return self.containedViewController;
+    return self.centerViewController;
 }
 -(void)setContainedViewController:(UIViewController *)containedViewController{
     [self setCenterViewController:containedViewController withCloseAnimation:NO completion:nil];
 }
+
 -(void)openDrawer{
     [self openDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 -(void)closeDrawer{
     [self closeDrawerAnimated:YES completion:nil];
+}
+
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
+    [self setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
+        UIViewController *centerViewController = drawerController.centerViewController;
+        if ([touch.view isDescendantOfView:centerViewController.navigationController.navigationBar]) return YES;
+        if ([touch locationInView:centerViewController.view].x > 18.0) return NO;
+        return block();
+    }];
 }
 @end
 

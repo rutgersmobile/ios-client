@@ -54,7 +54,11 @@
         Class drawerClass = [self drawerClass];
         if (![drawerClass conformsToProtocol:@protocol(RUContainerController)]) [NSException raise:NSInvalidArgumentException format:@"%@ does not conform to %@",NSStringFromClass(drawerClass), NSStringFromProtocol(@protocol(RUContainerController))];
         
+        __weak typeof(self) weakSelf = self;
         _containerViewController = [((id)drawerClass) performSelector:@selector(containerWithContainedViewController:drawerViewController:) withObject:centerViewController withObject:self.menuViewController];
+        [_containerViewController setDrawerShouldOpenBlock:^BOOL{
+            return [weakSelf drawerShouldOpen];     
+        }];
     }
     return _containerViewController;
 }
