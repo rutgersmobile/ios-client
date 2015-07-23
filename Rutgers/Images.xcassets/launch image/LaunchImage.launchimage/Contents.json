@@ -30,7 +30,7 @@
       "idiom" : "ipad",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "iPad-1024x768-landscape.png",
+      "filename" : "iPad-1024x768-landscape-01.png",
       "scale" : "1x"
     },
     {
@@ -46,7 +46,7 @@
       "idiom" : "ipad",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "filename" : "iPad-retina-2048x1536-landscape.png",
+      "filename" : "iPad-retina-2048x1536-landscape-01.png",
       "scale" : "2x"
     }
   ],
