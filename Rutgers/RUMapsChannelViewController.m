@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUMapsComponent.h"
+#import "RUMapsChannelViewController.h"
 #import "NSUserDefaults+MKMapRect.h"
 
 NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 
 
-@interface RUMapsComponent ()
+@interface RUMapsChannelViewController ()
 @property (nonatomic) BOOL shouldStartTrackingOnLocationUpdate;
 @end
 
-@implementation RUMapsComponent
+@implementation RUMapsChannelViewController
 +(instancetype)newWithChannel:(NSDictionary *)channel{
     return [[self alloc] init];
 }
