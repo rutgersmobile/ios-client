@@ -132,7 +132,7 @@
     [self setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
         UIViewController *centerViewController = drawerController.centerViewController;
         if ([touch.view isDescendantOfView:centerViewController.navigationController.navigationBar]) return YES;
-        if ([touch locationInView:centerViewController.view].x > 18.0) return NO;
+        if ([touch locationInView:centerViewController.view].x > 23.0) return NO;
         return block();
     }];
 }
