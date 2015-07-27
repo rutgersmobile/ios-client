@@ -10,7 +10,22 @@
 
 @protocol RUWebView <NSObject>
 -(void)loadRequest:(NSURLRequest *)request;
+
+@property (nullable, nonatomic, readonly, copy) NSString *title;
+@property (nullable, nonatomic, readonly, copy) NSURL *URL;
+
+@property (nonatomic, readonly, getter=isLoading) BOOL loading;
+@property (nonatomic, readonly) double estimatedProgress;
+
+- (void)goBack;
+- (void)goForward;
+- (void)reload;
+- (void)stopLoading;
+
+@property (nonatomic, readonly) BOOL canGoBack;
+@property (nonatomic, readonly) BOOL canGoForward;
 @end
+
 
 @protocol RUWebViewDelegate <NSObject>
 

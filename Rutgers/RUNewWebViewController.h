@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface RUNewWebViewController : UIViewController <RUChannelProtocol>
+@property (nonatomic,assign) BOOL showActionButton;
 
+@property (nonatomic) NSDictionary *buttonThemeAttributes;
+
+@property (nonatomic,assign) BOOL navigationButtonsHidden;
+
+@property (nonatomic,assign) BOOL hideWebViewBoundaries;
 @end

@@ -10,6 +10,10 @@
 #import <WebKit/WebKit.h>
 #import <PureLayout.h>
 
+@interface RUWebViewWrapper : UIView <RUWebView>
+
+@end
+
 @interface UIWebView (RUWebViewExtensions) <RUWebView>
 
 @end
@@ -34,12 +38,28 @@
     return self;
 }
 
+
 -(Class)webViewClass{
-    return [UIWebView class];//[WKWebView class] ? [WKWebView class] : [UIWebView class];
+    return [WKWebView class] ? [WKWebView class] : [UIWebView class];
 }
 
--(void)loadRequest:(NSURLRequest *)request{
-    [self.webView loadRequest:request];
+- (NSMethodSignature*)methodSignatureForSelector:(SEL)selector
+{
+    NSMethodSignature* signature = [super methodSignatureForSelector:selector];
+    if (!signature) {
+        signature = [_webView methodSignatureForSelector:selector];
+    }
+    return signature;
 }
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation
+{
+    if ([_webView respondsToSelector:[anInvocation selector]])
+        [anInvocation invokeWithTarget:_webView];
+    else
+        [super forwardInvocation:anInvocation];
+}
+
+
 @end
 

@@ -10,10 +10,24 @@
 #import <WebKit/WebKit.h>
 #import <PureLayout.h>
 #import "RUWebView.h"
+#import <UIImage+TOWebViewControllerIcons.h>
+#import "NSObject+KVOBlock.h"
 
-@interface RUNewWebViewController ()
+@interface RUNewWebViewController () <UIPopoverControllerDelegate>
 @property (nonatomic) RUWebView *webView;
 @property (nonatomic) NSDictionary *channel;
+@property (nonatomic) UIPopoverController *sharingPopoverController;
+
+@property (nonatomic,strong) UIButton *backButton;                       /* Moves the web view one page back */
+@property (nonatomic,strong) UIButton *forwardButton;                    /* Moves the web view one page forward */
+@property (nonatomic,strong) UIButton *reloadStopButton;                 /* Reload / Stop buttons */
+@property (nonatomic,strong) UIButton *actionButton;                     /* Shows the UIActivityViewController */
+
+@property (nonatomic,strong) UIImage *reloadIcon;
+@property (nonatomic,strong) UIImage *stopIcon;
+
+@property (nonatomic) UIProgressView *progressView;
+@property (nonatomic) id observer;
 @end
 
 #define BLANK_BARBUTTONITEM [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]
@@ -23,7 +37,7 @@
 #define NAVIGATION_BUTTON_SIZE              CGSizeMake(31,31)
 #define NAVIGATION_BUTTON_SPACING           40
 #define NAVIGATION_BUTTON_SPACING_IPAD      20
-#define NAVIGATION_BAR_HEIGHT               (MINIMAL_UI ? 64.0f : 44.0f)
+#define NAVIGATION_BAR_HEIGHT               (64.0f)
 #define NAVIGATION_TOGGLE_ANIM_TIME         0.3
 
 @implementation RUNewWebViewController
@@ -56,20 +70,47 @@
     self.webView = [[RUWebView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:self.webView];
     [self.webView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    
+    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    [self.view addSubview:self.progressView];
+    [self.progressView autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+    [self.progressView autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    [self.progressView autoPinEdgeToSuperviewMargin:ALEdgeTop];
 }
 
 -(void)viewDidLoad{
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.channel[@"url"]]]];
+    [super viewDidLoad];
+ 
+    NSURL *url = [NSURL URLWithString:self.channel[@"url"]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+    
+    //only load the buttons if we need to
+    if (self.navigationButtonsHidden == NO)
+        [self setUpNavigationButtons];
+    
+    
+    //Set the appropriate actions to the buttons
+    [self.backButton        addTarget:self action:@selector(backButtonTapped:)          forControlEvents:UIControlEventTouchUpInside];
+    [self.forwardButton     addTarget:self action:@selector(forwardButtonTapped:)       forControlEvents:UIControlEventTouchUpInside];
+    [self.reloadStopButton  addTarget:self action:@selector(reloadStopButtonTapped:)    forControlEvents:UIControlEventTouchUpInside];
+    [self.actionButton      addTarget:self action:@selector(actionButtonTapped:)        forControlEvents:UIControlEventTouchUpInside];
+    
+    UIProgressView *progressView = self.progressView;
+    self.observer = [self.webView aapl_addObserverForKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew withBlock:^(id obj, NSDictionary *change, id observer) {
+        [progressView setProgress:[change[NSKeyValueChangeNewKey] floatValue] animated:YES];
+    }];
 }
-/*
+
+-(void)dealloc{
+    [self.progressView aapl_removeObserver:self.observer];
+}
+
 - (void)setUpNavigationButtons
 {
     //set up the buttons for the navigation bar
     CGRect buttonFrame = CGRectZero; buttonFrame.size = NAVIGATION_BUTTON_SIZE;
     
-    UIButtonType buttonType = UIButtonTypeCustom;
-    if (MINIMAL_UI)
-        buttonType = UIButtonTypeSystem;
+    UIButtonType buttonType = UIButtonTypeSystem;
     
     //set up the back button
     UIImage *backButtonImage = [UIImage TOWebViewControllerIcon_backButtonWithAttributes:self.buttonThemeAttributes];
@@ -111,8 +152,8 @@
         [self.actionButton setImage:[UIImage TOWebViewControllerIcon_actionButtonWithAttributes:self.buttonThemeAttributes] forState:UIControlStateNormal];
     }
 }
-*/
-/*
+
+
 #pragma mark -
 #pragma mark Button Callbacks
 - (void)backButtonTapped:(id)sender
@@ -133,154 +174,42 @@
     [self.webView stopLoading];
     
     if (self.webView.isLoading) {
-        //if we were loading, hide the load bar for now
-        self.loadingBarView.alpha = 0.0f;
-    }
-    else {
-        //In certain cases, if the connection drops out preload or midload,
-        //it nullifies webView.request, which causes [webView reload] to stop working.
-        //This checks to see if the webView request URL is nullified, and if so, tries to load
-        //off our stored self.url property instead
-        if (self.webView.request.URL.absoluteString.length == 0 && self.url)
-        {
-            [self.webView loadRequest:self.urlRequest];
-        }
-        else {
-            [self.webView reload];
-        }
+       
+    } else {
+        [self.webView reload];
     }
     
     //refresh the buttons
     [self refreshButtonsState];
 }
 
-- (void)doneButtonTapped:(id)sender
-{
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:self.modalCompletionHandler];
-}
-
 #pragma mark -
 #pragma mark Action Item Event Handlers
 - (void)actionButtonTapped:(id)sender
 {
-    // If we're on iOS 6 or above, we can use the super-duper activity view controller :)
-    if (NSClassFromString(@"UIActivityViewController"))
+    //NSArray *browserActivities = @[[TOActivitySafari new], [TOActivityChrome new]];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.webView.URL] applicationActivities:nil];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
-        NSArray *browserActivities = @[[TOActivitySafari new], [TOActivityChrome new]];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.url] applicationActivities:browserActivities];
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        {
-            //If we're on an iPhone, we can just present it modally
-            [self presentViewController:activityViewController animated:YES completion:nil];
-        }
-        else
-        {
-            //UIPopoverController requires we retain our own instance of it.
-            //So if we somehow have a prior instance, clean it out
-            if (self.sharingPopoverController)
-            {
-                [self.sharingPopoverController dismissPopoverAnimated:NO];
-                self.sharingPopoverController = nil;
-            }
-            
-            //Create the sharing popover controller
-            self.sharingPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
-            self.sharingPopoverController.delegate = self;
-            [self.sharingPopoverController presentPopoverFromRect:self.actionButton.frame inView:self.actionButton.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
+        //If we're on an iPhone, we can just present it modally
+        [self presentViewController:activityViewController animated:YES completion:nil];
     }
-    else //We must be on iOS 5
+    else
     {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:nil
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedStringFromTable(@"Copy URL", @"TOWebViewControllerLocalizable", @"Copy the URL"), nil];
-        
-        NSInteger numberOfButtons = 1;
-        
-        //Add Browser
-        BOOL chromeIsInstalled = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]];
-        NSString *browserMessage = NSLocalizedStringFromTable(@"Open in Safari", @"TOWebViewControllerLocalizable", @"Open in Safari");
-        if (chromeIsInstalled)
-            browserMessage = NSLocalizedStringFromTable(@"Open in Chrome", @"TOWebViewControllerLocalizable", @"Open in Chrome");
-        
-        [actionSheet addButtonWithTitle:browserMessage];
-        numberOfButtons++;
-        
-        //Add Email
-        if ([MFMailComposeViewController canSendMail]) {
-            [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Mail", @"TOWebViewControllerLocalizable", @"Send Email")];
-            numberOfButtons++;
-        }
-        
-        //Add SMS
-        if ([MFMessageComposeViewController canSendText]) {
-            [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Message", @"TOWebViewControllerLocalizable", @"Send iMessage")];
-            numberOfButtons++;
-        }
-        
-        //Add Twitter
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        if ([TWTweetComposeViewController canSendTweet]) {
-            [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Twitter", @"TOWebViewControllerLocalizable", @"Send a Tweet")];
-            numberOfButtons++;
-        }
-#pragma clang diagnostic pop
-        
-        //Add a cancel button if on iPhone
-        if (IPAD == NO) {
-            [actionSheet addButtonWithTitle:NSLocalizedStringFromTable(@"Cancel", @"TOWebViewControllerLocalizable", @"Cancel")];
-            [actionSheet setCancelButtonIndex:numberOfButtons];
-            [actionSheet showInView:self.view];
-        }
-        else {
-            [actionSheet showFromRect:[(UIView *)sender frame] inView:[(UIView *)sender superview] animated:YES];
-        }
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    //Handle whichever button was tapped
-    switch (buttonIndex) {
-        case 0:
-            [self copyURLToClipboard];
-            break;
-        case 1:
-            [self openInBrowser];
-            break;
-        case 2: //Email
+        //UIPopoverController requires we retain our own instance of it.
+        //So if we somehow have a prior instance, clean it out
+        if (self.sharingPopoverController)
         {
-            if ([MFMailComposeViewController canSendMail])
-                [self openMailDialog];
-            else if ([MFMessageComposeViewController canSendText])
-                [self openMessageDialog];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            else if ([TWTweetComposeViewController canSendTweet])
-                [self openTwitterDialog];
-#pragma clang diagnostic pop
+            [self.sharingPopoverController dismissPopoverAnimated:NO];
+            self.sharingPopoverController = nil;
         }
-            break;
-        case 3: //SMS or Twitter
-        {
-            if ([MFMessageComposeViewController canSendText])
-                [self openMessageDialog];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            else if ([TWTweetComposeViewController canSendTweet])
-                [self openTwitterDialog];
-#pragma clang diagnostic pop
-        }
-            break;
-        case 4: //Twitter (or Cancel)
-            if ([MFMessageComposeViewController canSendText])
-                [self openTwitterDialog];
-        default:
-            break;
+        
+        //Create the sharing popover controller
+        self.sharingPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        self.sharingPopoverController.delegate = self;
+        [self.sharingPopoverController presentPopoverFromRect:self.actionButton.frame inView:self.actionButton.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
     }
 }
 
@@ -290,90 +219,8 @@
     self.sharingPopoverController = nil;
 }
 
-- (void)copyURLToClipboard
-{
-    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = self.url.absoluteString;
-}
-
-- (void)openInBrowser
-{
-    BOOL chromeIsInstalled = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"googlechrome://"]];
-    NSURL *inputURL = self.webView.request.URL;
-    
-    if (chromeIsInstalled)
-    {
-        NSString *scheme = inputURL.scheme;
-        
-        // Replace the URL Scheme with the Chrome equivalent.
-        NSString *chromeScheme = nil;
-        if ([scheme isEqualToString:@"http"])
-        {
-            chromeScheme = @"googlechrome";
-        }
-        else if ([scheme isEqualToString:@"https"])
-        {
-            chromeScheme = @"googlechromes";
-        }
-        
-        // Proceed only if a valid Google Chrome URI Scheme is available.
-        if (chromeScheme)
-        {
-            NSString *absoluteString    = [inputURL absoluteString];
-            NSRange rangeForScheme      = [absoluteString rangeOfString:@":"];
-            NSString *urlNoScheme       = [absoluteString substringFromIndex:rangeForScheme.location];
-            NSString *chromeURLString   = [chromeScheme stringByAppendingString:urlNoScheme];
-            NSURL *chromeURL            = [NSURL URLWithString:chromeURLString];
-            
-            // Open the URL with Chrome.
-            [[UIApplication sharedApplication] openURL:chromeURL];
-            
-            return;
-        }
-    }
-    
-    //If all else fails (Or Chrome is simply not installed), open as per usual
-    [[UIApplication sharedApplication] openURL:inputURL];
-}
-
-- (void)openMailDialog
-{
-    MFMailComposeViewController *mailViewController = [[MFMailComposeViewController alloc] init];
-    mailViewController.mailComposeDelegate = self;
-    [mailViewController setMessageBody:[self.url absoluteString] isHTML:NO];
-    [self presentViewController:mailViewController animated:YES completion:nil];
-}
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)openMessageDialog
-{
-    MFMessageComposeViewController *messageViewController = [[MFMessageComposeViewController alloc] init];
-    messageViewController.messageComposeDelegate = self;
-    [messageViewController setBody:[self.url absoluteString]];
-    [self presentViewController:messageViewController animated:YES completion:nil];
-}
-
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)openTwitterDialog
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    TWTweetComposeViewController *tweetComposer = [[TWTweetComposeViewController alloc] init];
-    [tweetComposer addURL:self.url];
-    [self presentViewController:tweetComposer animated:YES completion:nil];
-#pragma clang diagnostic pop
-}
-
-
 #pragma mark -
+/*
 #pragma mark Page Load Progress Tracking Handlers
 - (void)resetLoadProgress
 {
@@ -527,7 +374,7 @@
     BOOL complete = [readyState isEqualToString:@"complete"];
     if (complete && isNotRedirect)
         [self finishLoadProgress];
-}
+}*/
 
 #pragma mark -
 #pragma mark Button State Handling
@@ -552,6 +399,7 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         [self.reloadStopButton setImage:self.reloadIcon forState:UIControlStateNormal];
     }
-}*/
+}
+    
 @end
 
