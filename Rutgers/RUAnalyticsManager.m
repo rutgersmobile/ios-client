@@ -117,7 +117,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
-#warning this is a stub that must be expanded
+#warning incomplete
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction{
     return;
     /*
