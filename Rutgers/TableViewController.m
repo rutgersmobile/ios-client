@@ -207,6 +207,7 @@
 }
 
 -(UITableView *)searchTableView{
+    if (!self.isViewLoaded) return nil;
     if (self.searchController) return self.searchResultsController.tableView;
     else return self.mySearchDisplayController.searchResultsTableView;
 }
