@@ -93,7 +93,7 @@
 		A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFC51938E16200016C89 /* ExpandingTableViewSection.m */; };
 		A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A731C39B1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m */; };
 		A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A73248F6190E2B8F008DF9A8 /* AFXMLResponseSerializer.m */; };
-		A73F6574193E422E00E26449 /* RUMapsComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F6573193E422E00E26449 /* RUMapsComponent.m */; };
+		A73F6574193E422E00E26449 /* RUMapsChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */; };
 		A73F6576193E4F4900E26449 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A73F6575193E4F4900E26449 /* QuartzCore.framework */; };
 		A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F657C193E544600E26449 /* RUMenuTableViewCell.m */; };
 		A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7415780194B714200F396B5 /* RUMapsTableViewCell.m */; };
@@ -393,8 +393,8 @@
 		A731C39B1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuSectionHeaderView.m; sourceTree = "<group>"; };
 		A73248F5190E2B8F008DF9A8 /* AFXMLResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFXMLResponseSerializer.h; sourceTree = "<group>"; };
 		A73248F6190E2B8F008DF9A8 /* AFXMLResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLResponseSerializer.m; sourceTree = "<group>"; };
-		A73F6572193E422E00E26449 /* RUMapsComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsComponent.h; path = Rutgers/RUMapsComponent.h; sourceTree = SOURCE_ROOT; };
-		A73F6573193E422E00E26449 /* RUMapsComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsComponent.m; path = Rutgers/RUMapsComponent.m; sourceTree = SOURCE_ROOT; };
+		A73F6572193E422E00E26449 /* RUMapsChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsChannelViewController.h; path = Rutgers/RUMapsChannelViewController.h; sourceTree = SOURCE_ROOT; };
+		A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsChannelViewController.m; path = Rutgers/RUMapsChannelViewController.m; sourceTree = SOURCE_ROOT; };
 		A73F6575193E4F4900E26449 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A73F657B193E544600E26449 /* RUMenuTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuTableViewCell.h; sourceTree = "<group>"; };
 		A73F657C193E544600E26449 /* RUMenuTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuTableViewCell.m; sourceTree = "<group>"; };
@@ -1070,8 +1070,8 @@
 				A72FFFAA1937A2AC00016C89 /* NSUserDefaults+MKMapRect.m */,
 				A7B970C5192075F40070A414 /* RUMapsViewController.h */,
 				A7B970C6192075F40070A414 /* RUMapsViewController.m */,
-				A73F6572193E422E00E26449 /* RUMapsComponent.h */,
-				A73F6573193E422E00E26449 /* RUMapsComponent.m */,
+				A73F6572193E422E00E26449 /* RUMapsChannelViewController.h */,
+				A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */,
 				A7FCC3F8194B7088005FE994 /* RUEmbeddedMapsViewController.h */,
 				A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */,
 			);
@@ -1783,7 +1783,7 @@
 				0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */,
 				04A1EFD31A5C508300DE0351 /* RUPredictionsBodyRow.m in Sources */,
 				042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */,
-				A73F6574193E422E00E26449 /* RUMapsComponent.m in Sources */,
+				A73F6574193E422E00E26449 /* RUMapsChannelViewController.m in Sources */,
 				A7DD34921981D4110078023A /* NearbyPlacesDataSource.m in Sources */,
 				0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */,
 				A7D4B63919AB9D580087A8BC /* RUFeedbackDataSource.m in Sources */,
@@ -1965,17 +1965,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -1997,14 +1996,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_OPTIMIZATION_LEVEL = fast;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
