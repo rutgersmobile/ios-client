@@ -29,6 +29,11 @@
     return self;
 }
 
+-(void)resetContent{
+    [super resetContent];
+    self.text = self.initialText;
+}
+
 -(UIActionSheet *)makeActionSheetWithAlertButtonTitles:(NSArray *)alertButtonTitles{
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
     for (NSString *buttonTitle in alertButtonTitles) {
@@ -81,11 +86,6 @@
 
 -(NSString *)text{
     return [self.items firstObject];
-}
-
--(void)resetContent{
-    [super resetContent];
-    self.items = @[self.initialText];
 }
 
 @end

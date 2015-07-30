@@ -13,7 +13,10 @@
 -(instancetype)initWithInitialText:(NSString *)initialText alertButtonTitles:(NSArray *)alertButtonTitles NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSString *alertTitle;
 @property (nonatomic) NSString *text;
+
 @property (nonatomic) BOOL updatesInitialText;
--(void)showAlertInView:(UIView *)view;
+
 @property (nonatomic, copy) void(^alertAction)(NSString *buttonTitle, NSInteger buttonIndex);
+
+-(void)showAlertInView:(UIView *)view;
 @end
