@@ -3,73 +3,73 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iOS_icon29@2x.png",
+      "filename" : "ios_settings@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "iOS_icon29@3x.png",
+      "filename" : "ios_settings@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "iOS_icon40@2x.png",
+      "filename" : "ios_spotlight@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "iOS_icon40@3x.png",
+      "filename" : "ios_spotlight@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "iOS_icon60@2x.png",
+      "filename" : "ios_phone_app_icon@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "iOS_icon60@3x.png",
+      "filename" : "ios_phone_app_icon@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "iOS_icon29.png",
+      "filename" : "ios_settings.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "iOS_icon29@2x.png",
+      "filename" : "ios_settings@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "iOS_icon40.png",
+      "filename" : "ios_spotlight.png",
       "scale" : "1x"
     },
     {
       "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "iOS_icon40@2x.png",
+      "filename" : "ios_spotlight@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "iOS_icon76.png",
+      "filename" : "ios_pad_app_icon.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "iOS_icon76@2x.png",
+      "filename" : "ios_pad_app_icon@2x.png",
       "scale" : "2x"
     }
   ],
