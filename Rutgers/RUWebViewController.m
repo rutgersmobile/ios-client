@@ -8,6 +8,8 @@
 
 #import "RUWebViewController.h"
 #import <TOWebViewController.h>
+#import <WebKit/WebKit.h>
+#import <SafariServices/SafariServices.h>
 
 @interface RUWebViewController ()
 @property NSDictionary *channel;
@@ -26,14 +28,24 @@
     return storedChannels;
 }
 
-+(RUWebViewController *)newWithChannel:(NSDictionary *)channel{
++(id)newWithChannel:(NSDictionary *)channel{
     if ([[RUChannelManager sharedInstance].allChannels containsObject:channel]) {
         RUWebViewController *webViewController = [self.storedChannels objectForKey:channel];
         if (!webViewController) {
-            webViewController = [[RUWebViewController alloc] initWithChannel:channel];
+            webViewController = [self _newWithChannel:channel];
             [self.storedChannels setObject:webViewController forKey:channel];
         }
         return webViewController;
+    } else {
+        return [self _newWithChannel:channel];
+    }
+}
+
++(id)_newWithChannel:(NSDictionary *)channel{
+    if ([SFSafariViewController class]) {
+        return [[SFSafariViewController alloc] initWithURL:nil];
+    } else if ([WKWebView class]) {
+        return [[WKWebView alloc] init];
     } else {
         return [[RUWebViewController alloc] initWithChannel:channel];
     }
