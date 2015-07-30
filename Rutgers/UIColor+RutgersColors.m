@@ -7,6 +7,7 @@
 //
 
 #import "UIColor+RutgersColors.h"
+#import <HexColors.h>
 
 @implementation UIColor (RutgersColors)
 
@@ -47,22 +48,11 @@
 }
 
 +(UIColor *)rutgersBarRedColor{
-    #warning aaron edit the final colors here
-    //between 0 - 1
     return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.79607843137254897 alpha:1.0];
-   
-    /*
-    CGFloat hue, sat, bright, alpha;
-    [[UIColor rutgersRedColor] getHue:&hue saturation:&sat brightness:&bright alpha:&alpha];
-    
-    CGFloat hueFactor = 0.32;
-    CGFloat satFactor = 1.0;
-    
-    hue = (hue + (1.0 - hue)*hueFactor);
-    sat = (sat + (1.0 - sat)*satFactor);
-    
-    return [UIColor colorWithHue:hue saturation:sat brightness:bright alpha:alpha];
-     */
+    // return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.80607843137254897 alpha:1.0];
+
+    // return [UIColor colorWithHexString:@"ca072d"];
+    // return [UIColor colorWithHue:348.307678/360.0 saturation:0.96534653 brightness:0.80607843137254897 alpha:1.0];
 }
 
 @end
