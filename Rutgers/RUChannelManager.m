@@ -137,10 +137,12 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                                        @"Reader" :  @"RUReaderViewController",
                                        @"recreation" : @"RURecreationViewController",
                                        @"www" : @"RUWebViewController",
+                                       //@"www" : @"RUWebViewContainerViewController",
                                        @"text" : @"RUTextViewController",
                                        @"feedback" : @"RUFeedbackViewController",
                                        @"options" : @"RUOptionsViewController",
-                                       @"splash" : @"RUSplashViewController"
+                                       @"splash" : @"RUSplashViewController",
+                                       @"maps" : @"RUMapsChannelViewController"
                                        };
     });
     return NSClassFromString(viewTagsToClassNameMapping[viewTag]);
@@ -155,11 +157,9 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     if (!view) view = [self defaultViewForChannel:channel];
     Class class = [self classForViewTag:view];
     
-    if (!class) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
-    
-    UIViewController *vc = [class newWithChannel:channel];
-    vc.title = [channel channelTitle];
+    UIViewController *vc = [class channelWithConfiguration:channel];
+   // vc.title = [channel channelTitle];
     return vc;
 
 }

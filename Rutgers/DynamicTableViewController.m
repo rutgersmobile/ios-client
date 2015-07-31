@@ -14,7 +14,7 @@
 @end
 
 @implementation DynamicTableViewController
-+(instancetype)newWithChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }
 

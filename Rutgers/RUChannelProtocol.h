@@ -10,5 +10,6 @@
 
 @protocol RUChannelProtocol <NSObject>
 @required
-+(id)newWithChannel:(NSDictionary *)channel;
++(id)channelWithConfiguration:(NSDictionary *)channel;
+@property (nonatomic, readonly) NSDictionary *channelConfiguration;
 @end
