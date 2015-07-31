@@ -10,4 +10,5 @@
 #import <TOWebViewController.h>
 
 @interface RUWebViewController : TOWebViewController <RUChannelProtocol>
+
 @end
