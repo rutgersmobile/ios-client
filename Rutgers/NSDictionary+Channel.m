@@ -53,6 +53,10 @@
 }
 
 -(BOOL)channelIsWebLink{
-    return [self[@"weblink"] boolValue];
+    return self[@"url"] ? YES : NO;
+}
+
+-(BOOL)presentsModally{
+    return NO;//return self.channelIsWebLink;
 }
 @end

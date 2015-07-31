@@ -22,4 +22,6 @@
 @property (nonatomic, readonly) NSString *channelView;
 
 @property (nonatomic, readonly) BOOL channelIsWebLink;
+
+@property (nonatomic, readonly) BOOL presentsModally;
 @end

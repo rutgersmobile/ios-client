@@ -102,10 +102,12 @@
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
 
-    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
-    [RUAppearance applyAppearanceToNavigationController:navController];
-    vc = navController;
-    
+    if (![channel presentsModally]) {
+        UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
+        [RUAppearance applyAppearanceToNavigationController:navController];
+        vc = navController;
+    }
+
     return vc;
 }
 
