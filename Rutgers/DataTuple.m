@@ -18,6 +18,10 @@
     return self;
 }
 
+-(instancetype)init{
+    return [self initWithTitle:nil object:nil];
+}
+
 +(instancetype)tupleWithTitle:(NSString *)title object:(id)object{
     return [[self alloc] initWithTitle:title object:object];
 }
