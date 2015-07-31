@@ -26,6 +26,10 @@
     return self;
 }
 
+-(instancetype)init{
+    return [self initWithTitle:nil addressString:nil];
+}
+
 -(instancetype)initWithTitle:(NSString *)title addressString:(NSString *)addressString{
     self = [super init];
     if (self) {

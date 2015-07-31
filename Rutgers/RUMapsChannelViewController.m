@@ -7,29 +7,34 @@
 //
 
 #import "RUMapsChannelViewController.h"
-#import "NSUserDefaults+MKMapRect.h"
 
-NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
-
+NSString *const mapsRecentCameraKey = @"mapsRecentCameraKey";
 
 @interface RUMapsChannelViewController ()
 @property (nonatomic) BOOL shouldStartTrackingOnLocationUpdate;
 @end
 
 @implementation RUMapsChannelViewController
-+(instancetype)newWithChannel:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] init];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+
     self.shouldStartTrackingOnLocationUpdate = YES;
-    
-    //load last map rect, or world rect
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{mapsRecentRegionKey : MKStringFromMapRect(MKMapRectWorld)}];
-    MKMapRect mapRect = [[NSUserDefaults standardUserDefaults] mapRectForKey:mapsRecentRegionKey];
-    [self.mapView setVisibleMapRect:mapRect];
+}
+
+-(void)encodeRestorableStateWithCoder:(nonnull NSCoder *)coder{
+    [coder encodeObject:self.mapView.camera forKey:mapsRecentCameraKey];
+}
+
+-(void)decodeRestorableStateWithCoder:(nonnull NSCoder *)coder{
+    MKMapCamera *camera = [coder decodeObjectForKey:mapsRecentCameraKey];
+    if (camera) {
+        self.mapView.camera = camera;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -47,10 +52,6 @@ NSString *const mapsRecentRegionKey = @"mapsRecentRegionKey";
 }
 
 #pragma mark - MKMapViewDelegate protocol implementation
--(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-   // [super mapView:mapView regionDidChangeAnimated:animated];
-    [[NSUserDefaults standardUserDefaults] setMapRect:mapView.visibleMapRect forKey:mapsRecentRegionKey];
-}
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     if (self.shouldStartTrackingOnLocationUpdate) {
