@@ -25,13 +25,6 @@
     return self;
 }
 
--(void)viewDidLoad{
-    [super viewDidLoad];
-    self.showPageTitles = NO;
-    self.hideWebViewBoundaries = YES;
-    self.showUrlWhileLoading = NO;
-}
-
 /**
  *  After the webview finshes loading
  *

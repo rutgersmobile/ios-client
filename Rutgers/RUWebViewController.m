@@ -11,13 +11,13 @@
 #import <WebKit/WebKit.h>
 #import <SafariServices/SafariServices.h>
 #import "RUUIWebViewController.h"
+#import "RUWKWebViewController.h"
 
 @interface RUWebViewController ()
-@property NSDictionary *channel;
+@property NSDictionary *channelConfiguration;
 @end
 
 @implementation RUWebViewController
-
 //Global cache holding RUWebViewController objects
 +(NSCache *)storedChannels{
     static NSCache * storedChannels = nil;
@@ -43,12 +43,19 @@
 }
 
 +(id)_channelWithConfiguration:(NSDictionary *)channel{
-    return [RUUIWebViewController channelWithConfiguration:channel];
 
     if ([WKWebView class]) {
-     //   return [[WKWebView alloc] init];
+        RUWKWebViewController *wkWebViewController = [RUWKWebViewController channelWithConfiguration:channel];
+        wkWebViewController.showPageTitles = NO;
+        wkWebViewController.hideWebViewBoundaries = YES;
+        wkWebViewController.showUrlWhileLoading = NO;
+        return wkWebViewController;
     } else {
-
+        RUUIWebViewController *uiWebViewController = [RUUIWebViewController channelWithConfiguration:channel];
+        uiWebViewController.showPageTitles = NO;
+        uiWebViewController.hideWebViewBoundaries = YES;
+        uiWebViewController.showUrlWhileLoading = NO;
+        return uiWebViewController;
     }
     return nil;
 }
