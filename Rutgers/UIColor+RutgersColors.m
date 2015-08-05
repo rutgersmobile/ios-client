@@ -48,7 +48,7 @@
 }
 
 +(UIColor *)rutgersBarRedColor{
-    return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.79607843137254897 alpha:1.0];
+    return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.78607843137254897 alpha:1.0];
     // return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.80607843137254897 alpha:1.0];
 
     // return [UIColor colorWithHexString:@"ca072d"];
