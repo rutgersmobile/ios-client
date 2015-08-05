@@ -226,11 +226,10 @@ static NSString *const format = @"&stops=%@|null|%@";
         
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",self.agency];
         
-        //revise this
         NSMutableArray *descriptors = [NSMutableArray array];
         
         for (RUBusStop *stop in stops){
-            for (RUBusRoute *route in stop.activeRoutes) {
+            for (RUBusRoute *route in stop.routes) {
                 [descriptors addObject:@[route.tag,stop.tag]];
             }
         }
