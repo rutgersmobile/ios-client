@@ -11,7 +11,6 @@
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
 		041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F881B4F195900BBCBFC /* RURecreationDataSource.m */; };
 		041D5F8C1B4F196E00BBCBFC /* RURecCenterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F8B1B4F196E00BBCBFC /* RURecCenterTableViewCell.m */; };
-		041D5F8E1B5463C200BBCBFC /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 041D5F8D1B5463C200BBCBFC /* Settings.bundle */; };
 		04203AF71B15147E005A7099 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = 04203AF61B15147E005A7099 /* ordered_content.json */; };
 		0422C9841A69C3C100344828 /* RURecCenterDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9831A69C3C100344828 /* RURecCenterDataSource.m */; };
 		0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9881A69C95500344828 /* MiniMapDataSource.m */; };
@@ -21,6 +20,7 @@
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
+		048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048506F41B6FED100064769D /* RUWKWebViewController.m */; };
 		0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */; };
 		0490DC591B4B137E00E76EEF /* RUTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC581B4B137E00E76EEF /* RUTestCase.m */; };
 		0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */; };
@@ -236,7 +236,6 @@
 		041D5F881B4F195900BBCBFC /* RURecreationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecreationDataSource.m; path = Rutgers/RURecreationDataSource.m; sourceTree = SOURCE_ROOT; };
 		041D5F8A1B4F196E00BBCBFC /* RURecCenterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterTableViewCell.h; path = Rutgers/RURecCenterTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		041D5F8B1B4F196E00BBCBFC /* RURecCenterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterTableViewCell.m; path = Rutgers/RURecCenterTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		041D5F8D1B5463C200BBCBFC /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		04203AF61B15147E005A7099 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ordered_content.json; sourceTree = "<group>"; };
 		0422C9821A69C3C100344828 /* RURecCenterDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterDataSource.h; path = Rutgers/RURecCenterDataSource.h; sourceTree = SOURCE_ROOT; };
 		0422C9831A69C3C100344828 /* RURecCenterDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterDataSource.m; path = Rutgers/RURecCenterDataSource.m; sourceTree = SOURCE_ROOT; };
@@ -251,6 +250,8 @@
 		0465D0821ADEF7D1001C30FE /* RUResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUResponseSerializer.h; sourceTree = "<group>"; };
 		0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUResponseSerializer.m; sourceTree = "<group>"; };
 		047C2EF11A646FCC00B172E5 /* RUInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RUInfo.json; sourceTree = "<group>"; };
+		048506F31B6FED100064769D /* RUWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUWKWebViewController.h; sourceTree = "<group>"; };
+		048506F41B6FED100064769D /* RUWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUWKWebViewController.m; sourceTree = "<group>"; };
 		0488F85A1B6C0A3500668E54 /* RUOSMDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUOSMDataLoadingManager.h; path = Rutgers/RUOSMDataLoadingManager.h; sourceTree = SOURCE_ROOT; };
 		0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUOSMDataLoadingManager.m; path = Rutgers/RUOSMDataLoadingManager.m; sourceTree = SOURCE_ROOT; };
 		0490DC571B4B137E00E76EEF /* RUTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUTestCase.h; sourceTree = "<group>"; };
@@ -1389,6 +1390,8 @@
 			children = (
 				04DE78F01B6C13D700B06B6F /* RUUIWebViewController.h */,
 				04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */,
+				048506F31B6FED100064769D /* RUWKWebViewController.h */,
+				048506F41B6FED100064769D /* RUWKWebViewController.m */,
 				A7E8E131192480A60089F166 /* RUWebViewController.h */,
 				A7E8E132192480A60089F166 /* RUWebViewController.m */,
 			);
@@ -1537,7 +1540,6 @@
 		C262EFB2188345D10035C8F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				041D5F8D1B5463C200BBCBFC /* Settings.bundle */,
 				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
 				A74669021986D8F000A5EBE0 /* RUAppDelegate.m */,
 				C262EFB3188345D10035C8F5 /* Rutgers-Info.plist */,
@@ -1645,7 +1647,6 @@
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
-				041D5F8E1B5463C200BBCBFC /* Settings.bundle in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
@@ -1706,6 +1707,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */,
+				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
 				A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */,
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
