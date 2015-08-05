@@ -88,8 +88,8 @@
 - (void)doneButtonTapped:(id)sender;
 
 @property (nonatomic) id progressObserver;
-@property (nonatomic) id loadingObserver;
 
+@property (nonatomic) NSDictionary *channelConfiguration;
 @end
 
 @implementation RUWKWebViewController
@@ -101,7 +101,7 @@
     NSString *urlString = [channel channelURL];
     self = [self initWithURLString:urlString];
     if (self) {
-      //  self.channelConfiguration = channel;
+        self.channelConfiguration = channel;
     }
     return self;
 }
@@ -351,7 +351,6 @@
 
 -(void)dealloc{
     [self.webView aapl_removeObserver:self.progressObserver];
-    [self.webView aapl_removeObserver:self.loadingObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -546,6 +545,10 @@
             self.title = result;
         }];
     
+    if (self.channelConfiguration[@"fontSize"]) {
+        NSString *setTextSizeRule = [NSString stringWithFormat:@"document.body.style.fontSize = %@;", self.channelConfiguration[@"fontSize"]];
+        [self.webView evaluateJavaScript:setTextSizeRule completionHandler:nil];
+    }
 }
 
 -(void)webView:(nonnull WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(nonnull NSError *)error{
