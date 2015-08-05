@@ -59,8 +59,8 @@
         reset.updatesInitialText = NO;
         reset.showsDisclosureIndicator = YES;
         reset.footer = [NSString stringWithFormat:@"Rutgers Mobile Application\nVersion: %@\nAPI: %@",
-                        @"4.0.0",
-                        @"1.1"];
+                        gittag,
+                        api];
         
         reset.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
             [((RUAppDelegate *)[UIApplication sharedApplication].delegate) resetApp];

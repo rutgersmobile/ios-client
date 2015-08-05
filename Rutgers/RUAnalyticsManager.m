@@ -156,7 +156,9 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 -(NSDictionary *)releaseDict{
     return @{
-             @"beta" : @(BETA)
+             @"beta" : @(BETA),
+             @"version" : gittag,
+             @"api" : api
              };
 }
 
