@@ -46,7 +46,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                     NSData *data = [NSData dataWithContentsOfFile:path];
                     if (data) {
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                        if (channels) {
+                        if (channels.count) {
                             latestDate = date;
                             _allChannels = channels;
                         }
@@ -73,6 +73,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 -(void)setAllChannels:(NSArray *)allChannels{
+    if (!allChannels.count) return;
+    
     @synchronized(self) {
         NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
         if (data) [data writeToFile:[self documentPath] atomically:YES];
@@ -159,7 +161,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
     UIViewController *vc = [class channelWithConfiguration:channel];
-   // vc.title = [channel channelTitle];
+    vc.title = [channel channelTitle];
     return vc;
 
 }
