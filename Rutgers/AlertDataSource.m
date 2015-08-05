@@ -51,7 +51,7 @@
     return self.actionSheet.title;
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex{
+-(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (buttonIndex == actionSheet.cancelButtonIndex || buttonIndex == actionSheet.destructiveButtonIndex || buttonIndex < 0){
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
         return;
