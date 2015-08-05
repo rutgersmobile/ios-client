@@ -2,13 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "seal_only_regularSize.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "seal.png"
     },
     {
       "idiom" : "universal",
-      "filename" : "seal_only_2x.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "seal@2x.png"
     },
     {
       "idiom" : "universal",
