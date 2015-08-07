@@ -220,44 +220,25 @@
 static NSString *const format = @"&stops=%@|null|%@";
 
 -(NSString *)urlStringForItem:(id)item{
+    NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",self.agency];
+
     if ([item isKindOfClass:[RUMultiStop class]]) {
         RUMultiStop *stop = item;
         NSArray *stops = stop.stops;
-        
-        NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",self.agency];
-        
-        NSMutableArray *descriptors = [NSMutableArray array];
-        
+
         for (RUBusStop *stop in stops){
-            for (RUBusRoute *route in stop.routes) {
-                [descriptors addObject:@[route.tag,stop.tag]];
+            for (NSString *routeTag in stop.routes) {
+                [urlString appendFormat:format,routeTag,stop.tag];
             }
         }
         
-        NSArray *sortedDescriptors = [descriptors sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            NSString *routeTagOne = [obj1 firstObject];
-            NSString *routeTagTwo = [obj2 firstObject];
-            return [[self.routes[routeTagOne] title] localizedCaseInsensitiveCompare:[self.routes[routeTagTwo] title]];
-        }];
-        
-        for (NSArray *descriptor in sortedDescriptors) {
-            [urlString appendFormat:format, [descriptor firstObject], [descriptor lastObject]];
-        }
-        
-        return [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     } else if ([item isKindOfClass:[RUBusRoute class]]){
         RUBusRoute *route = item;
-        
-        NSString *agency = route.agency;
-        
-        NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",agency];
-        
-        for (RUBusStop *stop in route.stops){
-            [urlString appendFormat:format,route.tag,stop.tag];
+        for (NSString *stopTag in route.stops){
+            [urlString appendFormat:format,route.tag,stopTag];
         }
-        return [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
-    return nil;
+    return [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 
@@ -308,9 +289,8 @@ static NSString *const format = @"&stops=%@|null|%@";
         for (NSString *stopTag in stopTags) {
             RUBusStop *stop = stopsByTag[stopTag];
             [stops addObject:stop];
-            stop.routes = [stop.routes arrayByAddingObject:route];
+            stop.routes = [stop.routes arrayByAddingObject:routeTag];
         }
-        route.stops = stops;
     }
     
     self.stops = stopsByTitle;

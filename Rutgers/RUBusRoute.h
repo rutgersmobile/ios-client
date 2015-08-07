@@ -12,11 +12,12 @@
 @interface RUBusRoute : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) NSString *title;
+@property (nonatomic, readonly) NSString *title;
+@property (nonatomic, readonly) NSArray *directions;
+@property (nonatomic, readonly) NSArray *stops;
+
 @property (nonatomic) NSString *tag;
-@property (nonatomic) NSArray *stops;
 @property (nonatomic) BOOL active;
-@property (nonatomic) NSArray *directions;
 @property (nonatomic) NSString *agency;
 
 @end
