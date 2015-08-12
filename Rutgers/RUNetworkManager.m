@@ -21,18 +21,28 @@
  *  @return The shared network manager instance
  */
 
-+(AFHTTPSessionManager *)baseManager{
-    
++(NSURL *)baseURL{
     NSString *baseUrl = @"https://rumobile.rutgers.edu/";
     if (BETA) baseUrl = @"https://doxa.rutgers.edu/mobile/";
-    
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]];
+}
+
++(AFHTTPSessionManager *)baseManager{
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
     manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
   //  if (BETA) manager.securityPolicy.allowInvalidCertificates = YES;
-    
     return manager;
 }
 
++(AFHTTPSessionManager *)backgroundSessionManager{
+    static AFHTTPSessionManager *backgroundSessionManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL] sessionConfiguration:[NSURLSessionConfiguration backgroundSessionConfiguration:@"Analytics BG"]];
+        backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
+    });
+    return backgroundSessionManager;
+}
 
 +(AFHTTPSessionManager *)sessionManager{
     static AFHTTPSessionManager *sessionManager = nil;

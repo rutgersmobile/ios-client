@@ -10,6 +10,7 @@
 #import <AFNetworking.h>
 
 @interface RUNetworkManager : NSObject
++(AFHTTPSessionManager *)backgroundSessionManager;
 +(AFHTTPSessionManager *)sessionManager;
 +(AFHTTPSessionManager *)readerSessionManager;
 @end

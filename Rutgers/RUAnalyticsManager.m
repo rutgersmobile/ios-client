@@ -191,14 +191,10 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 -(void)postAnalyticsEvents:(NSArray *)events{
     if (!events.count) return;
     
-    UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
-    
-    [[RUNetworkManager sessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Analytics sent successfully");
-        [[UIApplication sharedApplication] endBackgroundTask:identifier];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSLog(@"Error sending analytics, retrying");
-        [[UIApplication sharedApplication] endBackgroundTask:identifier];
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
             [self queueAnalyticsEvents:events];
         }
