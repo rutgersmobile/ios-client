@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */; };
+		0417829F1B7BD61400FE75AD /* RUPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUPrediction.m */; };
+		041782A21B7BDC7F00FE75AD /* RUArrival.m in Sources */ = {isa = PBXBuildFile; fileRef = 041782A11B7BDC7F00FE75AD /* RUArrival.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
 		041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F881B4F195900BBCBFC /* RURecreationDataSource.m */; };
 		041D5F8C1B4F196E00BBCBFC /* RURecCenterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F8B1B4F196E00BBCBFC /* RURecCenterTableViewCell.m */; };
@@ -230,6 +232,10 @@
 /* Begin PBXFileReference section */
 		0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DiningHall.h"; sourceTree = "<group>"; };
 		0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DiningHall.m"; sourceTree = "<group>"; };
+		0417829D1B7BD61400FE75AD /* RUPrediction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPrediction.h; sourceTree = "<group>"; };
+		0417829E1B7BD61400FE75AD /* RUPrediction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPrediction.m; sourceTree = "<group>"; };
+		041782A01B7BDC7F00FE75AD /* RUArrival.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUArrival.h; sourceTree = "<group>"; };
+		041782A11B7BDC7F00FE75AD /* RUArrival.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUArrival.m; sourceTree = "<group>"; };
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
 		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
 		041D5F871B4F195900BBCBFC /* RURecreationDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecreationDataSource.h; path = Rutgers/RURecreationDataSource.h; sourceTree = SOURCE_ROOT; };
@@ -723,6 +729,10 @@
 		04A1F0051A5C50DC00DE0351 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				0417829D1B7BD61400FE75AD /* RUPrediction.h */,
+				0417829E1B7BD61400FE75AD /* RUPrediction.m */,
+				041782A01B7BDC7F00FE75AD /* RUArrival.h */,
+				041782A11B7BDC7F00FE75AD /* RUArrival.m */,
 				04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */,
 				04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */,
 				04A1EFC71A5C508300DE0351 /* RUPredictionsBodyTableViewCell.h */,
@@ -1708,6 +1718,7 @@
 			files = (
 				A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */,
 				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
+				041782A21B7BDC7F00FE75AD /* RUArrival.m in Sources */,
 				A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */,
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
@@ -1715,6 +1726,7 @@
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
+				0417829F1B7BD61400FE75AD /* RUPrediction.m in Sources */,
 				A7907CD119A2B83700711DCB /* UIFont+DynamicType.m in Sources */,
 				04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
