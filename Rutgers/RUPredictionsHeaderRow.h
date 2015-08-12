@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+@class RUPrediction;
+
 @interface RUPredictionsHeaderRow : NSObject
--(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithPredictions:(RUPrediction *)predictions forItem:(id)item NS_DESIGNATED_INITIALIZER;
 @property (nonatomic, readonly) id item;
 @property (nonatomic, readonly) BOOL active;
 @property (nonatomic, readonly, copy) NSString *title;

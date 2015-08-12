@@ -19,6 +19,7 @@
 #import "RUBusRoute.h"
 #import "RUMultiStop.h"
 #import "RUBusStop.h"
+#import "RUPrediction.h"
 
 @interface RUPredictionsDataSource ()
 @property id item;
@@ -61,31 +62,33 @@
 }
 
 -(void)parseResponse:(NSArray *)response{
-    NSMutableArray *sections = [NSMutableArray array];
+    NSMutableArray *parsedPredictions = [NSMutableArray array];
     
-    for (NSDictionary *predictions in [self reorderResponse:response]) {
-        [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:predictions forItem:self.item]];
+    for (NSDictionary *predictionDictionary in response) {
+        RUPrediction *prediction = [[RUPrediction alloc] initWithDictionary:predictionDictionary];
+        [parsedPredictions addObject:prediction];
     }
     
-    [self restoreExpansionStateFromCurrentSectionsToNewSections:sections];
-    
-    self.sections = sections;
-}
-
--(NSArray *)reorderResponse:(NSArray *)response{
-    
     if ([self.item isKindOfClass:[RUMultiStop class]]) {
-        response = [response sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"_routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"_routeTitle" ascending:YES]]];
+        [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
     } else if ([self.item isKindOfClass:[RUBusRoute class]]){
         RUBusRoute *route = self.item;
-        response = [response sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            NSInteger indexOne = [route.stops indexOfObject:obj1[@"_stopTag"]];
-            NSInteger indexTwo = [route.stops indexOfObject:obj2[@"_stopTag"]];
+        [parsedPredictions sortUsingComparator:^NSComparisonResult(RUPrediction *obj1, RUPrediction *obj2) {
+            NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
+            NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
             return compare(indexOne, indexTwo);
         }];
     }
     
-    return response;
+    NSMutableArray *sections = [NSMutableArray array];
+    
+    for (RUPrediction *prediction in parsedPredictions) {
+        [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:prediction forItem:self.item]];
+    }
+
+    [self restoreExpansionStateFromCurrentSectionsToNewSections:sections];
+    
+    self.sections = sections;
 }
 
 -(void)restoreExpansionStateFromCurrentSectionsToNewSections:(NSArray *)newSections{

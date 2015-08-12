@@ -9,6 +9,8 @@
 #import "RUPredictionsBodyRow.h"
 #import "RUPredictionsBodyTableViewCell.h"
 #import "NSDate+EpochTime.h"
+#import "RUPrediction.h"
+#import "RUArrival.h"
 
 @interface RUPredictionsBodyRow ()
 @property (nonatomic) NSArray *predictionTimes;
@@ -18,11 +20,10 @@
 @end
 
 @implementation RUPredictionsBodyRow
--(instancetype)initWithPredictionTimes:(NSArray *)predictionTimes{
-    
+-(instancetype)initWithPredictions:(RUPrediction *)predictions{
     self = [super init];
     if (self) {
-        self.predictionTimes = predictionTimes;
+        self.predictionTimes = predictions.arrivals;
     }
     return self;
 }
@@ -34,14 +35,11 @@
     NSMutableString *descriptionString = [NSMutableString new];
     NSMutableString *timeString = [NSMutableString new];
     
-    [self.predictionTimes enumerateObjectsUsingBlock:^(NSDictionary *prediction, NSUInteger idx, BOOL *stop) {
-        NSString *minutes = prediction[@"_minutes"];
-        NSString *seconds = prediction[@"_seconds"];
-        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:[seconds integerValue]];
-        /*
-        NSDate *otherDate = [NSDate dateWithEpochTime:prediction[@"_epochTime"]];
-        NSLog(@"%f",[date timeIntervalSinceDate:otherDate]);
-         */
+    [self.predictionTimes enumerateObjectsUsingBlock:^(RUArrival *arrivals, NSUInteger idx, BOOL *stop) {
+        NSInteger minutes = arrivals.minutes;
+        NSInteger seconds = arrivals.seconds;
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:seconds];
         
         if (idx != 0) {
             [minutesString appendString:@"\n"];
@@ -49,19 +47,18 @@
             [timeString appendString:@"\n"];
         }
         
-        if ([minutes integerValue] == 0) {
-            [minutesString appendString:seconds];
+        if (minutes == 0) {
+            [minutesString appendFormat:@"%ld",(long)seconds];
             [descriptionString appendString:@"seconds at"];
         } else {
-            [minutesString appendString:minutes];
-            if ([minutes integerValue] == 1) {
+            [minutesString appendFormat:@"%ld",(long)minutes];
+            if (minutes == 1) {
                 [descriptionString appendString:@"minute at"];
             } else {
                 [descriptionString appendString:@"minutes at"];
             }
         }
         [timeString appendString:[self formatDate:date]];
-        
     }];
 
     self.minutesString = minutesString;

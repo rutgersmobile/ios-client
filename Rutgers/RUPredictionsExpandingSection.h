@@ -8,7 +8,9 @@
 
 #import "ExpandingTableViewSection.h"
 
+@class RUPrediction;
+
 @interface RUPredictionsExpandingSection : ExpandingTableViewSection
--(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithPredictions:(RUPrediction *)predictions forItem:(id)item NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSString *identifier;
 @end

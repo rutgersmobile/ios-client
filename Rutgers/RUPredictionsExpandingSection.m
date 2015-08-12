@@ -13,22 +13,22 @@
 #import "RUPredictionsHeaderTableViewCell.h"
 #import "RUPredictionsBodyTableViewCell.h"
 #import "RUMultiStop.h"
+#import "RUPrediction.h"
 
 @interface RUPredictionsExpandingSection ()
 @property RUPredictionsHeaderRow *headerRow;
 @property RUPredictionsBodyRow *bodyRow;
-
 @end
 
 @implementation RUPredictionsExpandingSection
--(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item{
+-(instancetype)initWithPredictions:(RUPrediction *)predictions forItem:(id)item{
  
     self = [super init];
     if (self) {
         self.headerRow = [[RUPredictionsHeaderRow alloc] initWithPredictions:predictions forItem:item];
-        self.bodyRow = [[RUPredictionsBodyRow alloc] initWithPredictionTimes:[predictions[@"direction"] firstObject][@"prediction"]];
+        self.bodyRow = [[RUPredictionsBodyRow alloc] initWithPredictions:predictions];
         self.items = @[self.headerRow, self.bodyRow];
-        self.identifier = [NSString stringWithFormat:@"%@%@",predictions[@"_stopTag"],predictions[@"_routeTag"]];
+        self.identifier = [NSString stringWithFormat:@"%@%@",predictions.stopTag, predictions.routeTag];
     }
     return self;
 }

@@ -12,13 +12,16 @@
 #import <HexColors.h>
 #import "RUPredictionsHeaderTableViewCell.h"
 
+#import "RUPrediction.h"
+#import "RUArrival.h"
+
 @interface RUPredictionsHeaderRow ()
 @property id item;
-@property NSDictionary *predictions;
+@property RUPrediction *predictions;
 @end
 
 @implementation RUPredictionsHeaderRow
--(instancetype)initWithPredictions:(NSDictionary *)predictions forItem:(id)item{
+-(instancetype)initWithPredictions:(RUPrediction *)predictions forItem:(id)item{
     self = [super init];
     if (self) {
         self.item = item;
@@ -27,35 +30,28 @@
     return self;
 }
 
--(BOOL)active{
-    return [self.predictions[@"direction"] firstObject] ? YES : NO;
-}
-
 -(NSString *)title{
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
-        return self.predictions[@"_stopTitle"];
+        return self.predictions.stopTitle;
     } else {
-        return self.predictions[@"_routeTitle"];
+        return self.predictions.routeTitle;
     }
 }
 
 -(NSString *)directionTitle{
     if ([self.item isKindOfClass:[RUBusRoute class]]) return nil;
-    NSString *title = [self.predictions[@"direction"] firstObject][@"_title"];
-    if (title) return title;
-    return self.predictions[@"_dirTitleBecauseNoPredictions"];
+    return self.predictions.directionTitle;
 }
 
 -(NSString *)arrivalTimeDescription{
-    if (![self active]) return @"No predictions available.";
-    NSArray *predictions = [self.predictions[@"direction"] firstObject][@"prediction"];
+    if (!self.predictions.active) return @"No predictions available.";
+  
+    NSArray *arrivals = self.predictions.arrivals;
     
     NSMutableString *string = [[NSMutableString alloc] initWithString:@"Arriving in "];
     
-    [predictions enumerateObjectsUsingBlock:^(NSDictionary *prediction, NSUInteger idx, BOOL *stop) {
-        NSString *minutes = prediction[@"_minutes"];
-        
-        BOOL lastPrediction = (idx == 2 || idx == predictions.count - 1);
+    [arrivals enumerateObjectsUsingBlock:^(RUArrival *arrival, NSUInteger idx, BOOL *stop) {
+        BOOL lastPrediction = (idx == 2 || idx == arrivals.count - 1);
         
         if (idx != 0){
             if (idx == 1 && lastPrediction) [string appendString:@" "];
@@ -64,12 +60,16 @@
         
         if (idx != 0 && lastPrediction) [string appendString:@"and "];
         
-        if ([minutes isEqualToString:@"0"]) minutes = @"<1";
+        NSInteger minutes = arrival.minutes;
         
-        [string appendString:minutes];
+        if (minutes == 0) {
+            [string appendString:@"<1"];
+        } else {
+            [string appendFormat:@"%ld",(long)minutes];
+        }
 
         if (lastPrediction){
-            if ([minutes integerValue] == 1) {
+            if (minutes == 1) {
                 [string appendString:@" minute."];
             } else {
                 [string appendString:@" minutes."];
@@ -83,9 +83,12 @@
     return string;
 }
 
+-(BOOL)active{
+    return self.predictions.active;
+}
+
 -(UIColor *)timeLabelColor{
-    NSString *string = [[self.predictions[@"direction"] firstObject][@"prediction"] firstObject][@"_minutes"];
-    NSInteger minutes = [string integerValue];
+    NSInteger minutes = [self.predictions.arrivals.firstObject minutes];
     if (minutes < 2) {
         return [UIColor colorWithHexString:@"#CC0000"];
     } else if (minutes < 6) {
