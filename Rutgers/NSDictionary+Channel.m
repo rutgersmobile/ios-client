@@ -28,14 +28,14 @@
 -(UIImage *)channelIcon{
     NSString *iconName = self[@"icon"];
     if (!iconName) return nil;
-    UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [UIImage imageNamed:iconName];
     return image;
 }
 
 -(UIImage *)filledChannelIcon{
     NSString *iconName = [self[@"icon"] stringByAppendingString:@"-filled"];
     if (!iconName) return nil;
-    UIImage *image = [[UIImage imageNamed:iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [UIImage imageNamed:iconName];
     if (!image) return [self channelIcon];
     return image;
 }
