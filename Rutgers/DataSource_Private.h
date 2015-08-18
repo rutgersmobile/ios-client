@@ -33,7 +33,6 @@
 #pragma mark - Subclass hooks
 
 - (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier;
 - (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)configurePlaceholderCell:(id)cell;
 

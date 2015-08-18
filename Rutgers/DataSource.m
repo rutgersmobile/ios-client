@@ -149,10 +149,6 @@
     return [self.loadingState isEqualToString:AAPLLoadStateLoadingContent] ? NSStringFromClass([ALActivityIndicatorCell class]) : NSStringFromClass([ALPlaceholderCell class]);
 }
 
--(id)tableView:(UITableView *)tableView dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier{
-    return [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-}
-
 -(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     
 }
@@ -182,7 +178,7 @@
 -(id)tableView:(UITableView *)tableView sizingCellWithIdentifier:(NSString *)identifier{
     id cell = self.sizingCells[identifier];
     if (!cell) {
-        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:identifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         [cell removeFromSuperview];
         self.sizingCells[identifier] = cell;
     }
@@ -193,11 +189,11 @@
     ALTableViewAbstractCell *cell;
     
     if (self.showingPlaceholder) {
-        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier]];
+        cell = [tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier] forIndexPath:indexPath];
         [cell updateFonts];
         [self configurePlaceholderCell:cell];
     } else {
-        cell = [self tableView:tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
+        cell = [tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath] forIndexPath:indexPath];
         [cell updateFonts];
         [self configureCell:cell forRowAtIndexPath:indexPath];
     }
