@@ -12,8 +12,8 @@
 #import "DataSource_Private.h"
 #import "RUPredictionsHeaderTableViewCell.h"
 #import "RUPredictionsBodyTableViewCell.h"
-#import "RUMultiStop.h"
-#import "RUPrediction.h"
+#import "RUBusMultiStop.h"
+#import "RUBusPrediction.h"
 
 @interface RUPredictionsExpandingSection ()
 @property RUPredictionsHeaderRow *headerRow;
@@ -21,7 +21,7 @@
 @end
 
 @implementation RUPredictionsExpandingSection
--(instancetype)initWithPredictions:(RUPrediction *)predictions forItem:(id)item{
+-(instancetype)initWithPredictions:(RUBusPrediction *)predictions forItem:(id)item{
  
     self = [super init];
     if (self) {
@@ -51,7 +51,7 @@
         RUPredictionsHeaderTableViewCell *headerCell = cell;
         
         headerCell.titleLabel.text = [row title];
-        headerCell.directionLabel.text = [row.item isKindOfClass:[RUMultiStop class]] ? [row directionTitle] : nil;
+        headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultiStop class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
         if ([row active]) {
             headerCell.titleLabel.textColor = [UIColor blackColor];

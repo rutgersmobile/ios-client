@@ -8,20 +8,20 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUBusRoute.h"
-#import "RUMultiStop.h"
+#import "RUBusMultiStop.h"
 #import <HexColors.h>
 #import "RUPredictionsHeaderTableViewCell.h"
 
-#import "RUPrediction.h"
+#import "RUBusPrediction.h"
 #import "RUArrival.h"
 
 @interface RUPredictionsHeaderRow ()
 @property id item;
-@property RUPrediction *predictions;
+@property RUBusPrediction *predictions;
 @end
 
 @implementation RUPredictionsHeaderRow
--(instancetype)initWithPredictions:(RUPrediction *)predictions forItem:(id)item{
+-(instancetype)initWithPredictions:(RUBusPrediction *)predictions forItem:(id)item{
     self = [super init];
     if (self) {
         self.item = item;

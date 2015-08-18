@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RUPrediction : NSObject
+@interface RUBusPrediction : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 @property (nonatomic, readonly) NSString *stopTag;
 @property (nonatomic, readonly) NSString *routeTag;

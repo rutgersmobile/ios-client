@@ -11,7 +11,7 @@
 #import "RULocationManager.h"
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
-#import "RUMultiStop.h"
+#import "RUBusMultiStop.h"
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
 
@@ -122,9 +122,9 @@
     
     [self performWhenActiveLoaded:^(NSError *error) {
         
-        NSArray *sortedNearbyStops = [[self.stops.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUMultiStop *stop, NSDictionary *bindings) {
+        NSArray *sortedNearbyStops = [[self.stops.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(RUBusMultiStop *stop, NSDictionary *bindings) {
             return (stop.active && [self distanceOfStop:stop fromLocation:location] < NEARBY_DISTANCE);
-        }]] sortedArrayUsingComparator:^NSComparisonResult(RUMultiStop *stopOne, RUMultiStop *stopTwo) {
+        }]] sortedArrayUsingComparator:^NSComparisonResult(RUBusMultiStop *stopOne, RUBusMultiStop *stopTwo) {
             CLLocationDistance distanceOne = [self distanceOfStop:stopOne fromLocation:location];
             CLLocationDistance distanceTwo = [self distanceOfStop:stopTwo fromLocation:location];
             
@@ -138,7 +138,7 @@
     }];
 }
 
--(CLLocationDistance)distanceOfStop:(RUMultiStop *)multiStop fromLocation:(CLLocation *)location{
+-(CLLocationDistance)distanceOfStop:(RUBusMultiStop *)multiStop fromLocation:(CLLocation *)location{
     CLLocationDistance minDistance = -1;
     for (RUBusStop *stop in multiStop.stops) {
         CLLocationDistance distance = [stop.location distanceFromLocation:location];
@@ -222,8 +222,8 @@ static NSString *const format = @"&stops=%@|null|%@";
 -(NSString *)urlStringForItem:(id)item{
     NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",self.agency];
 
-    if ([item isKindOfClass:[RUMultiStop class]]) {
-        RUMultiStop *stop = item;
+    if ([item isKindOfClass:[RUBusMultiStop class]]) {
+        RUBusMultiStop *stop = item;
         NSArray *stops = stop.stops;
 
         for (RUBusStop *stop in stops){
@@ -269,10 +269,10 @@ static NSString *const format = @"&stops=%@|null|%@";
         stopsByTag[stopTag] = stop;
         
         //checks if the title has been seen yet
-        RUMultiStop *stopsForTitle = stopsByTitle[stop.title];
+        RUBusMultiStop *stopsForTitle = stopsByTitle[stop.title];
         if (!stopsForTitle) {
             //if not make an array to hold stops with this title
-            stopsForTitle = [[RUMultiStop alloc] init];
+            stopsForTitle = [[RUBusMultiStop alloc] init];
             stopsByTitle[stop.title] = stopsForTitle;
         }
         //add the stop to the array of stops with identical titles
@@ -312,7 +312,7 @@ static NSString *const format = @"&stops=%@|null|%@";
     NSSet *activeStopTitles = [NSSet setWithArray:[activeConfig[@"stops"] valueForKey:@"title"]];
     NSMutableArray *activeStops = [NSMutableArray array];
 
-    for (RUMultiStop *stop in self.stops.allValues) {
+    for (RUBusMultiStop *stop in self.stops.allValues) {
         BOOL active = [activeStopTitles containsObject:stop.title];
         stop.active = active;
         if (active) {

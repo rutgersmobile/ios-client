@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */; };
-		0417829F1B7BD61400FE75AD /* RUPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUPrediction.m */; };
+		0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUBusPrediction.m */; };
 		041782A21B7BDC7F00FE75AD /* RUArrival.m in Sources */ = {isa = PBXBuildFile; fileRef = 041782A11B7BDC7F00FE75AD /* RUArrival.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
 		041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F881B4F195900BBCBFC /* RURecreationDataSource.m */; };
@@ -48,7 +48,7 @@
 		04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF31A5C50B700DE0351 /* RUBusRoute.m */; };
 		04A1EFFB1A5C50B700DE0351 /* RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF51A5C50B700DE0351 /* RUBusStop.m */; };
 		04A1EFFC1A5C50B700DE0351 /* RUBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF71A5C50B700DE0351 /* RUBusViewController.m */; };
-		04A1EFFD1A5C50B700DE0351 /* RUMultiStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF91A5C50B700DE0351 /* RUMultiStop.m */; };
+		04A1EFFD1A5C50B700DE0351 /* RUBusMultiStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF91A5C50B700DE0351 /* RUBusMultiStop.m */; };
 		04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */; };
 		04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1F0021A5C50D400DE0351 /* NearbyActiveStopsDataSource.m */; };
 		04ABA7EE1B5D6B38000EB43C /* RUContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ABA7ED1B5D6B38000EB43C /* RUContainerController.m */; };
@@ -232,8 +232,8 @@
 /* Begin PBXFileReference section */
 		0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DiningHall.h"; sourceTree = "<group>"; };
 		0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DiningHall.m"; sourceTree = "<group>"; };
-		0417829D1B7BD61400FE75AD /* RUPrediction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPrediction.h; sourceTree = "<group>"; };
-		0417829E1B7BD61400FE75AD /* RUPrediction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPrediction.m; sourceTree = "<group>"; };
+		0417829D1B7BD61400FE75AD /* RUBusPrediction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusPrediction.h; sourceTree = "<group>"; };
+		0417829E1B7BD61400FE75AD /* RUBusPrediction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusPrediction.m; sourceTree = "<group>"; };
 		041782A01B7BDC7F00FE75AD /* RUArrival.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUArrival.h; sourceTree = "<group>"; };
 		041782A11B7BDC7F00FE75AD /* RUArrival.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUArrival.m; sourceTree = "<group>"; };
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
@@ -307,8 +307,8 @@
 		04A1EFF51A5C50B700DE0351 /* RUBusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusStop.m; sourceTree = "<group>"; };
 		04A1EFF61A5C50B700DE0351 /* RUBusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusViewController.h; sourceTree = "<group>"; };
 		04A1EFF71A5C50B700DE0351 /* RUBusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusViewController.m; sourceTree = "<group>"; };
-		04A1EFF81A5C50B700DE0351 /* RUMultiStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMultiStop.h; sourceTree = "<group>"; };
-		04A1EFF91A5C50B700DE0351 /* RUMultiStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMultiStop.m; sourceTree = "<group>"; };
+		04A1EFF81A5C50B700DE0351 /* RUBusMultiStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMultiStop.h; sourceTree = "<group>"; };
+		04A1EFF91A5C50B700DE0351 /* RUBusMultiStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMultiStop.m; sourceTree = "<group>"; };
 		04A1EFFE1A5C50C200DE0351 /* RUBusDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusDataSource.h; sourceTree = "<group>"; };
 		04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusDataSource.m; sourceTree = "<group>"; };
 		04A1F0011A5C50D400DE0351 /* NearbyActiveStopsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyActiveStopsDataSource.h; sourceTree = "<group>"; };
@@ -729,8 +729,8 @@
 		04A1F0051A5C50DC00DE0351 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				0417829D1B7BD61400FE75AD /* RUPrediction.h */,
-				0417829E1B7BD61400FE75AD /* RUPrediction.m */,
+				0417829D1B7BD61400FE75AD /* RUBusPrediction.h */,
+				0417829E1B7BD61400FE75AD /* RUBusPrediction.m */,
 				041782A01B7BDC7F00FE75AD /* RUArrival.h */,
 				041782A11B7BDC7F00FE75AD /* RUArrival.m */,
 				04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */,
@@ -793,8 +793,8 @@
 				04A1EFF31A5C50B700DE0351 /* RUBusRoute.m */,
 				04A1EFF41A5C50B700DE0351 /* RUBusStop.h */,
 				04A1EFF51A5C50B700DE0351 /* RUBusStop.m */,
-				04A1EFF81A5C50B700DE0351 /* RUMultiStop.h */,
-				04A1EFF91A5C50B700DE0351 /* RUMultiStop.m */,
+				04A1EFF81A5C50B700DE0351 /* RUBusMultiStop.h */,
+				04A1EFF91A5C50B700DE0351 /* RUBusMultiStop.m */,
 			);
 			name = objects;
 			sourceTree = "<group>";
@@ -1726,7 +1726,7 @@
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
-				0417829F1B7BD61400FE75AD /* RUPrediction.m in Sources */,
+				0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */,
 				A7907CD119A2B83700711DCB /* UIFont+DynamicType.m in Sources */,
 				04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
@@ -1888,7 +1888,7 @@
 				A7241A2D1988537100304436 /* CollectionViewController.m in Sources */,
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				04A1EFD81A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m in Sources */,
-				04A1EFFD1A5C50B700DE0351 /* RUMultiStop.m in Sources */,
+				04A1EFFD1A5C50B700DE0351 /* RUBusMultiStop.m in Sources */,
 				A7C92C9F1946477D00609549 /* iPadCheck.m in Sources */,
 				A7B8DB9819A67E9400EF1953 /* RUSportsPlayerUnexpandedCell.m in Sources */,
 				A7EA4C54197D6BD800E972DD /* SegmentedDataSource.m in Sources */,

@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUMultiStop.h"
+#import "RUBusMultiStop.h"
 #import "RUBusStop.h"
 #import "CLLocation+Centroid.h"
 
-@implementation RUMultiStop
+@implementation RUBusMultiStop
 -(instancetype)init{
     self = [super init];
     if (self) {

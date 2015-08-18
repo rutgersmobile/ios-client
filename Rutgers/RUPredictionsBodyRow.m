@@ -9,7 +9,7 @@
 #import "RUPredictionsBodyRow.h"
 #import "RUPredictionsBodyTableViewCell.h"
 #import "NSDate+EpochTime.h"
-#import "RUPrediction.h"
+#import "RUBusPrediction.h"
 #import "RUArrival.h"
 
 @interface RUPredictionsBodyRow ()
@@ -20,7 +20,7 @@
 @end
 
 @implementation RUPredictionsBodyRow
--(instancetype)initWithPredictions:(RUPrediction *)predictions{
+-(instancetype)initWithPredictions:(RUBusPrediction *)predictions{
     self = [super init];
     if (self) {
         self.predictionTimes = predictions.arrivals;

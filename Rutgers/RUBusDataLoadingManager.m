@@ -10,8 +10,8 @@
 #import "RUBusDataAgencyManager.h"
 #import "RUBusStop.h"
 #import "RUBusRoute.h"
-#import "RUMultiStop.h"
-#import "RUPrediction.h"
+#import "RUBusMultiStop.h"
+#import "RUBusPrediction.h"
 
 NSString * const newBrunswickAgency = @"rutgers";
 NSString * const newarkAgency = @"rutgers-newark";
@@ -92,16 +92,16 @@ NSString * const newarkAgency = @"rutgers-newark";
             NSMutableArray *parsedPredictions = [NSMutableArray array];
             
             for (NSDictionary *predictionDictionary in predictions) {
-                RUPrediction *prediction = [[RUPrediction alloc] initWithDictionary:predictionDictionary];
+                RUBusPrediction *prediction = [[RUBusPrediction alloc] initWithDictionary:predictionDictionary];
                 [parsedPredictions addObject:prediction];
             }
             
-            if ([item isKindOfClass:[RUMultiStop class]]) {
+            if ([item isKindOfClass:[RUBusMultiStop class]]) {
                 [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
                 [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
             } else if ([item isKindOfClass:[RUBusRoute class]]){
                 RUBusRoute *route = item;
-                [parsedPredictions sortUsingComparator:^NSComparisonResult(RUPrediction *obj1, RUPrediction *obj2) {
+                [parsedPredictions sortUsingComparator:^NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2) {
                     NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
                     NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
                     return compare(indexOne, indexTwo);

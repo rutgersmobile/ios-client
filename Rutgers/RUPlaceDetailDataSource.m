@@ -15,7 +15,7 @@
 #import "RUBusDataLoadingManager.h"
 
 #import <MapKit/MapKit.h>
-#import "RUMultiStop.h"
+#import "RUBusMultiStop.h"
 #import "RUMapsViewController.h"
 #import "MiniMapDataSource.h"
 

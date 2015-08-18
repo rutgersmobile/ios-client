@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@class RUPrediction;
+@class RUBusPrediction;
 
 @interface RUPredictionsBodyRow : NSObject
--(instancetype)initWithPredictions:(RUPrediction *)predictions;
+-(instancetype)initWithPredictions:(RUBusPrediction *)predictions;
 @property (nonatomic, readonly) NSString *minutesString;
 @property (nonatomic, readonly) NSString *descriptionString;
 @property (nonatomic, readonly) NSString *timeString;

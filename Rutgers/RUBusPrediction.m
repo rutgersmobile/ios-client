@@ -6,10 +6,10 @@
 //  Copyright © 2015 Rutgers. All rights reserved.
 //
 
-#import "RUPrediction.h"
+#import "RUBusPrediction.h"
 #import "RUArrival.h"
 
-@implementation RUPrediction
+@implementation RUBusPrediction
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {

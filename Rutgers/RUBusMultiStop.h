@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 @class RUBusStop;
 
-@interface RUMultiStop : NSObject
+@interface RUBusMultiStop : NSObject
 @property (nonatomic, readonly) NSArray *stops;
 @property (nonatomic, readonly) NSString *title;
 

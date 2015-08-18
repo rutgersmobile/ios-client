@@ -59,7 +59,7 @@
 -(void)updateSectionsForResponse:(NSArray *)response{
     NSMutableArray *sections = [NSMutableArray array];
     
-    for (RUPrediction *prediction in response) {
+    for (RUBusPrediction *prediction in response) {
         [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:prediction forItem:self.item]];
     }
 

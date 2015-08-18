@@ -11,7 +11,7 @@
 #import "RUMapsViewController.h"
 #import "RUPlacesViewController.h"
 #import "RUPlaceDetailDataSource.h"
-#import "RUMultiStop.h"
+#import "RUBusMultiStop.h"
 #import "RUPlace.h"
 
 @interface RUPlaceDetailViewController ()
@@ -49,7 +49,7 @@
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[RUPlace class]]) {
         [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:item] animated:YES];
-    } else if ([item isKindOfClass:[RUMultiStop class]]) {
+    } else if ([item isKindOfClass:[RUBusMultiStop class]]) {
         [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
     }
 }
