@@ -176,16 +176,18 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 -(void)resetFlushTimer{
     @synchronized(self) {
         [self.flushTimer invalidate];
-        self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
+        self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
     }
 }
 
 -(void)flushQueue{
-    @synchronized(self) {
-        [self.flushTimer invalidate];
-        [self postAnalyticsEvents:[self.queue copy]];
-        [self.queue removeAllObjects];
-    }
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
+        @synchronized(self) {
+            [self.flushTimer invalidate];
+            [self postAnalyticsEvents:[self.queue copy]];
+            [self.queue removeAllObjects];
+        }
+    });
 }
 
 -(void)postAnalyticsEvents:(NSArray *)events{
