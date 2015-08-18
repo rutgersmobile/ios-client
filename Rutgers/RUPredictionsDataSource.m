@@ -16,11 +16,6 @@
 #import "RUPredictionsBodyRow.h"
 #import "DataSource_Private.h"
 
-#import "RUBusRoute.h"
-#import "RUMultiStop.h"
-#import "RUBusStop.h"
-#import "RUPrediction.h"
-
 @interface RUPredictionsDataSource ()
 @property id item;
 @end
@@ -46,11 +41,11 @@
             if (!error) {
                 if (predictions.count) {
                     [loading updateWithContent:^(typeof(self) me) {
-                        [me parseResponse:predictions];
+                        [me updateSectionsForResponse:predictions];
                     }];
                 } else {
                     [loading updateWithNoContent:^(typeof(self) me) {
-                        self.sections = nil;
+                        [me updateSectionsForResponse:nil];
                     }];
                 }
 
@@ -61,28 +56,10 @@
     }];
 }
 
--(void)parseResponse:(NSArray *)response{
-    NSMutableArray *parsedPredictions = [NSMutableArray array];
-    
-    for (NSDictionary *predictionDictionary in response) {
-        RUPrediction *prediction = [[RUPrediction alloc] initWithDictionary:predictionDictionary];
-        [parsedPredictions addObject:prediction];
-    }
-    
-    if ([self.item isKindOfClass:[RUMultiStop class]]) {
-        [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-    } else if ([self.item isKindOfClass:[RUBusRoute class]]){
-        RUBusRoute *route = self.item;
-        [parsedPredictions sortUsingComparator:^NSComparisonResult(RUPrediction *obj1, RUPrediction *obj2) {
-            NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
-            NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
-            return compare(indexOne, indexTwo);
-        }];
-    }
-    
+-(void)updateSectionsForResponse:(NSArray *)response{
     NSMutableArray *sections = [NSMutableArray array];
     
-    for (RUPrediction *prediction in parsedPredictions) {
+    for (RUPrediction *prediction in response) {
         [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:prediction forItem:self.item]];
     }
 
