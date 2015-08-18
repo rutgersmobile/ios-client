@@ -189,11 +189,11 @@
     ALTableViewAbstractCell *cell;
     
     if (self.showingPlaceholder) {
-        cell = [tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier] forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier]];
         [cell updateFonts];
         [self configurePlaceholderCell:cell];
     } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath] forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
         [cell updateFonts];
         [self configureCell:cell forRowAtIndexPath:indexPath];
     }
