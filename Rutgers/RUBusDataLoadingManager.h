@@ -12,6 +12,9 @@
 extern NSString * const newBrunswickAgency;
 extern NSString * const newarkAgency;
 
+/**
+ *  The centralized point of bus data access. All messages should be sent to the singleton instance
+ */
 @interface RUBusDataLoadingManager : NSObject
 
 +(instancetype)sharedInstance;

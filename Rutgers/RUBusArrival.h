@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ The bus arrival holds the minutes and seconds for an arrival inside a prediction object
+ */
 @interface RUBusArrival : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 @property (nonatomic, readonly) NSInteger minutes;

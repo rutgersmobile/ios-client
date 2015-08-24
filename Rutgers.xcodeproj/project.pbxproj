@@ -733,12 +733,8 @@
 				0417829E1B7BD61400FE75AD /* RUBusPrediction.m */,
 				041782A01B7BDC7F00FE75AD /* RUBusArrival.h */,
 				041782A11B7BDC7F00FE75AD /* RUBusArrival.m */,
-				04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */,
-				04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */,
 				04A1EFC71A5C508300DE0351 /* RUPredictionsBodyTableViewCell.h */,
 				04A1EFC81A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m */,
-				04A1EFCD1A5C508300DE0351 /* RUPredictionsHeaderRow.h */,
-				04A1EFCE1A5C508300DE0351 /* RUPredictionsHeaderRow.m */,
 				04A1EFCF1A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.h */,
 				04A1EFD01A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m */,
 			);
@@ -759,6 +755,10 @@
 		04A1F0071A5C50E800DE0351 /* data source */ = {
 			isa = PBXGroup;
 			children = (
+				04A1EFC51A5C508300DE0351 /* RUPredictionsBodyRow.h */,
+				04A1EFC61A5C508300DE0351 /* RUPredictionsBodyRow.m */,
+				04A1EFCD1A5C508300DE0351 /* RUPredictionsHeaderRow.h */,
+				04A1EFCE1A5C508300DE0351 /* RUPredictionsHeaderRow.m */,
 				04A1EFC91A5C508300DE0351 /* RUPredictionsDataSource.h */,
 				04A1EFCA1A5C508300DE0351 /* RUPredictionsDataSource.m */,
 				04A1EFCB1A5C508300DE0351 /* RUPredictionsExpandingSection.h */,

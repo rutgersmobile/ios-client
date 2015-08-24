@@ -8,6 +8,9 @@
 
 #import "SegmentedTableViewController.h"
 
+/**
+ *  This is the View Controller that sits at the root of the Bus Channel
+ */
 @interface RUBusViewController : SegmentedTableViewController <RUChannelProtocol>
 
 @end

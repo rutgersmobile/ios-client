@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "ExpandingTableViewController.h"
 
-
 @interface RUPredictionsViewController : ExpandingTableViewController
+/**
+ *  The predictions view controller is initialized with an item to display.
+ *
+ *  @param item The item to display, this may be a stop or a route
+ *
+ *  @return The initialized view controller
+ */
 -(instancetype)initWithItem:(id)item;
 @end

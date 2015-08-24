@@ -10,6 +10,9 @@
 
 @class RUBusPrediction;
 
+/**
+ The predictions body row models how 
+ */
 @interface RUPredictionsBodyRow : NSObject
 -(instancetype)initWithPredictions:(RUBusPrediction *)predictions;
 @property (nonatomic, readonly) NSString *minutesString;

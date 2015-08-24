@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ The bus prediction object holds the predictions for a singlular route and stop combination.
+ */
 @interface RUBusPrediction : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 @property (nonatomic, readonly) NSString *stopTag;
