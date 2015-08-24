@@ -27,22 +27,25 @@
 {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
+    // All content is located in the data sources
     self.dataSource = [[RUBusDataSource alloc] init];
     self.searchDataSource = [[BusSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search All Routes and Stops";
 }
 
+//This causes an update timer to start upon the Bus View controller appearing
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [(RUBusDataSource *)self.dataSource startUpdates];
 }
 
+//And stops the timer
 -(void)viewWillDisappear:(BOOL)animated{
     [(RUBusDataSource *)self.dataSource stopUpdates];
     [super viewWillDisappear:animated];
 }
 
+//This is the action send when tapping on a cell, this opens up the predictions screen
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
