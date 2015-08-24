@@ -98,7 +98,8 @@ NSString * const newarkAgency = @"rutgers-newark";
             
             if ([item isKindOfClass:[RUBusMultiStop class]]) {
                 [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
-                [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
+                //[parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
+                [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
             } else if ([item isKindOfClass:[RUBusRoute class]]){
                 RUBusRoute *route = item;
                 [parsedPredictions sortUsingComparator:^NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2) {
