@@ -6,9 +6,9 @@
 //  Copyright © 2015 Rutgers. All rights reserved.
 //
 
-#import "RUArrival.h"
+#import "RUBusArrival.h"
 
-@implementation RUArrival
+@implementation RUBusArrival
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {

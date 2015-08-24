@@ -7,7 +7,7 @@
 //
 
 #import "RUBusPrediction.h"
-#import "RUArrival.h"
+#import "RUBusArrival.h"
 
 @implementation RUBusPrediction
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
@@ -25,7 +25,7 @@
             _directionTitle = direction[@"_title"];
             NSMutableArray *arrivals = [NSMutableArray array];
             for (NSDictionary *arrival in direction[@"prediction"]) {
-                [arrivals addObject:[[RUArrival alloc] initWithDictionary:arrival]];
+                [arrivals addObject:[[RUBusArrival alloc] initWithDictionary:arrival]];
             }
             _arrivals = arrivals;
         } else {

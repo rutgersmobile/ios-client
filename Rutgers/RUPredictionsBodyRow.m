@@ -10,7 +10,7 @@
 #import "RUPredictionsBodyTableViewCell.h"
 #import "NSDate+EpochTime.h"
 #import "RUBusPrediction.h"
-#import "RUArrival.h"
+#import "RUBusArrival.h"
 
 @interface RUPredictionsBodyRow ()
 @property (nonatomic) NSArray *predictionTimes;
@@ -35,7 +35,7 @@
     NSMutableString *descriptionString = [NSMutableString new];
     NSMutableString *timeString = [NSMutableString new];
     
-    [self.predictionTimes enumerateObjectsUsingBlock:^(RUArrival *arrivals, NSUInteger idx, BOOL *stop) {
+    [self.predictionTimes enumerateObjectsUsingBlock:^(RUBusArrival *arrivals, NSUInteger idx, BOOL *stop) {
         NSInteger minutes = arrivals.minutes;
         NSInteger seconds = arrivals.seconds;
         

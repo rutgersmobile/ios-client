@@ -13,7 +13,7 @@
 #import "RUPredictionsHeaderTableViewCell.h"
 
 #import "RUBusPrediction.h"
-#import "RUArrival.h"
+#import "RUBusArrival.h"
 
 @interface RUPredictionsHeaderRow ()
 @property id item;
@@ -50,7 +50,7 @@
     
     NSMutableString *string = [[NSMutableString alloc] initWithString:@"Arriving in "];
     
-    [arrivals enumerateObjectsUsingBlock:^(RUArrival *arrival, NSUInteger idx, BOOL *stop) {
+    [arrivals enumerateObjectsUsingBlock:^(RUBusArrival *arrival, NSUInteger idx, BOOL *stop) {
         BOOL lastPrediction = (idx == 2 || idx == arrivals.count - 1);
         
         if (idx != 0){
