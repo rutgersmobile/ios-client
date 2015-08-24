@@ -186,6 +186,7 @@
     CGFloat y = self.webView.scrollView.contentInset.top;
     self.loadingBarView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, y, CGRectGetWidth(self.view.frame), LOADING_BAR_HEIGHT)];
     self.loadingBarView.trackTintColor = [UIColor clearColor];
+    self.loadingBarView.progress = 0;
     
     [self.view addSubview:self.loadingBarView];
     
@@ -193,23 +194,8 @@
     [self.loadingBarView autoPinEdgeToSuperviewEdge:ALEdgeTrailing];
     [self.loadingBarView autoPinToTopLayoutGuideOfViewController:self withInset:0];
     
-    if (self.loadingBarTintColor && [self.loadingBarView respondsToSelector:@selector(setTintColor:)])
-        self.loadingBarView.tintColor = self.loadingBarTintColor;
-    
-    //set the tint color for the loading bar
-    if (self.loadingBarTintColor == nil) {
-        if (self.navigationController && self.navigationController.view.window.tintColor)
-            self.loadingBarView.backgroundColor = self.navigationController.view.window.tintColor;
-        else if (self.view.window.tintColor)
-            self.loadingBarView.backgroundColor = self.view.window.tintColor;
-        else
-            self.loadingBarView.backgroundColor = DEFAULT_BAR_TINT_COLOR;
-    }
-    else if (self.loadingBarTintColor)
-        self.loadingBarView.backgroundColor = self.loadingBarTintColor;
-    else
-        self.loadingBarView.backgroundColor = DEFAULT_BAR_TINT_COLOR;
-    
+    self.loadingBarView.tintColor = self.loadingBarTintColor;
+
     //only load the buttons if we need to
     if (self.navigationButtonsHidden == NO)
         [self setUpNavigationButtons];
@@ -443,19 +429,6 @@
     
     [self.urlRequest setURL:self.url];
     [self.webView loadRequest:self.urlRequest];
-}
-
-- (void)setLoadingBarTintColor:(UIColor *)loadingBarTintColor
-{
-    if (loadingBarTintColor == self.loadingBarTintColor)
-        return;
-    
-    _loadingBarTintColor = loadingBarTintColor;
-    
-    self.loadingBarView.backgroundColor = self.loadingBarTintColor;
-    
-    if ([self.loadingBarView respondsToSelector:@selector(setTintColor:)])
-        self.loadingBarView.tintColor = self.loadingBarTintColor;
 }
 
 - (UINavigationBar *)navigationBar
@@ -704,16 +677,25 @@
 
 - (void)setLoadingProgress:(CGFloat)loadingProgress
 {
-    //Update the loading bar progress to match
+    NSLog(@"%f",loadingProgress);
+    //Update the loading bar progress to match 
     if (self.showLoadingBar)
     {
         [self.loadingBarView setProgress:loadingProgress animated:YES];
 
         if (loadingProgress >= 1.0f - FLT_EPSILON)
         {
-            [UIView animateWithDuration:0.2f animations:^{
-                self.loadingBarView.alpha = 0.0f;
-            }];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (!self.webView.loading) {
+                    [UIView animateWithDuration:0.2f animations:^{
+                        self.loadingBarView.alpha = 0.0f;
+                    } completion:^(BOOL finished) {
+                        if (finished) {
+                            self.loadingBarView.progress = 0;
+                        }
+                    }];
+                }
+            });
         }
     }
 }
