@@ -37,7 +37,13 @@
         _dateString = [self dateStringWithStartDate:startDate endDate:endDate];
         
         //The image url may be in one of two fields
-        NSString *imageUrl = [item[@"enclosure"] firstObject][@"_url"];
+        NSString *imageUrl;
+        
+        id imageEnclosure = [item[@"enclosure"] firstObject];
+        if ([imageEnclosure isKindOfClass:[NSDictionary class]]) {
+            imageUrl = imageEnclosure[@"_url"];
+        }
+        
         if (!imageUrl) imageUrl = [item[@"media:thumbnail"] firstObject][@"_url"];
         
         _imageURL = [NSURL URLWithString:imageUrl];
