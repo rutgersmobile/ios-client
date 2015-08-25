@@ -12,6 +12,8 @@
 NSString *const ChannelManagerJsonFileName = @"ordered_content";
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
 
+#define CHANNEL_CACHE_TIME 60*60*24*1
+
 @interface RUChannelManager ()
 @property dispatch_group_t loadingGroup;
 
@@ -91,14 +93,12 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 -(NSString *)documentPath{
     NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *pathForFile = [documentsDir stringByAppendingPathComponent:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"]];
-    return pathForFile;
+    return [documentsDir stringByAppendingPathComponent:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"]];
 }
 
 -(NSString *)bundlePath{
     return [[NSBundle mainBundle] pathForResource:ChannelManagerJsonFileName ofType:@"json"];
 }
-
 
 -(BOOL)needsLoad{
     if (![super needsLoad]) return NO;
@@ -107,7 +107,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSDate *date = [attributes fileModificationDate];
     if (!date) return YES;
     
-    return YES;//([date compare:[NSDate dateWithTimeIntervalSinceNow:-60*60*24*3]] == NSOrderedAscending);
+    return ([date compare:[NSDate dateWithTimeIntervalSinceNow:-CHANNEL_CACHE_TIME]] == NSOrderedAscending);
 }
 
 -(void)load{
