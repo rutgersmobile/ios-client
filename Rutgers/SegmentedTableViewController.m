@@ -152,6 +152,6 @@
     }
     
     segmentedControl.bounds = controlBounds;
-    NSLog(@"%f",segmentedControl.bounds.size.width);
+    //NSLog(@"%f",segmentedControl.bounds.size.width);
 }
 @end

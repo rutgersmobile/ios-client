@@ -677,7 +677,7 @@
 
 - (void)setLoadingProgress:(CGFloat)loadingProgress
 {
-    NSLog(@"%f",loadingProgress);
+    //NSLog(@"%f",loadingProgress);
     //Update the loading bar progress to match 
     if (self.showLoadingBar)
     {
