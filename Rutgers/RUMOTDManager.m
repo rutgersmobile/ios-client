@@ -25,11 +25,13 @@
 
 -(void)showMOTD{
     [[RUNetworkManager sessionManager] GET:@"motd.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showMOTDResponse:responseObject];
-        });
+        if ([responseObject[@"data"] boolValue]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showMOTDResponse:responseObject];
+            });
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
+        NSLog(@"Failure retrieveing MOTD");
     }];
 }
 
