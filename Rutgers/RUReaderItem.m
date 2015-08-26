@@ -9,6 +9,7 @@
 #import "RUReaderItem.h"
 #import <NSString+HTML.h>
 #import "RUReaderTableViewCell.h"
+#import <XMLDictionary.h>
 
 @interface RUReaderItem ()
 @property (nonatomic) NSDictionary *item;
@@ -42,6 +43,9 @@
         id imageEnclosure = [item[@"enclosure"] firstObject];
         if ([imageEnclosure isKindOfClass:[NSDictionary class]]) {
             imageUrl = imageEnclosure[@"_url"];
+        } else if ([imageEnclosure isKindOfClass:[NSString class]]) {
+            imageEnclosure = [NSDictionary dictionaryWithXMLString:imageEnclosure];
+            imageUrl = imageEnclosure[@"_src"];
         }
         
         if (!imageUrl) imageUrl = [item[@"media:thumbnail"] firstObject][@"_url"];
