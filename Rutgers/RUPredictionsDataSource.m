@@ -38,6 +38,7 @@
                 [loading ignore];
                 return;
             }
+            
             if (!error) {
                 if (predictions.count) {
                     [loading updateWithContent:^(typeof(self) me) {

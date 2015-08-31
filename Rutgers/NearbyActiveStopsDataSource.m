@@ -38,6 +38,7 @@
                 [loading ignore];
                 return;
             }
+            
             if (!error) {
                 [loading updateWithContent:^(typeof(self) me) {
                     self.items = stops;

@@ -26,6 +26,7 @@
                 [loading ignore];
                 return;
             }
+            
             [loading updateWithContent:^(typeof(self) me) {
                 
             }];

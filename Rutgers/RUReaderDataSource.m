@@ -34,6 +34,7 @@
                 [loading ignore];
                 return;
             }
+            
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
                 NSArray *parsedResponse = [self parseResponse:channel[@"item"]];

@@ -30,6 +30,7 @@
                 [loading ignore];
                 return;
             }
+            
             if (!error) {
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = routes;
