@@ -32,7 +32,7 @@
             });
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Failure retrieveing MOTD");
+        NSLog(@"Failure retrieving MOTD");
     }];
 }
 
