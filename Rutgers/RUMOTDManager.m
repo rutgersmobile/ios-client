@@ -25,7 +25,8 @@
 
 -(void)showMOTD{
     [[RUNetworkManager sessionManager] GET:@"motd.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject[@"data"] boolValue]) {
+        id data = responseObject[@"data"];
+        if ([data isKindOfClass:[NSString class]]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showMOTDResponse:responseObject];
             });
@@ -40,7 +41,10 @@
     BOOL hasCloseButton = [responseObject[@"hasCloseButton"] boolValue];
     
     NSString *title = responseObject[@"title"];
-    NSString *message = responseObject[@"motd"];
+    NSString *message = responseObject[@"data"];
+    NSString *logMessage = responseObject[@"motd"];
+    
+    NSLog(@"MOTD log message: %@",logMessage);
    
     //more logic that aaron described
     //hasCloseButton = YES;
