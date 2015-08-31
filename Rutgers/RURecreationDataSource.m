@@ -27,7 +27,7 @@
                 return;
             }
             
-            if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([responseObject isKindOfClass:[NSArray class]]) {
                 [loading updateWithContent:^(typeof(self) me) {
                     [me parseResponse:responseObject];
                 }];
