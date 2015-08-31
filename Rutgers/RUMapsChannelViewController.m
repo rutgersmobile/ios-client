@@ -27,6 +27,7 @@ NSString *const mapsRecentCameraKey = @"mapsRecentCameraKey";
 }
 
 -(void)encodeRestorableStateWithCoder:(nonnull NSCoder *)coder{
+    [super encodeRestorableStateWithCoder:coder];
     [coder encodeObject:self.mapView.camera forKey:mapsRecentCameraKey];
 }
 
