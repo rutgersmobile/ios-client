@@ -44,7 +44,7 @@
 
     static BOOL const BETA = YES;
 
-    static NSString *const gittag = @"4.0-BETA1";
+    static NSString *const gittag = @"4.0-BETA5";
 
     static NSString *const api = @"1";
 
