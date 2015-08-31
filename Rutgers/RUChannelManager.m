@@ -115,8 +115,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     [[RUNetworkManager sessionManager] GET:@"ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.allChannels = responseObject;
+            [self didEndLoad:YES withError:nil];
+        } else {
+            [self didEndLoad:NO withError:nil];
         }
-        [self didEndLoad:YES withError:nil];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self didEndLoad:NO withError:error];
     }];

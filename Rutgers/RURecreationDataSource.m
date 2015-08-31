@@ -27,9 +27,15 @@
                 return;
             }
             
-            [loading updateWithContent:^(typeof(self) me) {
-                [me parseResponse:responseObject];
-            }];
+            if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me parseResponse:responseObject];
+                }];
+            } else {
+                [loading updateWithContent:^(typeof(self) me) {
+                    [me parseResponse:nil];
+                }];
+            }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
