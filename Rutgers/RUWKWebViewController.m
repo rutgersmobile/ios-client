@@ -681,7 +681,7 @@
     //Update the loading bar progress to match 
     if (self.showLoadingBar)
     {
-        [self.loadingBarView setProgress:loadingProgress animated:YES];
+        [self.loadingBarView setProgress:(float)loadingProgress animated:YES];
 
         if (loadingProgress >= 1.0f - FLT_EPSILON)
         {
