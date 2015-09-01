@@ -50,7 +50,6 @@
                 "type" : "emailButton",
                 "text" : "Email Colonel Henry",
                 "email" : "colhenry@rci.rutgers.edu",
-                "body" : ""
               }
              ],
     "footer" : "colhenry@rci.rutgers.edu"
