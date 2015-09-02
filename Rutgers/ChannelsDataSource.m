@@ -7,6 +7,7 @@
 //
 
 #import "ChannelsDataSource.h"
+#import "RUChannelManager.h"
 
 @implementation ChannelsDataSource
 - (instancetype)init

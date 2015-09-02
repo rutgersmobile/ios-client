@@ -9,6 +9,7 @@
 #import "MenuDataSource.h"
 #import "DataSource_Private.h"
 #import "ChannelsDataSource.h"
+#import "RUUserInfoManager.h"
 
 @implementation MenuDataSource
 -(instancetype)init{

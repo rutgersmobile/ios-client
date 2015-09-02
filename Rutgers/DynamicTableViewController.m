@@ -8,6 +8,8 @@
 
 #import "DynamicTableViewController.h"
 #import "DynamicDataSource.h"
+#import "RUChannelManager.h"
+#import "NSDictionary+Channel.h"
 
 @interface DynamicTableViewController ()
 @property NSDictionary *channel;

@@ -14,6 +14,7 @@
 #import "RUBusMultiStop.h"
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
+#import "RUNetworkManager.h"
 
 #define URLS @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"}
 #define ACTIVE_URLS @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"}

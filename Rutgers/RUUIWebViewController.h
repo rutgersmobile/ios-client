@@ -7,6 +7,7 @@
 //
 
 #import "TOWebViewController.h"
+#import "RUChannelProtocol.h"
 
 @interface RUUIWebViewController : TOWebViewController <RUChannelProtocol>
 

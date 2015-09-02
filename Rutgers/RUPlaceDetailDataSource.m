@@ -20,6 +20,7 @@
 #import "MiniMapDataSource.h"
 
 #import <AddressBookUI/AddressBookUI.h>
+#import <MSWeakTimer.h>
 
 #define UPDATE_TIME_INTERVAL 60.0
 

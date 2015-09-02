@@ -9,6 +9,8 @@
 #import "FAQViewController.h"
 #import "ExpandingTableViewSection.h"
 #import "FAQDataSource.h"
+#import "RUChannelManager.h"
+#import "NSDictionary+Channel.h"
 
 @interface FAQViewController ()
 @property NSDictionary *channel;

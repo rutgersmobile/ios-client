@@ -10,6 +10,8 @@
 
 #import "AAPLPlaceholderView.h"
 #import "RULabel.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
 
 #define CORNER_RADIUS 3.0
 #define VERTICAL_ELEMENT_SPACING 35.0

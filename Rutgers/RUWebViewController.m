@@ -12,6 +12,7 @@
 #import <SafariServices/SafariServices.h>
 #import "RUUIWebViewController.h"
 #import "RUWKWebViewController.h"
+#import "RUChannelManager.h"
 
 @interface RUWebViewController ()
 @property NSDictionary *channelConfiguration;

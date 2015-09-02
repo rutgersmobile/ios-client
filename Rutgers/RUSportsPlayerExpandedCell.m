@@ -9,6 +9,9 @@
 #import "RUSportsPlayerExpandedCell.h"
 #import "RUSportsPlayerCell_Private.h"
 #import "RULabel.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
+#import "UIColor+RutgersColors.h"
 
 @implementation RUSportsPlayerExpandedCell
 

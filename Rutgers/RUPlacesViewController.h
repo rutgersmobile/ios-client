@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SegmentedTableViewController.h"
+#import "RUChannelProtocol.h"
 
 @interface RUPlacesViewController : SegmentedTableViewController <RUChannelProtocol>
 

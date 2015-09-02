@@ -7,6 +7,7 @@
 //
 
 #import "RUAppearance.h"
+#import "UIColor+RutgersColors.h"
 
 @implementation RUAppearance
 

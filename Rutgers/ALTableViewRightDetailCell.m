@@ -8,6 +8,9 @@
 
 #import "ALTableViewRightDetailCell.h"
 #import "RULabel.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
+
 @interface ALTableViewRightDetailCell ()
 
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;

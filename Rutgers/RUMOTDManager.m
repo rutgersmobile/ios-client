@@ -8,6 +8,7 @@
 
 #import "RUMOTDManager.h"
 #import "RUNetworkManager.h"
+#import "RUChannelManager.h"
 
 @interface RUMOTDManager ()
 @property UIViewController *presentedViewController;

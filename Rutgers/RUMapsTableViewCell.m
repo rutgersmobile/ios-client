@@ -8,7 +8,7 @@
 
 #import "RUMapsTableViewCell.h"
 #import "RUEmbeddedMapsViewController.h"
-#import "iPadCheck.h"
+#import <PureLayout.h>
 
 @interface RUMapsTableViewCell ()
 @property (nonatomic) UIView *controllerView;

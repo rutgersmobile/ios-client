@@ -12,14 +12,12 @@
 #import "ALTableViewTextCell.h"
 #import "TupleDataSource.h"
 #import "DataSource_Private.h"
+#import "RUNetworkManager.h"
 
 @implementation RURecreationDataSource
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        NSString *url = @"gyms.txt";
-        if (BETA) {
-            url = @"gyms_array.txt";
-        }
+        NSString *url = @"gyms_array.txt";
         
         [[RUNetworkManager sessionManager] GET:url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
@@ -53,8 +51,6 @@
 }
 
 -(void)parseResponse:(id)responseObject{
-    if (!BETA) return;
-    
     NSArray *campuses = responseObject;
     for (NSDictionary *campus in campuses) {
         

@@ -11,6 +11,8 @@
 #import "RUFoodDataSource.h"
 #import "DataTuple.h"
 #import "NSDictionary+DiningHall.h"
+#import <MSWeakTimer.h>
+#import "RUChannelManager.h"
 
 @interface RUFoodViewController ()
 @property MSWeakTimer *timer;

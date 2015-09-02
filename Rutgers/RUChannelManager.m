@@ -8,6 +8,10 @@
 
 #import "NSDictionary+Channel.h"
 #import "RUDataLoadingManager_Private.h"
+#import "RUNetworkManager.h"
+#import "RUChannelManager.h"
+#import "RUChannelProtocol.h"
+#import "RUAnalyticsManager.h"
 
 NSString *const ChannelManagerJsonFileName = @"ordered_content";
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";

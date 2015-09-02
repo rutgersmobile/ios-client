@@ -15,6 +15,7 @@
 #import "NSPredicate+SearchPredicate.h"
 #import "NSArray+LimitedToCount.h"
 #import "RUDataLoadingManager_Private.h"
+#import "RUNetworkManager.h"
 
 NSString *PlacesDataDidUpdateRecentPlacesKey = @"PlacesDataDidUpdateRecentPlacesKey";
 static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";

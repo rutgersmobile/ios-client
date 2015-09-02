@@ -8,6 +8,8 @@
 
 #import "RUSOCSectionCell.h"
 #import "RULabel.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
 
 @interface RUSOCSectionCell ()
 @property (nonatomic) NSLayoutConstraint *descriptionConstraint;

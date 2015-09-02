@@ -9,6 +9,7 @@
 #import "RUInfoTableSection.h"
 #import "ALTableViewTextCell.h"
 #import "RUInfoDataSource.h"
+#import "UIFont+DynamicType.h"
 
 @implementation RUInfoTableSection
 -(void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{

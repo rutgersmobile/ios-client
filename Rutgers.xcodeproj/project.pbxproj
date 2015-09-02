@@ -162,7 +162,6 @@
 		A7C92C9819462A0800609549 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C92C9619462A0800609549 /* AddressBook.framework */; };
 		A7C92C9919462A0800609549 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C92C9719462A0800609549 /* AddressBookUI.framework */; };
 		A7C92C9C19462BA300609549 /* RUPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92C9B19462BA300609549 /* RUPlace.m */; };
-		A7C92C9F1946477D00609549 /* iPadCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C92C9E1946477D00609549 /* iPadCheck.m */; };
 		A7D4B63919AB9D580087A8BC /* RUFeedbackDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4B63819AB9D580087A8BC /* RUFeedbackDataSource.m */; };
 		A7D4B64319ABC94B0087A8BC /* RUOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4B64219ABC94B0087A8BC /* RUOptionsViewController.m */; };
 		A7D4B64619ABD1300087A8BC /* OptionsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4B64519ABD1300087A8BC /* OptionsDataSource.m */; };
@@ -531,8 +530,6 @@
 		A7C92C9719462A0800609549 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		A7C92C9A19462BA300609549 /* RUPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUPlace.h; sourceTree = "<group>"; };
 		A7C92C9B19462BA300609549 /* RUPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUPlace.m; sourceTree = "<group>"; };
-		A7C92C9D1946477D00609549 /* iPadCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPadCheck.h; sourceTree = "<group>"; };
-		A7C92C9E1946477D00609549 /* iPadCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPadCheck.m; sourceTree = "<group>"; };
 		A7D4B63719AB9D580087A8BC /* RUFeedbackDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFeedbackDataSource.h; sourceTree = "<group>"; };
 		A7D4B63819AB9D580087A8BC /* RUFeedbackDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFeedbackDataSource.m; sourceTree = "<group>"; };
 		A7D4B64119ABC94B0087A8BC /* RUOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUOptionsViewController.h; sourceTree = "<group>"; };
@@ -1371,8 +1368,6 @@
 				A75229AF196DCADC0095DD4D /* Serializer */,
 				A7B2D996190EE7DF003ABEA3 /* TTTAddressFormatter.h */,
 				A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */,
-				A7C92C9D1946477D00609549 /* iPadCheck.h */,
-				A7C92C9E1946477D00609549 /* iPadCheck.m */,
 				A70C2BD1198BF498004F82D4 /* RULabel.h */,
 				A70C2BD2198BF498004F82D4 /* RULabel.m */,
 				A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */,
@@ -1889,7 +1884,6 @@
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				04A1EFD81A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m in Sources */,
 				04A1EFFD1A5C50B700DE0351 /* RUBusMultiStop.m in Sources */,
-				A7C92C9F1946477D00609549 /* iPadCheck.m in Sources */,
 				A7B8DB9819A67E9400EF1953 /* RUSportsPlayerUnexpandedCell.m in Sources */,
 				A7EA4C54197D6BD800E972DD /* SegmentedDataSource.m in Sources */,
 				A7EA4C46197D65C000E972DD /* AAPLContentLoading.m in Sources */,

@@ -8,7 +8,8 @@
 
 #import "ALTableViewToggleCell.h"
 #import "RULabel.h"
-
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
 
 @interface ALTableViewToggleCell ()
 @property (strong, nonatomic) IBOutlet UILabel *realTextLabel;

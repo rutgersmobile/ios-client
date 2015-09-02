@@ -9,6 +9,8 @@
 #import "DynamicDataSource.h"
 #import "ALTableViewTextCell.h"
 #import "DataSource_Private.h"
+#import "RUNetworkManager.h"
+#import "NSDictionary+Channel.h"
 
 @interface DynamicDataSource ()
 @property NSDictionary *channel;

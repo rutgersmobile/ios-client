@@ -9,6 +9,8 @@
 #import "RUReaderViewController.h"
 #import "RUReaderItem.h"
 #import "RUReaderDataSource.h"
+#import "RUChannelManager.h"
+#import "NSDictionary+Channel.h"
 
 @interface RUReaderViewController ()
 @property (nonatomic) NSDictionary *channel;

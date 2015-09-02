@@ -8,6 +8,8 @@
 
 #import "RUSportsPlayerUnexpandedCell.h"
 #import "RUSportsPlayerCell_Private.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
 
 @implementation RUSportsPlayerUnexpandedCell
 

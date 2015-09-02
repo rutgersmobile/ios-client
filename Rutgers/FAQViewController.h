@@ -7,6 +7,7 @@
 //
 
 #import "ExpandingTableViewController.h"
+#import "RUChannelProtocol.h"
 
 /**
  This view controller shows faq style question answer information

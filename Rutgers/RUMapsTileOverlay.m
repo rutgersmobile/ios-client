@@ -8,7 +8,7 @@
 
 #import "RUMapsTileOverlay.h"
 #import "RUMapsData.h"
-#import "iPadCheck.h"
+#import "RUNetworkManager.h"
 
 @interface RUMapsTileOverlay ()
 @property BOOL retina;

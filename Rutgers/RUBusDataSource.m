@@ -16,6 +16,7 @@
 #import "RUBusDataLoadingManager.h"
 #import "RULocationManager.h"
 #import "RUUserInfoManager.h"
+#import <MSWeakTimer.h>
 
 #define UPDATE_TIME_INTERVAL 60.0
 

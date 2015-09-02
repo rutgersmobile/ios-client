@@ -13,6 +13,9 @@
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
 #import <MMDrawerController.h>
+#import "RUChannelManager.h"
+#import "NSDictionary+Channel.h"
+#import "RUAppearance.h"
 
 @interface RURootController () <RUMenuDelegate>
 @property (nonatomic) RUMenuViewController *menuViewController;
@@ -102,11 +105,9 @@
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
 
-    if (![channel presentsModally]) {
-        UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
-        [RUAppearance applyAppearanceToNavigationController:navController];
-        vc = navController;
-    }
+    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
+    [RUAppearance applyAppearanceToNavigationController:navController];
+    vc = navController;
 
     return vc;
 }

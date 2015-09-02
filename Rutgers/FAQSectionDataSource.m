@@ -9,6 +9,8 @@
 #import "FAQSectionDataSource.h"
 #import "ALTableViewTextCell.h"
 #import "DataSource_Private.h"
+#import "NSDictionary+Channel.h"
+#import "UIFont+DynamicType.h"
 
 @interface FAQSectionDataSource ()
 @end

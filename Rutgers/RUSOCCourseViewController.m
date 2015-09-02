@@ -11,6 +11,7 @@
 #import "RUSOCCourseDataSource.h"
 #import "RUSOCDataLoadingManager.h"
 #import "DataTuple.h"
+#import "RUChannelManager.h"
 
 @interface RUSOCCourseViewController ()
 @property (nonatomic) NSDictionary *course;

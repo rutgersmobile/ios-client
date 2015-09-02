@@ -7,6 +7,8 @@
 //
 
 #import "ALTableViewTextFieldCell.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
 
 @interface ALTableViewTextFieldCell()
 @property UILabel *realTextLabel;

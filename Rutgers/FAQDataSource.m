@@ -10,6 +10,8 @@
 #import "ALTableViewTextCell.h"
 #import "ExpandingTableViewSection.h"
 #import "FAQSectionDataSource.h"
+#import "RUNetworkManager.h"
+#import "NSDictionary+Channel.h"
 
 @interface FAQDataSource ()
 @property NSDictionary *channel;

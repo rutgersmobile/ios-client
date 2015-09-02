@@ -8,6 +8,10 @@
 
 #import "RUMenuTableViewCell.h" 
 #import "RULabel.h"
+#import <PureLayout.h>
+#import "NSDictionary+Channel.h"
+#import "UIFont+DynamicType.h"
+#import "UIColor+RutgersColors.h"
 
 @interface RUMenuTableViewCell ()
 @property (nonatomic) NSDictionary *channel;

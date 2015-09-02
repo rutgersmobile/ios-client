@@ -8,6 +8,7 @@
 
 #import "RUSportsData.h"
 #import "RUSportsPlayer.h"
+#import "RUNetworkManager.h"
 
 @implementation RUSportsData
 +(NSDictionary *)allSports{

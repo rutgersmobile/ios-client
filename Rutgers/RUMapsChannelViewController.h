@@ -7,6 +7,7 @@
 //
 
 #import "RUMapsViewController.h"
+#import "RUChannelProtocol.h"
 
 @interface RUMapsChannelViewController : RUMapsViewController <RUChannelProtocol>
 

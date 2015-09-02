@@ -8,6 +8,7 @@
 
 #import "RUResponseSerializer.h"
 #import "RUReaderResponseSerializer.h"
+#import "RUNetworkManager.h"
 
 @interface RUNetworkManager ()
 @property AFHTTPSessionManager *sessionManager;
@@ -23,7 +24,21 @@
 
 +(NSURL *)baseURL{
     NSString *baseUrl = @"https://rumobile.rutgers.edu/";
-    if (BETA) baseUrl = @"https://doxa.rutgers.edu/mobile/";
+    if (isBeta()) baseUrl = @"https://doxa.rutgers.edu/mobile/";
+    
+    #warning todo
+    /*
+    switch (betaMode) {
+        case BetaModeDevelopment:
+            
+            break;
+        case BetaModeBeta:
+            
+            break;
+        default:
+            break;
+    }*/
+    
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]];
 }
 

@@ -10,9 +10,9 @@
 #import "RUPredictionsDataSource.h"
 #import "RUBusRoute.h"
 #import "TableViewController_Private.h"
+#import <MSWeakTimer.h>
 
 #define PREDICTION_TIMER_INTERVAL 30.0
-
 
 @interface RUPredictionsViewController ()
 @property (nonatomic) MSWeakTimer *timer;

@@ -56,7 +56,4 @@
     return self[@"url"] ? YES : NO;
 }
 
--(BOOL)presentsModally{
-    return NO;//return self.channelIsWebLink;
-}
 @end

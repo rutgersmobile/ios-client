@@ -7,6 +7,9 @@
 //
 
 #import "RUAnalyticsManager.h"
+#import "RUNetworkManager.h"
+#import "NSDictionary+Channel.h"
+#import "RUUserInfoManager.h"
 
 @interface RUAnalyticsManager ()
 @property NSMutableArray *queue;
@@ -155,7 +158,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 -(NSDictionary *)releaseDict{
     return @{
-             @"beta" : @(BETA),
+             @"beta" : @(isBeta()),
              @"version" : gittag,
              @"api" : api
              };

@@ -11,6 +11,7 @@
 #import "RUUserInfoManager.h"
 #import "RUSOCCourseRow.h"
 #import "RUDataLoadingManager_Private.h"
+#import "RUNetworkManager.h"
 
 static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
 

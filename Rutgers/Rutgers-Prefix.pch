@@ -13,21 +13,6 @@
 #ifdef __OBJC__
 
     #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-
-    #import <AFNetworkReachabilityManager.h>
-    #import <MSWeakTimer.h>
-    #import <PureLayout.h>
-
-    #import "RUNetworkManager.h"
-
-    #import "RUChannelManager.h"
-    #import "NSDictionary+Channel.h"
-    #import "RUChannelProtocol.h"
-
-    #import "UIFont+DynamicType.h"
-    #import "RUAppearance.h"
-    #import "UIColor+RutgersColors.h"
 
     #define kLabelHorizontalInsets      15.0f
     #define kLabelVerticalInsets        11.0f
@@ -35,20 +20,7 @@
     #define kLabelHorizontalInsetsSmall      8.0f
     #define kLabelVerticalInsetsSmall        5.0f
 
-    #import "iPadCheck.h"
-
-    #import "RUAnalyticsManager.h"
-    #import "RUUserInfoManager.h"
-
     #define IPAD_SCALE 1.15
-
-    static BOOL const BETA = YES;
-
-    static NSString *const gittag = @"4.0-BETA5";
-
-    static NSString *const api = @"1";
-
-    static NSString *const betamode = @"beta";
 
     #define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
 
@@ -59,6 +31,48 @@
         if (int1 > int2) return NSOrderedDescending;
         return NSOrderedSame;
     };
+
+    static BOOL iPad() {
+        static bool iPad = NO;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+        });
+        return iPad;
+    }
+
+    static NSString *const gittag = @"4.0-BETA5";
+
+    static NSString *const api = @"1";
+
+    typedef NS_ENUM(NSUInteger, BetaMode) {
+        BetaModeDevelopment,
+        BetaModeBeta,
+        BetaModeProduction
+    };
+
+    static BetaMode const betaMode = BetaModeBeta;
+
+    static BOOL isBeta() {
+        switch (betaMode) {
+            case BetaModeDevelopment:
+            case BetaModeBeta:
+                return YES;
+            case BetaModeProduction:
+                return NO;
+        }
+    }
+
+    static NSString * betaModeString() {
+        switch (betaMode) {
+            case BetaModeDevelopment:
+                return @"dev";
+            case BetaModeBeta:
+                return @"beta";
+            case BetaModeProduction:
+                return @"production";
+        }
+    }
 
 #endif
 

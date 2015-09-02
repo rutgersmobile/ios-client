@@ -12,6 +12,8 @@
 #import "ComposedDataSource_Private.h"
 #import "RUChannelManager.h"
 #import "TextViewDataSource.h"
+#import "RUNetworkManager.h"
+#import "NSDictionary+Channel.h"
 
 @interface RUFeedbackDataSource ()
 @property (nonatomic) AlertDataSource *subjectDataSource;
@@ -119,6 +121,7 @@
 
 -(void)send{
     UIDevice *device = [UIDevice currentDevice];
+    
     BOOL wantsResponse = self.emailDataSource.textFieldText.length;
 
     NSMutableDictionary *feedback = [@{@"message" : self.messageDataSource.textViewText,
@@ -126,10 +129,9 @@
                                        @"wants_response" : @(wantsResponse),
                                        @"osname" : device.systemName,
                                        @"id" : device.identifierForVendor.UUIDString,
-                                       @"betamode" : betamode,
+                                       @"betamode" : betaModeString(),
                                        @"version" : gittag
                                        } mutableCopy];
-    
     
     if (wantsResponse) {
         feedback[@"email"] = self.emailDataSource.textFieldText;
@@ -141,14 +143,9 @@
     
     NSString *url = @"feedback.php";
 
-
-
-/* TODO This really should be if ALPHA
-    if (BETA) {
+    if (betaMode) {
         url = @"http://sauron.rutgers.edu/~jamchamb/feedback.php";
     }
- */
-
     
     [[RUNetworkManager sessionManager] POST:url parameters:feedback success:^(NSURLSessionDataTask *task, id responseObject) {
         dispatch_async(dispatch_get_main_queue(), ^{

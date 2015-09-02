@@ -7,6 +7,7 @@
 //
 
 #import "RUSportsRosterPlayerHeaderCell.h"
+#import <PureLayout.h>
 
 @interface RUSportsRosterPlayerHeaderCell ()
 @property (nonatomic) UIView *playerView;

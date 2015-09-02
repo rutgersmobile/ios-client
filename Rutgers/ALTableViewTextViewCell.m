@@ -7,6 +7,8 @@
 //
 
 #import "ALTableViewTextViewCell.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
 
 @implementation ALTableViewTextViewCell
 

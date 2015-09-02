@@ -7,6 +7,8 @@
 //
 
 #import "TableViewController.h"
+#import "RUChannelProtocol.h"
 
 @interface RUFeedbackViewController : TableViewController <RUChannelProtocol>
+
 @end

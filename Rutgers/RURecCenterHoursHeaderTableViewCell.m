@@ -7,6 +7,9 @@
 //
 
 #import "RURecCenterHoursHeaderTableViewCell.h"
+#import <PureLayout.h>
+#import "UIFont+DynamicType.h"
+
 @interface RURecCenterHoursHeaderTableViewCell ()
 @end
 

@@ -12,6 +12,7 @@
 #import "TableViewController_Private.h"
 #import "AAPLPlaceholderView.h"
 #import "RUAnalyticsManager.h"
+#import "RUAppearance.h"
 
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8

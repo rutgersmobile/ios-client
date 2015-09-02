@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface NSDictionary (Channel)
 
@@ -23,5 +24,4 @@
 
 @property (nonatomic, readonly) BOOL channelIsWebLink;
 
-@property (nonatomic, readonly) BOOL presentsModally;
 @end

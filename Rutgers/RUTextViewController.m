@@ -10,6 +10,7 @@
 #import "ALTableViewTextCell.h"
 #import <NSString+HTML.h>
 #import "NSAttributedString+FromHTML.h"
+#import <PureLayout.h>
 
 @interface RUTextViewController ()
 @property (nonatomic) NSString *data;

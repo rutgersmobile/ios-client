@@ -7,6 +7,7 @@
 //
 
 #import "RUSplashViewController.h"
+#import <PureLayout.h>
 
 @interface RUSplashViewController ()
 @property (nonatomic) UIViewController *childVC;

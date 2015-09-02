@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-@class RUImageResponseSerializer;
+#import <AFNetworking.h>
 
 @interface RUImageResponseSerializer : AFImageResponseSerializer
 

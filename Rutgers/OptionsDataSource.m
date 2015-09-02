@@ -11,6 +11,7 @@
 #import "AlertDataSource.h"
 #import "RUAppDelegate.h"
 #import "RUMOTDManager.h"
+#import "RUUserInfoManager.h"
 
 @implementation OptionsDataSource
 /**

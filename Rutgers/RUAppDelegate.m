@@ -10,9 +10,15 @@
 #import "XMLDictionary.h"
 #import "RUMOTDManager.h"
 #import "RURootController.h"
+#import <AFNetworking.h>
 #import <AFNetworkActivityIndicatorManager.h>
+#import <PureLayout.h>
+#import "RUAppearance.h"
+#import "RUAnalyticsManager.h"
+#import "RUUserInfoManager.h"
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
+@property (nonatomic) RUUserInfoManager *userInfoManager;
 @property RURootController *rootController;
 @property (nonatomic) UIImageView *windowBackground;
 

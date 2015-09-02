@@ -11,6 +11,7 @@
 #import "ALTableViewTextCell.h"
 #import "DataSource_Private.h"
 #import "NSDictionary+DiningHall.h"
+#import "RUNetworkManager.h"
 
 @implementation NewBrunswickFoodDataSource
 - (instancetype)init

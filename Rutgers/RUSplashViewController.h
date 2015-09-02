@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUChannelProtocol.h"
 
 @interface RUSplashViewController : UIViewController <RUChannelProtocol>
 @end

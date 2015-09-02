@@ -7,6 +7,7 @@
 //
 
 #import "RUUIWebViewController.h"
+#import "NSDictionary+Channel.h"
 
 @interface RUUIWebViewController ()
 @property (nonatomic) NSDictionary *channelConfiguration;

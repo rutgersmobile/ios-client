@@ -17,7 +17,8 @@
 #import "NSIndexPath+RowExtensions.h"
 
 #import "ComposedDataSource.h"
-
+#import <AFNetworkReachabilityManager.h>
+#import "RUAnalyticsManager.h"
 
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;

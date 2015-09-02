@@ -7,6 +7,7 @@
 //
 
 #import "TableViewController.h"
+#import "RUChannelProtocol.h"
 
 /**
  *  This is the view controller for the options menu
