@@ -66,9 +66,13 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 -(void)load{
     [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        self.semesters = [self parseSemesters:responseObject[@"semesters"]];
-        self.defaultSemesterIndex = [responseObject[@"defaultSemester"] integerValue];
-        [self didEndLoad:YES withError:nil];
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            self.semesters = [self parseSemesters:responseObject[@"semesters"]];
+            self.defaultSemesterIndex = [responseObject[@"defaultSemester"] integerValue];
+            [self didEndLoad:YES withError:nil];
+        } else {
+            [self didEndLoad:NO withError:nil];
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self didEndLoad:NO withError:error];
     }];
@@ -115,7 +119,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
             handler(nil,error);
         } else {
             [[RUNetworkManager sessionManager] GET:[self subjectsURL] parameters:[self parametersWithOtherParameters:nil] success:^(NSURLSessionDataTask *task, id responseObject) {
-                handler(responseObject,nil);
+                if ([responseObject isKindOfClass:[NSArray class]]) {
+                    handler(responseObject,nil);
+                } else {
+                    handler(nil,nil);
+                }
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 handler(nil,error);
             }];
@@ -129,12 +137,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
             handler(nil,error);
         } else {
             [[RUNetworkManager sessionManager] GET:[self coursesURL] parameters:[self parametersWithOtherParameters:@{@"subject" : subjectCode}] success:^(NSURLSessionDataTask *task, id responseObject) {
-                NSMutableArray *parsedItems = [NSMutableArray array];
-                for (NSDictionary *course in responseObject) {
-                    RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
-                    [parsedItems addObject:row];
+                if ([responseObject isKindOfClass:[NSArray class]]) {
+                    handler(responseObject,nil);
+                } else {
+                    handler(nil,nil);
                 }
-                handler(parsedItems,nil);
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 handler(nil,error);
             }];
@@ -148,7 +155,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
             handler(nil,error);
         } else {
             [[RUNetworkManager sessionManager] GET:[self courseURL] parameters:[self parametersWithOtherParameters:@{@"subject" : subjectCode, @"courseNumber" : courseCode}] success:^(NSURLSessionDataTask *task, id responseObject) {
-                handler(responseObject,nil);
+                if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                    handler(responseObject,nil);
+                } else {
+                    handler(nil,nil);
+                }
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 handler(nil,error);
             }];
@@ -163,7 +174,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
         } else {
             NSString *indexString = [NSString stringWithFormat:@"indexes/%@_%@_%@.json",self.semester[@"tag"], self.campus[@"tag"], self.level[@"tag"]];
             [[RUNetworkManager sessionManager] GET:indexString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-                handler(responseObject,nil);
+                if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                    handler(responseObject,nil);
+                } else {
+                    handler(nil,nil);
+                }
             } failure:^(NSURLSessionDataTask *task, NSError *error) {
                 handler(nil,error);
             }];

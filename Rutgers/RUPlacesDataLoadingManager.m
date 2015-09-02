@@ -55,8 +55,10 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     [[RUNetworkManager sessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
+            [self didEndLoad:YES withError:nil];
+        } else {
+            [self didEndLoad:NO withError:nil];
         }
-        [self didEndLoad:YES withError:nil];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self didEndLoad:NO withError:error];
     }];

@@ -54,6 +54,7 @@
                 [loading ignore];
                 return;
             }
+            
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 [loading updateWithContent:^(typeof(self) me) {
                     [me updateWithItems:responseObject[@"children"]];

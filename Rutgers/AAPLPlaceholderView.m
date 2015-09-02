@@ -108,7 +108,7 @@
 
         CGFloat cornerRadius = CORNER_RADIUS;
 
-        CGFloat capSize = ceilf(cornerRadius * CONTINUOUS_CURVES_SIZE_FACTOR);
+        CGFloat capSize = ceil(cornerRadius * CONTINUOUS_CURVES_SIZE_FACTOR);
         CGFloat rectSize = 2.0 * capSize + 1.0;
         CGRect rect = CGRectMake(0.0, 0.0, rectSize, rectSize);
         UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0.0);

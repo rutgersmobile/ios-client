@@ -11,4 +11,5 @@
 @interface RUMOTDManager : NSObject
 +(instancetype)sharedManager;
 -(void)showMOTD;
+@property (nonatomic) NSString *serverInfoString;
 @end

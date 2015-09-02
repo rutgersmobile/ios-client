@@ -10,6 +10,7 @@
 #import "StringDataSource.h"
 #import "AlertDataSource.h"
 #import "RUAppDelegate.h"
+#import "RUMOTDManager.h"
 
 @implementation OptionsDataSource
 /**
@@ -58,7 +59,12 @@
         reset.alertTitle = @"Are you sure you wish to reset the app?";
         reset.updatesInitialText = NO;
         reset.showsDisclosureIndicator = YES;
-        reset.footer = [NSString stringWithFormat:@"Rutgers Mobile Application\nVersion: %@\nAPI: %@",
+        
+        NSString *serverInfoString = [RUMOTDManager sharedManager].serverInfoString;
+        if (!serverInfoString) serverInfoString = @"Rutgers Mobile Application";
+        
+        reset.footer = [NSString stringWithFormat:@"%@\nVersion: %@\nAPI: %@",
+                        serverInfoString,
                         gittag,
                         api];
         

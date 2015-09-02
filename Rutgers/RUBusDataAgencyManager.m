@@ -173,12 +173,16 @@
     self.agencyLoadingError = nil;
     
     [[RUNetworkManager sessionManager] GET:URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self parseRouteConfig:responseObject];
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self parseRouteConfig:responseObject];
+            self.agencyFinishedLoading = YES;
+        } else {
+            self.agencyFinishedLoading = NO;
+        }
         
-        self.agencyLoading = NO;
-        self.agencyFinishedLoading = YES;
         self.agencyLoadingError = nil;
-        
+        self.agencyLoading = NO;
+
         dispatch_group_leave(self.agencyGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -198,12 +202,16 @@
     self.activeLoadingError = nil;
     
     [[RUNetworkManager sessionManager] GET:ACTIVE_URLS[self.agency] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [self parseActiveStopsAndRoutes:responseObject];
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [self parseActiveStopsAndRoutes:responseObject];
+            self.activeFinishedLoading = YES;
+            self.lastActiveTaskDate = [NSDate date];
+        } else {
+            self.activeFinishedLoading = NO;
+        }
         
         self.activeLoading = NO;
-        self.activeFinishedLoading = YES;
         self.activeLoadingError = nil;
-        self.lastActiveTaskDate = [NSDate date];
         
         dispatch_group_leave(self.activeGroup);
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

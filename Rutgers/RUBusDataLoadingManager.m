@@ -86,33 +86,36 @@ NSString * const newarkAgency = @"rutgers-newark";
 #pragma mark - predictions api
 -(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *, NSError *))handler{
     [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            id predictions = responseObject[@"predictions"];
-            
-            NSMutableArray *parsedPredictions = [NSMutableArray array];
-            
-            for (NSDictionary *predictionDictionary in predictions) {
-                RUBusPrediction *prediction = [[RUBusPrediction alloc] initWithDictionary:predictionDictionary];
-                [parsedPredictions addObject:prediction];
-            }
-            
-            if ([item isKindOfClass:[RUBusMultiStop class]]) {
-                [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
-                //[parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-                [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-            } else if ([item isKindOfClass:[RUBusRoute class]]){
-                RUBusRoute *route = item;
-                [parsedPredictions sortUsingComparator:^NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2) {
-                    NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
-                    NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
-                    return compare(indexOne, indexTwo);
-                }];
-            }
-            
-            handler(parsedPredictions,nil);
-        } else {
+        
+        if (![responseObject isKindOfClass:[NSDictionary class]]) {
             handler(nil,nil);
+            return;
         }
+        
+        id predictions = responseObject[@"predictions"];
+        
+        NSMutableArray *parsedPredictions = [NSMutableArray array];
+        
+        for (NSDictionary *predictionDictionary in predictions) {
+            RUBusPrediction *prediction = [[RUBusPrediction alloc] initWithDictionary:predictionDictionary];
+            [parsedPredictions addObject:prediction];
+        }
+        
+        if ([item isKindOfClass:[RUBusMultiStop class]]) {
+            [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
+            //[parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
+            [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
+        } else if ([item isKindOfClass:[RUBusRoute class]]){
+            RUBusRoute *route = item;
+            [parsedPredictions sortUsingComparator:^NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2) {
+                NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
+                NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
+                return compare(indexOne, indexTwo);
+            }];
+        }
+        
+        handler(parsedPredictions,nil);
+        
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         handler(nil,error);

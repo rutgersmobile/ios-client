@@ -29,9 +29,10 @@
                 [loading ignore];
                 return;
             }
+            
             if (!error) {
                 [loading updateWithContent:^(typeof(self) me) {
-                    me.items = courses;
+                    [self updateWithCourses:courses];
                 }];
             } else {
                 [loading doneWithError:error];
@@ -39,6 +40,17 @@
         }];
     }];
 }
+
+-(void)updateWithCourses:(NSArray *)courses{
+    NSMutableArray *parsedItems = [NSMutableArray array];
+    for (NSDictionary *course in courses) {
+        RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
+        [parsedItems addObject:row];
+    }
+    self.items = parsedItems;
+}
+
+
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
     [super registerReusableViewsWithTableView:tableView];
