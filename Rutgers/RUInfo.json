@@ -36,8 +36,7 @@
                 "text" : "Text your question to 66746",
                 "number" : "66746"
               }
-             ],
-    "footer" : "Standard text messaging rates or other carrier charges may apply."
+             ]
  },
                                     
  {
@@ -69,6 +68,7 @@
                 "text" : "Visit Website",
                 "url" : "http://m.rutgers.edu/ruinfo.html"
               }
-             ]
+             ],
+ "footer" : "Standard text messaging rates or other carrier charges may apply."
  }
 ]

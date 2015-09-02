@@ -141,6 +141,14 @@
     
     NSString *url = @"feedback.php";
 
+
+
+/* TODO This really should be if ALPHA
+    if (BETA) {
+        url = @"http://sauron.rutgers.edu/~jamchamb/feedback.php";
+    }
+ */
+
     
     [[RUNetworkManager sessionManager] POST:url parameters:feedback success:^(NSURLSessionDataTask *task, id responseObject) {
         dispatch_async(dispatch_get_main_queue(), ^{
