@@ -32,6 +32,8 @@
         return NSOrderedSame;
     };
 
+#warning todo supress unused function warnings
+
     static BOOL iPad() {
         static bool iPad = NO;
         static dispatch_once_t onceToken;

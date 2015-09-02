@@ -26,7 +26,7 @@
     NSString *baseUrl = @"https://rumobile.rutgers.edu/";
     if (isBeta()) baseUrl = @"https://doxa.rutgers.edu/mobile/";
     
-    #warning todo
+    #warning todo get nstanlee url
     /*
     switch (betaMode) {
         case BetaModeDevelopment:
