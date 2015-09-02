@@ -48,6 +48,8 @@
 
     static NSString *const api = @"1";
 
+    static NSString *const betamode = @"beta";
+
     #define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
 
     extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));

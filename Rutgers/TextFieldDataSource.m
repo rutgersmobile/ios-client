@@ -12,9 +12,6 @@
 #import "DataSource_Private.h"
 #import "NSIndexPath+RowExtensions.h"
 
-@interface TextFieldDataSource() <UITextFieldDelegate>
-@end
-
 @implementation TextFieldDataSource
 -(NSInteger)numberOfItems{
     return 1;
@@ -29,11 +26,17 @@
     return NSStringFromClass([ALTableViewTextFieldCell class]);
 }
 
+-(void)textFieldDidUpdate:(UITextField *)textField{
+    self.textFieldText = textField.text;
+}
+
 -(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     ALTableViewTextFieldCell *textFieldCell = cell;
+    [textFieldCell.textField removeTarget:nil action:nil forControlEvents:UIControlEventEditingChanged];
+    [textFieldCell.textField addTarget:self action:@selector(textFieldDidUpdate:) forControlEvents:UIControlEventEditingChanged];
     textFieldCell.textLabel.text = self.textFieldLabel;
     textFieldCell.textField.placeholder = self.textFieldPlaceholder;
-    textFieldCell.textField.delegate = self;
+
 }
 
 -(void)resetContent{

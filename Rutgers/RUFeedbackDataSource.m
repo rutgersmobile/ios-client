@@ -126,7 +126,10 @@
                                        @"wants_response" : @(wantsResponse),
                                        @"osname" : device.systemName,
                                        @"id" : device.identifierForVendor.UUIDString,
+                                       @"betamode" : betamode,
+                                       @"version" : gittag
                                        } mutableCopy];
+    
     
     if (wantsResponse) {
         feedback[@"email"] = self.emailDataSource.textFieldText;
@@ -137,9 +140,7 @@
     }
     
     NSString *url = @"feedback.php";
-    if (BETA) {
-        url = @"http://sauron.rutgers.edu/~jamchamb/feedback.php";
-    }
+
     
     [[RUNetworkManager sessionManager] POST:url parameters:feedback success:^(NSURLSessionDataTask *task, id responseObject) {
         dispatch_async(dispatch_get_main_queue(), ^{
