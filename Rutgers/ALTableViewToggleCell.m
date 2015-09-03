@@ -43,6 +43,4 @@
     [self.toggleSwitch autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 }
 
-
-
 @end

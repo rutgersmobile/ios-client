@@ -11,6 +11,7 @@
 #import "RUFeedbackDataSource.h"
 #import "AlertDataSource.h"
 #import "FeedbackDataSourceDelegate.h"
+#import "RUChannelManager.h"
 
 @interface RUFeedbackViewController () <FeedbackDataSourceDelegate>
 @property (nonatomic) UIBarButtonItem *sendButton;
@@ -82,5 +83,11 @@
     self.sendButton.title = @"Send";
     [self.dataSource resetContent];
     [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Thank you for sending your feedback!" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+}
+
+-(void)showRUInfo{
+    NSDictionary *channel = @{@"title": @"RU-Info",
+                              @"view": @"ruinfo"};
+    [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
 }
 @end

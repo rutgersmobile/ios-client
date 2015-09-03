@@ -34,9 +34,10 @@
     ALTableViewTextFieldCell *textFieldCell = cell;
     [textFieldCell.textField removeTarget:nil action:nil forControlEvents:UIControlEventEditingChanged];
     [textFieldCell.textField addTarget:self action:@selector(textFieldDidUpdate:) forControlEvents:UIControlEventEditingChanged];
+   
     textFieldCell.textLabel.text = self.textFieldLabel;
     textFieldCell.textField.placeholder = self.textFieldPlaceholder;
-
+    textFieldCell.textField.text = self.textFieldText;
 }
 
 -(void)resetContent{

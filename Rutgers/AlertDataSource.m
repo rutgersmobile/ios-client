@@ -58,11 +58,12 @@
     }
     
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if (self.alertAction) self.alertAction(buttonTitle,buttonIndex);
     
     if (self.updatesInitialText){
         self.text = buttonTitle;
     }
+    
+    if (self.alertAction) self.alertAction(buttonTitle,buttonIndex);
     
     [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndex:0]];
 }

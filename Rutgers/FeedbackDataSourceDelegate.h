@@ -12,4 +12,5 @@
 -(void)formDidChange;
 -(void)formSendFailed;
 -(void)formSendSucceeded;
+-(void)showRUInfo;
 @end
