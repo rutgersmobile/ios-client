@@ -14,6 +14,8 @@
 @interface RUAnalyticsManager ()
 @property NSMutableArray *queue;
 @property NSTimer *flushTimer;
+
+//This property is backed by persistent storage
 @property BOOL firstLaunch;
 @end
 
@@ -33,16 +35,24 @@
     self = [super init];
     if (self) {
         self.queue = [NSMutableArray array];
+        
+        //Register for notifications to flush before the application dies
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flushQueue) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flushQueue) name:UIApplicationWillTerminateNotification object:nil];
     }
     return self;
 }
 
+//The following key and methods define how to persistently store if this is the first launch
 static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirstLaunchKey";
 
 -(BOOL)firstLaunch{
+    //First we register the default value of yes
+    //What this does is ensure that if there is an absence of a value for this key, we will get yes by default
+    //As soon as a value is set, that will be read instead of the "default" value.
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kAnalyticsManagerFirstLaunchKey : @(YES)}];
+    
+    //Get either the value stored, or the default value
     return [[NSUserDefaults standardUserDefaults] boolForKey:kAnalyticsManagerFirstLaunchKey];
 }
 
@@ -51,7 +61,9 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 
+//This method is internal and not listed in the public header
 -(void)queueEventForFirstLaunch{
+    //Call the above setter
     self.firstLaunch = NO;
 
     NSMutableDictionary *event = [self baseEvent];
@@ -61,7 +73,9 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
+//This is the public method called each time the app starts
 -(void)queueEventForApplicationLaunch{
+    
     if (self.firstLaunch) {
         [self queueEventForFirstLaunch];
     }
@@ -73,12 +87,13 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
+//This method contains a mapping between error domains, and an array of codes within the domain to ignore
 -(BOOL)shouldIgnoreError:(NSError *)error{
     static NSDictionary *ignoredErrorsByDomain;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ignoredErrorsByDomain = @{
-                                  NSURLErrorDomain : @[@-1009]
+                                  NSURLErrorDomain : @[@-1009] //NSURLErrorNotConnectedToInternet
                                   };
     });
     
@@ -93,6 +108,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     
     NSMutableDictionary *errorDict = [NSMutableDictionary dictionary];
     
+    //Loop through the error info for any strings that might be useful
     [error.userInfo enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
         if ([key isKindOfClass:[NSString class]] && [value isKindOfClass:[NSString class]]) {
             errorDict[key] = value;
@@ -131,9 +147,9 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 -(NSMutableDictionary *)baseEvent{
     NSMutableDictionary *baseEvent = [@{
-                                       @"date" : [NSString stringWithFormat:@"@%ld",((long)[NSDate date].timeIntervalSince1970)],
-                                       @"platform" : [self platform],
-                                       @"release" : [self releaseDict]
+                                       @"date" : [NSString stringWithFormat:@"@%ld",((long)[NSDate date].timeIntervalSince1970)], //Unix timestamp
+                                       @"platform" : [self platform], //Device info
+                                       @"release" : [self releaseDict] //Version info
                                        } mutableCopy];
     
     NSString *roleTitle = [RUUserInfoManager currentUserRole][@"title"];
@@ -198,8 +214,8 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Analytics sent successfully");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Error sending analytics, retrying");
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+            NSLog(@"Error sending analytics, retrying");
             [self queueAnalyticsEvents:events];
         }
     }];

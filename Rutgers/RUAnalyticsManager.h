@@ -10,8 +10,12 @@
 
 @interface RUAnalyticsManager : NSObject
 +(instancetype)sharedManager;
+
+//Events are put in a queue to be flushed to reduce network useage
 -(void)queueEventForApplicationLaunch;
 -(void)queueEventForError:(NSError *)error;
 -(void)queueEventForChannelOpen:(NSDictionary *)channel;
+
+//Not yet implemented
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction;
 @end
