@@ -53,7 +53,16 @@
     static AFHTTPSessionManager *backgroundSessionManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL] sessionConfiguration:[NSURLSessionConfiguration backgroundSessionConfiguration:@"Analytics BG"]];
+        NSURLSessionConfiguration *configuration = nil;
+        NSString *identifier = @"Analytics BG";
+        
+        if ([NSURLSessionConfiguration respondsToSelector:@selector(backgroundSessionConfigurationWithIdentifier:)]) {
+            configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:identifier];
+        } else {
+            configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:identifier];
+        }
+        
+        backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL] sessionConfiguration:configuration];
         backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
     });
     return backgroundSessionManager;
