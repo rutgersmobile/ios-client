@@ -24,20 +24,18 @@
 
 +(NSURL *)baseURL{
     NSString *baseUrl = @"https://rumobile.rutgers.edu/";
-    if (isBeta()) baseUrl = @"https://doxa.rutgers.edu/mobile/";
     
     #warning todo get nstanlee url
-    /*
     switch (betaMode) {
         case BetaModeDevelopment:
-            
+            baseUrl = @"http://192.168.160.226/~gts37/mobile/";
             break;
         case BetaModeBeta:
-            
+            baseUrl = @"https://doxa.rutgers.edu/mobile/";
             break;
         default:
             break;
-    }*/
+    }
     
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]];
 }

@@ -229,7 +229,7 @@
 static NSString *const format = @"&stops=%@|null|%@";
 
 -(NSString *)urlStringForItem:(id)item{
-    NSMutableString *urlString = [NSMutableString stringWithFormat:@"http://webservices.nextbus.com/service/publicXMLFeed?a=%@&command=predictionsForMultiStops",self.agency];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://webservices.nextbus.com/service/publicXMLFeed?a=rutgers&command=predictionsForMultiStops"];
 
     if ([item isKindOfClass:[RUBusMultiStop class]]) {
         RUBusMultiStop *stop = item;
