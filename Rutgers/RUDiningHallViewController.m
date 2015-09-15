@@ -8,6 +8,8 @@
 
 #import "RUDiningHallViewController.h"
 #import "RUDiningHallDataSource.h"
+#import "NSDate+EpochTime.h"
+#import "NSString+WordsInString.h"
 
 @interface RUDiningHallViewController ()
 @property (nonatomic) NSDictionary *diningHall;
@@ -18,7 +20,17 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.diningHall = diningHall;
-        self.title = diningHall[@"location_name"];
+        
+        NSDate *date = [NSDate dateWithEpochTime:diningHall[@"date"]];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"EEE MMM dd";
+        
+        NSString *dateString = [dateFormatter stringFromDate:date];
+    
+        NSString *diningHallName = [diningHall[@"location_name"] wordsInString].firstObject;
+        
+        self.title = [NSString stringWithFormat:@"%@ (%@)", diningHallName, dateString];
     }
     return self;
 }
