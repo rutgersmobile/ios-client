@@ -53,7 +53,7 @@
         BetaModeProduction
     };
 
-    static BetaMode const betaMode = BetaModeDevelopment;
+    static BetaMode const betaMode = BetaModeBeta;
 
     static BOOL isBeta() {
         switch (betaMode) {
