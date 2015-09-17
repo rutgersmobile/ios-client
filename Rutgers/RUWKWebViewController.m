@@ -11,6 +11,8 @@
 #import "NSObject+KVOBlock.h"
 #import <PureLayout.h>
 #import "NSDictionary+Channel.h"
+#import "TOActivitySafari.h"
+#import "TOActivityChrome.h"
 
 /* The default blue tint color of iOS 7.0 */
 #define DEFAULT_BAR_TINT_COLOR [UIColor colorWithRed:0.0f green:110.0f/255.0f blue:1.0f alpha:1.0f]
@@ -161,10 +163,11 @@
     //Set the initial default style as full screen (But this can be easily overridden)
     self.modalPresentationStyle = UIModalPresentationFullScreen;
     
-    //Set the URL request
-    self.urlRequest = [[NSMutableURLRequest alloc] init];
 }
 
+-(NSURLRequest *)urlRequest{
+    return [NSURLRequest requestWithURL:self.url];
+}
 
 - (void)loadView
 {
@@ -365,7 +368,6 @@
     //start loading the initial page
     if (self.url && self.webView.URL == nil)
     {
-        [self.urlRequest setURL:self.url];
         [self.webView loadRequest:self.urlRequest];
     }
 }
@@ -429,7 +431,6 @@
     if (self.webView.loading)
         [self.webView stopLoading];
     
-    [self.urlRequest setURL:self.url];
     [self.webView loadRequest:self.urlRequest];
 }
 
@@ -502,6 +503,14 @@
 
 #pragma mark -
 #pragma mark WebView Delegate
+
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures{
+    if (!navigationAction.targetFrame.isMainFrame) {
+        [webView loadRequest:navigationAction.request];
+    }
+    return nil;
+}
+
 -(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
     //start tracking the load state
     [self startLoadProgress];
@@ -582,11 +591,12 @@
 #pragma mark Action Item Event Handlers
 - (void)actionButtonTapped:(id)sender
 {
-  //  NSArray *browserActivities = @[[TOActivitySafari new], [TOActivityChrome new]];
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.url] applicationActivities:nil];//browserActivities];
+    NSArray *browserActivities = @[[TOActivitySafari new], [TOActivityChrome new]];
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.url] applicationActivities:browserActivities];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
+        
         //If we're on an iPhone, we can just present it modally
         [self presentViewController:activityViewController animated:YES completion:nil];
     }
@@ -636,6 +646,8 @@
         BOOL complete = [readyState isEqualToString:@"complete"];
         if (complete && isNotRedirect)
             [self finishLoadProgress];
+        
+        _url = self.webView.URL;
     }];
 
 }
@@ -772,11 +784,5 @@
     }];
 }
 
-- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures{
-    if (!navigationAction.targetFrame.isMainFrame) {
-        [webView loadRequest:navigationAction.request];
-    }
-    return nil;
-}
 
 @end

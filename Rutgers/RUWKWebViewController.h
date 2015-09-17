@@ -18,7 +18,7 @@
 
 @property (nonatomic,strong)    NSURL *url;
 
-@property (nonatomic,strong)    NSMutableURLRequest *urlRequest;
+@property (nonatomic,readonly)  NSURLRequest *urlRequest;
 
 @property (nonatomic,readonly)  WKWebView *webView;
 
