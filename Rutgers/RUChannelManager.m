@@ -116,7 +116,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 -(void)load{
     [self willBeginLoad];
-    [[RUNetworkManager sessionManager] GET:@"ordered_content.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.allChannels = responseObject;
             [self didEndLoad:YES withError:nil];
