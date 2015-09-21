@@ -21,7 +21,7 @@
      
         [self initializeSubviews];
         
-        [UIView autoSetPriority:999 forConstraints:^{
+        [NSLayoutConstraint autoSetPriority:999 forConstraints:^{
             [self initializeConstraints];
         }];
         
