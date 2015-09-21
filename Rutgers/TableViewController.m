@@ -24,6 +24,9 @@
 
 @property (nonatomic) NSTimer *minSearchTimer;
 @property (nonatomic) NSTimer *maxSearchTimer;
+@property (nonatomic) BOOL wasSearching;
+@property (nonatomic) NSString *lastSearchQuery;
+
 @property (nonatomic) CGFloat lastValidWidth;
 @end
 
@@ -60,8 +63,11 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    if (self.searching) {
-        [self setStatusAppearanceForSearchingState:YES];
+    if (self.wasSearching) {
+        [self popSearching];
+        if (self.searching) {
+            [self setStatusAppearanceForSearchingState:YES];
+        }
     }
 }
 
@@ -69,6 +75,7 @@
     [super viewWillDisappear:animated];
     if (self.searching) {
         [self setStatusAppearanceForSearchingState:NO];
+        [self pushSearching];
     }
 }
 
@@ -287,6 +294,19 @@
         RUNavigationController *navController = navigationController;
         navController.preferredStatusBarStyle = (searching ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent);
     }
+}
+
+-(void)pushSearching{
+    self.wasSearching = YES;
+    self.lastSearchQuery = self.searchController.searchBar.text;
+    self.searchController.active = NO;
+}
+
+-(void)popSearching{
+    self.wasSearching = NO;
+    self.searchController.active = YES;
+    self.searchController.searchBar.text = self.lastSearchQuery;
+    self.lastSearchQuery = nil;
 }
 
 #pragma mark - TableView Delegate
