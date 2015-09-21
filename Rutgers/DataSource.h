@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Kyle Bailey. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "AAPLContentLoading.h"
 
 @class DataSource;

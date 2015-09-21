@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface RowHeightCache : NSObject
 -(NSNumber *)cachedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;

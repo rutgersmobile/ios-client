@@ -6,7 +6,7 @@
 //  Copyright © 2015 Rutgers. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "RUDefines.h"
 
 BOOL iPad() {
