@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */; };
+		041502281BB091E500D23AB8 /* RUSOCDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFB11937C55F00016C89 /* RUSOCDataLoadingManager.m */; settings = {ASSET_TAGS = (); }; };
+		041502291BB0948000D23AB8 /* RUNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970CC19215F910070A414 /* RUNetworkManager.m */; settings = {ASSET_TAGS = (); }; };
+		0415022A1BB0948500D23AB8 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; settings = {ASSET_TAGS = (); }; };
+		0415022B1BB0948B00D23AB8 /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; settings = {ASSET_TAGS = (); }; };
+		0415022C1BB0949300D23AB8 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73B241978880C006BC215 /* TableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		0415022D1BB0949800D23AB8 /* RUChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970D11921603E0070A414 /* RUChannelManager.m */; settings = {ASSET_TAGS = (); }; };
+		041502321BB0964A00D23AB8 /* RUDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 041502311BB0964A00D23AB8 /* RUDefines.m */; settings = {ASSET_TAGS = (); }; };
 		0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUBusPrediction.m */; };
 		041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */ = {isa = PBXBuildFile; fileRef = 041782A11B7BDC7F00FE75AD /* RUBusArrival.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
@@ -24,7 +31,6 @@
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
 		048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048506F41B6FED100064769D /* RUWKWebViewController.m */; };
 		0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */; };
-		0490DC591B4B137E00E76EEF /* RUTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC581B4B137E00E76EEF /* RUTestCase.m */; };
 		0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */; };
 		0490DC931B4C595700E76EEF /* RUDrillDownTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC921B4C595700E76EEF /* RUDrillDownTest.m */; };
 		0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0490DC991B4DB85A00E76EEF /* WebKit.framework */; };
@@ -217,6 +223,7 @@
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
+		DB1FDFAC5E884A41351883B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +239,8 @@
 /* Begin PBXFileReference section */
 		0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DiningHall.h"; sourceTree = "<group>"; };
 		0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DiningHall.m"; sourceTree = "<group>"; };
+		041502311BB0964A00D23AB8 /* RUDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDefines.m; sourceTree = "<group>"; };
+		041502331BB0965400D23AB8 /* RUDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUDefines.h; sourceTree = "<group>"; };
 		0417829D1B7BD61400FE75AD /* RUBusPrediction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusPrediction.h; sourceTree = "<group>"; };
 		0417829E1B7BD61400FE75AD /* RUBusPrediction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusPrediction.m; sourceTree = "<group>"; };
 		041782A01B7BDC7F00FE75AD /* RUBusArrival.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusArrival.h; sourceTree = "<group>"; };
@@ -260,8 +269,6 @@
 		048506F41B6FED100064769D /* RUWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUWKWebViewController.m; sourceTree = "<group>"; };
 		0488F85A1B6C0A3500668E54 /* RUOSMDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUOSMDataLoadingManager.h; path = Rutgers/RUOSMDataLoadingManager.h; sourceTree = SOURCE_ROOT; };
 		0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUOSMDataLoadingManager.m; path = Rutgers/RUOSMDataLoadingManager.m; sourceTree = SOURCE_ROOT; };
-		0490DC571B4B137E00E76EEF /* RUTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUTestCase.h; sourceTree = "<group>"; };
-		0490DC581B4B137E00E76EEF /* RUTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUTestCase.m; sourceTree = "<group>"; };
 		0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCTest.m; sourceTree = "<group>"; };
 		0490DC921B4C595700E76EEF /* RUDrillDownTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDrillDownTest.m; sourceTree = "<group>"; };
 		0490DC991B4DB85A00E76EEF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -646,6 +653,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB1FDFAC5E884A41351883B4 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,8 +707,6 @@
 			isa = PBXGroup;
 			children = (
 				049A4CE41B4AFC890006D1FA /* Info.plist */,
-				0490DC571B4B137E00E76EEF /* RUTestCase.h */,
-				0490DC581B4B137E00E76EEF /* RUTestCase.m */,
 				0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */,
 				0490DC921B4C595700E76EEF /* RUDrillDownTest.m */,
 			);
@@ -1551,6 +1557,8 @@
 			isa = PBXGroup;
 			children = (
 				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
+				041502331BB0965400D23AB8 /* RUDefines.h */,
+				041502311BB0964A00D23AB8 /* RUDefines.m */,
 				A74669021986D8F000A5EBE0 /* RUAppDelegate.m */,
 				C262EFB3188345D10035C8F5 /* Rutgers-Info.plist */,
 				C262EFB4188345D10035C8F5 /* InfoPlist.strings */,
@@ -1567,9 +1575,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 049A4CE71B4AFC890006D1FA /* Build configuration list for PBXNativeTarget "Rutgers Tests" */;
 			buildPhases = (
+				DCB49EE8E9609E15BEC26662 /* Check Pods Manifest.lock */,
 				049A4CDC1B4AFC890006D1FA /* Sources */,
 				049A4CDD1B4AFC890006D1FA /* Frameworks */,
 				049A4CDE1B4AFC890006D1FA /* Resources */,
+				15F920A61C86C66FFA00FFA8 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1684,6 +1694,36 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		15F920A61C86C66FFA00FFA8 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DCB49EE8E9609E15BEC26662 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		F64F9DA88AFF4B3A8763F4C1 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1706,9 +1746,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0415022D1BB0949800D23AB8 /* RUChannelManager.m in Sources */,
+				0415022B1BB0948B00D23AB8 /* RUSOCSearchOperation.m in Sources */,
 				0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */,
+				041502291BB0948000D23AB8 /* RUNetworkManager.m in Sources */,
+				0415022A1BB0948500D23AB8 /* RUDataLoadingManager.m in Sources */,
 				0490DC931B4C595700E76EEF /* RUDrillDownTest.m in Sources */,
-				0490DC591B4B137E00E76EEF /* RUTestCase.m in Sources */,
+				0415022C1BB0949300D23AB8 /* TableViewController.m in Sources */,
+				041502281BB091E500D23AB8 /* RUSOCDataLoadingManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1817,6 +1862,7 @@
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
 				0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */,
+				041502321BB0964A00D23AB8 /* RUDefines.m in Sources */,
 				04A1EFEB1A5C509600DE0351 /* AllStopsDataSource.m in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
 				A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */,
@@ -1924,6 +1970,7 @@
 /* Begin XCBuildConfiguration section */
 		049A4CE81B4AFC890006D1FA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6FAAF2D92E8DF9C54DCB3A3F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -1943,6 +1990,7 @@
 		};
 		049A4CE91B4AFC890006D1FA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F3065DFB12B2FEE170165DCB /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_WARN_UNREACHABLE_CODE = YES;

@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Rutgers. All rights reserved.
 //
 
-#import "RUTestCase.h"
+#import <XCTest/XCTest.h>
 #import "RUSOCDataLoadingManager.h"
 #import "RUSOCSearchIndex.h"
 #import "RUSOCSearchOperation.h"
 
-@interface RUSOCTest : RUTestCase
+@interface RUSOCTest : XCTestCase
 
 @end
 
@@ -49,11 +49,7 @@
 
 -(void)testLoadingSearchIndex{
     RUSOCSearchIndex *searchIndex = [[RUSOCSearchIndex alloc] init];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"searchIndexDidLoad"];
-    [searchIndex performWhenLoaded:^(NSError *error) {
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:0.5 handler:nil];
+    [self waitForIndexLoad:searchIndex];
 }
 
 -(void)testQuery1{

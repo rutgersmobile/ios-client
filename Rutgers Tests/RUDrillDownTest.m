@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUTestCase.h"
+#import <XCTest/XCTest.h>
 
 #import "RUChannelManager.h"
 #import "TableViewController.h"
 
-@interface RUDrillDownTest : RUTestCase <UINavigationControllerDelegate>
+@interface RUDrillDownTest : XCTestCase <UINavigationControllerDelegate>
 @property XCTestExpectation *navigationExpectation;
 @end
 
+/// This test does not work
 @implementation RUDrillDownTest
 
 - (void)setUp {
