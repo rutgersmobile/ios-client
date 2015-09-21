@@ -1,5 +1,7 @@
 platform :ios, '7.0'
 
+link_with 'Rutgers', 'Rutgers Tests'
+
 pod 'AFNetworking', "~> 2.0"
 pod 'XMLDictionary', "~> 1.0"
 pod 'MWFeedParser/NSString+HTML', "~> 1.0"
