@@ -44,6 +44,10 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, kLabelHorizontalInsets, 0, 0);
     self.tableView.estimatedRowHeight = 44.0;
     self.lastValidWidth = CGRectGetWidth(self.tableView.bounds);
+    
+    if ([self.tableView respondsToSelector:@selector(cellLayoutMarginsFollowReadableWidth)]) {
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
