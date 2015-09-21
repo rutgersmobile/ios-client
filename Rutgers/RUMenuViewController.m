@@ -12,6 +12,7 @@
 #import "UIApplication+StatusBarHeight.h"
 #import "TableViewController_Private.h"
 #import "RURootController.h"
+#import "RUDefines.h"
 
 @interface RUMenuViewController ()
 @property (nonatomic) UIView *paddingView;

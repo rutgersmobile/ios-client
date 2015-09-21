@@ -13,6 +13,7 @@
 #import "NSDictionary+Channel.h"
 #import "TOActivitySafari.h"
 #import "TOActivityChrome.h"
+#import "RUDefines.h"
 
 /* The default blue tint color of iOS 7.0 */
 #define DEFAULT_BAR_TINT_COLOR [UIColor colorWithRed:0.0f green:110.0f/255.0f blue:1.0f alpha:1.0f]

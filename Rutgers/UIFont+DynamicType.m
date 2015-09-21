@@ -7,6 +7,7 @@
 //
 
 #import "UIFont+DynamicType.h"
+#import "RUDefines.h"
 
 @implementation UIFont (DynamicType)
 +(UIFont *)ruPreferredItalicFontForTextStyle:(NSString *)style{

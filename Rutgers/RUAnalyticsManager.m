@@ -10,6 +10,7 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUUserInfoManager.h"
+#import "RUDefines.h"
 
 @interface RUAnalyticsManager ()
 @property NSMutableArray *queue;

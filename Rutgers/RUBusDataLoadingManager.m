@@ -13,6 +13,7 @@
 #import "RUBusMultiStop.h"
 #import "RUBusPrediction.h"
 #import "RUNetworkManager.h"
+#import "RUDefines.h"
 
 NSString * const newBrunswickAgency = @"rutgers";
 NSString * const newarkAgency = @"rutgers-newark";

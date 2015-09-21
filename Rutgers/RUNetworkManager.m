@@ -9,6 +9,7 @@
 #import "RUResponseSerializer.h"
 #import "RUReaderResponseSerializer.h"
 #import "RUNetworkManager.h"
+#import "RUDefines.h"
 
 @interface RUNetworkManager ()
 @property AFHTTPSessionManager *sessionManager;

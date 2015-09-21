@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUDefines.h"
 
 @interface ALTableViewAbstractCell : UITableViewCell
 @property (nonatomic, assign) BOOL didSetupConstraints;

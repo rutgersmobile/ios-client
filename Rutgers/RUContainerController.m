@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RUContainerController.h"
+#import "RUDefines.h"
 
 #import <SWRevealViewController.h>
 #import <MMDrawerController.h>

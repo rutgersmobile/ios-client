@@ -7,3 +7,35 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUDefines.h"
+
+BOOL iPad() {
+    static bool iPad = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+    });
+    return iPad;
+}
+
+BOOL isBeta() {
+    switch (betaMode) {
+        case BetaModeDevelopment:
+        case BetaModeBeta:
+            return YES;
+        case BetaModeProduction:
+            return NO;
+    }
+}
+
+
+NSString * betaModeString() {
+    switch (betaMode) {
+        case BetaModeDevelopment:
+            return @"dev";
+        case BetaModeBeta:
+            return @"beta";
+        case BetaModeProduction:
+            return @"production";
+    }
+}

@@ -10,6 +10,7 @@
 #import <PureLayout.h>
 #import "UIFont+DynamicType.h"
 #import "UIColor+RutgersColors.h"
+#import "RUDefines.h"
 
 @implementation RUMenuSectionHeaderView
 
