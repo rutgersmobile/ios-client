@@ -29,7 +29,7 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
 
 extern BOOL iPad();
 
-static NSString *const gittag = @"4.0-BETA9";
+static NSString *const gittag = @"4.0";
 
 static NSString *const api = @"1";
 
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, BetaMode) {
     BetaModeProduction
 };
 
-static BetaMode const betaMode = BetaModeBeta;
+static BetaMode const betaMode = BetaModeProduction;
 
 extern BOOL isBeta();
 
