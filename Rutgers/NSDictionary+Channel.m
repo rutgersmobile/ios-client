@@ -25,19 +25,38 @@
     return nil;
 }
 
+-(NSCache *)channelIconCache{
+    static NSCache *channelIconCache = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        channelIconCache = [[NSCache alloc] init];
+    });
+    return channelIconCache;
+}
+
+-(UIImage *)cachedImageWithName:(NSString *)name{
+    UIImage *image = [[self channelIconCache] objectForKey:name];
+    if (!image) {
+        image = [UIImage imageNamed:name];
+        [[self channelIconCache] setObject:image forKey:name];
+    }
+    return image;
+}
+
 -(UIImage *)channelIcon{
     NSString *iconName = self[@"icon"];
     if (!iconName) return nil;
-    UIImage *image = [UIImage imageNamed:iconName];
-    return image;
+    
+    return [self cachedImageWithName:iconName];
 }
 
 -(UIImage *)filledChannelIcon{
     NSString *iconName = [self[@"icon"] stringByAppendingString:@"-filled"];
     if (!iconName) return nil;
-    UIImage *image = [UIImage imageNamed:iconName];
-    if (!image) return [self channelIcon];
-    return image;
+    
+    UIImage *image = [self cachedImageWithName:iconName];
+    if (image) return image;
+    return [self channelIcon];
 }
 
 -(NSString *)channelHandle{
