@@ -32,7 +32,9 @@
 -(instancetype)initWithPlace:(RUPlace *)place{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        self.place = place;
+        if (place) {
+            self.place = place;
+        }
     }
     return self;
 }
