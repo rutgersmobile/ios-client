@@ -27,13 +27,13 @@
 @property (nonatomic) TextViewDataSource *messageDataSource;
 
 @property (nonatomic) NSArray *channels;
+@property (nonatomic) NSDictionary *selectedChannel;
 
 @property (nonatomic) BOOL switchEnabled;
 
 @property (nonatomic) BOOL channelSelectorStateEnabled;
 
 @property (nonatomic) BOOL subjectSelected;
-@property (nonatomic) BOOL channelSelected;
 @end
 
 @implementation RUFeedbackDataSource
@@ -76,7 +76,7 @@
         self.channelDataSource = [[AlertDataSource alloc] initWithInitialText:@"Select a channel..." alertButtonTitles:channelTitles];
         
         self.channelDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
-            weakSelf.channelSelected = YES;
+            weakSelf.selectedChannel = weakSelf.channels[buttonIndex];
             [weakSelf notifyUpdate];
         };
         
@@ -117,7 +117,7 @@
 
     self.switchEnabled = NO;
     self.channelSelectorStateEnabled = NO;
-    self.channelSelected = NO;
+    self.selectedChannel = nil;
     self.subjectSelected = NO;
 }
 
@@ -128,7 +128,7 @@
 -(BOOL)validateForm{
     if (!self.messageDataSource.textViewText.length) return NO;
     
-    if (self.channelSelectorStateEnabled && !self.channelSelected) return NO;
+    if (self.channelSelectorStateEnabled && !self.selectedChannel) return NO;
     
     NSString *emailText = self.emailDataSource.textFieldText;
     if (emailText.length) {
@@ -190,8 +190,8 @@
         feedback[@"email"] = self.emailDataSource.textFieldText;
     }
     
-    if (self.channelSelected) {
-        feedback[@"channel"] = self.channelDataSource.text;
+    if (self.selectedChannel) {
+        feedback[@"channel"] = [self.selectedChannel channelHandle];
     }
     
     NSString *url = @"feedback.php";
