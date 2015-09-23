@@ -69,6 +69,7 @@
 }
 
 -(void)showAlertInView:(UIView *)view{
+    [view endEditing:YES];
     [self.actionSheet showInView:view];
 }
 /*
