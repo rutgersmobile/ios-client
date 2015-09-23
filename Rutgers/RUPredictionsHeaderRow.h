@@ -9,6 +9,7 @@
 @class RUBusPrediction;
 
 @interface RUPredictionsHeaderRow : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithPredictions:(RUBusPrediction *)predictions forItem:(id)item NS_DESIGNATED_INITIALIZER;
 @property (nonatomic, readonly) id item;
 @property (nonatomic, readonly) BOOL active;

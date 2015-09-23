@@ -9,5 +9,6 @@
 #import "SegmentedDataSource.h"
 
 @interface RUDiningHallDataSource : SegmentedDataSource
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithDiningHall:(NSDictionary *)diningHall NS_DESIGNATED_INITIALIZER;
 @end

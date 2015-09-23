@@ -9,5 +9,6 @@
 #import "ExpandingTableViewDataSource.h"
 
 @interface RUPredictionsDataSource : ExpandingTableViewDataSource
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;
 @end

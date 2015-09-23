@@ -7,6 +7,7 @@
 //
 
 @interface RUSOCCourseRow : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithCourse:(NSDictionary *)course NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSDictionary *course;
 @property (nonatomic) NSString *titleText;

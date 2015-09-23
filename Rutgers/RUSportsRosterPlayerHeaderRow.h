@@ -10,5 +10,6 @@
 @class RUSportsPlayer;
 
 @interface RUSportsRosterPlayerHeaderRow : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithPlayer:(RUSportsPlayer *)player NS_DESIGNATED_INITIALIZER;
 @end

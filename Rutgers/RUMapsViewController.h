@@ -12,10 +12,10 @@
 @class RUPlace;
 
 @interface RUMapsViewController : UIViewController <MKMapViewDelegate>;
+-(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic) MKMapView *mapView;
 
--(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) RUPlace *place;
 -(void)zoomToPlace;
 @end

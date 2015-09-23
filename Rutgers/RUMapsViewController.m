@@ -22,9 +22,15 @@
 
 
 @implementation RUMapsViewController
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    return [self initWithPlace:nil];
+}
+-(instancetype)initWithCoder:(NSCoder *)aDecoder{
+    return [self initWithPlace:nil];
+}
 
 -(instancetype)initWithPlace:(RUPlace *)place{
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.place = place;
     }

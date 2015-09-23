@@ -11,6 +11,8 @@
 #import "RUPlace.h"
 
 @interface RURecCenterDataSource : ComposedDataSource
-@property (nonatomic) RURecCenterHoursSection *hoursSection;
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithRecCenter:(NSDictionary *)recCenter NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic) RURecCenterHoursSection *hoursSection;
 @end

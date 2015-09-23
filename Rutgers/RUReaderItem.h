@@ -11,6 +11,7 @@
  The class models a single item in the rureader data source
  */
 @interface RUReaderItem : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(NSDictionary *)item NS_DESIGNATED_INITIALIZER;
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *dateString;

@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 
 @interface RUBusRoute : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) NSString *title;

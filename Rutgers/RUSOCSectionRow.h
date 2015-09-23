@@ -9,6 +9,7 @@
 @class RUSOCSectionCell;
 
 @interface RUSOCSectionRow : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithSection:(NSDictionary *)section NS_DESIGNATED_INITIALIZER;
 @property (nonatomic) NSDictionary *section;
 
