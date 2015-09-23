@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 
 @interface RUBusStop : NSObject
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic) NSString *tag;
