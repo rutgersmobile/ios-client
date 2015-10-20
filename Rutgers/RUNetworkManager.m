@@ -48,7 +48,7 @@
     return manager;
 }
 
-+(AFHTTPSessionManager *)backgroundSession{
++(AFHTTPSessionManager *)backgroundSessionManager{
     static AFHTTPSessionManager *backgroundSessionManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
