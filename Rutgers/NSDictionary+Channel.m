@@ -37,7 +37,7 @@
 -(UIImage *)cachedImageWithName:(NSString *)name{
     UIImage *image = [[self channelIconCache] objectForKey:name];
     if (!image) {
-        image = [UIImage imageNamed:name];
+        image = [[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         [[self channelIconCache] setObject:image forKey:name];
     }
     return image;
