@@ -48,20 +48,11 @@
     return manager;
 }
 
-+(AFHTTPSessionManager *)backgroundSessionManager{
++(AFHTTPSessionManager *)backgroundSession{
     static AFHTTPSessionManager *backgroundSessionManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSURLSessionConfiguration *configuration = nil;
-        NSString *identifier = @"Analytics BG";
-        
-        if ([NSURLSessionConfiguration respondsToSelector:@selector(backgroundSessionConfigurationWithIdentifier:)]) {
-            configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:identifier];
-        } else {
-            configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:identifier];
-        }
-        
-        backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL] sessionConfiguration:configuration];
+        backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
         backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
     });
     return backgroundSessionManager;
