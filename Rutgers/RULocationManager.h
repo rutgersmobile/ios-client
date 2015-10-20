@@ -12,11 +12,6 @@
 NSString *LocationManagerDidChangeLocationKey;
 NSString *LocationManagerNotificationLocationKey;
 
-@class RULocationManager;
-@protocol RULocationManagerDelegate <NSObject>
--(void)locationManager:(RULocationManager *)manager didUpdateLocation:(CLLocation *)location;
-@end
-
 #define NEARBY_DISTANCE 300
 
 @interface RULocationManager : NSObject
