@@ -81,6 +81,7 @@
 		04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AEDE3C19D349D900A20D1E /* RUSplashViewController.m */; };
 		04AF8B431A82B57400619AFC /* NSDate+EpochTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */; };
 		04B3D6581B98C8B7006D0BF6 /* SwitchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3D6571B98C8B7006D0BF6 /* SwitchDataSource.m */; };
+		04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04BA07331BD6BCA5009AB651 /* Launch.xcassets */; settings = {ASSET_TAGS = (); }; };
 		04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; };
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
@@ -348,6 +349,7 @@
 		04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+EpochTime.m"; sourceTree = "<group>"; };
 		04B3D6561B98C8B7006D0BF6 /* SwitchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDataSource.h; sourceTree = "<group>"; };
 		04B3D6571B98C8B7006D0BF6 /* SwitchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataSource.m; sourceTree = "<group>"; };
+		04BA07331BD6BCA5009AB651 /* Launch.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Launch.xcassets; sourceTree = "<group>"; };
 		04C937DC1B31CB300055BC03 /* RUDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDataLoadingManager.h; sourceTree = "<group>"; };
 		04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDataLoadingManager.m; sourceTree = "<group>"; };
 		04C937E01B31CD770055BC03 /* RUDataLoadingManager_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDataLoadingManager_Private.h; sourceTree = "<group>"; };
@@ -1565,6 +1567,7 @@
 				A7B3F7B51954A66500458B19 /* rufeedback */,
 				A7E8E14319255E580089F166 /* menu and drawer */,
 				C262EFBD188345D10035C8F5 /* Images.xcassets */,
+				04BA07331BD6BCA5009AB651 /* Launch.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 			);
 			path = Rutgers;
@@ -1679,6 +1682,7 @@
 				A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				042C302E1A7977AA0034F89E /* legal in Resources */,
+				04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
