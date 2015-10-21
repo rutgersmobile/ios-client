@@ -42,7 +42,9 @@
 }
 
 -(void)updateTraitCollectionForSize:(CGSize)size{
-    [self setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:(size.width > size.height) ? UIUserInterfaceSizeClassRegular : UIUserInterfaceSizeClassCompact] forChildViewController:self.childVC];
+    if ([self respondsToSelector:@selector(setOverrideTraitCollection:forChildViewController:)]) {
+        [self setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:(size.width > size.height) ? UIUserInterfaceSizeClassRegular : UIUserInterfaceSizeClassCompact] forChildViewController:self.childVC];
+    }
 }
 
 -(BOOL)shouldAutomaticallyForwardAppearanceMethods{
