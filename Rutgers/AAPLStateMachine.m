@@ -13,6 +13,7 @@
  */
 
 #import "AAPLStateMachine.h"
+#import "RUAnalyticsManager.h"
 
 #import <objc/message.h>
 #import <libkern/OSAtomic.h>
@@ -106,7 +107,12 @@ static NSString * const AAPLStateNil = @"Nil";
 
 - (NSString *)missingTransitionFromState:(NSString *)fromState toState:(NSString *)toState
 {
-    [NSException raise:@"IllegalStateTransition" format:@"cannot transition from %@ to %@", fromState, toState];
+    NSError *error = [NSError errorWithDomain:@"AAPLStateMachineDomain" code:0 userInfo:
+  @{@"Error" : [NSString stringWithFormat:@"cannot transition from %@ to %@", fromState, toState],
+    @"Class" : NSStringFromClass([self class])}];
+    
+    [[RUAnalyticsManager sharedManager] queueEventForError:error];
+    //[NSException raise:@"IllegalStateTransition" format:@"cannot transition from %@ to %@", fromState, toState];
     return nil;
 }
 
