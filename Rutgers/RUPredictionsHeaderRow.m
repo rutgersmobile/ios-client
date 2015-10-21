@@ -90,11 +90,11 @@
 -(UIColor *)timeLabelColor{
     NSInteger minutes = [self.predictions.arrivals.firstObject minutes];
     if (minutes < 2) {
-        return [UIColor colorWithHexString:@"#CC0000"];
+        return [UIColor hx_colorWithHexString:@"#CC0000"];
     } else if (minutes < 6) {
-        return [UIColor colorWithHexString:@"#FF6600"];
+        return [UIColor hx_colorWithHexString:@"#FF6600"];
     } else {
-        return [UIColor colorWithHexString:@"#000099"];
+        return [UIColor hx_colorWithHexString:@"#000099"];
     }
 }
 
