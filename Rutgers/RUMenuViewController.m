@@ -13,6 +13,7 @@
 #import "TableViewController_Private.h"
 #import "RURootController.h"
 #import "RUDefines.h"
+#import "NSDictionary+Channel.h"
 
 @interface RUMenuViewController ()
 @property (nonatomic) UIView *paddingView;
@@ -86,7 +87,7 @@
 
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *channel = [self.dataSource itemAtIndexPath:indexPath];
-    [self.delegate menu:self didSelectChannel:channel];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"rutgers://%@",channel.channelHandle]]];
 }
 
 @end
