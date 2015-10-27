@@ -69,6 +69,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
 }
 
+
 -(NSDictionary *)channelWithHandle:(NSString *)handle{
     for (NSDictionary *channel in self.allChannels) {
         if ([[channel channelHandle] isEqualToString:handle]) {
@@ -170,6 +171,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     vc.title = [channel channelTitle];
     return vc;
 
+}
+
+-(NSArray *)viewControllersForURL:(NSURL *)url{
+    return @[[self viewControllerForChannel:[self channelWithHandle:url.host]]];
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{

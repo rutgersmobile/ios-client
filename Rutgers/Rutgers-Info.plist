@@ -24,6 +24,19 @@
 	<string>4.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.rutgers</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>rutgers</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>11</string>
 	<key>LSRequiresIPhoneOS</key>

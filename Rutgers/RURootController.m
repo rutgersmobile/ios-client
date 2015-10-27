@@ -17,7 +17,7 @@
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
 
-@interface RURootController () <RUMenuDelegate>
+@interface RURootController () //<RUMenuDelegate>
 @property (nonatomic) RUMenuViewController *menuViewController;
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @end
@@ -70,7 +70,7 @@
     if (!_menuViewController) {
         _menuViewController = [[RUMenuViewController alloc] init];
         _menuViewController.title = @"Menu";
-        _menuViewController.delegate = self;
+        //_menuViewController.delegate = self;
     }
     return _menuViewController;
 }
@@ -101,6 +101,16 @@
     if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
 
+-(void)openURL:(NSURL *)url{
+    UINavigationController *navController = [[RUNavigationController alloc] init];
+    [RUAppearance applyAppearanceToNavigationController:navController];
+    navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url];
+    [self placeButtonInViewController:navController.topViewController];
+
+    self.containerViewController.containedViewController = navController;
+    [self.containerViewController closeDrawer];
+}
+
 #pragma mark Drawer Interface
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
@@ -112,6 +122,7 @@
     return vc;
 }
 
+#pragma move last channel logic into channel manager
 -(void)setCenterChannel:(NSDictionary *)channel{
     self.currentChannel = channel;
     [RUChannelManager sharedInstance].lastChannel = channel;
@@ -136,10 +147,10 @@
 
 
 #pragma mark Menu Delegate
-
+/*
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
     if (![channel isEqualToDictionary:self.currentChannel]) [self setCenterChannel:channel];
     [self.containerViewController closeDrawer];
-}
+}*/
 
 @end

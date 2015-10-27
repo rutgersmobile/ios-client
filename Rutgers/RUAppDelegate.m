@@ -50,6 +50,11 @@
     return YES;
 }
 
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+    [self.rootController openURL:url];
+    return YES;
+}
+
 /**
  *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the menu/drawer containment view controller
  */

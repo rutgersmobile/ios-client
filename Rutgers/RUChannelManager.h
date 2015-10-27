@@ -15,7 +15,10 @@ extern NSString *const ChannelManagerDidUpdateChannelsKey;
 @interface RUChannelManager : RUDataLoadingManager
 +(RUChannelManager *)sharedInstance;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
+-(NSArray *)viewControllersForURL:(NSURL *)url;
+
 @property (readonly) NSArray *allChannels;
--(NSDictionary *)channelWithHandle:(NSString *)handle;
+//-(NSDictionary *)channelWithHandle:(NSString *)handle;
 @property NSDictionary *lastChannel;
+
 @end
