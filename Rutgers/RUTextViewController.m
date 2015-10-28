@@ -51,6 +51,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadText) name:UIContentSizeCategoryDidChangeNotification object:nil];
     
     [self loadText];
+    self.textView.contentOffset = CGPointMake(0, self.textView.contentInset.top);
 }
 
 /**
