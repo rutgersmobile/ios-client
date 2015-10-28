@@ -24,6 +24,7 @@
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
 		047D06D21BE1643C00DFEAA3 /* RUBusTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D06D11BE1643C00DFEAA3 /* RUBusTest.m */; settings = {ASSET_TAGS = (); }; };
+		047D06DE1BE16DB600DFEAA3 /* RutgersUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D06DD1BE16DB600DFEAA3 /* RutgersUITests.m */; };
 		048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048506F41B6FED100064769D /* RUWKWebViewController.m */; };
 		0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */; };
 		0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */; };
@@ -219,10 +220,16 @@
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
-		DB1FDFAC5E884A41351883B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		047D06E01BE16DB600DFEAA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C262EFA0188345D10035C8F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C262EFA7188345D10035C8F5;
+			remoteInfo = Rutgers;
+		};
 		049A4CE51B4AFC890006D1FA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C262EFA0188345D10035C8F5 /* Project object */;
@@ -262,6 +269,9 @@
 		0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUResponseSerializer.m; sourceTree = "<group>"; };
 		047C2EF11A646FCC00B172E5 /* RUInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RUInfo.json; sourceTree = "<group>"; };
 		047D06D11BE1643C00DFEAA3 /* RUBusTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusTest.m; sourceTree = "<group>"; };
+		047D06DB1BE16DB600DFEAA3 /* RutgersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RutgersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		047D06DD1BE16DB600DFEAA3 /* RutgersUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RutgersUITests.m; sourceTree = "<group>"; };
+		047D06DF1BE16DB600DFEAA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		048506F31B6FED100064769D /* RUWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUWKWebViewController.h; sourceTree = "<group>"; };
 		048506F41B6FED100064769D /* RUWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUWKWebViewController.m; sourceTree = "<group>"; };
 		0488F85A1B6C0A3500668E54 /* RUOSMDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUOSMDataLoadingManager.h; path = Rutgers/RUOSMDataLoadingManager.h; sourceTree = SOURCE_ROOT; };
@@ -647,11 +657,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		047D06D81BE16DB600DFEAA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		049A4CDD1B4AFC890006D1FA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB1FDFAC5E884A41351883B4 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +715,15 @@
 				0422C9831A69C3C100344828 /* RURecCenterDataSource.m */,
 			);
 			name = model;
+			sourceTree = "<group>";
+		};
+		047D06DC1BE16DB600DFEAA3 /* RutgersUITests */ = {
+			isa = PBXGroup;
+			children = (
+				047D06DD1BE16DB600DFEAA3 /* RutgersUITests.m */,
+				047D06DF1BE16DB600DFEAA3 /* Info.plist */,
+			);
+			path = RutgersUITests;
 			sourceTree = "<group>";
 		};
 		049A4CE11B4AFC890006D1FA /* Rutgers Tests */ = {
@@ -1489,6 +1514,7 @@
 			children = (
 				C262EFB1188345D10035C8F5 /* Rutgers */,
 				049A4CE11B4AFC890006D1FA /* Rutgers Tests */,
+				047D06DC1BE16DB600DFEAA3 /* RutgersUITests */,
 				C262EFAA188345D10035C8F5 /* Frameworks */,
 				C262EFA9188345D10035C8F5 /* Products */,
 				71C113FD36A753397BBAA999 /* Pods */,
@@ -1500,6 +1526,7 @@
 			children = (
 				C262EFA8188345D10035C8F5 /* Rutgers.app */,
 				049A4CE01B4AFC890006D1FA /* Rutgers Tests.xctest */,
+				047D06DB1BE16DB600DFEAA3 /* RutgersUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1571,16 +1598,31 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		047D06DA1BE16DB600DFEAA3 /* RutgersUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 047D06E21BE16DB600DFEAA3 /* Build configuration list for PBXNativeTarget "RutgersUITests" */;
+			buildPhases = (
+				047D06D71BE16DB600DFEAA3 /* Sources */,
+				047D06D81BE16DB600DFEAA3 /* Frameworks */,
+				047D06D91BE16DB600DFEAA3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				047D06E11BE16DB600DFEAA3 /* PBXTargetDependency */,
+			);
+			name = RutgersUITests;
+			productName = RutgersUITests;
+			productReference = 047D06DB1BE16DB600DFEAA3 /* RutgersUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		049A4CDF1B4AFC890006D1FA /* Rutgers Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 049A4CE71B4AFC890006D1FA /* Build configuration list for PBXNativeTarget "Rutgers Tests" */;
 			buildPhases = (
-				DCB49EE8E9609E15BEC26662 /* Check Pods Manifest.lock */,
 				049A4CDC1B4AFC890006D1FA /* Sources */,
 				049A4CDD1B4AFC890006D1FA /* Frameworks */,
 				049A4CDE1B4AFC890006D1FA /* Resources */,
-				15F920A61C86C66FFA00FFA8 /* Copy Pods Resources */,
-				C8C76182811D98FA374E0C4A /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1622,6 +1664,11 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Rutgers;
 				TargetAttributes = {
+					047D06DA1BE16DB600DFEAA3 = {
+						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = AT28YAJSZ3;
+						TestTargetID = C262EFA7188345D10035C8F5;
+					};
 					049A4CDF1B4AFC890006D1FA = {
 						CreatedOnToolsVersion = 7.0;
 						TestTargetID = C262EFA7188345D10035C8F5;
@@ -1645,11 +1692,19 @@
 			targets = (
 				C262EFA7188345D10035C8F5 /* Rutgers */,
 				049A4CDF1B4AFC890006D1FA /* Rutgers Tests */,
+				047D06DA1BE16DB600DFEAA3 /* RutgersUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		047D06D91BE16DB600DFEAA3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		049A4CDE1B4AFC890006D1FA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1697,21 +1752,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		15F920A61C86C66FFA00FFA8 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		17D319ABBBF33B5AA50442EF /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1725,36 +1765,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8C76182811D98FA374E0C4A /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DCB49EE8E9609E15BEC26662 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F64F9DA88AFF4B3A8763F4C1 /* Copy Pods Resources */ = {
@@ -1775,6 +1785,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		047D06D71BE16DB600DFEAA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				047D06DE1BE16DB600DFEAA3 /* RutgersUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		049A4CDC1B4AFC890006D1FA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1977,6 +1995,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		047D06E11BE16DB600DFEAA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C262EFA7188345D10035C8F5 /* Rutgers */;
+			targetProxy = 047D06E01BE16DB600DFEAA3 /* PBXContainerItemProxy */;
+		};
 		049A4CE61B4AFC890006D1FA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C262EFA7188345D10035C8F5 /* Rutgers */;
@@ -1996,6 +2019,58 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		047D06E31BE16DB600DFEAA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = RutgersUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = RU.RutgersUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Rutgers;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		047D06E41BE16DB600DFEAA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = RutgersUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = RU.RutgersUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Rutgers;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
 		049A4CE81B4AFC890006D1FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6FAAF2D92E8DF9C54DCB3A3F /* Pods.debug.xcconfig */;
@@ -2154,6 +2229,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		047D06E21BE16DB600DFEAA3 /* Build configuration list for PBXNativeTarget "RutgersUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				047D06E31BE16DB600DFEAA3 /* Debug */,
+				047D06E41BE16DB600DFEAA3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		049A4CE71B4AFC890006D1FA /* Build configuration list for PBXNativeTarget "Rutgers Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
