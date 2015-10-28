@@ -8,30 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */; };
-		041502281BB091E500D23AB8 /* RUSOCDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFB11937C55F00016C89 /* RUSOCDataLoadingManager.m */; settings = {ASSET_TAGS = (); }; };
-		041502291BB0948000D23AB8 /* RUNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970CC19215F910070A414 /* RUNetworkManager.m */; settings = {ASSET_TAGS = (); }; };
-		0415022A1BB0948500D23AB8 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; settings = {ASSET_TAGS = (); }; };
-		0415022B1BB0948B00D23AB8 /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; settings = {ASSET_TAGS = (); }; };
-		0415022C1BB0949300D23AB8 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73B241978880C006BC215 /* TableViewController.m */; settings = {ASSET_TAGS = (); }; };
-		0415022D1BB0949800D23AB8 /* RUChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970D11921603E0070A414 /* RUChannelManager.m */; settings = {ASSET_TAGS = (); }; };
 		041502321BB0964A00D23AB8 /* RUDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 041502311BB0964A00D23AB8 /* RUDefines.m */; settings = {ASSET_TAGS = (); }; };
-		041502341BB0980500D23AB8 /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA4C40197D655D00E972DD /* DataSource.m */; settings = {ASSET_TAGS = (); }; };
-		041502351BB0980900D23AB8 /* RUNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7177BAD199DC0CD0092126F /* RUNavigationController.m */; settings = {ASSET_TAGS = (); }; };
-		041502361BB0981000D23AB8 /* AAPLPlaceholderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA4C4D197D68D200E972DD /* AAPLPlaceholderView.m */; settings = {ASSET_TAGS = (); }; };
-		041502371BB0981400D23AB8 /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; settings = {ASSET_TAGS = (); }; };
-		041502381BB0981B00D23AB8 /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; settings = {ASSET_TAGS = (); }; };
-		041502391BB0982300D23AB8 /* AAPLContentLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA4C43197D65C000E972DD /* AAPLContentLoading.m */; settings = {ASSET_TAGS = (); }; };
-		0415023A1BB0985400D23AB8 /* RowHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7778D7319A4FEEF003BD8DE /* RowHeightCache.m */; settings = {ASSET_TAGS = (); }; };
-		0415023B1BB0985A00D23AB8 /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; settings = {ASSET_TAGS = (); }; };
-		0415023C1BB0985E00D23AB8 /* AAPLStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA4C45197D65C000E972DD /* AAPLStateMachine.m */; settings = {ASSET_TAGS = (); }; };
-		0415023D1BB0986400D23AB8 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; settings = {ASSET_TAGS = (); }; };
-		0415023E1BB0986A00D23AB8 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; settings = {ASSET_TAGS = (); }; };
-		0415023F1BB0987400D23AB8 /* RUUserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */; settings = {ASSET_TAGS = (); }; };
-		041502401BB0987900D23AB8 /* RUSOCSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = A771A27E199AB790000CD174 /* RUSOCSearchIndex.m */; settings = {ASSET_TAGS = (); }; };
-		041502411BB0990800D23AB8 /* DataTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A3A1989583500304436 /* DataTuple.m */; settings = {ASSET_TAGS = (); }; };
-		041502421BB0990D00D23AB8 /* AFXMLResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A73248F6190E2B8F008DF9A8 /* AFXMLResponseSerializer.m */; settings = {ASSET_TAGS = (); }; };
-		041502431BB0991100D23AB8 /* RUAnalyticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4B6E219ACD5F20087A8BC /* RUAnalyticsManager.m */; settings = {ASSET_TAGS = (); }; };
-		041502441BB0992200D23AB8 /* RUDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 041502311BB0964A00D23AB8 /* RUDefines.m */; settings = {ASSET_TAGS = (); }; };
 		0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUBusPrediction.m */; };
 		041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */ = {isa = PBXBuildFile; fileRef = 041782A11B7BDC7F00FE75AD /* RUBusArrival.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
@@ -46,6 +23,7 @@
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
+		047D06D21BE1643C00DFEAA3 /* RUBusTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D06D11BE1643C00DFEAA3 /* RUBusTest.m */; settings = {ASSET_TAGS = (); }; };
 		048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048506F41B6FED100064769D /* RUWKWebViewController.m */; };
 		0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */; };
 		0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */; };
@@ -283,6 +261,7 @@
 		0465D0821ADEF7D1001C30FE /* RUResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUResponseSerializer.h; sourceTree = "<group>"; };
 		0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUResponseSerializer.m; sourceTree = "<group>"; };
 		047C2EF11A646FCC00B172E5 /* RUInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RUInfo.json; sourceTree = "<group>"; };
+		047D06D11BE1643C00DFEAA3 /* RUBusTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusTest.m; sourceTree = "<group>"; };
 		048506F31B6FED100064769D /* RUWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUWKWebViewController.h; sourceTree = "<group>"; };
 		048506F41B6FED100064769D /* RUWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUWKWebViewController.m; sourceTree = "<group>"; };
 		0488F85A1B6C0A3500668E54 /* RUOSMDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUOSMDataLoadingManager.h; path = Rutgers/RUOSMDataLoadingManager.h; sourceTree = SOURCE_ROOT; };
@@ -728,6 +707,7 @@
 				049A4CE41B4AFC890006D1FA /* Info.plist */,
 				0490DC5E1B4B13F000E76EEF /* RUSOCTest.m */,
 				0490DC921B4C595700E76EEF /* RUDrillDownTest.m */,
+				047D06D11BE1643C00DFEAA3 /* RUBusTest.m */,
 			);
 			path = "Rutgers Tests";
 			sourceTree = "<group>";
@@ -1799,31 +1779,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0415022D1BB0949800D23AB8 /* RUChannelManager.m in Sources */,
-				041502431BB0991100D23AB8 /* RUAnalyticsManager.m in Sources */,
-				0415023B1BB0985A00D23AB8 /* RUResponseSerializer.m in Sources */,
-				041502361BB0981000D23AB8 /* AAPLPlaceholderView.m in Sources */,
-				0415022B1BB0948B00D23AB8 /* RUSOCSearchOperation.m in Sources */,
 				0490DC5F1B4B13F000E76EEF /* RUSOCTest.m in Sources */,
-				041502441BB0992200D23AB8 /* RUDefines.m in Sources */,
-				041502391BB0982300D23AB8 /* AAPLContentLoading.m in Sources */,
-				041502411BB0990800D23AB8 /* DataTuple.m in Sources */,
-				041502291BB0948000D23AB8 /* RUNetworkManager.m in Sources */,
-				041502351BB0980900D23AB8 /* RUNavigationController.m in Sources */,
-				0415022A1BB0948500D23AB8 /* RUDataLoadingManager.m in Sources */,
 				0490DC931B4C595700E76EEF /* RUDrillDownTest.m in Sources */,
-				041502371BB0981400D23AB8 /* RUAppearance.m in Sources */,
-				0415022C1BB0949300D23AB8 /* TableViewController.m in Sources */,
-				041502401BB0987900D23AB8 /* RUSOCSearchIndex.m in Sources */,
-				041502421BB0990D00D23AB8 /* AFXMLResponseSerializer.m in Sources */,
-				0415023A1BB0985400D23AB8 /* RowHeightCache.m in Sources */,
-				041502281BB091E500D23AB8 /* RUSOCDataLoadingManager.m in Sources */,
-				041502381BB0981B00D23AB8 /* RUReaderResponseSerializer.m in Sources */,
-				041502341BB0980500D23AB8 /* DataSource.m in Sources */,
-				0415023E1BB0986A00D23AB8 /* ALTableViewAbstractCell.m in Sources */,
-				0415023C1BB0985E00D23AB8 /* AAPLStateMachine.m in Sources */,
-				0415023D1BB0986400D23AB8 /* RULabel.m in Sources */,
-				0415023F1BB0987400D23AB8 /* RUUserInfoManager.m in Sources */,
+				047D06D21BE1643C00DFEAA3 /* RUBusTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
