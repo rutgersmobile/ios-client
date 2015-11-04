@@ -66,7 +66,7 @@
         [self addDataSource:self.subjectDataSource];
 
         //second selector
-        self.channels = [RUChannelManager sharedInstance].allChannels;
+        self.channels = [RUChannelManager sharedInstance].contentChannels;
         
         NSMutableArray *channelTitles = [NSMutableArray array];
         for (NSDictionary *channel in self.channels) {

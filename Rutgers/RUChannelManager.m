@@ -37,10 +37,22 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return manager;
 }
 
-@synthesize allChannels = _allChannels;
--(NSArray *)allChannels{
+@synthesize otherChannels = _otherChannels;
+-(NSArray *)otherChannels{
+    if (!_otherChannels) {
+        _otherChannels = @[@{@"handle" : @"options",
+                           @"title" : @"Options",
+                           @"view" : @"options",
+                           @"icon" : @"gear"
+                           }];
+    }
+    return _otherChannels;
+}
+
+@synthesize contentChannels = _contentChannels;
+-(NSArray *)contentChannels{
     @synchronized(self) {
-        if (!_allChannels) {
+        if (!_contentChannels) {
             NSDate *latestDate;
             NSArray *paths = @[[self documentPath],[self bundlePath]];
             
@@ -54,24 +66,30 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                         if (channels.count) {
                             latestDate = date;
-                            _allChannels = channels;
+                            _contentChannels = channels;
                         }
                     }
                 }
             }
+        
         }
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             if ([self needsLoad]) {
                 [self load];
             }
         });
-        return _allChannels;
+        return _contentChannels;
     }
 }
 
 
 -(NSDictionary *)channelWithHandle:(NSString *)handle{
-    for (NSDictionary *channel in self.allChannels) {
+    for (NSDictionary *channel in self.contentChannels) {
+        if ([[channel channelHandle] isEqualToString:handle]) {
+            return channel;
+        }
+    }
+    for (NSDictionary *channel in self.otherChannels) {
         if ([[channel channelHandle] isEqualToString:handle]) {
             return channel;
         }
@@ -79,16 +97,16 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return nil;
 }
 
--(void)setAllChannels:(NSArray *)allChannels{
+-(void)setContentChannels:(NSArray *)allChannels{
     if (!allChannels.count) return;
     
     @synchronized(self) {
         NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
         if (data) [data writeToFile:[self documentPath] atomically:YES];
         
-        if ([_allChannels isEqual:allChannels]) return;
+        if ([_contentChannels isEqual:allChannels]) return;
         
-        _allChannels = allChannels;
+        _contentChannels = allChannels;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:ChannelManagerDidUpdateChannelsKey object:self];
@@ -119,7 +137,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.allChannels = responseObject;
+            self.contentChannels = responseObject;
             [self didEndLoad:YES withError:nil];
         } else {
             [self didEndLoad:NO withError:nil];
@@ -146,7 +164,6 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                                        @"Reader" :  @"RUReaderViewController",
                                        @"recreation" : @"RURecreationViewController",
                                        @"www" : @"RUWebViewController",
-                                       //@"www" : @"RUWebViewContainerViewController",
                                        @"text" : @"RUTextViewController",
                                        @"feedback" : @"RUFeedbackViewController",
                                        @"options" : @"RUOptionsViewController",
@@ -174,7 +191,9 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 -(NSArray *)viewControllersForURL:(NSURL *)url{
-    return @[[self viewControllerForChannel:[self channelWithHandle:url.host]]];
+    NSMutableArray *components = [url.absoluteString.pathComponents mutableCopy];
+    [components removeObjectAtIndex:0];
+    return @[[self viewControllerForChannel:[self channelWithHandle:components.firstObject]]];
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{
@@ -189,13 +208,13 @@ static NSString *const ChannelManagerLastChannelKey = @"ChannelManagerLastChanne
 
 -(NSDictionary *)lastChannel{
     NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ChannelManagerLastChannelKey];
-    if (![self.allChannels containsObject:lastChannel]) lastChannel = nil;
+    if (![self.contentChannels containsObject:lastChannel]) lastChannel = nil;
     if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};
     return lastChannel;
 }
 
 -(void)setLastChannel:(NSDictionary *)lastChannel{
-    if ([self.allChannels containsObject:lastChannel]) {
+    if ([self.contentChannels containsObject:lastChannel]) {
         [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:ChannelManagerLastChannelKey];
     }
 }

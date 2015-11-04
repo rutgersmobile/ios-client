@@ -10,20 +10,14 @@
 #import "DataSource_Private.h"
 #import "ChannelsDataSource.h"
 #import "RUUserInfoManager.h"
+#import "RUChannelManager.h"
 
 @implementation MenuDataSource
 -(instancetype)init{
     self = [super init];
     if (self) {
         [self addDataSource:[[ChannelsDataSource alloc] init]];
-        
-        NSDictionary *optionsChannel = @{@"handle" : @"options",
-                                        @"title" : @"Options",
-                                        @"view" : @"options",
-                                        @"icon" : @"gear"
-                                         };
-        
-        [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:@[optionsChannel]]];
+        [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:[RUChannelManager sharedInstance].otherChannels]];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyDidReloadData) name:userInfoManagerDidChangeInfoKey object:nil];
     }

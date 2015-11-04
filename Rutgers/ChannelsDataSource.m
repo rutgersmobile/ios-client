@@ -14,7 +14,7 @@
 {
     self = [super init];
     if (self) {
-        self.items = [RUChannelManager sharedInstance].allChannels;
+        self.items = [RUChannelManager sharedInstance].contentChannels;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelsDidChange) name:ChannelManagerDidUpdateChannelsKey object:nil];
     }
     return self;
@@ -25,6 +25,6 @@
 }
 
 -(void)channelsDidChange{
-    self.items = [RUChannelManager sharedInstance].allChannels;
+    self.items = [RUChannelManager sharedInstance].contentChannels;
 }
 @end

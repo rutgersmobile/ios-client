@@ -17,8 +17,9 @@ extern NSString *const ChannelManagerDidUpdateChannelsKey;
 -(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
 -(NSArray *)viewControllersForURL:(NSURL *)url;
 
-@property (readonly) NSArray *allChannels;
+@property (readonly) NSArray *contentChannels;
 //-(NSDictionary *)channelWithHandle:(NSString *)handle;
 @property NSDictionary *lastChannel;
 
+@property (readonly) NSArray *otherChannels;
 @end

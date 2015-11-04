@@ -31,7 +31,7 @@
 }
 
 +(id)channelWithConfiguration:(NSDictionary *)channel{
-    if ([[RUChannelManager sharedInstance].allChannels containsObject:channel]) {
+    if ([[RUChannelManager sharedInstance].contentChannels containsObject:channel]) {
         RUWebViewController *webViewController = [self.storedChannels objectForKey:channel];
         if (!webViewController) {
             webViewController = [self _channelWithConfiguration:channel];
