@@ -19,51 +19,13 @@ static NSString *const SOCDataCampusKey = @"SOCDataCampusKey";
 static NSString *const SOCDataLevelKey = @"SOCDataLevelKey";
 static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
-@interface RUSOCDataLoadingManager ()
+
+@interface RUSOCIndexLoader : RUDataLoadingManager
 @property (nonatomic) NSArray *semesters;
-@property (nonatomic) NSArray *campuses;
-@property (nonatomic) NSArray *levels;
 @property (nonatomic) NSInteger defaultSemesterIndex;
 @end
 
-@implementation RUSOCDataLoadingManager
-+(RUSOCDataLoadingManager *)sharedInstance{
-    static RUSOCDataLoadingManager *socData = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        socData = [[RUSOCDataLoadingManager alloc] init];
-    });
-    return socData;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.campuses = @[
-                         @{@"title": @"New Brunswick", @"tag": @"NB"},
-                         @{@"title": @"Newark", @"tag": @"NK"},
-                         @{@"title": @"Camden", @"tag": @"CM"},
-                         @{@"title": @"Online Courses", @"tag": @"ONLINE"},
-                         @{@"title": @"Freehold WMHEC: RU-BCC", @"tag": @"WM"},
-                         @{@"title": @"Mays Landing: RU-ACCC", @"tag": @"AC"},
-                         @{@"title": @"Denville: RU-Morris", @"tag": @"MC"},
-                         @{@"title": @"McGuire-Dix-Lakehurst: RU-JBMDL", @"tag": @"J"},
-                         @{@"title": @"North Branch: RU-RVCC", @"tag": @"RV"},
-                         @{@"title": @"Camden County College", @"tag": @"CC"},
-                         @{@"title": @"Cumberland County College", @"tag": @"CU"}
-                         ];
-        
-        self.levels = @[
-                      @{@"title": @"Undergraduate", @"tag": @"U"},
-                      @{@"title": @"Graduate", @"tag": @"G"}
-                      ];
-            
-    }
-    return self;
-}
-
-
+@implementation RUSOCIndexLoader
 -(void)load{
     [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -77,6 +39,81 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self didEndLoad:NO withError:error];
     }];
+}
+-(NSArray *)parseSemesters:(NSArray *)semesters{
+    NSMutableArray *parsedSemesters = [NSMutableArray array];
+    for (NSString *semesterTag in semesters) {
+        [parsedSemesters addObject:@{@"title": [self descriptionForSemesterTag:semesterTag], @"tag": semesterTag}];
+    }
+    return parsedSemesters;
+}
+
+-(NSString *)descriptionForSemesterTag:(NSString *)semesterTag{
+    NSDictionary *monthMap = @{@"0": @"Winter", @"1": @"Spring", @"7": @"Summer", @"9": @"Fall"};
+    NSString *startMonth = [semesterTag substringToIndex:1];
+    NSString *year = [semesterTag substringFromIndex:1];
+    
+    return [NSString stringWithFormat:@"%@ %@",monthMap[startMonth],year];
+}
+@end
+
+@implementation RUSOCDataLoadingManager
++(NSArray *)campuses{
+    static NSArray *campuses = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        campuses = @[
+                     @{@"title": @"New Brunswick", @"tag": @"NB"},
+                     @{@"title": @"Newark", @"tag": @"NK"},
+                     @{@"title": @"Camden", @"tag": @"CM"},
+                     @{@"title": @"Online Courses", @"tag": @"ONLINE"},
+                     @{@"title": @"Freehold WMHEC: RU-BCC", @"tag": @"WM"},
+                     @{@"title": @"Mays Landing: RU-ACCC", @"tag": @"AC"},
+                     @{@"title": @"Denville: RU-Morris", @"tag": @"MC"},
+                     @{@"title": @"McGuire-Dix-Lakehurst: RU-JBMDL", @"tag": @"J"},
+                     @{@"title": @"North Branch: RU-RVCC", @"tag": @"RV"},
+                     @{@"title": @"Camden County College", @"tag": @"CC"},
+                     @{@"title": @"Cumberland County College", @"tag": @"CU"}
+                     ];
+    });
+    return campuses;
+}
+
++(NSArray *)levels{
+    static NSArray *levels = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        levels = @[
+                   @{@"title": @"Undergraduate", @"tag": @"U"},
+                   @{@"title": @"Graduate", @"tag": @"G"}
+                   ];
+    });
+    return levels;
+}
+
++(RUSOCIndexLoader *)indexLoader{
+    static RUSOCIndexLoader *indexLoader = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        indexLoader = [[RUSOCIndexLoader alloc] init];
+    });
+    return indexLoader;
+}
+
++(NSArray *)semesters{
+    return [self indexLoader].semesters;
+}
+
++(void)performWhenSemestersLoaded:(void (^)(NSError *))block{
+    [[self indexLoader] performWhenLoaded:^(NSError *error) {
+       dispatch_async(dispatch_get_main_queue(), ^{
+           block(error);
+       });
+    }];
+}
+
++(NSInteger)defaultSemesterIndex{
+    return [self indexLoader].defaultSemesterIndex;
 }
 
 -(BOOL)onlineCampusSelected{
@@ -187,15 +224,32 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     }];
 }
 
+-(NSString *)titleForCurrentConfiguration{
+    return [NSString stringWithFormat:@"%@ %@ %@",self.semester[@"title"],self.campus[@"tag"],self.level[@"tag"]];
+}
+
+@end
+
+@interface RUSOCSingletonDataLoadingManager : RUSOCDataLoadingManager
+
+@end
+
+@implementation RUSOCSingletonDataLoadingManager
 -(NSDictionary *)campus{
+    //First we check if the user has set a specific campus for the SOC channel
     NSDictionary *campus = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataCampusKey];
     if (campus) return campus;
-
+    
+    //Otherwise if they havent, we default to the app wide campus setting
     campus = [RUUserInfoManager currentCampus];
     
-    if ([[self.campuses valueForKeyPath:@"tag"] containsObject:campus[@"tag"]]) return campus;
+    //However the set of app wide campuses are different than the set of campuses for SOC
+    //So we check the app wide setting campus corresponds to a SOC campus
+    NSArray *campuses = [RUSOCDataLoadingManager campuses];
+    if ([[campuses valueForKeyPath:@"tag"] containsObject:campus[@"tag"]]) return campus;
     
-    return [self.campuses firstObject];
+    //Otherwise return the SOC default
+    return [campuses firstObject];
 }
 
 -(void)setCampus:(NSDictionary *)campus{
@@ -208,9 +262,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     
     level = [RUUserInfoManager currentUserRole];
     
-    if ([[self.levels valueForKeyPath:@"tag"] containsObject:level[@"tag"]]) return level;
+    NSArray *levels = [RUSOCDataLoadingManager levels];
     
-    return [self.levels firstObject];
+    if ([[levels valueForKeyPath:@"tag"] containsObject:level[@"tag"]]) return level;
+    
+    return [levels firstObject];
 }
 -(void)setLevel:(NSDictionary *)level{
     [[NSUserDefaults standardUserDefaults] setObject:level forKey:SOCDataLevelKey];
@@ -218,31 +274,24 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
 -(NSDictionary *)semester{
     NSDictionary *semester = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataSemesterKey];
-    if ([self.semesters containsObject:semester]) return semester;
-    return self.semesters[self.defaultSemesterIndex];
+    
+    NSArray *semesters = [RUSOCDataLoadingManager semesters];
+    if ([semesters containsObject:semester] || (!semesters && semester)) return semester;
+    return semesters[[RUSOCDataLoadingManager defaultSemesterIndex]];
 }
+
 -(void)setSemester:(NSDictionary *)semester{
     [[NSUserDefaults standardUserDefaults] setObject:semester forKey:SOCDataSemesterKey];
 }
+@end
 
--(NSArray *)parseSemesters:(NSArray *)semesters{
-    NSMutableArray *parsedSemesters = [NSMutableArray array];
-    for (NSString *semesterTag in semesters) {
-        [parsedSemesters addObject:@{@"title": [self descriptionForSemesterTag:semesterTag], @"tag": semesterTag}];
-    }
-    return parsedSemesters;
+@implementation RUSOCDataLoadingManager (SharedInstance)
++(RUSOCDataLoadingManager *)sharedInstance{
+    static RUSOCDataLoadingManager *socData = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        socData = [[RUSOCSingletonDataLoadingManager alloc] init];
+    });
+    return socData;
 }
-
--(NSString *)descriptionForSemesterTag:(NSString *)semesterTag{
-    NSDictionary *monthMap = @{@"0": @"Winter", @"1": @"Spring", @"7": @"Summer", @"9": @"Fall"};
-    NSString *startMonth = [semesterTag substringToIndex:1];
-    NSString *year = [semesterTag substringFromIndex:1];
-    
-    return [NSString stringWithFormat:@"%@ %@",monthMap[startMonth],year];
-}
-
--(NSString *)titleForCurrentConfiguration{
-    return [NSString stringWithFormat:@"%@ %@ %@",self.semester[@"title"],self.campus[@"tag"],self.level[@"tag"]];
-}
-
 @end

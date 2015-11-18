@@ -18,153 +18,124 @@
 @implementation RUSOCTest
 
 -(void)testPreferences{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
-    XCTAssertNotNil(manager.campus);
-    XCTAssertNotNil(manager.level);
-    
-    XCTAssertNotNil(manager.campuses);
-    XCTAssertNotNil(manager.levels);
-}
-
--(void)testLoadingSemesterIndex{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"semesterIndex"];
-    [manager performWhenLoaded:^(NSError *error) {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"loading"];
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
+        RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
+        XCTAssertNotNil(manager.campus);
+        XCTAssertNotNil(manager.level);
+        XCTAssertNotNil(manager.semester);
+        
+        XCTAssertNotNil([RUSOCDataLoadingManager campuses]);
+        XCTAssertNotNil([RUSOCDataLoadingManager levels]);
+        XCTAssertNotNil([RUSOCDataLoadingManager semesters]);
         [expectation fulfill];
     }];
-    [self waitForExpectationsWithTimeout:10.0 handler:nil];
-    XCTAssertNotNil(manager.semester);
-    XCTAssertNotNil(manager.semesters);
+    [self waitForExpectationsWithTimeout:30 handler:nil];
 }
 
--(void)applyForEachCombination:(void(^)(NSDictionary *campus, NSDictionary *level, NSDictionary *semester))function{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
+-(void)testLoadingSubjectsForAllCombinations{
+    XCTestExpectation *expectation = [self expectationWithDescription:@"loading"];
+    
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:30 handler:nil];
 
-    for (NSDictionary *campus in manager.campuses) {
-        for (NSDictionary *level in manager.levels) {
-            for (NSDictionary *semester in manager.semesters) {
+    NSMutableDictionary *results = [NSMutableDictionary dictionary];
+    dispatch_queue_t queue = dispatch_queue_create("results mutation queue", DISPATCH_QUEUE_SERIAL);
+    
+    for (NSDictionary *campus in [RUSOCDataLoadingManager campuses]) {
+        for (NSDictionary *level in [RUSOCDataLoadingManager levels]) {
+            for (NSDictionary *semester in [RUSOCDataLoadingManager semesters]) {
+                
+                RUSOCDataLoadingManager *manager = [[RUSOCDataLoadingManager alloc] init];
                 
                 manager.semester = semester;
                 manager.campus = campus;
                 manager.level = level;
                 
-                function(campus,level,semester);
+                NSString *title = [NSString stringWithFormat:@"%@ %@ %@",semester[@"title"],campus[@"title"],level[@"title"]];
                 
-                usleep(1000*40);
+                XCTestExpectation *expectation = [self expectationWithDescription:@"subjects"];
+                
+                //usleep(1000*50);
+                [manager getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
+                    
+                    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+                    if (error) result[@"error"] = error;
+                    if (subjects) result[@"subjects"] = subjects;
+                    
+                    if (subjects.count > 0) {
+                        NSDictionary *subject = subjects.firstObject;
+                        NSString *code = subject[@"code"];
+                        
+                        //usleep(1000*50);
+                        [manager getCoursesForSubjectCode:code completion:^(NSArray *courses, NSError *error) {
+                            dispatch_async(queue, ^{
+                                if (error) result[@"courseError"] = error;
+                                if (courses) result[@"courses"] = courses;
+                                results[title] = result;
+                                [expectation fulfill];
+                            });
+                        }];
+                        
+                    } else {
+                        dispatch_async(queue, ^{
+                            results[title] = result;
+                            [expectation fulfill];
+                        });
+                    }
+                }];
+            }
+        }
+    }
+    
+    [self waitForExpectationsWithTimeout:30 handler:nil];
+    
+    for (NSDictionary *campus in [RUSOCDataLoadingManager campuses]) {
+        for (NSDictionary *level in [RUSOCDataLoadingManager levels]) {
+            for (NSDictionary *semester in [RUSOCDataLoadingManager semesters]) {
+                
+                NSString *title = [NSString stringWithFormat:@"%@ %@ %@",semester[@"title"],campus[@"title"],level[@"title"]];
+                
+                NSDictionary *result = results[title];
+                
+                NSArray *subjects = result[@"subjects"];
+                NSError *error = result[@"error"];
+                
+                if (subjects) {
+                    if (subjects.count == 0) {
+                        NSLog(@"*\tNo subjects for %@", title);
+                    } else {
+                        NSLog(@"*\tSuccessful loading subjects for %@", title);
+                        
+                        NSArray *courses = result[@"courses"];
+                        NSError *courseError = result[@"courseError"];
+                        
+                        if (courses) {
+                            if (subjects.count == 0) {
+                                NSLog(@"\t\tNo courses for %@", title);
+                            } else {
+                                NSLog(@"\t\tSuccessful loading courses for %@", title);
+                            }
+                        } else {
+                            NSAssert(!courseError, @"\t\tError Loading courses for %@", title);
+                            if (courseError) NSLog(@"\t\tError %@", courseError.localizedDescription);
+                        }
+                    }
+                } else {
+                    if (![campus[@"tag"] isEqualToString:@"ONLINE"]) {
+                        NSAssert(false, @"*\tError Loading subjects for %@", title);
+                    } else {
+                        NSLog(@"*\tError Loading subjects for %@", title);
+                    }
+                    if (error) NSLog(@"\t\tError %@", error.localizedDescription);
+                }
+                
             }
         }
     }
 }
-
--(void)testLoadingSubjectsForAllCombinations{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"semesterIndexLoad"];
-    [manager performWhenLoaded:^(NSError *error) {
-        XCTAssertNil(error, @"Error loading semester index file");
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:30 handler:nil];
-    
-    NSMutableDictionary *results = [NSMutableDictionary dictionary];
-    dispatch_queue_t queue = dispatch_queue_create("results mutation queue", DISPATCH_QUEUE_SERIAL);
-    
-    [self applyForEachCombination:^(NSDictionary *campus, NSDictionary *level, NSDictionary *semester) {
-        XCTestExpectation *expectation = [self expectationWithDescription:@"subjects"];
-        
-        NSString *title = [NSString stringWithFormat:@"%@ %@ %@",semester[@"title"],campus[@"title"],level[@"title"]];
-        
-        [manager getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
-            dispatch_async(queue, ^{
-                NSMutableDictionary *result = [NSMutableDictionary dictionary];
-                if (error) result[@"error"] = error;
-                if (subjects) result[@"subjects"] = subjects;
-                results[title] = result;
-                [expectation fulfill];
-            });
-        }];
-        
-    }];
-    
-    [self waitForExpectationsWithTimeout:30 handler:nil];
-    
-    
-    [self applyForEachCombination:^(NSDictionary *campus, NSDictionary *level, NSDictionary *semester) {
-        NSString *title = [NSString stringWithFormat:@"%@ %@ %@",semester[@"title"],campus[@"title"],level[@"title"]];
-        
-        NSMutableDictionary *result = results[title];
-        
-        NSArray *subjects = result[@"subjects"];
-        
-        if (subjects.count > 0) {
-            NSDictionary *subject = subjects.firstObject;
-            NSString *code = subject[@"code"];
-            
-            XCTestExpectation *expectation = [self expectationWithDescription:@"subjects"];
-
-            [manager getCoursesForSubjectCode:code completion:^(NSArray *courses, NSError *error) {
-                dispatch_async(queue, ^{
-                    if (error) result[@"courseError"] = error;
-                    if (courses) result[@"courses"] = subjects;
-                    [expectation fulfill];
-                });
-            }];
-            
-            usleep(1000*30);
-        }
-        
-    }];
-    
-    [self waitForExpectationsWithTimeout:30 handler:nil];
-
-    [self applyForEachCombination:^(NSDictionary *campus, NSDictionary *level, NSDictionary *semester) {
-        NSString *title = [NSString stringWithFormat:@"%@ %@ %@",semester[@"title"],campus[@"title"],level[@"title"]];
-        
-        NSDictionary *result = results[title];
-        
-        NSArray *subjects = result[@"subjects"];
-        NSError *error = result[@"error"];
-        
-        if (subjects) {
-            if (subjects.count == 0) {
-                NSLog(@"*\tNo subjects for %@", title);
-            } else {
-                NSLog(@"*\tSuccessful loading subjects for %@", title);
-                
-                NSArray *courses = result[@"courses"];
-                NSError *courseError = result[@"courseError"];
-                
-                if (courses) {
-                    if (subjects.count == 0) {
-                        NSLog(@"\t\tNo courses for %@", title);
-                    } else {
-                        NSLog(@"\t\tSuccessful loading courses for %@", title);
-                    }
-                } else {
-                    NSLog(@"\t\tError Loading courses for %@", title);
-                    assert(!courseError && ![campus[@"tag"] isEqualToString:@"ONLINE"]);
-                    if (courseError) NSLog(@"\t\tError %@", courseError.localizedDescription);
-                }
-            }
-        } else {
-            NSLog(@"*\tError Loading subjects for %@", title);
-            if (error) NSLog(@"\t\tError %@", error.localizedDescription);
-        }
-    }];
-
-}
-
-/*
--(void)testLoadingSubjects{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"subjects"];
-    [manager getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
-        XCTAssertNotNil(subjects);
-        XCTAssertNil(error);
-        [expectation fulfill];
-    }];
-    [self waitForExpectationsWithTimeout:0.5 handler:nil];
-}*/
 
 -(void)testLoadingSearchIndex{
     RUSOCSearchIndex *searchIndex = [[RUSOCSearchIndex alloc] init];
@@ -192,7 +163,7 @@
     RUSOCSearchIndex *searchIndex = [[RUSOCSearchIndex alloc] init];
     [self waitForIndexLoad:searchIndex];
     [self measureBlock:^{
-        [self performSearchQuery:@"intro" onIndex:searchIndex];
+        [self performSearchQuery:@"101" onIndex:searchIndex];
     }];
 }
 

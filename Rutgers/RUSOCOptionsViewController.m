@@ -34,24 +34,27 @@
     
     __weak typeof(self) weakSelf = self;
     
-    AlertDataSource *semesterDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.semester[@"title"] alertButtonTitles:[dataManager.semesters valueForKey:@"title"]];
+    NSArray *semesters = [RUSOCDataLoadingManager semesters];
+    AlertDataSource *semesterDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.semester[@"title"] alertButtonTitles:[semesters valueForKey:@"title"]];
     semesterDataSource.title = @"Semester";
     semesterDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
-        dataManager.semester = dataManager.semesters[buttonIndex];
+        dataManager.semester = semesters[buttonIndex];
         [weakSelf notifyOptionsDidChange];
     };
     
-    AlertDataSource *campusDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.campus[@"title"] alertButtonTitles:[dataManager.campuses valueForKey:@"title"]];
+    NSArray *campuses = [RUSOCDataLoadingManager campuses];
+    AlertDataSource *campusDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.campus[@"title"] alertButtonTitles:[campuses valueForKey:@"title"]];
     campusDataSource.title = @"Campus";
     campusDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
-        dataManager.campus = dataManager.campuses[buttonIndex];
+        dataManager.campus = campuses[buttonIndex];
         [weakSelf notifyOptionsDidChange];
     };
     
-    AlertDataSource *levelDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.level[@"title"] alertButtonTitles:[dataManager.levels valueForKey:@"title"]];
+    NSArray *levels = [RUSOCDataLoadingManager levels];
+    AlertDataSource *levelDataSource = [[AlertDataSource alloc] initWithInitialText:dataManager.level[@"title"] alertButtonTitles:[levels valueForKey:@"title"]];
     levelDataSource.title = @"Level";
     levelDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
-        dataManager.level = dataManager.levels[buttonIndex];
+        dataManager.level = levels[buttonIndex];
         [weakSelf notifyOptionsDidChange];
     };
     

@@ -10,8 +10,6 @@
 #import "RUDataLoadingManager.h"
 
 @interface RUSOCDataLoadingManager : RUDataLoadingManager
-+(RUSOCDataLoadingManager *)sharedInstance;
-
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *subjects, NSError *error))handler;
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *courses, NSError *error))handler;
@@ -23,11 +21,14 @@
 @property (nonatomic) NSDictionary *level;
 @property (nonatomic) NSDictionary *semester;
 
-@property (nonatomic, readonly) NSArray *campuses;
-@property (nonatomic, readonly) NSArray *levels;
-@property (nonatomic, readonly) NSArray *semesters;
++(NSArray *)campuses;
++(NSArray *)levels;
++(NSArray *)semesters;
++(void)performWhenSemestersLoaded:(void (^)(NSError *error))block;
 
 @property (nonatomic, readonly, copy) NSString *titleForCurrentConfiguration;
-
 @end
 
+@interface RUSOCDataLoadingManager (SharedInstance)
++(RUSOCDataLoadingManager *)sharedInstance;
+@end

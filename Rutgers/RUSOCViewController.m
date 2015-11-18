@@ -23,7 +23,7 @@
 
 @implementation RUSOCViewController
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
-    return [[self alloc] initWithStyle:UITableViewStyleGrouped];
+    return [[self alloc] initWithStyle:UITableViewStylePlain];
 }
 
 - (void)viewDidLoad
@@ -37,12 +37,10 @@
     self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search Subjects and Courses";
     
-    [[RUSOCDataLoadingManager sharedInstance] performWhenLoaded:^(NSError *error) {
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
         if (!error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
-                [self setInterfaceEnabled:YES animated:YES];
-            });
+            self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
+            [self setInterfaceEnabled:YES animated:YES];
         }
     }];
     
