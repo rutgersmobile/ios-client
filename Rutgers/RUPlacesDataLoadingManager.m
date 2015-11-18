@@ -80,13 +80,19 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
     [self performWhenLoaded:^(NSError *error) {
         NSMutableOrderedSet *results = [NSMutableOrderedSet orderedSet];
         [results addObjectsFromArray:[self placesWithTitle:query]];
+        [results addObjectsFromArray:[self placesWithBuildingCode:query]];
         [results addObjectsFromArray:[self placesWithOffice:query]];
-        completionBlock([results.array sortByKeyPath:@"title"],error);
+        completionBlock([results.array sortByKeyPath:@"title" beginsWith:query],error);
     }];
 }
 
 -(NSArray *)placesWithTitle:(NSString *)title{
     NSPredicate *searchPredicate = [NSPredicate predicateForQuery:title keyPath:@"title"];
+    return [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
+}
+
+-(NSArray *)placesWithBuildingCode:(NSString *)buildingCode{
+    NSPredicate *searchPredicate = [NSPredicate predicateForQuery:buildingCode keyPath:@"buildingCode"];
     return [[self.places allValues] filteredArrayUsingPredicate:searchPredicate];
 }
 
