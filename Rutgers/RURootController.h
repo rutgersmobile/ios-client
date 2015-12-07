@@ -11,10 +11,15 @@
 
 @interface RURootController : NSObject
 +(instancetype)sharedInstance;
--(void)openDrawerIfNeeded;
 
+//-(void)openDrawer;
+-(void)openDrawerIfNeeded;
 -(void)openURL:(NSURL *)url;
 
 @property (nonatomic) UIViewController <RUContainerController> *containerViewController;
 @property (nonatomic) NSDictionary *currentChannel;
+@end
+
+@interface UINavigationController (PathComponents)
+-(NSURL *)deepLinkingURL;
 @end
