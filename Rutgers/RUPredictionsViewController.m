@@ -9,14 +9,17 @@
 #import "RUPredictionsViewController.h"
 #import "RUPredictionsDataSource.h"
 #import "RUBusRoute.h"
+#import "RUBusMultiStop.h"
 #import "TableViewController_Private.h"
 #import <MSWeakTimer.h>
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
-@interface RUPredictionsViewController ()
+@interface RUPredictionsViewController () <UIPopoverControllerDelegate>
 @property (nonatomic) MSWeakTimer *timer;
 @property (nonatomic) id item;
+@property (nonatomic) UIBarButtonItem *shareButton;
+@property (nonatomic) UIPopoverController *sharingPopoverController;
 @end
 
 @implementation RUPredictionsViewController
@@ -42,6 +45,50 @@
     //All of the content loading happens in the data source
     self.dataSource = [[RUPredictionsDataSource alloc] initWithItem:self.item];
     
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonTapped:)];
+    self.shareButton = shareButton;
+    self.navigationItem.rightBarButtonItem = shareButton;
+}
+
+-(NSURL *)url{
+    NSString *type;
+    if ([self.item isKindOfClass:[RUBusRoute class]]) {
+        type = @"bus";
+    } else if ([self.item isKindOfClass:[RUBusMultiStop class]]) {
+        type = @"stop";
+    }
+    if (!type) return nil;
+    
+    return [NSURL URLWithString:[NSString stringWithFormat:@"rutgers://%@/%@", type, [self.item title]]];
+}
+
+- (void)actionButtonTapped:(id)sender {
+    NSURL *url = self.url;
+    if (!url) return;
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        
+        //If we're on an iPhone, we can just present it modally
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
+    else
+    {
+        //UIPopoverController requires we retain our own instance of it.
+        //So if we somehow have a prior instance, clean it out
+        if (self.sharingPopoverController)
+        {
+            [self.sharingPopoverController dismissPopoverAnimated:NO];
+            self.sharingPopoverController = nil;
+        }
+        
+        //Create the sharing popover controller
+        self.sharingPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        self.sharingPopoverController.delegate = self;
+        [self.sharingPopoverController presentPopoverFromBarButtonItem:self.shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
 }
 
 //This causes an update timer to start upon the Predictions View controller appearing
