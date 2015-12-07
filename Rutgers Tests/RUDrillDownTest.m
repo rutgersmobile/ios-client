@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
+#import "NSDictionary+Channel.h"
 #import "RUChannelManager.h"
 #import "TableViewController.h"
 
@@ -31,7 +32,7 @@
 
 -(void)testChannelManager{
     RUChannelManager *channelManager = [RUChannelManager sharedInstance];
-    NSArray *channels = channelManager.allChannels;
+    NSArray *channels = channelManager.contentChannels;
     XCTAssertGreaterThan(channels.count, 0);
     for (NSDictionary *channel in channels) {
         XCTAssertNoThrow([channelManager viewControllerForChannel:channel]);
@@ -40,21 +41,22 @@
 
 - (void)testChannels{
     RUChannelManager *channelManager = [RUChannelManager sharedInstance];
-    NSArray *channels = channelManager.allChannels;
+    NSArray *channels = channelManager.contentChannels;
     for (NSDictionary *channel in channels) {
+        NSLog(@"Testing %@ channel",channel.channelTitle);
         UIViewController *vc = [channelManager viewControllerForChannel:channel];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
         navController.delegate = self;
-        [self visitChildren:vc];
+        [self visitViewController:vc];
     }
 }
 
--(void)visitChildren:(UIViewController *)viewController{
+-(void)visitViewController:(UIViewController *)viewController{
     XCTAssert(viewController.navigationController);
     if ([viewController isKindOfClass:[TableViewController class]]) {
         [self visitChildrenOfTableView:(TableViewController *)viewController];
     } else {
-        
+         
     }
 }
 
@@ -66,19 +68,20 @@
         for (NSInteger row = 0; row < [dataSource numberOfItemsInSection:section]; row++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
             [tableViewController tableView:tableViewController.tableView didSelectRowAtIndexPath:indexPath];
-            [self visitChildren:tableViewController.navigationController.viewControllers[stackPos+1]];
+            [self visitViewController:tableViewController.navigationController.viewControllers[stackPos+1]];
         }
     }
 }
 
 -(void)waitForTableViewLoad:(TableViewController *)tableViewController{
     XCTestExpectation *expectation = [self expectationWithDescription:tableViewController.title];
-    tableViewController.view;
-    [tableViewController.dataSource setNeedsLoadContent];
+    [tableViewController loadViewIfNeeded];
     [tableViewController.dataSource whenLoaded:^{
+        NSLog(@"called when loaded");
         [expectation fulfill];
     }];
-    [self waitForExpectationsWithTimeout:0.8 handler:nil];
+    [tableViewController.dataSource setNeedsLoadContent];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 -(void)waitForNavigation{

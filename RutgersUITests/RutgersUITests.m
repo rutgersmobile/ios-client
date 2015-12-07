@@ -38,6 +38,7 @@
     //Open app to bus channel
     XCUIApplication *app = [[XCUIApplication alloc] init];
     XCUIElementQuery *tablesQuery = app.tables;
+    
     [tablesQuery.staticTexts[@"Bus"] tap];
     
     //Change to routes tab
@@ -100,6 +101,7 @@
 -(void)testPlaces{
     XCUIApplication *app = [[XCUIApplication alloc] init];
     XCUIElementQuery *tablesQuery = app.tables;
+    
     [tablesQuery.staticTexts[@"Places"] tap];
     
     [tablesQuery.searchFields[@"Search All Places"] tap];
@@ -118,9 +120,12 @@
     
     XCUIApplication *app = [[XCUIApplication alloc] init];
     XCUIElementQuery *tablesQuery = app.tables;
+    
     [tablesQuery.staticTexts[@"Scarlet Knights"] tap];
     [tablesQuery.staticTexts[@"Athletics Schedules"] tap];
+    
     [tablesQuery.staticTexts[@"Basketball - Men"] tap];
+    
     [[[[app.navigationBars[@"Basketball - Men"] childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Back"] elementBoundByIndex:0] tap];
     [app.navigationBars[@"Athletics Schedules"].buttons[@"Scarlet Knights"] tap];
     [tablesQuery.staticTexts[@"Directions"] tap];
@@ -132,15 +137,18 @@
     XCUIElement *gardenStateParkwaySouthboundStaticText = tablesQuery.staticTexts[@"Garden State Parkway Southbound"];
     [gardenStateParkwaySouthboundStaticText tap];
     [gardenStateParkwaySouthboundStaticText tap];
+    
     [app.navigationBars[@"Directions"].buttons[@"Scarlet Knights"] tap];
     [[[[[app.windows containingType:XCUIElementTypeImage identifier:@"bg"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther].element.tables.staticTexts[@"News"] tap];
     [tablesQuery.staticTexts[@"Baseball"] tap];
+    
     [app.navigationBars[@"Baseball"].buttons[@"News"] tap];
     [app.navigationBars[@"News"].buttons[@"Scarlet Knights"] tap];
+    
     [tablesQuery.staticTexts[@"Rutgers Bag Policy"] tap];
     [app.navigationBars[@"Rutgers Bag Policy"].buttons[@"Scarlet Knights"] tap];
-    [tablesQuery.staticTexts[@"Stadium Parking Lots"] tap];
     
+    [tablesQuery.staticTexts[@"Stadium Parking Lots"] tap];
     XCUIElement *stadiumLotsStaticText = tablesQuery.staticTexts[@"Stadium Lots"];
     [stadiumLotsStaticText tap];
     [stadiumLotsStaticText tap];
@@ -148,6 +156,7 @@
     XCUIElement *gameDayCashParkingLotsStaticText = tablesQuery.staticTexts[@"Game Day Cash Parking Lots"];
     [gameDayCashParkingLotsStaticText tap];
     [gameDayCashParkingLotsStaticText tap];
+    
     [[[[app.navigationBars[@"Stadium Parking Lots"] childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Back"] elementBoundByIndex:0] tap];
     [tablesQuery.staticTexts[@"Parking FAQ"] tap];
     
@@ -159,6 +168,28 @@
     [iDoNotHaveAParkingPassWhereCanIParkStaticText tap];
     [iDoNotHaveAParkingPassWhereCanIParkStaticText tap];
     [app.navigationBars[@"Parking FAQ"].buttons[@"Scarlet Knights"] tap];
+
+}
+
+-(void)testScheduleOfClasses{
+    
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    XCUIElementQuery *tablesQuery = app.tables;
+    [tablesQuery.staticTexts[@"Schedule of Classes"] tap];
+    [tablesQuery.staticTexts[@"Accounting (010)"] tap];
+    [tablesQuery.staticTexts[@"272: Intro Financial Acct"] tap];
+    [app.navigationBars[@"Intro Financial Acct"].buttons[@"010: Accounting"] tap];
+    [app.navigationBars[@"010: Accounting"].buttons[@"Fall 2015 NB U"] tap];
+    
+    XCUIElement *searchSubjectsAndCoursesSearchField = app.searchFields[@"Search Subjects and Courses"];
+    [searchSubjectsAndCoursesSearchField tap];
+    [searchSubjectsAndCoursesSearchField typeText:@"compu"];
+    [app.tables[@"Search results"].staticTexts[@"Computer Science (198)"] tap];
+    [[[[app.navigationBars[@"198: Computer Science"] childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Back"] elementBoundByIndex:0] tap];
+    [app.tables[@"Search results"].staticTexts[@"Electrical and Compu. (332)"] tap];
+    [[[[app.navigationBars[@"332: Electrical And Compu."] childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Back"] elementBoundByIndex:0] tap];
+    [app.tables[@"Search results"].staticTexts[@"Computer Science: Intro Computer Sci (198:111)"] tap];
+    [[[[app.navigationBars[@"Intro Computer Sci"] childrenMatchingType:XCUIElementTypeButton] matchingIdentifier:@"Back"] elementBoundByIndex:0] tap];
 
 }
 
