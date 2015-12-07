@@ -17,6 +17,12 @@
 @end
 
 @implementation RUInfoTableViewController
++(NSString *)channelHandle{
+    return @"ruinfo";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
@@ -53,7 +59,7 @@
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
     NSString *type = item[@"type"];
-    return ![type isEqualToString:@"text"];
+    return [RUInfoDataSource buttonTypeEnabled:type];
 }
 
 /**
