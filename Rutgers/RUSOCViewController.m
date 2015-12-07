@@ -15,6 +15,7 @@
 #import "RUSOCDataLoadingManager.h"
 #import "DataTuple.h"
 #import "TableViewController_Private.h"
+#import "RUChannelManager.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate, RUSOCOptionsDelegate>
 @property (nonatomic) UIBarButtonItem *optionsButton;
@@ -22,6 +23,13 @@
 @end
 
 @implementation RUSOCViewController
++(NSString *)channelHandle{
+    return @"soc";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStylePlain];
 }
@@ -36,13 +44,6 @@
     self.dataSource = [[RUSOCDataSource alloc] init];
     self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search Subjects and Courses";
-    
-    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
-        if (!error) {
-            self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
-            [self setInterfaceEnabled:YES animated:YES];
-        }
-    }];
     
     [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
     
@@ -81,7 +82,6 @@
         self.optionsDidChange = NO;
     }
 }
- 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     DataTuple *item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];

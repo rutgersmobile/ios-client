@@ -152,7 +152,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *, NSError *))handler{
-    [self performWhenLoaded:^(NSError *error) {
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -170,7 +170,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *, NSError *))handler{
-    [self performWhenLoaded:^(NSError *error) {
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -188,7 +188,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode completion:(void (^)(NSDictionary *, NSError *))handler{
-    [self performWhenLoaded:^(NSError *error) {
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -206,7 +206,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSearchIndexWithCompletion:(void (^)(NSDictionary *, NSError *))handler{
-    [self performWhenLoaded:^(NSError *error) {
+    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {

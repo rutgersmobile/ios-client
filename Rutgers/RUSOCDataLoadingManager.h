@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RUDataLoadingManager.h"
+//#import "RUDataLoadingManager.h"
 
-@interface RUSOCDataLoadingManager : RUDataLoadingManager
+@interface RUSOCDataLoadingManager : NSObject
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *subjects, NSError *error))handler;
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *courses, NSError *error))handler;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "TupleDataSource.h"
+#import "ComposedDataSource.h"
 
-@interface RUSOCDataSource : TupleDataSource
+@interface RUSOCDataSource : ComposedDataSource
 
 @end
