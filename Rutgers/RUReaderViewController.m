@@ -17,6 +17,13 @@
 @end
 
 @implementation RUReaderViewController
++(NSString *)channelHandle{
+    return @"Reader";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }

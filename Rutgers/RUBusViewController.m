@@ -12,12 +12,19 @@
 #import "RUBusDataLoadingManager.h"
 #import "RUPredictionsViewController.h"
 #import "TableViewController_Private.h"
+#import "RUChannelManager.h"
 
 @interface RUBusViewController ()
 
 @end
 
 @implementation RUBusViewController
++(NSString *)channelHandle{
+    return @"bus";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStylePlain];

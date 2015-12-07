@@ -8,12 +8,20 @@
 
 #import "RUSplashViewController.h"
 #import <PureLayout.h>
+#import "RUChannelManager.h"
 
 @interface RUSplashViewController ()
 @property (nonatomic) UIViewController *childVC;
 @end
 
 @implementation RUSplashViewController
++(NSString *)channelHandle{
+    return @"splash";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] init];
 }

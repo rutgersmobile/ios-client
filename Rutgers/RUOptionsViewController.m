@@ -11,12 +11,19 @@
 #import "RULegalViewController.h"
 #import "AlertDataSource.h"
 #import "RUAppDelegate.h"
+#import "RUChannelManager.h"
 
 @interface RUOptionsViewController ()
 @property NSDictionary *channel;
 @end
 
 @implementation RUOptionsViewController
++(NSString *)channelHandle{
+    return @"options";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];

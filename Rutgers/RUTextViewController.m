@@ -11,6 +11,7 @@
 #import <NSString+HTML.h>
 #import "NSAttributedString+FromHTML.h"
 #import <PureLayout.h>
+#import "RUChannelManager.h"
 
 @interface RUTextViewController ()
 @property (nonatomic) NSString *data;
@@ -18,6 +19,13 @@
 @end
 
 @implementation RUTextViewController
++(NSString *)channelHandle{
+    return @"text";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[RUTextViewController alloc] initWithChannel:channel];
 }

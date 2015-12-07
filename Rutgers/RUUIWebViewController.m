@@ -14,6 +14,9 @@
 @end
 
 @implementation RUUIWebViewController
++(NSString *)channelHandle{
+    return @"www";
+}
 +(id)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }

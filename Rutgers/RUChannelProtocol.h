@@ -14,9 +14,13 @@
  *  The main initialization method of each channel
  *
  *  @param channel The dictionary containing the channel description
- *  @abstract The channel manager uses the tag in the channel description to locate the proper class, and then sends this message to that class
+ *  @abstract The channel manager uses the channel handle to locate the proper class, and then sends this message to that class
  *
  *  @return The initialized view controller
  */
 +(id)channelWithConfiguration:(NSDictionary *)channel;
++(NSString *)channelHandle;
+
+@optional
++(NSArray *)subViewControllersWithPathComponents:(NSArray *)pathComponents;
 @end

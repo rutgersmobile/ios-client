@@ -16,6 +16,13 @@
 @end
 
 @implementation DynamicTableViewController
++(NSString *)channelHandle{
+    return @"dtable";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }

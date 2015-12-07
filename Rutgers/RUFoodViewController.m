@@ -19,6 +19,13 @@
 @end
 
 @implementation RUFoodViewController
++(NSString *)channelHandle{
+    return @"food";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }

@@ -7,6 +7,7 @@
 //
 
 #import "RUMapsChannelViewController.h"
+#import "RUChannelManager.h"
 
 NSString *const mapsRecentCameraKey = @"mapsRecentCameraKey";
 
@@ -15,6 +16,13 @@ NSString *const mapsRecentCameraKey = @"mapsRecentCameraKey";
 @end
 
 @implementation RUMapsChannelViewController
++(NSString *)channelHandle{
+    return @"maps";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] init];
 }

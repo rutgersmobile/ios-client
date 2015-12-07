@@ -37,6 +37,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return manager;
 }
 
+#pragma mark - Channel Information Methods
 @synthesize otherChannels = _otherChannels;
 -(NSArray *)otherChannels{
     if (!_otherChannels) {
@@ -114,6 +115,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
 }
 
+#pragma mark Channel manager loading
 -(NSString *)documentPath{
     NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     return [documentsDir stringByAppendingPathComponent:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"]];
@@ -148,33 +150,27 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 -(Class)classForViewTag:(NSString *)viewTag{
-    static NSDictionary *viewTagsToClassNameMapping = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        viewTagsToClassNameMapping = @{
-                                       @"bus" : @"RUBusViewController",
-                                       @"faqview" : @"FAQViewController",
-                                       @"dtable" : @"DynamicTableViewController",
-                                       @"food" : @"RUFoodViewController",
-                                       @"places" : @"RUPlacesViewController",
-                                       @"ruinfo" : @"RUInfoTableViewController",
-                                       @"soc" : @"RUSOCViewController",
-                                       @"athletics" : @"RUSportsViewController",
-                                       @"emergency" : @"RUEmergencyViewController",
-                                       @"Reader" :  @"RUReaderViewController",
-                                       @"recreation" : @"RURecreationViewController",
-                                       @"www" : @"RUWebViewController",
-                                       @"text" : @"RUTextViewController",
-                                       @"feedback" : @"RUFeedbackViewController",
-                                       @"options" : @"RUOptionsViewController",
-                                       @"splash" : @"RUSplashViewController",
-                                       @"maps" : @"RUMapsChannelViewController"
-                                       };
-    });
-    return NSClassFromString(viewTagsToClassNameMapping[viewTag]);
+    NSString *className = [self viewTagsToClassNameMapping][viewTag];
+    return NSClassFromString(className);
 }
 
--(UIViewController *)viewControllerForChannel:(NSDictionary *)channel{
+-(NSMutableDictionary *)viewTagsToClassNameMapping{
+    static NSMutableDictionary *viewTagsToClassNameMapping = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        viewTagsToClassNameMapping = [NSMutableDictionary dictionary];
+    });
+    return viewTagsToClassNameMapping;
+}
+
+-(void)registerClass:(Class)class{
+    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) return;
+    NSString *handle = [class performSelector:@selector(channelHandle)];
+    [self viewTagsToClassNameMapping][handle] = NSStringFromClass(class);
+}
+
+-(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];
     });
@@ -184,7 +180,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     Class class = [self classForViewTag:view];
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
-    UIViewController *vc = [class channelWithConfiguration:channel];
+    
+    UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
     vc.title = [channel channelTitle];
     return vc;
 
@@ -193,7 +190,18 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 -(NSArray *)viewControllersForURL:(NSURL *)url{
     NSMutableArray *components = [url.absoluteString.pathComponents mutableCopy];
     [components removeObjectAtIndex:0];
-    return @[[self viewControllerForChannel:[self channelWithHandle:components.firstObject]]];
+   
+    NSString *handle = components.firstObject;
+    [components removeObjectAtIndex:0];
+    
+    UIViewController <RUChannelProtocol>*rootVC = [self viewControllerForChannel:[self channelWithHandle:handle]];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithObject:rootVC];
+    if ([rootVC respondsToSelector:@selector(subViewControllersWithPathComponents:)]) {
+        NSArray *subVCs = [rootVC performSelector:@selector(subViewControllersWithPathComponents:) withObject:components];
+        if (subVCs) [viewControllers addObjectsFromArray:subVCs];
+    }
+    
+    return viewControllers;
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{

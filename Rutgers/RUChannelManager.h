@@ -9,12 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RUDataLoadingManager.h"
+#import "RUChannelProtocol.h"
 
 extern NSString *const ChannelManagerDidUpdateChannelsKey;
 
 @interface RUChannelManager : RUDataLoadingManager
 +(RUChannelManager *)sharedInstance;
--(UIViewController *)viewControllerForChannel:(NSDictionary *)channel;
+
+-(void)registerClass:(Class)class;
+
+-(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel;
 -(NSArray *)viewControllersForURL:(NSURL *)url;
 
 @property (readonly) NSArray *contentChannels;

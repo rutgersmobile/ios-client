@@ -19,6 +19,13 @@
 @end
 
 @implementation RUWebViewController
++(NSString *)channelHandle{
+    return @"www";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 //Global cache holding RUWebViewController objects
 +(NSCache *)storedChannels{
     static NSCache * storedChannels = nil;

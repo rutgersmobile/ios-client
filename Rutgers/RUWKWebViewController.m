@@ -98,6 +98,9 @@
 @end
 
 @implementation RUWKWebViewController
++(NSString *)channelHandle{
+    return @"www";
+}
 +(id)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }

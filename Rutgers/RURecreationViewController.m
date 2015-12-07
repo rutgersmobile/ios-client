@@ -10,12 +10,20 @@
 #import "RURecCenterViewController.h"
 #import "RURecreationDataSource.h"
 #import "DataTuple.h"
+#import "RUChannelManager.h"
 
 @interface RURecreationViewController ()
 @property (nonatomic) NSDictionary *recData;
 @end
 
 @implementation RURecreationViewController
++(NSString *)channelHandle{
+    return @"recreation";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }

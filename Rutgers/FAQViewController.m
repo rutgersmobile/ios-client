@@ -17,6 +17,12 @@
 @end
 
 @implementation FAQViewController
++(NSString *)channelHandle{
+    return @"faqview";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];

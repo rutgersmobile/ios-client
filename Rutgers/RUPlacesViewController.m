@@ -14,12 +14,20 @@
 #import "RULocationManager.h"
 #import "RUPlace.h"
 #import "TableViewController_Private.h"
+#import "RUChannelManager.h"
 
 @interface RUPlacesViewController ()
 
 @end
 
 @implementation RUPlacesViewController
++(NSString *)channelHandle{
+    return @"places";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
+
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }

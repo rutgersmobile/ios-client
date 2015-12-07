@@ -18,6 +18,12 @@
 @end
 
 @implementation RUFeedbackViewController
++(NSString *)channelHandle{
+    return @"feedback";
+}
++(void)load{
+    [[RUChannelManager sharedInstance] registerClass:[self class]];
+}
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
