@@ -22,7 +22,7 @@ extern NSString *const ChannelManagerDidUpdateChannelsKey;
 -(NSArray *)viewControllersForURL:(NSURL *)url;
 
 @property (readonly) NSArray *contentChannels;
-//-(NSDictionary *)channelWithHandle:(NSString *)handle;
+-(NSDictionary *)channelWithHandle:(NSString *)handle;
 @property NSDictionary *lastChannel;
 
 @property (readonly) NSArray *otherChannels;
