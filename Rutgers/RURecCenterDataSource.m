@@ -57,7 +57,6 @@
             
             descriptionDataSource.title = @"Description";
             [self addDataSource:descriptionDataSource];
-    
         }
     }
     return self;

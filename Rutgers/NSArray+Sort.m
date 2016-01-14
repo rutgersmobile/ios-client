@@ -18,7 +18,7 @@
 }
 
 -(NSArray *)sortByKeyPath:(NSString *)keyPath beginsWith:(NSString *)string{
-    NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"%k beginswith[cd] %@",@"self",string];
+    NSPredicate *beginsWithPredicate = [NSPredicate predicateWithFormat:@"%K beginswith[cd] %@",@"self",string];
     return [self sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSString *valueOne = [obj1 valueForKeyPath:keyPath];
         NSString *valueTwo = [obj2 valueForKeyPath:keyPath];
@@ -35,6 +35,5 @@
         }
     }];
 }
-
 
 @end

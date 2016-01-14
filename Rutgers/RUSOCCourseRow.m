@@ -8,6 +8,7 @@
 
 #import "RUSOCCourseRow.h"
 #import "RUSOCCourseCell.h"
+
 @interface RUSOCCourseRow ()
 
 @end
