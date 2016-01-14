@@ -13,6 +13,7 @@
 #import "RUPlaceDetailDataSource.h"
 #import "RUBusMultiStop.h"
 #import "RUPlace.h"
+#import "NSURL+RUAdditions.h"
 
 @interface RUPlaceDetailViewController ()
 @property (nonatomic) RUPlace *place;
@@ -42,6 +43,14 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [(RUPlaceDetailDataSource *)self.dataSource stopUpdates];
     [super viewWillDisappear:animated];
+}
+
+
+-(NSURL *)sharingURL{
+    return [NSURL rutgersUrlWithPathComponents:@[
+                                                 @"places",
+                                                 self.place.uniqueID
+                                                 ]];
 }
 
 

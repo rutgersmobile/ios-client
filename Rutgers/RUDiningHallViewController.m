@@ -10,6 +10,7 @@
 #import "RUDiningHallDataSource.h"
 #import "NSDate+EpochTime.h"
 #import "NSString+WordsInString.h"
+#import "NSURL+RUAdditions.h"
 
 @interface RUDiningHallViewController ()
 @property (nonatomic) NSDictionary *diningHall;
@@ -27,12 +28,18 @@
         dateFormatter.dateFormat = @"EEE MMM dd";
         
         NSString *dateString = [dateFormatter stringFromDate:date];
-    
-        NSString *diningHallName = [diningHall[@"location_name"] wordsInString].firstObject;
         
-        self.title = [NSString stringWithFormat:@"%@ (%@)", diningHallName, dateString];
+        self.title = [NSString stringWithFormat:@"%@ (%@)", [self diningHallShortName], dateString];
     }
     return self;
+}
+
+-(NSString *)diningHallShortName{
+    return [self.diningHall[@"location_name"] wordsInString].firstObject;
+}
+
+-(NSURL *)sharingURL{
+    return [NSURL rutgersUrlWithPathComponents:@[@"food", [self diningHallShortName]]];
 }
 
 -(void)viewDidLoad{

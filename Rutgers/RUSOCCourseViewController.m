@@ -12,6 +12,7 @@
 #import "RUSOCDataLoadingManager.h"
 #import "DataTuple.h"
 #import "RUChannelManager.h"
+#import "NSURL+RUAdditions.h"
 
 @interface RUSOCCourseViewController ()
 @property (nonatomic) NSDictionary *course;
@@ -33,15 +34,25 @@
     // Do any additional setup after loading the view.
     self.tableView.separatorColor = [[UIColor blackColor] colorWithAlphaComponent:0.17];
     self.dataSource = [[RUSOCCourseDataSource alloc] initWithCourse:self.course];
+    self.pullsToRefresh = YES;
 }
 
--(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
-    if (!self.refreshControl && !error) {
-        self.refreshControl = [[UIRefreshControl alloc] init];
-        [self.refreshControl addTarget:self.dataSource action:@selector(setNeedsLoadContent) forControlEvents:UIControlEventValueChanged];
-    }
-    [self.refreshControl endRefreshing];
+-(NSURL *)sharingURL{
+    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
+ 
+    NSString *subjectCode = self.course[@"subjectCode"];
+    if (!subjectCode) subjectCode = self.course[@"subject"];
+    
+    return [NSURL rutgersUrlWithPathComponents:@[
+                                                 @"soc",
+                                                 manager.semester[@"tag"],
+                                                 manager.campus[@"tag"],
+                                                 manager.level[@"tag"],
+                                                 subjectCode,
+                                                 self.course[@"courseNumber"]
+                                                 ]];
 }
+
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
