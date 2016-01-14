@@ -19,6 +19,7 @@
 #import "ComposedDataSource.h"
 #import <AFNetworkReachabilityManager.h>
 #import "RUAnalyticsManager.h"
+#import "SearchDataSource.h"
 
 @interface DataSource () <AAPLStateMachineDelegate>
 @property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
@@ -74,7 +75,7 @@
 }
 
 - (BOOL)isSearchDataSource{
-    return [self conformsToProtocol:NSProtocolFromString(@"SearchDataSource")] ? YES : NO;
+    return [self conformsToProtocol:@protocol(SearchDataSource)] ? YES : NO;
 }
 
 -(NSString *)description{
