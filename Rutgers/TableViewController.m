@@ -17,7 +17,7 @@
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8
 
-@interface TableViewController () <UISearchResultsUpdating, UISearchDisplayDelegate, UISearchControllerDelegate>
+@interface TableViewController () <UISearchResultsUpdating, UISearchDisplayDelegate, UISearchControllerDelegate, UIPopoverControllerDelegate>
 @property (nonatomic) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic) UISearchController *searchController;
 @property (nonatomic) TableViewController *searchResultsController;
@@ -28,10 +28,13 @@
 @property (nonatomic) NSString *lastSearchQuery;
 
 @property (nonatomic) CGFloat lastValidWidth;
+
+@property (nonatomic) UIBarButtonItem *shareButton;
+@property (nonatomic) UIPopoverController *sharingPopoverController;
 @end
 
 @implementation TableViewController
-
+#pragma mark - Lifecycle
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
@@ -50,6 +53,12 @@
         self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     }
     #endif
+    
+    if (self.sharingURL) {
+        UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonTapped:)];
+        self.shareButton = shareButton;
+        self.navigationItem.rightBarButtonItem = shareButton;
+    }
 
 }
 
@@ -86,6 +95,11 @@
     }
 }
 
+-(void)viewWillLayoutSubviews{
+    CGFloat width = CGRectGetWidth(self.view.bounds);
+    if (width != self.lastValidWidth) [self viewDidChangeWidth];
+}
+
 -(void)dealloc{
     if (self.isViewLoaded) {
         [self resetDataSource:self.dataSource];
@@ -95,30 +109,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
--(void)resetDataSource:(DataSource *)dataSource{
-    dataSource.delegate = nil;
-    [dataSource resetContent];
-    UITableView *tableView = [self tableViewForDataSource:dataSource];
-    tableView.dataSource = nil;
+-(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
+    NSArray *selectedIndexPaths = [tableView indexPathsForSelectedRows];
+    [tableView reloadData];
+    [tableView selectRowsAtIndexPaths:selectedIndexPaths animated:NO];
 }
 
--(void)viewWillLayoutSubviews{
-    CGFloat width = CGRectGetWidth(self.view.bounds);
-    if (width != self.lastValidWidth) [self viewDidChangeWidth];
-}
-
--(void)viewDidChangeWidth{
-    self.lastValidWidth = CGRectGetWidth(self.view.bounds);
-    [self invalidateCachedHeights];
-}
-
--(void)invalidateCachedHeightsIfNeeded{
-    CGFloat width = CGRectGetWidth(self.view.bounds);
-    if (width != self.lastValidWidth)  {
-        [self invalidateCachedHeights];
-    }
-}
-
+#pragma mark - Row Height Cache
 -(void)invalidateCachedHeights{
     [self invalidateCachedHeightsForTableView:self.tableView];
     [self invalidateCachedHeightsForTableView:self.searchTableView];
@@ -141,11 +138,52 @@
     [self reloadTablePreservingSelectionState:self.searchTableView];
 }
 
--(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
-    NSArray *selectedIndexPaths = [tableView indexPathsForSelectedRows];
-    [tableView reloadData];
-    [tableView selectRowsAtIndexPaths:selectedIndexPaths animated:NO];
+-(void)viewDidChangeWidth{
+    self.lastValidWidth = CGRectGetWidth(self.view.bounds);
+    [self invalidateCachedHeights];
 }
+
+-(void)invalidateCachedHeightsIfNeeded{
+    CGFloat width = CGRectGetWidth(self.view.bounds);
+    if (width != self.lastValidWidth)  {
+        [self invalidateCachedHeights];
+    }
+}
+
+#pragma mark - Deep Linking
+-(NSURL *)sharingURL{
+    return nil;
+}
+
+- (void)actionButtonTapped:(id)sender {
+    NSURL *url = self.sharingURL;
+    if (!url) return;
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        
+        //If we're on an iPhone, we can just present it modally
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
+    else
+    {
+        //UIPopoverController requires we retain our own instance of it.
+        //So if we somehow have a prior instance, clean it out
+        if (self.sharingPopoverController)
+        {
+            [self.sharingPopoverController dismissPopoverAnimated:NO];
+            self.sharingPopoverController = nil;
+        }
+        
+        //Create the sharing popover controller
+        self.sharingPopoverController = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
+        self.sharingPopoverController.delegate = self;
+        [self.sharingPopoverController presentPopoverFromBarButtonItem:self.shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
 
 #pragma mark - Data Source
 -(void)setDataSource:(DataSource *)dataSource{
@@ -153,6 +191,24 @@
     _dataSource = dataSource;
     dataSource.delegate = self;
     [self setupTableView:self.tableView withDataSource:dataSource];
+}
+
+-(void)resetDataSource:(DataSource *)dataSource{
+    dataSource.delegate = nil;
+    UITableView *tableView = [self tableViewForDataSource:dataSource];
+    tableView.dataSource = nil;
+    [dataSource resetContent];
+}
+
+-(DataSource *)dataSourceForTableView:(UITableView *)tableView{
+    if ([tableView.dataSource isKindOfClass:[DataSource class]]) return (DataSource *)tableView.dataSource;
+    return nil;
+}
+
+-(UITableView *)tableViewForDataSource:(DataSource *)dataSource{
+    if (dataSource == self.dataSource) return self.tableView;
+    else if (dataSource == self.searchDataSource) return self.searchTableView;
+    return nil;
 }
 
 #pragma mark - Search Data Source
@@ -226,7 +282,8 @@
     if (self.searchController) return self.searchResultsController.tableView;
     else return self.mySearchDisplayController.searchResultsTableView;
 }
- 
+
+#pragma Mark - Searching
  #pragma mark - SearchDisplayController Delegate
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
     [self updateTimersForKeyPress];
@@ -327,17 +384,6 @@
              @"description" : [[[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath] description]? : @"null"};
 }
 
--(DataSource *)dataSourceForTableView:(UITableView *)tableView{
-    if ([tableView.dataSource isKindOfClass:[DataSource class]]) return (DataSource *)tableView.dataSource;
-    return nil;
-}
-
--(UITableView *)tableViewForDataSource:(DataSource *)dataSource{
-    if (dataSource == self.dataSource) return self.tableView;
-    else if (dataSource == self.searchDataSource) return self.searchTableView;
-    return nil;
-}
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [[self dataSourceForTableView:tableView] tableView:tableView heightForRowAtIndexPath:indexPath];
 }
@@ -352,7 +398,7 @@
     return YES;
 }
 
-#pragma mark - Data Source notifications
+#pragma mark - Data Source Delegate
 -(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimationDirection)direction{
     switch (direction) {
         case DataSourceAnimationDirectionNone:
@@ -430,8 +476,17 @@
     
 }
 
+
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
-    
+    if (!self.pullsToRefresh) return;
+        
+    if (!self.refreshControl && !error) {
+        //After first load, add the refresh control to let the user pull to refresh
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self.dataSource action:@selector(setNeedsLoadContent) forControlEvents:UIControlEventValueChanged];
+    }
+    //If the refresh control was refreshing, stop it
+    [self.refreshControl endRefreshing];
 }
 
 @end

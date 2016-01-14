@@ -17,9 +17,14 @@
  */
 @interface TableViewController : UITableViewController <UITableViewDelegate, DataSourceDelegate>
 @property (nonatomic) DataSource *dataSource;
-@property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 
+@property (nonatomic) DataSource<SearchDataSource> *searchDataSource;
 @property (nonatomic, readonly, strong) UITableView *searchTableView;
+
+@property (nonatomic, readonly) NSURL *sharingURL;
+
+@property (nonatomic) BOOL pullsToRefresh;
+
 /**
  *  Whether or not a row should be highlighted
  *  This base implementation will return NO if the row is a placeholder, which you cant tap on
