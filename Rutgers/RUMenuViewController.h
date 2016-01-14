@@ -11,12 +11,11 @@
 
 @class RUMenuViewController;
 
-/*
 @protocol RUMenuDelegate <NSObject>
 @required
 -(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel;
 @end
-*/
+
 @interface RUMenuViewController : TableViewController
-//@property id <RUMenuDelegate> delegate;
+@property id <RUMenuDelegate> delegate;
 @end

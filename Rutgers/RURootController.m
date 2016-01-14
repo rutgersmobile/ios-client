@@ -17,7 +17,7 @@
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
 
-@interface RURootController () //<RUMenuDelegate>
+@interface RURootController () <RUMenuDelegate>
 @property (nonatomic) RUMenuViewController *menuViewController;
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @end
@@ -70,7 +70,7 @@
     if (!_menuViewController) {
         _menuViewController = [[RUMenuViewController alloc] init];
         _menuViewController.title = @"Menu";
-        //_menuViewController.delegate = self;
+        _menuViewController.delegate = self;
     }
     return _menuViewController;
 }
@@ -131,6 +131,8 @@
     self.containerViewController.containedViewController = viewController;
 }
 
+
+
 -(void)openDrawer{
     [self.containerViewController openDrawer];
 }
@@ -145,21 +147,12 @@
     return [[channel channelView] isEqualToString:@"splash"];
 }
 
-@end
 
-@implementation UINavigationController (PathComponents)
--(NSURL *)deepLinkingURL {
-    NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = @"rutgers:";
-    
-    NSMutableArray *viewControllers = [self.viewControllers mutableCopy];
-    UIViewController <RUChannelProtocol>* vc = viewControllers.firstObject;
-    [viewControllers removeObjectAtIndex:0];
-    if (![vc conformsToProtocol:@protocol(RUChannelProtocol)]) return nil;
-    
-    NSString *channelHandle = [vc.class performSelector:@selector(channelHandle)];
-    components.host = channelHandle;
-    
-    return components.URL;
+#pragma mark Menu Delegate
+
+-(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
+    if (![channel isEqualToDictionary:self.currentChannel]) [self setCenterChannel:channel];
+    [self.containerViewController closeDrawer];
 }
+
 @end

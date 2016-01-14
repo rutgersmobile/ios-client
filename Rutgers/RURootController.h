@@ -19,7 +19,3 @@
 @property (nonatomic) UIViewController <RUContainerController> *containerViewController;
 @property (nonatomic) NSDictionary *currentChannel;
 @end
-
-@interface UINavigationController (PathComponents)
--(NSURL *)deepLinkingURL;
-@end
