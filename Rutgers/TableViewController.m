@@ -13,6 +13,7 @@
 #import "AAPLPlaceholderView.h"
 #import "RUAnalyticsManager.h"
 #import "RUAppearance.h"
+#import "RUFavoriteActivity.h"
 
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8
@@ -155,11 +156,21 @@
     return nil;
 }
 
+-(NSString *)handle{
+    [NSException raise:@"Sharing url but no handle" format:@"Class %@",NSStringFromClass([self class])];
+    return nil;
+}
+
 - (void)actionButtonTapped:(id)sender {
     NSURL *url = self.sharingURL;
     if (!url) return;
     
-    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
+    UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.title handle:self.handle];
+    
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:@[favoriteActivity]];
+    activityViewController.excludedActivityTypes = @[
+                                                     UIActivityTypePrint
+                                                     ];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {

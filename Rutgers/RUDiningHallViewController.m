@@ -42,6 +42,10 @@
     return [NSURL rutgersUrlWithPathComponents:@[@"food", [self diningHallShortName]]];
 }
 
+-(NSString *)handle{
+    return @"food";
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
     self.dataSource = [[RUDiningHallDataSource alloc] initWithDiningHall:self.diningHall];

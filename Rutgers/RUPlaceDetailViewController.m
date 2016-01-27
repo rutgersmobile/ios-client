@@ -53,6 +53,9 @@
                                                  ]];
 }
 
+-(NSString *)handle{
+    return @"places";
+}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
