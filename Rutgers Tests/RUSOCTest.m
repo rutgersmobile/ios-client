@@ -140,6 +140,11 @@
 -(void)testLoadingSearchIndex{
     RUSOCSearchIndex *searchIndex = [[RUSOCSearchIndex alloc] init];
     [self waitForIndexLoad:searchIndex];
+    
+    assert(searchIndex.ids.count);
+    assert(searchIndex.subjects.count);
+    assert(searchIndex.courses.count);
+    assert(searchIndex.abbreviations.count);
 }
 
 -(void)testQuery1{
@@ -147,7 +152,10 @@
     
     [self waitForIndexLoad:searchIndex];
     [self measureBlock:^{
-        [self performSearchQuery:@"comp sci" onIndex:searchIndex];
+        [self performSearchQuery:@"comp sci" onIndex:searchIndex completion:^(RUSOCSearchOperation *operation) {
+            assert(operation.subjects.count);
+            assert(operation.courses.count);
+        }];
     }];
 }
 
@@ -155,7 +163,9 @@
     RUSOCSearchIndex *searchIndex = [[RUSOCSearchIndex alloc] init];
     [self waitForIndexLoad:searchIndex];
     [self measureBlock:^{
-        [self performSearchQuery:@"intro" onIndex:searchIndex];
+        [self performSearchQuery:@"intro" onIndex:searchIndex completion:^(RUSOCSearchOperation *operation) {
+            assert(operation.courses.count);
+        }];
     }];
 }
 
@@ -163,7 +173,9 @@
     RUSOCSearchIndex *searchIndex = [[RUSOCSearchIndex alloc] init];
     [self waitForIndexLoad:searchIndex];
     [self measureBlock:^{
-        [self performSearchQuery:@"101" onIndex:searchIndex];
+        [self performSearchQuery:@"101" onIndex:searchIndex completion:^(RUSOCSearchOperation *operation) {
+            assert(operation.courses.count);
+        }];
     }];
 }
 
@@ -175,11 +187,13 @@
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
 }
 
--(void)performSearchQuery:(NSString *)query onIndex:(RUSOCSearchIndex *)searchIndex{
+-(void)performSearchQuery:(NSString *)query onIndex:(RUSOCSearchIndex *)searchIndex completion:(void(^)(RUSOCSearchOperation *))completionHandler{
     XCTestExpectation *searchExpectation = [self expectationWithDescription:@"searchOperationDidFinish"];
     RUSOCSearchOperation *operation = [[RUSOCSearchOperation alloc] initWithQuery:query searchIndex:searchIndex];
+    __weak typeof(operation) weakOperation = operation;
     operation.completionBlock = ^{
         [searchExpectation fulfill];
+        completionHandler(weakOperation);
     };
     [operation start];
     [self waitForExpectationsWithTimeout:10.0 handler:nil];
