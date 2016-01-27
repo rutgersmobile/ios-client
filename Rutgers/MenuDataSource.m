@@ -11,11 +11,13 @@
 #import "ChannelsDataSource.h"
 #import "RUUserInfoManager.h"
 #import "RUChannelManager.h"
+#import "RUFavoritesDataSource.h"
 
 @implementation MenuDataSource
 -(instancetype)init{
     self = [super init];
     if (self) {
+        [self addDataSource:[[RUFavoritesDataSource alloc] init]];
         [self addDataSource:[[ChannelsDataSource alloc] init]];
         [self addDataSource:[[MenuBasicDataSource alloc] initWithItems:[RUChannelManager sharedInstance].otherChannels]];
         

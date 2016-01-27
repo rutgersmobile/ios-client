@@ -7,10 +7,14 @@
 //
 
 #import "RUUserInfoManager.h"
+#import "RUFavorite.h"
 
 NSString *const userInfoManagerDidChangeInfoKey = @"userInfoManagerDidChangeInfoKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
 static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey";
+
+static NSString *const userInfoManagerFavoritesKey = @"userInfoManagerFavoritesKey";
+NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChangeFavoritesKey";
 
 @interface RUUserInfoManager () <UIActionSheetDelegate>
 @property UIActionSheet *campusActionSheet;
@@ -21,7 +25,6 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 @property (nonatomic, readonly) BOOL hasUserInformation;
 -(void)getUserInformationCompletion:(dispatch_block_t)completion;
 @end
-
 
 @implementation RUUserInfoManager
 +(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
@@ -185,5 +188,34 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window].rootViewController.view];
 }
 
++(NSArray <RUFavorite *>*)favorites{
+    NSArray *favorites = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:userInfoManagerFavoritesKey]];
+    NSMutableArray *parsedFavorites = [NSMutableArray array];
+    for (NSDictionary *favorite in favorites) {
+        [parsedFavorites addObject:[[RUFavorite alloc] initWithDictionary:favorite]];
+    }
+    return parsedFavorites;
+}
+
++(void)setFavorites:(NSArray <RUFavorite *>*)favorites{
+    NSMutableArray *serializedFavorites = [NSMutableArray array];
+    for (RUFavorite *favorite in favorites) {
+        [serializedFavorites addObject:favorite.dictionaryRepresentation];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:serializedFavorites forKey:userInfoManagerFavoritesKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeFavoritesKey object:self];
+}
+
++(void)addFavorite:(RUFavorite *)favorite{
+    NSArray *favorites = [self favorites];
+    if ([favorites containsObject:favorite]) return;
+    [self setFavorites:[favorites arrayByAddingObject:favorite]];
+}
+
++(void)removeFavorite:(RUFavorite *)favorite{
+    NSMutableArray *favorites = [[self favorites] mutableCopy];
+    [favorites removeObject:favorite];
+    [self setFavorites:favorites];
+}
 
 @end
