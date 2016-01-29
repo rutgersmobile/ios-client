@@ -53,7 +53,7 @@
     [self.channelTitleLabel autoPinEdge:ALEdgeLeft toEdge:ALEdgeRight ofView:self.channelImage withOffset:kLabelHorizontalInsets];
     [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets+3];
     [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets+3 relation:NSLayoutRelationGreaterThanOrEqual];
-    [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+    [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
 }
 
 -(void)updateFonts{
