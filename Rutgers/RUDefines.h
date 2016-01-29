@@ -27,6 +27,10 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
     return NSOrderedSame;
 };
 
+NSString *stringEscapeFunction(NSString *component) {
+    return [[component lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
 extern BOOL iPad();
 
 static NSString *const gittag = @"4.0";
@@ -39,7 +43,7 @@ typedef NS_ENUM(NSUInteger, BetaMode) {
     BetaModeProduction
 };
 
-static BetaMode const betaMode = BetaModeProduction;
+static BetaMode const betaMode = BetaModeBeta;
 
 extern BOOL isBeta();
 

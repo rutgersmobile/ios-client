@@ -7,13 +7,14 @@
 //
 
 #import "NSURL+RUAdditions.h"
+#import "RUDefines.h"
 
 @implementation NSURL (RUAdditions)
 +(NSURL *)rutgersUrlWithPathComponents:(NSArray <NSString *>*)pathComponents{
     NSMutableString *string = [NSMutableString stringWithString:@"rutgers://"];
     
     for (NSString *component in pathComponents) {
-        NSString *escapedComponent = [[component lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *escapedComponent = stringEscapeFunction(component);
         [string appendFormat: @"%@/", escapedComponent];
     }
     

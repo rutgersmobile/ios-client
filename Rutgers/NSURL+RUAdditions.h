@@ -10,4 +10,5 @@
 
 @interface NSURL (RUAdditions)
 +(NSURL *)rutgersUrlWithPathComponents:(NSArray <NSString *>*)pathComponents;
+
 @end
