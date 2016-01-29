@@ -7,7 +7,6 @@
 //
 
 #import "RUUserInfoManager.h"
-#import "RUFavorite.h"
 
 NSString *const userInfoManagerDidChangeInfoKey = @"userInfoManagerDidChangeInfoKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
@@ -188,31 +187,22 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window].rootViewController.view];
 }
 
-+(NSArray <RUFavorite *>*)favorites{
-    NSArray *favorites = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:userInfoManagerFavoritesKey]];
-    NSMutableArray *parsedFavorites = [NSMutableArray array];
-    for (NSDictionary *favorite in favorites) {
-        [parsedFavorites addObject:[[RUFavorite alloc] initWithDictionary:favorite]];
-    }
-    return parsedFavorites;
++(NSArray <NSDictionary *>*)favorites{
+    return [[NSUserDefaults standardUserDefaults] arrayForKey:userInfoManagerFavoritesKey];
 }
 
-+(void)setFavorites:(NSArray <RUFavorite *>*)favorites{
-    NSMutableArray *serializedFavorites = [NSMutableArray array];
-    for (RUFavorite *favorite in favorites) {
-        [serializedFavorites addObject:favorite.dictionaryRepresentation];
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:serializedFavorites forKey:userInfoManagerFavoritesKey];
++(void)setFavorites:(NSArray <NSDictionary *>*)favorites{
+    [[NSUserDefaults standardUserDefaults] setObject:favorites forKey:userInfoManagerFavoritesKey];
     [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeFavoritesKey object:self];
 }
 
-+(void)addFavorite:(RUFavorite *)favorite{
-    NSArray *favorites = [self favorites];
++(void)addFavorite:(NSDictionary *)favorite{
+    NSArray *favorites = [NSArray arrayWithArray:[self favorites]];
     if ([favorites containsObject:favorite]) return;
     [self setFavorites:[favorites arrayByAddingObject:favorite]];
 }
 
-+(void)removeFavorite:(RUFavorite *)favorite{
++(void)removeFavorite:(NSDictionary *)favorite{
     NSMutableArray *favorites = [[self favorites] mutableCopy];
     [favorites removeObject:favorite];
     [self setFavorites:favorites];

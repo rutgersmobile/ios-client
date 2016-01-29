@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class RUFavorite;
-
 extern NSString *const userInfoManagerDidChangeInfoKey;
 extern NSString *const userInfoManagerDidChangeFavoritesKey;
 
@@ -27,8 +25,8 @@ extern NSString *const userInfoManagerDidChangeFavoritesKey;
 
 -(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion;
 
-+(NSArray <RUFavorite *>*)favorites;
-+(void)addFavorite:(RUFavorite *)favorite;
-+(void)removeFavorite:(RUFavorite *)favorite;
++(NSArray <NSDictionary *>*)favorites;
++(void)addFavorite:(NSDictionary *)favorite;
++(void)removeFavorite:(NSDictionary *)favorite;
 
 @end

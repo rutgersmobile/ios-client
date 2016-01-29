@@ -8,7 +8,7 @@
 
 #import "RUFavoriteActivity.h"
 #import "RUUserInfoManager.h"
-#import "RUFavorite.h"
+#import "RUChannelManager.h"
 
 @interface RUFavoriteActivity ()
 @property (nonatomic) NSString *title;
@@ -45,7 +45,12 @@
 }
 
 - (void)performActivity {
-    RUFavorite *favorite = [[RUFavorite alloc] initWithTitle:self.title handle:self.handle url:self.urlToFavorite];
+    NSDictionary *favorite = @{
+                               @"isFavorite" : @true,
+                               @"handle" : self.handle,
+                               @"url" : self.urlToFavorite.absoluteString,
+                               @"title" : self.title
+                               };
     [RUUserInfoManager addFavorite:favorite];
     [self activityDidFinish:YES];
 }
