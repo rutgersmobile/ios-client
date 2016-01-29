@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */ = {isa = PBXBuildFile; fileRef = 0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */; };
-		041502321BB0964A00D23AB8 /* RUDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 041502311BB0964A00D23AB8 /* RUDefines.m */; settings = {ASSET_TAGS = (); }; };
+		041502321BB0964A00D23AB8 /* RUDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 041502311BB0964A00D23AB8 /* RUDefines.m */; };
 		0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUBusPrediction.m */; };
 		041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */ = {isa = PBXBuildFile; fileRef = 041782A11B7BDC7F00FE75AD /* RUBusArrival.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
@@ -20,10 +20,11 @@
 		042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 042C302A1A7974E10034F89E /* LegalDataSource.m */; };
 		042C302E1A7977AA0034F89E /* legal in Resources */ = {isa = PBXBuildFile; fileRef = 042C302D1A7977AA0034F89E /* legal */; };
 		044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */; };
+		046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */; };
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
 		0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0831ADEF7D1001C30FE /* RUResponseSerializer.m */; };
 		047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 047C2EF11A646FCC00B172E5 /* RUInfo.json */; };
-		047D06D21BE1643C00DFEAA3 /* RUBusTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D06D11BE1643C00DFEAA3 /* RUBusTest.m */; settings = {ASSET_TAGS = (); }; };
+		047D06D21BE1643C00DFEAA3 /* RUBusTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D06D11BE1643C00DFEAA3 /* RUBusTest.m */; };
 		047D06DE1BE16DB600DFEAA3 /* RutgersUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 047D06DD1BE16DB600DFEAA3 /* RutgersUITests.m */; };
 		048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048506F41B6FED100064769D /* RUWKWebViewController.m */; };
 		0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0488F85B1B6C0A3500668E54 /* RUOSMDataLoadingManager.m */; };
@@ -53,6 +54,9 @@
 		04A1EFFD1A5C50B700DE0351 /* RUBusMultiStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF91A5C50B700DE0351 /* RUBusMultiStop.m */; };
 		04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */; };
 		04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1F0021A5C50D400DE0351 /* NearbyActiveStopsDataSource.m */; };
+		04A655F21C485D880024B1F0 /* RUFavoriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A655F11C485D880024B1F0 /* RUFavoriteActivity.m */; };
+		04A6561D1C502F1E0024B1F0 /* RUFavoritesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A6561C1C502F1E0024B1F0 /* RUFavoritesDataSource.m */; };
+		04A656231C5967A80024B1F0 /* NSDictionary+Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A656221C5967A80024B1F0 /* NSDictionary+Channel.m */; };
 		04ABA7EE1B5D6B38000EB43C /* RUContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04ABA7ED1B5D6B38000EB43C /* RUContainerController.m */; };
 		04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3519D32EB800A20D1E /* Splash Screen.xib */; };
 		04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04AEDE3719D32FC000A20D1E /* rutgerscopyright@2x.png */; };
@@ -60,7 +64,7 @@
 		04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AEDE3C19D349D900A20D1E /* RUSplashViewController.m */; };
 		04AF8B431A82B57400619AFC /* NSDate+EpochTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */; };
 		04B3D6581B98C8B7006D0BF6 /* SwitchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3D6571B98C8B7006D0BF6 /* SwitchDataSource.m */; };
-		04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04BA07331BD6BCA5009AB651 /* Launch.xcassets */; settings = {ASSET_TAGS = (); }; };
+		04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04BA07331BD6BCA5009AB651 /* Launch.xcassets */; };
 		04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; };
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
@@ -191,7 +195,6 @@
 		A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E132192480A60089F166 /* RUWebViewController.m */; };
 		A7E8E137192484B00089F166 /* RUTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E136192484B00089F166 /* RUTextViewController.m */; };
 		A7E8E13C192547190089F166 /* RURootController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E13B192547190089F166 /* RURootController.m */; };
-		A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E8E13E192554260089F166 /* NSDictionary+Channel.m */; };
 		A7EA3F3E197D8D4000D4BC9E /* UIView+LayoutSize.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA3F3D197D8D4000D4BC9E /* UIView+LayoutSize.m */; };
 		A7EA3F48197DA60800D4BC9E /* ExpandingTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA3F47197DA60800D4BC9E /* ExpandingTableViewDataSource.m */; };
 		A7EA4C41197D655D00E972DD /* DataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EA4C40197D655D00E972DD /* DataSource.m */; };
@@ -263,6 +266,8 @@
 		042C302A1A7974E10034F89E /* LegalDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegalDataSource.m; sourceTree = "<group>"; };
 		042C302D1A7977AA0034F89E /* legal */ = {isa = PBXFileReference; lastKnownFileType = folder; path = legal; sourceTree = "<group>"; };
 		044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		046555F01C3C581D00CAF833 /* NSURL+RUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RUAdditions.h"; sourceTree = "<group>"; };
+		046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RUAdditions.m"; sourceTree = "<group>"; };
 		0465D07F1ADEF6B9001C30FE /* RUReaderResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderResponseSerializer.h; sourceTree = "<group>"; };
 		0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderResponseSerializer.m; sourceTree = "<group>"; };
 		0465D0821ADEF7D1001C30FE /* RUResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUResponseSerializer.h; sourceTree = "<group>"; };
@@ -327,6 +332,12 @@
 		04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusDataSource.m; sourceTree = "<group>"; };
 		04A1F0011A5C50D400DE0351 /* NearbyActiveStopsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyActiveStopsDataSource.h; sourceTree = "<group>"; };
 		04A1F0021A5C50D400DE0351 /* NearbyActiveStopsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyActiveStopsDataSource.m; sourceTree = "<group>"; };
+		04A655F01C485D880024B1F0 /* RUFavoriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFavoriteActivity.h; sourceTree = "<group>"; };
+		04A655F11C485D880024B1F0 /* RUFavoriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFavoriteActivity.m; sourceTree = "<group>"; };
+		04A6561B1C502F1E0024B1F0 /* RUFavoritesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFavoritesDataSource.h; sourceTree = "<group>"; };
+		04A6561C1C502F1E0024B1F0 /* RUFavoritesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFavoritesDataSource.m; sourceTree = "<group>"; };
+		04A656211C5967A80024B1F0 /* NSDictionary+Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Channel.h"; sourceTree = "<group>"; };
+		04A656221C5967A80024B1F0 /* NSDictionary+Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Channel.m"; sourceTree = "<group>"; };
 		04ABA7ED1B5D6B38000EB43C /* RUContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUContainerController.m; sourceTree = "<group>"; };
 		04ABA7EF1B5D6B43000EB43C /* RUContainerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUContainerController.h; sourceTree = "<group>"; };
 		04AEDE3519D32EB800A20D1E /* Splash Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Splash Screen.xib"; sourceTree = "<group>"; };
@@ -595,8 +606,6 @@
 		A7E8E136192484B00089F166 /* RUTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUTextViewController.m; sourceTree = "<group>"; };
 		A7E8E13A192547190089F166 /* RURootController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RURootController.h; sourceTree = "<group>"; };
 		A7E8E13B192547190089F166 /* RURootController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RURootController.m; sourceTree = "<group>"; };
-		A7E8E13D192554260089F166 /* NSDictionary+Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Channel.h"; sourceTree = "<group>"; };
-		A7E8E13E192554260089F166 /* NSDictionary+Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Channel.m"; sourceTree = "<group>"; };
 		A7EA3F3C197D8D4000D4BC9E /* UIView+LayoutSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LayoutSize.h"; sourceTree = "<group>"; };
 		A7EA3F3D197D8D4000D4BC9E /* UIView+LayoutSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LayoutSize.m"; sourceTree = "<group>"; };
 		A7EA3F45197D9E6A00D4BC9E /* ComposedDataSource_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComposedDataSource_Private.h; sourceTree = "<group>"; };
@@ -956,7 +965,7 @@
 			name = "View controller superclasses";
 			sourceTree = "<group>";
 		};
-		A731C38D193FBC5600E9E7E0 /* objects */ = {
+		A731C38D193FBC5600E9E7E0 /* managers */ = {
 			isa = PBXGroup;
 			children = (
 				A7B970D01921603E0070A414 /* RUChannelManager.h */,
@@ -975,7 +984,7 @@
 				04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */,
 				04C937E01B31CD770055BC03 /* RUDataLoadingManager_Private.h */,
 			);
-			name = objects;
+			name = managers;
 			sourceTree = "<group>";
 		};
 		A73F6580193E549F00E26449 /* menu */ = {
@@ -1059,7 +1068,7 @@
 			isa = PBXGroup;
 			children = (
 				A7B970D3192161B10070A414 /* channels */,
-				A731C38D193FBC5600E9E7E0 /* objects */,
+				A731C38D193FBC5600E9E7E0 /* managers */,
 				A7E8E12D192464970089F166 /* Utils */,
 				A7D73B22197887FD006BC215 /* data source */,
 				A731C38C193FBC0D00E9E7E0 /* View controller superclasses */,
@@ -1070,6 +1079,8 @@
 		A75E7EB319A3C42A00782AE5 /* Data source */ = {
 			isa = PBXGroup;
 			children = (
+				04A6561B1C502F1E0024B1F0 /* RUFavoritesDataSource.h */,
+				04A6561C1C502F1E0024B1F0 /* RUFavoritesDataSource.m */,
 				A75E7EB419A3C44B00782AE5 /* MenuBasicDataSource.h */,
 				A75E7EB519A3C44B00782AE5 /* MenuBasicDataSource.m */,
 				A75E7EB719A3C6C300782AE5 /* MenuDataSource.h */,
@@ -1356,8 +1367,10 @@
 		A7DDA0181999370600F6C102 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				A7E8E13D192554260089F166 /* NSDictionary+Channel.h */,
-				A7E8E13E192554260089F166 /* NSDictionary+Channel.m */,
+				04A656211C5967A80024B1F0 /* NSDictionary+Channel.h */,
+				04A656221C5967A80024B1F0 /* NSDictionary+Channel.m */,
+				046555F01C3C581D00CAF833 /* NSURL+RUAdditions.h */,
+				046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */,
 				A7907CCF19A2B83700711DCB /* UIFont+DynamicType.h */,
 				A7907CD019A2B83700711DCB /* UIFont+DynamicType.m */,
 				A79B5DE1199C23C900DAEFC1 /* CLLocation+Centroid.h */,
@@ -1401,6 +1414,8 @@
 			children = (
 				A7DDA0181999370600F6C102 /* Categories */,
 				A75229AF196DCADC0095DD4D /* Serializer */,
+				04A655F01C485D880024B1F0 /* RUFavoriteActivity.h */,
+				04A655F11C485D880024B1F0 /* RUFavoriteActivity.m */,
 				A7B2D996190EE7DF003ABEA3 /* TTTAddressFormatter.h */,
 				A7B2D997190EE7DF003ABEA3 /* TTTAddressFormatter.m */,
 				A70C2BD1198BF498004F82D4 /* RULabel.h */,
@@ -1583,9 +1598,9 @@
 		C262EFB2188345D10035C8F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
 				041502331BB0965400D23AB8 /* RUDefines.h */,
 				041502311BB0964A00D23AB8 /* RUDefines.m */,
+				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,
 				A74669021986D8F000A5EBE0 /* RUAppDelegate.m */,
 				C262EFB3188345D10035C8F5 /* Rutgers-Info.plist */,
 				C262EFB4188345D10035C8F5 /* InfoPlist.strings */,
@@ -1807,7 +1822,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7E8E13F192554260089F166 /* NSDictionary+Channel.m in Sources */,
 				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
 				041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */,
 				A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */,
@@ -1826,6 +1840,7 @@
 				A7241A4219896A9400304436 /* RUReaderDataSource.m in Sources */,
 				A7D4B64619ABD1300087A8BC /* OptionsDataSource.m in Sources */,
 				A7DD348C1981D3CB0078023A /* PlacesBasicDataSource.m in Sources */,
+				04A655F21C485D880024B1F0 /* RUFavoriteActivity.m in Sources */,
 				A7778D8319A54897003BD8DE /* RUInfoTableSection.m in Sources */,
 				A7C92C951946108200609549 /* RUSportsData.m in Sources */,
 				0465D0841ADEF7D1001C30FE /* RUResponseSerializer.m in Sources */,
@@ -1873,6 +1888,7 @@
 				A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */,
 				A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */,
 				A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */,
+				04A656231C5967A80024B1F0 /* NSDictionary+Channel.m in Sources */,
 				04ABA7EE1B5D6B38000EB43C /* RUContainerController.m in Sources */,
 				041AE339193D2E32002ED85C /* RUAppearance.m in Sources */,
 				0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */,
@@ -1908,6 +1924,8 @@
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
 				0401C4E51B39E5680053B10B /* NSDictionary+DiningHall.m in Sources */,
+				04A6561D1C502F1E0024B1F0 /* RUFavoritesDataSource.m in Sources */,
+				046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */,
 				041502321BB0964A00D23AB8 /* RUDefines.m in Sources */,
 				04A1EFEB1A5C509600DE0351 /* AllStopsDataSource.m in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
@@ -2123,6 +2141,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Bailey (ST467WTGUT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2156,6 +2175,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Bailey (37579WX763)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2181,8 +2201,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2207,8 +2225,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2236,6 +2252,7 @@
 				047D06E41BE16DB600DFEAA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		049A4CE71B4AFC890006D1FA /* Build configuration list for PBXNativeTarget "Rutgers Tests" */ = {
 			isa = XCConfigurationList;
