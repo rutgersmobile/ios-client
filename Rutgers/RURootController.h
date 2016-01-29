@@ -17,5 +17,5 @@
 -(void)openURL:(NSURL *)url;
 
 @property (nonatomic) UIViewController <RUContainerController> *containerViewController;
-@property (nonatomic) NSDictionary *currentChannel;
+@property (nonatomic) NSDictionary *selectedItem;
 @end

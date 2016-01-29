@@ -38,7 +38,7 @@
 {
     self = [super init];
     if (self) {
-        self.currentChannel = [RUChannelManager sharedInstance].lastChannel;
+        self.selectedItem = [RUChannelManager sharedInstance].lastChannel;
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
     }
     return self;
@@ -51,8 +51,7 @@
 @synthesize containerViewController = _containerViewController;
 -(UIViewController <RUContainerController> *)containerViewController{
     if (!_containerViewController) {
-        UIViewController *centerViewController = [self topViewControllerForChannel:self.currentChannel];
-        [self placeButtonInViewController:centerViewController];
+        UIViewController *centerViewController = [self topViewControllerForChannel:self.selectedItem];
         
         Class drawerClass = [self drawerClass];
         if (![drawerClass conformsToProtocol:@protocol(RUContainerController)]) [NSException raise:NSInvalidArgumentException format:@"%@ does not conform to %@",NSStringFromClass(drawerClass), NSStringFromProtocol(@protocol(RUContainerController))];
@@ -117,21 +116,23 @@
 
     UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
     [RUAppearance applyAppearanceToNavigationController:navController];
-    vc = navController;
+    
+    [self placeButtonInViewController:navController];
 
-    return vc;
+    return navController;
 }
 
 #pragma move last channel logic into channel manager
--(void)setCenterChannel:(NSDictionary *)channel{
-    self.currentChannel = channel;
-    [RUChannelManager sharedInstance].lastChannel = channel;
-    UIViewController *viewController = [self topViewControllerForChannel:channel];
-    [self placeButtonInViewController:viewController];
-    self.containerViewController.containedViewController = viewController;
+-(void)openItem:(NSDictionary *)item {
+    self.selectedItem = item;
+    
+    if (item[@"isFavorite"]) {
+        [self openURL:[NSURL URLWithString:item[@"url"]]];
+    } else {
+        [RUChannelManager sharedInstance].lastChannel = item;
+        self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
+    }
 }
-
-
 
 -(void)openDrawer{
     [self.containerViewController openDrawer];
@@ -147,11 +148,9 @@
     return [[channel channelView] isEqualToString:@"splash"];
 }
 
-
 #pragma mark Menu Delegate
-
--(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel{
-    if (![channel isEqualToDictionary:self.currentChannel]) [self setCenterChannel:channel];
+-(void)menu:(RUMenuViewController *)menu didSelectItem:(NSDictionary *)item{
+    if (![item isEqualToDictionary:self.selectedItem]) [self openItem:item];
     [self.containerViewController closeDrawer];
 }
 

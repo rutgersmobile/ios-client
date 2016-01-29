@@ -40,7 +40,7 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 32+kLabelHorizontalInsets*2, 0, 0);
     self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
     
-    NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:[RURootController sharedInstance].currentChannel] lastObject];
+    NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:[RURootController sharedInstance].selectedItem] lastObject];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
 }
 
@@ -63,7 +63,7 @@
 -(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
     if (tableView == self.tableView) {
         [self.tableView reloadData];
-        [self.tableView selectRowsAtIndexPaths:[self.dataSource indexPathsForItem:[RURootController sharedInstance].currentChannel] animated:NO];
+        [self.tableView selectRowsAtIndexPaths:[self.dataSource indexPathsForItem:[RURootController sharedInstance].selectedItem] animated:NO];
     } else {
         [super reloadTablePreservingSelectionState:tableView];
     }
@@ -85,8 +85,8 @@
 }
 
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *channel = [self.dataSource itemAtIndexPath:indexPath];
-    [self.delegate menu:self didSelectChannel:channel];
+    NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
+    [self.delegate menu:self didSelectItem:item];
 }
 
 @end

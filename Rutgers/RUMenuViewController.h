@@ -13,7 +13,7 @@
 
 @protocol RUMenuDelegate <NSObject>
 @required
--(void)menu:(RUMenuViewController *)menu didSelectChannel:(NSDictionary *)channel;
+-(void)menu:(RUMenuViewController *)menu didSelectItem:(NSDictionary *)item;
 @end
 
 @interface RUMenuViewController : TableViewController
