@@ -51,12 +51,12 @@
 -(NSURL *)sharingURL{
     NSString *type;
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
-        type = @"bus";
+        type = @"route";
     } else if ([self.item isKindOfClass:[RUBusMultiStop class]]) {
         type = @"stop";
     }
     if (!type) return nil;
-    return [NSURL rutgersUrlWithPathComponents:@[type, [self.item title]]];
+    return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, [self.item title]]];
 }
 
 -(NSString *)handle{
