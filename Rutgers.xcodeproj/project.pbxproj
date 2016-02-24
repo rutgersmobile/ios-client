@@ -65,6 +65,7 @@
 		04AF8B431A82B57400619AFC /* NSDate+EpochTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */; };
 		04B3D6581B98C8B7006D0BF6 /* SwitchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B3D6571B98C8B7006D0BF6 /* SwitchDataSource.m */; };
 		04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04BA07331BD6BCA5009AB651 /* Launch.xcassets */; };
+		04C0D29F1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */; };
 		04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; };
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
@@ -350,6 +351,9 @@
 		04B3D6561B98C8B7006D0BF6 /* SwitchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDataSource.h; sourceTree = "<group>"; };
 		04B3D6571B98C8B7006D0BF6 /* SwitchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataSource.m; sourceTree = "<group>"; };
 		04BA07331BD6BCA5009AB651 /* Launch.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Launch.xcassets; sourceTree = "<group>"; };
+		04C0D2981C7E4B3900FEF0D7 /* Rutgers-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rutgers-Bridging-Header.h"; sourceTree = "<group>"; };
+		04C0D29D1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFavoritesDynamicHandoffViewController.h; sourceTree = "<group>"; };
+		04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFavoritesDynamicHandoffViewController.m; sourceTree = "<group>"; };
 		04C937DC1B31CB300055BC03 /* RUDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDataLoadingManager.h; sourceTree = "<group>"; };
 		04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDataLoadingManager.m; sourceTree = "<group>"; };
 		04C937E01B31CD770055BC03 /* RUDataLoadingManager_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDataLoadingManager_Private.h; sourceTree = "<group>"; };
@@ -1427,6 +1431,9 @@
 				A7177BAD199DC0CD0092126F /* RUNavigationController.m */,
 				049425001B3A07B500BE570C /* RUSplitViewController.h */,
 				049425011B3A07B500BE570C /* RUSplitViewController.m */,
+				04C0D29D1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.h */,
+				04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */,
+				04C0D2981C7E4B3900FEF0D7 /* Rutgers-Bridging-Header.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1676,6 +1683,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = RU;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Rutgers;
 				TargetAttributes = {
@@ -1980,6 +1988,7 @@
 				A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */,
 				04A1EFE81A5C509600DE0351 /* ActiveRoutesDataSource.m in Sources */,
 				A7B3F7B41954A06B00458B19 /* FAQViewController.m in Sources */,
+				04C0D29F1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m in Sources */,
 				A7DD34951981D41C0078023A /* RecentPlacesDataSource.m in Sources */,
 				A7778D7D19A54852003BD8DE /* RUInfoDataSource.m in Sources */,
 				A7B970C8192075F40070A414 /* RUMapsData.m in Sources */,
@@ -2200,12 +2209,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2213,6 +2224,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.Rutgers.css.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2224,12 +2237,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2237,6 +2252,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "edu.Rutgers.css.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};
