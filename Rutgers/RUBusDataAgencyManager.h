@@ -21,4 +21,8 @@
 -(void)fetchActiveStopsWithCompletion:(void(^)(NSArray *stops, NSError *error))handler;
 -(void)fetchActiveRoutesWithCompletion:(void(^)(NSArray *routes, NSError *error))handler;
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler;
+
+-(void)performWhenAgencyLoaded:(void(^)(NSError *error))handler;
+
+-(id)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type;
 @end

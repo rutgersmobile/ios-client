@@ -15,6 +15,7 @@
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
 #import "RUNetworkManager.h"
+#import "NSURL+RUAdditions.h"
 
 #define URLS @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"}
 #define ACTIVE_URLS @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"}
@@ -31,8 +32,8 @@
 @property NSError *activeLoadingError;
 @property NSDate *lastActiveTaskDate;
 
-@property NSDictionary *stops;
-@property NSDictionary *routes;
+@property NSDictionary<NSString *, RUBusMultiStop *>* stops;
+@property NSDictionary<NSString *, RUBusRoute *>* routes;
 
 @property NSArray *activeStops;
 @property NSArray *activeRoutes;
@@ -332,6 +333,23 @@ static NSString *const format = @"&stops=%@|null|%@";
     self.activeRoutes = [activeRoutes sortByKeyPath:@"title"];
 
     self.activeStops = [activeStops sortByKeyPath:@"title"];
+}
+
+-(id)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type {
+    if ([type isEqualToString:@"stop"]) {
+        for (RUBusMultiStop *stop in self.stops.allValues) {
+            if ([stop.title.rutgersStringEscape isEqualToString:name]) {
+                return stop;
+            }
+        }
+    } else if ([type isEqualToString:@"route"]) {
+        for (RUBusRoute *route in self.routes.allValues) {
+            if ([route.title.rutgersStringEscape isEqualToString:name]) {
+                return route;
+            }
+        }
+    }
+    return nil;
 }
 
 @end

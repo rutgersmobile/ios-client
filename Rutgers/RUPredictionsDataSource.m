@@ -16,6 +16,9 @@
 #import "RUPredictionsBodyRow.h"
 #import "DataSource_Private.h"
 
+#import "RUBusStop.h"
+#import "RUBusRoute.h"
+
 @interface RUPredictionsDataSource ()
 @property id item;
 @end
@@ -33,27 +36,45 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUBusDataLoadingManager sharedInstance] getPredictionsForItem:self.item completion:^(NSArray *predictions, NSError *error) {
-            if (!loading.current) {
-                [loading ignore];
-                return;
-            }
-            
-            if (!error) {
-                if (predictions.count) {
-                    [loading updateWithContent:^(typeof(self) me) {
-                        [me updateSectionsForResponse:predictions];
-                    }];
-                } else {
-                    [loading updateWithNoContent:^(typeof(self) me) {
-                        [me updateSectionsForResponse:nil];
-                    }];
+        void (^getPredictions)(id item) = ^(id item) {
+            [[RUBusDataLoadingManager sharedInstance] getPredictionsForItem:item completion:^(NSArray *predictions, NSError *error) {
+                if (!loading.current) {
+                    [loading ignore];
+                    return;
                 }
-
-            } else {
-                [loading doneWithError:error];
-            }
-        }];
+                
+                if (!error) {
+                    if (predictions.count) {
+                        [loading updateWithContent:^(typeof(self) me) {
+                            [me updateSectionsForResponse:predictions];
+                        }];
+                    } else {
+                        [loading updateWithNoContent:^(typeof(self) me) {
+                            [me updateSectionsForResponse:nil];
+                        }];
+                    }
+                    
+                } else {
+                    [loading doneWithError:error];
+                }
+            }];
+        };
+        
+        
+        if ([self.item isKindOfClass:[RUBusStop class]] || [self.item isKindOfClass:[RUBusRoute class]]) {
+            getPredictions(self.item);
+        } else if ([self.item isKindOfClass:[NSArray class]] && [self.item count] >= 2) {
+            [[RUBusDataLoadingManager sharedInstance] reconstituteSerializedItemWithName:self.item[1] type:self.item[0] completion:^(id item, NSError *error) {
+                if (item) {
+                    self.item = item;
+                    getPredictions(item);
+                } else {
+                    [loading doneWithError:error];
+                }
+            }];
+        } else {
+            [loading doneWithError:nil];
+        }
     }];
 }
 

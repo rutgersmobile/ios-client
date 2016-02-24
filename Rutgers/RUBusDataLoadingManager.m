@@ -171,5 +171,40 @@ NSString * const newarkAgency = @"rutgers-newark";
     }];
 }
 
+-(void)performWhenAgencyLoaded:(void(^)(NSError *error))handler {
+    __block NSError *outerError;
+    
+    dispatch_group_t group = dispatch_group_create();
+    
+    for (RUBusDataAgencyManager *manager in self.agencyManagers.allValues) {
+        dispatch_group_enter(group);
+        [manager performWhenAgencyLoaded:^(NSError *error) {
+            if (error) outerError = error;
+            dispatch_group_leave(group);
+        }];
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        handler(outerError);
+    });
+}
 
+-(void)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler {
+    [self performWhenAgencyLoaded:^(NSError *error) {
+        if (error) {
+            handler(nil, error);
+            return;
+        } else {
+            for (RUBusDataAgencyManager *manager in self.agencyManagers.allValues) {
+                id item = [manager reconstituteSerializedItemWithName:name type:type];
+                if (item) {
+                    handler(item, nil);
+                    return;
+                }
+            }
+            handler(nil, nil);
+            return;
+        }
+    }];
+}
 @end

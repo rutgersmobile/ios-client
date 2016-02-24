@@ -17,5 +17,6 @@
  *
  *  @return The initialized view controller
  */
--(instancetype)initWithItem:(id)item;
+-(instancetype)initWithItem:(id)item; //Route or stop
+-(instancetype)initWithSerializedItem:(id)item title:(NSString *)title;
 @end

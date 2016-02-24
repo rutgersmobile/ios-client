@@ -13,13 +13,14 @@
 #import "TableViewController_Private.h"
 #import <MSWeakTimer.h>
 #import "NSURL+RUAdditions.h"
+#import "RUBusDataLoadingManager.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
 @interface RUPredictionsViewController ()
 @property (nonatomic) MSWeakTimer *timer;
 @property (nonatomic) id item;
-
+@property (nonatomic) id serializedItem;
 @end
 
 @implementation RUPredictionsViewController
@@ -27,16 +28,21 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.item = item;
+        self.title = [self.item title];
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+-(instancetype)initWithSerializedItem:(id)item title:(NSString *)title{
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        self.item = item;
+        self.title = [self.item title];
+    }
+    return self;
+}
+- (void)viewDidLoad{
     [super viewDidLoad];
-    
-    //Set the title of the view controller to the items title
-    self.title = [self.item title];
     
     //Set the estimated row height to help the tableview
     self.tableView.rowHeight = [self.item isKindOfClass:[RUBusRoute class]] ? 70.0 : 96.0;
@@ -57,10 +63,6 @@
     }
     if (!type) return nil;
     return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, [self.item title]]];
-}
-
--(NSString *)handle{
-    return @"bus";
 }
 
 //This causes an update timer to start upon the Predictions View controller appearing

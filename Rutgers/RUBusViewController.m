@@ -58,4 +58,9 @@
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
 }
 
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
+    RUPredictionsViewController *viewController = [[RUPredictionsViewController alloc] initWithSerializedItem:pathComponents title:destinationTitle];
+    return @[viewController];
+}
+
 @end
