@@ -19,7 +19,7 @@ extern NSString *const ChannelManagerDidUpdateChannelsKey;
 -(void)registerClass:(Class)class;
 
 -(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel;
--(NSArray *)viewControllersForURL:(NSURL *)url;
+-(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle;
 
 @property (readonly) NSArray *contentChannels;
 -(NSDictionary *)channelWithHandle:(NSString *)handle;

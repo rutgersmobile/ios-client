@@ -41,11 +41,12 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 @synthesize otherChannels = _otherChannels;
 -(NSArray *)otherChannels{
     if (!_otherChannels) {
-        _otherChannels = @[@{@"handle" : @"options",
-                           @"title" : @"Options",
-                           @"view" : @"options",
-                           @"icon" : @"gear"
-                           }];
+        _otherChannels = @[
+                           @{@"handle" : @"options",
+                             @"title" : @"Options",
+                             @"view" : @"options",
+                             @"icon" : @"gear"}
+                           ];
     }
     return _otherChannels;
 }
@@ -187,21 +188,14 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 }
 
--(NSArray *)viewControllersForURL:(NSURL *)url{
+-(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle{
     NSMutableArray *components = [url.absoluteString.pathComponents mutableCopy];
     [components removeObjectAtIndex:0];
    
     NSString *handle = components.firstObject;
     [components removeObjectAtIndex:0];
     
-    UIViewController <RUChannelProtocol>*rootVC = [self viewControllerForChannel:[self channelWithHandle:handle]];
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithObject:rootVC];
-    if ([rootVC respondsToSelector:@selector(subViewControllersWithPathComponents:)]) {
-        NSArray *subVCs = [rootVC performSelector:@selector(subViewControllersWithPathComponents:) withObject:components];
-        if (subVCs) [viewControllers addObjectsFromArray:subVCs];
-    }
-    
-    return viewControllers;
+    return [(id)[self classForViewTag:handle] performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{

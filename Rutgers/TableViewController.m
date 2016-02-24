@@ -156,16 +156,11 @@
     return nil;
 }
 
--(NSString *)handle{
-    [NSException raise:@"Sharing url but no handle" format:@"Class %@",NSStringFromClass([self class])];
-    return nil;
-}
-
 - (void)actionButtonTapped:(id)sender {
     NSURL *url = self.sharingURL;
     if (!url) return;
     
-    UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.title handle:self.handle];
+    UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.title];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:@[favoriteActivity]];
     activityViewController.excludedActivityTypes = @[

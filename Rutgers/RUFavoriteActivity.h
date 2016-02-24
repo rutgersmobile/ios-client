@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RUFavoriteActivity : UIActivity
--(instancetype)initWithTitle:(NSString *)title handle:(NSString *)handle;
+-(instancetype)initWithTitle:(NSString *)title;
 @end

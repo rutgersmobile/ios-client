@@ -12,16 +12,14 @@
 
 @interface RUFavoriteActivity ()
 @property (nonatomic) NSString *title;
-@property (nonatomic) NSString *handle;
 @property (nonatomic) NSURL *urlToFavorite;
 @end
 
 @implementation RUFavoriteActivity
--(instancetype)initWithTitle:(NSString *)title handle:(NSString *)handle{
+-(instancetype)initWithTitle:(NSString *)title{
     self = [super init];
     if (self) {
         self.title = title;
-        self.handle = handle;
     }
     return self;
 }
@@ -47,7 +45,6 @@
 - (void)performActivity {
     NSDictionary *favorite = @{
                                @"isFavorite" : @true,
-                               @"handle" : self.handle,
                                @"url" : self.urlToFavorite.absoluteString,
                                @"title" : self.title
                                };

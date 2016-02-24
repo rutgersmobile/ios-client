@@ -10,7 +10,6 @@
 #import "RUChannelManager.h"
 #import "RUUserInfoManager.h"
 #import "RUMenuTableViewCell.h"
-#import "RUFavorite.h"
 
 @implementation RUFavoritesDataSource
 - (instancetype)init
@@ -24,10 +23,12 @@
 }
 
 -(void)configureCell:(RUMenuTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    RUFavorite *favorite = [self itemAtIndexPath:indexPath];
-    NSDictionary *channel = [[RUChannelManager sharedInstance] channelWithHandle:favorite.channelHandle];
+    NSDictionary *favorite = [self itemAtIndexPath:indexPath];
+    NSString *channelHandle = [[NSURL URLWithString:favorite[@"url"]] host];
+    
+    NSDictionary *channel = [[RUChannelManager sharedInstance] channelWithHandle:channelHandle];
     [cell setupForChannel:channel];
-    cell.channelTitleLabel.text = favorite.title;
+    cell.channelTitleLabel.text = favorite[@"title"];
 }
 
 -(void)dealloc{
@@ -36,5 +37,14 @@
 
 -(void)favoritesDidChange{
     self.items = [RUUserInfoManager favorites];
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *favorite = [self itemAtIndexPath:indexPath];
+    [RUUserInfoManager removeFavorite:favorite];
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return true;
 }
 @end

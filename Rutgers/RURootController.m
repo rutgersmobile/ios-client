@@ -101,13 +101,23 @@
 }
 
 -(void)openURL:(NSURL *)url{
+    [self openURL:url destinationTitle:nil];
+}
+
+-(void)openURL:(NSURL *)url destinationTitle:(NSString *)title{
     UINavigationController *navController = [[RUNavigationController alloc] init];
     [RUAppearance applyAppearanceToNavigationController:navController];
-    navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url];
+    navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url destinationTitle:nil];
+    navController.viewControllers.firstObject.title = title;
+    
     [self placeButtonInViewController:navController.topViewController];
 
     self.containerViewController.containedViewController = navController;
     [self.containerViewController closeDrawer];
+}
+
+-(void)openFavorite:(NSDictionary *)favorite{
+    [self openURL:[NSURL URLWithString:favorite[@"url"]] destinationTitle:favorite[@"title"]];
 }
 
 #pragma mark Drawer Interface
@@ -127,7 +137,7 @@
     self.selectedItem = item;
     
     if (item[@"isFavorite"]) {
-        [self openURL:[NSURL URLWithString:item[@"url"]]];
+        [self openFavorite:item];
     } else {
         [RUChannelManager sharedInstance].lastChannel = item;
         self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
