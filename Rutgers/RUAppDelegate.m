@@ -86,11 +86,7 @@
  *  Resets the app, clearing the cache, the saved information in NSUserDefaults, and then prompts the user to reenter their campus and role.
  */
 -(void)resetApp{
-    [self clearCache];
-    
-    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
+    [RUUserInfoManager resetApp];
     [self.userInfoManager getUserInfoIfNeededWithCompletion:nil];
 }
 

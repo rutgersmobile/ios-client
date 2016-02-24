@@ -193,6 +193,10 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 
 +(void)setFavorites:(NSArray <NSDictionary *>*)favorites{
     [[NSUserDefaults standardUserDefaults] setObject:favorites forKey:userInfoManagerFavoritesKey];
+    [self notifyFavoritesChanged];
+}
+
++(void)notifyFavoritesChanged{
     [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeFavoritesKey object:self];
 }
 
@@ -206,6 +210,22 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     NSMutableArray *favorites = [[self favorites] mutableCopy];
     [favorites removeObject:favorite];
     [self setFavorites:favorites];
+}
+
+/**
+ *  Resets the app, clearing the cache, the saved information in NSUserDefaults, and then prompts the user to reenter their campus and role.
+ */
++(void)resetApp{
+    [self clearCache];
+    
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self notifyFavoritesChanged];
+}
+
++(void)clearCache{
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 @end

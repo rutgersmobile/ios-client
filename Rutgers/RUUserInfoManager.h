@@ -29,4 +29,6 @@ extern NSString *const userInfoManagerDidChangeFavoritesKey;
 +(void)addFavorite:(NSDictionary *)favorite;
 +(void)removeFavorite:(NSDictionary *)favorite;
 
++(void)resetApp;
++(void)clearCache;
 @end
