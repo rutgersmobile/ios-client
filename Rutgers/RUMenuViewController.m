@@ -32,6 +32,8 @@
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = NO;
     self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
+
     self.dataSource = [[MenuDataSource alloc] init];
     
     self.view.backgroundColor = [UIColor clearColor];
@@ -54,10 +56,6 @@
     UIEdgeInsets insets = UIEdgeInsetsMake(statusBarHeight, 0, 0, 0);
     self.tableView.contentInset = insets;
     self.tableView.scrollIndicatorInsets = insets;
-    
-    CGPoint offset = self.tableView.contentOffset;
-    if (offset.y == 0) offset.y = -insets.top;
-    self.tableView.contentOffset = offset;
 }
 
 -(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
@@ -69,17 +67,6 @@
     }
 }
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-}
-
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
@@ -88,5 +75,4 @@
     NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
     [self.delegate menu:self didSelectItem:item];
 }
-
 @end

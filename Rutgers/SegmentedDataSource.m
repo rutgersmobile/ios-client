@@ -181,6 +181,23 @@
     return [self.selectedDataSource tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    DataSource *dataSource = self.selectedDataSource;
+    if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
+        return [dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
+    }
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    DataSource *dataSource = self.selectedDataSource;
+    if ([dataSource respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]) {
+        [dataSource tableView:tableView commitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
+    }
+}
+
+
 #pragma mark - Collection View Data Source
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     return [self.selectedDataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];

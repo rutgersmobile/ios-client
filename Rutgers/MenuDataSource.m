@@ -30,8 +30,4 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    return YES;
-}
-
 @end

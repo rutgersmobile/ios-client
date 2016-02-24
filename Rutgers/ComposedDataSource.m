@@ -173,6 +173,25 @@
     return [dataSource tableView:tableView estimatedHeightForRowAtIndexPath:localIndexPath];
 }
 
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger globalSection = indexPath.section;
+    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
+    if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
+        NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
+        return [dataSource tableView:tableView canEditRowAtIndexPath:localIndexPath];
+    }
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger globalSection = indexPath.section;
+    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
+    if ([dataSource respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]) {
+        NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
+        [dataSource tableView:tableView commitEditingStyle:editingStyle forRowAtIndexPath:localIndexPath];
+    }
+}
+
 #pragma mark - Collection View Data Source
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     if (self.showingPlaceholder) return [super collectionView:collectionView cellForItemAtIndexPath:indexPath];
@@ -181,7 +200,6 @@
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
     return [dataSource collectionView:collectionView cellForItemAtIndexPath:localIndexPath];
 }
-
 
 #pragma mark - AAPLContentLoading
 
