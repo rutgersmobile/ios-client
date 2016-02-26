@@ -33,5 +33,5 @@ extern NSString * const newarkAgency;
 
 -(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *predictions, NSError *error))handler;
 
--(void)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler;
+-(void)getSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler;
 @end

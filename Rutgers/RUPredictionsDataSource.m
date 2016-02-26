@@ -16,7 +16,7 @@
 #import "RUPredictionsBodyRow.h"
 #import "DataSource_Private.h"
 
-#import "RUBusStop.h"
+#import "RUBusMultiStop.h"
 #import "RUBusRoute.h"
 
 @interface RUPredictionsDataSource ()
@@ -61,10 +61,10 @@
         };
         
         
-        if ([self.item isKindOfClass:[RUBusStop class]] || [self.item isKindOfClass:[RUBusRoute class]]) {
+        if ([self.item isKindOfClass:[RUBusMultiStop class]] || [self.item isKindOfClass:[RUBusRoute class]]) {
             getPredictions(self.item);
         } else if ([self.item isKindOfClass:[NSArray class]] && [self.item count] >= 2) {
-            [[RUBusDataLoadingManager sharedInstance] reconstituteSerializedItemWithName:self.item[1] type:self.item[0] completion:^(id item, NSError *error) {
+            [[RUBusDataLoadingManager sharedInstance] getSerializedItemWithName:self.item[1] type:self.item[0] completion:^(id item, NSError *error) {
                 if (item) {
                     self.item = item;
                     getPredictions(item);

@@ -37,7 +37,7 @@
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.item = item;
-        self.title = [self.item title];
+        self.title = title;
     }
     return self;
 }

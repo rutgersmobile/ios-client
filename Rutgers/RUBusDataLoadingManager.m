@@ -189,7 +189,7 @@ NSString * const newarkAgency = @"rutgers-newark";
     });
 }
 
--(void)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler {
+-(void)getSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler {
     [self performWhenAgencyLoaded:^(NSError *error) {
         if (error) {
             handler(nil, error);
