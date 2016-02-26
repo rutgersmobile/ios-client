@@ -13,4 +13,5 @@
 
 @interface RUPlaceDetailViewController : TableViewController
 -(instancetype)initWithPlace:(RUPlace *)place;
+-(instancetype)initWithSerializedPlace:(NSString *)serializedPlace title:(NSString *)title;
 @end

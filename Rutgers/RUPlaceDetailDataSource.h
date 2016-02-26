@@ -13,6 +13,7 @@
 @interface RUPlaceDetailDataSource : ComposedDataSource
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithSerializedPlace:(NSString *)serializedPlace NS_DESIGNATED_INITIALIZER;
 -(void)startUpdates;
 -(void)stopUpdates;
 @end

@@ -62,4 +62,10 @@
     [self.navigationController pushViewController:[[RUPlaceDetailViewController alloc] initWithPlace:place] animated:YES];
 }
 
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
+    RUPlaceDetailViewController *viewController = [[RUPlaceDetailViewController alloc] initWithSerializedPlace:pathComponents[0] title:destinationTitle];
+    return @[viewController];
+}
+
+
 @end

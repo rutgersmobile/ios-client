@@ -23,4 +23,6 @@ extern NSString *PlacesDataDidUpdateRecentPlacesKey;
 -(void)getRecentPlacesWithCompletion:(void (^)(NSArray *recents, NSError *error))completionBlock;
 
 -(void)placesNearLocation:(CLLocation *)location completion:(void (^)(NSArray *nearbyPlaces, NSError *error))completionBlock;
+
+-(void)getSerializedPlace:(NSString *)serializedPlace withCompletion:(void (^)(RUPlace *place, NSError *error))completionBlock;
 @end

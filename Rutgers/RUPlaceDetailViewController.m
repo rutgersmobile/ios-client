@@ -17,6 +17,7 @@
 
 @interface RUPlaceDetailViewController ()
 @property (nonatomic) RUPlace *place;
+@property (nonatomic) NSString *serializedPlace;
 @end
 
 @implementation RUPlaceDetailViewController
@@ -30,9 +31,22 @@
     return self;
 }
 
+-(instancetype)initWithSerializedPlace:(NSString *)serializedPlace title:(NSString *)title{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.serializedPlace = serializedPlace;
+        self.title = title;
+    }
+    return self;
+}
+
 -(void)viewDidLoad{
     [super viewDidLoad];
-    self.dataSource = [[RUPlaceDetailDataSource alloc] initWithPlace:self.place];
+    if (self.place) {
+        self.dataSource = [[RUPlaceDetailDataSource alloc] initWithPlace:self.place];
+    } else if (self.serializedPlace) {
+        self.dataSource = [[RUPlaceDetailDataSource alloc] initWithSerializedPlace:self.serializedPlace];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -47,15 +61,20 @@
 
 
 -(NSURL *)sharingURL{
+    NSString *idString;
+    if (self.place) {
+        idString = self.place.uniqueID;
+    } else {
+        idString = self.serializedPlace;
+    }
+    if (!idString) return nil;
+    
     return [NSURL rutgersUrlWithPathComponents:@[
                                                  @"places",
-                                                 self.place.uniqueID
+                                                 idString
                                                  ]];
 }
 
--(NSString *)handle{
-    return @"places";
-}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];

@@ -16,6 +16,7 @@
 #import "NSArray+LimitedToCount.h"
 #import "RUDataLoadingManager_Private.h"
 #import "RUNetworkManager.h"
+#import "NSURL+RUAdditions.h"
 
 NSString *PlacesDataDidUpdateRecentPlacesKey = @"PlacesDataDidUpdateRecentPlacesKey";
 static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
@@ -156,6 +157,19 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
         
         completionBlock(nearbyPlaces,error);
 
+    }];
+}
+
+-(void)getSerializedPlace:(NSString *)serializedPlace withCompletion:(void (^)(RUPlace *, NSError *))completionBlock{
+    [self performWhenLoaded:^(NSError *error) {
+        for (NSString *key in self.places) {
+            if ([[key rutgersStringEscape] isEqualToString:serializedPlace]) {
+                completionBlock(self.places[key], nil);
+                return;
+            }
+        }
+        completionBlock(nil, error);
+        return;
     }];
 }
 @end
