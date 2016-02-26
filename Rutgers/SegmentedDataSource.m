@@ -187,7 +187,7 @@
     if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
         return [dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
     }
-    return YES;
+    return NO;
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
