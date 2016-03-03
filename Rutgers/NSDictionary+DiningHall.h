@@ -10,4 +10,5 @@
 
 @interface NSDictionary (DiningHall)
 -(BOOL)isDiningHallOpen;
+-(NSString *)diningHallShortName;
 @end

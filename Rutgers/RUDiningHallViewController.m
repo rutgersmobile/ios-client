@@ -11,44 +11,80 @@
 #import "NSDate+EpochTime.h"
 #import "NSString+WordsInString.h"
 #import "NSURL+RUAdditions.h"
+#import "NSDictionary+DiningHall.h"
 
 @interface RUDiningHallViewController ()
 @property (nonatomic) NSDictionary *diningHall;
+@property (nonatomic) NSString *serializedDiningHall;
 @end
 
 @implementation RUDiningHallViewController
--(instancetype)initWithDiningHall:(NSDictionary *)diningHall{
+-(instancetype)initWithSerializedDiningHall:(NSString *)serializedDiningHall title:(NSString *)title{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        self.diningHall = diningHall;
-        
-        NSDate *date = [NSDate dateWithEpochTime:diningHall[@"date"]];
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"EEE MMM dd";
-        
-        NSString *dateString = [dateFormatter stringFromDate:date];
-        
-        self.title = [NSString stringWithFormat:@"%@ (%@)", [self diningHallShortName], dateString];
+        self.serializedDiningHall = serializedDiningHall;
+        self.title = title;
     }
     return self;
 }
 
--(NSString *)diningHallShortName{
-    return [self.diningHall[@"location_name"] wordsInString].firstObject;
-}
-
--(NSURL *)sharingURL{
-    return [NSURL rutgersUrlWithPathComponents:@[@"food", [self diningHallShortName]]];
-}
-
--(NSString *)handle{
-    return @"food";
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall{
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        self.diningHall = diningHall;
+        [self configureTitleWithDiningHall:diningHall];
+    }
+    return self;
 }
 
 -(void)viewDidLoad{
     [super viewDidLoad];
-    self.dataSource = [[RUDiningHallDataSource alloc] initWithDiningHall:self.diningHall];
+    if (self.diningHall) {
+        self.dataSource = [[RUDiningHallDataSource alloc] initWithDiningHall:self.diningHall];
+    } else if (self.serializedDiningHall) {
+        self.dataSource = [[RUDiningHallDataSource alloc] initWithSerializedDiningHall:self.serializedDiningHall];
+    }
+}
+
+-(void)configureTitleWithDiningHall:(NSDictionary *)diningHall {
+    
+    NSDate *date = [NSDate dateWithEpochTime:diningHall[@"date"]];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"EEE MMM dd";
+    
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    
+    self.title = [NSString stringWithFormat:@"%@ (%@)", [self.diningHall diningHallShortName], dateString];
+}
+
+-(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error {
+    RUDiningHallDataSource *diningHallDataSource = (RUDiningHallDataSource *)dataSource;
+    if (diningHallDataSource.diningHall) {
+        [self configureTitleWithDiningHall:diningHallDataSource.diningHall];
+    }
+}
+
+-(NSString *)sharingTitle{
+    if (self.diningHall) {
+        return [self.diningHall diningHallShortName];
+    } else {
+        return self.title;
+    }
+}
+
+-(NSURL *)sharingURL{
+    NSString *shortName;
+    
+    if (self.diningHall) {
+        shortName = [self.diningHall diningHallShortName];
+    } else {
+        shortName = self.serializedDiningHall;
+    }
+    
+    if (!shortName) return nil;
+    
+    return [NSURL rutgersUrlWithPathComponents:@[@"food", shortName]];
 }
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{

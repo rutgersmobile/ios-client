@@ -53,6 +53,10 @@
     }
 }
 
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title{
+    RUDiningHallViewController *viewController = [[RUDiningHallViewController alloc] initWithSerializedDiningHall:pathComponents.firstObject title:title];
+    return @[viewController];
+}
 
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;

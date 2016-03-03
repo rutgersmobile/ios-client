@@ -11,4 +11,5 @@
 
 @interface RUDiningHallViewController : SegmentedTableViewController
 -(instancetype)initWithDiningHall:(NSDictionary *)diningHall;
+-(instancetype)initWithSerializedDiningHall:(NSString *)serializedDiningHall title:(NSString *)title;
 @end

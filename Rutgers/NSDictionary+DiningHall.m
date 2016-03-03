@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+DiningHall.h"
+#import "NSString+WordsInString.h"
 
 @implementation NSDictionary (DiningHall)
 
@@ -16,5 +17,10 @@
         if ([meal[@"meal_avail"] boolValue]) return YES;
     }
     return NO;
+}
+
+
+-(NSString *)diningHallShortName{
+    return [self[@"location_name"] wordsInString].firstObject;
 }
 @end

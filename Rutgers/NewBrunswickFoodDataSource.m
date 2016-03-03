@@ -11,7 +11,7 @@
 #import "ALTableViewTextCell.h"
 #import "DataSource_Private.h"
 #import "NSDictionary+DiningHall.h"
-#import "RUNetworkManager.h"
+#import "RUFoodDataLoadingManager.h"
 
 @implementation NewBrunswickFoodDataSource
 - (instancetype)init
@@ -25,39 +25,22 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUNetworkManager sessionManager] GET:@"rutgers-dining.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUFoodDataLoadingManager sharedInstance] getDiningHallsWithCompletion:^(NSArray *diningHalls, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
             }
-            
-            if ([responseObject isKindOfClass:[NSArray class]]) {
-                NSArray *parsedDiningHalls = [self parseResponse:responseObject];
+
+            if (diningHalls) {
                 [loading updateWithContent:^(typeof(self) me) {
-                    me.items = parsedDiningHalls;
+                    me.items = diningHalls;
                 }];
             } else {
-                [loading doneWithError:nil];
+                [loading doneWithError:error];
             }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            if (!loading.current) {
-                [loading ignore];
-                return;
-            }
-            [loading doneWithError:error];
         }];
     }];
 }
-
--(NSArray *)parseResponse:(NSArray *)response{
-    NSMutableArray *parsedDiningHalls = [NSMutableArray array];
-    for (NSDictionary *diningHall in response) {
-        DataTuple *parsedDiningHall = [[DataTuple alloc] initWithTitle:diningHall[@"location_name"] object:diningHall];
-        [parsedDiningHalls addObject:parsedDiningHall];
-    }
-    return parsedDiningHalls;
-}
-
 -(void)configureCell:(ALTableViewTextCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     [super configureCell:cell forRowAtIndexPath:indexPath];
     DataTuple *diningHall = [self itemAtIndexPath:indexPath];
