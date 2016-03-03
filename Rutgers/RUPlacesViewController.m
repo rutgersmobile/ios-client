@@ -63,9 +63,8 @@
 }
 
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
-    RUPlaceDetailViewController *viewController = [[RUPlaceDetailViewController alloc] initWithSerializedPlace:pathComponents[0] title:destinationTitle];
+    RUPlaceDetailViewController *viewController = [[RUPlaceDetailViewController alloc] initWithSerializedPlace:pathComponents.firstObject title:destinationTitle];
     return @[viewController];
 }
-
 
 @end

@@ -156,19 +156,19 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
         }];
         
         completionBlock(nearbyPlaces,error);
-
     }];
 }
 
--(void)getSerializedPlace:(NSString *)serializedPlace withCompletion:(void (^)(RUPlace *, NSError *))completionBlock{
+-(void)getSerializedPlace:(NSString *)serializedPlace withCompletion:(void (^)(RUPlace *, NSError *))completionBlock{    
     [self performWhenLoaded:^(NSError *error) {
+        RUPlace *matchingPlace;
         for (NSString *key in self.places) {
             if ([[key rutgersStringEscape] isEqualToString:serializedPlace]) {
-                completionBlock(self.places[key], nil);
-                return;
+                matchingPlace = self.places[key];
+                break;
             }
         }
-        completionBlock(nil, error);
+        completionBlock(matchingPlace, error);
         return;
     }];
 }
