@@ -156,20 +156,25 @@
     return nil;
 }
 
+-(NSString *)sharingTitle{
+    return self.title;
+}
+
 - (void)actionButtonTapped:(id)sender {
     NSURL *url = self.sharingURL;
     if (!url) return;
     
-    UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.title];
+    UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.sharingTitle];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:@[favoriteActivity]];
     activityViewController.excludedActivityTypes = @[
-                                                     UIActivityTypePrint
+                                                     UIActivityTypePrint,
+                                                     UIActivityTypeAddToReadingList,
+                                                     
                                                      ];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
-        
         //If we're on an iPhone, we can just present it modally
         [self presentViewController:activityViewController animated:YES completion:nil];
     }

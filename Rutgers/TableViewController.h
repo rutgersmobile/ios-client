@@ -22,7 +22,7 @@
 @property (nonatomic, readonly, strong) UITableView *searchTableView;
 
 @property (nonatomic, readonly) NSURL *sharingURL;
-@property (nonatomic, readonly) NSString *handle;
+@property (nonatomic, readonly) NSString *sharingTitle;
 
 @property (nonatomic) BOOL pullsToRefresh;
 

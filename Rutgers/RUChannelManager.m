@@ -12,6 +12,7 @@
 #import "RUChannelManager.h"
 #import "RUChannelProtocol.h"
 #import "RUAnalyticsManager.h"
+#import "NSURL+RUAdditions.h"
 
 NSString *const ChannelManagerJsonFileName = @"ordered_content";
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
@@ -185,17 +186,27 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
     vc.title = [channel channelTitle];
     return vc;
-
 }
 
 -(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle{
-    NSMutableArray *components = [url.absoluteString.pathComponents mutableCopy];
+    NSMutableArray *components = [NSMutableArray array];
+    for (NSString *component in url.absoluteString.pathComponents) {
+        NSString *normalizedComponent = [component rutgersStringEscape];
+        [components addObject:normalizedComponent];
+    }
     [components removeObjectAtIndex:0];
    
     NSString *handle = components.firstObject;
     [components removeObjectAtIndex:0];
     
-    return [(id)[self classForViewTag:handle] performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
+    id class = [self classForViewTag:handle];
+    
+    if ([class respondsToSelector:@selector(viewControllersWithPathComponents:destinationTitle:)]) {
+        return [class performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
+    } else {
+        NSLog(@"Unhandled Favorite: %@ cannot open favorite, must implement viewControllersWithPathComponents:destinationTitle:", NSStringFromClass(class));
+        return nil;
+    }
 }
 
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{

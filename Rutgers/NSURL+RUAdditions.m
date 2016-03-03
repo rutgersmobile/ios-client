@@ -18,13 +18,12 @@
         [string appendFormat: @"%@/", escapedComponent];
     }
     
-    NSLog(@"%@",string);
     return [NSURL URLWithString:string];
 }
 @end
 
 @implementation NSString (RUAdditions)
 -(NSString *)rutgersStringEscape {
-    return [[self lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [[[self stringByRemovingPercentEncoding] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 @end

@@ -48,6 +48,7 @@
                                @"url" : self.urlToFavorite.absoluteString,
                                @"title" : self.title
                                };
+    NSLog(@"Favoriting URL: %@",self.urlToFavorite);
     [RUUserInfoManager addFavorite:favorite];
     [self activityDidFinish:YES];
 }
