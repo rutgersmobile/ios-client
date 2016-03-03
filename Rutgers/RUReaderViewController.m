@@ -11,6 +11,7 @@
 #import "RUReaderDataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
+#import "NSURL+RUAdditions.h"
 
 @interface RUReaderViewController ()
 @property (nonatomic) NSDictionary *channel;
@@ -42,6 +43,26 @@
     self.tableView.rowHeight = 135;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
     self.dataSource = [[RUReaderDataSource alloc] initWithUrl:[self.channel channelURL]];
+}
+
+-(NSURL *)sharingURL {
+    return [self buildDynamicSharingURL];
+}
+
+-(NSURL *)buildDynamicSharingURL {
+    NSMutableArray *pathComponents = [NSMutableArray array];
+    for (id viewController in self.navigationController.viewControllers) {
+        if ([viewController respondsToSelector:@selector(channel)]) {
+            NSDictionary *channel = [viewController channel];
+            NSString *handle = [channel channelHandle];
+            if (handle) {
+                [pathComponents addObject:handle];
+            } else {
+                [pathComponents addObject:[[channel channelTitle] rutgersStringEscape]];
+            }
+        }
+    }
+    return [NSURL rutgersUrlWithPathComponents:pathComponents];
 }
 
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
