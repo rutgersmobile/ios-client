@@ -38,10 +38,6 @@
                                                  ]];
 }
 
--(NSString *)handle{
-    return @"soc";
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

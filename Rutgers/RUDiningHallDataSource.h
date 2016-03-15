@@ -11,8 +11,8 @@
 
 @interface RUDiningHallDataSource : SegmentedDataSource
 -(instancetype)init NS_UNAVAILABLE;
--(instancetype)initWithDiningHall:(DataTuple *)diningHall NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithSerializedDiningHall:(NSString *)serializedDiningHall NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic) DataTuple *diningHall;
+@property (nonatomic) NSDictionary *diningHall;
 @end

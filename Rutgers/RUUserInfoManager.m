@@ -202,6 +202,7 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 
 +(void)addFavorite:(NSDictionary *)favorite{
     NSArray *favorites = [NSArray arrayWithArray:[self favorites]];
+    NSLog(@"%@",favorite);
     if ([favorites containsObject:favorite]) return;
     [self setFavorites:[favorites arrayByAddingObject:favorite]];
 }

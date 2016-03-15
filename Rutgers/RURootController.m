@@ -107,8 +107,7 @@
 -(void)openURL:(NSURL *)url destinationTitle:(NSString *)title{
     UINavigationController *navController = [[RUNavigationController alloc] init];
     [RUAppearance applyAppearanceToNavigationController:navController];
-    navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url destinationTitle:nil];
-    navController.viewControllers.firstObject.title = title;
+    navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url destinationTitle:title];
     
     [self placeButtonInViewController:navController.topViewController];
 

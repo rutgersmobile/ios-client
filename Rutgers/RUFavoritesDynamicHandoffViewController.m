@@ -7,16 +7,27 @@
 //
 
 #import "RUFavoritesDynamicHandoffViewController.h"
+#import "RUNetworkManager.h"
+#import "Rutgers-Swift.h"
 
 @interface RUFavoritesDynamicHandoffViewController ()
-
+@property (nonatomic) NSArray *pathComponents;
 @end
 
 @implementation RUFavoritesDynamicHandoffViewController
+-(instancetype)initWithPathComponents:(NSArray *)pathComponents title:(NSString *)title{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.title = title;
+        self.pathComponents = pathComponents;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.dataSource = [[RUFavoritesDynamicHandoffDataSource alloc] initWithPathComponents:self.pathComponents];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,3 +46,5 @@
 */
 
 @end
+
+

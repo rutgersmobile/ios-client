@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -105,14 +105,14 @@
                                     <exclude reference="56x-NB-LVe"/>
                                 </mask>
                                 <mask key="constraints">
+                                    <exclude reference="noe-dw-idp"/>
+                                    <exclude reference="oBy-av-vzk"/>
+                                    <exclude reference="q3r-a6-3f9"/>
                                     <exclude reference="0Qd-W6-OFK"/>
                                     <exclude reference="36i-nl-EJp"/>
                                     <exclude reference="Kgl-Qq-hL4"/>
                                     <exclude reference="hrw-bl-VVF"/>
-                                    <exclude reference="noe-dw-idp"/>
-                                    <exclude reference="oBy-av-vzk"/>
                                     <exclude reference="ofe-dm-aoi"/>
-                                    <exclude reference="q3r-a6-3f9"/>
                                     <exclude reference="5ba-wx-MfL"/>
                                     <exclude reference="EE2-kI-z7i"/>
                                     <exclude reference="afl-me-T2X"/>
@@ -126,7 +126,9 @@
                                     <include reference="56x-NB-LVe"/>
                                 </mask>
                                 <mask key="constraints">
-                                    <exclude reference="lxt-jh-bRS"/>
+                                    <include reference="noe-dw-idp"/>
+                                    <include reference="oBy-av-vzk"/>
+                                    <include reference="q3r-a6-3f9"/>
                                     <include reference="0Qd-W6-OFK"/>
                                     <include reference="36i-nl-EJp"/>
                                     <exclude reference="533-Py-n6s"/>
@@ -134,11 +136,8 @@
                                     <include reference="Kgl-Qq-hL4"/>
                                     <exclude reference="ZaK-rX-nLY"/>
                                     <include reference="hrw-bl-VVF"/>
-                                    <exclude reference="rYL-8x-Ual"/>
-                                    <include reference="noe-dw-idp"/>
-                                    <include reference="oBy-av-vzk"/>
                                     <include reference="ofe-dm-aoi"/>
-                                    <include reference="q3r-a6-3f9"/>
+                                    <exclude reference="rYL-8x-Ual"/>
                                     <include reference="5ba-wx-MfL"/>
                                     <exclude reference="8us-Gy-OSg"/>
                                     <include reference="EE2-kI-z7i"/>
@@ -149,6 +148,7 @@
                                     <include reference="g49-TX-anT"/>
                                     <exclude reference="hAw-Eb-LfF"/>
                                     <include reference="iTW-hX-AL8"/>
+                                    <exclude reference="lxt-jh-bRS"/>
                                 </mask>
                             </variation>
                         </view>

@@ -13,6 +13,7 @@
 #import "RUChannelProtocol.h"
 #import "RUAnalyticsManager.h"
 #import "NSURL+RUAdditions.h"
+#import "RUFavoritesDynamicHandoffViewController.h"
 
 NSString *const ChannelManagerJsonFileName = @"ordered_content";
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
@@ -159,7 +160,6 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 -(NSMutableDictionary *)viewTagsToClassNameMapping{
     static NSMutableDictionary *viewTagsToClassNameMapping = nil;
     static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         viewTagsToClassNameMapping = [NSMutableDictionary dictionary];
     });
@@ -167,7 +167,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 -(void)registerClass:(Class)class{
-    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) return;
+    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) {
+        NSLog(@"Trying to register class with channel manager that does not conform to RUChannelProtocol");
+        return;
+    }
     NSString *handle = [class performSelector:@selector(channelHandle)];
     [self viewTagsToClassNameMapping][handle] = NSStringFromClass(class);
 }
@@ -190,7 +193,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 -(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle{
     NSMutableArray *components = [NSMutableArray array];
-    for (NSString *component in url.absoluteString.pathComponents) {
+    NSString *urlString = [url.absoluteString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    for (NSString *component in urlString.pathComponents) {
         NSString *normalizedComponent = [component rutgersStringEscape];
         [components addObject:normalizedComponent];
     }
@@ -199,13 +203,13 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSString *handle = components.firstObject;
     [components removeObjectAtIndex:0];
     
-    id class = [self classForViewTag:handle];
+    NSString *viewTag = [[self channelWithHandle:handle] channelView];
+    id class = [self classForViewTag:viewTag];
     
     if ([class respondsToSelector:@selector(viewControllersWithPathComponents:destinationTitle:)]) {
         return [class performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
     } else {
-        NSLog(@"Unhandled Favorite: %@ cannot open favorite, must implement viewControllersWithPathComponents:destinationTitle:", NSStringFromClass(class));
-        return nil;
+        return @[[[RUFavoritesDynamicHandoffViewController alloc] initWithPathComponents:components title:destinationTitle]];
     }
 }
 

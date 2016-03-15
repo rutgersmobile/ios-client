@@ -47,7 +47,6 @@
 }
 
 -(void)configureTitleWithDiningHall:(NSDictionary *)diningHall {
-    
     NSDate *date = [NSDate dateWithEpochTime:diningHall[@"date"]];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -55,13 +54,14 @@
     
     NSString *dateString = [dateFormatter stringFromDate:date];
     
-    self.title = [NSString stringWithFormat:@"%@ (%@)", [self.diningHall diningHallShortName], dateString];
+    self.title = [NSString stringWithFormat:@"%@ (%@)", [diningHall diningHallShortName], dateString];
 }
 
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error {
     RUDiningHallDataSource *diningHallDataSource = (RUDiningHallDataSource *)dataSource;
     if (diningHallDataSource.diningHall) {
         [self configureTitleWithDiningHall:diningHallDataSource.diningHall];
+        [self configureSegmentedControl];
     }
 }
 

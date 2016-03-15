@@ -15,7 +15,7 @@
     
     for (NSString *component in pathComponents) {
         NSString *escapedComponent = component.rutgersStringEscape;
-        [string appendFormat: @"%@/", escapedComponent];
+        [string stringByAppendingPathComponent:escapedComponent];
     }
     
     return [NSURL URLWithString:string];

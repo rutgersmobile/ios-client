@@ -7,6 +7,7 @@
 //
 
 #import "RUUserInfoManager.h"
+#import "NSDictionary+Channel.h"
 
 @implementation NSDictionary (Channel)
 

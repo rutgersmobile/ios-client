@@ -17,4 +17,6 @@
  *  @return A dictionary containing details about segment that was selected
  */
 -(NSDictionary *)userInteractionForSegmentAtIndex:(NSInteger)segmentIndex;
+
+-(void)configureSegmentedControl;
 @end

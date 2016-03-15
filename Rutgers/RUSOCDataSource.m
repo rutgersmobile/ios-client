@@ -14,6 +14,7 @@
 
 @interface RUSOCDataSource ()
 @property (nonatomic) NSArray *sectionIndexTitles;
+@property (nonatomic) UILocalizedIndexedCollation *collation;
 @end
 
 @implementation RUSOCDataSource
@@ -22,6 +23,7 @@
     self = [super init];
     if (self) {
         self.title = @"Subjects";
+        self.collation = [UILocalizedIndexedCollation currentCollation];
     }
     return self;
 }
@@ -29,22 +31,25 @@
 -(void)setItems:(NSArray *)items{
     NSMutableDictionary *sectionIndexMapping = [NSMutableDictionary dictionary];
     for (DataTuple *item in items) {
-        NSString *letter = [[item.title substringToIndex:1] capitalizedString];
-        NSMutableArray *section = sectionIndexMapping[letter];
+        NSInteger index = [self.collation sectionForObject:item collationStringSelector:@selector(title)];
+        NSString *indexTitle = self.collation.sectionIndexTitles[index];
+        NSMutableArray *section = sectionIndexMapping[indexTitle];
         if (!section) {
             section = [NSMutableArray array];
-            sectionIndexMapping[letter] = section;
+            sectionIndexMapping[indexTitle] = section;
         }
         [section addObject:item];
     }
     
-    NSArray *sectionIndexTitles = [sectionIndexMapping.allKeys sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    NSArray *sectionIndexTitles = self.collation.sectionIndexTitles;
     _sectionIndexTitles = sectionIndexTitles;
   
     [self removeAllDataSources];
 
-    for (NSString *letter in sectionIndexTitles) {
-        [self addDataSource:[[TupleDataSource alloc] initWithItems:sectionIndexMapping[letter]]];
+    for (NSString *indexTitle in sectionIndexTitles) {
+        TupleDataSource *dataSource = [[TupleDataSource alloc] initWithItems:sectionIndexMapping[indexTitle]];
+        dataSource.title = indexTitle;
+        [self addDataSource:dataSource];
     }
 }
 
@@ -57,21 +62,18 @@
     return NSStringFromClass([ALTableViewTextCell class]);
 }
 
+/*
 -(NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     return self.sectionIndexTitles;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
     return index;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return self.sectionIndexTitles[section];
-}
+}*/
 
 -(void)loadContent{
     [self removeAllDataSources];
-
+    
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [[RUSOCDataLoadingManager sharedInstance] getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
             if (!loading.current) {

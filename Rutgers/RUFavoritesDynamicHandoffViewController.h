@@ -9,5 +9,6 @@
 #import "TableViewController.h"
 
 @interface RUFavoritesDynamicHandoffViewController : TableViewController
-
+-(instancetype)init NS_UNAVAILABLE;
+-(instancetype)initWithPathComponents:(NSArray *)pathComponents title:(NSString *)title;
 @end

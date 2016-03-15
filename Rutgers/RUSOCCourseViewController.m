@@ -53,10 +53,6 @@
                                                  ]];
 }
 
--(NSString *)handle{
-    return @"soc";
-}
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[RUSOCSectionRow class]]) {

@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, BetaMode) {
     BetaModeProduction
 };
 
-static BetaMode const betaMode = BetaModeBeta;
+static BetaMode const betaMode = BetaModeProduction;
 
 extern BOOL isBeta();
 

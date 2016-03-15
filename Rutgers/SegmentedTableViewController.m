@@ -126,7 +126,11 @@
     if ([self.dataSource isEqual:dataSource]) return;
     [super setDataSource:dataSource];
     
-    SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)dataSource;
+    [self configureSegmentedControl];
+}
+
+-(void)configureSegmentedControl {
+    SegmentedDataSource *segmentedDataSource = (SegmentedDataSource*)self.dataSource;
     [segmentedDataSource configureSegmentedControl:self.segmentedControl];
     [self.segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged:) forControlEvents:UIControlEventValueChanged];
     [self setupSegmentedControlWidth:self.segmentedControl];

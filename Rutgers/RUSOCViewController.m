@@ -26,6 +26,7 @@
 +(NSString *)channelHandle{
     return @"soc";
 }
+
 +(void)load{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
@@ -45,12 +46,15 @@
     self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search Subjects and Courses";
     
+    self.tableView.sectionIndexMinimumDisplayRowCount = 20;
+    
     [((RUSOCSearchDataSource *)self.searchDataSource) setNeedsLoadIndex];
     
     [self setInterfaceEnabled:NO animated:NO];
 }
 
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
+    [super dataSource:dataSource didLoadContentWithError:error];
     if (!error) {
         self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
         [self setInterfaceEnabled:YES animated:YES];
@@ -102,6 +106,10 @@
 -(void)optionsViewControllerDidChangeOptions:(RUSOCOptionsViewController *)optionsViewController{
     self.optionsDidChange = YES;
     self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
+}
+
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents{
+    return nil;
 }
 
 @end

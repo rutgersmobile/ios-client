@@ -10,13 +10,15 @@
 #import "ComposedDataSource.h"
 #import "StringDataSource.h"
 #import "RUFoodDataLoadingManager.h"
+#import "DataSource_Private.h"
+#import "ALTableViewTextCell.h"
 
 @interface RUDiningHallDataSource ()
 @property (nonatomic) NSString *serializedDiningHall;
 @end
 
 @implementation RUDiningHallDataSource
--(instancetype)initWithDiningHall:(DataTuple *)diningHall{
+-(instancetype)initWithDiningHall:(NSDictionary *)diningHall{
     self = [super init];
     if (self) {
         self.diningHall = diningHall;
@@ -33,7 +35,13 @@
     return self;
 }
 
--(void)setupWithDiningHall:(DataTuple *)diningHall {
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView{
+    [super registerReusableViewsWithTableView:tableView];
+    [tableView registerClass:[ALTableViewTextCell class] forCellReuseIdentifier:NSStringFromClass([ALTableViewTextCell class])];
+}
+
+-(void)setupWithDiningHall:(NSDictionary *)diningHall {
+    NSMutableArray *dataSources = [NSMutableArray array];
     for (NSDictionary *meal in diningHall[@"meals"]) {
         if (![meal[@"meal_avail"] boolValue]) continue;
         
@@ -46,6 +54,7 @@
             [mealDataSource addDataSource:genreDataSource];
         }
         
+        [dataSources addObject:mealDataSource];
         [self addDataSource:mealDataSource];
     }
 }
@@ -60,8 +69,8 @@
        [[RUFoodDataLoadingManager sharedInstance] getSerializedDiningHall:self.serializedDiningHall withCompletion:^(DataTuple *diningHall, NSError *error) {
            if (diningHall) {
                [loading updateWithContent:^(typeof(self) me) {
-                   me.diningHall = diningHall;
-                   [me setupWithDiningHall:diningHall];
+                   me.diningHall = diningHall.object;
+                   [me setupWithDiningHall:diningHall.object];
                }];
            } else {
                [loading doneWithError:error];

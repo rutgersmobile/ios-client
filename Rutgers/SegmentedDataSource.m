@@ -27,7 +27,10 @@
 
 #pragma mark - Segmented Data Source Interface
 -(void)addDataSource:(DataSource *)dataSource{
-    if (![self.dataSources count]) _selectedDataSource = dataSource;
+    if (![self.dataSources count]) {
+        _selectedDataSource = dataSource;
+        [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataSource.numberOfSections)]];
+    }
     [self.dataSources addObject:dataSource];
     dataSource.delegate = self;
 }
