@@ -7,7 +7,9 @@
 //
 
 #import "TableViewController.h"
+#import "RUSOCDataLoadingManager.h"
 
 @interface RUSOCCourseViewController : TableViewController
 -(instancetype)initWithCourse:(NSDictionary *)course;
+@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
 @end

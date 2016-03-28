@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "RUDataLoadingManager.h"
+#import "RUSOCDataLoadingManager.h"
 
 @interface RUSOCSearchIndex : RUDataLoadingManager
 @property (nonatomic) NSDictionary *ids;
 @property (nonatomic) NSDictionary *subjects;
 @property (nonatomic) NSDictionary *courses;
 @property (nonatomic) NSDictionary *abbreviations;
+@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
 @end

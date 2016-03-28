@@ -22,9 +22,16 @@
     return self;
 }
 
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
+}
+
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUSOCDataLoadingManager sharedInstance] getCoursesForSubjectCode:self.subjectCode completion:^(NSArray *courses, NSError *error) {
+        [self.dataLoadingManager getCoursesForSubjectCode:self.subjectCode completion:^(NSArray *courses, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;
