@@ -10,6 +10,8 @@
 //#import "RUDataLoadingManager.h"
 
 @interface RUSOCDataLoadingManager : NSObject
++(instancetype)managerForSemesterTag:(NSString *)semesterTag campusTag:(NSString *)campusTag levelTag:(NSString *)levelTag;
+
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *subjects, NSError *error))handler;
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *courses, NSError *error))handler;

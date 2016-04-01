@@ -28,6 +28,13 @@
     return self;
 }
 
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -38,7 +45,7 @@
 }
 
 -(NSURL *)sharingURL{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
+    RUSOCDataLoadingManager *manager = self.dataLoadingManager;
  
     NSString *subjectCode = self.course[@"subjectCode"];
     if (!subjectCode) subjectCode = self.course[@"subject"];
@@ -58,7 +65,15 @@
     if ([item isKindOfClass:[RUSOCSectionRow class]]) {
         RUSOCSectionRow *sectionRow = [self.dataSource itemAtIndexPath:indexPath];
         
-        NSDictionary *channel = @{@"title" : @"WebReg", @"view" : @"www", @"url" :[NSString stringWithFormat:@"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",[RUSOCDataLoadingManager sharedInstance].semester[@"tag"],sectionRow.section[@"index"]]};
+        NSDictionary *channel = @{
+                                  @"title" : @"WebReg",
+                                  @"view" : @"www",
+                                  @"url" :[NSString stringWithFormat:
+                                           @"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",
+                                           self.dataLoadingManager.semester[@"tag"],
+                                           sectionRow.section[@"index"]
+                                           ]
+                                  };
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
     } else if ([item isKindOfClass:[DataTuple class]]) {
         DataTuple *tuple = item;

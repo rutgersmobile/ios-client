@@ -48,12 +48,12 @@ class RUFavoritesDynamicHandoffDataSource: DataSource {
     }
 }
 
-enum RutgersError: ErrorType {
+public enum RutgersError: ErrorType {
     case InvalidPathComponent
     case InvalidPath
 }
 
-let RutgersErrorDomain = "RutgersErrorDomain"
+public let RutgersErrorDomain = "RutgersErrorDomain"
 
 public extension NSError {
     convenience init(invalidPathComponent: String) {

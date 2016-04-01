@@ -15,6 +15,7 @@
 @interface RUSOCDataSource ()
 @property (nonatomic) NSArray *sectionIndexTitles;
 @property (nonatomic) UILocalizedIndexedCollation *collation;
+@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
 @end
 
 @implementation RUSOCDataSource
@@ -26,6 +27,13 @@
         self.collation = [UILocalizedIndexedCollation currentCollation];
     }
     return self;
+}
+
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
 }
 
 -(void)setItems:(NSArray *)items{
@@ -75,7 +83,7 @@
     [self removeAllDataSources];
     
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUSOCDataLoadingManager sharedInstance] getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
+        [self.dataLoadingManager getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {
             if (!loading.current) {
                 [loading ignore];
                 return;

@@ -27,7 +27,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.dataSource = [[RUFavoritesDynamicHandoffDataSource alloc] initWithPathComponents:self.pathComponents];
+    
+    NSMutableArray *remainingComponents = [self.pathComponents mutableCopy];
+    NSString *handle = remainingComponents.firstObject;
+    [remainingComponents removeObjectAtIndex:0];
+    
+    self.dataSource = [[RUFavoritesDynamicHandoffDataSource alloc] initWithHandle:handle pathComponents:remainingComponents];
 }
 
 - (void)didReceiveMemoryWarning {

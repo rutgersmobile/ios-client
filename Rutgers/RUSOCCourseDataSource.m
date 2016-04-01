@@ -19,6 +19,7 @@
 @property (nonatomic) RUSOCCourseSectionsDataSource *sectionsDataSource;
 @property (nonatomic) RUSOCCourseHeaderDataSource *headerDataSource;
 @property (nonatomic) BOOL initialLoadComplete;
+@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
 @end
 
 @implementation RUSOCCourseDataSource
@@ -30,6 +31,13 @@
         self.sectionsDataSource = [[RUSOCCourseSectionsDataSource alloc] init];
     }
     return self;
+}
+
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
 }
 
 -(void)loadContent{
@@ -45,7 +53,7 @@
             NSString *subjectCode = self.course[@"subjectCode"];
             if (!subjectCode) subjectCode = self.course[@"subject"];
             
-            [[RUSOCDataLoadingManager sharedInstance] getCourseForSubjectCode:subjectCode courseCode:self.course[@"courseNumber"] completion:^(NSDictionary *course, NSError *error) {
+            [self.dataLoadingManager getCourseForSubjectCode:subjectCode courseCode:self.course[@"courseNumber"] completion:^(NSDictionary *course, NSError *error) {
                 if (!loading.current) {
                     [loading ignore];
                     return;

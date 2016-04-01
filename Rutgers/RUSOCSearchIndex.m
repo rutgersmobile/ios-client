@@ -21,9 +21,16 @@
     return self;
 }
 
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
+}
+
 -(void)load{
     [self willBeginLoad];
-    [[RUSOCDataLoadingManager sharedInstance] getSearchIndexWithCompletion:^(NSDictionary *index, NSError *error) {
+    [self.dataLoadingManager getSearchIndexWithCompletion:^(NSDictionary *index, NSError *error) {
         if (index) {
             [self parseIndex:index];
             [self didEndLoad:YES withError:nil];

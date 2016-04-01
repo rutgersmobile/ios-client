@@ -19,6 +19,7 @@
 		0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9881A69C95500344828 /* MiniMapDataSource.m */; };
 		042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 042C302A1A7974E10034F89E /* LegalDataSource.m */; };
 		042C302E1A7977AA0034F89E /* legal in Resources */ = {isa = PBXBuildFile; fileRef = 042C302D1A7977AA0034F89E /* legal */; };
+		042E7BC01C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 042E7BBF1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m */; };
 		044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */; };
 		046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */; };
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
@@ -268,6 +269,8 @@
 		042C30291A7974E10034F89E /* LegalDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegalDataSource.h; sourceTree = "<group>"; };
 		042C302A1A7974E10034F89E /* LegalDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegalDataSource.m; sourceTree = "<group>"; };
 		042C302D1A7977AA0034F89E /* legal */ = {isa = PBXFileReference; lastKnownFileType = folder; path = legal; sourceTree = "<group>"; };
+		042E7BBE1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFavoritesErrorViewController.h; sourceTree = "<group>"; };
+		042E7BBF1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFavoritesErrorViewController.m; sourceTree = "<group>"; };
 		044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		046555F01C3C581D00CAF833 /* NSURL+RUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RUAdditions.h"; sourceTree = "<group>"; };
 		046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RUAdditions.m"; sourceTree = "<group>"; };
@@ -735,6 +738,18 @@
 			name = model;
 			sourceTree = "<group>";
 		};
+		042E7BBB1C9C7C8C0036EC58 /* favorites */ = {
+			isa = PBXGroup;
+			children = (
+				04C0D29D1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.h */,
+				04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */,
+				04C0D2CF1C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift */,
+				042E7BBE1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.h */,
+				042E7BBF1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m */,
+			);
+			name = favorites;
+			sourceTree = "<group>";
+		};
 		047D06DC1BE16DB600DFEAA3 /* RutgersUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1076,6 +1091,7 @@
 		A75B0AAD1909A3EA00A57149 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				042E7BBB1C9C7C8C0036EC58 /* favorites */,
 				A7B970D3192161B10070A414 /* channels */,
 				A731C38D193FBC5600E9E7E0 /* managers */,
 				A7E8E12D192464970089F166 /* Utils */,
@@ -1438,9 +1454,6 @@
 				A7177BAD199DC0CD0092126F /* RUNavigationController.m */,
 				049425001B3A07B500BE570C /* RUSplitViewController.h */,
 				049425011B3A07B500BE570C /* RUSplitViewController.m */,
-				04C0D29D1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.h */,
-				04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */,
-				04C0D2CF1C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift */,
 				04C0D2981C7E4B3900FEF0D7 /* Rutgers-Bridging-Header.h */,
 			);
 			name = Utils;
@@ -1929,6 +1942,7 @@
 				A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */,
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
 				04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */,
+				042E7BC01C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m in Sources */,
 				A72FFFB21937C55F00016C89 /* RUSOCDataLoadingManager.m in Sources */,
 				A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */,
 				A7EA4C58197D6C2900E972DD /* BasicDataSource.m in Sources */,

@@ -16,10 +16,12 @@
 #import "DataTuple.h"
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
+#import "RUFavoritesErrorViewController.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate, RUSOCOptionsDelegate>
 @property (nonatomic) UIBarButtonItem *optionsButton;
 @property BOOL optionsDidChange;
+@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
 @end
 
 @implementation RUSOCViewController
@@ -33,6 +35,13 @@
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStylePlain];
+}
+
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
 }
 
 - (void)viewDidLoad
@@ -56,7 +65,7 @@
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
     [super dataSource:dataSource didLoadContentWithError:error];
     if (!error) {
-        self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
+        self.title = self.dataLoadingManager.titleForCurrentConfiguration;
         [self setInterfaceEnabled:YES animated:YES];
     }
 }
@@ -71,7 +80,6 @@
     if (self.optionsDidChange) {
         [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     }
-
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -92,9 +100,11 @@
    
     if (item.object[@"courseNumber"]) {
         RUSOCCourseViewController *courseVC = [[RUSOCCourseViewController alloc] initWithCourse:item.object];
+        courseVC.dataLoadingManager = self.dataLoadingManager;
         [self.navigationController pushViewController:courseVC animated:YES];
     } else {
         RUSOCSubjectViewController *subjectVC = [[RUSOCSubjectViewController alloc] initWithSubject:item.object];
+        subjectVC.dataLoadingManager = self.dataLoadingManager;
         [self.navigationController pushViewController:subjectVC animated:YES];
     }
 }
@@ -108,8 +118,38 @@
     self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
 }
 
-+(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents{
-    return nil;
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title{
+    if (pathComponents.count < 4) return @[[[RUFavoritesErrorViewController alloc] init]];
+    
+    NSString *semester = pathComponents[0];
+    NSString *campus = pathComponents[1];
+    NSString *level = pathComponents[2];
+    NSString *subjectCode = pathComponents[3];
+    NSString *courseNumber;
+    
+    if (pathComponents.count > 4) { courseNumber = pathComponents[4]; }
+    
+    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
+    if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
+    
+    if (courseNumber) {
+        NSDictionary *course = @{
+                                 @"subjectCode": subjectCode,
+                                 @"courseNumber": courseNumber,
+                                 @"title": title
+                                 };
+        RUSOCCourseViewController *vc = [[RUSOCCourseViewController alloc] initWithCourse:course];
+        vc.dataLoadingManager = manager;
+        return @[vc];
+    } else {
+        NSDictionary *subject = @{
+                                  @"code": subjectCode,
+                                  @"description": title
+                                  };
+        RUSOCSubjectViewController *vc = [[RUSOCSubjectViewController alloc] initWithSubject:subject];
+        vc.dataLoadingManager = manager;
+        return @[vc];
+    }
 }
 
 @end

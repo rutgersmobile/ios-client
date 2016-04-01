@@ -27,8 +27,15 @@
     return self;
 }
 
+-(RUSOCDataLoadingManager *)dataLoadingManager{
+    if (!_dataLoadingManager) {
+        return [RUSOCDataLoadingManager sharedInstance];
+    }
+    return _dataLoadingManager;
+}
+
 -(NSURL *)sharingURL{
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager sharedInstance];
+    RUSOCDataLoadingManager *manager = self.dataLoadingManager;
     return [NSURL rutgersUrlWithPathComponents:@[
                                                  @"soc",
                                                  manager.semester[@"tag"],
@@ -46,6 +53,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     RUSOCCourseRow *row = [self.dataSource itemAtIndexPath:indexPath];
-    [self.navigationController pushViewController:[[RUSOCCourseViewController alloc] initWithCourse:row.course] animated:YES];
+    RUSOCCourseViewController *courseVC = [[RUSOCCourseViewController alloc] initWithCourse:row.course];
+    courseVC.dataLoadingManager = self.dataLoadingManager;
+    [self.navigationController pushViewController:courseVC animated:YES];
 }
 @end
