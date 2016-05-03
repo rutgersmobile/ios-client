@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+   
+    Descript : 
+        Talks back to the server with the data about the usage by the app
+ 
+ */
+
 #import "RUAnalyticsManager.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
@@ -13,8 +20,8 @@
 #import "RUDefines.h"
 
 @interface RUAnalyticsManager ()
-@property NSMutableArray *queue;
-@property NSTimer *flushTimer;
+@property NSMutableArray *queue;   // Used to keep a queue about the event that take place in the app : Like which channel is being opened etc.
+@property NSTimer *flushTimer;      // Maintains time interval for which to collect user information and at the end of the time, send the queue contents to postAnalytics
 
 //This property is backed by persistent storage
 @property BOOL firstLaunch;
@@ -124,6 +131,16 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvent:event];
 }
 
+
+/*
+    add each channel that is opened into base Event
+    // Not sure if this is done for each channel , or whether it is done only during start up . Make Sure ... 
+    Descript : 
+        Seems to add information about open channel to base event and add it to the queue
+        and the queue is posted to internet as json after a specific time interval
+ 
+    // Should each event be send to the servers ?
+ */
 -(void)queueEventForChannelOpen:(NSDictionary *)channel{
     NSString *channelHandle = [channel channelHandle];
     if (!channelHandle) return;
@@ -146,6 +163,9 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     NSLog(@"%@",event);*/
 }
 
+/*
+    Dict with some basic information about the app and its user.
+ */
 -(NSMutableDictionary *)baseEvent{
     NSMutableDictionary *baseEvent = [@{
                                        @"date" : [NSString stringWithFormat:@"@%ld",((long)[NSDate date].timeIntervalSince1970)], //Unix timestamp
@@ -181,9 +201,14 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
              };
 }
 
+/*
+    Queue mulitple events using mutex lock
+ 
+    Add each event into the queue
+ */
 -(void)queueAnalyticsEvents:(NSArray *)events{
     @synchronized (self) {
-        [self.queue addObjectsFromArray:events];
+        [self.queue addObjectsFromArray:events];    // add the array to the queue
         [self resetFlushTimer];
     }
 }
@@ -192,6 +217,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     [self queueAnalyticsEvents:@[event]];
 }
 
+// Reset the timer to set up the next interval over which to send the event...
 -(void)resetFlushTimer{
     @synchronized(self) {
         [self.flushTimer invalidate];
@@ -209,9 +235,19 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     });
 }
 
+
+
+/*
+    Send the event over the network , if failure stores it for next attempt at sending
+    
+    LOOK AT :   
+        analytics.php
+ 
+    Data send as Json
+ */
 -(void)postAnalyticsEvents:(NSArray *)events{
     if (!events.count) return;
-    
+    // Convert the event array into Json
     [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Analytics sent successfully");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -222,6 +258,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     }];
 }
 
+// Creates the json serialization
 -(NSString *)jsonStringForObject:(id)object{
     NSData *data = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];

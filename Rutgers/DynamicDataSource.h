@@ -13,4 +13,5 @@
  */
 @interface DynamicDataSource : BasicDataSource
 -(instancetype)initWithChannel:(NSDictionary *)channel NS_DESIGNATED_INITIALIZER;
+@property NSDictionary *channel;
 @end

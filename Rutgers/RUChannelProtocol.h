@@ -6,6 +6,16 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+/*
+ Descript : 
+         Used to locate which view to show to the user : 
+       
+        May be used from the sidebar to obtian the particular view controller
+ 
+ 
+ */
+
 #import <Foundation/Foundation.h>
 
 @protocol RUChannelProtocol <NSObject>

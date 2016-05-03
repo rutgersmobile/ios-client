@@ -12,10 +12,6 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 
-@interface DynamicDataSource ()
-@property NSDictionary *channel;
-@end
-
 @implementation DynamicDataSource
 
 -(instancetype)initWithChannel:(NSDictionary *)channel{

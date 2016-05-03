@@ -6,6 +6,14 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+    Descripts : 
+        Set up the Root View Controller
+ 
+ 
+ 
+ */
+
 #import "RUAppDelegate.h"
 #import "XMLDictionary.h"
 #import "RUMOTDManager.h"

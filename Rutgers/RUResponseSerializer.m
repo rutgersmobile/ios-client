@@ -6,6 +6,12 @@
 //  Copyright (c) 2015 Rutgers. All rights reserved.
 //
 
+/*
+    Descrpit : 
+            Serialize JSON and XML to do : 
+            what ? 
+ */
+
 #import "RUResponseSerializer.h"
 #import "AFXMLResponseSerializer.h"
 

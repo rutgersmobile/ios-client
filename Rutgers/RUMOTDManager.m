@@ -6,6 +6,16 @@
 //  Copyright (c) 2015 Rutgers. All rights reserved.
 //
 
+/*
+    Descript : 
+        Deals with Netorking ??
+    Ask Aaron MOTD
+ 
+ 
+ Shared Manager :
+ 
+ 
+ */
 #import "RUMOTDManager.h"
 #import "RUNetworkManager.h"
 #import "RUChannelManager.h"

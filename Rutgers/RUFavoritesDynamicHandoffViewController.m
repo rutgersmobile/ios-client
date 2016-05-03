@@ -11,14 +11,16 @@
 #import "Rutgers-Swift.h"
 
 @interface RUFavoritesDynamicHandoffViewController ()
+@property (nonatomic) NSString *handle;
 @property (nonatomic) NSArray *pathComponents;
 @end
 
 @implementation RUFavoritesDynamicHandoffViewController
--(instancetype)initWithPathComponents:(NSArray *)pathComponents title:(NSString *)title{
+-(instancetype)initWithHandle:(NSString *)handle pathComponents:(NSArray *)pathComponents title:(NSString *)title{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = title;
+        self.handle = handle;
         self.pathComponents = pathComponents;
     }
     return self;
@@ -26,18 +28,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
-    NSMutableArray *remainingComponents = [self.pathComponents mutableCopy];
-    NSString *handle = remainingComponents.firstObject;
-    [remainingComponents removeObjectAtIndex:0];
-    
-    self.dataSource = [[RUFavoritesDynamicHandoffDataSource alloc] initWithHandle:handle pathComponents:remainingComponents];
+    self.dataSource = [[RUFavoritesDynamicHandoffDataSource alloc] initWithHandle:self.handle pathComponents:self.pathComponents];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error {
+    RUFavoritesDynamicHandoffDataSource *handoffDataSource = (RUFavoritesDynamicHandoffDataSource *)dataSource;
+    NSDictionary *result = handoffDataSource.result;
+    if (result) {
+        UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:result];
+        vc.navigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem;
+        
+        [self.navigationController setViewControllers:@[vc]];
+    }
 }
 
 /*

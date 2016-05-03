@@ -6,6 +6,12 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+    Descript : 
+        Convert The XML file into a NSDict 
+ */
+
+
 #import "AFXMLResponseSerializer.h"
 #import "XMLDictionary.h"
 @implementation AFXMLResponseSerializer

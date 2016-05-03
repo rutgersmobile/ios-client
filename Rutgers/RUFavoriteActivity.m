@@ -10,6 +10,13 @@
 #import "RUUserInfoManager.h"
 #import "RUChannelManager.h"
 
+/*
+ Descript : 
+        Main favourite things on app ?
+ 
+ 
+ */
+
 @interface RUFavoriteActivity ()
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSURL *urlToFavorite;

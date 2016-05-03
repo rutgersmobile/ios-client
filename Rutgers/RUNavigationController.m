@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+    Descript: 
+            Might function as the nav controller on which everything is based ? 
+ */
+
 #import "RUNavigationController.h"
 
 @implementation RUNavigationController

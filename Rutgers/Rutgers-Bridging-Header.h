@@ -6,3 +6,6 @@
 #import "DataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
+#import "DynamicDataSource.h"
+#import "RUReaderDataSource.h"
+#import "NSURL+RUAdditions.h"

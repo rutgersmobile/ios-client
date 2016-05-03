@@ -10,5 +10,5 @@
 
 @interface RUFavoritesDynamicHandoffViewController : TableViewController
 -(instancetype)init NS_UNAVAILABLE;
--(instancetype)initWithPathComponents:(NSArray *)pathComponents title:(NSString *)title;
+-(instancetype)initWithHandle:(NSString *)handle pathComponents:(NSArray *)pathComponents title:(NSString *)title;
 @end

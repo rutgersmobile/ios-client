@@ -8,57 +8,97 @@
 
 import UIKit
 
-class RUFavoritesDynamicHandoffDataSource: DataSource {
-    let pathComponents: [String]
+class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
+    var remainingPathComponents: [String]
     let handle: String
     
-    var result: NSDictionary?
+    var currentDataSource: DynamicDataSource
+    
+    var resultTitle: String?
+    var result: [NSObject: AnyObject]?
+    var error: ErrorType?
+    
+    var loading: AAPLLoading?
     
     init(handle: String, pathComponents: [String]) {
         self.handle = handle
-        self.pathComponents = pathComponents
+        self.remainingPathComponents = pathComponents
+        let currentChannel = RUChannelManager.sharedInstance().channelWithHandle(handle)
+        currentDataSource = DynamicDataSource(channel: currentChannel)
     }
     
     override func loadContent() {
         loadContentWithBlock { loading in
-            do {
-                let channel = try self.findChannelForPathComponents(self.pathComponents)
-                loading.updateWithContent { weakSelf in
-                    (weakSelf as! RUFavoritesDynamicHandoffDataSource).result = channel
-                }
-            } catch {
-                loading.doneWithError(error as NSError)
-            }
+            self.loading = loading
+            self.startIteration()
         }
     }
     
-    func findChannelForPathComponents(pathComponents: [String]) throws -> NSDictionary {
-        guard pathComponents.count > 0 else { throw RutgersError.InvalidPath }
+    func startIteration() {
+        currentDataSource.delegate = self
+        currentDataSource.loadContent()
+    }
+    
+    func finishWithDataSource(dataSource: DynamicDataSource) {
+        self.result = dataSource.channel
+        self.loading?.done()
+        self.loading = nil
+    }
+    
+    func finishWithError(error: ErrorType?) {
+        if error is DynamicFavoriteError {
+            self.errorTitle = "Favorites Error"
+            self.errorMessage = "Your favorite could not be loaded"
+            self.errorButtonTitle = nil
+        }
         
-        var mutableComponents = pathComponents
-        let component = mutableComponents.removeFirst()
-        
-        let channel = RUChannelManager.sharedInstance().channelWithHandle(component) as NSDictionary
-        
-        let url = channel.channelURL
-        
-        
-        
-        throw RutgersError.InvalidPath
+        self.error = error
+        self.loading?.doneWithError(error as? NSError)
+        self.loading = nil
+    }
+    
+    func dataSource(dataSource: DataSource!, didLoadContentWithError error: NSError!) {
+        do {
+            try findMatchingSubItemInDataSource(dataSource)
+        } catch {
+            finishWithError(error)
+        }
+    }
+    
+    func findMatchingSubItemInDataSource(dataSource: DataSource) throws {
+        if let dataSource = dataSource as? BasicDataSource {
+            let nextComponent = remainingPathComponents.removeFirst()
+            guard let currentItem = dataSource.subitemMatchingPathComponent(nextComponent),
+            channel = currentItem["channel"] as? [NSObject: AnyObject] else { throw DynamicFavoriteError.InvalidPathComponent }
+            
+            currentDataSource = DynamicDataSource(channel: channel)
+            
+            if remainingPathComponents.count == 0 {
+                finishWithDataSource(currentDataSource)
+            } else {
+                startIteration()
+            }
+            print(dataSource.items)
+        }
     }
 }
 
-public enum RutgersError: ErrorType {
+extension BasicDataSource {
+    func subitemMatchingPathComponent(pathComponent: String) -> [NSObject: AnyObject]? {
+        for case let subItem as NSDictionary in items {
+            guard let title = subItem.channelTitle else { continue }
+            let normalizedTitle = (title as NSString).rutgersStringEscape()
+            if normalizedTitle == pathComponent {
+                
+                return subItem as? [NSObject: AnyObject]
+            }
+        }
+        return nil
+    }
+}
+
+public enum DynamicFavoriteError: ErrorType {
     case InvalidPathComponent
     case InvalidPath
 }
-
-public let RutgersErrorDomain = "RutgersErrorDomain"
-
-public extension NSError {
-    convenience init(invalidPathComponent: String) {
-        self.init(domain: RutgersErrorDomain, code: 666, userInfo: ["pathComponent": invalidPathComponent])
-    }
-}
-
 

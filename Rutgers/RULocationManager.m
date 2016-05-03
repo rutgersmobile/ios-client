@@ -75,7 +75,7 @@ NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotification
 }
 
 /**
- *  Notify the delegates of location updates
+ *  Notify the delegates of location updates 
  *
  *  @param manager   The shared manager that has updated
  *  @param locations An array of location updates, the most recent of which will be relayed to any observers

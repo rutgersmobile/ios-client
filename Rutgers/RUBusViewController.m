@@ -6,6 +6,23 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+        Descripts : Verbose         
+            Set up the initial Table View Contoller On Tapping the Bus Icon
+            On tapping Cell Segues into predictions page
+ 
+ 
+            Function Of Timer : 
+                May be Used for updating Prediction based on predefined text rather than using a web api ?
+ 
+        To Do :     
+            Convert this into a map
+
+ 
+ */
+
+
+
 #import "RUBusViewController.h"
 #import "RUBusDataSource.h"
 #import "BusSearchDataSource.h"
@@ -26,6 +43,11 @@
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
+
+/*
+    Descript :
+    Since each of the View Controller are Handled by a Generic Channel , this functions allows us to set up specific Configurations for a particular View Controller...
+ */
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithStyle:UITableViewStylePlain];
 }
@@ -58,6 +80,12 @@
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
 }
 
+/*
+    Descript : 
+        Part of the Channel ? 
+ 
+ 
+ */
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
     RUPredictionsViewController *viewController = [[RUPredictionsViewController alloc] initWithSerializedItem:pathComponents title:destinationTitle];
     return @[viewController];

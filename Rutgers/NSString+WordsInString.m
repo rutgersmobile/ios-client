@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+  Descript : 
+        Extract the words in a string in an NSArray 
+
+ */
+
+
 #import "NSString+WordsInString.h"
 
 @implementation NSString (WordsInString)

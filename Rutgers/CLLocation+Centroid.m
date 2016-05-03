@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+    Descript : 
+        Centroid of an array locations
+        Calculated by adding the lat and div by # locations
+        Same for long
+ */
+
 #import "CLLocation+Centroid.h"
 
 @implementation CLLocation (Centroid)

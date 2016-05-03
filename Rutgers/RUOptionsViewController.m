@@ -18,6 +18,10 @@
 @end
 
 @implementation RUOptionsViewController
+/*
+    Descript : 
+        This is
+ */
 +(NSString *)channelHandle{
     return @"options";
 }

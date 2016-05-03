@@ -6,6 +6,14 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+/*
+    Descript : 
+        Called When the App Loads   
+        The Other Class register with this class
+ 
+ 
+ */
 #import "NSDictionary+Channel.h"
 #import "RUDataLoadingManager_Private.h"
 #import "RUNetworkManager.h"
@@ -30,6 +38,13 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 @implementation RUChannelManager
 
+/*
+    
+    Find : 
+        What does the shared signify ?
+ 
+ 
+ */
 +(RUChannelManager *)sharedInstance{
     static RUChannelManager *manager = nil;
     static dispatch_once_t onceToken;
@@ -52,7 +67,14 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
     return _otherChannels;
 }
-
+/*
+  Extracts files from path and takes tye latest files and creates Json Objects out of them 
+  Thread safe : 
+ 
+@result : array containing json objects
+ 
+ 
+ */
 @synthesize contentChannels = _contentChannels;
 -(NSArray *)contentChannels{
     @synchronized(self) {
@@ -86,7 +108,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
 }
 
-
+/*
+  Find a paritcular data in either the content channels or the other channels
+ 
+ @return NSDict : of Data ?
+ */
 -(NSDictionary *)channelWithHandle:(NSString *)handle{
     for (NSDictionary *channel in self.contentChannels) {
         if ([[channel channelHandle] isEqualToString:handle]) {
@@ -100,6 +126,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
     return nil;
 }
+
+
 
 -(void)setContentChannels:(NSArray *)allChannels{
     if (!allChannels.count) return;
@@ -152,11 +180,30 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }];
 }
 
+
+/*
+    Usees the ViewTagstToClassNa..Map.. to find the string from the view controller and NSClassFromStr.. to obtain the actual Class / VIew Controller
+    Handled by iOS. The ViewContr.. has to be loaded before use..
+ 
+ */
 -(Class)classForViewTag:(NSString *)viewTag{
     NSString *className = [self viewTagsToClassNameMapping][viewTag];
     return NSClassFromString(className);
 }
 
+
+/*
+    Descript  : 
+ 
+    Each View Controller Has a tag and this tag is used and  filled in the viewTags... dictionary.
+    
+    The Tagging is done between a keyword and the name of the view controller :: 
+    eg : tag : bus
+        className : RUBusViewController
+ 
+    Find :
+        How is this populated
+ */
 -(NSMutableDictionary *)viewTagsToClassNameMapping{
     static NSMutableDictionary *viewTagsToClassNameMapping = nil;
     static dispatch_once_t onceToken;
@@ -166,28 +213,41 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return viewTagsToClassNameMapping;
 }
 
+
+/*
+    Descript : 
+            Different Views / CLasses like "options , ruifo " loads and registers with this class
+ 
+ 
+ */
 -(void)registerClass:(Class)class{
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) {
         NSLog(@"Trying to register class with channel manager that does not conform to RUChannelProtocol");
         return;
     }
-    NSString *handle = [class performSelector:@selector(channelHandle)];
-    [self viewTagsToClassNameMapping][handle] = NSStringFromClass(class);
+    NSString *handle = [class performSelector:@selector(channelHandle)];  // call channelHandle to obtain the class name
+    [self viewTagsToClassNameMapping][handle] = NSStringFromClass(class);  // use ios to convert class name into an acutal class instance
 }
 
+/*
+    Creates the View Controller For the seperate channels ..
+    Called by differnt channels to create the seperate view controllers ...
+ */
 -(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];
     });
     
+    // Obtains the Identifier for the Current VC from the channel and then uses it to create the view controller for the channel
     NSString *view = channel[@"view"];
     if (!view) view = [self defaultViewForChannel:channel];
     Class class = [self classForViewTag:view];
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
     
+    // Sets the required property for the particular View Controller. Since they are all initialized in a generic manner , this step adds additional configurations
     UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
-    vc.title = [channel channelTitle];
+    vc.title = [channel channelTitle];  // VC obtains the title from the Generic channel
     return vc;
 }
 
@@ -209,10 +269,18 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     if ([class respondsToSelector:@selector(viewControllersWithPathComponents:destinationTitle:)]) {
         return [class performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
     } else {
-        return @[[[RUFavoritesDynamicHandoffViewController alloc] initWithPathComponents:components title:destinationTitle]];
+        return @[[[RUFavoritesDynamicHandoffViewController alloc] initWithHandle:handle pathComponents:components title:destinationTitle]];
     }
 }
 
+/*
+ 
+    Descript:
+ 
+    FIND
+        Why is the channel NSDict ?
+ 
+ */
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel{
     NSArray *children = channel[@"children"];
     for (NSDictionary *child in children) {
@@ -221,9 +289,15 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return @"dtable";
 }
 
+
+/*
+    Keep track of the channel that has been last used :: For use by the root View Controller ????
+ */
 static NSString *const ChannelManagerLastChannelKey = @"ChannelManagerLastChannelKey";
 
 -(NSDictionary *)lastChannel{
+    
+            // Obtain the last channel that was used by the user from the user defaulsts database and use it to start the app at a particular view
     NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ChannelManagerLastChannelKey];
     if (![self.contentChannels containsObject:lastChannel]) lastChannel = nil;
     if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};

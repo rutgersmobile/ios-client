@@ -19,22 +19,29 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 @property UIActionSheet *campusActionSheet;
 @property UIActionSheet *userTypeActionSheet;
 
-@property (copy) dispatch_block_t completion;
+@property (copy) dispatch_block_t completion;   // Block used to obtain information from the user in a non over lapping manner ?? If block is active ,
 
 @property (nonatomic, readonly) BOOL hasUserInformation;
 -(void)getUserInformationCompletion:(dispatch_block_t)completion;
 @end
 
+/*
+ Descipt : 
+    Maintain loading preferences.
+    Make user select Campus + Studen Type
+ */
 @implementation RUUserInfoManager
 +(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
     NSDictionary *campus = [self currentCampus];
     NSString *tag = campus[@"tag"];
     
     //in case the inputs were nil
-    newBrunswickBlock = ^{ if (newBrunswickBlock) newBrunswickBlock(); };
+    newBrunswickBlock = ^{ if (newBrunswickBlock) newBrunswickBlock(); };  // if the input is nul , then replace the nil by an empty block {}
     newarkBlock = ^{ if (newarkBlock) newarkBlock(); };
     camdenBlock = ^{ if (camdenBlock) camdenBlock(); };
     
+    
+    // Different Priority
     if ([tag isEqualToString:@"NK"]) {
         newarkBlock();
         newBrunswickBlock();
@@ -56,10 +63,12 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
              @{@"title" : @"Newark" , @"tag" : @"NK"},
              @{@"title" : @"Camden", @"tag" : @"CM"},
              @{@"title" : @"RBHS", @"tag" : @"RBHS"},
-             @{@"title" : @"Other", @"tag" : @"other"}
+             @{@"title" : @"Other", @"tag" : @"other"}       //     Is there a need for another campus ? Verify ..
              ];
 }
 
+
+// Obtain the Campus using the tar
 +(NSDictionary *)campusWithTag:(NSString *)tag{
     for (NSDictionary *campus in self.campuses) {
         if ([campus[@"tag"] isEqualToString:tag]) return campus;
@@ -67,11 +76,15 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     return nil;
 }
 
+
+// Obtain the campus from user defaults
 +(NSDictionary *)currentCampus{
     NSString *tag = [[NSUserDefaults standardUserDefaults] stringForKey:userInfoManagerCampusKey];
     return [self campusWithTag:tag];
 }
 
+
+// Set the defaults for future use.
 +(void)setCurrentCampus:(NSDictionary *)currentCampus{
     [[NSUserDefaults standardUserDefaults] setObject:currentCampus[@"tag"] forKey:userInfoManagerCampusKey];
     [self notifyInfoDidChange];
@@ -81,6 +94,7 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeInfoKey object:nil];
 }
 
+// NSAarray of NSDicts
 +(NSArray *)userRoles{
     return @[
              @{@"title" : @"Undergraduate Student", @"tag" : @"UG"},
@@ -93,6 +107,7 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
              ];
 }
 
+// Get user role for tag
 +(NSDictionary *)userRolesWithTag:(NSString *)tag{
     for (NSDictionary *userRole in self.userRoles) {
         if ([userRole[@"tag"] isEqualToString:tag]) return userRole;
@@ -100,6 +115,7 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     return nil;
 }
 
+// Defauls Value Similar to the Campus
 +(NSDictionary *)currentUserRole{
     NSString *tag = [[NSUserDefaults standardUserDefaults] stringForKey:userInfoManagerUserRoleKey];
     return [self userRolesWithTag:tag];
@@ -109,10 +125,13 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     [[NSUserDefaults standardUserDefaults] setObject:currentUserRole[@"tag"] forKey:userInfoManagerUserRoleKey];
 }
 
+
+// Detemine if the defaults have been set by the user
 -(BOOL)hasUserInformation{
     return [[self class] currentCampus] && [[self class] currentUserRole];
 }
 
+// If the defaults have not been set , then ask the user for the defaults.
 -(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion{
     if (![self hasUserInformation]) {
         [self getUserInformationCompletion:completion];
@@ -132,10 +151,11 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     
     [self makeActionSheets];
     
-    [self presentActionSheet:self.campusActionSheet];
+    [self presentActionSheet:self.campusActionSheet];  // after the campus has been selected , the role action sheet will be displayed
 
 }
 
+// Create the action sheets to be presented individually
 -(void)makeActionSheets{
     
     self.campusActionSheet = [[UIActionSheet alloc] initWithTitle:@"Please choose your campus." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
@@ -163,12 +183,12 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
         return;
     }
     
-    if (actionSheet == self.campusActionSheet) {
+    if (actionSheet == self.campusActionSheet) {  // after the campus has been selected, ask for the role
         
         [[self class] setCurrentCampus:[[self class] campuses][buttonIndex]];
         [self presentActionSheet:self.userTypeActionSheet];
 
-    } else if (actionSheet == self.userTypeActionSheet) {
+    } else if (actionSheet == self.userTypeActionSheet) { // after the role , call completion block
         
         [[self class] setCurrentUserRole:[[self class] userRoles][buttonIndex]];
         [self complete];
@@ -184,8 +204,10 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 }
 
 -(void)presentActionSheet:(UIActionSheet *)actionSheet{
-    [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window].rootViewController.view];
+    [actionSheet showInView:[[[UIApplication sharedApplication] delegate] window].rootViewController.view]; // read docs
 }
+
+// Maintain Favouites Icons in the App ??
 
 +(NSArray <NSDictionary *>*)favorites{
     return [[NSUserDefaults standardUserDefaults] arrayForKey:userInfoManagerFavoritesKey];
@@ -200,6 +222,7 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeFavoritesKey object:self];
 }
 
+// add new favourites to the property
 +(void)addFavorite:(NSDictionary *)favorite{
     NSArray *favorites = [NSArray arrayWithArray:[self favorites]];
     NSLog(@"%@",favorite);

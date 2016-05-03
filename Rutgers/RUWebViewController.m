@@ -19,14 +19,19 @@
 @end
 
 @implementation RUWebViewController
+
+// tag sepcific to this ViewCon..
 +(NSString *)channelHandle{
     return @"www";
 }
+
+// Registers itself with the RUChannelMan which is like a central system which manager the seperate classes
 +(void)load{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
 //Global cache holding RUWebViewController objects
+// cache can be cleared on demand by the system. This does not matter for the WebViewController objects
 +(NSCache *)storedChannels{
     static NSCache * storedChannels = nil;
     static dispatch_once_t onceToken;
@@ -37,7 +42,12 @@
     return storedChannels;
 }
 
+
+// Config specifics of View Controller
 +(id)channelWithConfiguration:(NSDictionary *)channel{
+    
+    // if the content channel has a web view , then search for it in the cache , if present in the cache return that web VC , else recreate a new view controller
+    // Recreation is also done if the content channel does not have a web view
     if ([[RUChannelManager sharedInstance].contentChannels containsObject:channel]) {
         RUWebViewController *webViewController = [self.storedChannels objectForKey:channel];
         if (!webViewController) {
@@ -46,10 +56,14 @@
         }
         return webViewController;
     } else {
-        return [self _channelWithConfiguration:channel];
+        return [self _channelWithConfiguration:channel];   // Recreate new Web View Controller
     }
 }
 
+
+/*
+    Create a web View controller ...
+ */
 +(id)_channelWithConfiguration:(NSDictionary *)channel{
 
     if ([WKWebView class]) {

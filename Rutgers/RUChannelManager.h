@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+/*
+    Descript: 
+        Channel : Different Communication Channels to different services or something else ?
+ 
+ 
+ */
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "RUDataLoadingManager.h"

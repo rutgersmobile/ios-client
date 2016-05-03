@@ -6,6 +6,15 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+    Descript : 
+        Predicates : Used for Query and Searcg
+    Predicate Tips : 
+    %K -> No quotes 
+    %@ -> Quotes
+*/
+
+
 #import "NSPredicate+SearchPredicate.h"
 #import "NSString+WordsInString.h"
 

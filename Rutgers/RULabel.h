@@ -6,6 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+/*
+  Descprit :
+         Special type of UILabel doing what : 
+ 
+ 
+ */
 #import <UIKit/UIKit.h>
 
 @interface RULabel : UILabel

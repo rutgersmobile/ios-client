@@ -14,7 +14,5 @@
 
     #import <UIKit/UIKit.h>
 
-    //#import "RUDefines.h"
-    
 #endif
 

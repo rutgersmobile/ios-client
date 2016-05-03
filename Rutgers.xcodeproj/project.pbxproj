@@ -1454,7 +1454,6 @@
 				A7177BAD199DC0CD0092126F /* RUNavigationController.m */,
 				049425001B3A07B500BE570C /* RUSplitViewController.h */,
 				049425011B3A07B500BE570C /* RUSplitViewController.m */,
-				04C0D2981C7E4B3900FEF0D7 /* Rutgers-Bridging-Header.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1626,6 +1625,7 @@
 		C262EFB2188345D10035C8F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				04C0D2981C7E4B3900FEF0D7 /* Rutgers-Bridging-Header.h */,
 				041502331BB0965400D23AB8 /* RUDefines.h */,
 				041502311BB0964A00D23AB8 /* RUDefines.m */,
 				C262EFBA188345D10035C8F5 /* RUAppDelegate.h */,

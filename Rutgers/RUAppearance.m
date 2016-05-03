@@ -11,6 +11,14 @@
 
 @implementation RUAppearance
 
+/*
+ Descript : 
+    Apply certain style to the component
+ 
+ */
+
+
+
 +(void)applyAppearance{
     //global appearance, nothing right now
   
@@ -35,10 +43,10 @@
     tabBar.tintColor = [UIColor whiteColor];
 }
 
+
 +(void)applyAppearanceToNavigationBar:(UINavigationBar *)navigationBar{
     navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
-    navigationBar.tintColor = [UIColor whiteColor];
-    navigationBar.barTintColor = [UIColor rutgersBarRedColor];
+    navigationBar.tintColor = [UIColor whiteColor];    navigationBar.barTintColor = [UIColor rutgersBarRedColor];
 }
 
 +(void)applyAppearanceToToolbar:(UIToolbar *)toolbar{

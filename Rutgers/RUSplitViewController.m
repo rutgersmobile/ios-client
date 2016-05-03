@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Rutgers. All rights reserved.
 //
 
+// Split view for the iPAD ?
+
 #import "RUSplitViewController.h"
 
 @interface RUSplitViewController ()

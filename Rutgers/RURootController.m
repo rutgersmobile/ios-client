@@ -34,11 +34,19 @@
 
 #pragma mark initialization
 
+/*
+    Set us the view controller from which every other VC is accessed. 
+    Also Setup the Menu Item 
+ 
+    To do:
+        Use the 3 bar icon for Menu button
+ 
+ */
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.selectedItem = [RUChannelManager sharedInstance].lastChannel;
+        self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel ??
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
     }
     return self;
@@ -56,7 +64,7 @@
         Class drawerClass = [self drawerClass];
         if (![drawerClass conformsToProtocol:@protocol(RUContainerController)]) [NSException raise:NSInvalidArgumentException format:@"%@ does not conform to %@",NSStringFromClass(drawerClass), NSStringFromProtocol(@protocol(RUContainerController))];
         
-        __weak typeof(self) weakSelf = self;
+        __weak typeof(self) weakSelf = self; // Used within block to prevent memory cycles.
         _containerViewController = [((id)drawerClass) performSelector:@selector(containerWithContainedViewController:drawerViewController:) withObject:centerViewController withObject:self.menuViewController];
         [_containerViewController setDrawerShouldOpenBlock:^BOOL{
             return [weakSelf drawerShouldOpen];     
@@ -119,11 +127,13 @@
     [self openURL:[NSURL URLWithString:favorite[@"url"]] destinationTitle:favorite[@"title"]];
 }
 
+
+
 #pragma mark Drawer Interface
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
 
-    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
+    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];  // create a navigation controller with a view controller of the current channel as root ?????
     [RUAppearance applyAppearanceToNavigationController:navController];
     
     [self placeButtonInViewController:navController];

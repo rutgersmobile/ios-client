@@ -17,6 +17,9 @@
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
+#define DEV 1
+
+
 @interface RUPredictionsViewController ()
 @property (nonatomic) MSWeakTimer *timer;
 @property (nonatomic) id item;
@@ -29,6 +32,7 @@
     if (self) {
         self.item = item;
         self.title = [self.item title];
+        if(DEV) NSLog(@"title");
     }
     return self;
 }
