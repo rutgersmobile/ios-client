@@ -10,6 +10,15 @@
 #import "DataSource_Private.h"
 #import "NSArray+LimitedToCount.h"
 
+/*
+    What is the differnce between the DataSource and Basic Data source
+        <q> is the basic data source an abstract class ,which provides similar fucntionality to the Data Source or 
+        is it a concrete class providing functionality to the Data Source ?
+
+    Basic Data Source is a sub class of Data Source
+ */
+
+
 @interface BasicDataSource ()
 @end
 
@@ -20,6 +29,10 @@
     return self;
 }
 
+/*
+    what is item ? <q>
+    NSArray holding the items
+ */
 -(instancetype)initWithItems:(NSArray *)items{
     self = [super init];
     if (self) {
@@ -43,6 +56,9 @@
     return self.numberOfItems;
 }
 
+/*
+ 
+ */
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath{
     NSUInteger itemIndex = indexPath.item;
     if (itemIndex < [_items count])
@@ -54,6 +70,7 @@
 - (NSArray *)indexPathsForItem:(id)item
 {
     NSMutableArray *indexPaths = [NSMutableArray array];
+    // go through the array , find the item and adds its index to the indexpath array
     [_items enumerateObjectsUsingBlock:^(id obj, NSUInteger objectIndex, BOOL *stop) {
         if ([obj isEqual:item]) [indexPaths addObject:[NSIndexPath indexPathForItem:objectIndex inSection:0]];
     }];

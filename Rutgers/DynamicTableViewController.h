@@ -9,8 +9,9 @@
 #import "TableViewController.h"
 #import "RUChannelProtocol.h"
 
-/**
- *  This is the class used to display dynamic information in json form
+/*
+ *
+ *  This is the class used to display dynamic information  // json form
  */
 @interface DynamicTableViewController : TableViewController <RUChannelProtocol>
 

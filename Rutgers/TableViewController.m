@@ -18,6 +18,9 @@
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8
 
+/*
+    Generic table view controller that displays the data for all the different source ?
+ */
 @interface TableViewController () <UISearchResultsUpdating, UISearchDisplayDelegate, UISearchControllerDelegate, UIPopoverControllerDelegate>
 @property (nonatomic) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic) UISearchController *searchController;
@@ -40,6 +43,8 @@
     [super viewDidLoad];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
+    
+    // chanage the format if the user font preference has changed
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(preferredContentSizeChanged)
                                                  name:UIContentSizeCategoryDidChangeNotification
@@ -55,7 +60,8 @@
     }
     #endif
     
-    if (self.sharingURL) {
+    if (self.sharingURL) { // sharingURL is implemented in the respective source sub class .. This TableView is an abstract class
+        // What does the shareButton do ????? <q>
         UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonTapped:)];
         self.shareButton = shareButton;
         self.navigationItem.rightBarButtonItem = shareButton;
@@ -68,6 +74,8 @@
     
     [self invalidateCachedHeightsIfNeeded];
 
+        // Based on the state the data source is made to load content
+    // Set up both the data source and the search data source
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial]) {
         [self.dataSource setNeedsLoadContent];
     }
@@ -77,10 +85,12 @@
     }
 }
 
+
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    if (self.wasSearching) {
+    if (self.wasSearching) { // if a search was being conducted then show it again
         [self popSearching];
         if (self.searching) {
             [self setStatusAppearanceForSearchingState:YES];
@@ -90,16 +100,25 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
+    // if we where conduction a search store the search instance with the string being used to serach for use
+    // when the view appreace again
     if (self.searching) {
         [self setStatusAppearanceForSearchingState:NO];
         [self pushSearching];
     }
 }
 
+/*
+    called before the subviews are added , if the width has chaned call viewDidCha...Heig..
+ */
 -(void)viewWillLayoutSubviews{
     CGFloat width = CGRectGetWidth(self.view.bounds);
     if (width != self.lastValidWidth) [self viewDidChangeWidth];
 }
+
+/*
+    deallocates the data soruce and search data source
+ */
 
 -(void)dealloc{
     if (self.isViewLoaded) {
@@ -116,6 +135,9 @@
     [tableView selectRowsAtIndexPaths:selectedIndexPaths animated:NO];
 }
 
+/*
+    Manages the display of objects
+ */
 #pragma mark - Row Height Cache
 -(void)invalidateCachedHeights{
     [self invalidateCachedHeightsForTableView:self.tableView];
@@ -160,10 +182,19 @@
     return self.title;
 }
 
+
+/*
+    <q> ?????
+    This button seems to be used for adding the favoutes button to the slide view controller
+ 
+ */
 - (void)actionButtonTapped:(id)sender {
     NSURL *url = self.sharingURL;
     if (!url) return;
-    
+   
+    /*
+        An abstract class used to provide the service of adding favourtes to the app
+     */
     UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.sharingTitle];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:@[favoriteActivity]];
@@ -195,7 +226,10 @@
     }
 }
 
-
+/*
+    Data source is set by : <q>
+ 
+ */
 #pragma mark - Data Source
 -(void)setDataSource:(DataSource *)dataSource{
     _dataSource.delegate = nil;
@@ -204,6 +238,9 @@
     [self setupTableView:self.tableView withDataSource:dataSource];
 }
 
+/*
+    Reset Data source and add it to the tableViewCon
+ */
 -(void)resetDataSource:(DataSource *)dataSource{
     dataSource.delegate = nil;
     UITableView *tableView = [self tableViewForDataSource:dataSource];
@@ -211,10 +248,20 @@
     [dataSource resetContent];
 }
 
+/*
+ obtain the data source for the table view controller 
+ */
 -(DataSource *)dataSourceForTableView:(UITableView *)tableView{
     if ([tableView.dataSource isKindOfClass:[DataSource class]]) return (DataSource *)tableView.dataSource;
     return nil;
 }
+
+/*
+    obtain the table vc for a given data source
+        if the data source belongs to the current class , then simply return the table view for it 
+    else 
+        search ???? <q>
+ */
 
 -(UITableView *)tableViewForDataSource:(DataSource *)dataSource{
     if (dataSource == self.dataSource) return self.tableView;
@@ -225,9 +272,13 @@
 #pragma mark - Search Data Source
 @synthesize searchDataSource = _searchDataSource;
 
+/*
+    Set the searchData source for the current table vc .
+ 
+ */
 -(void)setSearchDataSource:(DataSource<SearchDataSource> *)searchDataSource{
     if (searchDataSource && !self.searchEnabled) {
-        [self enableSearch];
+        [self enableSearch]; // allow searc
     }
     
     if (searchDataSource) {
@@ -237,18 +288,29 @@
     if (!searchDataSource) {
         self.tableView.tableHeaderView = nil;
     }
-    
+   
+        /*
+            After obtaining the controller for a particule search , attach the search data source to it .
+         */
     if (self.searchController) {
         self.searchResultsController.dataSource = searchDataSource;
     } else {
+        /*
+            if not , sets up the search data source to be used with the search table view
+         */
         _searchDataSource.delegate = nil;
         _searchDataSource = searchDataSource;
         searchDataSource.delegate = self;
-        [self setupTableView:self.searchTableView withDataSource:searchDataSource];
+        [self setupTableView:self.searchTableView withDataSource:searchDataSource]; // set up the table view to be search table view with the search data source
     }
 }
 
+/*
+    if the controller is a search controller , then return the result data source , other wise , return the 
+    data source set up by some other class
+ */
 -(DataSource<SearchDataSource> *)searchDataSource{
+    
     if (self.searchController) {
         return (DataSource<SearchDataSource> *)self.searchResultsController.dataSource;
     } else {
@@ -256,17 +318,30 @@
     }
 }
 
+/*
+    Allow to search the current view for the particular item 
+ 
+ */
 -(void)enableSearch{
-    if ([UISearchController class]) {
+    /*
+        UISearchController manages two classes , one the current class with the data that is being displayed and the other class the view that you want to display the search results in .
+     
+     */
+    if ([UISearchController class]) { // may be for higher ios version ?
         self.definesPresentationContext = YES;
         TableViewController *searchResultsController = [[TableViewController alloc] initWithStyle:UITableViewStylePlain];
+        // serachRes...Con is displayed when the user seraches in the UISea...Contr..
         self.searchResultsController = searchResultsController;
         searchResultsController.tableView.delegate = self;
         self.searchController = [[UISearchController alloc] initWithSearchResultsController:searchResultsController];
-        self.searchBar = self.searchController.searchBar;
-        self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
-        [RUAppearance applyAppearanceToSearchBar:self.searchBar];
+        self.searchBar = self.searchController.searchBar; // join the searchBar of the current VC to be that of the
+                                // UISearchController
         
+        // sets up the search bar the set its apperance
+        self.searchBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+        [RUAppearance applyAppearanceToSearchBar:self.searchBar]; // set up the searchBar with proper name etc.
+        
+        // set up serch controller
         self.searchController.delegate = self;
         self.searchController.searchResultsUpdater = self;
         
@@ -282,22 +357,35 @@
     self.searchEnabled = YES;
 }
 
+/*
+    set up the tvc with the data source and register the table view with the data source
+ 
+ */
 -(void)setupTableView:(UITableView *)tableView withDataSource:(DataSource *)dataSource{
     tableView.dataSource = dataSource;
     [dataSource registerReusableViewsWithTableView:tableView];
     [tableView reloadData];
 }
 
+/*
+    Obtain the search table view to display , based on ios version
+ 
+ */
 -(UITableView *)searchTableView{
     if (!self.isViewLoaded) return nil;
-    if (self.searchController) return self.searchResultsController.tableView;
-    else return self.mySearchDisplayController.searchResultsTableView;
+    if (self.searchController) return self.searchResultsController.tableView; // for ios > 8
+    else return self.mySearchDisplayController.searchResultsTableView; // lower versions
 }
 
 #pragma Mark - Searching
  #pragma mark - SearchDisplayController Delegate
+
+/*
+    The updating of the data being displayed is done based on a timer , this timer is reset when a search is done 
+    based on the updateTime..forKey... func
+ */
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-    [self updateTimersForKeyPress];
+    [self updateTimersForKeyPress]; // update the timer
     return NO;
 }
 
@@ -305,28 +393,45 @@
     [self updateTimersForKeyPress];
 }
 
+/*
+    There seems to be two timers that are used to maintain the proper updating of the results , 
+    minSearchTimer and maxSearchTimer with two seperate time intervals to update the data
+ 
+    On reaching the time , they both call the searchTimerFired func
+ 
+ */
+
 -(void)updateTimersForKeyPress{
     [self.minSearchTimer invalidate];
     self.minSearchTimer = nil;
+    
+    // s
     self.minSearchTimer = [NSTimer scheduledTimerWithTimeInterval:MIN_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO];
     if (!self.maxSearchTimer) {
         self.maxSearchTimer = [NSTimer scheduledTimerWithTimeInterval:MAX_SEARCH_DELAY target:self selector:@selector(searchTimerFired) userInfo:nil repeats:NO];
     }
 }
 
+/*
+    Function is called when the timer ends and does the serach within the search data ce
+ 
+ */
 -(void)searchTimerFired{
-    if (self.searchController) {
-        DataSource *dataSource = self.searchResultsController.dataSource;
+    if (self.searchController) { // for ios > 8
+        DataSource *dataSource = self.searchResultsController.dataSource; // <q> who runs the search ?
         if ([dataSource conformsToProtocol:@protocol(SearchDataSource)]) {
             DataSource<SearchDataSource> *searchDataSource = (DataSource<SearchDataSource>*)dataSource;
-            [searchDataSource updateForQuery:self.searchBar.text];
+            // this does the search with the string
+            [searchDataSource updateForQuery:self.searchBar.text]; // func within the data source
         }
     } else {
         [self.searchDataSource updateForQuery:self.searchBar.text];
     }
-    [self invalidateSearchTimers];
+    
+    [self invalidateSearchTimers]; // end both the serach timers after the query has been done
 }
 
+// ends the timers
 -(void)invalidateSearchTimers{
     [self.minSearchTimer invalidate];
     self.minSearchTimer = nil;
@@ -335,7 +440,7 @@
 }
 
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller{
-    [self presentSearch];
+    [self presentSearch]; // func to display the serach VC
 }
 
 -(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller{
@@ -349,6 +454,7 @@
     [self dismissSearch];
 }
 
+
 -(void)presentSearch{
     [self setStatusAppearanceForSearchingState:YES];
     self.searching = YES;
@@ -359,10 +465,15 @@
     self.searching = NO;
     [self invalidateSearchTimers];
     [UIView performWithoutAnimation:^{
-        [self.searchDataSource resetContent];
+        [self.searchDataSource resetContent]; // reset the content after the search ??? may be for the next search ?
     }];
 }
 
+/*
+    on searching the top bar of the navigation controller is hidden and the the color of the status 
+    bar is changed from red to light / tranparent to show the search bars' upper portion
+ 
+*/
 -(void)setStatusAppearanceForSearchingState:(BOOL)searching{
     id navigationController = self.navigationController;
     if ([navigationController isKindOfClass:[RUNavigationController class]]) {
@@ -371,12 +482,22 @@
     }
 }
 
+/*
+    what does this do ? <q>
+    
+    hides the serach controller and stores the serch query
+ */
 -(void)pushSearching{
     self.wasSearching = YES;
     self.lastSearchQuery = self.searchController.searchBar.text;
     self.searchController.active = NO;
 }
 
+/*
+    <q>
+    shows the searchController and with the last queru in the serachBar text
+ 
+ */
 -(void)popSearching{
     self.wasSearching = NO;
     self.searchController.active = YES;
@@ -385,16 +506,26 @@
 }
 
 #pragma mark - TableView Delegate
+
+/*
+    Store the touches in analytics
+ */
 -(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [[RUAnalyticsManager sharedManager] queueEventForUserInteraction:[self userInteractionForTableView:tableView rowAtIndexPath:indexPath]];
     return indexPath;
 }
 
+/*
+    returns information about the user interaction , about where it occured and at what row. Reader header file
+ */
 -(NSDictionary *)userInteractionForTableView:(UITableView *)tableView rowAtIndexPath:(NSIndexPath *)indexPath{
     return @{@"indexPath" : indexPath.description,
              @"description" : [[[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath] description]? : @"null"};
 }
 
+/*
+    stores the heigh of the section <q>
+ */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return [[self dataSourceForTableView:tableView] tableView:tableView heightForRowAtIndexPath:indexPath];
 }
@@ -403,6 +534,13 @@
     return [[self dataSourceForTableView:tableView] tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
 }
 
+/*
+    highlights the row at index path ? <q>
+ 
+    if the user touches the activity indicator of the place holder cell then do not highlight it , 
+    but otherwise high light the cell, may be used when the used touches the cell ?
+ 
+ */
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[ALPlaceholderCell class]] || [cell isKindOfClass:[ALActivityIndicatorCell class]]) return NO;
@@ -410,6 +548,14 @@
 }
 
 #pragma mark - Data Source Delegate
+
+/*
+    decides the animation of the cell that is inserted or removed .
+
+    <q>
+        But why set it up , is it instead being used when the view is initially displayed
+ */
+
 -(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimationDirection)direction{
     switch (direction) {
         case DataSourceAnimationDirectionNone:
@@ -424,6 +570,10 @@
     }
 }
 
+/*
+    Funcs to add and remove rows
+    move rows
+ */
 -(void)dataSource:(DataSource *)dataSource didInsertItemsAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimationDirection)direction{
     [[self tableViewForDataSource:dataSource] insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:[self rowAnimationForOperationDirection:direction]];
 }
@@ -439,6 +589,11 @@
 -(void)dataSource:(DataSource *)dataSource didMoveItemFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
     [[self tableViewForDataSource:dataSource] moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
 }
+
+/*
+    reafresh sections , add remove and move section
+ 
+ */
 
 -(void)dataSource:(DataSource *)dataSource didRefreshSections:(NSIndexSet *)sections direction:(DataSourceAnimationDirection)direction{
     [[self tableViewForDataSource:dataSource] reloadSections:sections withRowAnimation:[self rowAnimationForOperationDirection:direction]];
@@ -456,9 +611,16 @@
     [[self tableViewForDataSource:dataSource] moveSection:section toSection:newSection];
 }
 
+
+
+/*
+    make the table view display the updated data source
+ */
+
 -(void)dataSourceDidReloadData:(DataSource *)dataSource direction:(DataSourceAnimationDirection)direction{
     UITableView *tableView = [self tableViewForDataSource:dataSource];
     [tableView reloadData];
+    // set up animation to add the table view items <q> ?????
     if (direction != DataSourceAnimationDirectionNone) {
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
@@ -469,6 +631,10 @@
     }
 }
 
+/*
+    What is particular of Batch Updating ?
+    Are multple items updated together ?
+*/
 -(void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete{
     UITableView *tableView = [self tableViewForDataSource:dataSource];
     
@@ -476,6 +642,7 @@
     if (update) {
         update();
     }
+    
     [tableView endUpdates];
     
     if (complete) {
@@ -487,7 +654,10 @@
     
 }
 
-
+/*
+ 
+    update the data when the user pull to refresh
+ */
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{
     if (!self.pullsToRefresh) return;
         

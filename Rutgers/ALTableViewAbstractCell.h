@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+/*
+    An abstract cell which is used by the subclasses in more specific manner
+ 
+ */
 #import <UIKit/UIKit.h>
 #import "RUDefines.h"
 

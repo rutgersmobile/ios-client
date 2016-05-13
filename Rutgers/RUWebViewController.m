@@ -25,7 +25,7 @@
     return @"www";
 }
 
-// Registers itself with the RUChannelMan which is like a central system which manager the seperate classes
+// Registers itself with the RUChannelMan which is like a central system which manages the seperate classes
 +(void)load{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }

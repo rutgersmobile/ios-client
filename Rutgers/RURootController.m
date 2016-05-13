@@ -56,6 +56,11 @@
     return [MMDrawerController class];
 }
 
+/*
+    In RuRootContr...
+ 
+ 
+ */
 @synthesize containerViewController = _containerViewController;
 -(UIViewController <RUContainerController> *)containerViewController{
     if (!_containerViewController) {
@@ -96,39 +101,68 @@
     }
     return NO;
 }
-
+/*
+    Adds a Left Button to top most nav controller
+ */
 #pragma mark Managing Buttons
 - (void)placeButtonInViewController:(UIViewController *)viewController{
     if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *nav = (UINavigationController *)viewController;
-        if ([nav.viewControllers count] > 0) viewController = (nav.viewControllers)[0];
+        if ([nav.viewControllers count] > 0) viewController = (nav.viewControllers)[0]; // select the top most viewController ? or is the bottom ? ????? <q>
     }
     
     UINavigationItem *navigationItem = viewController.navigationItem;
+    // add the menu bar to the navigation bar of the top most view controller
     if (!navigationItem.leftBarButtonItem) navigationItem.leftBarButtonItem = self.menuBarButtonItem;
 }
 
+
+/*
+    Moves to a particular view . The location of the views are maintained as an URL
+ 
+ */
 -(void)openURL:(NSURL *)url{
     [self openURL:url destinationTitle:nil];
 }
 
+/*
+    Descript : 
+            Used to Move from The Side Bar to any one of the VC . 
+            Also used to handle the Favourites Function of the app;
+    @param url : dtable / actual url ???? eg rutgers://bus/route/a/
+    @param title : Name of the VC
+
+    Converts the url into a view Controller using the RUChannelMan...
+ */
 -(void)openURL:(NSURL *)url destinationTitle:(NSString *)title{
-    UINavigationController *navController = [[RUNavigationController alloc] init];
+    UINavigationController *navController = [[RUNavigationController alloc] init];  // Should a new instance be created ???
     [RUAppearance applyAppearanceToNavigationController:navController];
     navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url destinationTitle:title];
     
     [self placeButtonInViewController:navController.topViewController];
 
     self.containerViewController.containedViewController = navController;
-    [self.containerViewController closeDrawer];
+    [self.containerViewController closeDrawer];  // ???? Closing the side view bar ?
 }
 
+
+
+/*
+    opens a particular url. openFavourite is simply a wrapper for the openURL function.
+ 
+ */
 -(void)openFavorite:(NSDictionary *)favorite{
     [self openURL:[NSURL URLWithString:favorite[@"url"]] destinationTitle:favorite[@"title"]];
 }
 
 
 
+/*
+    The slide drawer is build by using MMDrawController lib. 
+    This sets up the slide view controller
+ 
+ 
+ */
 #pragma mark Drawer Interface
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
@@ -151,6 +185,12 @@
         [RUChannelManager sharedInstance].lastChannel = item;
         self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
     }
+    
+        /*
+            Tried removing the condition of isFavourite , but it does not work.
+                App says network error
+         */
+    
 }
 
 -(void)openDrawer{

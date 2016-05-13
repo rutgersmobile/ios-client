@@ -182,6 +182,10 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     return baseEvent;
 }
 
+/*
+    Holds information about the platfrom and realease Data for reporting in the analytics
+ */
+
 -(NSDictionary *)platform{
     UIDevice *device = [UIDevice currentDevice];
     return @{
@@ -193,6 +197,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
              };
 }
 
+
 -(NSDictionary *)releaseDict{
     return @{
              @"beta" : @(isBeta()),
@@ -203,7 +208,6 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 /*
     Queue mulitple events using mutex lock
- 
     Add each event into the queue
  */
 -(void)queueAnalyticsEvents:(NSArray *)events{

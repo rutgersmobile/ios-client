@@ -8,7 +8,7 @@
 
 #import "TableViewController.h"
 
-@interface RUFavoritesDynamicHandoffViewController : TableViewController
+@interface RUFavoritesDynamicHandoffViewController : TableViewController // Is it a TVC , but what is being displayed ? Is this TVC being added as a section in the slide
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithHandle:(NSString *)handle pathComponents:(NSArray *)pathComponents title:(NSString *)title;
 @end

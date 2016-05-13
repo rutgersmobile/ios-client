@@ -11,6 +11,10 @@
 
 @implementation ALTableViewAbstractCell
 
+/*
+    Creates a cell with a particular style and reuse identifier
+ 
+ */
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -35,6 +39,7 @@
     return UIEdgeInsetsZero;
 }
 
+// Abstarct classes to be implemented by the sub views
 -(void)initializeSubviews{
     
 }

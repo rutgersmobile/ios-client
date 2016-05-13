@@ -69,6 +69,9 @@
 }
 
 //And stops the timer
+/*
+    View is being update / but with what <q>
+ */
 -(void)viewWillDisappear:(BOOL)animated{
     [(RUBusDataSource *)self.dataSource stopUpdates];
     [super viewWillDisappear:animated];
@@ -77,7 +80,8 @@
 //This is the action send when tapping on a cell, this opens up the predictions screen
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
-    [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
+    // Create a view using the item. Ie. Present the view with the bu stops and their timiings
+    [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }
 
 /*

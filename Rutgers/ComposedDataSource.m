@@ -1,13 +1,20 @@
-        //
 //  ComposedDataSource.m
 //  
-//
 //  Created by Kyle Bailey on 6/30/14.
 //  Copyright (c) 2014 Kyle Bailey. All rights reserved.
 //
 
 #import "ComposedDataSource_Private.h"
 #import "DataSource_Private.h"
+
+/*
+    Class Function : 
+        Holds multiple Data Sources :
+    But is that being used to display anything ? 
+        What is the use of composed data source ? 
+    May be is it used to display items in a table view ?
+ 
+ */
 
 @interface ComposedDataSource ()
 @property (nonatomic, strong) NSString *aggregateLoadingState;
@@ -17,8 +24,9 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-        _dataSources = [NSMutableArray array];
+    if (self)
+    {
+       _dataSources = [NSMutableArray array]; // an array to hold the multiple data sources
     }
     return self;
 }
@@ -33,20 +41,32 @@
     To Do : 
         Determine other uses... 
  
+    Seems to be used for all the different types of information obtained
+    Data source is a generic object providing the information to be dispalyed by the view controller and composedDataSources contain multiple data source 
+    How are they used ? 
+        Does each bus route have a specific data source or does each stop ? How is it used?
  */
 -(void)addDataSource:(DataSource *)dataSource{
     [self.dataSources addObject:dataSource];
     dataSource.delegate = self;
+    // creates a unique set out the multiple data sources. Why is this done ,for better addressing ? <q>
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataSource.numberOfSections)];
     [dataSource notifySectionsInserted:sections];
   //  [self updateLoadingState];
 }
 
+/*
+    <q>
+        Adds the data source to an array within this class, sets its delegate to be the current class and we notify that 
+        sections have been added to the data source ?
+        Why are sections being added to the data source
+ */
 -(void)insertDataSource:(DataSource *)dataSource atIndex:(NSInteger)index{
     [self.dataSources insertObject:dataSource atIndex:index];
     dataSource.delegate = self;
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, dataSource.numberOfSections)];
-    [dataSource notifySectionsInserted:sections];
+    
+    [dataSource notifySectionsInserted:sections]; // why notify the data source about the inserted items ?
   ///  [self updateLoadingState];
 }
 
@@ -57,6 +77,8 @@
     dataSource.delegate = nil;
     
     [self notifySectionsRemoved:sections];
+    
+    // for removal the current class is notified , but for addition , the data source is notified , is this an error <q> [:w
   //  [self updateLoadingState];
 }
 
@@ -69,6 +91,13 @@
     [self notifySectionsRemoved:sections];
 }
 
+/*
+    Add a set of new Data Sources ?
+    The previous Data Sources is removed and the provided Data  Source is used as the data sources 
+    
+    if the previous number of section is more than the current number of sections , then we remove the previous sections
+    else if we have more sections , then we add the new sections and refresh the old sections . Why is this done , why is the previous section not being removed ?
+ */
 -(void)setDataSources:(NSMutableArray *)dataSources{
     NSInteger oldNumberOfSections = [self numberOfSections];
     _dataSources = dataSources;
@@ -87,6 +116,11 @@
     }
 }
 
+/*
+    Each data source is not mapped to a single section , but rather , the sections of a single data source are added to the global sections.
+    , such that the global sections are made up of multiple data sources and the multiple sections of each of the data sources
+ 
+ */
 #pragma mark - Composed Data Source Implementation
 -(NSInteger)numberOfSections{
     if (self.showingPlaceholder) return 1;
@@ -100,7 +134,9 @@
 -(NSInteger)numberOfItemsInSection:(NSInteger)section{
     if (self.showingPlaceholder) return 1;
     DataSource *dataSource = [self dataSourceForGlobalSection:section];
-    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
+    // obtain local section from global section?
+    NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section]; /// which is the local section depend on the global sectio
+        // shouldn't the local section we restricted to within the data Source ? <q>
     return [dataSource numberOfItemsInSection:localSection];
 }
 
@@ -123,6 +159,10 @@
     return [dataSource itemAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:localSection]];
 }
 
+
+/*
+    Register the 3 seperate views that holds the route view , bus view etc .
+ */
 - (void)registerReusableViewsWithTableView:(UITableView *)tableView
 {
     [super registerReusableViewsWithTableView:tableView];
@@ -140,11 +180,18 @@
     }
 }
 
+/*
+    Used to populate Table View Cells for 
+        - BUS
+ 
+ */
+
+
 #pragma mark - Table View Data Source
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.showingPlaceholder) return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    if (self.showingPlaceholder) return [super tableView:tableView cellForRowAtIndexPath:indexPath];  // ???? Place Holder seems to be the error message that is displayed?
     NSInteger globalSection = indexPath.section;
-    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
+    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];   // Create data source from
     NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
     return [dataSource tableView:tableView cellForRowAtIndexPath:localIndexPath];
 }
@@ -179,9 +226,15 @@
     return [dataSource tableView:tableView estimatedHeightForRowAtIndexPath:localIndexPath];
 }
 
+/*
+    Used for editing elements in the data source ..     
+    Transform is done to locate a particule cell in the global data source catering to multiple sections
+ 
+ */
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger globalSection = indexPath.section;
-    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];
+    DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];  // The data source of multiple sections might be same , so editing an item in a
+                                                                            // particular section will require having to pin point the cell in the data source
     if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
         NSIndexPath *localIndexPath = [self localIndexPathInDataSource:dataSource forGlobalIndexPath:indexPath];
         return [dataSource tableView:tableView canEditRowAtIndexPath:localIndexPath];
@@ -221,6 +274,11 @@
     
     NSArray *loadingStates = [self.dataSources valueForKey:@"loadingState"];
     loadingStates = [loadingStates arrayByAddingObject:[super loadingState]];
+   
+        /*
+            AP class seems to have a state machine and that might be used <q>
+         
+         */
     
     for (NSString *state in loadingStates) {
         if ([state isEqualToString:AAPLLoadStateLoadingContent])
@@ -234,6 +292,10 @@
         else if ([state isEqualToString:AAPLLoadStateNoContent])
             numberOfNoContent++;
     }
+    
+    /*
+        _aggregate... must refer to a state variable , which controls the state at which data is stored
+     */
     
     // Always prefer loading
     if (numberOfLoading > 1)
@@ -258,6 +320,12 @@
     [self updatePlaceholderState];
 }
 
+
+/*
+    <q> What is aggregate loading state :
+        Multiple cells get updated ??
+ 
+ */
 - (NSString *)loadingState
 {
     if (!_aggregateLoadingState)
@@ -351,12 +419,19 @@
     [self notifyWillLoadContent];
 }
 
+/*
+ How the index being Transformed ? From Global to Local , but what does that mean ? ????
 
+    Obtains the mapping between data sources and section , it is not a one to one mapping , as a single data source can have mulitple sections  
+    which area added to the global sections
+ 
+ */
 #pragma mark - Index Transformation
 -(DataSource *)dataSourceForGlobalSection:(NSInteger)section{
     NSInteger remainderSection = section;
-    for (DataSource *dataSource in self.dataSources) {
+    for (DataSource *dataSource in self.dataSources) {  // Go through each of the data sources , keep on reducing until the number of
         NSInteger numberOfSections = dataSource.numberOfSections;
+        // what is the logic in this part of the code <q>
         if (remainderSection < numberOfSections) return dataSource;
         else remainderSection -= numberOfSections;
     }
@@ -395,6 +470,7 @@
     for (DataSource *aDataSource in self.dataSources) {
         if (aDataSource == dataSource) return localSection;
         else localSection -= aDataSource.numberOfSections;
+       
     }
     return 0;
 }

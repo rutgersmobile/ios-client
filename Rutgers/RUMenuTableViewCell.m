@@ -81,6 +81,10 @@
     self.channelImage.image = state ? [self.channel filledChannelIcon] : [self.channel channelIcon];
 }
 
+/*
+    Sets up a cell for displaying information about the channel that is being displayed by the user
+ 
+ */
 -(void)setupForChannel:(NSDictionary *)channel{
     self.channel = channel;
     self.channelTitleLabel.text = [channel channelTitle];

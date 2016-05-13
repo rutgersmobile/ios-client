@@ -12,8 +12,7 @@
 
 /*
  Descript : 
-        Main favourite things on app ?
- 
+    Add the favouties item to the slide view controller
  
  */
 
@@ -36,28 +35,42 @@
 }
 
 - (nullable UIImage *)activityImage {
-    return [UIImage imageNamed:@"athletics-filled"];
+    return [UIImage imageNamed:@"athletics-filled"]; // <q> why is it specific to athletics filled ?
 }
 
+/*
+    Decides whether to perform the activity of not
+    
+    Override of UIActivity class function
+ */
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
     if (activityItems.count != 1) return NO;
     if (![activityItems.firstObject isKindOfClass:[NSURL class]]) return NO;
     return YES;
 }
 
+/*
+ prepares to add favourtie item
+ */
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
-    self.urlToFavorite = activityItems.firstObject;
+    self.urlToFavorite = activityItems.firstObject; // <q>
 }
 
+
+/*
+    Add the favourite to RUUserInfoMan...
+ 
+ */
 - (void)performActivity {
+    NSLog(@"Fav : url %@ -> title %@", self.urlToFavorite.absoluteString , self.title);
     NSDictionary *favorite = @{
                                @"isFavorite" : @true,
                                @"url" : self.urlToFavorite.absoluteString,
                                @"title" : self.title
                                };
     NSLog(@"Favoriting URL: %@",self.urlToFavorite);
-    [RUUserInfoManager addFavorite:favorite];
-    [self activityDidFinish:YES];
+    [RUUserInfoManager addFavorite:favorite]; // sets up the favourite
+    [self activityDidFinish:YES]; // calls func of UIActivity
 }
 
 @end

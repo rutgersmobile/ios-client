@@ -17,8 +17,17 @@
 
 @implementation RUNetworkManager
 
+/*
+    Two seprate request :
+        One to rutgers : rumobile.ru--.edu to get the configuration files , the other request is send to next bus to obtain the 
+        timings . 
+ 
+ */
+
 /**
  *  The shared network manager acting as the main entry point for all network requests
+  *
+ * Base url acts as base for using relavtive url
  *
  *  @return The shared network manager instance
  */
@@ -48,9 +57,14 @@
     return manager;
 }
 
+/*
+    A single session maanger is used to handle the http request through out the app
+ 
+ */
 +(AFHTTPSessionManager *)backgroundSessionManager{
     static AFHTTPSessionManager *backgroundSessionManager = nil;
     static dispatch_once_t onceToken;
+    
     dispatch_once(&onceToken, ^{
         backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
         backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];

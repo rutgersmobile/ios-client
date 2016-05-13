@@ -6,6 +6,13 @@
 //  Copyright © 2015 Rutgers. All rights reserved.
 //
 
+/*
+    Determine whether a iPad is being used or an isBeta 
+ 
+ 
+ */
+
+
 #import <UIKit/UIKit.h>
 #import "RUDefines.h"
 

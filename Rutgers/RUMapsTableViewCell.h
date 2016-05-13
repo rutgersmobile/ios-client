@@ -6,9 +6,15 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
 #import "ALTableViewAbstractCell.h"
 #import <MapKit/MapKit.h>
 #import "RUMapsViewController.h"
+
+/*
+    Class for displaying the map in RUPlaces
+ */
+
 @class RUPlace;
 
 @interface RUMapsTableViewCell : ALTableViewAbstractCell

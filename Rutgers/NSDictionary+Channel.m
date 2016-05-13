@@ -9,6 +9,12 @@
 #import "RUUserInfoManager.h"
 #import "NSDictionary+Channel.h"
 
+/*
+    This class add aditional functions to channels
+    <q> Where is channel defined and created ?
+ */
+
+
 @implementation NSDictionary (Channel)
 
 -(NSString *)channelTitle{
@@ -17,6 +23,10 @@
         return title = title;
     } else if ([title isKindOfClass:[NSDictionary class]]) {
         NSString *campus = title[@"homeCampus"];
+        /*
+            Based on the campus title , the schools will be different and the campus will be foreign or home based on the 
+            campus choosen
+         */
         if ([campus isEqualToString:[RUUserInfoManager currentCampus][@"title"]]) {
             return title[@"homeTitle"];
         } else {
@@ -26,15 +36,23 @@
     return nil;
 }
 
+/*
+    Create a cache to store the items in
+ 
+ */
 -(NSCache *)channelIconCache{
     static NSCache *channelIconCache = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        channelIconCache = [[NSCache alloc] init];
+        channelIconCache = [[NSCache alloc] init];  // create the cache
     });
     return channelIconCache;
 }
 
+/*
+    store the images in the chache so that they do not have to be loaded again
+ 
+ */
 -(UIImage *)cachedImageWithName:(NSString *)name{
     UIImage *image = [[self channelIconCache] objectForKey:name];
     if (!image) {
@@ -44,6 +62,9 @@
     return image;
 }
 
+/*
+    obtain the icon for the channel
+ */
 -(UIImage *)channelIcon{
     NSString *iconName = self[@"icon"];
     if (!iconName) return nil;
@@ -51,6 +72,10 @@
     return [self cachedImageWithName:iconName];
 }
 
+/*
+    different types of icon  "filled" they are loaded . 
+    May be used by the favourites
+ */
 -(UIImage *)filledChannelIcon{
     NSString *iconName = [self[@"icon"] stringByAppendingString:@"-filled"];
     if (!iconName) return nil;
@@ -59,6 +84,10 @@
     if (image) return image;
     return [self channelIcon];
 }
+
+/* 
+ Obtain the various components of the channel
+ */
 
 -(NSString *)channelHandle{
     return self[@"handle"];

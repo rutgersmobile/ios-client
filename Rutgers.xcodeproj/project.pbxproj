@@ -741,8 +741,8 @@
 		042E7BBB1C9C7C8C0036EC58 /* favorites */ = {
 			isa = PBXGroup;
 			children = (
-				04C0D29D1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.h */,
 				04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */,
+				04C0D29D1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.h */,
 				04C0D2CF1C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift */,
 				042E7BBE1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.h */,
 				042E7BBF1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m */,
@@ -1258,8 +1258,8 @@
 			isa = PBXGroup;
 			children = (
 				A79BBE3118FF1085007136B0 /* RUReaderViewController.h */,
-				A79BBE3218FF1085007136B0 /* RUReaderViewController.m */,
 				A7241A4019896A9400304436 /* RUReaderDataSource.h */,
+				A79BBE3218FF1085007136B0 /* RUReaderViewController.m */,
 				A7241A4119896A9400304436 /* RUReaderDataSource.m */,
 				A769931E19352B43008C64EE /* RUReaderItem.h */,
 				A769931F19352B43008C64EE /* RUReaderItem.m */,
@@ -1598,9 +1598,9 @@
 		C262EFB1188345D10035C8F5 /* Rutgers */ = {
 			isa = PBXGroup;
 			children = (
-				A777C2B1190C243100F978D7 /* rockoff.gpx */,
 				A777C2B3190C248500F978D7 /* barr.gpx */,
 				A7DD347519816F120078023A /* arc stop.gpx */,
+				A777C2B1190C243100F978D7 /* rockoff.gpx */,
 				A7DD347619816F120078023A /* hill center stop.gpx */,
 				A7DD347719816F120078023A /* werblin parking lot.gpx */,
 				A754263019AFAA6B00D4E573 /* options */,

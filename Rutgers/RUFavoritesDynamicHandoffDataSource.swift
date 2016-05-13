@@ -62,6 +62,7 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
             try findMatchingSubItemInDataSource(dataSource)
         } catch {
             finishWithError(error)
+            print("error")
         }
     }
     

@@ -23,6 +23,11 @@ NSString * const newarkAgency = @"rutgers-newark";
 @end
 
 @implementation RUBusDataLoadingManager
+/*
+    Use a single manager to load the data for all the buses ?
+ 
+ 
+ */
 +(instancetype)sharedInstance{
     static RUBusDataLoadingManager *sharedManager = nil;
     static dispatch_once_t onceToken;

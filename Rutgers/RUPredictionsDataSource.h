@@ -8,6 +8,11 @@
 
 #import "ExpandingTableViewDataSource.h"
 
+/*
+    <q> Seems to be used for displaying the bus predictions beneath the route ?
+ */
+
+
 @interface RUPredictionsDataSource : ExpandingTableViewDataSource
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;

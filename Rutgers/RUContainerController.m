@@ -6,6 +6,12 @@
 //  Copyright © 2015 Rutgers. All rights reserved.
 //
 
+
+/*
+    interface for setting up the MMD slide view controller
+ 
+ 
+ */
 #import <Foundation/Foundation.h>
 #import "RUContainerController.h"
 #import "RUDefines.h"

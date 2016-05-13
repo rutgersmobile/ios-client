@@ -31,6 +31,10 @@
     return !(self.loading || self.finishedLoading);
 }
 
+/*
+    Tries to load the required information and sets up the error block to be called on error
+ 
+ */
 -(void)performWhenLoaded:(void (^)(NSError *error))block{
     @synchronized(self) {
         //If we need to load, trigger the load

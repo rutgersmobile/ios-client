@@ -11,17 +11,26 @@
 #import "RUUserInfoManager.h"
 #import "RUMenuTableViewCell.h"
 
+/*
+    Used to provide information to the Favourites in the Slide View
+ 
+ */
+
+
 @implementation RUFavoritesDataSource
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.items = [RUUserInfoManager favorites];
+        self.items = [RUUserInfoManager favorites]; // obtain the favourites from the RUUserInfoMan..
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoritesDidChange) name:userInfoManagerDidChangeFavoritesKey object:nil];
     }
     return self;
 }
 
+/*
+    Configure the Cell for the Slide View Controller
+ */
 -(void)configureCell:(RUMenuTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *favorite = [self itemAtIndexPath:indexPath];
     NSString *channelHandle = [[NSURL URLWithString:favorite[@"url"]] host];

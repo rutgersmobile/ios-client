@@ -26,6 +26,12 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 @end
 
 /*
+    Maintain a manager with default information and preferences of the user. 
+        The favourites are stored within the user manager and they are displayed by another class <q> 
+        The favourties are stored within NSUserDefaults
+ */
+
+/*
  Descipt : 
     Maintain loading preferences.
     Make user select Campus + Studen Type

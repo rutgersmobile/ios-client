@@ -7,7 +7,9 @@
 //
 
 #import "NSIndexPath+RowExtensions.h"
-
+/*
+    An array of index paths from the given section from the given range
+ */
 @implementation NSIndexPath (RowExtensions)
 +(NSArray *)indexPathsForRange:(NSRange)range inSection:(NSInteger)section{
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:range.length];

@@ -49,6 +49,9 @@
     return [self buildDynamicSharingURL];
 }
 
+/*
+    Goes over the view controllers and collects the channel names into an array
+ */
 -(NSURL *)buildDynamicSharingURL {
     NSMutableArray *pathComponents = [NSMutableArray array];
     for (id viewController in self.navigationController.viewControllers) {
