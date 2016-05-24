@@ -168,4 +168,52 @@
         self.loadingState = AAPLLoadStateNoContent;
 }
 
+
+
+/*
+ 
+    Hackish addition: Sandeep
+ */
+
+
+- (NSArray *)indexPathsForTitle:(id)title
+{
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    // go through the array , find the item and adds its index to the indexpath array
+    [_items enumerateObjectsUsingBlock:^(id obj, NSUInteger objectIndex, BOOL *stop) {
+        id values = _items[objectIndex];
+        id item = [values objectForKey:@"title"];
+        /*
+            if item is a dictionary obtain the hometitle and compare with
+            string
+         
+            if item is a string , compare directly
+         */
+        if( [item isKindOfClass:[NSDictionary class]])
+        {
+            if([[item objectForKey:@"homeTitle"] compare: title options:NSCaseInsensitiveSearch] )
+            {
+               [indexPaths addObject:[NSIndexPath indexPathForItem:objectIndex inSection:0]];
+                NSLog(@" item # : %d" , objectIndex);
+            }
+        }
+        else
+        {
+            if([item compare: title options:NSCaseInsensitiveSearch] )
+            {
+               [indexPaths addObject:[NSIndexPath indexPathForItem:objectIndex inSection:0]];
+                NSLog(@" item # : %d" , objectIndex);
+            }
+            
+        }
+        
+    }];
+    
+    return indexPaths;
+}
+
+
+
+
+
 @end

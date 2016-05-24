@@ -8,6 +8,7 @@
 
 #import "RUUserInfoManager.h"
 
+// Constants to manage notifications
 NSString *const userInfoManagerDidChangeInfoKey = @"userInfoManagerDidChangeInfoKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
 static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey";

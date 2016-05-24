@@ -23,6 +23,8 @@
 @end
 
 @implementation DynamicTableViewController
+
+
 +(NSString *)channelHandle{
     return @"dtable";
 }
@@ -49,6 +51,8 @@
     }
     return self;
 }
+
+
 
 - (void)viewDidLoad
 {
@@ -79,10 +83,38 @@
     //Sometimes the title is on the item and not its channel
     if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];
    
-    
+  
      // Now move to the next view controller
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+// Sandeep Additions : Trying to solve error with book marks
+
+/*
+// Not working , the required method is static , and I am not able to
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
+    // How to set up the correct view controller ?
+    NSLog(@"#1 : %@" ,[pathComponents[0] stringByRemovingPercentEncoding]);
+    NSLog(@"#2 : %@" ,[pathComponents[1] stringByRemovingPercentEncoding]);
+ 
+    self.dataSource = [[DynamicDataSource alloc] initWithChannel:self.channel];
+    id item = [self.dataSource indexPathsForTitle:[pathComponents[0] stringByRemovingPercentEncoding]];
+   
+    //Either the item is the channel or has a channel
+    NSDictionary *channel = item[@"channel"];
+    if (!channel) channel = item;
+    
+    //Get view controller to display
+    UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+    
+    //Sometimes the title is on the item and not its channel
+    if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];
+    
+    // Now move to the next view controller
+    
+    return @[vc];
+}
+*/
 
 
 @end

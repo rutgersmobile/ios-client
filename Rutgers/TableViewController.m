@@ -186,7 +186,7 @@
 /*
     <q> ?????
     This button seems to be used for adding the favoutes button to the slide view controller
- 
+    Creates an action sheet .
  */
 - (void)actionButtonTapped:(id)sender {
     NSURL *url = self.sharingURL;

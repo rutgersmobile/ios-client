@@ -133,6 +133,12 @@
     return nil;
 }
 
+- (NSArray *)indexPathsForTitle:(id)title
+{
+     NSAssert(NO, @"Should be implemented by subclasses");
+    return nil;   
+}
+
 /// Find the item at the specified index path.
 - (id)itemAtIndexPath:(NSIndexPath *)indexPath{
     NSAssert(NO, @"Should be implemented by subclasses");

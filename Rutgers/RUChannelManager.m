@@ -77,27 +77,30 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
  
 @result : array containing json objects
  
-    Descript : 
-        This seems to create the content in the Channel , get the Json objects ????
- 
- 
  */
 @synthesize contentChannels = _contentChannels;
--(NSArray *)contentChannels{
-    @synchronized(self) {
-        if (!_contentChannels) { // If the content channel has not been created , create it .
+-(NSArray *)contentChannels
+{
+    @synchronized(self)
+    {
+        if (!_contentChannels)
+        { // If the content channel has not been created , create it .
             NSDate *latestDate;
             NSArray *paths = @[[self documentPath],[self bundlePath]];
             
-            for (NSString *path in paths) {
+            for (NSString *path in paths)
+            {
                 NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
                 NSDate *date = [attributes fileModificationDate];
                 
-                if (!latestDate || [date compare:latestDate] == NSOrderedDescending) {  // If the latest date has not been set or if the date
+                if (!latestDate || [date compare:latestDate] == NSOrderedDescending)
+                {  // If the latest date has not been set or if the date
                     NSData *data = [NSData dataWithContentsOfFile:path];
-                    if (data) {
+                    if (data)
+                    {
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                        if (channels.count) {
+                        if (channels.count)
+                        {
                             latestDate = date;
                             _contentChannels = channels;  // So we create channel from files converted into JSonn Objects ?
                         }
@@ -240,8 +243,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         NSLog(@"Trying to register class with channel manager that does not conform to RUChannelProtocol");
         return;
     }
-    NSString *handle = [class performSelector:@selector(channelHandle)];  // call channelHandle to obtain the class name
-    [self viewTagsToClassNameMapping][handle] = NSStringFromClass(class);  // use ios to convert class name into an acutal class instance
+    NSString *handle = [class performSelector:@selector(channelHandle)];  // call channelHandle to obtain the handle name
+    self.viewTagsToClassNameMapping[handle] = NSStringFromClass(class);  // use ios to convert actual class into a class name
 }
 
 /*
@@ -283,7 +286,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 /*
  
- 
+trollersForURL
  
  */
 -(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle{
@@ -305,10 +308,17 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     NSString *viewTag = [[self channelWithHandle:handle] channelView];
     id class = [self classForViewTag:viewTag];
-    
+   
+    // Check if the channel handles opening favorites itself, or defers to the channnel manager
     if ([class respondsToSelector:@selector(viewControllersWithPathComponents:destinationTitle:)]) {
+            // If this part of the code is called , then things work
+        
         return [class performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
-    } else {
+    }
+    else {
+        
+        NSLog(@"error in VCForUrl");
+            // If this part of the code is called , then it ends in error
         return @[[[RUFavoritesDynamicHandoffViewController alloc] initWithHandle:handle pathComponents:components title:destinationTitle]];
     }
 }
@@ -322,8 +332,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         Why is the channel NSDict ? -> A Dict is used to store the values describing the channel.
             Different keys like handle : ??
                                 view : Name of VC
-                                icon : icon ??
-                                title : Name fo title
+ icon : icon ??
+ title : Name fo title
  
  
  */

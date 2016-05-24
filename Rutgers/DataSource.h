@@ -68,6 +68,8 @@ typedef NS_ENUM(int, DataSourceAnimationDirection) {
 
 /// Find the index paths of the specified item in the data source. An item may appear more than once in a given data source.
 - (NSArray *)indexPathsForItem:(id)item;
+- (NSArray *)indexPathsForTitle:(id)title;
+
 
 -(void)invalidateCachedHeights;
 

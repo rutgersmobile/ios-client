@@ -24,6 +24,7 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self makeSections];
+    
 }
 
 -(void)makeSections{

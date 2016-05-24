@@ -56,10 +56,14 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
         self.loading?.doneWithError(error as? NSError)
         self.loading = nil
     }
+   
+    
+   // Point of error
     
     func dataSource(dataSource: DataSource!, didLoadContentWithError error: NSError!) {
         do {
             try findMatchingSubItemInDataSource(dataSource)
+            print("working !!")
         } catch {
             finishWithError(error)
             print("error")

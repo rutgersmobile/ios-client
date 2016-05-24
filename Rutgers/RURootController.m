@@ -22,6 +22,10 @@
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @end
 
+/*
+    Create a shared instance used for the entirety of the program
+ 
+ */
 @implementation RURootController
 +(instancetype)sharedInstance{
     static RURootController *sharedInstance = nil;
@@ -137,6 +141,13 @@
 -(void)openURL:(NSURL *)url destinationTitle:(NSString *)title{
     UINavigationController *navController = [[RUNavigationController alloc] init];  // Should a new instance be created ???
     [RUAppearance applyAppearanceToNavigationController:navController];
+    
+   
+    /*
+        This function seems to be the source of error , for the bus etc , one specific way to used to 
+        display the controller , but for the dtables another way to present the information is used .
+     
+     */
     navController.viewControllers = [[RUChannelManager sharedInstance] viewControllersForURL:url destinationTitle:title];
     
     [self placeButtonInViewController:navController.topViewController];
@@ -179,7 +190,7 @@
 -(void)openItem:(NSDictionary *)item {
     self.selectedItem = item;
     
-    if (item[@"isFavorite"]) {
+    if ([item[@"isFavorite"] boolValue]) {
         [self openFavorite:item];
     } else {
         [RUChannelManager sharedInstance].lastChannel = item;
@@ -207,10 +218,16 @@
     return [[channel channelView] isEqualToString:@"splash"];
 }
 
+/*
+    Select the view to go to
+    
+    If the user tries to open an already open view , the drawer is just closed.
+ */
 #pragma mark Menu Delegate
 -(void)menu:(RUMenuViewController *)menu didSelectItem:(NSDictionary *)item{
     if (![item isEqualToDictionary:self.selectedItem]) [self openItem:item];
     [self.containerViewController closeDrawer];
+    NSLog(@" #1 ");
 }
 
 @end

@@ -18,6 +18,9 @@
 #import "RUDataLoadingManager.h"
 #import "RUChannelProtocol.h"
 
+#import "DynamicTableViewController.h"
+
+
 extern NSString *const ChannelManagerDidUpdateChannelsKey;
 
 @interface RUChannelManager : RUDataLoadingManager

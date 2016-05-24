@@ -29,7 +29,12 @@
  *  @return The initialized view controller
  */
 +(id)channelWithConfiguration:(NSDictionary *)channelConfiguration;
++(NSString *)channelHandle;
 
 @optional
+
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title;
+
+
+
 @end

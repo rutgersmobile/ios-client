@@ -14,7 +14,6 @@
 
 /*
     pathComp... is an array of strings representing the point the app tghat we are at , 
-    or is it used as an url for the internet ?????
  
     eg -> rutgers://bus/route/f/
     
