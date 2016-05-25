@@ -72,7 +72,7 @@
 		04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; };
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
-		6862BA48665649378AC0462B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2127C0710965413FBE553ECA /* libPods.a */; };
+		592E7C98495BF39051D79C73 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
 		A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
@@ -370,7 +370,7 @@
 		04DE78F01B6C13D700B06B6F /* RUUIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUIWebViewController.h; sourceTree = "<group>"; };
 		04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUIWebViewController.m; sourceTree = "<group>"; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FAAF2D92E8DF9C54DCB3A3F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		A704909F19478CB2003B99DC /* RUSportsRosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsRosterViewController.h; sourceTree = "<group>"; };
 		A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSportsRosterViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
@@ -661,6 +661,7 @@
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
 		A7FCC3F8194B7088005FE994 /* RUEmbeddedMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUEmbeddedMapsViewController.h; path = Rutgers/RUEmbeddedMapsViewController.h; sourceTree = SOURCE_ROOT; };
 		A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUEmbeddedMapsViewController.m; path = Rutgers/RUEmbeddedMapsViewController.m; sourceTree = SOURCE_ROOT; };
+		B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -674,7 +675,7 @@
 		C262EFC4188345D10035C8F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
-		F3065DFB12B2FEE170165DCB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -707,7 +708,7 @@
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
 				C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */,
 				0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */,
-				6862BA48665649378AC0462B /* libPods.a in Frameworks */,
+				592E7C98495BF39051D79C73 /* libPods-Rutgers.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,8 +875,8 @@
 		71C113FD36A753397BBAA999 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6FAAF2D92E8DF9C54DCB3A3F /* Pods.debug.xcconfig */,
-				F3065DFB12B2FEE170165DCB /* Pods.release.xcconfig */,
+				FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */,
+				7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1591,6 +1592,7 @@
 				C262EFAF188345D10035C8F5 /* UIKit.framework */,
 				C262EFC4188345D10035C8F5 /* XCTest.framework */,
 				2127C0710965413FBE553ECA /* libPods.a */,
+				B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1681,12 +1683,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C262EFD4188345D10035C8F5 /* Build configuration list for PBXNativeTarget "Rutgers" */;
 			buildPhases = (
-				027474BDB74F4A8B95CB6031 /* Check Pods Manifest.lock */,
+				027474BDB74F4A8B95CB6031 /* 📦 Check Pods Manifest.lock */,
 				C262EFA4188345D10035C8F5 /* Sources */,
 				C262EFA5188345D10035C8F5 /* Frameworks */,
 				C262EFA6188345D10035C8F5 /* Resources */,
-				F64F9DA88AFF4B3A8763F4C1 /* Copy Pods Resources */,
-				17D319ABBBF33B5AA50442EF /* Embed Pods Frameworks */,
+				F64F9DA88AFF4B3A8763F4C1 /* 📦 Copy Pods Resources */,
+				17D319ABBBF33B5AA50442EF /* 📦 Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1781,14 +1783,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		027474BDB74F4A8B95CB6031 /* Check Pods Manifest.lock */ = {
+		027474BDB74F4A8B95CB6031 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1796,34 +1798,34 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		17D319ABBBF33B5AA50442EF /* Embed Pods Frameworks */ = {
+		17D319ABBBF33B5AA50442EF /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F64F9DA88AFF4B3A8763F4C1 /* Copy Pods Resources */ = {
+		F64F9DA88AFF4B3A8763F4C1 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2124,7 +2126,6 @@
 		};
 		049A4CE81B4AFC890006D1FA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FAAF2D92E8DF9C54DCB3A3F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -2144,7 +2145,6 @@
 		};
 		049A4CE91B4AFC890006D1FA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3065DFB12B2FEE170165DCB /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -2229,7 +2229,7 @@
 		};
 		C262EFD5188345D10035C8F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6FAAF2D92E8DF9C54DCB3A3F /* Pods.debug.xcconfig */;
+			baseConfigurationReference = FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2257,7 +2257,7 @@
 		};
 		C262EFD6188345D10035C8F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3065DFB12B2FEE170165DCB /* Pods.release.xcconfig */;
+			baseConfigurationReference = 7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
