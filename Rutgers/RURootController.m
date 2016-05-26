@@ -227,7 +227,6 @@
 -(void)menu:(RUMenuViewController *)menu didSelectItem:(NSDictionary *)item{
     if (![item isEqualToDictionary:self.selectedItem]) [self openItem:item];
     [self.containerViewController closeDrawer];
-    NSLog(@" #1 ");
 }
 
 @end

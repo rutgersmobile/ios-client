@@ -27,6 +27,16 @@
 {
     self = [super init];
     if (self) {
+       
+        // Set up an Alert Data Source and then add it to the data source : The order in which the data is added will determine the layout order
+        StringDataSource *editChannels = [[StringDataSource alloc] initWithItems:@[@"Edit Channels"]];
+        editChannels.showsDisclosureIndicator = YES;
+        
+        [self addDataSource:editChannels];
+
+       
+        
+        
         
         //Select Campus
         //Get the current campus title or use placeholder text
@@ -56,7 +66,7 @@
             [RUUserInfoManager setCurrentUserRole:[RUUserInfoManager userRoles][buttonIndex]];
         };
         
-        [self addDataSource:campuses];
+        [self addDataSource:campuses]; // campus will appear first
         [self addDataSource:userRoles];
         
         //Reset App
@@ -78,7 +88,8 @@
         };
         [self addDataSource:reset];
 
-        
+     
+//            Seperate ViewController has been created for this
         //Legal Notices
         StringDataSource *legal = [[StringDataSource alloc] initWithItems:@[@"Legal Notices"]];
         legal.showsDisclosureIndicator = YES;
