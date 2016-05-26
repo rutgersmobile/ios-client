@@ -73,11 +73,16 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     func findMatchingSubItemInDataSource(dataSource: DataSource) throws {
         if let dataSource = dataSource as? BasicDataSource {
             let nextComponent = remainingPathComponents.removeFirst()
-            guard let currentItem = dataSource.subitemMatchingPathComponent(nextComponent),
-            channel = currentItem["channel"] as? [NSObject: AnyObject] else { throw DynamicFavoriteError.InvalidPathComponent }
+            guard let channel = dataSource.subitemMatchingPathComponent(nextComponent)
+                else { throw DynamicFavoriteError.InvalidPathComponent }
+
+            if let actualChannel = channel["channel"] as? [NSObject: AnyObject] {
+                currentDataSource = DynamicDataSource(channel: actualChannel)
+            } else {
+                currentDataSource = DynamicDataSource(channel: channel)
+            }
             
-            currentDataSource = DynamicDataSource(channel: channel)
-            
+
             if remainingPathComponents.count == 0 {
                 finishWithDataSource(currentDataSource)
             } else {
@@ -94,7 +99,6 @@ extension BasicDataSource {
             guard let title = subItem.channelTitle else { continue }
             let normalizedTitle = (title as NSString).rutgersStringEscape()
             if normalizedTitle == pathComponent {
-                
                 return subItem as? [NSObject: AnyObject]
             }
         }
