@@ -17,6 +17,15 @@
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
 
+
+/**
+    RUMenu -> the menu displayed in the slide bar
+    RURoot -> The root view controller which displays the differet View Controllers
+    RUContainer -> Protocol which is used to customize the drawer and add abstract away the usagd differences between MDDrawer and SWRevel libraries
+ 
+ */
+
+
 @interface RURootController () <RUMenuDelegate>
 @property (nonatomic) RUMenuViewController *menuViewController;
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
@@ -50,7 +59,7 @@
 {
     self = [super init];
     if (self) {
-        self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel ??
+        self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
     }
     return self;
@@ -71,6 +80,9 @@
         UIViewController *centerViewController = [self topViewControllerForChannel:self.selectedItem];
         
         Class drawerClass = [self drawerClass];
+        /*
+                RUContainerController is added to the Classes during run time using the category feature
+          */
         if (![drawerClass conformsToProtocol:@protocol(RUContainerController)]) [NSException raise:NSInvalidArgumentException format:@"%@ does not conform to %@",NSStringFromClass(drawerClass), NSStringFromProtocol(@protocol(RUContainerController))];
         
         __weak typeof(self) weakSelf = self; // Used within block to prevent memory cycles.
@@ -168,17 +180,14 @@
 
 
 
-/*
-    The slide drawer is build by using MMDrawController lib. 
-    This sets up the slide view controller
- 
- 
+/**
+    Used to obtain the front view controller while opening the the drawer
  */
 #pragma mark Drawer Interface
 -(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
 
-    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];  // create a navigation controller with a view controller of the current channel as root ?????
+    UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
     [RUAppearance applyAppearanceToNavigationController:navController];
     
     [self placeButtonInViewController:navController];
@@ -194,7 +203,7 @@
         [self openFavorite:item];
     } else {
         [RUChannelManager sharedInstance].lastChannel = item;
-        self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
+        self.containerViewController.containedViewController = [self topViewControllerForChannel:item]; // sets the property containedViewController added by the RUContainer Protocol
     }
     
         /*

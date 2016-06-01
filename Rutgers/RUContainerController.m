@@ -7,11 +7,6 @@
 //
 
 
-/*
-    interface for setting up the MMD slide view controller
- 
- 
- */
 #import <Foundation/Foundation.h>
 #import "RUContainerController.h"
 #import "RUDefines.h"
@@ -22,6 +17,12 @@
 #define DRAWER_WIDTH (iPad() ? round(270 * IPAD_SCALE) : 270)
 #define DRAWER_DISPLACEMENT 55
 #define DRAWER_ANIM_DURATION 0.25
+
+/*
+    General Style followed is to add methods to the objects during run time using the categoey technique in Obj C
+ 
+ */
+
 
 @interface UISplitViewController (RUContainer) <RUContainerController>
 
@@ -72,6 +73,9 @@
     
     return revealVC;
 }
+
+
+// getter and setter for the containedViewController
 -(UIViewController *)containedViewController{
     return self.frontViewController;
 }
@@ -93,7 +97,7 @@
 
 @end
 
-@implementation MMDrawerController (RUContainer)
+@implementation MMDrawerController (RUContainer) // extend class using categories
 +(id<RUContainerController>)containerWithContainedViewController:(UIViewController *)containedViewController drawerViewController:(UIViewController *)drawerViewController{
     MMDrawerController *drawerController = [[MMDrawerController alloc] initWithCenterViewController:containedViewController leftDrawerViewController:drawerViewController];
     

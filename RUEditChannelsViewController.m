@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.dataSource = [[ChannelsDataSource alloc] init];
+    self.dataSource = [[RUMenuMultipleDataSource alloc] init];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -28,6 +28,9 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
 
 /*
 // Override to support conditional editing of the table view.

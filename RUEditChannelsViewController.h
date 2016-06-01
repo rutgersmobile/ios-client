@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ChannelsDataSource.h"
 #import "TableViewController.h"
+#import "RUMenuMultipleDataSource.h"
 
 @interface RUEditChannelsViewController : TableViewController
 

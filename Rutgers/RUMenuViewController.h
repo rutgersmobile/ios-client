@@ -17,5 +17,5 @@
 @end
 
 @interface RUMenuViewController : TableViewController
-@property id <RUMenuDelegate> delegate;
+@property id <RUMenuDelegate> delegate; // where is the delegate set ? :: with in the RURootViewController
 @end

@@ -55,7 +55,7 @@
     }
     else {
         // Trigger the alert action
-        DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section-1];
+        DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
         if ([dataSource isKindOfClass:[AlertDataSource class]]) {
             AlertDataSource *alertDataSource = (AlertDataSource *)dataSource;
             [alertDataSource showAlertInView:tableView];

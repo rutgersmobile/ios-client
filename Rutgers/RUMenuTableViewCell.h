@@ -13,4 +13,5 @@
 @property (nonatomic) UILabel *channelTitleLabel;
 @property (nonatomic) UIImageView *channelImage;
 -(void)setupForChannel:(NSDictionary *)channel;
+-(void)setupForChannelForEditOptions:(NSDictionary *)channel;
 @end
