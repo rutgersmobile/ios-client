@@ -8,6 +8,10 @@
 
 #import "RUEditChannelsViewController.h"
 #import "DataSource.h"
+#import "RUChannelManager.h"
+#import "NSDictionary+Channel.h" // categories :: For obtaining the title and image from channel
+
+
 
 @interface RUEditChannelsViewController ()
 @end
@@ -16,7 +20,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.dataSource = [[RUMenuMultipleDataSource alloc] init];
+    self.dataSource = [RUMenuMultipleDataSource sharedManager];
+   
+    // add edit option to navigation controller
+    
+    self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editDataSource)];
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -29,7 +39,44 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if(cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
+    NSDictionary *item = [self.dataSource objectAtIndex:indexPath.row];
+    if( [item[@"isFavourite"] boolValue])
+    {
+        NSString *channelHandle = [[NSURL URLWithString:item[@"url"]] host];
+        
+        // obtain the channel with the handle
+        NSDictionary *channel = [[RUChannelManager sharedInstance] channelWithHandle:channelHandle];
+        
+        cell.textLabel.text = [channel channelTitle];
+        cell.imageView.image = [channel channelIcon];
+        
+    }
+    else // channel
+    {
+        cell.textLabel.text = [item channelTitle];
+        cell.imageView.image = [item channelIcon];
+    }
+    
+    return cell;
+}
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.dataSource numberOfObjects];
+}
 
 
 /*

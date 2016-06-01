@@ -15,6 +15,13 @@
     and the edit RUEditChanenl View Controller for the editing functionality wihtin the options channel
  */
 
-@interface RUMenuMultipleDataSource : BasicDataSource
+@interface RUMenuMultipleDataSource : MenuBasicDataSource
+
++(instancetype) sharedManager;
+
+-(id) objectAtIndex:(NSUInteger)index;
+
+-(NSInteger) numberOfObjects;
+
 
 @end

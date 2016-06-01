@@ -11,7 +11,22 @@
 #import "TableViewController.h"
 #import "RUMenuMultipleDataSource.h"
 
-@interface RUEditChannelsViewController : TableViewController
+/*
+    This class will function as the data source and delegate of the table view
+    
+    Create a simpler solution  , so for now ignoring Kyle 's Apple Example concept
+  
+ */
 
+#warning  TO DO : Implement using the TableViewController Super Class
+
+@interface RUEditChannelsViewController : UITableViewController <UITableViewDataSource>
+
+
+@property (weak) id dataSource; // pointer to the Menu Multiple Data Source
+/*
+    We do not use this data souce directly , we 
+ 
+ */
 
 @end
