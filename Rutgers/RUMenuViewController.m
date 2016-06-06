@@ -14,6 +14,12 @@
 #import "RURootController.h"
 #import "RUDefines.h"
 
+/*
+ 
+    RU Menu is shown within the slide menu bar
+ */
+
+
 @interface RUMenuViewController ()
 @property (nonatomic) UIView *paddingView;
 @end
@@ -35,22 +41,36 @@
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
 
     self.dataSource = [[MenuDataSource alloc] init];
-    
+ 
+    /*
+        Sets the graphics opt of the menu slide bar
+     */
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 32+kLabelHorizontalInsets*2, 0, 0);
     self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
-    
+   
+    /*
+        Location where the menu bar moves to the previous selected item
+     */
     NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:[RURootController sharedInstance].selectedItem] lastObject];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
 }
 
+/*
+    pre auto layout
+ */
 -(void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     [self setContentInsets];
 }
 
+/*
+    pre auto layout : 
+    see this :
+    http://stackoverflow.com/questions/1983463/whats-the-uiscrollview-contentinset-property-for
+ */
 -(void)setContentInsets{
     CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarHeight];
     UIEdgeInsets insets = UIEdgeInsetsMake(statusBarHeight, 0, 0, 0);
@@ -58,6 +78,7 @@
     self.tableView.scrollIndicatorInsets = insets;
 }
 
+// store the state and reload
 -(void)reloadTablePreservingSelectionState:(UITableView *)tableView{
     if (tableView == self.tableView) {
         [self.tableView reloadData];

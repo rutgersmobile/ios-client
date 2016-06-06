@@ -17,8 +17,6 @@
  
  */
 
-
-
 +(void)applyAppearance{
     //global appearance, nothing right now
   

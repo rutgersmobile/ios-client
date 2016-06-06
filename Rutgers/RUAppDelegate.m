@@ -36,17 +36,21 @@
 #pragma mark Initialization
 /**
  *  Setup application wide appearance, application wide cache, drawer, network monitoring, ask the user for their information if this is the first run, and send the proper analytics events.
+ 
+    Starting point for the app
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
-    [application setStatusBarHidden:NO];
+    [application setStatusBarHidden:YES];
+    
+        // set up apperance
     [RUAppearance applyAppearance];
-    
+  
     [self initializeDrawer];
-    
+   
     self.userInfoManager = [[RUUserInfoManager alloc] init];
     [self.userInfoManager getUserInfoIfNeededWithCompletion:^{
         [[RUAnalyticsManager sharedManager] queueEventForApplicationLaunch];
@@ -68,25 +72,27 @@
  *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the menu/drawer containment view controller
  */
 -(void)initializeDrawer{
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; // set up the window
     
     self.rootController = [[RURootController alloc] init];
     self.window.rootViewController = self.rootController.containerViewController;
 
-    [self.window makeKeyAndVisible];
-    [self.window addSubview:self.windowBackground];
+    [self.window makeKeyAndVisible]; // set up window
+    [self.window addSubview:self.windowBackground]; // windowBack refers to the black/ grey background of the app , seen when using the menu to see the slide view
+    
+    // set up 
     [self.windowBackground autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     [self.window sendSubviewToBack:self.windowBackground];
     
-    self.rootController.containerViewController.view.backgroundColor = [UIColor clearColor];
+    self.rootController.containerViewController.view.backgroundColor = [UIColor clearColor]; // clear color allows us to see the windowBackground
 }
 
 - (UIImageView *)windowBackground
 {
     if (!_windowBackground) {
         
-        _windowBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
-        _windowBackground.contentMode = UIViewContentModeScaleToFill;
+        _windowBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]]; // bg is present in the image assets -> the background of the slide view
+        _windowBackground.contentMode = UIViewContentModeScaleToFill; // set up
     }
     return _windowBackground;
 }

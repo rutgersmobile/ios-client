@@ -11,6 +11,11 @@
 extern NSString *const userInfoManagerDidChangeInfoKey;
 extern NSString *const userInfoManagerDidChangeFavoritesKey;
 
+/*
+    Collects information from the user and stores it
+ 
+ 
+ */
 @interface RUUserInfoManager : NSObject
 
 +(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock;

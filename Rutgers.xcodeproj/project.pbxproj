@@ -73,6 +73,10 @@
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
 		592E7C98495BF39051D79C73 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
+		620D2BB61CF7733F001FB878 /* RUAthleticsGameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 620D2BB51CF7733F001FB878 /* RUAthleticsGameCell.xib */; };
+		620D2BB91CF77415001FB878 /* RUAthleticsGameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 620D2BB81CF77415001FB878 /* RUAthleticsGameCell.m */; };
+		620D2BC01CF790E5001FB878 /* RUEditChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 620D2BBF1CF790E5001FB878 /* RUEditChannelsViewController.m */; };
+		620D2BC51CFDE104001FB878 /* RUMenuMultipleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 620D2BC41CFDE104001FB878 /* RUMenuMultipleDataSource.m */; };
 		A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
@@ -370,6 +374,13 @@
 		04DE78F01B6C13D700B06B6F /* RUUIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUIWebViewController.h; sourceTree = "<group>"; };
 		04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUIWebViewController.m; sourceTree = "<group>"; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		620D2BB51CF7733F001FB878 /* RUAthleticsGameCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RUAthleticsGameCell.xib; path = Rutgers/RUAthleticsGameCell.xib; sourceTree = "<group>"; };
+		620D2BB71CF77415001FB878 /* RUAthleticsGameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAthleticsGameCell.h; sourceTree = "<group>"; };
+		620D2BB81CF77415001FB878 /* RUAthleticsGameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAthleticsGameCell.m; sourceTree = "<group>"; };
+		620D2BBE1CF790E5001FB878 /* RUEditChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUEditChannelsViewController.h; sourceTree = "<group>"; };
+		620D2BBF1CF790E5001FB878 /* RUEditChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUEditChannelsViewController.m; sourceTree = "<group>"; };
+		620D2BC31CFDE104001FB878 /* RUMenuMultipleDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuMultipleDataSource.h; sourceTree = "<group>"; };
+		620D2BC41CFDE104001FB878 /* RUMenuMultipleDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuMultipleDataSource.m; sourceTree = "<group>"; };
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		A704909F19478CB2003B99DC /* RUSportsRosterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSportsRosterViewController.h; sourceTree = "<group>"; };
 		A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSportsRosterViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1336,6 +1347,8 @@
 				A7C92C941946108200609549 /* RUSportsData.m */,
 				A7778D8619A57516003BD8DE /* RUImageResponseSerializer.h */,
 				A7778D8719A57516003BD8DE /* RUImageResponseSerializer.m */,
+				620D2BB71CF77415001FB878 /* RUAthleticsGameCell.h */,
+				620D2BB81CF77415001FB878 /* RUAthleticsGameCell.m */,
 			);
 			name = ruathletics;
 			sourceTree = "<group>";
@@ -1555,6 +1568,11 @@
 		C262EF9F188345D10035C8F5 = {
 			isa = PBXGroup;
 			children = (
+				620D2BBE1CF790E5001FB878 /* RUEditChannelsViewController.h */,
+				620D2BBF1CF790E5001FB878 /* RUEditChannelsViewController.m */,
+				620D2BC31CFDE104001FB878 /* RUMenuMultipleDataSource.h */,
+				620D2BC41CFDE104001FB878 /* RUMenuMultipleDataSource.m */,
+				620D2BB51CF7733F001FB878 /* RUAthleticsGameCell.xib */,
 				C262EFB1188345D10035C8F5 /* Rutgers */,
 				049A4CE11B4AFC890006D1FA /* Rutgers Tests */,
 				047D06DC1BE16DB600DFEAA3 /* RutgersUITests */,
@@ -1720,7 +1738,7 @@
 						TestTargetID = C262EFA7188345D10035C8F5;
 					};
 					C262EFA7188345D10035C8F5 = {
-						DevelopmentTeam = 43YR78874Z;
+						DevelopmentTeam = E5335P94A9;
 					};
 				};
 			};
@@ -1772,6 +1790,7 @@
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
+				620D2BB61CF7733F001FB878 /* RUAthleticsGameCell.xib in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
@@ -1868,6 +1887,7 @@
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
 				A7D4B65219ABDCBE0087A8BC /* KeyValueDataSource.m in Sources */,
+				620D2BC01CF790E5001FB878 /* RUEditChannelsViewController.m in Sources */,
 				A7241A4219896A9400304436 /* RUReaderDataSource.m in Sources */,
 				A7D4B64619ABD1300087A8BC /* OptionsDataSource.m in Sources */,
 				A7DD348C1981D3CB0078023A /* PlacesBasicDataSource.m in Sources */,
@@ -1892,6 +1912,7 @@
 				A75E7EB919A3C6C300782AE5 /* MenuDataSource.m in Sources */,
 				04A1EFFB1A5C50B700DE0351 /* RUBusStop.m in Sources */,
 				A74669031986D8F000A5EBE0 /* RUAppDelegate.m in Sources */,
+				620D2BC51CFDE104001FB878 /* RUMenuMultipleDataSource.m in Sources */,
 				A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */,
 				A72FFFBC1937DF9000016C89 /* RUSOCCourseCell.m in Sources */,
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
@@ -2001,6 +2022,7 @@
 				04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */,
 				A7DD34871981B5E80078023A /* RUSOCDataSource.m in Sources */,
 				04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */,
+				620D2BB91CF77415001FB878 /* RUAthleticsGameCell.m in Sources */,
 				A7241A1B1988168800304436 /* RUFoodDataSource.m in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
 				A771A27F199AB790000CD174 /* RUSOCSearchIndex.m in Sources */,
@@ -2174,7 +2196,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Bailey (ST467WTGUT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sandeep Mattappali (85RTFG4DHB)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2208,7 +2230,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Kyle Bailey (37579WX763)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sandeep Mattappali (85RTFG4DHB)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2235,6 +2257,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2245,7 +2269,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.Rutgers.css.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
@@ -2263,6 +2287,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2273,7 +2299,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.Rutgers.css.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";

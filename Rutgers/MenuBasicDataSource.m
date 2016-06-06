@@ -12,6 +12,7 @@
 #import "DataSource_Private.h"
 
 @implementation MenuBasicDataSource
+
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[RUMenuTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUMenuTableViewCell class])];
@@ -21,6 +22,11 @@
     return NSStringFromClass([RUMenuTableViewCell class]);
 }
 
+/*
+    This does not seem to have any effect on the program
+    Should the configutation be in the view controller ?
+    Changing the cell configutation here has not effect , may it is being over ridden somewhere else ?
+ */
 -(void)configureCell:(RUMenuTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *channel = [self itemAtIndexPath:indexPath];
     [cell setupForChannel:channel];

@@ -9,6 +9,10 @@
 #import "UIColor+RutgersColors.h"
 #import <HexColors.h>
 
+/*
+    Category to hard code color functionality
+ */
+
 @implementation UIColor (RutgersColors)
 
 +(UIColor *)rutgersRedColor{
@@ -47,6 +51,9 @@
     return [UIColor colorWithRed:177/255.0 green:198/255.0 blue:226/255.0 alpha:1];
 }
 
+/*
+    Color Used for the entire app
+ */
 +(UIColor *)rutgersBarRedColor{
     return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.77607843137254897 alpha:1.0];
     // return [UIColor colorWithHue:0.97875000000000001 saturation:1 brightness:0.80607843137254897 alpha:1.0];

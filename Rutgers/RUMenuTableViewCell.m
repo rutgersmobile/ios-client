@@ -60,6 +60,9 @@
     self.channelTitleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
+/*
+    Methods are called from the data source did select row at index path
+ */
 -(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
     
     if (!self.selected) {
@@ -68,17 +71,23 @@
     }
 }
 
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
     [self applyStyleForHighlightedState:selected];
 }
 
+/*
+    This function seems to over ride the configutation set up the setupForChannel :
+        The ovverride happens for the image
+ 
+ */
 -(void)applyStyleForHighlightedState:(BOOL)state{
     self.channelImage.tintColor = state ? [UIColor whiteColor] : [UIColor iconDeselectedColor];
     self.channelTitleLabel.textColor = state ? [UIColor whiteColor] : [UIColor menuDeselectedColor];
-    self.backgroundColor = state ? [[UIColor blackColor] colorWithAlphaComponent:0.25] : nil;
-    self.channelImage.image = state ? [self.channel filledChannelIcon] : [self.channel channelIcon];
+    self.backgroundColor = state ? [[UIColor redColor] colorWithAlphaComponent:0.25] : nil;
+    self.channelImage.image =   state ? [self.channel filledChannelIcon] : [self.channel channelIcon];
 }
 
 /*
@@ -91,5 +100,19 @@
     self.channelImage.image = [channel channelIcon];
 }
 
+/*
+    Sets up the Menu Cell For displaying within the ru edit channel view controller in the options channel
+ 
+ <q> 
+    The image and the title are set up at some other location
+ */
+-(void)setupForChannelForEditOptions:(NSDictionary *)channel
+{
+    self.channel = channel;
+    self.channelTitleLabel.text = @"test" ;//[channel channelTitle];
+    [self.channelTitleLabel setTextColor:[UIColor blackColor]];
+    self.channelImage.image = nil;
+  //  self.channelImage.image = [channel channelIcon];
+}
 
 @end

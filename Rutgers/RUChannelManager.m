@@ -27,9 +27,13 @@
 #import "NSURL+RUAdditions.h"
 #import "RUFavoritesDynamicHandoffViewController.h"
 
-NSString *const ChannelManagerJsonFileName = @"ordered_content"; // What does this do ? Used in the creation of channels ...
+NSString *const ChannelManagerJsonFileName = @"ordered_content"; // Json file used in the creation of the different channels
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
 
+/*
+    Update the number of channels and colletevery day ?
+ 
+ */
 #define CHANNEL_CACHE_TIME 60*60*24*1
 
 @interface RUChannelManager ()
@@ -43,10 +47,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 @implementation RUChannelManager
 
 /*
-    
-    Find : 
-        What does the shared signify ?
- 
+    Creates a singleton class to mangage the different channels
  
  */
 +(RUChannelManager *)sharedInstance{
@@ -58,6 +59,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     return manager;
 }
 
+
+/*
+    Other channel is the Options Channel at the end
+ 
+ */
 #pragma mark - Channel Information Methods
 @synthesize otherChannels = _otherChannels;
 -(NSArray *)otherChannels{
@@ -71,12 +77,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     }
     return _otherChannels;
 }
-/*
-  Extracts files from path and takes tye latest files and creates Json Objects out of them 
-  Thread safe : 
- 
-@result : array containing json objects
- 
+
+
+/**
+    Loads the contentChannels from a file ::
  */
 @synthesize contentChannels = _contentChannels;
 -(NSArray *)contentChannels
@@ -109,6 +113,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
             }
         
         }
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             if ([self needsLoad]) {
                 [self load];
@@ -167,8 +172,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 
-/*
- Determines if new information is avaliable , if it is then returns TRUE
+/**
+    Determines if new information is avaliable , if it is then returns TRUE
     Reads the files , Looks @ their dates and if data is older than a CHANNEL_CHACHE_TIME invertal , then a needsLoad occurs.
  */
 -(BOOL)needsLoad{
