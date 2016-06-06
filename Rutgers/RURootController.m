@@ -166,8 +166,6 @@
     [self openURL:[NSURL URLWithString:favorite[@"url"]] destinationTitle:favorite[@"title"]];
 }
 
-
-
 /*
     The slide drawer is build by using MMDrawController lib. 
     This sets up the slide view controller
@@ -190,17 +188,19 @@
 -(void)openItem:(NSDictionary *)item {
     self.selectedItem = item;
     
-    if ([item[@"isFavorite"] boolValue]) {
-        [self openFavorite:item];
-    } else {
+    NSLog(@"%@",item);
+    
+    if (item[@"view"]) {
         [RUChannelManager sharedInstance].lastChannel = item;
         self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
+    } else {
+        [self openFavorite:item];
     }
     
-        /*
-            Tried removing the condition of isFavourite , but it does not work.
-                App says network error
-         */
+    /*
+     Tried removing the condition of isFavourite , but it does not work.
+     App says network error
+     */
     
 }
 

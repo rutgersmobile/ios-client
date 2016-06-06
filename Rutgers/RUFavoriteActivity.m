@@ -64,7 +64,7 @@
 - (void)performActivity {
     NSLog(@"Fav : url %@ -> title %@", self.urlToFavorite.absoluteString , self.title);
     NSDictionary *favorite = @{
-                               @"isFavorite" : @true,
+                               //@"isFavorite" : @true,
                                @"url" : self.urlToFavorite.absoluteString,
                                @"title" : self.title
                                };

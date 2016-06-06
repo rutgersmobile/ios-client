@@ -57,6 +57,4 @@
     self.directionConstraint.constant = self.directionLabel.text.length ? kLabelVerticalInsetsSmall : 0;
 }
 
-
-
 @end
