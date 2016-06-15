@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern NSString *const userInfoManagerDidChangeInfoKey;
-extern NSString *const userInfoManagerDidChangeFavoritesKey;
+//extern NSString *const userInfoManagerDidChangeFavoritesKey;
 
 /*
     Collects information from the user and stores it
@@ -30,9 +30,11 @@ extern NSString *const userInfoManagerDidChangeFavoritesKey;
 
 -(void)getUserInfoIfNeededWithCompletion:(dispatch_block_t)completion;
 
+/*
 +(NSArray <NSDictionary *>*)favorites;
 +(void)addFavorite:(NSDictionary *)favorite;
 +(void)removeFavorite:(NSDictionary *)favorite;
+*/
 
 +(void)resetApp;
 +(void)clearCache;

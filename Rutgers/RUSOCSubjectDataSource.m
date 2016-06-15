@@ -12,21 +12,20 @@
 #import "RUSOCCourseCell.h"
 #import "DataSource_Private.h"
 
+@interface RUSOCSubjectDataSource ()
+@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
+@property (nonatomic) NSString *subjectCode;
+@end
+
 @implementation RUSOCSubjectDataSource
--(instancetype)initWithSubjectCode:(NSString *)subjectCode{
+-(instancetype)initWithSubjectCode:(NSString *)subjectCode dataLoadingManager:(RUSOCDataLoadingManager *)dataLoadingManager{
     self = [super init];
     if (self) {
         self.subjectCode = subjectCode;
         self.title = @"Courses";
+        self.dataLoadingManager = dataLoadingManager;
     }
     return self;
-}
-
--(RUSOCDataLoadingManager *)dataLoadingManager{
-    if (!_dataLoadingManager) {
-        return [RUSOCDataLoadingManager sharedInstance];
-    }
-    return _dataLoadingManager;
 }
 
 -(void)loadContent{

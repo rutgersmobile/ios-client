@@ -23,21 +23,15 @@
 @end
 
 @implementation RUSOCCourseDataSource
--(instancetype)initWithCourse:(NSDictionary *)course{
+-(instancetype)initWithCourse:(NSDictionary *)course dataLoadingManager:(RUSOCDataLoadingManager *)dataLoadingManager {
     self = [super init];
     if (self) {
         self.course = course;
         self.headerDataSource = [[RUSOCCourseHeaderDataSource alloc] init];
         self.sectionsDataSource = [[RUSOCCourseSectionsDataSource alloc] init];
+        self.dataLoadingManager = dataLoadingManager;
     }
     return self;
-}
-
--(RUSOCDataLoadingManager *)dataLoadingManager{
-    if (!_dataLoadingManager) {
-        return [RUSOCDataLoadingManager sharedInstance];
-    }
-    return _dataLoadingManager;
 }
 
 -(void)loadContent{

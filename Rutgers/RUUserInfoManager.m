@@ -7,14 +7,15 @@
 //
 
 #import "RUUserInfoManager.h"
+#import "Rutgers-Swift.h"
 
 // Constants to manage notifications
 NSString *const userInfoManagerDidChangeInfoKey = @"userInfoManagerDidChangeInfoKey";
 static NSString *const userInfoManagerCampusKey = @"userInfoManagerCampusKey";
 static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey";
 
-static NSString *const userInfoManagerFavoritesKey = @"userInfoManagerFavoritesKey";
-NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChangeFavoritesKey";
+//static NSString *const userInfoManagerFavoritesKey = @"userInfoManagerFavoritesKey";
+//NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChangeFavoritesKey";
 
 @interface RUUserInfoManager () <UIActionSheetDelegate>
 @property UIActionSheet *campusActionSheet;
@@ -215,7 +216,7 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 }
 
 // Maintain Favouites Icons in the App ??
-
+/*
 +(NSArray <NSDictionary *>*)favorites{
     return [[NSUserDefaults standardUserDefaults] arrayForKey:userInfoManagerFavoritesKey];
 }
@@ -223,10 +224,6 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
 +(void)setFavorites:(NSArray <NSDictionary *>*)favorites{
     [[NSUserDefaults standardUserDefaults] setObject:favorites forKey:userInfoManagerFavoritesKey];
     [self notifyFavoritesChanged];
-}
-
-+(void)notifyFavoritesChanged{
-    [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeFavoritesKey object:self];
 }
 
 // add new favourites to the property
@@ -241,6 +238,12 @@ NSString *const userInfoManagerDidChangeFavoritesKey = @"userInfoManagerDidChang
     NSMutableArray *favorites = [[self favorites] mutableCopy];
     [favorites removeObject:favorite];
     [self setFavorites:favorites];
+}
+*/
+
++(void)notifyFavoritesChanged{
+    #warning fix this
+    //[[NSNotificationCenter defaultCenter] postNotificationName:MenuItemManagerDidChangeActiveMenuItemsKey object:self];
 }
 
 /**

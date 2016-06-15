@@ -38,7 +38,7 @@
     RUSOCDataLoadingManager *manager = self.dataLoadingManager;
     return [NSURL rutgersUrlWithPathComponents:@[
                                                  @"soc",
-                                                 manager.semester[@"tag"],
+                                                 manager.semesterTag,
                                                  manager.campus[@"tag"],
                                                  manager.level[@"tag"],
                                                  self.subject[@"code"]
@@ -48,7 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.dataSource = [[RUSOCSubjectDataSource alloc] initWithSubjectCode:self.subject[@"code"]];
+    self.dataSource = [[RUSOCSubjectDataSource alloc] initWithSubjectCode:self.subject[@"code"] dataLoadingManager:self.dataLoadingManager];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

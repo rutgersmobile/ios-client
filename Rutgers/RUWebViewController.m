@@ -13,6 +13,8 @@
 #import "RUUIWebViewController.h"
 #import "RUWKWebViewController.h"
 #import "RUChannelManager.h"
+#import "NSDictionary+Channel.h"
+#import "UIColor+RutgersColors.h"
 
 @interface RUWebViewController ()
 @property NSDictionary *channelConfiguration;
@@ -65,7 +67,12 @@
     Create a web View controller ...
  */
 +(id)_channelWithConfiguration:(NSDictionary *)channel{
-
+    /*
+    if ([SFSafariViewController class]) {
+        SFSafariViewController *sfWebViewController = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:[channel channelURL]]];
+        sfWebViewController.view.tintColor = [UIColor rutgersRedColor];
+        return sfWebViewController;
+    } else */
     if ([WKWebView class]) {
         RUWKWebViewController *wkWebViewController = [RUWKWebViewController channelWithConfiguration:channel];
         wkWebViewController.showPageTitles = NO;

@@ -16,7 +16,7 @@
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
-
+#import "Rutgers-Swift.h"
 
 /**
     RUMenu -> the menu displayed in the slide bar
@@ -174,8 +174,8 @@
     opens a particular url. openFavourite is simply a wrapper for the openURL function.
  
  */
--(void)openFavorite:(NSDictionary *)favorite{
-    [self openURL:[NSURL URLWithString:favorite[@"url"]] destinationTitle:favorite[@"title"]];
+-(void)openFavorite:(RUFavorite *)favorite{
+    [self openURL:favorite.url destinationTitle:favorite.title];
 }
 
 /*
@@ -197,22 +197,17 @@
 }
 
 #pragma move last channel logic into channel manager
--(void)openItem:(NSDictionary *)item {
+-(void)openItem:(id)item {
     self.selectedItem = item;
     
     NSLog(@"%@",item);
     
-    if (item[@"view"]) {
+    if ([item isKindOfClass:[NSDictionary class]]) {
         [RUChannelManager sharedInstance].lastChannel = item;
         self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
     } else {
         [self openFavorite:item];
     }
-    
-    /*
-     Tried removing the condition of isFavourite , but it does not work.
-     App says network error
-     */
     
 }
 
@@ -236,8 +231,8 @@
     If the user tries to open an already open view , the drawer is just closed.
  */
 #pragma mark Menu Delegate
--(void)menu:(RUMenuViewController *)menu didSelectItem:(NSDictionary *)item{
-    if (![item isEqualToDictionary:self.selectedItem]) [self openItem:item];
+-(void)menu:(RUMenuViewController *)menu didSelectItem:(id)item{
+    if (![item isEqual:self.selectedItem]) [self openItem:item];
     [self.containerViewController closeDrawer];
 }
 

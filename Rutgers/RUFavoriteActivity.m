@@ -9,7 +9,7 @@
 #import "RUFavoriteActivity.h"
 #import "RUUserInfoManager.h"
 #import "RUChannelManager.h"
-
+#import "Rutgers-Swift.h"
 /*
  Descript : 
     Add the favouties item to the slide view controller
@@ -63,13 +63,10 @@
  */
 - (void)performActivity {
     NSLog(@"Fav : url %@ -> title %@", self.urlToFavorite.absoluteString , self.title);
-    NSDictionary *favorite = @{
-                               //@"isFavorite" : @true,
-                               @"url" : self.urlToFavorite.absoluteString,
-                               @"title" : self.title
-                               };
-    NSLog(@"Favoriting URL: %@",self.urlToFavorite);
-    [RUUserInfoManager addFavorite:favorite]; // sets up the favourite
+    
+    RUFavorite *favorite = [[RUFavorite alloc] initWithTitle:self.title url:self.urlToFavorite];
+    [[RUMenuItemManager sharedManager] addFavorite:favorite]; // sets up the favourite
+
     [self activityDidFinish:YES]; // calls func of UIActivity
 }
 

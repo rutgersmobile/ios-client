@@ -7,8 +7,9 @@
 //
 
 #import "ComposedDataSource.h"
+#import "RUSOCDataLoadingManager.h"
 
 @interface RUSOCCourseDataSource : ComposedDataSource
 -(instancetype)init NS_UNAVAILABLE;
--(instancetype)initWithCourse:(NSDictionary *)course NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithCourse:(NSDictionary *)course dataLoadingManager:(RUSOCDataLoadingManager *)dataLoadingManager NS_DESIGNATED_INITIALIZER;
 @end

@@ -22,11 +22,12 @@
 @property (nonatomic) NSDictionary *campus;
 @property (nonatomic) NSDictionary *level;
 @property (nonatomic) NSDictionary *semester;
+@property (nonatomic) NSString *semesterTag;
 
 +(NSArray *)campuses;
 +(NSArray *)levels;
 +(NSArray *)semesters;
-+(void)performWhenSemestersLoaded:(void (^)(NSError *error))block;
+-(void)performWhenSemestersLoaded:(void (^)(NSError *error))block;
 
 @property (nonatomic, readonly, copy) NSString *titleForCurrentConfiguration;
 @end

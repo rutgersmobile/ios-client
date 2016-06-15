@@ -73,9 +73,16 @@ typedef NS_ENUM(int, DataSourceAnimationDirection) {
 
 -(void)invalidateCachedHeights;
 
+#pragma mark - Subclass hooks
 /// Register reusable views needed by this data source
 - (void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView NS_REQUIRES_SUPER;
 - (void)registerReusableViewsWithTableView:(UITableView *)tableView NS_REQUIRES_SUPER;
+
+- (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Placeholders
 
@@ -91,6 +98,8 @@ typedef NS_ENUM(int, DataSourceAnimationDirection) {
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)configurePlaceholderCell:(ALPlaceholderCell *)cell;
 
 #pragma mark - Content loading
 

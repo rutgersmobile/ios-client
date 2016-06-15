@@ -40,7 +40,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.tableView.separatorColor = [[UIColor blackColor] colorWithAlphaComponent:0.17];
-    self.dataSource = [[RUSOCCourseDataSource alloc] initWithCourse:self.course];
+    self.dataSource = [[RUSOCCourseDataSource alloc] initWithCourse:self.course dataLoadingManager:self.dataLoadingManager];
     self.pullsToRefresh = YES;
 }
 

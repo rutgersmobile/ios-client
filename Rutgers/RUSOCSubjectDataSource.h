@@ -10,7 +10,5 @@
 #import "RUSOCDataLoadingManager.h"
 
 @interface RUSOCSubjectDataSource : BasicDataSource
--(instancetype)initWithSubjectCode:(NSString *)subjectCode NS_DESIGNATED_INITIALIZER;
-@property (nonatomic) NSString *subjectCode;
-@property (nonatomic) RUSOCDataLoadingManager *dataLoadingManager;
+-(instancetype)initWithSubjectCode:(NSString *)subjectCode dataLoadingManager:(RUSOCDataLoadingManager *)dataLoadingManager NS_DESIGNATED_INITIALIZER;
 @end

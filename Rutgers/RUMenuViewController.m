@@ -7,12 +7,12 @@
 //
 
 #import "RUMenuViewController.h"
-#import "MenuDataSource.h"
 #import "UITableView+Selection.h"
 #import "UIApplication+StatusBarHeight.h"
 #import "TableViewController_Private.h"
 #import "RURootController.h"
 #import "RUDefines.h"
+#import "Rutgers-Swift.h"
 
 /*
  
@@ -40,7 +40,7 @@
     self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
 
-    self.dataSource = [[MenuDataSource alloc] init];
+    self.dataSource = [[RUMenuDataSource alloc] init];
  
     /*
         Sets the graphics opt of the menu slide bar
@@ -93,7 +93,7 @@
 }
 
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *item = [self.dataSource itemAtIndexPath:indexPath];
+    id item = [self.dataSource itemAtIndexPath:indexPath];
     [self.delegate menu:self didSelectItem:item];
 }
 @end

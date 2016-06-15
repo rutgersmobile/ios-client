@@ -30,15 +30,6 @@
 @property (nonatomic, readonly) BOOL shouldDisplayPlaceholder;
 @property (nonatomic) BOOL showingPlaceholder;
 
-#pragma mark - Subclass hooks
-
-- (NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)configurePlaceholderCell:(id)cell;
-
-- (NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath;
-- (void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
-
 #pragma mark - Notifications
 
 // Use these methods to notify the observers of changes to the dataSource.

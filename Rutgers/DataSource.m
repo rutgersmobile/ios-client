@@ -282,7 +282,7 @@
         // set up the place holder cell
         cell = [tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier]];
         [cell updateFonts]; // the update fonts is called on the sub classes , so the configuration is done by specific classes
-        [self configurePlaceholderCell:cell];
+        [self configurePlaceholderCell:(ALPlaceholderCell *)cell];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
         [cell updateFonts];

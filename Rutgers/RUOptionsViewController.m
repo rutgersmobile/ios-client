@@ -12,8 +12,7 @@
 #import "AlertDataSource.h"
 #import "RUAppDelegate.h"
 #import "RUChannelManager.h"
-#import "RUEditChannelsViewController.h" // For the Channel Edit View
-
+#import "Rutgers-Swift.h"
 
 @interface RUOptionsViewController ()
 @property NSDictionary *channel;
@@ -42,18 +41,12 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 4) {
+    if (indexPath.section == 0) {
+        [self.navigationController pushViewController:[[RUEditMenuItemsViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
+    } else if (indexPath.section == 4) {
         // Open the legal view controller
         [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStylePlain] animated:YES];
-    }
-    /*
-        Adding a cell for displaying the edit menu
-     */
-    else if (indexPath.section == 0)
-    {
-        [self.navigationController pushViewController:[[RUEditChannelsViewController alloc] initWithStyle:UITableViewStylePlain] animated:YES];
-    }
-    else {
+    } else {
         // Trigger the alert action
         DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
         if ([dataSource isKindOfClass:[AlertDataSource class]]) {

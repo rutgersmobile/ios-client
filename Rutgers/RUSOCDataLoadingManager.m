@@ -20,13 +20,21 @@ static NSString *const SOCDataCampusKey = @"SOCDataCampusKey";
 static NSString *const SOCDataLevelKey = @"SOCDataLevelKey";
 static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
-
 @interface RUSOCSemesterIndexLoader : RUDataLoadingManager
 @property (nonatomic) NSArray *semesters;
 @property (nonatomic) NSInteger defaultSemesterIndex;
 @end
 
 @implementation RUSOCSemesterIndexLoader
++(RUSOCSemesterIndexLoader *)indexLoader{
+    static RUSOCSemesterIndexLoader *indexLoader = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        indexLoader = [[RUSOCSemesterIndexLoader alloc] init];
+    });
+    return indexLoader;
+}
+
 -(void)load{
     [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -58,28 +66,32 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 @end
 
+NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) = ^NSDictionary *(NSArray<NSDictionary *>* items, NSString *tagToFind) {
+    for (NSDictionary *item in items) {
+        NSString *tag = item[@"tag"];
+        if ([[tag rutgersStringEscape] isEqualToString:tagToFind]) {
+            return item;
+        }
+    }
+    return nil;
+};
+
 @implementation RUSOCDataLoadingManager
 +(instancetype)managerForSemesterTag:(NSString *)semesterTagToFind campusTag:(NSString *)campusTagToFind levelTag:(NSString *)levelTagToFind{
-    NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) = ^NSDictionary *(NSArray<NSDictionary *>* items, NSString *tagToFind) {
-        for (NSDictionary *item in items) {
-            NSString *tag = item[@"tag"];
-            if ([[tag rutgersStringEscape] isEqualToString:tagToFind]) {
-                return item;
-            }
-        }
-        return nil;
-    };
 
-    NSDictionary *semester = findItemWithMatchingTag([self semesters], semesterTagToFind);
     NSDictionary *campus = findItemWithMatchingTag([self campuses], campusTagToFind);
     NSDictionary *level = findItemWithMatchingTag([self levels], levelTagToFind);
-
-    if (!semester || !campus || !level) return nil;
+    NSDictionary *semester = findItemWithMatchingTag([self semesters], semesterTagToFind);
+    
+    if (!campus || !level) return nil;
     
     RUSOCDataLoadingManager *manager = [[RUSOCDataLoadingManager alloc] init];
-    manager.semester = semester;
+   
     manager.campus = campus;
     manager.level = level;
+    
+    manager.semester = semester;
+    manager.semesterTag = semesterTagToFind;
     
     return manager;
 }
@@ -117,29 +129,23 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     return levels;
 }
 
-+(RUSOCSemesterIndexLoader *)indexLoader{
-    static RUSOCSemesterIndexLoader *indexLoader = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        indexLoader = [[RUSOCSemesterIndexLoader alloc] init];
-    });
-    return indexLoader;
-}
-
 +(NSArray *)semesters{
-    return [self indexLoader].semesters;
+    return [RUSOCSemesterIndexLoader indexLoader].semesters;
 }
 
-+(void)performWhenSemestersLoaded:(void (^)(NSError *))block{
-    [[self indexLoader] performWhenLoaded:^(NSError *error) {
+-(void)performWhenSemestersLoaded:(void (^)(NSError *))block{
+    [[RUSOCSemesterIndexLoader indexLoader] performWhenLoaded:^(NSError *error) {
        dispatch_async(dispatch_get_main_queue(), ^{
+           if (self.semester == nil) {
+               self.semester = findItemWithMatchingTag([RUSOCDataLoadingManager semesters], self.semesterTag);
+           }
            block(error);
        });
     }];
 }
 
 +(NSInteger)defaultSemesterIndex{
-    return [self indexLoader].defaultSemesterIndex;
+    return [RUSOCSemesterIndexLoader indexLoader].defaultSemesterIndex;
 }
 
 -(BOOL)onlineCampusSelected{
@@ -178,7 +184,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSubjectsWithCompletion:(void (^)(NSArray *, NSError *))handler{
-    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
+    [self performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -196,7 +202,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getCoursesForSubjectCode:(NSString *)subjectCode completion:(void (^)(NSArray *, NSError *))handler{
-    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
+    [self performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -214,7 +220,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getCourseForSubjectCode:(NSString *)subjectCode courseCode:(NSString *)courseCode completion:(void (^)(NSDictionary *, NSError *))handler{
-    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
+    [self performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -232,7 +238,7 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 }
 
 -(void)getSearchIndexWithCompletion:(void (^)(NSDictionary *, NSError *))handler{
-    [RUSOCDataLoadingManager performWhenSemestersLoaded:^(NSError *error) {
+    [self performWhenSemestersLoaded:^(NSError *error) {
         if (error) {
             handler(nil,error);
         } else {
@@ -308,6 +314,10 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
 
 -(void)setSemester:(NSDictionary *)semester{
     [[NSUserDefaults standardUserDefaults] setObject:semester forKey:SOCDataSemesterKey];
+}
+
+-(NSString *)semesterTag {
+    return self.semester[@"tag"];
 }
 @end
 
