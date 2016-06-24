@@ -16,7 +16,6 @@
 
 #import <MapKit/MapKit.h>
 #import "RUBusMultiStop.h"
-#import "RUMapsViewController.h"
 #import "MiniMapDataSource.h"
 
 #import <AddressBookUI/AddressBookUI.h>

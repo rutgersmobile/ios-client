@@ -18,3 +18,4 @@
 #import "AAPLPlaceholderView.h"
 
 #import "NSURL+RUAdditions.h"
+#import "RUPlace.h"

@@ -8,7 +8,6 @@
 
 #import "RURecCenterViewController.h"
 #import "RUPlace.h"
-#import "RUMapsViewController.h"
 #import "RURecCenterDataSource.h"
 #import "DataTuple.h"
 

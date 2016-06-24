@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
-#import "RUMapsViewController.h"
 #import "RUPlace.h"
 #import <MapKit/MapKit.h>
 #import "RUMapsTileOverlay.h"
@@ -15,11 +14,16 @@
 #import <AFURLResponseSerialization.h>
 #import "RUOSMDataLoadingManager.h"
 
-@interface RUMapsViewController ()
-@property RUMapsData *mapsData;
-@property BOOL usesOSM;
-@end
+@import Mapbox;
 
+#define DEFAULT_MAP_RECT
+
+@interface RUMapsViewController ()<MKMapViewDelegate, MGLMapViewDelegate>
+//@property RUMapsData *mapsData;
+@property (nonatomic) MKMapView *mkMapView;
+@property (nonatomic) MGLMapView *mglMapView ;
+@property BOOL usesMapBox;
+@end
 
 @implementation RUMapsViewController
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -39,16 +43,39 @@
     return self;
 }
 
+
+MGLCoordinateBounds  MGLCoordinateBoundsFromMapRect(MKMapRect rect){
+    MKMapPoint nep  = MKMapPointMake(rect.origin.x + rect.size.width , rect.origin.y );
+    CLLocationCoordinate2D ne = MKCoordinateForMapPoint(nep);
+    
+    MKMapPoint swp = MKMapPointMake(rect.origin.x , rect.origin.y + rect.size.height);
+    CLLocationCoordinate2D sw = MKCoordinateForMapPoint(swp);
+    
+    return MGLCoordinateBoundsMake(sw, ne);
+}
+
 -(void)loadView{
     [super loadView];
-    self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
-    self.mapView.delegate = self;
-    self.mapView.opaque = YES;
-    self.mapView.showsUserLocation = YES;
+    if (self.usesMapBox) {
+        self.mglMapView = [[MGLMapView alloc] initWithFrame:self.view.bounds];
+        self.mglMapView.delegate = self;
+        self.mglMapView.opaque = YES;
+        self.mglMapView.showsUserLocation = YES;
     
-    
-    self.view = self.mapView;
-    [self.mapView setVisibleMapRect:MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)];
+        self.view = self.mglMapView;
+        [self.mglMapView setVisibleCoordinateBounds: MGLCoordinateBoundsFromMapRect(DEFAULT_MAP_RECT)];
+        
+    } else {
+        self.mkMapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+        self.mkMapView.delegate = self;
+        self.mkMapView.opaque = YES;
+        self.mkMapView.showsUserLocation = YES;
+        
+        
+        self.view = self.mkMapView;
+        [self.mkMapView setVisibleMapRect:DEFAULT_MAP_RECT];
+    }
+
 }
 
 - (void)viewDidLoad
@@ -61,13 +88,18 @@
    
    // self.usesOSM = YES;
     
-    if (self.usesOSM) {
-        self.mapsData = [RUMapsData sharedInstance];
+    if (self.usesMapBox) {
         [self setupOverlay];
     }
     
     if (self.navigationController) {
-        self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
+        if(self.usesMapBox){
+        //    self.navigationItem.rightBarButtonItem = [[MGLUserTackingBar]]
+            NSLog(@"mgl map view");
+        } else {
+             self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mkMapView];
+
+        }
     }
     
     if (self.place) {
@@ -76,6 +108,7 @@
 }
 
 -(void)loadPlace{
+    
     self.title = self.place.title;
     if (self.place.location) {
         [self zoomToPlace];

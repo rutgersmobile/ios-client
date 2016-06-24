@@ -20,6 +20,7 @@
 		042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 042C302A1A7974E10034F89E /* LegalDataSource.m */; };
 		042C302E1A7977AA0034F89E /* legal in Resources */ = {isa = PBXBuildFile; fileRef = 042C302D1A7977AA0034F89E /* legal */; };
 		042E7BC01C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 042E7BBF1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m */; };
+		0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0430BAC51D13313C0044F5BF /* MapsViewController.swift */; };
 		044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */; };
 		046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */; };
 		0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0465D0801ADEF6B9001C30FE /* RUReaderResponseSerializer.m */; };
@@ -77,6 +78,15 @@
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
 		04EDDE141D05FDB900A59235 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EDDE131D05FDB900A59235 /* SafariServices.framework */; };
+		04FD97C41D1353B900E9877D /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04FD97C21D1353B900E9877D /* Mapbox.bundle */; };
+		04FD97C51D1353B900E9877D /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C31D1353B900E9877D /* Mapbox.framework */; };
+		04FD97C71D13540500E9877D /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C61D13540500E9877D /* GLKit.framework */; };
+		04FD97C91D13540C00E9877D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C81D13540C00E9877D /* ImageIO.framework */; };
+		04FD97CB1D13541500E9877D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97CA1D13541500E9877D /* MobileCoreServices.framework */; };
+		04FD97CD1D13542D00E9877D /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97CC1D13542D00E9877D /* libc++.tbd */; };
+		04FD97CF1D13543400E9877D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97CE1D13543400E9877D /* libsqlite3.tbd */; };
+		04FD97D11D13543900E9877D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97D01D13543900E9877D /* libz.tbd */; };
+		04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD97D51D14988300E9877D /* PlaceholderDataSource.m */; };
 		592E7C98495BF39051D79C73 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
 		620D2BB91CF77415001FB878 /* RUAthleticsGameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 620D2BB81CF77415001FB878 /* RUAthleticsGameCell.m */; };
 		A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70490A019478CB2003B99DC /* RUSportsRosterViewController.m */; };
@@ -111,7 +121,6 @@
 		A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFC51938E16200016C89 /* ExpandingTableViewSection.m */; };
 		A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A731C39B1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m */; };
 		A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A73248F6190E2B8F008DF9A8 /* AFXMLResponseSerializer.m */; };
-		A73F6574193E422E00E26449 /* RUMapsChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */; };
 		A73F6576193E4F4900E26449 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A73F6575193E4F4900E26449 /* QuartzCore.framework */; };
 		A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F657C193E544600E26449 /* RUMenuTableViewCell.m */; };
 		A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7415780194B714200F396B5 /* RUMapsTableViewCell.m */; };
@@ -128,8 +137,6 @@
 		A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993021934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m */; };
 		A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993041934E9C1008C64EE /* RURecCenterHoursSection.m */; };
 		A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993081934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m */; };
-		A76993141934F08C008C64EE /* RURecreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993131934F08C008C64EE /* RURecreationViewController.m */; };
-		A769931A1934F10E008C64EE /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993191934F10E008C64EE /* RURecCenterViewController.m */; };
 		A769932019352B43008C64EE /* RUReaderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A769931F19352B43008C64EE /* RUReaderItem.m */; };
 		A770EDC71948AC0F00DD5866 /* RUInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A770EDC61948AC0F00DD5866 /* RUInfoTableViewController.m */; };
 		A771A27B199AA987000CD174 /* NSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = A771A27A199AA987000CD174 /* NSArray+Sort.m */; };
@@ -162,8 +169,6 @@
 		A7B8DB9519A67E8200EF1953 /* RUSportsPlayerExpandedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B8DB9419A67E8200EF1953 /* RUSportsPlayerExpandedCell.m */; };
 		A7B8DB9819A67E9400EF1953 /* RUSportsPlayerUnexpandedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B8DB9719A67E9400EF1953 /* RUSportsPlayerUnexpandedCell.m */; };
 		A7B970C8192075F40070A414 /* RUMapsData.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C2192075F40070A414 /* RUMapsData.m */; };
-		A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C4192075F40070A414 /* RUMapsTileOverlay.m */; };
-		A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970C6192075F40070A414 /* RUMapsViewController.m */; };
 		A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970CC19215F910070A414 /* RUNetworkManager.m */; };
 		A7B970D21921603E0070A414 /* RUChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B970D11921603E0070A414 /* RUChannelManager.m */; };
 		A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C0373719B1287F00F5D962 /* UIApplication+StatusBarHeight.m */; };
@@ -222,7 +227,6 @@
 		A7F9564D1963206D0074305D /* RUSportsRosterPlayerHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9564C1963206D0074305D /* RUSportsRosterPlayerHeaderCell.m */; };
 		A7F95650196334890074305D /* RUSportsRosterPlayerHeaderRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F9564F196334890074305D /* RUSportsRosterPlayerHeaderRow.m */; };
 		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
-		A7FCC3FA194B7088005FE994 /* RUEmbeddedMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -249,6 +253,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0430BAC11D1324C00044F5BF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DiningHall.h"; sourceTree = "<group>"; };
 		0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DiningHall.m"; sourceTree = "<group>"; };
@@ -274,6 +291,7 @@
 		042C302D1A7977AA0034F89E /* legal */ = {isa = PBXFileReference; lastKnownFileType = folder; path = legal; sourceTree = "<group>"; };
 		042E7BBE1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFavoritesErrorViewController.h; sourceTree = "<group>"; };
 		042E7BBF1C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFavoritesErrorViewController.m; sourceTree = "<group>"; };
+		0430BAC51D13313C0044F5BF /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapsViewController.swift; path = Rutgers/MapsViewController.swift; sourceTree = SOURCE_ROOT; };
 		044BD6C31B2A13790031FE5E /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		046555F01C3C581D00CAF833 /* NSURL+RUAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+RUAdditions.h"; sourceTree = "<group>"; };
 		046555F11C3C581D00CAF833 /* NSURL+RUAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+RUAdditions.m"; sourceTree = "<group>"; };
@@ -376,6 +394,16 @@
 		04DE78F01B6C13D700B06B6F /* RUUIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUIWebViewController.h; sourceTree = "<group>"; };
 		04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUIWebViewController.m; sourceTree = "<group>"; };
 		04EDDE131D05FDB900A59235 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		04FD97C21D1353B900E9877D /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
+		04FD97C31D1353B900E9877D /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		04FD97C61D13540500E9877D /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		04FD97C81D13540C00E9877D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		04FD97CA1D13541500E9877D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		04FD97CC1D13542D00E9877D /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		04FD97CE1D13543400E9877D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		04FD97D01D13543900E9877D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		04FD97D41D14988300E9877D /* PlaceholderDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderDataSource.h; sourceTree = "<group>"; };
+		04FD97D51D14988300E9877D /* PlaceholderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderDataSource.m; sourceTree = "<group>"; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		620D2BB71CF77415001FB878 /* RUAthleticsGameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAthleticsGameCell.h; sourceTree = "<group>"; };
 		620D2BB81CF77415001FB878 /* RUAthleticsGameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAthleticsGameCell.m; sourceTree = "<group>"; };
@@ -662,8 +690,6 @@
 		A7F9564F196334890074305D /* RUSportsRosterPlayerHeaderRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSportsRosterPlayerHeaderRow.m; sourceTree = "<group>"; };
 		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
-		A7FCC3F8194B7088005FE994 /* RUEmbeddedMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUEmbeddedMapsViewController.h; path = Rutgers/RUEmbeddedMapsViewController.h; sourceTree = SOURCE_ROOT; };
-		A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUEmbeddedMapsViewController.m; path = Rutgers/RUEmbeddedMapsViewController.m; sourceTree = SOURCE_ROOT; };
 		B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -700,13 +726,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FD97D11D13543900E9877D /* libz.tbd in Frameworks */,
+				04FD97CF1D13543400E9877D /* libsqlite3.tbd in Frameworks */,
+				04FD97CD1D13542D00E9877D /* libc++.tbd in Frameworks */,
+				A73F6576193E4F4900E26449 /* QuartzCore.framework in Frameworks */,
+				04FD97CB1D13541500E9877D /* MobileCoreServices.framework in Frameworks */,
+				04FD97C91D13540C00E9877D /* ImageIO.framework in Frameworks */,
+				04FD97C71D13540500E9877D /* GLKit.framework in Frameworks */,
 				04EDDE141D05FDB900A59235 /* SafariServices.framework in Frameworks */,
 				A75425E719C8B216003F0D58 /* libxml2.dylib in Frameworks */,
 				A7D73ADC1977275B006BC215 /* SystemConfiguration.framework in Frameworks */,
 				A7C92C9819462A0800609549 /* AddressBook.framework in Frameworks */,
 				A7C92C9919462A0800609549 /* AddressBookUI.framework in Frameworks */,
-				A73F6576193E4F4900E26449 /* QuartzCore.framework in Frameworks */,
 				A7910E5819181847002DA45F /* MessageUI.framework in Frameworks */,
+				04FD97C51D1353B900E9877D /* Mapbox.framework in Frameworks */,
 				A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */,
 				C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */,
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
@@ -1137,10 +1170,9 @@
 				A7B3F7B01954897500458B19 /* osm */,
 				A7B970C5192075F40070A414 /* RUMapsViewController.h */,
 				A7B970C6192075F40070A414 /* RUMapsViewController.m */,
+				0430BAC51D13313C0044F5BF /* MapsViewController.swift */,
 				A73F6572193E422E00E26449 /* RUMapsChannelViewController.h */,
 				A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */,
-				A7FCC3F8194B7088005FE994 /* RUEmbeddedMapsViewController.h */,
-				A7FCC3F9194B7088005FE994 /* RUEmbeddedMapsViewController.m */,
 			);
 			name = rumaps;
 			path = ../Pods/ruinfo;
@@ -1323,6 +1355,8 @@
 				A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */,
 				04B3D6561B98C8B7006D0BF6 /* SwitchDataSource.h */,
 				04B3D6571B98C8B7006D0BF6 /* SwitchDataSource.m */,
+				04FD97D41D14988300E9877D /* PlaceholderDataSource.h */,
+				04FD97D51D14988300E9877D /* PlaceholderDataSource.m */,
 			);
 			name = "concrete data sources";
 			sourceTree = "<group>";
@@ -1558,6 +1592,8 @@
 		C262EF9F188345D10035C8F5 = {
 			isa = PBXGroup;
 			children = (
+				04FD97C21D1353B900E9877D /* Mapbox.bundle */,
+				04FD97C31D1353B900E9877D /* Mapbox.framework */,
 				C262EFB1188345D10035C8F5 /* Rutgers */,
 				049A4CE11B4AFC890006D1FA /* Rutgers Tests */,
 				047D06DC1BE16DB600DFEAA3 /* RutgersUITests */,
@@ -1580,6 +1616,12 @@
 		C262EFAA188345D10035C8F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04FD97D01D13543900E9877D /* libz.tbd */,
+				04FD97CE1D13543400E9877D /* libsqlite3.tbd */,
+				04FD97CC1D13542D00E9877D /* libc++.tbd */,
+				04FD97CA1D13541500E9877D /* MobileCoreServices.framework */,
+				04FD97C81D13540C00E9877D /* ImageIO.framework */,
+				04FD97C61D13540500E9877D /* GLKit.framework */,
 				04EDDE131D05FDB900A59235 /* SafariServices.framework */,
 				0490DC991B4DB85A00E76EEF /* WebKit.framework */,
 				A786C71519C8AC9F00347BBD /* CoreImage.framework */,
@@ -1687,12 +1729,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C262EFD4188345D10035C8F5 /* Build configuration list for PBXNativeTarget "Rutgers" */;
 			buildPhases = (
-				027474BDB74F4A8B95CB6031 /* 📦 Check Pods Manifest.lock */,
+				027474BDB74F4A8B95CB6031 /* [CP] Check Pods Manifest.lock */,
 				C262EFA4188345D10035C8F5 /* Sources */,
 				C262EFA5188345D10035C8F5 /* Frameworks */,
 				C262EFA6188345D10035C8F5 /* Resources */,
-				F64F9DA88AFF4B3A8763F4C1 /* 📦 Copy Pods Resources */,
-				17D319ABBBF33B5AA50442EF /* 📦 Embed Pods Frameworks */,
+				F64F9DA88AFF4B3A8763F4C1 /* [CP] Copy Pods Resources */,
+				17D319ABBBF33B5AA50442EF /* [CP] Embed Pods Frameworks */,
+				0430BAC11D1324C00044F5BF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1778,6 +1821,7 @@
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
+				04FD97C41D1353B900E9877D /* Mapbox.bundle in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
@@ -1787,14 +1831,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		027474BDB74F4A8B95CB6031 /* 📦 Check Pods Manifest.lock */ = {
+		027474BDB74F4A8B95CB6031 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1802,14 +1846,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		17D319ABBBF33B5AA50442EF /* 📦 Embed Pods Frameworks */ = {
+		17D319ABBBF33B5AA50442EF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1817,14 +1861,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F64F9DA88AFF4B3A8763F4C1 /* 📦 Copy Pods Resources */ = {
+		F64F9DA88AFF4B3A8763F4C1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1857,6 +1901,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */,
 				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
 				041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */,
 				A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */,
@@ -1901,6 +1946,7 @@
 				A7C92C9C19462BA300609549 /* RUPlace.m in Sources */,
 				A7F9029C19A7C02500FD3054 /* ALTableViewToggleCell.m in Sources */,
 				A75E7EC219A3E18D00782AE5 /* UITableView+Selection.m in Sources */,
+				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
 				A7E8E137192484B00089F166 /* RUTextViewController.m in Sources */,
@@ -1915,7 +1961,6 @@
 				04B2F3CC1D09E4D20035F96E /* RUMenuDataSource.swift in Sources */,
 				A7F9564D1963206D0074305D /* RUSportsRosterPlayerHeaderCell.m in Sources */,
 				A7D4B64319ABC94B0087A8BC /* RUOptionsViewController.m in Sources */,
-				A7B970C9192075F40070A414 /* RUMapsTileOverlay.m in Sources */,
 				A770EDC71948AC0F00DD5866 /* RUInfoTableViewController.m in Sources */,
 				A771A27B199AA987000CD174 /* NSArray+Sort.m in Sources */,
 				04A1EFD71A5C508300DE0351 /* RUPredictionsHeaderRow.m in Sources */,
@@ -1929,7 +1974,6 @@
 				0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */,
 				04A1EFD31A5C508300DE0351 /* RUPredictionsBodyRow.m in Sources */,
 				042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */,
-				A73F6574193E422E00E26449 /* RUMapsChannelViewController.m in Sources */,
 				A7DD34921981D4110078023A /* NearbyPlacesDataSource.m in Sources */,
 				04B2F3D21D09F0770035F96E /* RUEditMenuItemsViewController.swift in Sources */,
 				0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */,
@@ -1941,12 +1985,10 @@
 				04A1EFD61A5C508300DE0351 /* RUPredictionsExpandingSection.m in Sources */,
 				A777C2B0190B35C400F978D7 /* RUPlacesDataLoadingManager.m in Sources */,
 				A70490A119478CB2003B99DC /* RUSportsRosterViewController.m in Sources */,
-				A7FCC3FA194B7088005FE994 /* RUEmbeddedMapsViewController.m in Sources */,
 				A7B8DB9219A65FE400EF1953 /* NSArray+LimitedToCount.m in Sources */,
 				A7E8E13C192547190089F166 /* RURootController.m in Sources */,
 				A72FFFB51937D8E500016C89 /* RUSOCSubjectViewController.m in Sources */,
 				A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */,
-				A7B970CA192075F40070A414 /* RUMapsViewController.m in Sources */,
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
 				04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */,
 				042E7BC01C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m in Sources */,
@@ -1971,7 +2013,6 @@
 				A769932019352B43008C64EE /* RUReaderItem.m in Sources */,
 				A7177BB4199E86660092126F /* RUSOCCourseSectionsDataSource.m in Sources */,
 				A7D4B6E319ACD5F20087A8BC /* RUAnalyticsManager.m in Sources */,
-				A769931A1934F10E008C64EE /* RURecCenterViewController.m in Sources */,
 				A7D4B6E919AD0B370087A8BC /* NSAttributedString+FromHTML.m in Sources */,
 				A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */,
 				A72795EB195B5FD900C21165 /* RUFeedbackViewController.m in Sources */,
@@ -2035,7 +2076,6 @@
 				04AF8B431A82B57400619AFC /* NSDate+EpochTime.m in Sources */,
 				0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */,
 				A7F9564A19630BB10074305D /* RUSportsRosterSectionHeaderView.m in Sources */,
-				A76993141934F08C008C64EE /* RURecreationViewController.m in Sources */,
 				A7241A2D1988537100304436 /* CollectionViewController.m in Sources */,
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				04A1EFD81A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m in Sources */,
@@ -2243,7 +2283,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2275,7 +2318,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;

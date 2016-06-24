@@ -7,18 +7,18 @@
 //
 
 #import "RUMapsTableViewCell.h"
-#import "RUEmbeddedMapsViewController.h"
+#import "Rutgers-Swift.h"
 #import <PureLayout.h>
 
 @interface RUMapsTableViewCell ()
 @property (nonatomic) UIView *controllerView;
-@property (nonatomic) RUEmbeddedMapsViewController *mapsViewController;
+@property (nonatomic) EmbeddedMapsViewController *mapsViewController;
 @end
 
 @implementation RUMapsTableViewCell
 
 -(void)initializeSubviews{
-    self.mapsViewController = [[RUEmbeddedMapsViewController alloc] init];
+    self.mapsViewController = [[EmbeddedMapsViewController alloc] init];
     self.controllerView = self.mapsViewController.view;
     [self.contentView addSubview:self.controllerView];
 }

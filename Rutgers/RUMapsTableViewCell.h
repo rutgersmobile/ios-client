@@ -9,7 +9,6 @@
 
 #import "ALTableViewAbstractCell.h"
 #import <MapKit/MapKit.h>
-#import "RUMapsViewController.h"
 
 /*
     Class for displaying the map in RUPlaces

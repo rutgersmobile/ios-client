@@ -26,6 +26,7 @@
     return self;
 }
 
+/*
 -(instancetype)init{
     return [self initWithTitle:nil addressString:nil];
 }
@@ -37,7 +38,7 @@
         self.addressString = addressString;
     }
     return self;
-}
+}*/
 
 -(NSString *)description{
     return [NSString stringWithFormat:@"%@ - %@",self.buildingNumber,self.title];

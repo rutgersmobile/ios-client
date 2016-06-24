@@ -8,6 +8,7 @@
 
 #import "RUMapsData.h"
 
+/*
 @interface RUMapsData ()
 @property NSCache *cache;
 @end
@@ -48,4 +49,4 @@
     [self.cache setObject:data forKey:[self keyForOverlayPath:path] cost:data.length];
 }
 @end
-
+*/

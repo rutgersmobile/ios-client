@@ -11,11 +11,8 @@
 
 @class RUPlace;
 
-@interface RUMapsViewController : UIViewController <MKMapViewDelegate>;
+@interface RUMapsViewController : UIViewController;
 -(instancetype)initWithPlace:(RUPlace *)place NS_DESIGNATED_INITIALIZER;
-
-@property (nonatomic) MKMapView *mapView;
-
 @property (nonatomic) RUPlace *place;
 -(void)zoomToPlace;
 @end

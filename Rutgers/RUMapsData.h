@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
+/*
 @interface RUMapsData : NSObject
 +(RUMapsData *)sharedInstance;
 -(NSURL *)URLForTilePath:(MKTileOverlayPath)path;
@@ -16,3 +17,4 @@
 -(NSData *)cachedDataForTilePath:(MKTileOverlayPath)path;
 -(void)setCachedData:(NSData *)data forTilePath:(MKTileOverlayPath)path;
 @end
+*/

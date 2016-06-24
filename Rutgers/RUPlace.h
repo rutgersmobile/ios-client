@@ -10,8 +10,9 @@
 #import <MapKit/MapKit.h>
 
 @interface RUPlace : NSObject <MKAnnotation>
+-(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
--(instancetype)initWithTitle:(NSString *)title addressString:(NSString *)addressString NS_DESIGNATED_INITIALIZER;
+//-(instancetype)initWithTitle:(NSString *)title addressString:(NSString *)addressString NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic) NSString *buildingNumber;
