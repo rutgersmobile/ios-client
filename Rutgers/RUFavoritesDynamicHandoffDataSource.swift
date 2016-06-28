@@ -21,6 +21,7 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     var loading: AAPLLoading?
     
     init(handle: String, pathComponents: [String]) {
+        print(handle)
         self.handle = handle
         self.remainingPathComponents = pathComponents
         let currentChannel = RUChannelManager.sharedInstance().channelWithHandle(handle)

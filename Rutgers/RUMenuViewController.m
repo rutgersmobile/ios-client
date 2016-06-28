@@ -94,6 +94,8 @@
 
 - (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     id item = [self.dataSource itemAtIndexPath:indexPath];
+    
+   // NSLog(@"%@",[item sharingURL].absoluteString);
     [self.delegate menu:self didSelectItem:item];
 }
 @end

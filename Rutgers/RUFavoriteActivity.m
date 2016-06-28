@@ -12,7 +12,6 @@
 #import "Rutgers-Swift.h"
 /*
  Descript : 
-    Add the favouties item to the slide view controller
  
  */
 

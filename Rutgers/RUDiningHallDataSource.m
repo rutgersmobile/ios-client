@@ -12,6 +12,8 @@
 #import "RUFoodDataLoadingManager.h"
 #import "DataSource_Private.h"
 #import "ALTableViewTextCell.h"
+#import "NSDictionary+DiningHall.h"
+#import "PlaceholderDataSource.h"
 
 @interface RUDiningHallDataSource ()
 @property (nonatomic) NSString *serializedDiningHall;
@@ -30,6 +32,8 @@
 -(instancetype)initWithSerializedDiningHall:(NSString *)serializedDiningHall{
     self = [super init];
     if (self) {
+        self.noContentTitle = @"Dining Hall Closed";
+        self.noContentMessage = @"Check back another day very sorry";
         self.serializedDiningHall = serializedDiningHall;
     }
     return self;
@@ -59,6 +63,17 @@
     }
 }
 
+-(void)setupWithNoContent {
+    /*
+    PlaceholderDataSource *placeholder = [[PlaceholderDataSource alloc] init];
+    placeholder.title = @"Dining Hall Closed";
+    placeholder.noContentTitle = @"Dining Hall Closed";
+    placeholder.noContentMessage = @"Please check back later";
+    
+    [self addDataSource:placeholder];
+     */
+}
+
 -(void)loadContent{
     if (!self.serializedDiningHall) {
         [super loadContent];
@@ -68,10 +83,16 @@
     [self loadContentWithBlock:^(AAPLLoading *loading) {
        [[RUFoodDataLoadingManager sharedInstance] getSerializedDiningHall:self.serializedDiningHall withCompletion:^(DataTuple *diningHall, NSError *error) {
            if (diningHall) {
-               [loading updateWithContent:^(typeof(self) me) {
-                   me.diningHall = diningHall.object;
-                   [me setupWithDiningHall:diningHall.object];
-               }];
+               if ([diningHall.object isDiningHallOpen]) {
+                   [loading updateWithContent:^(typeof(self) me) {
+                       me.diningHall = diningHall.object;
+                       [me setupWithDiningHall:diningHall.object];
+                   }];
+               } else {
+                   [loading updateWithNoContent:^(typeof(self) me) {
+                       [me setupWithNoContent];
+                   }];
+               }
            } else {
                [loading doneWithError:error];
            }

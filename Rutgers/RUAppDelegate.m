@@ -65,7 +65,7 @@
 /* This is the entry point for application deep links from the ios system */
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     [self.rootController openURL:url];
-    return YES;
+       return YES;
 }
 
 /**

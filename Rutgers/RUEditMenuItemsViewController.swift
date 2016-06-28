@@ -15,6 +15,10 @@ class RUEditMenuItemsViewController: TableViewController {
         tableView.editing = true
         title = "Edit Channels"
         
+        
+        // 
+        tableView.allowsSelectionDuringEditing = true ;
+        
         let editDataSource = RUEditMenuItemsDataSource()
         dataSource = editDataSource
         
@@ -49,6 +53,23 @@ class RUEditMenuItemsViewController: TableViewController {
             return NSIndexPath(forRow: dataSource.numberOfItemsInSection(0) - 1, inSection: 0)
         } else {
             return proposedDestinationIndexPath
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print(indexPath)
+        let item = self.dataSource .itemAtIndexPath(indexPath)
+        
+        if item is RUFavorite
+        {
+            print(item.url!!.absoluteString)
+        }
+        else
+        {
+            print(item.self)
+            print(item.channelURL)
+            print(item.channelHandle)
+            print()
         }
     }
 }

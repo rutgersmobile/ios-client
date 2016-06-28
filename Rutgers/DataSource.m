@@ -238,18 +238,18 @@
 -(void)configurePlaceholderCell:(id)cell{
     if ([cell isKindOfClass:[ALPlaceholderCell class]]) {
         ALPlaceholderCell *placeholder = cell;
-        if ([self.loadingState isEqualToString:AAPLLoadStateNoContent]) {
-            placeholder.title = self.noContentTitle;
-            placeholder.message = self.noContentMessage;
-            placeholder.image = self.noContentImage;
-            placeholder.buttonTitle = nil;
-            placeholder.buttonAction = nil;
-        } else if ([self.loadingState isEqualToString:AAPLLoadStateError]) {
+        if ([self.loadingState isEqualToString:AAPLLoadStateError]) {
             placeholder.title = self.errorTitle;
             placeholder.message = self.errorMessage;
             placeholder.image = self.errorImage;
             placeholder.buttonTitle = self.errorButtonTitle;
             placeholder.buttonAction = self.errorButtonAction;
+        } else {
+            placeholder.title = self.noContentTitle;
+            placeholder.message = self.noContentMessage;
+            placeholder.image = self.noContentImage;
+            placeholder.buttonTitle = nil;
+            placeholder.buttonAction = nil;
         }
     } else if ([cell isKindOfClass:[ALActivityIndicatorCell class]]) {
         ALActivityIndicatorCell *activity = cell;

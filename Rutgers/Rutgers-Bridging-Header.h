@@ -19,3 +19,5 @@
 
 #import "NSURL+RUAdditions.h"
 #import "RUPlace.h"
+
+#import "NSDictionary+Channel.h"
