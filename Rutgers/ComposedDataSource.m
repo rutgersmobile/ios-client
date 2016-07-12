@@ -46,7 +46,8 @@
     How are they used ? 
         Does each bus route have a specific data source or does each stop ? How is it used?
  */
--(void)addDataSource:(DataSource *)dataSource{
+-(void)addDataSource:(DataSource *)dataSource
+{
     [self.dataSources addObject:dataSource];
     dataSource.delegate = self;
     // creates a unique set out the multiple data sources. Why is this done ,for better addressing ? <q>

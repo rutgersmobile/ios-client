@@ -184,17 +184,43 @@
 
 
 /*
-    <q> ?????
-    This button seems to be used for adding the favoutes button to the slide view controller
-    Creates an action sheet .
+    Called when the button on the right hand top of the navigation controller is pressed ...
+
+    Used for Sending the deep links to other devices
+ 
+ 
  */
 - (void)actionButtonTapped:(id)sender {
-    NSURL *url = self.sharingURL;
-    if (!url) return;
+  
+    
+    // Add Support For Andorid DEEP LINKING
+  
+   /*
+        Will ios accpet http ? 
+            > Use Uinversal Links in ios 9
+            > ios < 9  : We will a server redirect
+    
+    */
+    
+    NSString * urlString = [NSString stringWithFormat:@"http://%@" , self.sharingURL.absoluteString] ;
    
-    /*
-        An abstract class used to provide the service of adding favourtes to the app
-     */
+   /*
+        change http://rutgers://bus/route/weekend%201/ to
+    
+        http://rumobile.rutgers.edu/bus/route/weekend%201/
+    */
+  
+    NSLog(@"URL -> %@ ",urlString);
+    
+    
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"rutgers://" withString:@"rumobile.rutgers.edu/"];
+    
+    NSLog(@"URL -> %@ ",urlString);
+    
+    NSURL * url = [[NSURL alloc] initWithString:urlString];
+    NSLog(@"SEND URL : %@" , url);
+    if (!url) return;
+    
     UIActivity *favoriteActivity = [[RUFavoriteActivity alloc] initWithTitle:self.sharingTitle];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:@[favoriteActivity]];

@@ -16,6 +16,8 @@
 #import "RUBusDataLoadingManager.h"
 #import "RUDefines.h"
 
+#import "RUBusPredictionsAndMessageDataSource.h"
+
 #define PREDICTION_TIMER_INTERVAL 30.0
 
 /*
@@ -78,9 +80,8 @@
         Which in turn inherits from composed data source which in turn inherits from the Data Source class
      */
 
-    self.dataSource = [[RUPredictionsDataSource alloc] initWithItem:self.item];
+    self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
    
-    
     
     
     

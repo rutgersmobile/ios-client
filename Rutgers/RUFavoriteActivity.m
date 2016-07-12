@@ -64,9 +64,9 @@
     NSLog(@"Fav : url %@ -> title %@", self.urlToFavorite.absoluteString , self.title);
     
     RUFavorite *favorite = [[RUFavorite alloc] initWithTitle:self.title url:self.urlToFavorite];
-    [[RUMenuItemManager sharedManager] addFavorite:favorite]; // sets up the favourite
+    [[RUMenuItemManager sharedManager] addFavorite:favorite]; 
 
-    [self activityDidFinish:YES]; // calls func of UIActivity
+    [self activityDidFinish:YES];
 }
 
 @end

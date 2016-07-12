@@ -34,6 +34,9 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>rutgers</string>
+				<string>http://rumobile.rutgers.edu</string>
+				<string>rumobile.rutgers.edu</string>
+				<string>rutgers.edu</string>
 			</array>
 		</dict>
 	</array>
@@ -64,6 +67,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSAllowsArbitraryLoads</key><true/>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
 </dict>
 </plist>

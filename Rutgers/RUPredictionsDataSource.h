@@ -17,6 +17,5 @@
 -(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;
 
 
-@property NSString * messageForRoute; // Stores the message for each rotue if it is present
 
 @end

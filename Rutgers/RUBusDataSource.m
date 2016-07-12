@@ -18,7 +18,7 @@
 #import "RUUserInfoManager.h"
 #import <MSWeakTimer.h>
 
-#define UPDATE_TIME_INTERVAL 60.0
+#define UPDATE_TIME_INTERVAL 10.0
 
 @interface RUBusDataSource ()
 @property MSWeakTimer *refreshTimer;
