@@ -213,7 +213,7 @@
     NSLog(@"URL -> %@ ",urlString);
     
     
-    urlString = [urlString stringByReplacingOccurrencesOfString:@"rutgers://" withString:@"rumobile.rutgers.edu/"];
+    urlString = [urlString stringByReplacingOccurrencesOfString:@"rutgers://" withString:@"rumobile.rutgers.edu/link/"];
     
     NSLog(@"URL -> %@ ",urlString);
     
