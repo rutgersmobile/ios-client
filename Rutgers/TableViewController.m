@@ -631,10 +631,6 @@
     }
 }
 
-/*
-    What is particular of Batch Updating ?
-    Are multple items updated together ?
-*/
 -(void)dataSource:(DataSource *)dataSource performBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete{
     UITableView *tableView = [self tableViewForDataSource:dataSource];
     

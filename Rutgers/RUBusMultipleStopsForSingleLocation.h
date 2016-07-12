@@ -10,7 +10,14 @@
 #import <MapKit/MapKit.h>
 @class RUBusStop;
 
-@interface RUBusMultiStop : NSObject
+
+/*
+    Class simply holds an array of stops and gives it a name .
+
+ 
+ */
+@interface RUBusMultipleStopsForSingleLocation : NSObject
+
 @property (nonatomic, readonly) NSArray *stops;
 @property (nonatomic, readonly) NSString *title;
 
@@ -19,4 +26,5 @@
 @property (nonatomic, readonly) NSString *agency;
 
 -(void)addStopsObject:(RUBusStop *)object;
+
 @end

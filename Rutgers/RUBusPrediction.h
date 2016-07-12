@@ -10,6 +10,7 @@
 
 /**
  The bus prediction object holds the predictions for a singlular route and stop combination.
+ Also holds any message associated with a stop and route:w
  */
 @interface RUBusPrediction : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
@@ -22,4 +23,6 @@
 
 @property (nonatomic, readonly) BOOL active;
 @property (nonatomic, readonly) NSArray *arrivals;
+
+@property (nonatomic , readonly) NSArray * messages ;
 @end

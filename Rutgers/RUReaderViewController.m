@@ -51,6 +51,7 @@
 
 /*
     Goes over the view controllers and collects the channel names into an array
+    and returns them as a url
  */
 -(NSURL *)buildDynamicSharingURL {
     NSMutableArray *pathComponents = [NSMutableArray array];
@@ -77,6 +78,11 @@
     [self.refreshControl endRefreshing];
 }
 
+
+
+/*
+    Allow highligh only if there is a url location that the cell can go to.
+ */
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     //Super wont allow highlighting/selection if the placeholder is showing, if super says no go along with it
     BOOL should = [super tableView:tableView shouldHighlightRowAtIndexPath:indexPath];
@@ -84,15 +90,21 @@
     
     //Allow only if there is a url to go to
     RUReaderItem *row = [self.dataSource itemAtIndexPath:indexPath];
-    
     return row.url ? YES : NO;
 }
 
+/*
+    Used to move forward in the heirarchy if the item as the cell has a url attached to it. 
+    If is has an url then we display the webpage
+ */
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     RUReaderItem *row = [self.dataSource itemAtIndexPath:indexPath];
     if (!row.url) return;
-    
+   // Create a channel :: Which is just a dictonary
+    NSDictionary * readerChannel = [[NSDictionary alloc] initWithObjectsAndKeys:row.title ,@"title", @"www" ,@"view" ,row.url ,@"url" ,  nil];
+    //@{@"title" : row.title, @"view" : @"www", @"url" : row.url}
     //Push a new view controller with a web view
-    [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : row.title, @"view" : @"www", @"url" : row.url}] animated:YES];
+    [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:readerChannel] animated:YES];
 }
+
 @end

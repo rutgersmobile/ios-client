@@ -8,7 +8,14 @@
 
 #import "ComposedDataSource.h"
 
+/*
+    Why is this a composed data source ? 
+ 
+ */
 @interface ExpandingTableViewDataSource : ComposedDataSource
-@property (nonatomic) NSArray *sections;
--(void)toggleExpansionForSection:(NSUInteger)section;
+
+@property (nonatomic) NSArray *sections; // holds the sections ? / Then why the multiple data sources in the composedDS ? 
+
+-(void)toggleExpansionForSection:(NSUInteger)section; // toogle whether the section has been expanded or not .
+
 @end

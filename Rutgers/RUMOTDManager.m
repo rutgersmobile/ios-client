@@ -25,34 +25,52 @@
 @end
 
 @implementation RUMOTDManager
-+(instancetype)sharedManager{
++(instancetype)sharedManager
+{
     static RUMOTDManager *sharedManager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         sharedManager = [[RUMOTDManager alloc] init];
     });
     return sharedManager;
 }
 
--(void)showMOTD{
-    [[RUNetworkManager sessionManager] GET:@"motd.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if (![responseObject isKindOfClass:[NSDictionary class]]) return;
-        
-        id data = responseObject[@"data"];
-        self.serverInfoString = responseObject[@"motd"];
-        NSLog(@"MOTD log message: %@",self.serverInfoString);
-        
-        if ([data isKindOfClass:[NSString class]]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self showMOTDResponse:responseObject];
-            });
+-(void)showMOTD
+{
+    
+    [[RUNetworkManager sessionManager] GET:@"motd.txt" parameters:nil
+     
+         success:^
+     (NSURLSessionDataTask *task, id responseObject)
+        {
+            if (![responseObject isKindOfClass:[NSDictionary class]]) return;
+            
+            id data = responseObject[@"data"];
+            self.serverInfoString = responseObject[@"motd"];
+            
+            NSLog(@"MOTD log message: %@",self.serverInfoString);
+            
+            if ([data isKindOfClass:[NSString class]])
+            {
+                dispatch_async(dispatch_get_main_queue(),^
+                {
+                    [self showMOTDResponse:responseObject];
+                });
+            }
+            
         }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Failure retrieving MOTD");
-    }];
+     
+         failure:^
+     (NSURLSessionDataTask *task, NSError *error)
+        {
+            NSLog(@"Failure retrieving MOTD");
+        }
+     ];
 }
 
--(void)showMOTDResponse:(id)responseObject{
+-(void)showMOTDResponse:(id)responseObject
+{
     BOOL isWindow = [responseObject[@"isWindow"] boolValue];
     BOOL hasCloseButton = [responseObject[@"hasCloseButton"] boolValue];
     
@@ -76,7 +94,8 @@
     }
 }
 
--(void)done{
+-(void)done
+{
     [self.presentedViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     self.presentedViewController = nil;
 }

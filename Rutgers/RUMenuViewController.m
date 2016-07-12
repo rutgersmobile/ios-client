@@ -15,8 +15,10 @@
 #import "Rutgers-Swift.h"
 
 /*
- 
     RU Menu is shown within the slide menu bar
+    This acts as the starting point for the app.
+
+    If a last channel exits , then its view controller is initialized .. After this initilization . The RUMenu is initialized.
  */
 
 
@@ -28,13 +30,15 @@
 - (instancetype)init
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
+    if (self)
+    {
         self.title = @"Menu";
     }
     return self;
 }
 
--(void)viewDidLoad{
+-(void)viewDidLoad
+{
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = NO;
     self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -92,7 +96,8 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableview didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     id item = [self.dataSource itemAtIndexPath:indexPath];
     
    // NSLog(@"%@",[item sharingURL].absoluteString);

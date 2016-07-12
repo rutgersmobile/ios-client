@@ -6,8 +6,15 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+/*
+    sandeep : 
+        deprecated
+ */
+
 #import <UIKit/UIKit.h>
 #import "DynamicTableViewController.h"
+
+
 
 @interface RUSportsViewController : DynamicTableViewController <RUChannelProtocol>
 

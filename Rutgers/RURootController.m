@@ -31,17 +31,21 @@
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @end
 
+
+@implementation RURootController
+
 /*
     Create a shared instance used for the entirety of the program
- 
  */
-@implementation RURootController
-+(instancetype)sharedInstance{
++(instancetype)sharedInstance
+{
     static RURootController *sharedInstance = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken,^
+    {
         sharedInstance = [[self alloc] init];
     });
+    
     return sharedInstance;
 }
 
@@ -58,8 +62,10 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
+#warning to do : convert the menu to an icon
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
     }
     return self;

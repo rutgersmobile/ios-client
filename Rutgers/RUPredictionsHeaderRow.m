@@ -8,7 +8,7 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUBusRoute.h"
-#import "RUBusMultiStop.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import <HexColors.h>
 #import "RUPredictionsHeaderTableViewCell.h"
 

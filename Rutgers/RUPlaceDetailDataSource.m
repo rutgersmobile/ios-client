@@ -15,7 +15,7 @@
 #import "RUBusDataLoadingManager.h"
 
 #import <MapKit/MapKit.h>
-#import "RUBusMultiStop.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import "MiniMapDataSource.h"
 
 #import <AddressBookUI/AddressBookUI.h>

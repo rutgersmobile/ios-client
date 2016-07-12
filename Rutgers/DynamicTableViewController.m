@@ -74,11 +74,13 @@
     id item = [self.dataSource itemAtIndexPath:indexPath];
     
     //Either the item is the channel or has a channel
+    // it might be dictionary containing a children key and the an array of channels
     NSDictionary *channel = item[@"channel"];
     if (!channel) channel = item;
     
     //Get view controller to display
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
+  
     
     //Sometimes the title is on the item and not its channel
     if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];

@@ -10,7 +10,7 @@
 #import "RUBusDataAgencyManager.h"
 #import "RUBusStop.h"
 #import "RUBusRoute.h"
-#import "RUBusMultiStop.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusPrediction.h"
 #import "RUNetworkManager.h"
 #import "RUDefines.h"
@@ -24,112 +24,175 @@ NSString * const newarkAgency = @"rutgers-newark";
 
 @implementation RUBusDataLoadingManager
 /*
-    Use a single manager to load the data for all the buses ?
- 
- 
+    Use a single manager to load the data for all the buses
  */
 +(instancetype)sharedInstance{
     static RUBusDataLoadingManager *sharedManager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         sharedManager = [[RUBusDataLoadingManager alloc] init];
     });
     return sharedManager;
 }
 
-+(NSString *)titleForAgency:(NSString *)agency{
++(NSString *)titleForAgency:(NSString *)agency
+{
     return @{newBrunswickAgency : @"New Brunswick", newarkAgency : @"Newark"}[agency];
 }
 
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    
+    if (self)
+    {
+        // add multiple agency . Load information from both agencies ?
         self.agencyManagers = @{
                                 newBrunswickAgency : [RUBusDataAgencyManager managerForAgency:newBrunswickAgency],
                                 newarkAgency : [RUBusDataAgencyManager managerForAgency:newarkAgency]
-                                };
+                            };
+        
     }
     return self;
 }
 
+// GET ALL ROUTES + STOPS
 -(void)fetchAllStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler{
     [self.agencyManagers[agency] fetchAllStopsWithCompletion:handler];
 }
 
--(void)fetchAllRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler{
+-(void)fetchAllRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler
+{
     [self.agencyManagers[agency] fetchAllRoutesWithCompletion:handler];
 }
 
--(void)fetchActiveStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler{
+
+// GET ALL ACTIVE ROUTES + STOPS
+-(void)fetchActiveStopsForAgency:(NSString *)agency completion:(void(^)(NSArray *stops, NSError *error))handler
+{
     [self.agencyManagers[agency] fetchActiveStopsWithCompletion:handler];
 }
 
--(void)fetchActiveRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler{
+-(void)fetchActiveRoutesForAgency:(NSString *)agency completion:(void(^)(NSArray *routes, NSError *error))handler
+{
     [self.agencyManagers[agency] fetchActiveRoutesWithCompletion:handler];
 }
 
--(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void (^)(NSArray *stops, NSError *error))handler{
+/*
+    This searches through different agencies
+ */
+-(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void (^)(NSArray *stops, NSError *error))handler
+{
     dispatch_group_t group = dispatch_group_create();
 
     NSMutableArray *allStops = [NSMutableArray array];
     __block NSError *outerError;
+   
+   /*
+        Load data for the different agency like NB and newark in different blocks.
     
-    [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^(NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) {
+    
+    */
+    [self.agencyManagers enumerateKeysAndObjectsUsingBlock:^
+     (NSString *const agency, RUBusDataAgencyManager *agencyManager, BOOL *stop) // enumerate the dict , stop when stop is true
+    {
         dispatch_group_enter(group);
-        [agencyManager fetchActiveStopsNearbyLocation:location completion:^(NSArray *stops, NSError *error) {
-            [allStops addObjectsFromArray:stops];
-            if (error) outerError = error;
-            dispatch_group_leave(group);
-        }];
+        [agencyManager fetchActiveStopsNearbyLocation:location completion:^ // this function is called on the BusAgencyManager. Not recursion
+             (NSArray *stops, NSError *error)
+              {
+                [allStops addObjectsFromArray:stops];
+                if (error) outerError = error;
+                dispatch_group_leave(group);
+              }
+        ];
     }];
     
-    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+    {
         handler(allStops,outerError);
     });
 }
 
 
 #pragma mark - predictions api
--(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *, NSError *))handler{
-    [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+-(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray * ,  NSError *))handler
+{
+    // TEST :
+  
+    if(DEV)
+    {
+         NSString *urlTest = [self urlStringForItem:item];
+        NSLog(@"%@" , urlTest);
+    }
+    
+    [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil
+        success:^
+            (NSURLSessionDataTask *task, id responseObject)
+            {
+            
+                if (![responseObject isKindOfClass:[NSDictionary class]]) // error : unable to serialize the object
+                {
+                    handler(nil,nil );
+                    return;
+                }
+                
+                id predictions = responseObject[@"predictions"]; // we get the prediction for each stop and we just display if for each site
+                    // This contains prediction for stops in the route. The stops are requested using the api
+                
+                
+                NSLog(@"%@",predictions);
+                NSMutableArray *parsedPredictions = [NSMutableArray array];
+               
+                // create prediction objects
+                for (NSDictionary *predictionDictionary in predictions) // obtain prediction for each stop
+                {
+                    RUBusPrediction *prediction = [[RUBusPrediction alloc] initWithDictionary:predictionDictionary];
+
+                    
+                    [parsedPredictions addObject:prediction];
+                }
+                
+                if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]])
+                {
+                    [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
+                    
+                    //[parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
+                    
+                    /*
+                                Sort the result using multiple descritpors ..
+                                    descritpors sorts the array by looking at a key in the dictionary
+                         */
+                    [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
+                    
+                }
+                else if ([item isKindOfClass:[RUBusRoute class]]) // sort the predictions in a route using the
+                {
+                    RUBusRoute *route = item;
+                    [parsedPredictions sortUsingComparator:^
+                        NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2)
+                        {
+                            NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
+                            NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
+                            return compare(indexOne, indexTwo);
+                        }
+                     ];
+                }
+                
+                handler(parsedPredictions,nil);
+                
         
-        if (![responseObject isKindOfClass:[NSDictionary class]]) {
-            handler(nil,nil);
-            return;
-        }
-        
-        id predictions = responseObject[@"predictions"];
-        
-        NSMutableArray *parsedPredictions = [NSMutableArray array];
-        
-        for (NSDictionary *predictionDictionary in predictions) {
-            RUBusPrediction *prediction = [[RUBusPrediction alloc] initWithDictionary:predictionDictionary];
-            [parsedPredictions addObject:prediction];
-        }
-        
-        if ([item isKindOfClass:[RUBusMultiStop class]]) {
-            [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
-            //[parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-            [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-        } else if ([item isKindOfClass:[RUBusRoute class]]){
-            RUBusRoute *route = item;
-            [parsedPredictions sortUsingComparator:^NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2) {
-                NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
-                NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
-                return compare(indexOne, indexTwo);
-            }];
-        }
-        
-        handler(parsedPredictions,nil);
-        
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        handler(nil,error);
-    }];
+            }
+        failure:^
+            (NSURLSessionDataTask *task, NSError *error)
+            {
+                handler(nil,error);
+            }
+     ];
 }
 
--(NSString *)urlStringForItem:(id)item{
+-(NSString *)urlStringForItem:(id)item
+{
     NSString *agency = [item agency];
     return [self.agencyManagers[agency] urlStringForItem:item];
 }
@@ -194,15 +257,26 @@ NSString * const newarkAgency = @"rutgers-newark";
     });
 }
 
--(void)getSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler {
-    [self performWhenAgencyLoaded:^(NSError *error) {
-        if (error) {
+/*
+    WHAT DOES THIS DO ?
+ 
+ */
+-(void)getSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler
+{
+    [self performWhenAgencyLoaded:^(NSError *error)
+    {
+        if (error)
+        {
             handler(nil, error);
             return;
-        } else {
-            for (RUBusDataAgencyManager *manager in self.agencyManagers.allValues) {
+        }
+        else
+        {
+            for (RUBusDataAgencyManager *manager in self.agencyManagers.allValues)
+            {
                 id item = [manager reconstituteSerializedItemWithName:name type:type];
-                if (item) {
+                if (item)
+                {
                     handler(item, nil);
                     return;
                 }

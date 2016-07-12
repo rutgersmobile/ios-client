@@ -9,11 +9,20 @@
 #import "RUBusRoute.h"
 
 @implementation RUBusRoute
+
+/*
+    Create route object from the data from the Rutgers server : 
+    called by the parse Route Config function
+
+    active controls where the route is active or not 
+ */
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
-    if (self) {
+    if (self)
+    {
         _title = dictionary[@"title"];
         _stops = dictionary[@"stops"];
+        NSLog(@" route : %@", self.title);
     }
     return self;
 }

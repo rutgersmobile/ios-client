@@ -41,14 +41,17 @@
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
-    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;  // the circular spining icon ..
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
     [application setStatusBarHidden:YES];
     
         // set up apperance
     [RUAppearance applyAppearance];
-  
+ 
+   /*
+        This sets up the RUMenuViewController which sets up the menu bar
+    */
     [self initializeDrawer];
    
     self.userInfoManager = [[RUUserInfoManager alloc] init];
@@ -71,10 +74,13 @@
 /**
  *  Initialize the main application window, then setup the root controller that communicates between the channel manager and the menu/drawer containment view controller
  */
--(void)initializeDrawer{
+-(void)initializeDrawer
+{
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; // set up the window
-    
+   
+   // set up the root view controller for the navigatrional controller
     self.rootController = [[RURootController alloc] init];
+    
     self.window.rootViewController = self.rootController.containerViewController;
 
     [self.window makeKeyAndVisible]; // set up window

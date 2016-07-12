@@ -31,7 +31,7 @@ extern NSString * const newarkAgency;
 
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler;
 
--(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *predictions, NSError *error))handler;
+-(void)getPredictionsForItem:(id)item completion:(void (^)(NSArray *predictions,  NSError *error))handler;
 
 -(void)getSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler;
 @end

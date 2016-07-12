@@ -16,10 +16,19 @@
 #import "CLLocation+Centroid.h"
 
 @implementation CLLocation (Centroid)
-+(CLLocation *)centroidOfLocations:(NSArray *)locations{
+
+/*
+    Find the centroid of all the location within the array
+    
+    the centroid is calculated by adding up all the latitude (and longitudes) and dividing it by the number of items in the array. This gives us a centroid
+ */
+
++(CLLocation *)centroidOfLocations:(NSArray *)locations
+{
     CLLocationDegrees lat = 0;
     CLLocationDegrees lon = 0;
-    for (CLLocation *location in locations) {
+    for (CLLocation *location in locations)
+    {
         CLLocationCoordinate2D coordinate = location.coordinate;
         lat += coordinate.latitude;
         lon += coordinate.longitude;

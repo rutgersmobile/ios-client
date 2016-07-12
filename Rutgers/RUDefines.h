@@ -19,6 +19,8 @@
 
 #define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
 
+#define DEV 1
+
 extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
 
 static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
@@ -31,15 +33,31 @@ extern BOOL iPad();
 
 static NSString *const gittag = @"4.0";
 
-static NSString *const api = @"1";
+static NSString *const api = @"2";
 
-typedef NS_ENUM(NSUInteger, BetaMode) {
-    BetaModeDevelopment,
-    BetaModeBeta,
-    BetaModeProduction
+/*
+    Different RUN Modes for the App to run in .
+ 
+    alpha -> beta -> production ::
+   
+    The server can be run locally too ::
+ 
+    alpha server :: nvanguard  on internet : nstanlee
+    beta server :: doxa
+    production server :: nlethe on internet : rumobile
+ 
+ 
+ */
+
+typedef NS_ENUM(NSUInteger, RunMode)
+{
+    LocalDevMode ,
+    AlphaMode ,
+    BetaMode ,
+    ProductionMode
 };
 
-static BetaMode const betaMode = BetaModeBeta;
+static RunMode const runMode = BetaMode;
 
 extern BOOL isBeta();
 

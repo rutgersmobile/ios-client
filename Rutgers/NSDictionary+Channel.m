@@ -53,10 +53,18 @@
     store the images in the chache so that they do not have to be loaded again
  
  */
--(UIImage *)cachedImageWithName:(NSString *)name{
+-(UIImage *)cachedImageWithName:(NSString *)name
+{
     UIImage *image = [[self channelIconCache] objectForKey:name];
-    if (!image) {
+    if (!image)
+    {
         image = [[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
+        if(!image) // If the proper image is not found, then fall back on a default image
+        {
+            image = [[UIImage imageNamed:@"bookmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        }
+        
         [[self channelIconCache] setObject:image forKey:name];
     }
     return image;

@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
@@ -45,11 +43,6 @@
 	<true/>
 	<key>MGLMapboxAccessToken</key>
 	<string>pk.eyJ1IjoicnV0Z2Vyc21vYmlsZSIsImEiOiJjaWxjcTRtMTIzZTltdWdrbjBmOWV4dG5lIn0.Oe8md18ARvd38C_i6aY_uA</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Rutgers would like to use your location to find nearby places and bus stops.</string>
 	<key>UILaunchStoryboardName</key>
@@ -71,5 +64,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSAllowsArbitraryLoads</key><true/>
 </dict>
 </plist>

@@ -9,24 +9,45 @@
 #import "RUBusStop.h"
 
 @implementation RUBusStop
--(instancetype)initWithDictionary:(NSDictionary *)dictionary{
+
+/*
+    Obtain data from the servers as a dictionary and then use it to create the bus stop objects
+ 
+ 
+    called by the parse Route Config in RUBusDataAgencyManager
+ 
+ */
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary
+{
     self = [super init];
-    if (self) {
-        self.routes = @[];
+    
+    if (self)
+    {
+        self.routes = @[]; // filled up in the parseConfig method
         self.title = dictionary[@"title"];
+        
         CLLocationDegrees lat = [dictionary[@"lat"] doubleValue];
         CLLocationDegrees lon = [dictionary[@"lon"] doubleValue];
+        
         self.location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
         self.stopId = [dictionary[@"stopId"] integerValue];
+        
+        NSLog(@" stop : %@", self.title);
     }
+    
     return self;
 }
 
--(NSArray *)activeRoutes{
+/*
+    Get the routes that are active for the current stop from all the stops
+ */
+-(NSArray *)activeRoutes
+{
     return [self.routes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"active = YES"]];
 }
 
--(NSString *)description{
+-(NSString *)description
+{
     return self.title;
 }
 @end 

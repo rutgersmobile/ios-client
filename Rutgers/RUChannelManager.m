@@ -12,9 +12,7 @@
         Called When the App Loads   
         The Other Class register with this class , basically similar to keeping a pointer for access .
  
-        
         This class is used when the app transitions from one UIViewTable to the next ... 
- 
  
  
  */
@@ -34,7 +32,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     Update the number of channels and colletevery day ?
  
  */
-#define CHANNEL_CACHE_TIME 60*60*24*1
+//#define CHANNEL_CACHE_TIME 60*60*24*1
+#define CHANNEL_CACHE_TIME 60
 
 @interface RUChannelManager ()
 @property dispatch_group_t loadingGroup;
@@ -81,6 +80,22 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
 /**
     Loads the contentChannels from a file ::
+    Is the getter of the contentChannels property the most important step of loading the different channels from the file is done. .
+    After the end of this getter , the contentChannels will be an nsArray containing dictionary elements , such that each dictionary in the array will be a
+    channel 
+ 
+    The input file is ordered_content file :: It is in the json format hence serialization is done by a JSONSerilaizer
+                    the orederd_content file is under common , channel
+
+    The ordered content is tested from in multiple locations : which is why there is the documentPath and bundlePath
+ 
+    ordered_content is stored in its setter in the documentPath :
+    So we also look at the ordered_content that we might have added to obtain the channels
+
+    :: Some additional test are done to ensure ???
+ 
+    This is one of the blocks called just after initialization
+ 
  */
 @synthesize contentChannels = _contentChannels;
 -(NSArray *)contentChannels
@@ -90,6 +105,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         if (!_contentChannels)
         { // If the content channel has not been created , create it .
             NSDate *latestDate;
+            
             NSArray *paths = @[[self documentPath],[self bundlePath]];
             
             for (NSString *path in paths)
@@ -97,14 +113,15 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                 NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
                 NSDate *date = [attributes fileModificationDate];
                 
-                if (!latestDate || [date compare:latestDate] == NSOrderedDescending)
-                {  // If the latest date has not been set or if the date
+                if (!latestDate || [date compare:latestDate] == NSOrderedDescending) // serach for the latest copy ?
+                {
                     NSData *data = [NSData dataWithContentsOfFile:path];
                     if (data)
                     {
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                        if (channels.count)
+                        if (channels.count) // if there are multiple items in the channel
                         {
+                            NSLog(@" # CHANNELS : %i " , (int)channels.count);
                             latestDate = date;
                             _contentChannels = channels;  // So we create channel from files converted into JSonn Objects ?
                         }
@@ -113,7 +130,12 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
             }
         
         }
+       
+        // After the copy stored in the device is read , do a network request to get the
+        // latest ordered content in the server
         
+        // This is done as a background process , with out causing delay of the curretn
+        // thread
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             if ([self needsLoad]) {
                 [self load];
@@ -124,59 +146,83 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 /*
-  Find a paritcular data in either the content channels or the other channels
- 
- @return NSDict : of Data ?
+    The input handle is compared with handle present in the orderend content channel :: Each channel in the ordered content file has a channel feild
+    
+    If they match then the whole channel containing the handle is returend
  */
 -(NSDictionary *)channelWithHandle:(NSString *)handle{
-    for (NSDictionary *channel in self.contentChannels) {
-        if ([[channel channelHandle] isEqualToString:handle]) {
+    
+    // looks in the data obtained from the ordered_content file , either on the device or from the internet :
+
+    for (NSDictionary *channel in self.contentChannels)
+    {
+        if ([[channel channelHandle] isEqualToString:handle])
+        {
             return channel;
         }
     }
-    for (NSDictionary *channel in self.otherChannels) {
-        if ([[channel channelHandle] isEqualToString:handle]) {
+    
+    for (NSDictionary *channel in self.otherChannels) // the others channel for now have a singel channel , but in the future other channels migh be added programatically
+    {
+        if ([[channel channelHandle] isEqualToString:handle])
+        {
             return channel;
         }
     }
     return nil;
 }
 
-
-
--(void)setContentChannels:(NSArray *)allChannels{
-    if (!allChannels.count) return;
+/*
+    This is the setter for the contentChannels:: 
+        The new content is stored to the disk
+        If the new items and old items are same , the fucntion just returns
+ 
+ 
+ */
+-(void)setContentChannels:(NSArray *)allChannels
+{
     
-    @synchronized(self) {
-        NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil];
-        if (data) [data writeToFile:[self documentPath] atomically:YES];
+    if (!allChannels.count) return; // if the input array has no element return :: no element or is nill
+    
+    @synchronized(self)
+    {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:allChannels options:0 error:nil]; // obtain the channel from the array
+        
+        if (data) [data writeToFile:[self documentPath] atomically:YES]; // WRITE THE NEW ORDERED CONTENT INTO THE DOCUMENTS FILE
         
         if ([_contentChannels isEqual:allChannels]) return;
         
         _contentChannels = allChannels;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:ChannelManagerDidUpdateChannelsKey object:self];
-        });
+        dispatch_async(
+        dispatch_get_main_queue(),
+            ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:ChannelManagerDidUpdateChannelsKey object:self];
+                // send notification to everyone who listens that the contents of the file has been changed
+             }
+        );
     }
 }
 
 #pragma mark Channel manager loading
--(NSString *)documentPath{
+-(NSString *)documentPath // THIS IS THE LOCATION THAT THE NEW ORDERED CONTENT FROM THE INTERNET IS STORED
+{
     NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     return [documentsDir stringByAppendingPathComponent:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"]];
 }
 
--(NSString *)bundlePath{
+-(NSString *)bundlePath // LOCATION OF THE OREDERED CONTENT THAT IS SHIPPED WITH THE APP
+{
     return [[NSBundle mainBundle] pathForResource:ChannelManagerJsonFileName ofType:@"json"];
 }
 
 
 /**
     Determines if new information is avaliable , if it is then returns TRUE
-    Reads the files , Looks @ their dates and if data is older than a CHANNEL_CHACHE_TIME invertal , then a needsLoad occurs.
+    Reads the files , Looks @ their dates and if data is older than a CHANNEL_CHACHE_TIME invertal , then it returns true
  */
--(BOOL)needsLoad{
+-(BOOL)needsLoad
+{
     if (![super needsLoad]) return NO;
     
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self documentPath] error:nil];
@@ -187,70 +233,107 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 }
 
 /*
-    Loads the data when it needsLoad calls True
+    Loads the data from the interet servers : 
+    The data is the ordered content :: 
+        This data is also written to the disk in the setter of the content channels
     Used in the creation of contentChannels
  */
--(void)load{
+-(void)load
+{
     [self willBeginLoad];
-    [[RUNetworkManager sessionManager] GET:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {   // ????? How is the usl determined ?
-        if ([responseObject isKindOfClass:[NSArray class]]) {
-            self.contentChannels = responseObject;  // Sets the contentChannel to the be response array.
-            [self didEndLoad:YES withError:nil];
-        } else {
-            [self didEndLoad:NO withError:nil];
+    [
+         [RUNetworkManager sessionManager] GET:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"] parameters:nil
+     
+        success:
+         ^(NSURLSessionDataTask *task, id responseObject) // pass in a block for success
+        {
+            if ([responseObject isKindOfClass:[NSArray class]])
+            {
+                
+                self.contentChannels = responseObject; // change the content channel with new information from the internet ::
+                /*
+                        What happenns if there are some changes , are they immediately applied , will the app crash because of this ?
+                 
+                      */
+                
+                [self didEndLoad:YES withError:nil];
+            } else {
+                [self didEndLoad:NO withError:nil];
+            }
         }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [self didEndLoad:NO withError:error];
-    }];
+         
+        failure:
+         ^(NSURLSessionDataTask *task, NSError *error)
+        {
+            NSLog(@"ERROR: %@:",error);
+            [self didEndLoad:NO withError:error];
+        }
+   ];
 }
 
 
 /*
     Uses the ViewTagstToClassNa..Map.. to find the string from the view controller and NSClassFromStr.. to obtain the actual Class / VIew Controller
-    Handled by iOS. The ViewContr.. has to be loaded before use..
+ 
+    This functiuon is very important as is it used to mapp from the view tag in the channel , to the view controller that is used to display the data pertaining to the channel
  
  */
--(Class)classForViewTag:(NSString *)viewTag{
+-(Class)classForViewTag:(NSString *)viewTag
+{
     NSString *className = [self viewTagsToClassNameMapping][viewTag];
     return NSClassFromString(className);
 }
 
-
 /*
-    Descript  : 
- 
-    Each View Controller Has a tag and this tag is used and  filled in the viewTags... dictionary.
-    
-    The Tagging is done between a keyword and the name of the view controller :: 
+    The Tagging is done between a keyword and the name of the view controller ::
     eg : tag : bus
         className : RUBusViewController
  
+    the keyword is obtained from the view feild in the channel obtained from the ordered content file :: 
+    We predefine which view controller is used to  display a particular data  in this view tag ::
+ 
     Find :
-        How is this populated
+        How is this populated ? 
+            >> This is populated when each class calls the register class function just below
  */
--(NSMutableDictionary *)viewTagsToClassNameMapping{
+-(NSMutableDictionary *)viewTagsToClassNameMapping
+{
     static NSMutableDictionary *viewTagsToClassNameMapping = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        viewTagsToClassNameMapping = [NSMutableDictionary dictionary];
-    });
+    
+    dispatch_once( // just done once
+    &onceToken,
+        ^{
+            viewTagsToClassNameMapping = [NSMutableDictionary dictionary];
+        }
+    );
     return viewTagsToClassNameMapping;
 }
 
 
 /*
-    Descript : 
-            Different Views / CLasses like "options , ruifo " loads and registers with this class
+ 
+    This function allows the mapping between the view feild in the channel from ordered content and its view controller :: 
+ 
+    There are two parts to this working properly : 
+    Each view controller has a channelHandle function which maps a view to the view controller ::  A class having  channelHandle function is one of the conditions of conforming to a protocol
+    This view and view controller mapping is added to the viewTagsToClassNameMapping Dictionary : where the the view tag is the key and the object is the string name of the class
+
+    Now the handle from the ordered content is used as a key to the dict and the correponsing view controller is obatained
  
  */
--(void)registerClass:(Class)class{
-    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) {
+-(void)registerClass:(Class)class // This FUNCTION IS CALLED BY ALL VIEW CONTROLLERS FOR MAPPIGN BETWEEN A VIEW AND THE VIEW CONTGROLE R
+{
+    if (![class conformsToProtocol:@protocol(RUChannelProtocol)])
+    {
         NSLog(@"Trying to register class with channel manager that does not conform to RUChannelProtocol");
         return;
     }
-    NSString *handle = [class performSelector:@selector(channelHandle)];  // call channelHandle to obtain the handle name
-    self.viewTagsToClassNameMapping[handle] = NSStringFromClass(class);  // use ios to convert actual class into a class name
+    
+    NSString *handle = [class performSelector:@selector(channelHandle)];  //
+    self.viewTagsToClassNameMapping[handle] = NSStringFromClass(class);  // use ios to convert actual class into a class name stirng
 }
+
 
 /*
     Creates the View Controller For the seperate channels ..
@@ -270,31 +353,44 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                 > It seems to be created when a user touches an item on the table view ,  by the concrete class supporting the
                    Data Source class.
  */
--(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];   // Stores each event , Why ?
-    });
+-(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
+        ^{
+            [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];   // used for sending usage reports to the rutgers server
+         }
+    );
     
     // Obtains the Identifier for the next VC from the channel and then uses it to create / bind the VC for the channel
     NSString *view = channel[@"view"];
-    if (!view) view = [self defaultViewForChannel:channel]; // Different Classes create different kinds of channel
-    Class class = [self classForViewTag:view];  // apple funcs which enable us to obtain a VC from the name used to represent it.
+    // based on the view feild in the channel dict we decide which view controller to show for the data
     
-    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view];
     
-    // Sets the required property for the particular View Controller. Since they are all initialized in a generic manner , this step adds additional configurations
-    // Like Coolors, the # sections in the table view etc.
+    if (!view) view = [self defaultViewForChannel:channel]; // the default for each channel is the dynamic table view contorller or called a dtable
+                                                            // If the channel is for faq , then a differnt view is used.
+    
+    Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
+    
+    NSLog(@"%@",class);
+    
+    if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view]; // all the view controller used to display the channel conforsm to RUChannelProtocol
+    
+       /*
+                channelWithConfig is implemented by the view controller conforming to the protocol
+        */
     UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
-    vc.title = [channel channelTitle];  // VC obtains the title from the Generic channel
+    
+    vc.title = [channel channelTitle];  // channelTitile is implemnted as a category on the channel (NSDictionary)
+    NSLog(@"class : %@", vc);
     return vc;
 }
 
 /*
- 
-trollersForURL
+    Converts the URL into a view controller 
  
  */
--(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle{
+-(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle
+{
     NSMutableArray *components = [NSMutableArray array];
     NSString *urlString = [url.absoluteString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
     /*
@@ -342,9 +438,11 @@ trollersForURL
  
  
  */
--(NSString *)defaultViewForChannel:(NSDictionary *)channel{
+-(NSString *)defaultViewForChannel:(NSDictionary *)channel
+{
     NSArray *children = channel[@"children"];
-    for (NSDictionary *child in children) {
+    for (NSDictionary *child in children)
+    {
         if (child[@"answer"]) return @"faqview";  // Why this specific case ? Why is faqview different ?
     }
     return @"dtable"; // This is the reply , the name of the view in the channel while a view contrller move to the next section in the table UITableView
@@ -357,19 +455,28 @@ trollersForURL
  */
 static NSString *const ChannelManagerLastChannelKey = @"ChannelManagerLastChannelKey";
 
--(NSDictionary *)lastChannel{
-    
+
+
+/*
+    Returns the splash screen ( rutgers logo ) when the app is being started for the first time , else gives the last opened view
+    The view is stored in the NSUSER DEFAULTS
+ */
+-(NSDictionary *)lastChannel
+{
             // Obtain the last channel that was used by the user from the user defaulsts database and use it to start the app at a particular view
     NSDictionary *lastChannel = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ChannelManagerLastChannelKey];
     if (![self.contentChannels containsObject:lastChannel]) lastChannel = nil;
-    if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};  // What is splash and Welcome ?
+    if (!lastChannel) lastChannel = @{@"view" : @"splash", @"title" : @"Welcome!"};
     return lastChannel;
 }
 
 // Set the last channel that has been opened.
--(void)setLastChannel:(NSDictionary *)lastChannel{
-    if ([self.contentChannels containsObject:lastChannel]) {
+-(void)setLastChannel:(NSDictionary *)lastChannel
+{
+    if ([self.contentChannels containsObject:lastChannel])
+    {
         [[NSUserDefaults standardUserDefaults] setObject:lastChannel forKey:ChannelManagerLastChannelKey];
     }
 }
+
 @end

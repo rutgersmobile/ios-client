@@ -15,27 +15,33 @@
 @end
 
 @implementation ExpandingTableViewDataSource
--(instancetype)init{
+-(instancetype)init
+{
     self = [super init];
-    if (self) {
+    if (self)
+    {
 
     }
     return self;
 }
 
--(NSArray *)sections{
+-(NSArray *)sections
+{
     return self.dataSources;
 }
 
--(void)setSections:(NSArray *)sections{
+-(void)setSections:(NSArray *)sections
+{
     self.dataSources = [sections mutableCopy];
 }
 
--(ExpandingTableViewSection *)sectionAtIndex:(NSInteger)index{
+-(ExpandingTableViewSection *)sectionAtIndex:(NSInteger)index
+{
     return self.sections[index];
 }
 
--(void)toggleExpansionForSection:(NSUInteger)section{
+-(void)toggleExpansionForSection:(NSUInteger)section
+{
     ExpandingTableViewSection *expandingSection = [self sectionAtIndex:section];
     expandingSection.expanded = !expandingSection.expanded;
 }

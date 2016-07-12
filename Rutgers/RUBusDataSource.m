@@ -28,7 +28,8 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         
         ComposedDataSource *routes = [[ComposedDataSource alloc] init];
         routes.title = @"Routes";

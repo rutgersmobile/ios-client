@@ -10,7 +10,7 @@
 #import "RUPredictionsViewController.h"
 #import "RUPlacesViewController.h"
 #import "RUPlaceDetailDataSource.h"
-#import "RUBusMultiStop.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUPlace.h"
 #import "NSURL+RUAdditions.h"
 #import "Rutgers-Swift.h"
@@ -80,7 +80,7 @@
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[RUPlace class]]) {
         [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:item] animated:YES];
-    } else if ([item isKindOfClass:[RUBusMultiStop class]]) {
+    } else if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
         [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
     }
 }

@@ -1,4 +1,4 @@
-//
+    //
 //  RUNewBusViewController.m
 //  Rutgers
 //
@@ -36,10 +36,13 @@
 @end
 
 @implementation RUBusViewController
-+(NSString *)channelHandle{
++(NSString *)channelHandle
+{
     return @"bus";
 }
-+(void)load{
+
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
@@ -48,7 +51,8 @@
     Descript :
     Since each of the View Controller are Handled by a Generic Channel , this functions allows us to set up specific Configurations for a particular View Controller...
  */
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel
+{
     return [[self alloc] initWithStyle:UITableViewStylePlain];
 }
 

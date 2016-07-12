@@ -11,7 +11,8 @@
 
 @implementation NSArray (Sort)
 
--(NSArray *)sortByKeyPath:(NSString *)keyPath{
+-(NSArray *)sortByKeyPath:(NSString *)keyPath
+{
     return [self sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [[obj1 valueForKeyPath:keyPath] compare:[obj2 valueForKeyPath:keyPath] options:NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch|NSNumericSearch];
     }];

@@ -1,4 +1,4 @@
-Oplatform :ios, '7.0'
+platform :ios, '7.0'
 
 target 'Rutgers' do
     pod 'AFNetworking', "~> 2.0"

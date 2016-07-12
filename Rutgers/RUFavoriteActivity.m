@@ -34,7 +34,7 @@
 }
 
 - (nullable UIImage *)activityImage {
-    return [UIImage imageNamed:@"athletics-filled"]; // <q> why is it specific to athletics filled ?
+    return [UIImage imageNamed:@"athletics-filled"]; //  The icons for the favourites is the 
 }
 
 /*

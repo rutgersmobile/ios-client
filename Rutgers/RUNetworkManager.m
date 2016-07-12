@@ -33,27 +33,44 @@
  */
 
 +(NSURL *)baseURL{
-    NSString *baseUrl = @"https://rumobile.rutgers.edu/";
+    NSString * baseUrl  ;
     
-    #warning todo get nstanlee url
-    switch (betaMode) {
-        case BetaModeDevelopment:
-            baseUrl = @"http://192.168.160.226/~gts37/mobile/";
+    switch (runMode)
+    {
+        case LocalDevMode:
+            [NSException raise:NSInvalidArgumentException format:@"LocalDevMode Not Defined"];
             break;
-        case BetaModeBeta:
+        case AlphaMode:
+            baseUrl = @"http://192.168.160.226/~richton/mobile/";
+            break;
+        case BetaMode:
             baseUrl = @"https://doxa.rutgers.edu/mobile/";
             break;
+        case ProductionMode:
+            baseUrl = @"https://rumobile.rutgers.edu/";
         default:
             break;
     }
+   
+    NSLog(@"Base URL : %@ " , baseUrl);
+    baseUrl = [baseUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"Base URL : %@ " , baseUrl);
     
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]];
 }
 
-+(AFHTTPSessionManager *)baseManager{
+/*
+    Sets up the manager with our base URL. This tells Afnetworking to go our servers.
+    For each request we append the particular thing we are looking for and obtain the result. 
+    restful api
+ */
++(AFHTTPSessionManager *)baseManager
+{
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
+    
     manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
-  //  if (BETA) manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    //if (BETA) manager.securityPolicy.allowInvalidCertificates = YES;
     return manager;
 }
 
@@ -61,31 +78,51 @@
     A single session maanger is used to handle the http request through out the app
  
  */
-+(AFHTTPSessionManager *)backgroundSessionManager{
++(AFHTTPSessionManager *)backgroundSessionManager
+{
     static AFHTTPSessionManager *backgroundSessionManager = nil;
+    
     static dispatch_once_t onceToken;
     
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
+        // set up at networking with the base url
         backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
+       
+        // provide serializer to the manager : Which gives us inforamtion on how to parse the response object
+        // json and xml parsers
         backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
+        
     });
+    
     return backgroundSessionManager;
 }
 
-+(AFHTTPSessionManager *)sessionManager{
+/*
+    Build from the base manager but has additional serialization options.. 
+    So the repsonse will be serialized using xml or json parsers
+ */
++(AFHTTPSessionManager *)sessionManager
+{
     static AFHTTPSessionManager *sessionManager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sessionManager = [self baseManager];
+    dispatch_once(&onceToken, ^ // ensure that this is executed only once
+    {
+        sessionManager = [self baseManager]; // build on top of the base manager
         sessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
     });
     return sessionManager;
 }
-
-+(AFHTTPSessionManager *)readerSessionManager{
+/*
+    reader is also build on top of the base manager ::
+    but the response will be parsed in a custom manner by the rureader serilizer. This serilization is done custom
+ */
++(AFHTTPSessionManager *)readerSessionManager
+{
     static AFHTTPSessionManager *sessionManager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         sessionManager = [self baseManager];
         sessionManager.responseSerializer = [RUReaderResponseSerializer compoundResponseSerializer];
     });

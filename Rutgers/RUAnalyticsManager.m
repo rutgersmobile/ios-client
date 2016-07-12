@@ -28,10 +28,12 @@
 @end
 
 @implementation RUAnalyticsManager
-+(instancetype)sharedManager{
++(instancetype)sharedManager
+{
     static RUAnalyticsManager *sharedManager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         sharedManager = [[RUAnalyticsManager alloc] init];
     });
     
@@ -54,7 +56,8 @@
 //The following key and methods define how to persistently store if this is the first launch
 static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirstLaunchKey";
 
--(BOOL)firstLaunch{
+-(BOOL)firstLaunch
+{
     //First we register the default value of yes
     //What this does is ensure that if there is an absence of a value for this key, we will get yes by default
     //As soon as a value is set, that will be read instead of the "default" value.
@@ -64,7 +67,8 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     return [[NSUserDefaults standardUserDefaults] boolForKey:kAnalyticsManagerFirstLaunchKey];
 }
 
--(void)setFirstLaunch:(BOOL)firstLaunch{
+-(void)setFirstLaunch:(BOOL)firstLaunch
+{
     [[NSUserDefaults standardUserDefaults] setBool:firstLaunch forKey:kAnalyticsManagerFirstLaunchKey];
 }
 
@@ -257,6 +261,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
             NSLog(@"Error sending analytics, retrying");
+            NSLog(@"ERROR : %@", error);
             [self queueAnalyticsEvents:events];
         }
     }];

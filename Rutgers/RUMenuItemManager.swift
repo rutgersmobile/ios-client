@@ -21,16 +21,31 @@ protocol DictionaryConvertible {
     func asDictionary() -> NSDictionary
 }
 
-public class RUFavorite: NSObject {
+
+/*
+ 
+ 
+ 
+ */
+public class RUFavorite: NSObject
+{
     public let title: String
     public let url: NSURL
     
-    public init(title: String, url: NSURL) {
+    public init(title: String, url: NSURL)
+    {
         self.title = title
         self.url = url
     }
+   
+    /*
+         Equality for objc objects :
+         If two things are equal then there hashes must be equal : but two hashes being equal does not mean that the objects are equal
+     
+      */
     
-    public override func isEqual(object: AnyObject?) -> Bool {
+    public override func isEqual(object: AnyObject?) -> Bool
+    {
         guard let other = object as? RUFavorite else { return false }
         return self.title == other.title && self.url == other.url
     }

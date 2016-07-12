@@ -9,10 +9,10 @@
 #import "DataSource.h"
 
 /*
-    how does composed data source fucntion : 
-        Does it hold multiple data source ? It seems like this due to function names
     Gives out data source at a particular location
-    May be each bus route has a different data source etc <q>
+
+ 
+    Multiple Data Sources are stored in this data source 
  */
 
 

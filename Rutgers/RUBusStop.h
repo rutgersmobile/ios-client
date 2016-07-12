@@ -17,8 +17,8 @@
 @property (nonatomic) NSString *title;
 @property (nonatomic) CLLocation *location;
 @property (nonatomic) NSInteger stopId;
-@property (nonatomic) NSArray *routes;
+@property (nonatomic) NSArray *routes;  // Why is the multiple routes for each stop. Is it combining multiple buses going through the stop into this array ? 
 @property (nonatomic, readonly, copy) NSArray *activeRoutes;
-@property (nonatomic) NSString *agency;
+@property (nonatomic) NSString *agency; // How is the agency specified ? 
 
 @end

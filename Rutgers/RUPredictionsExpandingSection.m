@@ -12,7 +12,7 @@
 #import "DataSource_Private.h"
 #import "RUPredictionsHeaderTableViewCell.h"
 #import "RUPredictionsBodyTableViewCell.h"
-#import "RUBusMultiStop.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusPrediction.h"
 
 @interface RUPredictionsExpandingSection ()
@@ -51,7 +51,7 @@
         RUPredictionsHeaderTableViewCell *headerCell = cell;
         
         headerCell.titleLabel.text = [row title];
-        headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultiStop class]] ? [row directionTitle] : nil;
+        headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
         if ([row active]) {
             headerCell.titleLabel.textColor = [UIColor blackColor];

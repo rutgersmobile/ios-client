@@ -9,15 +9,15 @@
 #import "RUPredictionsViewController.h"
 #import "RUPredictionsDataSource.h"
 #import "RUBusRoute.h"
-#import "RUBusMultiStop.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import "TableViewController_Private.h"
 #import <MSWeakTimer.h>
 #import "NSURL+RUAdditions.h"
 #import "RUBusDataLoadingManager.h"
+#import "RUDefines.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
-#define DEV 1
 /*
     Handles the predictions for the BUS app.
  
@@ -37,7 +37,8 @@
     Determine how this is passed ???? <q>
  
  */
--(instancetype)initWithItem:(id)item{
+-(instancetype)initWithItem:(id)item
+{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         self.item = item; // RUBusRoute or RUBusStop
@@ -95,7 +96,7 @@
     NSString *type;
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
         type = @"route";
-    } else if ([self.item isKindOfClass:[RUBusMultiStop class]]) {
+    } else if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
         type = @"stop";
     }
     if (!type) return nil;
@@ -123,6 +124,7 @@
         case DataSourceAnimationDirectionNone:
             //This causes the inserted and removed sections to slide on and off the screen
             return UITableViewRowAnimationAutomatic;
+            
             break;
         default:
             return [super rowAnimationForOperationDirection:direction];

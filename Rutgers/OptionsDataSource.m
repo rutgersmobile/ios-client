@@ -26,27 +26,40 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-       
+    if (self)
+    {
+      
+        
+        
         // Set up an Alert Data Source and then add it to the data source : The order in which the data is added will determine the layout order
         StringDataSource *editChannels = [[StringDataSource alloc] initWithItems:@[@"Edit Channels"]];
         editChannels.showsDisclosureIndicator = YES;
         [self addDataSource:editChannels];
-       
+   
+        
+        
+        
         //Select Campus
         //Get the current campus title or use placeholder text
         NSString *campusInitialText = [RUUserInfoManager currentCampus][@"title"];
         if (!campusInitialText) campusInitialText = @"Please choose your campus";
+       
         
+        
+        
+
         //Make alert data source with an array of campus titles
         AlertDataSource *campuses = [[AlertDataSource alloc] initWithInitialText:campusInitialText alertButtonTitles:[[RUUserInfoManager campuses] valueForKey:@"title"]];
         campuses.title = @"Select Campus";
         campuses.alertTitle = @"Please choose your campus";
-        campuses.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
+        campuses.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex)
+        {
             //On selection, set this campus to be the current campus
             [RUUserInfoManager setCurrentCampus:[RUUserInfoManager campuses][buttonIndex]];
         };
+       
         
+
         //Select Role
         //Get the current user role or use placeholder text
         NSString *userRolesInitialText = [RUUserInfoManager currentUserRole][@"title"];
@@ -56,13 +69,17 @@
         AlertDataSource *userRoles = [[AlertDataSource alloc] initWithInitialText:userRolesInitialText alertButtonTitles:[[RUUserInfoManager userRoles] valueForKey:@"title"]];
         userRoles.title = @"Select Role";
         userRoles.alertTitle = @"Please indicate your role at the university";
-        userRoles.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex){
+        userRoles.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex)
+        {
             //On selection, set this user role to be the current role
             [RUUserInfoManager setCurrentUserRole:[RUUserInfoManager userRoles][buttonIndex]];
         };
         
         [self addDataSource:campuses]; // campus will appear first
         [self addDataSource:userRoles];
+       
+        
+        
         
         //Reset App
         AlertDataSource *reset = [[AlertDataSource alloc] initWithInitialText:@"Reset App" alertButtonTitles:@[@"Yes, I am sure."]];
