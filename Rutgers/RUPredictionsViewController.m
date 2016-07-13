@@ -95,13 +95,16 @@
  */
 -(NSURL *)sharingURL{
     NSString *type;
+    NSString *identifier;
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
         type = @"route";
+        identifier = [(RUBusRoute*)self.item tag];
     } else if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
         type = @"stop";
+        identifier = [self.item title];
     }
     if (!type) return nil;
-    return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, [self.item title]]]; // eg rut../bus/route/f
+    return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, identifier]]; // eg rut../bus/route/f
 }
 
 //This causes an update timer to start upon the Predictions View controller appearing
