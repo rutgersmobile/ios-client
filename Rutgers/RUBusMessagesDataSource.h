@@ -19,6 +19,7 @@
 
 @interface RUBusMessagesDataSource : BasicDataSource
 
+- (instancetype)initWithItem:(id)item;
 -(void)addMessage:(NSString *) message;
--(void)addMessagesForPrediction:(RUBusPrediction *) prediction ;
+-(void)addMessagesForPrediction:(NSArray *) response;
 @end

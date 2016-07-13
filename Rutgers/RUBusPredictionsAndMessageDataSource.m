@@ -8,11 +8,16 @@
 
 #import "RUBusPredictionsAndMessageDataSource.h"
 #import "RUPredictionsDataSource.h"
+#import "RUBusDataLoadingManager.h"
 #import "RUBusMessagesDataSource.h"
 
+
 @interface RUBusPredictionsAndMessageDataSource()
+
 @property (nonatomic) RUPredictionsDataSource * busPredictionsDS;
 @property (nonatomic) RUBusMessagesDataSource * busMessagesDS;
+@property id item ;
+
 @end
 
 @implementation RUBusPredictionsAndMessageDataSource
@@ -22,7 +27,7 @@
     self = [super init];
     if (self)
     {
-        self.busMessagesDS = [[RUBusMessagesDataSource alloc]init];
+        self.busMessagesDS = [[RUBusMessagesDataSource alloc]initWithItem:item];
         self.busPredictionsDS = [[RUPredictionsDataSource alloc] initWithItem:item];
         
         [self addDataSource:self.busMessagesDS];
@@ -42,7 +47,7 @@
    }
    else
     {
-        [self.busPredictionsDS toggleExpansionForSection: section -1];
+        [self.busPredictionsDS toggleExpansionForSection: section - 1];
     }
 }
 

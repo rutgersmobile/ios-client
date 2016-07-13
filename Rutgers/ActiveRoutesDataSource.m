@@ -25,9 +25,12 @@
     return self;
 }
 
--(void)loadContent{
-    [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUBusDataLoadingManager sharedInstance] fetchActiveRoutesForAgency:self.agency completion:^(NSArray *routes, NSError *error) {
+-(void)loadContent
+{
+    [self loadContentWithBlock:^(AAPLLoading *loading)
+    {
+        [[RUBusDataLoadingManager sharedInstance] fetchActiveRoutesForAgency:self.agency completion:^(NSArray *routes, NSError *error)
+        {
             if (!loading.current) {
                 [loading ignore];
                 return;

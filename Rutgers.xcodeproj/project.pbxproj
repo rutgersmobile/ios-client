@@ -87,7 +87,6 @@
 		04FD97CF1D13543400E9877D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97CE1D13543400E9877D /* libsqlite3.tbd */; };
 		04FD97D11D13543900E9877D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97D01D13543900E9877D /* libz.tbd */; };
 		04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD97D51D14988300E9877D /* PlaceholderDataSource.m */; };
-		592E7C98495BF39051D79C73 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
@@ -223,6 +222,7 @@
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
+		F0799491216F9AC23449C5E4 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -710,7 +710,7 @@
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
 				C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */,
 				0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */,
-				592E7C98495BF39051D79C73 /* libPods-Rutgers.a in Frameworks */,
+				F0799491216F9AC23449C5E4 /* libPods-Rutgers.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1695,7 +1695,7 @@
 			attributes = {
 				CLASSPREFIX = RU;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Rutgers;
 				TargetAttributes = {
 					047D06DA1BE16DB600DFEAA3 = {
@@ -2166,7 +2166,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2197,6 +2197,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LLVM_LTO = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

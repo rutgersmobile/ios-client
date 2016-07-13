@@ -47,7 +47,9 @@
     self.items = @[];
 }
 
--(NSInteger)numberOfItems{
+-(NSInteger)numberOfItems
+{
+    NSLog(@" # items = %lu",(unsigned long)[_items count]);
     return [_items count];
 }
 

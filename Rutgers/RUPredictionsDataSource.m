@@ -24,8 +24,6 @@
 
 /*
     This class obtains the prediction using the rubusdataloading manager
- 
- 
     This class and another class containing the messages will be placed in a composed data source and that will be displayed..
 
  */
@@ -47,6 +45,7 @@
     }
     return self;
 }
+
 
 -(void)loadContent
 {

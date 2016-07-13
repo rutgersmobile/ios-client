@@ -82,7 +82,9 @@
 }
 
 //This is the action send when tapping on a cell, this opens up the predictions screen
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
     // Create a view using the item. Ie. Present the view with the bu stops and their timiings
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller

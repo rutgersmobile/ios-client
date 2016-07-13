@@ -39,7 +39,8 @@
 
 @implementation TableViewController
 #pragma mark - Lifecycle
--(void)viewDidLoad{
+-(void)viewDidLoad
+{
     [super viewDidLoad];
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
@@ -207,7 +208,7 @@
    /*
         change http://rutgers://bus/route/weekend%201/ to
     
-        http://rumobile.rutgers.edu/bus/route/weekend%201/
+            http://rumobile.rutgers.edu/bus/route/weekend%201/
     */
   
     NSLog(@"URL -> %@ ",urlString);
