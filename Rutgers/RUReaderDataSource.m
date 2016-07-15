@@ -36,8 +36,19 @@
             }
             
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                
+                
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
-                NSArray *parsedResponse = [self parseResponse:channel[@"item"]];
+                NSArray *parsedResponse;
+                if(responseObject[@"games"]!=nil)
+                {
+                    parsedResponse = [self parseGameResponse:responseObject[@"games"]];
+                }
+                else
+                {
+                    parsedResponse = [self parseResponse:channel[@"item"]];
+                }
+                
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = parsedResponse;
                 }];
@@ -52,7 +63,18 @@
     }];
 }
 
--(NSArray *)parseResponse:(NSArray *)response{
+-(NSArray *)parseGameResponse:(NSArray *)response
+{
+    NSMutableArray *parsedItems = [NSMutableArray array];
+    for (NSDictionary *item in response) {
+        RUReaderItem *row = [[RUReaderItem alloc] initWithGame:item];
+        [parsedItems addObject:row];
+    }
+    return parsedItems;
+}
+
+-(NSArray *)parseResponse:(NSArray *)response
+{
     NSMutableArray *parsedItems = [NSMutableArray array];
     for (NSDictionary *item in response) {
         RUReaderItem *row = [[RUReaderItem alloc] initWithItem:item];

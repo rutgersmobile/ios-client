@@ -62,6 +62,17 @@
     return self;
 }
 
+-(instancetype)initWithGame:(NSDictionary *)game
+{
+    self = [super init];
+    if (self) {
+        self.item = game;
+        _title = game[@"description"];
+        _dateString = game[@"start"];
+        _descriptionText = game[@"location"];
+    }
+    return self;
+}
 
 /**
  *  Parses the given string representation of a date

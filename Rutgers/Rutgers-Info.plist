@@ -67,15 +67,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <!--Include to allow all connections (DANGER)-->
-      
-    </dict>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
         <key>NSExceptionDomains</key>
         <dict>
             <key>webservices.nextbus.com</key>
@@ -103,6 +98,6 @@
                 <string>TLSv1.1</string>
             </dict>
         </dict>
-    </dict>
+	</dict>
 </dict>
 </plist>
