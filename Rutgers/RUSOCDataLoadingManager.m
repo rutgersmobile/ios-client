@@ -14,7 +14,7 @@
 #import "RUNetworkManager.h"
 #import "NSURL+RUAdditions.h"
 
-static NSString *const baseString = @"http://sis.rutgers.edu/soc/";
+static NSString *const baseString = @"https://sis.rutgers.edu/soc/";
 
 static NSString *const SOCDataCampusKey = @"SOCDataCampusKey";
 static NSString *const SOCDataLevelKey = @"SOCDataLevelKey";
