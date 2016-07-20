@@ -224,8 +224,14 @@
     RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
     if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
     
+    if(title == nil)
+    {
+            title = @"";
+    }
+       
     if (courseNumber)
     {
+       
         NSDictionary *course = @{
                                  @"subjectCode": subjectCode,
                                  @"courseNumber": courseNumber,
@@ -237,6 +243,7 @@
     }
     else
     {
+       
         NSDictionary *subject = @{
                                   @"code": subjectCode,
                                   @"description": title
