@@ -126,6 +126,7 @@ NSString * const newarkAgency = @"rutgers-newark";
         NSLog(@"%@" , urlTest);
     }
     
+    
     [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil
         success:^
             (NSURLSessionDataTask *task, id responseObject)

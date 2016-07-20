@@ -63,6 +63,8 @@
 - (void)performActivity {
     NSLog(@"Fav : url %@ -> title %@", self.urlToFavorite.absoluteString , self.title);
     
+    self.urlToFavorite  = [[NSURL alloc] initWithString:[self.urlToFavorite.absoluteString stringByReplacingOccurrencesOfString:@"http://rumobile.rutgers.edu/link/" withString:@"rutgers://"]];
+    
     RUFavorite *favorite = [[RUFavorite alloc] initWithTitle:self.title url:self.urlToFavorite];
     [[RUMenuItemManager sharedManager] addFavorite:favorite]; 
 

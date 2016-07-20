@@ -33,7 +33,7 @@
             
             if (!error) {
                 [loading updateWithContent:^(typeof(self) me) {
-                    me.items = nil;
+                    me.items = stops;
                 }];
             } else {
                 [loading doneWithError:error];

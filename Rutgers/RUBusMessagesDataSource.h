@@ -22,4 +22,8 @@
 - (instancetype)initWithItem:(id)item;
 -(void)addMessage:(NSString *) message;
 -(void)addMessagesForPrediction:(NSArray *) response;
+-(BOOL)isMessageAvaliable;
+-(void) updateContent;
+
+@property (nonatomic) id item ; // holds the name of the item
 @end

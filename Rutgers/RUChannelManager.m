@@ -402,8 +402,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         NSString *normalizedComponent = [component rutgersStringEscape];
         [components addObject:normalizedComponent];
     }
-    [components removeObjectAtIndex:0]; // remove the rutgers part
-   
+  //  [components removeObjectAtIndex:0]; // remove the http part
+   // [components removeObjectAtIndex:0]; // remove the rumobile.rutgers.edu link
+    [components removeObjectAtIndex:0]; // remove the link part
+    
     NSString *handle = components.firstObject;
     [components removeObjectAtIndex:0];
     
@@ -416,7 +418,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         
         return [class performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
     }
-    else {
+    else
+    {
         
         NSLog(@"error in VCForUrl");
             // If this part of the code is called , then it ends in error

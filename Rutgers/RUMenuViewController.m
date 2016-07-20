@@ -100,7 +100,7 @@
 {
     id item = [self.dataSource itemAtIndexPath:indexPath];
     
-   // NSLog(@"%@",[item sharingURL].absoluteString);
+     NSLog(@"%@",item);
     [self.delegate menu:self didSelectItem:item];
 }
 @end

@@ -28,7 +28,6 @@
 
  */
 @interface RUPredictionsDataSource ()
-@property id item;
 @end
 
 @implementation RUPredictionsDataSource
@@ -47,6 +46,9 @@
 }
 
 
+/*
+
+    NO LONGER NEED : DATA LOADED IN ANOTHER CLASS AND PASSED ALONG
 -(void)loadContent
 {
     [self loadContentWithBlock:^
@@ -120,6 +122,10 @@
         }
     }];
 }
+
+*/
+
+
 
 /*
     Add the objects which were recieved in the data request to the data source

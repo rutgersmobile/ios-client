@@ -88,12 +88,12 @@
     self.pullsToRefresh = YES;
 }
 
+
 /*
     the self.item is set by the init , and can either represent the route or a stop and based on that 
- 
- 
  */
--(NSURL *)sharingURL{
+-(NSURL *)sharingURL
+{
     NSString *type;
     NSString *identifier;
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
@@ -106,6 +106,7 @@
     if (!type) return nil;
     return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, identifier]]; // eg rut../bus/route/f
 }
+
 
 //This causes an update timer to start upon the Predictions View controller appearing
 -(void)viewWillAppear:(BOOL)animated{
@@ -135,5 +136,22 @@
             break;
     }
 }
+
+/*
+    Make the messges unselectable
+ 
+ */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.section == 0) // if message then make it unselectable
+    {
+        [tableView cellForRowAtIndexPath:indexPath].selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    else // pass on the message to the super class
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
 
 @end

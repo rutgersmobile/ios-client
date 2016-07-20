@@ -13,8 +13,6 @@
                 data.
             > It is like an abstract class
  
-     <q> 
-        Basic Picture of Data Source understood
  */
 
 
@@ -29,18 +27,17 @@
 #import "NSIndexPath+RowExtensions.h"
 
 #import "ComposedDataSource.h"
-#import <AFNetworkReachabilityManager.h>
 #import "RUAnalyticsManager.h"
 #import "SearchDataSource.h"
 
 @interface DataSource () <AAPLStateMachineDelegate>
-@property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
 
 @property (nonatomic, copy) dispatch_block_t whenLoadedBlock;
 
 @property (nonatomic) BOOL loadingComplete;
 @property (nonatomic, weak) AAPLLoading *loadingInstance;
 
+// STore the cache heighs of the cells
 @property (nonatomic) NSMutableDictionary *sizingCells;
 @property (nonatomic) RowHeightCache *rowHeightCache;
 @property (nonatomic) AAPLPlaceholderView *placeholderView;
@@ -59,7 +56,8 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         self.sizingCells = [NSMutableDictionary dictionary];
         self.rowHeightCache = [[RowHeightCache alloc] init];
         
@@ -80,7 +78,8 @@
 }
 
 // detached from the Notification Center
--(void)dealloc{
+-(void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -89,35 +88,49 @@
     if the network is avalibale and the an error has occured while loading the content , then we load the content again. 
     Also ensure that the current class is a dataSource
  */
--(void)reachabilityDidChange:(NSNotification *)notification{
-    if ([AFNetworkReachabilityManager sharedManager].reachable && self.isRootDataSource && [self.loadingState isEqualToString:AAPLLoadStateError]) {
+-(void)reachabilityDidChange:(NSNotification *)notification
+{
+    // if data is reachable , if data can be send down to lower level classes and the previous load ended in an error
+    //          then realod the data
+    if ([AFNetworkReachabilityManager sharedManager].reachable && self.isRootDataSource && [self.loadingState isEqualToString:AAPLLoadStateError])
+    {
         [self setNeedsLoadContent];
     }
 }
 
-// determine if the current class is a data source
+/*
+    How to determine if the data source is the root ?
+    if it is a root data source 's delegate is a data source , then it is not a root ,  
+    else it is a root..
+ */
 - (BOOL)isRootDataSource
 {
     return [self.delegate isKindOfClass:[DataSource class]] ? NO : YES;
 }
 // if the data source can be searched
-- (BOOL)isSearchDataSource{
+- (BOOL)isSearchDataSource
+{
     return [self conformsToProtocol:@protocol(SearchDataSource)] ? YES : NO;
 }
 
-// description about the class .. <q> how is this used ?
--(NSString *)description{
+// description about the class ..
+// used for analytics etc
+-(NSString *)description
+{
     return [[super description] stringByAppendingFormat:@"\t%@",self.title];
 }
 
+
 #pragma mark - Data Source Implementation
 // initially only a single section and 0 item . If there is an error then the place holder is shown
--(NSInteger)numberOfSections{
+-(NSInteger)numberOfSections
+{
     if (self.showingPlaceholder) return 1;
     return 1;
 }
 
--(NSInteger)numberOfItemsInSection:(NSInteger)section{
+-(NSInteger)numberOfItemsInSection:(NSInteger)section
+{
     if (self.showingPlaceholder) return 1;
     return 0;
 }
@@ -140,7 +153,8 @@
 }
 
 /// Find the item at the specified index path.
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath{
+- (id)itemAtIndexPath:(NSIndexPath *)indexPath
+{
     NSAssert(NO, @"Should be implemented by subclasses");
     return nil;
 }
@@ -148,33 +162,31 @@
 /*
     Handles the common step of setting up the cells to be reused to prevent the cells from having to be recreated each step.
  */
--(void)registerReusableViewsWithTableView:(UITableView *)tableView{
-    // What is the purpose of using AL... class ? Is something being added ? or is it handling something ios did not have in older versions ? <q>
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView
+{
     // Seems to be used for unique customization of the cell within the tableViewContr...
-    // AL.... inherits from UIView
     [tableView registerClass:[ALPlaceholderCell class] forCellReuseIdentifier:NSStringFromClass([ALPlaceholderCell class])];
     
     [tableView registerClass:[ALActivityIndicatorCell class] forCellReuseIdentifier:NSStringFromClass([ALActivityIndicatorCell class])];
     
-   /*
-        <q> 
-            > AL... inherits from UITabBarController , so is it handling the UITabBar ??? or is is used for cell customization ???
-    */
 }
 
 /*
-    <q> What is the purpose of chaching heights ? They are single values ?
-        No , different types of information have different heights. 
+ 
+        different types of information have different heights.
             say a route or a stop , or a news item .
  */
 #pragma mark - Cached Heights
--(void)invalidateCachedHeights{
+-(void)invalidateCachedHeights
+{
     [self.rowHeightCache invalidateCachedHeights];
 }
--(void)invalidateCachedHeightsForSection:(NSInteger)section{
+-(void)invalidateCachedHeightsForSection:(NSInteger)section
+{
     [self.rowHeightCache invalidateCachedHeightsForSection:section];
 }
--(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths{
+-(void)invalidateCachedHeightsForIndexPaths:(NSArray *)indexPaths
+{
     [self.rowHeightCache invalidateCachedHeightsForIndexPaths:indexPaths];
 }
 
@@ -184,45 +196,56 @@
  
  */
 #pragma mark - Table View Data Source
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return self.numberOfSections;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return [self numberOfItemsInSection:section];
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     return (section == 0) ? self.title : nil;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
     return (section == 0) ? self.footer : nil;
 }
 
--(BOOL)tableView:(UITableView *)tableView sectionHasCustomHeader:(NSInteger)section{
+-(BOOL)tableView:(UITableView *)tableView sectionHasCustomHeader:(NSInteger)section
+{
     return NO;
 }
 
--(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return nil;
 }
 
 /*
     Obtain the reuse cell for the place holder
  
- 
-    Based on the ability to load the state or not , he determine the type of cell to be displayed . 
+    Based on the ability to load the state or not , he determine the type of cell to be displayed .
     ALActivityIndi...Cell ->
+    
+    if the data is being loaded , show the indicaltor cell , else the place holder
+ 
  */
--(NSString *)placeholderReuseIdentifier{
+-(NSString *)placeholderReuseIdentifier
+{
     return [self.loadingState isEqualToString:AAPLLoadStateLoadingContent] ? NSStringFromClass([ALActivityIndicatorCell class]) : NSStringFromClass([ALPlaceholderCell class]);
 }
 
 /*
     To configure the cell if required to be implemented by the subclass that need this functionality
+    Implemented by the sub classes
  */
--(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
 }
 
@@ -235,35 +258,45 @@
     else if the cell is of indicator type , then animate and show the indicator icon
  */
 // Error loading Data ?
--(void)configurePlaceholderCell:(id)cell{
-    if ([cell isKindOfClass:[ALPlaceholderCell class]]) {
+-(void)configurePlaceholderCell:(id)cell
+{
+    if ([cell isKindOfClass:[ALPlaceholderCell class]])
+    {
         ALPlaceholderCell *placeholder = cell;
-        if ([self.loadingState isEqualToString:AAPLLoadStateError]) {
+        // if an error in loading has occured , then show the error info in the place holder
+        if ([self.loadingState isEqualToString:AAPLLoadStateError])
+        {
             placeholder.title = self.errorTitle;
             placeholder.message = self.errorMessage;
             placeholder.image = self.errorImage;
             placeholder.buttonTitle = self.errorButtonTitle;
             placeholder.buttonAction = self.errorButtonAction;
-        } else {
+        }
+        else // if no content has been loaded from the servers then , how the no content place holder
+        {
             placeholder.title = self.noContentTitle;
             placeholder.message = self.noContentMessage;
             placeholder.image = self.noContentImage;
             placeholder.buttonTitle = nil;
             placeholder.buttonAction = nil;
         }
-    } else if ([cell isKindOfClass:[ALActivityIndicatorCell class]]) {
+        
+    }
+    else if ([cell isKindOfClass:[ALActivityIndicatorCell class]]) // if the cell is an acitivcity indicator cell , then show the indicator..
+    {
         ALActivityIndicatorCell *activity = cell;
-        [activity.activityIndicatorView startAnimating];
+        [activity.activityIndicatorView startAnimating]; 
     }
 }
 
 /*
     Is this removing the cell from use ? Unclear
- 
  */
--(id)tableView:(UITableView *)tableView sizingCellWithIdentifier:(NSString *)identifier{
+-(id)tableView:(UITableView *)tableView sizingCellWithIdentifier:(NSString *)identifier
+{
     id cell = self.sizingCells[identifier];
-    if (!cell) {
+    if (!cell)
+    {
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         [cell removeFromSuperview];
         self.sizingCells[identifier] = cell;
@@ -272,23 +305,29 @@
 }
 
 /*
- 
+    This proviees the cells to be displayed in the table view .. 
+    the configurations are done by the sub classes which use the configure cell function
  
  */
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     ALTableViewAbstractCell *cell; // an abstract cell with minimal configurations
     
-    if (self.showingPlaceholder) {
+    if (self.showingPlaceholder)
+    {
         // set up the place holder cell
         cell = [tableView dequeueReusableCellWithIdentifier:[self placeholderReuseIdentifier]];
         [cell updateFonts]; // the update fonts is called on the sub classes , so the configuration is done by specific classes
         [self configurePlaceholderCell:(ALPlaceholderCell *)cell];
-    } else {
+    }
+    else
+    {
         cell = [tableView dequeueReusableCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
         [cell updateFonts];
-        [self configureCell:cell forRowAtIndexPath:indexPath];
+        [self configureCell:cell forRowAtIndexPath:indexPath]; // configured by the sub classes
     }
 
+    // look at the changed contraints
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
@@ -309,7 +348,8 @@
     Is there a more efficient way to obtain the height : Possible method would be using the measurement of the subview
  */
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
     
     /*
@@ -324,16 +364,29 @@
 
     if (cachedHeight) return [cachedHeight doubleValue];
     
+    /*
+        The row height is calculted from the constraints.
+            But crreating the cell and calculating the height for each time the user moves up and down is very expensive.
+        So we store the heights which have already been calculated from the contraints and give them to the table view..
+        
+            If the height for the cell has not been calculated previously , then we try again...
+
+     */
+    
     
     // Create a cell with the specific configurations
     ALTableViewAbstractCell *cell;
     
-    if (self.showingPlaceholder) {  // Place Holder Text is set if there is no input Connection
+    if (self.showingPlaceholder)
+    {
+        // Place Holder Text is set if there is no input Connection
         ALPlaceholderCell *placeholderCell = [self tableView:tableView sizingCellWithIdentifier:[self placeholderReuseIdentifier]];
         cell = placeholderCell;
         [cell updateFonts];
         [self configurePlaceholderCell:placeholderCell];
-    } else {
+    }
+    else
+    {
         cell = [self tableView:tableView sizingCellWithIdentifier:[self reuseIdentifierForRowAtIndexPath:indexPath]];
         [cell updateFonts];
         [self configureCell:cell forRowAtIndexPath:indexPath];
@@ -353,11 +406,14 @@
 
 /*
     Estimated height ?
-        <q> How is the height being estimated ?
  */
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath];
-    if (cachedHeight) return [cachedHeight doubleValue];
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath]; // the estimiated height is obtained from craeting the cell , applying constrains and then reading the cell's height
+    
+    if (cachedHeight)
+        return [cachedHeight doubleValue];
+    
     return tableView.estimatedRowHeight; // default set up by apple is 0 <q> how is this changed ?
 }
 
@@ -382,35 +438,39 @@
  */
 
 #pragma mark - Collection View Data Source
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
     return self.numberOfSections;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return [self numberOfItemsInSection:section];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForItemAtIndexPath:indexPath] forIndexPath:indexPath];
-    
    // [cell updateFonts];
     [self configureCell:cell forItemAtIndexPath:indexPath];
     
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
-    
     return cell;
 }
 
--(void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView{
+-(void)registerReusableViewsWithCollectionView:(UICollectionView *)collectionView
+{
 
 }
 
--(NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath{
+-(NSString *)reuseIdentifierForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     return nil;
 }
 
--(void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+-(void)configureCell:(id)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
     
 }
 
@@ -431,7 +491,6 @@
  
     It seems the diffrent possible states are 
  
- 
      NSString * const AAPLLoadStateInitial = @"Initial";
      NSString * const AAPLLoadStateLoadingContent = @"LoadingState";
      NSString * const AAPLLoadStateRefreshingContent = @"RefreshingState";
@@ -440,9 +499,14 @@
      NSString * const AAPLLoadStateError = @"ErrorState";
     
     The state machine in implemented in the APPLContentLoading.m file and APPLStateMachine file
-
+ 
+    It is based on this state machine that the data is obtained from the server : 
+ 
+ 
+ 
  */
 
+// create the state machine
 - (AAPLLoadableContentStateMachine *)stateMachine
 {
     if (_stateMachine)
@@ -455,7 +519,8 @@
 
 /*
     Returns the current state from the Apple State Machien
- 
+    If the machine has not been created , then the loading state is give..
+
  */
 - (NSString *)loadingState
 {
@@ -475,23 +540,20 @@
         stateMachine.currentState = loadingState;
 }
 
-/*
-    <q> Begin loading information ?
- 
-    No this function only sets up the state machine , the loading corresponding to the state is done by another class
-    using the notifyWillLoadContent
- */
 - (void)beginLoading
 {
     self.loadingComplete = NO;
+    /*
+        If the loading state is initiali , or is in the process of laoding content , or if an error occured , then we change the state to be the loading content state .. 
+        Else we are refreshing the content
+     
+     */
     self.loadingState = (([self.loadingState isEqualToString:AAPLLoadStateInitial] || [self.loadingState isEqualToString:AAPLLoadStateLoadingContent] || [self.loadingState isEqualToString:AAPLLoadStateError]) ? AAPLLoadStateLoadingContent : AAPLLoadStateRefreshingContent);
     
     [self notifyWillLoadContent];
 }
 /*
     <q> How is this function used ?
-    Error state ?
-    Not exclusively for error state , but notifies someone about the error ????
  */
 - (void)endLoadingWithState:(NSString *)state error:(NSError *)error update:(dispatch_block_t)update
 {
@@ -499,23 +561,28 @@
     self.loadingState = state;
     
     if (error) [[RUAnalyticsManager sharedManager] queueEventForError:error];
-    
+   
+    // update refers to the changes that have to be made to the data source or table view
     [self notifyBatchUpdate:^{
         if (update)
             update();
     }];
     
     self.loadingComplete = YES;
-    if (self.whenLoadedBlock) {
+    
+    if (self.whenLoadedBlock)
+    {
         self.whenLoadedBlock();
         self.whenLoadedBlock = nil;
     }
+    
     [self notifyContentLoadedWithError:error];
 }
 
 /*
     Cancels the previous request to load content and starts the load again
  
+    Data souce calls load content on its sub classes ?
  */
 - (void)setNeedsLoadContent
 {
@@ -523,6 +590,7 @@
     [self performSelector:@selector(loadContent) withObject:nil afterDelay:0];
 }
 
+// reset the data machine
 - (void)resetContent
 {
     _stateMachine = nil;
@@ -535,20 +603,26 @@
     // To be implemented by subclasses…
 }
 
+// conforms to APPLContentLoading Protocol
+// AAPLLoadingBlock takes a APLLoading as a parameter. It might be used to know more about the state and change the state?
 - (void)loadContentWithBlock:(AAPLLoadingBlock)block
 {
     [self beginLoading];
     
     __weak typeof(self) weakself = self;
-    
-    AAPLLoading *loading = [AAPLLoading loadingWithCompletionHandler:^(NSString *newState, NSError *error, AAPLLoadingUpdateBlock update){
+   
+    // the
+    AAPLLoading *loading = [AAPLLoading loadingWithCompletionHandler:^
+    (NSString *newState, NSError *error, AAPLLoadingUpdateBlock update) // the update block is attached to the loading state
+    {
         if (!newState)
             return;
         
-        [self endLoadingWithState:newState error:error update:^{
+        [self endLoadingWithState:newState error:error update:^
+        {
             DataSource *me = weakself;
             if (update && me)
-                update(me);
+                update(me); // update the data source ? // update block takes in an id as parameter
         }];
     }];
     
@@ -558,22 +632,28 @@
     
     // Call the provided block to actually do the load
     block(loading); // block is actually a fuction pointer which takes AAPLLoading as its input
+                    // the block might use the loading pointer to change the state based on the content loading state , wether completed , or on going etc..
 }
 
 /*
-    Execute block on ending loading
+    Execute block on ending loading :: See header
  */
 - (void)whenLoaded:(dispatch_block_t)block
 {
-    if (self.whenLoadedBlock) {
+    // add the block to be loaded to the whenloaded block
+    if (self.whenLoadedBlock)
+    {
         dispatch_block_t currentBlock = self.whenLoadedBlock;
-        self.whenLoadedBlock = ^{
+        self.whenLoadedBlock = ^
+        {
             currentBlock();
             block();
         };
     }
-    
-    if (self.loadingComplete && self.whenLoadedBlock) {
+   
+    // execute the whenLaodedBlock is loading is complete and there is a whenLoadedBlock
+    if (self.loadingComplete && self.whenLoadedBlock)
+    {
         self.whenLoadedBlock();
         self.whenLoadedBlock = nil;
     }
@@ -619,7 +699,7 @@
 {
     NSString *loadingState = self.loadingState;
     
-    // If we're in the error state & have an error message or title
+    // If we're in the error state & have an error message or title we dispplay the placeholder
     if ([loadingState isEqualToString:AAPLLoadStateError] && (self.errorMessage || self.errorTitle))
         return YES;
     
@@ -630,23 +710,31 @@
     return YES;
 }
 
-- (void)updatePlaceholderState{
+- (void)updatePlaceholderState
+{
     self.showingPlaceholder = self.shouldDisplayPlaceholder;
 }
 
 /*
-    <q> What is being done here ?
  
  */
--(void)setShowingPlaceholder:(BOOL)showingPlaceholder{
-    if (_showingPlaceholder == showingPlaceholder) { // if we are already doing what is required
-        if (showingPlaceholder) { // if we want to display a place holder , we remove chache and refresh ?
+-(void)setShowingPlaceholder:(BOOL)showingPlaceholder
+{
+    if (_showingPlaceholder == showingPlaceholder) // if we have the place holder
+    {
+        // if we are already doing what is required
+        if (showingPlaceholder)
+        { // if we want to display a place holder , we remove chache and refrech the place hodler cell ?
             [self invalidateCachedHeightsForIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
             [self notifyItemsRefreshedAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]];
         }
-    } else { // if the required state and current state of place holder being displayed or not is differetn then
+    }
+    else
+    {
+        // if the required state and current state of place holder being displayed or not is differetn then
         [self invalidateCachedHeights];
-        [self notifyBatchUpdate:^{ // simply execute this block , either by the subclasses or by the current class itself
+        [self notifyBatchUpdate:^
+        { // simply execute this block , either by the subclasses or by the current class itself
             
             // Keep track of the changes in sections and the items present in the sections
             NSInteger oldNumberOfSections = self.numberOfSections;
@@ -658,13 +746,16 @@
             NSInteger newNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
             
             // If the number of sections is not zero , then notify
-            if (newNumberOfSections > 0 && oldNumberOfSections > 0) {
+            if (newNumberOfSections > 0 && oldNumberOfSections > 0)
+            {
                 // nofity about the removal and insertion of section and add animations for the actiosn
                 [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldNumberOfItemsInFirstSection) inSection:0]];
                 [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newNumberOfItemsInFirstSection) inSection:0]];
                 [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, newNumberOfSections-1)]];
                 [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, oldNumberOfSections-1)]];
-            } else {
+            }
+            else
+            {
                 [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
                 [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
             }
@@ -675,11 +766,13 @@
 #pragma mark - Data Source Delegate
 // Use these methods to notify the observers of changes to the dataSource.
 // and show animations for the removal
-- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths{
+- (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths
+{
     [self notifyItemsInsertedAtIndexPaths:insertedIndexPaths direction:DataSourceAnimationDirectionNone];
 }
 
-- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths{
+- (void)notifyItemsRemovedAtIndexPaths:(NSArray *)removedIndexPaths
+{
     [self notifyItemsRemovedAtIndexPaths:removedIndexPaths direction:DataSourceAnimationDirectionNone];
 }
 
@@ -687,15 +780,23 @@
     [self notifyItemsRefreshedAtIndexPaths:refreshedIndexPaths direction:DataSourceAnimationDirectionNone];
 }
 
+
+/*
+    Speficy the changes that happens in the data source , then the table view controller will mirror these changes and insert and remove according to the data source
+ 
+ */
+
+
 // Use these methods to notify the observers of changes to the dataSource.
+// notify the table view controller , which is the delete of this data source about the changes..
 - (void)notifyItemsInsertedAtIndexPaths:(NSArray *)insertedIndexPaths direction:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexPaths:direction:)]) {
+    if ([delegate respondsToSelector:@selector(dataSource:didInsertItemsAtIndexPaths:direction:)])
+    {
         [delegate dataSource:self didInsertItemsAtIndexPaths:insertedIndexPaths direction:direction];
     }
-    
 }
 
 /*
@@ -705,23 +806,27 @@
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didRemoveItemsAtIndexPaths:direction:)]) {
+    if ([delegate respondsToSelector:@selector(dataSource:didRemoveItemsAtIndexPaths:direction:)])
+    {
         [delegate dataSource:self didRemoveItemsAtIndexPaths:removedIndexPaths direction:direction];
     }
-    
 }
 
-- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimationDirection)direction{
+// reload the cells , with animation to notify the user of the change..
+- (void)notifyItemsRefreshedAtIndexPaths:(NSArray *)refreshedIndexPaths direction:(DataSourceAnimationDirection)direction
+{
     ASSERT_MAIN_THREAD;
     
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didRefreshItemsAtIndexPaths:direction:)]) {
+    if ([delegate respondsToSelector:@selector(dataSource:didRefreshItemsAtIndexPaths:direction:)])
+    {
         [delegate dataSource:self didRefreshItemsAtIndexPaths:refreshedIndexPaths direction:direction];
     }
     
 }
 
-- (void)notifyItemMovedFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath{
+- (void)notifyItemMovedFromIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
+{
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
@@ -733,22 +838,27 @@
 /*
     Remove / insert sections and show animation
  */
-- (void)notifySectionsInserted:(NSIndexSet *)sections{
+- (void)notifySectionsInserted:(NSIndexSet *)sections
+{
     [self notifySectionsInserted:sections direction:DataSourceAnimationDirectionNone];
 }
 
-- (void)notifySectionsRemoved:(NSIndexSet *)sections{
+- (void)notifySectionsRemoved:(NSIndexSet *)sections
+{
     [self notifySectionsRemoved:sections direction:DataSourceAnimationDirectionNone];
 }
 
-- (void)notifySectionsRefreshed:(NSIndexSet *)sections{
+- (void)notifySectionsRefreshed:(NSIndexSet *)sections
+{
     [self notifySectionsRefreshed:sections direction:DataSourceAnimationDirectionNone];
 }
 
-- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection{
+- (void)notifySectionMovedFrom:(NSInteger)section to:(NSInteger)newSection
+{
     ASSERT_MAIN_THREAD;
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didMoveSection:toSection:)]) {
+    if ([delegate respondsToSelector:@selector(dataSource:didMoveSection:toSection:)])
+    {
         [delegate dataSource:self didMoveSection:section toSection:newSection];
     }
 }
@@ -760,7 +870,8 @@
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didInsertSections:direction:)]) {
+    if ([delegate respondsToSelector:@selector(dataSource:didInsertSections:direction:)])
+    {
         [delegate dataSource:self didInsertSections:sections direction:direction];
     }
 }
@@ -771,7 +882,8 @@
     ASSERT_MAIN_THREAD;
 
     id<DataSourceDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(dataSource:didRemoveSections:direction:)]) {
+    if ([delegate respondsToSelector:@selector(dataSource:didRemoveSections:direction:)])
+    {
         [delegate dataSource:self didRemoveSections:sections direction:direction];
     }
 }

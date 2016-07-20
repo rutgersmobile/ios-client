@@ -119,6 +119,136 @@
 }
 
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title{
+
+    /*
+     
+    NSString *semester;
+    NSString *campus;
+    NSString *level;
+    NSString *subjectCode;
+    
+    
+    NSString *courseNumber;
+    
+    // Used to see if semester / subject / course codes are valid
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    
+    // Used to store integer codes
+    NSMutableArray *codes = [[NSMutableArray alloc] init];
+    
+    
+    
+    for (NSString *component in pathComponents)
+    {
+        // All codes are uppercase
+        NSString *upper = [component uppercaseString];
+        if ([upper isEqualToString:@"NB"] || [upper isEqualToString:@"CM"] ||  [upper isEqualToString:@"NK"] || [upper isEqualToString:@"ONLINE"])
+        {
+            // All possible campus codes
+            campus = upper;
+        }
+        else if ([upper isEqualToString:@"U"] || [upper isEqualToString:@"G"])
+        {
+            // All possible level codes
+            level = upper;
+        }
+        else
+        {
+            // Only thing left is integer based codes, which we collect in order
+            NSNumber *code = [f numberFromString:upper];
+            if (code != nil)
+            {
+                [codes addObject:upper];
+            }
+            else
+            {
+                // If we've gotten this far then the pathComponent is invalid
+                return @[[[RUFavoritesErrorViewController alloc] init]];
+            }
+        }
+    }
+    
+    
+    // We go through the integer codes for semester, subject, and course
+    if ([codes count] > 0)
+    {
+        // The semester code could be anywhere in the list
+        for (int i = 0; i < [codes count]; i++)
+        {
+            NSString *code = codes[i];
+            // The semester code is always at least 4 characters
+            // The subject and course codes are always 3
+            if (code.length > 3)
+            {
+                semester = codes[i];
+                [codes removeObjectAtIndex:i];
+            }
+        }
+    
+        // The only thing left should be subject and course codes
+        // These look identical and subject is required so it will always be
+        // <subjectCode> or <subjectCode>/<courseCode>
+        if ([codes count] > 0)
+        {
+            subjectCode = codes[0];
+            [codes removeObjectAtIndex:0];
+            if ([codes count] > 0)
+            {
+                courseNumber = codes[0];
+                [codes removeObjectAtIndex:0];
+            }
+        }
+    }
+        
+    // Leftover junk is an error
+    if ([codes count] > 0)
+    {
+        return @[[[RUFavoritesErrorViewController alloc] init]];
+    }
+    
+    // Missing components is an error
+    // TODO subjectCode is optional on Android
+    
+    if (semester == nil || campus == nil || subjectCode == nil)
+    {
+        return @[[[RUFavoritesErrorViewController alloc] init]];
+    }
+    
+    // Default to undergraduate
+    // May want to default other fields in the future
+    if (level == nil)
+    {
+    
+        level = @"U";
+    }
+    
+    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
+    if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
+    
+    if (courseNumber)
+    {
+        NSDictionary *course = @{
+                                 @"subjectCode": subjectCode,
+                                 @"courseNumber": courseNumber,
+                                 @"title": title
+                                 };
+        RUSOCCourseViewController *vc = [[RUSOCCourseViewController alloc] initWithCourse:course];
+        vc.dataLoadingManager = manager;
+        return @[vc];
+    }
+    else
+    {
+        NSDictionary *subject = @{
+                                  @"code": subjectCode,
+                                  @"description": title
+                                  };
+        RUSOCSubjectViewController *vc = [[RUSOCSubjectViewController alloc] initWithSubject:subject];
+        vc.dataLoadingManager = manager;
+        return @[vc];
+    }
+     
+     */
+    
     if (pathComponents.count < 4) return @[[[RUFavoritesErrorViewController alloc] init]];
     
     NSString *semester = pathComponents[0];
@@ -150,6 +280,9 @@
         vc.dataLoadingManager = manager;
         return @[vc];
     }
+    
+    
+    
 }
 
 @end

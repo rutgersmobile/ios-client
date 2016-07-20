@@ -18,7 +18,6 @@
 
 @interface RUBusMessagesDataSource()
 @property (nonatomic) NSMutableArray * arrayMessages;
-@property (nonatomic) id item ; // holds the name of the item
 @end
 
 @implementation RUBusMessagesDataSource
@@ -82,13 +81,32 @@
     }
 }
 
+-(BOOL)isMessageAvaliable
+{
+        if([_arrayMessages count])
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
+}
+
+-(void) updateContent
+{
+    [self setItems:_arrayMessages];
+}
+
+/*
+    NO LONGER NEED : DATA LOADED IN ANOTHER CLASS AND PASSED ALONG
+
 -(void)loadContent
 {
     
     [self loadContentWithBlock:^
      (AAPLLoading *loading)
      {
-         
          void (^getPredictions)(id item) = ^(id item)
          {
              
@@ -100,6 +118,8 @@
                       [loading ignore];
                       return;
                   }
+                 
+                  
                   
                   if (!error)
                   {
@@ -109,12 +129,19 @@
                            {
                                [me addMessagesForPrediction:predictions]; // add the obtained prediction to self (data source)
                                
-                               [self setItems:_arrayMessages];
                            }];
                       }
                       else
                       {
-                          [loading updateWithNoContent:^(typeof(self) me)
+                          
+                          NSLog(@"Data#############################################################################################################################################");
+                          [loading updateWithContent:^(typeof(self) me)
+                           {
+                               [me addMessagesForPrediction:nil]; // add the obtained prediction to self (data source)
+                               
+                               [self setItems:nil];
+                           }];
+                                [loading updateWithNoContent:^(typeof(self) me)
                            {
                                [me addMessagesForPrediction:nil];
                                [self setItems:_arrayMessages];
@@ -160,7 +187,7 @@
      }];
 }
 
-
+*/
 
 
 

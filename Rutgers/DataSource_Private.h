@@ -30,6 +30,8 @@
 @property (nonatomic, readonly) BOOL shouldDisplayPlaceholder;
 @property (nonatomic) BOOL showingPlaceholder;
 
+@property (nonatomic, strong) AAPLLoadableContentStateMachine *stateMachine;
+
 #pragma mark - Notifications
 
 // Use these methods to notify the observers of changes to the dataSource.
@@ -59,6 +61,12 @@
 
 - (void)notifyWillLoadContent;
 - (void)notifyContentLoadedWithError:(NSError *)error;
+
+
+#pragma mark - PlaceHolder
+- (void)beginLoading;
+- (void)didEnterLoadedState;
+- (void)endLoadingWithState:(NSString *)state error:(NSError *)error update:(dispatch_block_t)update;
 
 @end
 

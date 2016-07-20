@@ -40,6 +40,7 @@
         //The image url may be in one of two fields
         NSString *imageUrl;
         
+        
         id imageEnclosure = [item[@"enclosure"] firstObject];
         if ([imageEnclosure isKindOfClass:[NSDictionary class]]) {
             imageUrl = imageEnclosure[@"_url"];

@@ -610,12 +610,12 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
  */
 -(id)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type
 {
-    
+    name = name.stringByRemovingPercentEncoding;
     if ([type isEqualToString:@"stop"])
     {
         for (RUBusMultipleStopsForSingleLocation *stop in self.stops.allValues)
         {
-            if ([stop.title.rutgersStringEscape isEqualToString:name])
+            if ([stop.title.lowercaseString isEqualToString:name])
             {
                 return stop;
             }
@@ -625,7 +625,7 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
     {
         for (RUBusRoute *route in self.routes.allValues)
         {
-            if ([route.title.rutgersStringEscape isEqualToString:name])
+            if ([route.tag.lowercaseString isEqualToString:name])
             {
                 return route;
             }

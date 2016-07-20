@@ -16,6 +16,9 @@
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;
 
+-(void)updateSectionsForResponse:(NSArray *)response;
 
+
+@property id item;
 
 @end
