@@ -118,10 +118,10 @@
     self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
 }
 
-+(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title{
++(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title
+{
 
-    /*
-     
+    
     NSString *semester;
     NSString *campus;
     NSString *level;
@@ -136,21 +136,20 @@
     // Used to store integer codes
     NSMutableArray *codes = [[NSMutableArray alloc] init];
     
-    
-    
     for (NSString *component in pathComponents)
     {
         // All codes are uppercase
         NSString *upper = [component uppercaseString];
+        
         if ([upper isEqualToString:@"NB"] || [upper isEqualToString:@"CM"] ||  [upper isEqualToString:@"NK"] || [upper isEqualToString:@"ONLINE"])
         {
             // All possible campus codes
-            campus = upper;
+            campus = [upper lowercaseString];
         }
         else if ([upper isEqualToString:@"U"] || [upper isEqualToString:@"G"])
         {
             // All possible level codes
-            level = upper;
+            level = [upper lowercaseString];
         }
         else
         {
@@ -246,9 +245,8 @@
         vc.dataLoadingManager = manager;
         return @[vc];
     }
-     
-     */
     
+     /*
     if (pathComponents.count < 4) return @[[[RUFavoritesErrorViewController alloc] init]];
     
     NSString *semester = pathComponents[0];
@@ -281,8 +279,7 @@
         return @[vc];
     }
     
-    
-    
+   */
 }
 
 @end
