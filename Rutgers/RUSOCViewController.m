@@ -139,17 +139,17 @@
     for (NSString *component in pathComponents)
     {
         // All codes are uppercase
-        NSString *upper = [component uppercaseString];
+        NSString *upper = [component uppercaseString]; // covert to upper case
         
         if ([upper isEqualToString:@"NB"] || [upper isEqualToString:@"CM"] ||  [upper isEqualToString:@"NK"] || [upper isEqualToString:@"ONLINE"])
         {
             // All possible campus codes
-            campus = [upper lowercaseString];
+            campus = upper ; // convert to lower case for getting the data from the server ..
         }
         else if ([upper isEqualToString:@"U"] || [upper isEqualToString:@"G"])
         {
             // All possible level codes
-            level = [upper lowercaseString];
+            level = upper ;
         }
         else
         {
@@ -224,8 +224,16 @@
     RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
     if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
     
-    if(title == nil)
+    if(title == nil) // when we do an outside linking , we do not have a title to go by. In such cases , make the title be an empty string to prevent the crashs.
     {
+            // Do a get request .
+            [manager getSearchIndexWithCompletion:^
+             (NSDictionary *index, NSError *error)
+             {
+                    // find the id , set the title value.. 
+                 
+            }];
+        
             title = @"";
     }
        
@@ -253,40 +261,7 @@
         return @[vc];
     }
     
-     /*
-    if (pathComponents.count < 4) return @[[[RUFavoritesErrorViewController alloc] init]];
-    
-    NSString *semester = pathComponents[0];
-    NSString *campus = pathComponents[1];
-    NSString *level = pathComponents[2];
-    NSString *subjectCode = pathComponents[3];
-    NSString *courseNumber;
-    
-    if (pathComponents.count > 4) { courseNumber = pathComponents[4]; }
-    
-    RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
-    if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
-    
-    if (courseNumber) {
-        NSDictionary *course = @{
-                                 @"subjectCode": subjectCode,
-                                 @"courseNumber": courseNumber,
-                                 @"title": title
-                                 };
-        RUSOCCourseViewController *vc = [[RUSOCCourseViewController alloc] initWithCourse:course];
-        vc.dataLoadingManager = manager;
-        return @[vc];
-    } else {
-        NSDictionary *subject = @{
-                                  @"code": subjectCode,
-                                  @"description": title
-                                  };
-        RUSOCSubjectViewController *vc = [[RUSOCSubjectViewController alloc] initWithSubject:subject];
-        vc.dataLoadingManager = manager;
-        return @[vc];
-    }
-    
-   */
+
 }
 
 @end

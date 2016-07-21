@@ -7,10 +7,7 @@
 //
 
 /*
-
     Have to show multiple messages : Keep each of the message in an array . Then show the items
- 
- 
  */
 
 #import <Foundation/Foundation.h>

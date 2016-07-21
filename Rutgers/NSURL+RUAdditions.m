@@ -37,6 +37,6 @@
 
 @implementation NSString (RUAdditions)
 -(NSString *)rutgersStringEscape {
-    return [[[self stringByRemovingPercentEncoding] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [[self stringByRemovingPercentEncoding] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 @end

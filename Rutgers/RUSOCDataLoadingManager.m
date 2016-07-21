@@ -35,7 +35,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     return indexLoader;
 }
 
--(void)load{
+-(void)load
+{
+    
+    if(self.semesters == nil)
+    {
     [self willBeginLoad];
     [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -47,8 +51,52 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [self didEndLoad:NO withError:error];
-    }];
+    }];    
+    }
+    else
+    {
+        [self willBeginLoad];
+        [self didEndLoad:YES withError:nil];
+    }
+    
+    
 }
+
+
+-(void)loadSemesters
+{
+ 
+#warning Redesign loading process to prevent use of semaphore
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    dispatch_sync(  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) , ^
+    {
+         [[RUNetworkManager sessionManager] GET:@"soc_conf.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject)
+          {
+            if ([responseObject isKindOfClass:[NSDictionary class]])
+            {
+                self.semesters = [self parseSemesters:responseObject[@"semesters"]];
+                self.defaultSemesterIndex = [responseObject[@"defaultSemester"] integerValue];
+            
+            }
+            else // show error page . But if there is no network , this page should not even show
+            {
+                
+            }
+              dispatch_semaphore_signal(semaphore);
+           }
+             failure:^(NSURLSessionDataTask *task, NSError *error)
+            {
+                dispatch_semaphore_signal(semaphore);
+            }];
+    });
+    
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    return ;
+}
+
 -(NSArray *)parseSemesters:(NSArray *)semesters{
     NSMutableArray *parsedSemesters = [NSMutableArray array];
     for (NSString *semesterTag in semesters) {
@@ -81,12 +129,15 @@ NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) =
 
     NSDictionary *campus = findItemWithMatchingTag([self campuses], campusTagToFind);
     NSDictionary *level = findItemWithMatchingTag([self levels], levelTagToFind);
+    
     NSDictionary *semester = findItemWithMatchingTag([self semesters], semesterTagToFind);
     
     if (!campus || !level) return nil;
     
     RUSOCDataLoadingManager *manager = [[RUSOCDataLoadingManager alloc] init];
-   
+ 
+    
+    
     manager.campus = campus;
     manager.level = level;
     
@@ -129,11 +180,18 @@ NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) =
     return levels;
 }
 
-+(NSArray *)semesters{
++(NSArray *)semesters
+{
+    if( [RUSOCSemesterIndexLoader indexLoader].semesters == nil)
+    {
+        [[RUSOCSemesterIndexLoader indexLoader] loadSemesters];
+    }
+    
     return [RUSOCSemesterIndexLoader indexLoader].semesters;
 }
 
--(void)performWhenSemestersLoaded:(void (^)(NSError *))block{
+-(void)performWhenSemestersLoaded:(void (^)(NSError *))block
+{
     [[RUSOCSemesterIndexLoader indexLoader] performWhenLoaded:^(NSError *error) {
        dispatch_async(dispatch_get_main_queue(), ^{
            if (self.semester == nil) {
@@ -143,6 +201,11 @@ NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) =
        });
     }];
 }
+
+
+
+
+
 
 +(NSInteger)defaultSemesterIndex{
     return [RUSOCSemesterIndexLoader indexLoader].defaultSemesterIndex;
@@ -238,10 +301,14 @@ NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) =
 }
 
 -(void)getSearchIndexWithCompletion:(void (^)(NSDictionary *, NSError *))handler{
-    [self performWhenSemestersLoaded:^(NSError *error) {
-        if (error) {
+    [self performWhenSemestersLoaded:^(NSError *error)
+    {
+        if (error)
+        {
             handler(nil,error);
-        } else {
+        }
+        else
+        {
             NSString *indexString = [NSString stringWithFormat:@"indexes/%@_%@_%@.json",self.semester[@"tag"], self.campus[@"tag"], self.level[@"tag"]];
             [[RUNetworkManager sessionManager] GET:indexString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
                 if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -304,12 +371,13 @@ NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) =
     [[NSUserDefaults standardUserDefaults] setObject:level forKey:SOCDataLevelKey];
 }
 
--(NSDictionary *)semester{
+-(NSDictionary *)semester
+{
     NSDictionary *semester = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataSemesterKey];
     
     NSArray *semesters = [RUSOCDataLoadingManager semesters];
     if ([semesters containsObject:semester] || (!semesters && semester)) return semester;
-    return semesters[[RUSOCDataLoadingManager defaultSemesterIndex]];
+      return semesters[[RUSOCDataLoadingManager defaultSemesterIndex]];
 }
 
 -(void)setSemester:(NSDictionary *)semester{

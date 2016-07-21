@@ -20,9 +20,20 @@
 @implementation RUSOCSubjectViewController
 -(instancetype)initWithSubject:(NSDictionary *)subject{
     self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
+    if (self)
+    {
         self.subject = subject;
-        self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], [subject[@"description"] capitalizedString]];
+        // append the subject to the title(descript) only if the subject code is not found in the
+        // title
+        
+        if ([subject[@"description"] rangeOfString:subject[@"code"] ].location == NSNotFound) // title dont not contains code
+        {
+            self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], [subject[@"description"] capitalizedString]];
+        }
+        else // titile contain codes
+        {
+            self.title = [NSString stringWithFormat:@"%@" , [subject[@"description"] capitalizedString]];
+        }
     }
     return self;
 }

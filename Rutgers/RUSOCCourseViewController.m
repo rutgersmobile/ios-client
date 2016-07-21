@@ -49,6 +49,22 @@
  
     NSString *subjectCode = self.course[@"subjectCode"];
     if (!subjectCode) subjectCode = self.course[@"subject"];
+ 
+    /*
+    if(manager.semester == nil)
+    {
+        NSLog(@"ERROR");
+        [manager performWhenSemestersLoaded:^(NSError *error) {
+            NSLog(@"semsester Load error %@" ,error);
+        }];
+        
+    }
+     
+     
+     When the course is directly accessed from the favourties , without going through the
+    heirarchy , the manager.semester returns nil , as that is filled by a RUCource
+     
+    */
     
     return [NSURL rutgersUrlWithPathComponents:@[
                                                  @"soc",
@@ -60,9 +76,12 @@
                                                  ]];
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     id item = [self.dataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[RUSOCSectionRow class]]) {
+    
+    if ([item isKindOfClass:[RUSOCSectionRow class]])
+    {
         RUSOCSectionRow *sectionRow = [self.dataSource itemAtIndexPath:indexPath];
         
         NSDictionary *channel = @{
@@ -72,23 +91,32 @@
                                            @"https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=%@&indexList=%@",
                                            self.dataLoadingManager.semester[@"tag"],
                                            sectionRow.section[@"index"]
-                                           ]
+                                        ]
                                   };
+        
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
-    } else if ([item isKindOfClass:[DataTuple class]]) {
+    }
+    else if ([item isKindOfClass:[DataTuple class]])
+    {
         DataTuple *tuple = item;
-        if ([tuple.title isEqualToString:@"Prerequisites"]) {
+        if ([tuple.title isEqualToString:@"Prerequisites"])
+        {
             [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : tuple.title, @"view" : @"text", @"data" : tuple.object, @"centersText" : @YES}] animated:YES];
-        } else if ([tuple.title isEqualToString:@"Synopsis"]) {
+        }
+        else if ([tuple.title isEqualToString:@"Synopsis"])
+        {
             [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:@{@"title" : tuple.title, @"view" : @"www", @"url" : tuple.object}] animated:YES];
         }
     }
+    
 }
 
--(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     id item = [self.dataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[DataTuple class]]) {
+    if ([item isKindOfClass:[DataTuple class]])
+    {
         DataTuple *tuple = item;
         if (!tuple.object) return NO;
     }
