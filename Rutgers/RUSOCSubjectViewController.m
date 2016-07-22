@@ -60,6 +60,20 @@
 {
     [super viewDidLoad];
     self.dataSource = [[RUSOCSubjectDataSource alloc] initWithSubjectCode:self.subject[@"code"] dataLoadingManager:self.dataLoadingManager];
+    // when the data has been loaded , update the title of the view controller
+    [self.dataSource whenLoaded:^
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.title = ((RUSOCSubjectDataSource*)self.dataSource).subjectTitle;
+        });
+    }];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSLog(@" subject vc loaded");
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

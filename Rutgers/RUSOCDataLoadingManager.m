@@ -97,9 +97,11 @@ static NSString *const SOCDataSemesterKey = @"SOCDataSemesterKey";
     return ;
 }
 
--(NSArray *)parseSemesters:(NSArray *)semesters{
+-(NSArray *)parseSemesters:(NSArray *)semesters
+{
     NSMutableArray *parsedSemesters = [NSMutableArray array];
-    for (NSString *semesterTag in semesters) {
+    for (NSString *semesterTag in semesters)
+    {
         [parsedSemesters addObject:@{@"title": [self descriptionForSemesterTag:semesterTag], @"tag": semesterTag}];
     }
     return parsedSemesters;

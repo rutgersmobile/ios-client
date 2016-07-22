@@ -217,26 +217,74 @@
     // May want to default other fields in the future
     if (level == nil)
     {
-    
         level = @"U";
     }
     
     RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
     if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
-    
+   
+    __block NSString * titleCopy = [title copy] ;
+   
+   /*
     if(title == nil) // when we do an outside linking , we do not have a title to go by. In such cases , make the title be an empty string to prevent the crashs.
     {
-            // Do a get request .
-            [manager getSearchIndexWithCompletion:^
-             (NSDictionary *index, NSError *error)
-             {
-                    // find the id , set the title value.. 
-                 
-            }];
+        // Do a get request .
+        dispatch_semaphore_t semaphore2 = dispatch_semaphore_create(0);
         
-            title = @"";
+        dispatch_sync(  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) , ^
+        {
+            [manager getSearchIndexWithCompletion:^
+                 (NSDictionary *index, NSError *error)
+                 {
+                        // find the id , set the title value.. 
+                        // get the title
+                        // index
+                               // NSLog(@" index -> %@", index);
+                        for (NSString * key in [index allKeys])
+                        {
+                            NSDictionary * dict = [index objectForKey:key] ;
+                            
+                            if([key isEqualToString:@"names"])
+                            {
+                                NSLog(@" dict -> %@"  , dict);
+                                // go through the dict and then find the name for the course
+                               
+                                for(id key in dict)
+                                {
+                                    NSInteger value = [[dict objectForKey:key] integerValue] ;
+                                    
+                                    NSLog(@"key=%@ value=%@", key, [dict objectForKey:key]);
+                                    // weird encoding . The course name is the key ( string ) , the course number is the value for the key
+                                    
+                                    if([subjectCode integerValue] == value)
+                                    {
+                                        titleCopy = key ;
+                                        dispatch_semaphore_signal(semaphore2);
+                                        break;
+                                    }
+                                }
+                                break ;
+                            }
+                        }
+                     // use semaphore linking for now ..
+                     NSLog(@" asdfadsfadsfadswf");
+                }];
+            
+        });
+        
+#warning sempahore being used here . Use better design in next release
+        dispatch_semaphore_wait(semaphore2, DISPATCH_TIME_FOREVER);
     }
-       
+  
+    */
+    
+    title = [titleCopy copy] ;
+   
+    if(title == nil)
+    {
+       title = @"";
+    }
+    
     if (courseNumber)
     {
        

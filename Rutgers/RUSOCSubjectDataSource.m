@@ -30,22 +30,84 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [self.dataLoadingManager getCoursesForSubjectCode:self.subjectCode completion:^(NSArray *courses, NSError *error) {
-            if (!loading.current) {
-                [loading ignore];
-                return;
-            }
-            
-            if (!error) {
-                [loading updateWithContent:^(typeof(self) me) {
-                    [self updateWithCourses:courses];
-                }];
-            } else {
-                [loading doneWithError:error];
-            }
+        [self.dataLoadingManager getCoursesForSubjectCode:self.subjectCode completion:^(NSArray *courses, NSError *error)
+         {
+             // we need to get the title for the view  controller too. We do this by chainning another request , which will be called in this
+            // completion handler and then , calling telling the super classs that data was loaded in the chained request
+             [self loadContentAndGetTitle:loading loadedCourses:courses loadingError:error];
         }];
     }];
 }
+
+
+
+
+-(void) loadContentAndGetTitle:(AAPLLoading *) loading loadedCourses:(NSArray *)courses loadingError:(NSError *) courseLoadError
+{
+
+    [self.dataLoadingManager getSearchIndexWithCompletion:^
+     (NSDictionary *index, NSError *error)
+     {
+         // find the id , set the title value..
+         // get the title
+         // index
+         if (!loading.current)
+         {
+            [loading ignore];
+            return;
+         }
+        
+        if(! courseLoadError)
+        {
+           [loading updateWithContent:^(typeof(self) me)
+            {
+             
+                 // parse out the title
+         
+                 for (NSString * key in [index allKeys]) // keys like names , ids , abber..
+                 {
+                     NSDictionary * dict = [index objectForKey:key] ;
+                    
+                     // get the dict corresponds to the names key  , we parse that dict as that has the subject title
+                     if([key isEqualToString:@"names"])
+                     {
+                         // go through the dict and then find the name for the subject title
+                         for(id key in dict)
+                         {
+                             NSInteger value = [[dict objectForKey:key] integerValue] ;
+                             
+                         //    NSLog(@"key=%@ value=%@", key, [dict objectForKey:key]);
+                             // weird encoding . The course name is the key ( string ) , the course number is the value for the key
+                             
+                             if([self.subjectCode integerValue] == value)
+                             {
+                                 self.subjectTitle = key ; // this is the subject title
+                                 break;
+                             }
+                         }
+                         break ;
+                     }
+                 }          
+                
+                
+                
+                // Store the course list which was loaded in the previous block
+                [self updateWithCourses:courses];
+                
+            }];
+            
+        }
+         else
+         {
+             [loading doneWithError:courseLoadError];
+         }
+         
+      
+     }];
+    
+    
+}
+
 
 -(void)updateWithCourses:(NSArray *)courses{
     NSMutableArray *parsedItems = [NSMutableArray array];

@@ -44,6 +44,12 @@
     self.pullsToRefresh = YES;
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"View Loaaded");
+}
+
 -(NSURL *)sharingURL{
     RUSOCDataLoadingManager *manager = self.dataLoadingManager;
  

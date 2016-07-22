@@ -11,4 +11,5 @@
 
 @interface RUSOCSubjectDataSource : BasicDataSource
 -(instancetype)initWithSubjectCode:(NSString *)subjectCode dataLoadingManager:(RUSOCDataLoadingManager *)dataLoadingManager NS_DESIGNATED_INITIALIZER;
+@property (nonatomic) NSString * subjectTitle;
 @end
