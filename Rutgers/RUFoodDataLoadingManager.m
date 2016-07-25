@@ -52,7 +52,7 @@
     [self performWhenLoaded:^(NSError *error) {
         DataTuple *matchingDiningHall;
         for (DataTuple *diningHall in self.diningHalls) {
-            if ([[[diningHall.object diningHallShortName] rutgersStringEscape] isEqualToString:serializedDiningHall]) {
+            if ([[[[diningHall.object diningHallShortName] lowercaseString] rutgersStringEscape] isEqualToString:serializedDiningHall]) {
                 matchingDiningHall = diningHall;
                 break;
             }
