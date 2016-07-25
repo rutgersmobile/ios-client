@@ -62,7 +62,7 @@
         
         if(!image) // If the proper image is not found, then fall back on a default image
         {
-            image = [[UIImage imageNamed:@"bookmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            image = [[UIImage imageNamed:@"no-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
         
         [[self channelIconCache] setObject:image forKey:name];

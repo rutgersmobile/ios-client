@@ -11,6 +11,7 @@
 #import "RURecCenterDataSource.h"
 #import "DataTuple.h"
 
+#import "Rutgers-Swift.h"
 #import <NSString+HTML.h>
 #import "NSAttributedString+FromHTML.h"
 
@@ -38,7 +39,7 @@
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[DataTuple class]]) {
         DataTuple *tuple = item;
-        [self.navigationController pushViewController:[[RUMapsViewController alloc] initWithPlace:tuple.object] animated:YES];
+        [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:tuple.object] animated:YES];
     }
 }
 

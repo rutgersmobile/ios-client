@@ -90,6 +90,8 @@
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
+		6244DACC1D46849500D275D7 /* RURecreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACB1D46849500D275D7 /* RURecreationViewController.m */; };
+		6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
 		62CB1E8C1D393813001476D7 /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
@@ -401,6 +403,10 @@
 		621872C91D340B9500E727E3 /* RUBusMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessageCell.m; sourceTree = "<group>"; };
 		621872CB1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusPredictionsAndMessageDataSource.h; sourceTree = "<group>"; };
 		621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusPredictionsAndMessageDataSource.m; sourceTree = "<group>"; };
+		6244DACA1D46849500D275D7 /* RURecreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecreationViewController.h; path = Rutgers/RURecreationViewController.h; sourceTree = SOURCE_ROOT; };
+		6244DACB1D46849500D275D7 /* RURecreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecreationViewController.m; path = Rutgers/RURecreationViewController.m; sourceTree = SOURCE_ROOT; };
+		6244DACD1D4684B100D275D7 /* RURecCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterViewController.h; path = Rutgers/RURecCenterViewController.h; sourceTree = SOURCE_ROOT; };
+		6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterViewController.m; path = Rutgers/RURecCenterViewController.m; sourceTree = SOURCE_ROOT; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUReaderGameViewController.h; path = ../RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUReaderGameViewController.m; path = ../RUReaderGameViewController.m; sourceTree = "<group>"; };
@@ -490,10 +496,6 @@
 		A76993041934E9C1008C64EE /* RURecCenterHoursSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterHoursSection.m; path = Rutgers/RURecCenterHoursSection.m; sourceTree = SOURCE_ROOT; };
 		A76993071934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterMeetingAreaTableViewCell.h; path = Rutgers/RURecCenterMeetingAreaTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		A76993081934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterMeetingAreaTableViewCell.m; path = Rutgers/RURecCenterMeetingAreaTableViewCell.m; sourceTree = SOURCE_ROOT; };
-		A76993121934F08C008C64EE /* RURecreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecreationViewController.h; path = Rutgers/RURecreationViewController.h; sourceTree = SOURCE_ROOT; };
-		A76993131934F08C008C64EE /* RURecreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecreationViewController.m; path = Rutgers/RURecreationViewController.m; sourceTree = SOURCE_ROOT; };
-		A76993181934F10E008C64EE /* RURecCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterViewController.h; path = Rutgers/RURecCenterViewController.h; sourceTree = SOURCE_ROOT; };
-		A76993191934F10E008C64EE /* RURecCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = RURecCenterViewController.m; path = Rutgers/RURecCenterViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A769931E19352B43008C64EE /* RUReaderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderItem.h; sourceTree = "<group>"; };
 		A769931F19352B43008C64EE /* RUReaderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderItem.m; sourceTree = "<group>"; };
 		A770EDC51948AC0F00DD5866 /* RUInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUInfoTableViewController.h; sourceTree = "<group>"; };
@@ -723,10 +725,10 @@
 		0422C9851A69C3E000344828 /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				A76993121934F08C008C64EE /* RURecreationViewController.h */,
-				A76993131934F08C008C64EE /* RURecreationViewController.m */,
-				A76993181934F10E008C64EE /* RURecCenterViewController.h */,
-				A76993191934F10E008C64EE /* RURecCenterViewController.m */,
+				6244DACD1D4684B100D275D7 /* RURecCenterViewController.h */,
+				6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */,
+				6244DACA1D46849500D275D7 /* RURecreationViewController.h */,
+				6244DACB1D46849500D275D7 /* RURecreationViewController.m */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1895,6 +1897,7 @@
 				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
+				6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */,
 				A7E8E137192484B00089F166 /* RUTextViewController.m in Sources */,
 				04A1EFE91A5C509600DE0351 /* ActiveStopsDataSource.m in Sources */,
 				A7B435EF1912E286001FE8B6 /* RUFoodViewController.m in Sources */,
@@ -1996,6 +1999,7 @@
 				04B2F3C61D075AE00035F96E /* RUMenuItemManager.swift in Sources */,
 				A7B2D995190EDBAC003ABEA3 /* RUPlaceDetailViewController.m in Sources */,
 				04A1EFEA1A5C509600DE0351 /* AllRoutesDataSource.m in Sources */,
+				6244DACC1D46849500D275D7 /* RURecreationViewController.m in Sources */,
 				A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */,
 				04A1EFE81A5C509600DE0351 /* ActiveRoutesDataSource.m in Sources */,
 				A7B3F7B41954A06B00458B19 /* FAQViewController.m in Sources */,
