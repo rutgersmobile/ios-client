@@ -28,8 +28,10 @@
     return self;
 }
 
--(void)loadContent{
-    [self loadContentWithBlock:^(AAPLLoading *loading) {
+-(void)loadContent
+{
+    [self loadContentWithBlock:^(AAPLLoading *loading)
+    {
         [self.dataLoadingManager getCoursesForSubjectCode:self.subjectCode completion:^(NSArray *courses, NSError *error)
          {
              // we need to get the title for the view  controller too. We do this by chainning another request , which will be called in this

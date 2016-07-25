@@ -23,9 +23,18 @@
     if (self)
     {
         self.subject = subject;
-        // append the subject to the title(descript) only if the subject code is not found in the
-        // title
+        // append the subject to the title(descript) only if the subject code is not found in the // title
+       
+       if([subject[@"description"] isEqualToString: @""])
+       {
+            self.title = [NSString stringWithFormat:@"%@" , subject[@"code"]];
+       }
+       else
+       {
+            self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], [subject[@"description"] capitalizedString]];
+       }
         
+/*
         if ([subject[@"description"] rangeOfString:subject[@"code"] ].location == NSNotFound) // title dont not contains code
         {
             self.title = [NSString stringWithFormat:@"%@: %@", subject[@"code"], [subject[@"description"] capitalizedString]];
@@ -33,7 +42,8 @@
         else // titile contain codes
         {
             self.title = [NSString stringWithFormat:@"%@" , [subject[@"description"] capitalizedString]];
-        }
+           }
+ */
     }
     return self;
 }
@@ -60,12 +70,16 @@
 {
     [super viewDidLoad];
     self.dataSource = [[RUSOCSubjectDataSource alloc] initWithSubjectCode:self.subject[@"code"] dataLoadingManager:self.dataLoadingManager];
-    // when the data has been loaded , update the title of the view controller
+    
+    // when the data has been loaded , update the title of the view controller .. THis is need to get the title during deep linking ..
     [self.dataSource whenLoaded:^
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            self.title = ((RUSOCSubjectDataSource*)self.dataSource).subjectTitle;
+            if([((RUSOCSubjectDataSource*)self.dataSource).subjectTitle capitalizedString])
+            {
+                self.title = [NSString stringWithFormat:@"%@: %@", self.subject[@"code"], [((RUSOCSubjectDataSource*)self.dataSource).subjectTitle capitalizedString]];
+            }
         });
     }];
 }
@@ -82,4 +96,6 @@
     courseVC.dataLoadingManager = self.dataLoadingManager;
     [self.navigationController pushViewController:courseVC animated:YES];
 }
+
+
 @end

@@ -633,6 +633,10 @@
     // Call the provided block to actually do the load
     block(loading); // block is actually a fuction pointer which takes AAPLLoading as its input
                     // the block might use the loading pointer to change the state based on the content loading state , wether completed , or on going etc..
+    if(self.whenLoadedBlock)
+    {
+        self.whenLoadedBlock();
+    }
 }
 
 /*
@@ -640,7 +644,10 @@
  */
 - (void)whenLoaded:(dispatch_block_t)block
 {
-    // add the block to be loaded to the whenloaded block
+    self.whenLoadedBlock = block;
+    // call this when data has been loaded
+    
+  /*  // add the block to be loaded to the whenloaded block
     if (self.whenLoadedBlock)
     {
         dispatch_block_t currentBlock = self.whenLoadedBlock;
@@ -657,6 +664,7 @@
         self.whenLoadedBlock();
         self.whenLoadedBlock = nil;
     }
+   */
 }
 
 

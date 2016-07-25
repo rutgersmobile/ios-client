@@ -10,4 +10,6 @@
 #import "RUChannelProtocol.h"
 
 @interface RUSplashViewController : UIViewController <RUChannelProtocol>
+- (instancetype)initWithWrongUrl;
+@property (nonatomic) BOOL showWrongUrlAlert ;
 @end

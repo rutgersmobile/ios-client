@@ -24,6 +24,10 @@
     if (self) {
         self.course = course;
         self.title = [self.course[@"title"] capitalizedString];
+        if(self.title == nil)
+        {
+           self.title = @"Course";
+        }
     }
     return self;
 }
@@ -41,6 +45,19 @@
     // Do any additional setup after loading the view.
     self.tableView.separatorColor = [[UIColor blackColor] colorWithAlphaComponent:0.17];
     self.dataSource = [[RUSOCCourseDataSource alloc] initWithCourse:self.course dataLoadingManager:self.dataLoadingManager];
+  
+    [self.dataSource whenLoaded:^
+     {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            if(((RUSOCCourseDataSource *)self.dataSource).courseTitle)
+            {
+                self.title = ((RUSOCCourseDataSource *)self.dataSource).courseTitle ;
+            }
+        });
+     }];
+    
+    
     self.pullsToRefresh = YES;
 }
 

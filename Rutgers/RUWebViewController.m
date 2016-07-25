@@ -28,7 +28,8 @@
 }
 
 // Registers itself with the RUChannelMan which is like a central system which manages the seperate classes
-+(void)load{
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 

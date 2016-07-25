@@ -24,6 +24,9 @@
 #import "RUAnalyticsManager.h"
 #import "NSURL+RUAdditions.h"
 #import "RUFavoritesDynamicHandoffViewController.h"
+#import "RUSplashViewController.h"
+
+
 
 NSString *const ChannelManagerJsonFileName = @"ordered_content"; // Json file used in the creation of the different channels
 NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
@@ -49,10 +52,12 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     Creates a singleton class to mangage the different channels
  
  */
-+(RUChannelManager *)sharedInstance{
++(RUChannelManager *)sharedInstance
+{
     static RUChannelManager *manager = nil;
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^
+    {
         manager = [[RUChannelManager alloc] init];
     });
     return manager;
@@ -257,7 +262,9 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                       */
                 
                 [self didEndLoad:YES withError:nil];
-            } else {
+            }
+            else
+            {
                 [self didEndLoad:NO withError:nil];
             }
         }
@@ -281,7 +288,16 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 -(Class)classForViewTag:(NSString *)viewTag
 {
     NSString *className = [self viewTagsToClassNameMapping][viewTag];
-    return NSClassFromString(className);
+   
+    if(className) // if the a class does not exist for the view tag , we turn nil and an error alert will the shown
+    {
+        return NSClassFromString(className);
+    }
+    else
+    {
+        return nil;
+    }
+    
 }
 
 /*
@@ -369,6 +385,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     if (!view) view = [self defaultViewForChannel:channel]; // the default for each channel is the dynamic table view contorller or called a dtable
                                                             // If the channel is for faq , then a differnt view is used.
     
+
     Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
     
     NSLog(@"%@",class);
@@ -412,6 +429,13 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSString *viewTag = [[self channelWithHandle:handle] channelView];
     id class = [self classForViewTag:viewTag];
    
+   
+    // if a wrong url comes along , we show the splash screen
+    if(class == nil)
+    {
+        return @[[[RUSplashViewController alloc] initWithWrongUrl]];
+    }
+    
     // Check if the channel handles opening favorites itself, or defers to the channnel manager
     if ([class respondsToSelector:@selector(viewControllersWithPathComponents:destinationTitle:)]) {
             // If this part of the code is called , then things work
@@ -425,6 +449,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
             // If this part of the code is called , then it ends in error
         return @[[[RUFavoritesDynamicHandoffViewController alloc] initWithHandle:handle pathComponents:components title:destinationTitle]];
     }
+    
+
 }
 
 /*

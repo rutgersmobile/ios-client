@@ -18,15 +18,40 @@
 +(NSString *)channelHandle{
     return @"splash";
 }
-+(void)load{
+
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel
+{
     return [[self alloc] init];
 }
 
--(void)loadView{
+// if the url the wrong , then we show a notification
+- (instancetype)initWithWrongUrl
+{
+    self = [super init];
+    if (self)
+    {
+        _showWrongUrlAlert = YES;
+    }
+    return self;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if(_showWrongUrlAlert )
+    {
+        // show the alert to the user that the url was wrong
+        [[[UIAlertView alloc] initWithTitle:@" Error Invalid Url " message:@" Given url has a formatting or content error " delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+    }
+}
+
+-(void)loadView
+{
     [super loadView];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
@@ -45,20 +70,25 @@
 
 }
 
--(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
+-(void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
     [self updateTraitCollectionForSize:size];
 }
 
--(void)updateTraitCollectionForSize:(CGSize)size{
-    if ([self respondsToSelector:@selector(setOverrideTraitCollection:forChildViewController:)]) {
+-(void)updateTraitCollectionForSize:(CGSize)size
+{
+    if ([self respondsToSelector:@selector(setOverrideTraitCollection:forChildViewController:)])
+    {
         [self setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:(size.width > size.height) ? UIUserInterfaceSizeClassRegular : UIUserInterfaceSizeClassCompact] forChildViewController:self.childVC];
     }
 }
 
--(BOOL)shouldAutomaticallyForwardAppearanceMethods{
+-(BOOL)shouldAutomaticallyForwardAppearanceMethods
+{
     return YES;
 }
--(BOOL)shouldAutomaticallyForwardRotationMethods{
+-(BOOL)shouldAutomaticallyForwardRotationMethods
+{
     return YES;
 }
 

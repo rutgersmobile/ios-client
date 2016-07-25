@@ -17,14 +17,18 @@
 @end
 
 @implementation RURecreationViewController
-+(NSString *)channelHandle{
++(NSString *)channelHandle
+{
     return @"recreation";
 }
-+(void)load{
+
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel
+{
     return [[self alloc] initWithStyle:UITableViewStyleGrouped];
 }
 
@@ -35,7 +39,8 @@
     self.dataSource = [[RURecreationDataSource alloc] init];
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     DataTuple *recCenter = [self.dataSource itemAtIndexPath:indexPath];
    
     RURecCenterViewController *recVC = [[RURecCenterViewController alloc] initWithTitle:recCenter.title recCenter:recCenter.object];

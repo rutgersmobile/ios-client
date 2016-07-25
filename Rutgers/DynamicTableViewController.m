@@ -90,7 +90,6 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-// Sandeep Additions : Trying to solve error with book marks
 
 /*
 // Not working , the required method is static , and I am not able to

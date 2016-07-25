@@ -90,18 +90,21 @@
 
 - (void)setItems:(NSArray *)items animated:(BOOL)animated
 {
-    if (_items == items || [_items isEqualToArray:items]) {
+    if (_items == items || [_items isEqualToArray:items])
+    {
         [self updateLoadingStateFromItems];
         return;
     }
     
-    if (!self.delegate) {
+    if (!self.delegate)
+    {
         _items = [items copy];
         [self updateLoadingStateFromItems];
         return;
     }
     
-    if (!animated) {
+    if (!animated)
+    {
         _items = [items copy];
         [self invalidateCachedHeightsForSection:0];
         [self notifyDidReloadDataWithDirection:DataSourceAnimationDirectionNone];

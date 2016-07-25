@@ -4,4 +4,5 @@ KEEP TRACK OF CHANGES MADE TO CODE BASE
 July 12th :
     Embed the RUPredictionsDataSource and RUBusDS in a Composed Data Source
 
-
+July 25th :
+    RUDataLoadingManager Bug solve 
