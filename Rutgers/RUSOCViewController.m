@@ -17,6 +17,7 @@
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
 #import "RUFavoritesErrorViewController.h"
+#import "NSURL+RUAdditions.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate, RUSOCOptionsDelegate>
 @property (nonatomic) UIBarButtonItem *optionsButton;
@@ -49,7 +50,17 @@
     [super viewDidLoad];
     
     self.optionsButton = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
-    self.navigationItem.rightBarButtonItem = self.optionsButton;
+
+   
+    // set both the sharing and options button
+    // sharing button is setup in the super class O
+   
+    self.optionsButton.image = [UIImage imageNamed:@"options"];
+    
+    
+    self.optionsButton.title = nil;
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , self.optionsButton, nil]];
+    //self.navigationItem.rightBarButtonItem = self.optionsButton;
     
     self.dataSource = [[RUSOCDataSource alloc] init];
     self.searchDataSource = [[RUSOCSearchDataSource alloc] init];
@@ -69,6 +80,33 @@
         [self setInterfaceEnabled:YES animated:YES];
     }
 }
+
+-(NSURL *)sharingURL{
+    RUSOCDataLoadingManager *manager = self.dataLoadingManager;
+ 
+ 
+    /*
+    if(manager.semester == nil)
+    {
+        NSLog(@"ERROR");
+        [manager performWhenSemestersLoaded:^(NSError *error) {
+            NSLog(@"semsester Load error %@" ,error);
+        }];
+        
+    }
+     
+     
+     When the course is directly accessed from the favourties , without going through the
+    heirarchy , the manager.semester returns nil , as that is filled by a RUCource
+     
+    */
+    
+    return [NSURL rutgersUrlWithPathComponents:@[
+                                                 @"soc",
+                                                 manager.semester[@"tag"],
+                                                 ]];
+}
+
 
 -(void)setInterfaceEnabled:(BOOL)enabled animated:(BOOL)animated{
     self.optionsButton.enabled = enabled;

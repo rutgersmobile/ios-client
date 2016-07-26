@@ -26,6 +26,8 @@
 
 @property (nonatomic) BOOL pullsToRefresh;
 
+@property (nonatomic) UIBarButtonItem *shareButton;
+
 /**
  *  Whether or not a row should be highlighted
  *  This base implementation will return NO if the row is a placeholder, which you cant tap on

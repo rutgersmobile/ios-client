@@ -39,7 +39,6 @@
 @property (nonatomic) CGFloat lastValidWidth;
 
 // Used to share the link . Deep links ..
-@property (nonatomic) UIBarButtonItem *shareButton;
 @property (nonatomic) UIPopoverController *sharingPopoverController;
 @end
 
@@ -71,8 +70,8 @@
     #endif
     
     if (self.sharingURL)
-    { // sharingURL is implemented in the respective source sub class
-        
+    {
+        // sharingURL is implemented in the respective source sub class
         UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonTapped:)];
         self.shareButton = shareButton;
         self.navigationItem.rightBarButtonItem = shareButton;

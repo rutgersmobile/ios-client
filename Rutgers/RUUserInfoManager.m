@@ -39,7 +39,9 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
     Make user select Campus + Studen Type
  */
 @implementation RUUserInfoManager
-+(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock{
+
++(void)performInCampusPriorityOrderWithNewBrunswickBlock:(dispatch_block_t)newBrunswickBlock newarkBlock:(dispatch_block_t)newarkBlock camdenBlock:(dispatch_block_t)camdenBlock
+{
     NSDictionary *campus = [self currentCampus];
     NSString *tag = campus[@"tag"];
     
@@ -77,7 +79,8 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 
 // Obtain the Campus using the tar
-+(NSDictionary *)campusWithTag:(NSString *)tag{
++(NSDictionary *)campusWithTag:(NSString *)tag
+{
     for (NSDictionary *campus in self.campuses) {
         if ([campus[@"tag"] isEqualToString:tag]) return campus;
     }
@@ -86,24 +89,28 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 
 // Obtain the campus from user defaults
-+(NSDictionary *)currentCampus{
++(NSDictionary *)currentCampus
+{
     NSString *tag = [[NSUserDefaults standardUserDefaults] stringForKey:userInfoManagerCampusKey];
     return [self campusWithTag:tag];
 }
 
 
 // Set the defaults for future use.
-+(void)setCurrentCampus:(NSDictionary *)currentCampus{
++(void)setCurrentCampus:(NSDictionary *)currentCampus
+{
     [[NSUserDefaults standardUserDefaults] setObject:currentCampus[@"tag"] forKey:userInfoManagerCampusKey];
     [self notifyInfoDidChange];
 }
 
-+(void)notifyInfoDidChange{
++(void)notifyInfoDidChange
+{
     [[NSNotificationCenter defaultCenter] postNotificationName:userInfoManagerDidChangeInfoKey object:nil];
 }
 
 // NSAarray of NSDicts
-+(NSArray *)userRoles{
++(NSArray *)userRoles
+{
     return @[
              @{@"title" : @"Undergraduate Student", @"tag" : @"UG"},
              @{@"title" : @"Graduate Student", @"tag" : @"G"},
@@ -116,15 +123,18 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 }
 
 // Get user role for tag
-+(NSDictionary *)userRolesWithTag:(NSString *)tag{
-    for (NSDictionary *userRole in self.userRoles) {
++(NSDictionary *)userRolesWithTag:(NSString *)tag
+{
+    for (NSDictionary *userRole in self.userRoles)
+    {
         if ([userRole[@"tag"] isEqualToString:tag]) return userRole;
     }
     return nil;
 }
 
 // Defauls Value Similar to the Campus
-+(NSDictionary *)currentUserRole{
++(NSDictionary *)currentUserRole
+{
     NSString *tag = [[NSUserDefaults standardUserDefaults] stringForKey:userInfoManagerUserRoleKey];
     return [self userRolesWithTag:tag];
 }

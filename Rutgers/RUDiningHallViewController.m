@@ -83,6 +83,8 @@
     }
     
     if (!shortName) return nil;
+   
+    shortName = [shortName lowercaseString];
     
     return [NSURL rutgersUrlWithPathComponents:@[@"food", shortName]];
 }
