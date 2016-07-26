@@ -250,36 +250,27 @@
     // Missing components is an error
     // TODO subjectCode is optional on Android
   
-   
-    
-    
-    if(semester == nil)
-    {
-        //semester = [RUUserInfoManager ]
-        // semester is not stored in user defaults
-    }
-   
     if(campus == nil)
     {
         campus = [RUUserInfoManager currentCampus][@"tag"];
     }
-   
-    
-    
-    
-    if (semester == nil || campus == nil || subjectCode == nil)
-    {
-        return @[[[RUFavoritesErrorViewController alloc] init]];
-    }
-   
+
     // Default to undergraduate
     // May want to default other fields in the future
     if (level == nil)
     {
         level = [RUUserInfoManager currentUserRole][@"tag"];
     }
-   
-    
+
+    if (semester == nil)
+    {
+        return @[[[RUFavoritesErrorViewController alloc] init]];
+    }
+
+    if (subjectCode == nil) {
+        // LINK TO MAIN SOC PAGE
+    }
+
     RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
     if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
    
