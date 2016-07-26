@@ -66,10 +66,30 @@
 -(instancetype)initWithGame:(NSDictionary *)game
 {
     self = [super init];
-    if (self) {
+    if (self)
+    {
         self.item = game;
         _title = game[@"description"];
-        _dateString = game[@"start"];
+        
+        // Ensuring compatability with the new server changes
+        // get a num prepresentation of the time tag which determines whether a time is present or not
+        NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
+        
+        if( [timePresent boolValue] == YES) // convert to boolean
+        {
+            // The data and time are seperated by a T
+            NSString * dateTime = game[@"date"];
+            NSArray * components = [dateTime componentsSeparatedByString:@"T"];
+            _dateString = [NSString stringWithFormat:@"Date -> %@", components[0]]; // set the date
+            _dateString = [_dateString stringByAppendingString:[NSString stringWithFormat:@"Time -> %@", components[1]]]; // set the time
+        }
+        else // is this the right thing to do  ?
+        {
+            _dateString = game[@"date"];
+        }
+         // this currently crashes push the server changes to doxa.
+        
+        
         _descriptionText = game[@"location"];
     }
     return self;
