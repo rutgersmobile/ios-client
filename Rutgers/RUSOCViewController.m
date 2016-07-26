@@ -19,6 +19,9 @@
 #import "RUFavoritesErrorViewController.h"
 #import "NSURL+RUAdditions.h"
 
+// User Defaults to set the values if it is not specified
+#import "RUUserInfoManager.h"
+
 @interface RUSOCViewController () <UISearchDisplayDelegate, RUSOCOptionsDelegate>
 @property (nonatomic) UIBarButtonItem *optionsButton;
 @property BOOL optionsDidChange;
@@ -49,17 +52,18 @@
 {
     [super viewDidLoad];
     
-    self.optionsButton = [[UIBarButtonItem alloc] initWithTitle:@"Options" style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
+    //self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"options"] style:UIBarButtonItemStylePlain target:self action:@selector(optionsButtonPressed)];
 
    
     // set both the sharing and options button
     // sharing button is setup in the super class O
-   
-    self.optionsButton.image = [UIImage imageNamed:@"options"];
     
+    UIButton *settingsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [settingsView addTarget:self action:@selector(optionsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [settingsView setBackgroundImage:[UIImage imageNamed:@"gear"] forState:UIControlStateNormal];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:settingsView];
     
-    self.optionsButton.title = nil;
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , self.optionsButton, nil]];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , settingsButton , nil]];
     //self.navigationItem.rightBarButtonItem = self.optionsButton;
     
     self.dataSource = [[RUSOCDataSource alloc] init];
@@ -245,18 +249,36 @@
     
     // Missing components is an error
     // TODO subjectCode is optional on Android
+  
+   
+    
+    
+    if(semester == nil)
+    {
+        //semester = [RUUserInfoManager ]
+        // semester is not stored in user defaults
+    }
+   
+    if(campus == nil)
+    {
+        campus = [RUUserInfoManager currentCampus][@"tag"];
+    }
+   
+    
+    
     
     if (semester == nil || campus == nil || subjectCode == nil)
     {
         return @[[[RUFavoritesErrorViewController alloc] init]];
     }
-    
+   
     // Default to undergraduate
     // May want to default other fields in the future
     if (level == nil)
     {
-        level = @"U";
+        level = [RUUserInfoManager currentUserRole][@"tag"];
     }
+   
     
     RUSOCDataLoadingManager *manager = [RUSOCDataLoadingManager managerForSemesterTag:semester campusTag:campus levelTag:level];
     if (!manager) return @[[[RUFavoritesErrorViewController alloc] init]];
