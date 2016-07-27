@@ -105,15 +105,14 @@
         // Use the formatter to transform the date portion of our date/time
         NSString* dateString = [dateFormatter stringFromDate:date];
 
-        // Check if we have a time so we can decide to put it in the UI or not
-        if([timePresent boolValue]) {
-            // If we do, then format the time and date into one final string
-            NSString* timeString = [timeFormatter stringFromDate:date];
-            _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString]; // set the time
-        } else {
-            // If we don't have the time, only show date
-            _dateString = [NSString stringWithFormat:@"%@, TBD", dateString]; // set the date
-        }
+        // If time exists in the date, get it from there
+        // otherwise get it from the server
+        NSString* timeString = [timePresent boolValue]
+            ? [timeFormatter stringFromDate:date]
+            : game[@"start"][@"timeString"];
+
+        // Put our time and date strings together for the UI
+        _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
 
         _descriptionText = game[@"location"];
     }

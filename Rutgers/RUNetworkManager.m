@@ -41,7 +41,8 @@
             [NSException raise:NSInvalidArgumentException format:@"LocalDevMode Not Defined"];
             break;
         case AlphaMode:
-            baseUrl = @"http://192.168.160.226/~richton/mobile/";
+            //baseUrl = @"http://192.168.160.226/~richton/mobile/";
+            baseUrl = @"http://localhost:8000/mobile/";
             break;
         case BetaMode:
             baseUrl = @"https://doxa.rutgers.edu/mobile/";
