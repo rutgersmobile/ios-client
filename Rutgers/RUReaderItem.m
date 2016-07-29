@@ -70,26 +70,50 @@
     {
         self.item = game;
         _title = game[@"description"];
-        
+
         // Ensuring compatability with the new server changes
         // get a num prepresentation of the time tag which determines whether a time is present or not
         NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
-        
-        if( [timePresent boolValue] == YES) // convert to boolean
-        {
-            // The data and time are seperated by a T
-            NSString * dateTime = game[@"date"];
-            NSArray * components = [dateTime componentsSeparatedByString:@"T"];
-            _dateString = [NSString stringWithFormat:@"Date -> %@", components[0]]; // set the date
-            _dateString = [_dateString stringByAppendingString:[NSString stringWithFormat:@"Time -> %@", components[1]]]; // set the time
-        }
-        else // is this the right thing to do  ?
-        {
-            _dateString = game[@"date"];
-        }
-         // this currently crashes push the server changes to doxa.
-        
-        
+
+        // formatter for reading date string from server
+        NSDateFormatter* dateTimeFormatter = [[NSDateFormatter alloc] init];
+        dateTimeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        dateTimeFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'";
+        dateTimeFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+        // formatter for printing date
+        // always used since we should always have a date
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+
+        // formatter for printing time
+        // only used if we have a time
+        NSDateFormatter* timeFormatter = [[NSDateFormatter alloc] init];
+        timeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        timeFormatter.dateStyle = NSDateFormatterNoStyle;
+        timeFormatter.timeStyle = NSDateFormatterShortStyle;
+
+        // String from the server that we need to parse
+        // Contains a date and a time
+        NSString * dateTime = game[@"start"][@"date"];
+
+        // parse the date so we can use it in the UI
+        NSDate* date = [dateTimeFormatter dateFromString:dateTime];
+
+        // Use the formatter to transform the date portion of our date/time
+        NSString* dateString = [dateFormatter stringFromDate:date];
+
+        // If time exists in the date, get it from there
+        // otherwise get it from the server
+        NSString* timeString = [timePresent boolValue]
+            ? [timeFormatter stringFromDate:date]
+            : game[@"start"][@"timeString"];
+
+        // Put our time and date strings together for the UI
+        _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
+
         _descriptionText = game[@"location"];
     }
     return self;

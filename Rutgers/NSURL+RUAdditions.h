@@ -10,6 +10,8 @@
 
 @interface NSURL (RUAdditions)
 +(NSURL *)rutgersUrlWithPathComponents:(NSArray <NSString *>*)pathComponents;
+-(NSURL *)asRutgersURL;
+-(NSURL *)asHTTPURL;
 @end
 
 @interface NSString (RUAdditions)
