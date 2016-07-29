@@ -14,6 +14,7 @@
 #import "RUAnalyticsManager.h"
 #import "RUAppearance.h"
 #import "RUFavoriteActivity.h"
+#import "NSURL+RUAdditions.h"
 
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8
@@ -243,23 +244,14 @@
      
      */
     
-    
-    NSString * urlString = [NSString stringWithFormat:@"http://%@" , self.sharingURL.absoluteString] ;
-    
     /*
      change http://rutgers://bus/route/weekend%201/ to
      
      http://rumobile.rutgers.edu/bus/route/weekend%201/
      */
     
-    NSLog(@"URL -> %@ ",urlString);
-    
-    
-    urlString = [urlString stringByReplacingOccurrencesOfString:@"rutgers://" withString:@"rumobile.rutgers.edu/link/"];
-    
-    NSLog(@"URL -> %@ ",urlString);
-    
-    NSURL * url = [[NSURL alloc] initWithString:urlString];
+    NSURL * url = [self.sharingURL asRutgersURL];
+    NSURL* testUrl = [self.sharingURL asHTTPURL];
     NSLog(@"SEND URL : %@" , url);
     if (!url) return;
     

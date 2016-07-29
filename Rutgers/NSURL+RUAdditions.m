@@ -8,6 +8,7 @@
 
 #import "NSURL+RUAdditions.h"
 #import "RUDefines.h"
+#import "RUNetworkManager.h"
 
 @implementation NSURL (RUAdditions)
 
@@ -32,6 +33,63 @@
         [string appendFormat:@"%@/",escapedComponent];
     }
     return [NSURL URLWithString:string];
+}
+
+-(NSURL *)asRutgersURL {
+    NSString* scheme = [self scheme];
+    if ([scheme isEqualToString:@"rutgers"]) {
+        return self;
+    } else {
+        // ["link", "handle", "rest", "of", "parts"]
+        NSMutableArray* oldPathParts = [NSMutableArray arrayWithArray:[self pathComponents]];
+
+        // ["handle", "rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+        NSString* handle = oldPathParts[0];
+
+        // ["rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+        NSArray* pathComponents = [NSArray arrayWithArray:oldPathParts];
+
+        // "rest/of/parts"
+        NSString* path = [pathComponents componentsJoinedByString:@"/"];
+
+        NSURLComponents* components = [NSURLComponents new];
+        [components setScheme:@"rutgers"];
+        [components setHost:handle];
+        [components setPath:path];
+
+        return [components URL];
+    }
+}
+
+-(NSURL *)asHTTPURL {
+    NSString* scheme = [self scheme];
+    if ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) {
+        return self;
+    } else {
+        // ["rest", "of", "parts"]
+        NSMutableArray* oldPathParts = [NSMutableArray arrayWithArray:[self pathComponents]];
+        NSString* handle = [self host];
+
+        // ["handle", "rest", "of", "parts"]
+        [oldPathParts insertObject:handle atIndex:0];
+
+        // ["link", "handle", "rest", "of", "parts"]
+        [oldPathParts insertObject:@"link" atIndex:0];
+
+        NSArray* pathComponents = [NSArray arrayWithArray:oldPathParts];
+
+        NSString* path = [pathComponents componentsJoinedByString:@"/"];
+
+        NSURLComponents* components = [NSURLComponents
+            componentsWithURL:[RUNetworkManager baseURL]
+            resolvingAgainstBaseURL:NO
+        ];
+        [components setPath:path];
+
+        return [components URL];
+    }
 }
 @end
 
