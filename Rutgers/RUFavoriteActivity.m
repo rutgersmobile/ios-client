@@ -58,12 +58,14 @@
 
 /*
     Add the favourite to RUUserInfoMan...
+
+ 
  
  */
 - (void)performActivity
 {
     
-    RUFavorite *favorite = [[RUFavorite alloc] initWithTitle:self.title url:[self.urlToFavorite asRutgersURL]];
+    RUFavorite *favorite = [[RUFavorite alloc] initWithTitle:self.title url:[self.urlToFavorite asRutgersURL]]; // we convert between the url used for https sending and the internal url used for storing the favourties.. 
     [[RUMenuItemManager sharedManager] addFavorite:favorite]; 
 
     [self activityDidFinish:YES];
