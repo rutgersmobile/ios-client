@@ -50,7 +50,8 @@
     
     // <q> Is this the location where we move to the view controller spcified by the Favourite ?
     
-    if (result) {
+    if (result)
+    {
         UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:result];
         vc.navigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem;
         

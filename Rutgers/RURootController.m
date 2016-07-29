@@ -54,10 +54,6 @@
 /*
     Set us the view controller from which every other VC is accessed. 
     Also Setup the Menu Item 
- 
-    To do:
-        Use the 3 bar icon for Menu button
- 
  */
 - (instancetype)init
 {
@@ -66,12 +62,21 @@
     {
         self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
 #warning to do : convert the menu to an icon
-        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
+       // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
+        
+        UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+        [menuView addTarget:self action:@selector(openDrawer) forControlEvents:UIControlEventTouchUpInside];
+        [menuView setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
+        self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuView];
+        
+        //self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
     }
     return self;
 }
 
--(Class)drawerClass{
+// decide which drawer we are going to use for the class
+-(Class)drawerClass
+{
     return [MMDrawerController class];
 }
 
@@ -81,8 +86,10 @@
  
  */
 @synthesize containerViewController = _containerViewController;
--(UIViewController <RUContainerController> *)containerViewController{
-    if (!_containerViewController) {
+-(UIViewController <RUContainerController> *)containerViewController
+{
+    if (!_containerViewController)
+    {
         UIViewController *centerViewController = [self topViewControllerForChannel:self.selectedItem];
         
         Class drawerClass = [self drawerClass];

@@ -429,7 +429,6 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSString *viewTag = [[self channelWithHandle:handle] channelView];
     id class = [self classForViewTag:viewTag];
    
-   
     // if a wrong url comes along , we show the splash screen
     if(class == nil)
     {
@@ -438,15 +437,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     // Check if the channel handles opening favorites itself, or defers to the channnel manager
     if ([class respondsToSelector:@selector(viewControllersWithPathComponents:destinationTitle:)]) {
-            // If this part of the code is called , then things work
         
         return [class performSelector:@selector(viewControllersWithPathComponents:destinationTitle:) withObject:components withObject:destinationTitle];
     }
     else
     {
-        
-        NSLog(@"error in VCForUrl");
-            // If this part of the code is called , then it ends in error
         return @[[[RUFavoritesDynamicHandoffViewController alloc] initWithHandle:handle pathComponents:components title:destinationTitle]];
     }
     

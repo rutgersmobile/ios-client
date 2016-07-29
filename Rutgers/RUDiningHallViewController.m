@@ -66,10 +66,13 @@
 }
 
 -(NSString *)sharingTitle{
-    if (self.diningHall) {
+    if (self.diningHall)
+    {
         return [self.diningHall diningHallShortName];
-    } else {
-        return self.title;
+    }
+    else
+    { // serialziedDiningHall is all lower case , so we convert the first letter to caps and set the title.. 
+       return [NSString stringWithFormat:@"%@%@",[[self.serializedDiningHall substringToIndex:1] uppercaseString],[self.serializedDiningHall substringFromIndex:1] ];
     }
 }
 

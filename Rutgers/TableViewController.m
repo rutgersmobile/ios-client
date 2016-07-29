@@ -70,6 +70,7 @@
     }
     #endif
     
+   // if a class has a sharingURL then we show the button , else we don't ...
     if (self.sharingURL)
     {
         // sharingURL is implemented in the respective source sub class
@@ -80,13 +81,15 @@
 
 }
 
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     [self invalidateCachedHeightsIfNeeded]; // cahche the cell heights..
 
-        // Based on the state the data source is made to load content
+    // Based on the state the data source is made to load content
     // Set up both the data source and the search data source if initial state
     if (self.loadsContentOnViewWillAppear || [self.dataSource.loadingState isEqualToString:AAPLLoadStateInitial])
     {
@@ -238,16 +241,13 @@
     // Add Support For Andorid DEEP LINKING
     
     /*
-     Will ios accpet http ?
-     > Use Uinversal Links in ios 9
-     > ios < 9  : We will a server redirect
-     
+        Will ios accpet http ?
+        > Use Uinversal Links in ios 9
+        > ios < 9  : We will a server redirect
      */
-    
     /*
-     change http://rutgers://bus/route/weekend%201/ to
-     
-     http://rumobile.rutgers.edu/bus/route/weekend%201/
+        change http://rutgers://bus/route/weekend%201/ to
+        http://rumobile.rutgers.edu/bus/route/weekend%201/
      */
     
     NSURL * url = [self.sharingURL asHTTPURL];
@@ -260,7 +260,6 @@
     activityViewController.excludedActivityTypes = @[
                                                      UIActivityTypePrint,
                                                      UIActivityTypeAddToReadingList,
-                                                     
                                                      ];
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -298,10 +297,7 @@
 }
 
 /*
-    ??
-    
     get the data source or the TVC set it to nil and reload the data source..
- 
  */
 -(void)resetDataSource:(DataSource *)dataSource
 {
@@ -361,10 +357,10 @@
     {
         self.tableView.tableHeaderView = nil;
     }
-   
-        /*
+    
+    /*
             After obtaining the controller for a particule search , attach the search data source to it .
-         */
+     */
     if (self.searchController)
     {
         self.searchResultsController.dataSource = searchDataSource;

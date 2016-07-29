@@ -62,11 +62,6 @@
 }
 
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    NSLog(@"View Loaaded");
-}
-
 -(NSURL *)sharingURL{
     RUSOCDataLoadingManager *manager = self.dataLoadingManager;
  
@@ -80,9 +75,7 @@
         [manager performWhenSemestersLoaded:^(NSError *error) {
             NSLog(@"semsester Load error %@" ,error);
         }];
-        
     }
-     
      
      When the course is directly accessed from the favourties , without going through the
     heirarchy , the manager.semester returns nil , as that is filled by a RUCource
