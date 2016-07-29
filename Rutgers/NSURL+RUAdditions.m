@@ -35,21 +35,30 @@
     return [NSURL URLWithString:string];
 }
 
-/*
-    convert internal rutgers scheme to support going to the server ..
-    Done to support both android and ios
- 
- */
 -(NSURL *)asRutgersURL {
     NSString* scheme = [self scheme];
-if ([scheme isEqualToString:[RUNetworkManager baseURL].host]) // base url points to the server
-    {
+    if ([scheme isEqualToString:@"rutgers"]) {
         return self;
-    }
-    else
-    {
-        NSURLComponents * components = [NSURLComponents componentsWithURL:[RUNetworkManager baseURL] resolvingAgainstBaseURL:NO];
-        components.path = [NSString stringWithFormat:@"/link/%@%@",[self absoluteURL].host ,[self absoluteURL].path];
+    } else {
+        // ["link", "handle", "rest", "of", "parts"]
+        NSMutableArray* oldPathParts = [NSMutableArray arrayWithArray:[self pathComponents]];
+
+        // ["handle", "rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+        NSString* handle = oldPathParts[0];
+
+        // ["rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+        NSArray* pathComponents = [NSArray arrayWithArray:oldPathParts];
+
+        // "rest/of/parts"
+        NSString* path = [pathComponents componentsJoinedByString:@"/"];
+
+        NSURLComponents* components = [NSURLComponents new];
+        [components setScheme:@"rutgers"];
+        [components setHost:handle];
+        [components setPath:path];
+
         return [components URL];
     }
 }
