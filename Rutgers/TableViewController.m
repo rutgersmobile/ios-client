@@ -250,8 +250,7 @@
      http://rumobile.rutgers.edu/bus/route/weekend%201/
      */
     
-    NSURL * url = [self.sharingURL asRutgersURL];
-    NSURL* testUrl = [self.sharingURL asHTTPURL];
+    NSURL * url = [self.sharingURL asHTTPURL];
     NSLog(@"SEND URL : %@" , url);
     if (!url) return;
     
