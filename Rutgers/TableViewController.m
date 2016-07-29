@@ -245,14 +245,12 @@
      */
     
     /*
-        change rutgers://bus/route/weekend%201/ to
+     change http://rutgers://bus/route/weekend%201/ to
      
-        http://rumobile.rutgers.edu/bus/route/weekend%201/
-        or similar based on the base url that we are using
+     http://rumobile.rutgers.edu/bus/route/weekend%201/
      */
     
-    NSURL * url = [self.sharingURL asRutgersURL];
-    
+    NSURL * url = [self.sharingURL asHTTPURL];
     NSLog(@"SEND URL : %@" , url);
     if (!url) return;
     

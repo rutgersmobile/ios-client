@@ -35,21 +35,32 @@
     return [NSURL URLWithString:string];
 }
 
-/*
-    convert internal rutgers scheme to support going to the server ..
-    Done to support both android and ios
- 
- */
 -(NSURL *)asRutgersURL {
     NSString* scheme = [self scheme];
-if ([scheme isEqualToString:[RUNetworkManager baseURL].host]) // base url points to the server
-    {
+    if ([scheme isEqualToString:@"rutgers"]) {
         return self;
-    }
-    else
-    {
-        NSURLComponents * components = [NSURLComponents componentsWithURL:[RUNetworkManager baseURL] resolvingAgainstBaseURL:NO];
-        components.path = [NSString stringWithFormat:@"/link/%@%@",[self absoluteURL].host ,[self absoluteURL].path];
+    } else {
+        // ["/", "link", "handle", "rest", "of", "parts"]
+        NSMutableArray* oldPathParts = [NSMutableArray arrayWithArray:[self pathComponents]];
+
+        // ["handle", "rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+        [oldPathParts removeObjectAtIndex:0];
+        NSString* handle = oldPathParts[0];
+
+        // ["rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+        NSArray* pathComponents = [NSArray arrayWithArray:oldPathParts];
+
+        // "rest/of/parts"
+        NSString* path = [pathComponents componentsJoinedByString:@"/"];
+        NSString* pathWithLeadingSlash = [NSString stringWithFormat:@"%@%@", @"/", path];
+
+        NSURLComponents* components = [NSURLComponents new];
+        [components setScheme:@"rutgers"];
+        [components setHost:handle];
+        [components setPath:pathWithLeadingSlash];
+
         return [components URL];
     }
 }
@@ -59,8 +70,12 @@ if ([scheme isEqualToString:[RUNetworkManager baseURL].host]) // base url points
     if ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"]) {
         return self;
     } else {
-        // ["rest", "of", "parts"]
+        // ["/", "rest", "of", "parts"]
         NSMutableArray* oldPathParts = [NSMutableArray arrayWithArray:[self pathComponents]];
+
+        // ["rest", "of", "parts"]
+        [oldPathParts removeObjectAtIndex:0];
+
         NSString* handle = [self host];
 
         // ["handle", "rest", "of", "parts"]
@@ -72,12 +87,13 @@ if ([scheme isEqualToString:[RUNetworkManager baseURL].host]) // base url points
         NSArray* pathComponents = [NSArray arrayWithArray:oldPathParts];
 
         NSString* path = [pathComponents componentsJoinedByString:@"/"];
+        NSString* pathWithLeadingSlash = [NSString stringWithFormat:@"%@%@", @"/", path];
 
         NSURLComponents* components = [NSURLComponents
             componentsWithURL:[RUNetworkManager baseURL]
             resolvingAgainstBaseURL:NO
         ];
-        [components setPath:path];
+        [components setPath:pathWithLeadingSlash];
 
         return [components URL];
     }
