@@ -61,8 +61,9 @@
     if (self)
     {
         self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
-#warning to do : convert the menu to an icon
        // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
+       
+       // Add a button to the icon..
         
         UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
         [menuView addTarget:self action:@selector(openDrawer) forControlEvents:UIControlEventTouchUpInside];

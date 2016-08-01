@@ -1,4 +1,4 @@
-    //
+//
 //  RUNewBusViewController.m
 //  Rutgers
 //
@@ -7,21 +7,13 @@
 //
 
 /*
-        Descripts : Verbose         
             Set up the initial Table View Contoller On Tapping the Bus Icon
             On tapping Cell Segues into predictions page
  
- 
-            Function Of Timer : 
-                May be Used for updating Prediction based on predefined text rather than using a web api ?
- 
         To Do :     
             Convert this into a map
-
  
  */
-
-
 
 #import "RUBusViewController.h"
 #import "RUBusDataSource.h"
@@ -67,7 +59,8 @@
 }
 
 //This causes an update timer to start upon the Bus View controller appearing
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [(RUBusDataSource *)self.dataSource startUpdates];
 }

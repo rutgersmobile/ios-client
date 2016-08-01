@@ -18,7 +18,8 @@
 @end
 
 @implementation RUDataLoadingManager
--(instancetype)init{
+-(instancetype)init
+{
     self = [super init];
     if (self)
     {
@@ -35,9 +36,7 @@
 
 /*
     Tries to load the required information and sets up the error block to be called on error
- 
-    Perform when loaded calls load on the sub classes.. 
- 
+    Perform when loaded calls load on the sub classes..
  */
 -(void)performWhenLoaded:(void (^)(NSError *error))block
 {
@@ -59,7 +58,6 @@
     @synchronized(self)
     {
         dispatch_group_enter(self.loadingGroup);
-        
         self.loading = YES;
         self.finishedLoading = NO;
         self.loadingError = nil;
