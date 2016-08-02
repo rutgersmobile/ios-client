@@ -27,6 +27,7 @@
 @interface UISplitViewController (RUContainer) <RUContainerController>
 
 @end
+    
 
 @implementation UISplitViewController (RUContainer)
 +(id<RUContainerController>)containerWithContainedViewController:(UIViewController *)containedViewController drawerViewController:(UIViewController *)drawerViewController{
@@ -52,6 +53,13 @@
 -(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
     
 }
+
+-(void)toogleDrawer
+{
+    
+}
+
+
 @end
 
 @interface SWRevealViewController (RUContainer) <RUContainerController>
@@ -91,6 +99,12 @@
 -(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
 
 }
+
+-(void)toogleDrawer
+{
+    [self revealToggleAnimated:YES];
+}
+
 @end
 
 @interface MMDrawerController (RUContainer) <RUContainerController>
@@ -137,6 +151,11 @@
 }
 -(void)closeDrawer{
     [self closeDrawerAnimated:YES completion:nil];
+}
+
+-(void)toogleDrawer
+{
+    
 }
 
 -(void)setDrawerShouldOpenBlock:(BOOL(^)())block{

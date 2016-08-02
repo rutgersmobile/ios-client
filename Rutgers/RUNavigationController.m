@@ -23,8 +23,10 @@
     return self;
 }
 
--(void)viewDidLoad{
+-(void)viewDiLoad{
     [super viewDidLoad];
+
+    
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
 

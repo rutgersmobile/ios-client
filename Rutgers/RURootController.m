@@ -12,7 +12,8 @@
 #import "RUUserInfoManager.h"
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
-#import <MMDrawerController.h>
+//#import <MMDrawerController.h> // NO LONGER USED // HAD TOO MANY ERRORS RELATED TO SHOWING THE EDIT OPTIONS VIEW PROPERLY
+#import <SWRevealViewController.h>
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
@@ -26,6 +27,12 @@
  */
 
 
+/*
+    AUGUST 2ND :
+        WE USE SWREVEL EXCLUSIVELY FOR THE SLIDE MENU
+ 
+ */
+
 @interface RURootController () <RUMenuDelegate>
 @property (nonatomic) RUMenuViewController *menuViewController;
 @property (nonatomic) UIBarButtonItem *menuBarButtonItem;
@@ -36,6 +43,7 @@
 
 /*
     Create a shared instance used for the entirety of the program
+    Singleton Class
  */
 +(instancetype)sharedInstance
 {
@@ -63,28 +71,29 @@
         self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
        // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
        
-       // Add a button to the icon..
-        
+       // Add a button to the menu icon..
         UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
         [menuView addTarget:self action:@selector(openDrawer) forControlEvents:UIControlEventTouchUpInside];
         [menuView setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuView];
         
-        //self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu"] style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
     }
     return self;
 }
 
+
+
 // decide which drawer we are going to use for the class
 -(Class)drawerClass
 {
-    return [MMDrawerController class];
+    //return [MMDrawerController class];
+    return [SWRevealViewController class];
 }
 
 /*
     In RuRootContr...
- 
- 
+    This contains the RUMenuViewController and the RUNAvigation ...
+    The containerViewController is either the SWRevel View controller or the MDView controller
  */
 @synthesize containerViewController = _containerViewController;
 -(UIViewController <RUContainerController> *)containerViewController
@@ -100,16 +109,26 @@
         if (![drawerClass conformsToProtocol:@protocol(RUContainerController)]) [NSException raise:NSInvalidArgumentException format:@"%@ does not conform to %@",NSStringFromClass(drawerClass), NSStringFromProtocol(@protocol(RUContainerController))];
         
         __weak typeof(self) weakSelf = self; // Used within block to prevent memory cycles.
+        
         _containerViewController = [((id)drawerClass) performSelector:@selector(containerWithContainedViewController:drawerViewController:) withObject:centerViewController withObject:self.menuViewController];
-        [_containerViewController setDrawerShouldOpenBlock:^BOOL{
+        
+        [_containerViewController setDrawerShouldOpenBlock:^BOOL
+        {
             return [weakSelf drawerShouldOpen];     
         }];
+    
+       //   // add the slide gesture recogniser to the view
+       //    ((SWRevealViewController *)_containerViewController).panGestureRecognizer.enabled = YES;
+       //    [centerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
     }
+    
     return _containerViewController;
 }
 
--(RUMenuViewController *)menuViewController{
-    if (!_menuViewController) {
+-(RUMenuViewController *)menuViewController
+{
+    if (!_menuViewController)
+    {
         _menuViewController = [[RUMenuViewController alloc] init];
         _menuViewController.title = @"Menu";
         _menuViewController.delegate = self;
@@ -117,16 +136,20 @@
     return _menuViewController;
 }
 
--(BOOL)drawerShouldOpen{
+-(BOOL)drawerShouldOpen
+{
     id viewController = self.containerViewController.containedViewController;
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
+    if ([viewController isKindOfClass:[UINavigationController class]])
+    {
         UINavigationController *nav = viewController;
-        if ([nav.viewControllers count] > 1) {
+        if ([nav.viewControllers count] > 1)
+        {
             return NO;
         }
         viewController = nav.topViewController;
     }
-    if ([viewController isKindOfClass:[TableViewController class]]) {
+    if ([viewController isKindOfClass:[TableViewController class]])
+    {
         return ![viewController isSearching];
     }
     return NO;
@@ -135,8 +158,10 @@
     Adds a Left Button to top most nav controller
  */
 #pragma mark Managing Buttons
-- (void)placeButtonInViewController:(UIViewController *)viewController{
-    if ([viewController isKindOfClass:[UINavigationController class]]) {
+- (void)placeButtonInViewController:(UIViewController *)viewController
+{
+    if ([viewController isKindOfClass:[UINavigationController class]])
+    {
         UINavigationController *nav = (UINavigationController *)viewController;
         if ([nav.viewControllers count] > 0) viewController = (nav.viewControllers)[0]; // select the top most viewController ? or is the bottom ? ????? <q>
     }
@@ -149,9 +174,9 @@
 
 /*
     Moves to a particular view . The location of the views are maintained as an URL
- 
  */
--(void)openURL:(NSURL *)url{
+-(void)openURL:(NSURL *)url
+{
     [self openURL:url destinationTitle:nil];
 }
 
@@ -164,11 +189,11 @@
 
     Converts the url into a view Controller using the RUChannelMan...
  */
--(void)openURL:(NSURL *)url destinationTitle:(NSString *)title{
+-(void)openURL:(NSURL *)url destinationTitle:(NSString *)title
+{
     UINavigationController *navController = [[RUNavigationController alloc] init];  // Should a new instance be created ???
     [RUAppearance applyAppearanceToNavigationController:navController];
     
-   
     /*
         This function seems to be the source of error , for the bus etc , one specific way to used to 
         display the controller , but for the dtables another way to present the information is used .
@@ -179,6 +204,12 @@
     [self placeButtonInViewController:navController.topViewController];
 
     self.containerViewController.containedViewController = navController;
+   
+    
+   // inorder to ensure that the gestures given to each of the seperate view controller ( like bus , soc , web ) etc will support these gestures...
+    [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).panGestureRecognizer];
+    [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).tapGestureRecognizer];
+    
     [self.containerViewController closeDrawer];  // ???? Closing the side view bar ?
 }
 
@@ -188,49 +219,60 @@
     opens a particular url. openFavourite is simply a wrapper for the openURL function.
  
  */
--(void)openFavorite:(RUFavorite *)favorite{
+-(void)openFavorite:(RUFavorite *)favorite
+{
     [self openURL:favorite.url destinationTitle:favorite.title];
 }
 
 /*
     The slide drawer is build by using MMDrawController lib. 
     This sets up the slide view controller
- 
- 
+    Get the top view controller for a given channel
+    That is get the view controller for a channel. Emebed the channel in a navigation controller and then return the top navigation controller
  */
 #pragma mark Drawer Interface
--(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel{
+-(UIViewController *)topViewControllerForChannel:(NSDictionary *)channel
+{
     UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
-
     UINavigationController *navController = [[RUNavigationController alloc] initWithRootViewController:vc];
     [RUAppearance applyAppearanceToNavigationController:navController];
-    
     [self placeButtonInViewController:navController];
 
     return navController;
 }
 
 #pragma move last channel logic into channel manager
--(void)openItem:(id)item {
+-(void)openItem:(id)item
+{
     self.selectedItem = item;
     
-    NSLog(@"%@",item);
-    
-    if ([item isKindOfClass:[NSDictionary class]]) {
+    if ([item isKindOfClass:[NSDictionary class]])
+    {
         [RUChannelManager sharedInstance].lastChannel = item;
         self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
-    } else {
+        
+        
+   // inorder to ensure that the gestures given to each of the seperate view controller ( like bus , soc , web ) etc will support these gestures...
+        [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).panGestureRecognizer];
+        [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).tapGestureRecognizer];
+    }
+    else
+    {
         [self openFavorite:item];
     }
     
 }
 
--(void)openDrawer{
-    [self.containerViewController openDrawer];
+-(void)openDrawer
+{
+  //  [self.containerViewController openDrawer]; // use for MD sldie
+    [self.containerViewController toogleDrawer]; // use for SWRevel
 }
 
--(void)openDrawerIfNeeded{
-    if ([self channelIsSplashChannel:[RUChannelManager sharedInstance].lastChannel]){
+-(void)openDrawerIfNeeded
+{
+    if ([self channelIsSplashChannel:[RUChannelManager sharedInstance].lastChannel])
+    {
         [self.containerViewController openDrawer];
     }
 }
@@ -245,8 +287,12 @@
     If the user tries to open an already open view , the drawer is just closed.
  */
 #pragma mark Menu Delegate
--(void)menu:(RUMenuViewController *)menu didSelectItem:(id)item{
-    if (![item isEqual:self.selectedItem]) [self openItem:item];
+-(void)menu:(RUMenuViewController *)menu didSelectItem:(id)item
+{
+    if (![item isEqual:self.selectedItem])
+    {
+        [self openItem:item];
+    }
     [self.containerViewController closeDrawer];
 }
 

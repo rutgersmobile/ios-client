@@ -8,6 +8,7 @@
 
 #import "TableViewController.h"
 #import "RUChannelProtocol.h"
+#import "Rutgers-Swift.h"
 
 /**
  *  This is the view controller for the options menu

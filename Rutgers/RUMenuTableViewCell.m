@@ -18,18 +18,24 @@
 @end
 
 @implementation RUMenuTableViewCell
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
+    
+    if (self)
+    {
         self.backgroundColor = [UIColor clearColor];
         self.opaque = NO;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-      //  self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
     }
+    
     return self;
 }
 
--(void)initializeSubviews {
+-(void)initializeSubviews
+{
     
     self.channelImage = [UIImageView newAutoLayoutView];
     self.channelImage.tintColor = [UIColor iconDeselectedColor];
@@ -45,7 +51,8 @@
 
 }
 
--(void)initializeConstraints {
+-(void)initializeConstraints
+{
     [self.channelImage autoSetDimensionsToSize:CGSizeMake(32, 32)];
     [self.channelImage autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:iPad() ? 20 : kLabelHorizontalInsets];
     [self.channelImage autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
@@ -56,16 +63,21 @@
     [self.channelTitleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
 }
 
--(void)updateFonts{
+-(void)updateFonts
+{
     self.channelTitleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 /*
     Methods are called from the data source did select row at index path
- */
--(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated{
     
-    if (!self.selected) {
+    Called when the user presses on a button on the menu slide view.
+ 
+ */
+-(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    if (!self.selected)
+    {
         [super setHighlighted:highlighted animated:animated];
         [self applyStyleForHighlightedState:highlighted];
     }
@@ -83,7 +95,8 @@
         The ovverride happens for the image
  
  */
--(void)applyStyleForHighlightedState:(BOOL)state{
+-(void)applyStyleForHighlightedState:(BOOL)state
+{
     self.channelImage.tintColor = state ? [UIColor whiteColor] : [UIColor iconDeselectedColor];
     self.channelTitleLabel.textColor = state ? [UIColor whiteColor] : [UIColor menuDeselectedColor];
     self.backgroundColor = state ? [[UIColor blackColor] colorWithAlphaComponent:0.25] : nil;
@@ -94,12 +107,12 @@
     Sets up a cell for displaying information about the channel that is being displayed by the user
  
  */
--(void)setupForChannel:(NSDictionary *)channel{
+-(void)setupForChannel:(NSDictionary *)channel
+{
     self.channel = channel;
-    NSLog(@"Channel %@", channel);
+//    NSLog(@"Channel %@", channel);
     self.channelTitleLabel.text = [channel channelTitle];
     self.channelImage.image = [channel channelIcon];
-
 }
 
 /*

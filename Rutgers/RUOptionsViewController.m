@@ -12,7 +12,6 @@
 #import "AlertDataSource.h"
 #import "RUAppDelegate.h"
 #import "RUChannelManager.h"
-#import "Rutgers-Swift.h"
 
 @interface RUOptionsViewController ()
 @property NSDictionary *channel;
@@ -26,8 +25,13 @@
 +(NSString *)channelHandle{
     return @"options";
 }
-+(void)load{
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
+    
+    // load the RUEditMenuItemView COntroller
+   [RUEditMenuItemsViewController registerClass];
+    
 }
 
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel{
@@ -40,13 +44,23 @@
     self.dataSource = [[OptionsDataSource alloc] init];
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    /* NO Longer needed . Options moved to root
+    if (indexPath.section == 0)
+    {
         [self.navigationController pushViewController:[[RUEditMenuItemsViewController alloc] initWithStyle:UITableViewStyleGrouped] animated:YES];
-    } else if (indexPath.section == 4) {
+    }
+    else
+     */
+    
+    if (indexPath.section == 3) // after the removal of the edit options , the legal is at index 3 ( from index 4)
+    {
         // Open the legal view controller
         [self.navigationController pushViewController:[[RULegalViewController alloc] initWithStyle:UITableViewStylePlain] animated:YES];
-    } else {
+    }
+    else
+    {
         // Trigger the alert action
         DataSource *dataSource = [(ComposedDataSource *)self.dataSource dataSourceAtIndex:indexPath.section];
         if ([dataSource isKindOfClass:[AlertDataSource class]]) {

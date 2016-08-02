@@ -30,13 +30,16 @@
     {
       
         
-        
+      /*
+       
+        The edit options has been moved to the root menu ( the slide menu ) 
+       
         // Set up an Alert Data Source and then add it to the data source : The order in which the data is added will determine the layout order
         StringDataSource *editChannels = [[StringDataSource alloc] initWithItems:@[@"Edit Channels"]];
         editChannels.showsDisclosureIndicator = YES;
         [self addDataSource:editChannels];
    
-        
+      */
         
         
         //Select Campus

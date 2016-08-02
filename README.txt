@@ -1,13 +1,9 @@
-
 Wiki About The Rutgers App
-
-
 
 > ScarletNight :
             ( JUNE 28TH )
             A Dynamics Table View Controller :
             End Nodes are RUReaderViewController
-
 
 
 > App Transport Security.
@@ -17,5 +13,7 @@ Wiki About The Rutgers App
         and for the soc api , which does not have the latest SSL version
         we add exception in the Rutgers info plist.
 
+
+> Add the Edit Screen Button into the slide menu ...
 
 

@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ALTableViewAbstractCell.h"
 
+/*
+    These cells are used to display the items on the menu slide view..
+ */
+
 @interface RUMenuTableViewCell : ALTableViewAbstractCell
 @property (nonatomic) UILabel *channelTitleLabel;
 @property (nonatomic) UIImageView *channelImage;

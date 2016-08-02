@@ -76,6 +76,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                            @{@"handle" : @"options",
                              @"title" : @"Options",
                              @"view" : @"options",
+                             @"icon" : @"gear"},
+                           @{@"handle" : @"edit",
+                             @"title" : @"Edit Channels",
+                             @"view" : @"edit",
                              @"icon" : @"gear"}
                            ];
     }

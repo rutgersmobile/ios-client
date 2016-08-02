@@ -615,7 +615,7 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
     {
         for (RUBusMultipleStopsForSingleLocation *stop in self.stops.allValues)
         {
-            if ([stop.title.lowercaseString isEqualToString:name])
+            if ([stop.title.lowercaseString isEqualToString:[name lowercaseString]]) // both values are converted to lower case string before comparison.
             {
                 return stop;
             }
@@ -625,7 +625,7 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
     {
         for (RUBusRoute *route in self.routes.allValues)
         {
-            if ([route.tag.lowercaseString isEqualToString:name])
+            if ([route.tag.lowercaseString isEqualToString:[name lowercaseString]])
             {
                 return route;
             }

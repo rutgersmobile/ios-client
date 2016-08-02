@@ -32,5 +32,6 @@
 @property (nonatomic) UIViewController *containedViewController; // the front view controller that holds the drawer
 -(void)closeDrawer;
 -(void)openDrawer;
+-(void)toogleDrawer;
 @end
 
