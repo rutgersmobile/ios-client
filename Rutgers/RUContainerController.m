@@ -16,7 +16,7 @@
 
 #define DRAWER_WIDTH (iPad() ? round(270 * IPAD_SCALE) : 270)
 #define DRAWER_DISPLACEMENT 55
-#define DRAWER_ANIM_DURATION 0.25
+#define DRAWER_ANIM_DURATION 0.35
 
 /*
     General Style followed is to add methods to the objects during run time using the categoey technique in Obj C
@@ -55,6 +55,11 @@
 }
 
 -(void)toogleDrawer
+{
+    
+}
+
+-(void)setFrontViewControllerInteration:(BOOL) interaction
 {
     
 }
@@ -100,9 +105,16 @@
 
 }
 
+-(void)setFrontViewControllerInteration:(BOOL) interaction
+{
+    [self.frontViewController.view setUserInteractionEnabled:interaction];
+}
+
 -(void)toogleDrawer
 {
     [self revealToggleAnimated:YES];
+    
+    
 }
 
 @end
@@ -157,6 +169,15 @@
 {
     
 }
+
+
+-(void)setFrontViewControllerInteration:(BOOL) interaction
+{
+    
+}
+
+
+
 
 -(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
     [self setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {

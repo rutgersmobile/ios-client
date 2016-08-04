@@ -33,5 +33,6 @@
 -(void)closeDrawer;
 -(void)openDrawer;
 -(void)toogleDrawer;
+-(void)setFrontViewControllerInteration:(BOOL) interaction;
 @end
 

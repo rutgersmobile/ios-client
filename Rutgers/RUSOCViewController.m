@@ -105,10 +105,23 @@
      
     */
     
-    return [NSURL rutgersUrlWithPathComponents:@[
+ 
+    // if the manager.semester is not loaded then we do not have a sharing url.
+    
+   
+    if(manager.semester) // if no manager has been set up , then we do not allow the sharing url to be set up.
+    {
+        return [NSURL rutgersUrlWithPathComponents:@[
                                                  @"soc",
                                                  manager.semester[@"tag"],
-                                                 ]];
+                                                 ]];     
+    }
+    else
+    {
+        return nil;
+       // create the sharing url for the soc (all courses for a semster page ) from the
+        
+    }
 }
 
 
@@ -160,6 +173,12 @@
     self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
 }
 
+
+
+/*
+    This is used to create the view controller from the path components.
+    This is used for the favoruties feature..
+ */
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)title
 {
 

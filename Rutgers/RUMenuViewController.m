@@ -37,6 +37,23 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.delegate menuWillAppear];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self.delegate menuWillDisappear];
+}
+
+
+
+
 -(void)viewDidLoad
 {
     [super viewDidLoad];

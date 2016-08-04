@@ -103,6 +103,11 @@
         type = @"stop";
         identifier = [self.item title];
     }
+    else if( [self.item isKindOfClass:[NSArray class]]) // add support for showing the url when the bus has been favourited..
+    {
+        type = self.item[0];
+        identifier = self.item[1];
+    }
     if (!type) return nil;
     return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, identifier]]; // eg rut../bus/route/f
 }

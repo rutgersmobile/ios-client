@@ -14,6 +14,11 @@
 @protocol RUMenuDelegate <NSObject>
 @required
 -(void)menu:(RUMenuViewController *)menu didSelectItem:(id)item;
+
+// pass messages about opening and closing the drawer to the root view controller so that it can disable the front view user interaction appropraitely
+-(void)menuWillAppear;
+-(void)menuWillDisappear;
+
 @end
 
 @interface RUMenuViewController : TableViewController

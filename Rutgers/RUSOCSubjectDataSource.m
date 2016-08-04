@@ -113,9 +113,20 @@
 
 -(void)updateWithCourses:(NSArray *)courses{
     NSMutableArray *parsedItems = [NSMutableArray array];
-    for (NSDictionary *course in courses) {
-        RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
-        [parsedItems addObject:row];
+    for (NSDictionary *course in courses)
+    {
+       // We are not adding a course if there are no sections in it.
+        
+        NSPredicate *printedSectionsPredicate = [NSPredicate predicateWithFormat:@"printed == %@",@"Y"];
+        
+        NSArray *sections = [course[@"sections"] filteredArrayUsingPredicate:printedSectionsPredicate];
+        
+       if(sections.count != 0)
+       {
+           RUSOCCourseRow *row = [[RUSOCCourseRow alloc] initWithCourse:course];
+           [parsedItems addObject:row];
+       }
+       
     }
     self.items = parsedItems;
 }

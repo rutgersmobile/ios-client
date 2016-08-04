@@ -41,6 +41,9 @@
 
 @implementation RURootController
 
+
+
+
 /*
     Create a shared instance used for the entirety of the program
     Singleton Class
@@ -70,12 +73,13 @@
     {
         self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
        // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
-       
-       // Add a button to the menu icon..
-        UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+       // Add a hamburger button to the menu icon..
+        UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
         [menuView addTarget:self action:@selector(openDrawer) forControlEvents:UIControlEventTouchUpInside];
         [menuView setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuView];
+        
+        
         
     }
     return self;
@@ -118,8 +122,14 @@
         }];
     
        //   // add the slide gesture recogniser to the view
-       //    ((SWRevealViewController *)_containerViewController).panGestureRecognizer.enabled = YES;
-       //    [centerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
+        
+         [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
+        ((SWRevealViewController *)_containerViewController).tapGestureRecognizer.cancelsTouchesInView = NO; // inorder to ensure that the tap gesture also is passed to the menu view controller.
+         [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).tapGestureRecognizer];
+        
+       // see : https://github.com/John-Lluch/SWRevealViewController/issues/152
+       
+     
     }
     
     return _containerViewController;
@@ -193,7 +203,7 @@
 {
     UINavigationController *navController = [[RUNavigationController alloc] init];  // Should a new instance be created ???
     [RUAppearance applyAppearanceToNavigationController:navController];
-    
+   
     /*
         This function seems to be the source of error , for the bus etc , one specific way to used to 
         display the controller , but for the dtables another way to present the information is used .
@@ -206,11 +216,7 @@
     self.containerViewController.containedViewController = navController;
    
     
-   // inorder to ensure that the gestures given to each of the seperate view controller ( like bus , soc , web ) etc will support these gestures...
-    [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).panGestureRecognizer];
-    [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).tapGestureRecognizer];
-    
-    [self.containerViewController closeDrawer];  // ???? Closing the side view bar ?
+    [self.containerViewController closeDrawer];
 }
 
 
@@ -225,8 +231,7 @@
 }
 
 /*
-    The slide drawer is build by using MMDrawController lib. 
-    This sets up the slide view controller
+    his sets up the slide view controller
     Get the top view controller for a given channel
     That is get the view controller for a channel. Emebed the channel in a navigation controller and then return the top navigation controller
  */
@@ -250,11 +255,7 @@
     {
         [RUChannelManager sharedInstance].lastChannel = item;
         self.containerViewController.containedViewController = [self topViewControllerForChannel:item];
-        
-        
-   // inorder to ensure that the gestures given to each of the seperate view controller ( like bus , soc , web ) etc will support these gestures...
-        [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).panGestureRecognizer];
-        [self.containerViewController.containedViewController.view addGestureRecognizer:((SWRevealViewController *)self.containerViewController).tapGestureRecognizer];
+      
     }
     else
     {
@@ -267,6 +268,13 @@
 {
   //  [self.containerViewController openDrawer]; // use for MD sldie
     [self.containerViewController toogleDrawer]; // use for SWRevel
+    
+   
+    
+  
+    
+    
+    
 }
 
 -(void)openDrawerIfNeeded
@@ -295,5 +303,18 @@
     }
     [self.containerViewController closeDrawer];
 }
+
+// Disable user interaction with the front view when the menu has appearer
+-(void)menuWillAppear
+{
+    [self.containerViewController.containedViewController.view setUserInteractionEnabled:NO];
+}
+
+-(void)menuWillDisappear
+{
+    [self.containerViewController.containedViewController.view setUserInteractionEnabled:YES];
+}
+
+
 
 @end

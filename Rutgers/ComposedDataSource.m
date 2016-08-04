@@ -83,7 +83,8 @@
   //  [self updateLoadingState];
 }
 
--(void)removeAllDataSources{
+-(void)removeAllDataSources
+{
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfSections)];
     for (DataSource *dataSource in self.dataSources) {
         dataSource.delegate = nil;

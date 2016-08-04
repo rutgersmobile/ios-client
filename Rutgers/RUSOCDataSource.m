@@ -80,7 +80,7 @@
 }*/
 
 -(void)loadContent{
-    [self removeAllDataSources];
+  //  [self removeAllDataSources];
     
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         [self.dataLoadingManager getSubjectsWithCompletion:^(NSArray *subjects, NSError *error) {

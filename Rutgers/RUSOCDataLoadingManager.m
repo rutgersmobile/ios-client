@@ -373,20 +373,34 @@ NSDictionary *(^findItemWithMatchingTag)(NSArray<NSDictionary *>*, NSString *) =
     [[NSUserDefaults standardUserDefaults] setObject:level forKey:SOCDataLevelKey];
 }
 
+/*
+    There are two places where information about the semester can be obtained.
+ 
+    The semester from the internet that we currently get.
+    The semester from the stored defaults...
+ 
+ */
+
 -(NSDictionary *)semester
 {
-    NSDictionary *semester = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataSemesterKey];
+    NSDictionary *semester = [[NSUserDefaults standardUserDefaults] dictionaryForKey:SOCDataSemesterKey]; // if the SOC has been loaded earlier then we have stored the semester , and so we get it from the userdefaults.
     
     NSArray *semesters = [RUSOCDataLoadingManager semesters];
-    if ([semesters containsObject:semester] || (!semesters && semester)) return semester;
+    if ([semesters containsObject:semester] || (!semesters && semester))
+    {
+        return semester;
+    }
+    
       return semesters[[RUSOCDataLoadingManager defaultSemesterIndex]];
 }
 
--(void)setSemester:(NSDictionary *)semester{
+-(void)setSemester:(NSDictionary *)semester
+{
     [[NSUserDefaults standardUserDefaults] setObject:semester forKey:SOCDataSemesterKey];
 }
 
--(NSString *)semesterTag {
+-(NSString *)semesterTag
+{
     return self.semester[@"tag"];
 }
 @end
