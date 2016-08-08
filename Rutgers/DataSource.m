@@ -644,27 +644,25 @@
  */
 - (void)whenLoaded:(dispatch_block_t)block
 {
-    self.whenLoadedBlock = block;
-    // call this when data has been loaded
-    
-  /*  // add the block to be loaded to the whenloaded block
     if (self.whenLoadedBlock)
     {
+        // combine our new block with the old one
         dispatch_block_t currentBlock = self.whenLoadedBlock;
         self.whenLoadedBlock = ^
         {
             currentBlock();
             block();
         };
+    } else {
+        self.whenLoadedBlock = block;
     }
-   
-    // execute the whenLaodedBlock is loading is complete and there is a whenLoadedBlock
-    if (self.loadingComplete && self.whenLoadedBlock)
+
+    // execute the whenLoadedBlock if we are done loading
+    if (self.loadingComplete)
     {
         self.whenLoadedBlock();
         self.whenLoadedBlock = nil;
     }
-   */
 }
 
 

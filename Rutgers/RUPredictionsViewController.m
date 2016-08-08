@@ -81,8 +81,15 @@
      */
 
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
-   
-    
+
+    [self.dataSource whenLoaded:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.dataSource != nil) {
+                NSLog(@"DATASOURCE: %@", self.dataSource);
+                self.title = @"asdfadsfasdf";
+            }
+        });
+    }];
     
     
     self.pullsToRefresh = YES;
