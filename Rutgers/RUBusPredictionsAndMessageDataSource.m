@@ -13,6 +13,7 @@
 
 #import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusRoute.h"
+#import "RUBusPrediction.h"
 
 // To Handle the place holder business
 #import "DataSource.h"
@@ -22,6 +23,8 @@
 
 @property (nonatomic) RUPredictionsDataSource * busPredictionsDS;
 @property (nonatomic) RUBusMessagesDataSource * busMessagesDS;
+
+-(void)getTitleFromInternetResponse:(NSArray  *)prediction;
 
 @end
 
@@ -100,6 +103,9 @@
                                    [self.busMessagesDS updateContent];
                                }
                                
+                               [self getTitleFromInternetResponse:predictions];
+                               
+                               
                            }];
                       }
                       else
@@ -163,4 +169,40 @@
          }
      }];
 }
+
+/*
+    Get the title from the internet resposne. 
+ 
+        We do this so that the title can be properly set , when the bus prediction is created from a favourite or a deep link.
+        In these both cases we do not have access to the proper expanded title , we just have access to the tag.
+ 
+ */
+-(void)getTitleFromInternetResponse:(NSArray  *)prediction
+{
+    if([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) // if prediction for a stop , then get title from stopTitle of RUBusPredictiosn
+    {
+        self.responseTitle = ((RUBusPrediction *)prediction[0]).stopTitle; // the stop title will be the same for all items of the stop prediction
+    }
+    else if ([self.item isKindOfClass:[RUBusRoute class]])
+    {
+        self.responseTitle = ((RUBusPrediction*)prediction[0]).routeTitle;
+    }
+    else if ([self.item isKindOfClass:[NSArray class]]) // initliazed from the deep url or favourite ..
+    {
+        // determine if the favourite / link is a route / stop . then take out the required info based on this
+        if([(NSString *)self.item[0] isEqualToString:@"stop"])
+        {
+                self.responseTitle = ((RUBusPrediction *)prediction[0]).stopTitle; // the stop title will be the same for all items of the stop prediction
+        }
+        else if([(NSString *)self.item[0] isEqualToString:@"route"])
+         {
+                self.responseTitle = ((RUBusPrediction*)prediction[0]).routeTitle;
+         }
+        
+        
+    }
+    
+    
+}
+
 @end

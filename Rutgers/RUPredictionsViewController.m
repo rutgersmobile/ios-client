@@ -85,26 +85,10 @@
     [self.dataSource whenLoaded:^{
            if (self.dataSource != nil)
             {
-                id item = ((RUBusPredictionsAndMessageDataSource *)self.dataSource).item;
-                
-                NSLog(@"DATASOURCE ITEM : %@", item);
-                NSString * busTitle ;
-                
-                // base on the location where this object is initialized , the item can be a stop , a route or simply an array
-                if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] || [self.item isKindOfClass:[RUBusRoute class]]) // when initialized from the bus view controller
-                {
-                    busTitle = [self.item title];
-                }
-                else if ([self.item isKindOfClass:[NSArray class]] && [self.item count] >= 2) // when the object has been initializec from a favourite or a deep url
-                {
-                    busTitle = [(NSString*)self.item[1] stringByRemovingPercentEncoding];
-                }
-                
                   dispatch_async(dispatch_get_main_queue(), ^
                     {
-                        self.title = busTitle;
+                        self.title = ((RUBusPredictionsAndMessageDataSource *)self.dataSource).responseTitle;
                     });
-                
             }
     }];
     

@@ -18,5 +18,6 @@
 - (instancetype)initWithItem:(id)item;
 -(void)toggleExpansionForSection:(NSUInteger)section; // toogle whether the section has been expanded or not .
 @property(nonatomic) id item ;
+@property(nonatomic) NSString * responseTitle; // the title of the stop/route obtained from the internet response
 
 @end
