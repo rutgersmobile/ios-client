@@ -22,7 +22,6 @@
 
 @property (nonatomic) RUPredictionsDataSource * busPredictionsDS;
 @property (nonatomic) RUBusMessagesDataSource * busMessagesDS;
-@property id item ;
 
 @end
 

@@ -17,5 +17,6 @@
 
 - (instancetype)initWithItem:(id)item;
 -(void)toggleExpansionForSection:(NSUInteger)section; // toogle whether the section has been expanded or not .
+@property(nonatomic) id item ;
 
 @end
