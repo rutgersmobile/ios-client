@@ -16,6 +16,32 @@
 @end
 
 @implementation RUReaderItem
++(NSDateFormatter *)dateFormatter {
+    static NSDateFormatter* dateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    });
+
+    return dateFormatter;
+}
+
++(NSDateFormatter *)timeFormatter {
+    static NSDateFormatter* timeFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        timeFormatter = [[NSDateFormatter alloc] init];
+        timeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        timeFormatter.dateStyle = NSDateFormatterNoStyle;
+        timeFormatter.timeStyle = NSDateFormatterShortStyle;
+    });
+
+    return timeFormatter;
+}
+
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
@@ -39,8 +65,6 @@
         
         //The image url may be in one of two fields
         NSString *imageUrl;
-        
-        
         id imageEnclosure = [item[@"enclosure"] firstObject];
         if ([imageEnclosure isKindOfClass:[NSDictionary class]]) {
             imageUrl = imageEnclosure[@"_url"];
@@ -63,6 +87,22 @@
     return self;
 }
 
+-(instancetype)initWithAtom:(NSDictionary *)atom {
+    self = [super init];
+    if (self) {
+        _title = atom[@"title"][0];
+        _descriptionText = atom[@"summary"][0];
+        _url = atom[@"id"][0];
+
+        NSDate* date = [self dateFromString:atom[@"updated"][0]];
+        NSString* dateString = [[RUReaderItem dateFormatter] stringFromDate:date];
+        NSString* timeString = [[RUReaderItem timeFormatter] stringFromDate:date];
+
+        _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
+    }
+    return self;
+}
+
 -(instancetype)initWithGame:(NSDictionary *)game
 {
     self = [super init];
@@ -75,40 +115,20 @@
         // get a num prepresentation of the time tag which determines whether a time is present or not
         NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
 
-        // formatter for reading date string from server
-        NSDateFormatter* dateTimeFormatter = [[NSDateFormatter alloc] init];
-        dateTimeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        dateTimeFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'";
-        dateTimeFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-
-        // formatter for printing date
-        // always used since we should always have a date
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        dateFormatter.timeStyle = NSDateFormatterNoStyle;
-
-        // formatter for printing time
-        // only used if we have a time
-        NSDateFormatter* timeFormatter = [[NSDateFormatter alloc] init];
-        timeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        timeFormatter.dateStyle = NSDateFormatterNoStyle;
-        timeFormatter.timeStyle = NSDateFormatterShortStyle;
-
         // String from the server that we need to parse
         // Contains a date and a time
         NSString * dateTime = game[@"start"][@"date"];
 
         // parse the date so we can use it in the UI
-        NSDate* date = [dateTimeFormatter dateFromString:dateTime];
+        NSDate* date = [self dateFromString:dateTime];
 
         // Use the formatter to transform the date portion of our date/time
-        NSString* dateString = [dateFormatter stringFromDate:date];
+        NSString* dateString = [[RUReaderItem dateFormatter] stringFromDate:date];
 
         // If time exists in the date, get it from there
         // otherwise get it from the server
         NSString* timeString = [timePresent boolValue]
-            ? [timeFormatter stringFromDate:date]
+            ? [[RUReaderItem timeFormatter] stringFromDate:date]
             : game[@"start"][@"timeString"];
 
         // Put our time and date strings together for the UI
@@ -152,6 +172,8 @@
         inputFormatters = [NSMutableArray array];
         for (NSString *dateFormatString in @[@"EEEE, MMMM d, yyyy",
                                              @"EEE, d MMM yyyy HH:mm:ss zzz",
+                                             @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'",
+                                             @"yyyy'-'MM'-'dd'T'HH':'mm':'ssZZZZZ",
                                              @"EEE, dd MMM yyyy -HHmm",
                                              @"yyyy-MM-dd HH:mm:ss EEE",
                                              @"EEE, dd MMM yyyy"]){

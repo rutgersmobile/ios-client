@@ -13,7 +13,10 @@
 @interface RUReaderItem : NSObject
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(NSDictionary *)item NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithAtom:(NSDictionary *)item NS_DESIGNATED_INITIALIZER;
 -(instancetype)initWithGame:(NSDictionary *)game NS_DESIGNATED_INITIALIZER;
++(NSDateFormatter *) dateFormatter;
++(NSDateFormatter *) timeFormatter;
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *dateString;
 @property (nonatomic, readonly) NSURL *imageURL;

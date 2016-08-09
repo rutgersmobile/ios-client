@@ -40,7 +40,9 @@
                 
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
                 NSArray *parsedResponse;
-                if(responseObject[@"games"]!=nil)
+                if (responseObject[@"entry"] != nil) {
+                    parsedResponse = [self parseAtomResponse:responseObject[@"entry"]];
+                } else if(responseObject[@"games"]!=nil)
                 {
                     parsedResponse = [self parseGameResponse:responseObject[@"games"]];
                 }
@@ -61,6 +63,15 @@
             [loading doneWithError:error];
         }];
     }];
+}
+
+-(NSArray *)parseAtomResponse:(NSArray *)response {
+    NSMutableArray* parsedItems = [NSMutableArray array];
+    for (NSDictionary *item in response) {
+        RUReaderItem *row = [[RUReaderItem alloc] initWithAtom:item];
+        [parsedItems addObject:row];
+    }
+    return parsedItems;
 }
 
 -(NSArray *)parseGameResponse:(NSArray *)response

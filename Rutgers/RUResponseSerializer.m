@@ -30,7 +30,7 @@
    
     // xml serilizer
     AFXMLResponseSerializer *xmlSerializer = [AFXMLResponseSerializer serializer];
-    xmlSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",nil];
+    xmlSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/xml",@"text/xml",@"application/rss+xml",@"application/atom+xml",nil];
 
     return [self compoundSerializerWithResponseSerializers:@[xmlSerializer,jsonSerializer]];
 }
