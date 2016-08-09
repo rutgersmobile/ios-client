@@ -83,13 +83,18 @@
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
 
     [self.dataSource whenLoaded:^{
-           if (self.dataSource != nil)
+        if (self.dataSource != nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
             {
-                  dispatch_async(dispatch_get_main_queue(), ^
-                    {
-                        self.title = ((RUBusPredictionsAndMessageDataSource *)self.dataSource).responseTitle;
-                    });
-            }
+                RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
+                if (dataSource.responseTitle == nil) {
+                    self.title = @"Bus";
+                } else {
+                    self.title = dataSource.responseTitle;
+                }
+            });
+        }
     }];
     
     
