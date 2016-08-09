@@ -18,6 +18,9 @@
 -(void)openDrawerIfNeeded;
 -(void)openURL:(NSURL *)url;
 
+-(void)openDrawer;
+
 @property (nonatomic) UIViewController <RUContainerController> *containerViewController;
 @property (nonatomic) id selectedItem;
+@property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @end

@@ -12,12 +12,13 @@
 #import "RUUserInfoManager.h"
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
-//#import <MMDrawerController.h> // NO LONGER USED // HAD TOO MANY ERRORS RELATED TO SHOWING THE EDIT OPTIONS VIEW PROPERLY
+#import <MMDrawerController.h> // NO LONGER USED // HAD TOO MANY ERRORS RELATED TO SHOWING THE EDIT OPTIONS VIEW PROPERLY
 #import <SWRevealViewController.h>
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
 #import "Rutgers-Swift.h"
+
 
 /**
     RUMenu -> the menu displayed in the slide bar
@@ -26,6 +27,7 @@
  
  */
 
+#import <WebKit/WebKit.h>
 
 /*
     AUGUST 2ND :
@@ -35,7 +37,6 @@
 
 @interface RURootController () <RUMenuDelegate>
 @property (nonatomic) RUMenuViewController *menuViewController;
-@property (nonatomic) UIBarButtonItem *menuBarButtonItem;
 @end
 
 
@@ -72,13 +73,11 @@
     if (self)
     {
         self.selectedItem = [RUChannelManager sharedInstance].lastChannel;  //obtain the last selected channel
-       // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)];
-       // Add a hamburger button to the menu icon..
-        UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+       // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)]; // revert back to old menu icon.
+        UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
         [menuView addTarget:self action:@selector(openDrawer) forControlEvents:UIControlEventTouchUpInside];
         [menuView setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuView];
-        
         
         
     }
@@ -90,8 +89,7 @@
 // decide which drawer we are going to use for the class
 -(Class)drawerClass
 {
-    //return [MMDrawerController class];
-    return [SWRevealViewController class];
+        return [SWRevealViewController class];
 }
 
 /*
@@ -122,13 +120,16 @@
         }];
     
        //   // add the slide gesture recogniser to the view
-        
-         [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
+       if([self drawerClass] == [SWRevealViewController class])
+       {
+               [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
         ((SWRevealViewController *)_containerViewController).tapGestureRecognizer.cancelsTouchesInView = NO; // inorder to ensure that the tap gesture also is passed to the menu view controller.
          [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).tapGestureRecognizer];
         
        // see : https://github.com/John-Lluch/SWRevealViewController/issues/152
        
+       }
+     
      
     }
     
@@ -266,15 +267,17 @@
 
 -(void)openDrawer
 {
-  //  [self.containerViewController openDrawer]; // use for MD sldie
-    [self.containerViewController toogleDrawer]; // use for SWRevel
-    
-   
-    
   
+    if([self drawerClass] == [SWRevealViewController class])
+    {
+        [self.containerViewController toogleDrawer]; // use for SWRevel
+    }
+    else
+    {
+        [self.containerViewController openDrawer]; // use for MD sldie
+    }
     
-    
-    
+    NSLog(@"toggle Drawer");
 }
 
 -(void)openDrawerIfNeeded
@@ -307,12 +310,14 @@
 // Disable user interaction with the front view when the menu has appearer
 -(void)menuWillAppear
 {
-    [self.containerViewController.containedViewController.view setUserInteractionEnabled:NO];
+    if([self drawerClass] == [SWRevealViewController class])
+        [self.containerViewController.containedViewController.view setUserInteractionEnabled:NO];
 }
 
 -(void)menuWillDisappear
 {
-    [self.containerViewController.containedViewController.view setUserInteractionEnabled:YES];
+    if([self drawerClass] == [SWRevealViewController class])
+        [self.containerViewController.containedViewController.view setUserInteractionEnabled:YES];
 }
 
 

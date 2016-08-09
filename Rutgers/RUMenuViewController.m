@@ -117,7 +117,7 @@
 {
     id item = [self.dataSource itemAtIndexPath:indexPath];
     
-     NSLog(@"%@",item);
+    if(DEV) NSLog(@"%@",item);
     [self.delegate menu:self didSelectItem:item];
 }
 @end

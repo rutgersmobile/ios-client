@@ -18,10 +18,6 @@
 #define DRAWER_DISPLACEMENT 55
 #define DRAWER_ANIM_DURATION 0.35
 
-/*
-    General Style followed is to add methods to the objects during run time using the categoey technique in Obj C
- 
- */
 
 
 @interface UISplitViewController (RUContainer) <RUContainerController>
@@ -63,7 +59,6 @@
 {
     
 }
-
 
 @end
 

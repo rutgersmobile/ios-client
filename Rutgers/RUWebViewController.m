@@ -16,6 +16,9 @@
 #import "NSDictionary+Channel.h"
 #import "UIColor+RutgersColors.h"
 
+
+#import "RURootController.h" // to get access to the menu bar button item
+
 @interface RUWebViewController ()
 @property NSDictionary *channelConfiguration;
 @end
@@ -74,17 +77,22 @@
         sfWebViewController.view.tintColor = [UIColor rutgersRedColor];
         return sfWebViewController;
     } else */
-    if ([WKWebView class]) {
+    if ([WKWebView class])
+    {
         RUWKWebViewController *wkWebViewController = [RUWKWebViewController channelWithConfiguration:channel];
         wkWebViewController.showPageTitles = NO;
         wkWebViewController.hideWebViewBoundaries = YES;
         wkWebViewController.showUrlWhileLoading = NO;
         return wkWebViewController;
-    } else {
+    }
+    else // ios 7 version
+    {
         RUUIWebViewController *uiWebViewController = [RUUIWebViewController channelWithConfiguration:channel];
         uiWebViewController.showPageTitles = NO;
-        uiWebViewController.hideWebViewBoundaries = YES;
         uiWebViewController.showUrlWhileLoading = NO;
+          uiWebViewController.hideWebViewBoundaries = YES;
+     //   UIBarButtonItem * menu = [RURootController sharedInstance].menuBarButtonItem;
+    //    uiWebViewController.applicationLeftBarButtonItems = @[menu];
         return uiWebViewController;
     }
     return nil;

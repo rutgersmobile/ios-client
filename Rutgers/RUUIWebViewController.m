@@ -20,11 +20,14 @@
 +(id)channelWithConfiguration:(NSDictionary *)channel{
     return [[self alloc] initWithChannel:channel];
 }
--(instancetype)initWithChannel:(NSDictionary *)channel{
+-(instancetype)initWithChannel:(NSDictionary *)channel
+{
     NSString *urlString = [channel channelURL];
     self = [super initWithURLString:urlString];
-    if (self) {
+    if (self)
+    {
         self.channelConfiguration = channel;
+        
     }
     return self;
 }

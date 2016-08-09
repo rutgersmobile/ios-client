@@ -110,7 +110,7 @@
 -(void)setupForChannel:(NSDictionary *)channel
 {
     self.channel = channel;
-//    NSLog(@"Channel %@", channel);
+    if(DEV) NSLog(@"Channel %@", channel);
     self.channelTitleLabel.text = [channel channelTitle];
     self.channelImage.image = [channel channelIcon];
 }
