@@ -76,7 +76,7 @@
        // self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openDrawer)]; // revert back to old menu icon.
         UIButton *menuView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
         [menuView addTarget:self action:@selector(openDrawer) forControlEvents:UIControlEventTouchUpInside];
-        [menuView setBackgroundImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
+        [menuView setBackgroundImage:[[UIImage imageNamed:@"menu"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
         self.menuBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:menuView];
         
         
