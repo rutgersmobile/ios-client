@@ -27,7 +27,8 @@
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
     self.toolbarItems = barArray;
-    
+   /*
+    Disbale Gestures for 4.1 release.
     UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
     leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
     
@@ -36,6 +37,8 @@
     
     [self.tableView addGestureRecognizer:leftSwipe];
     [self.tableView addGestureRecognizer:rightSwipe];
+    
+    */
 }
 
 -(void)viewDidChangeWidth{
@@ -99,7 +102,8 @@
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
-
+/*
+ Disable Swipe in 4.1
 -(void)swipeLeft{
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     if (selectedSegmentIndex == -1) return;
@@ -111,6 +115,8 @@
     if (selectedSegmentIndex == -1) return;
     if (selectedSegmentIndex > 0) [self selectSegmentIndex:--selectedSegmentIndex];
 }
+
+ */
 
 -(void)selectSegmentIndex:(NSInteger)index{
     [UIView animateWithDuration:0.15 animations:^{
