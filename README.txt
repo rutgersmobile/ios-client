@@ -14,6 +14,8 @@ Wiki About The Rutgers App
         we add exception in the Rutgers info plist.
 
 
-> Add the Edit Screen Button into the slide menu ...
+> For the Web View Controllers , we use an external library for ios 7 called TOWebViewController. This should be kept on version 2.0.14. Updating to higher versions causes clashes with both libraries that can be used within our app to
+    create the slide view controllers on the left side of the screen.
+
 
 
