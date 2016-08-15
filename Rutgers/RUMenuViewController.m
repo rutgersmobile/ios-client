@@ -81,11 +81,11 @@
     NSIndexPath *indexPath = [[self.dataSource indexPathsForItem:[RURootController sharedInstance].selectedItem] lastObject];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
     
-   
+  /*
          //   Allow user to drag and drop the cells within the menu item
      UILongPressGestureRecognizer * menuCellLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     [self.tableView addGestureRecognizer:menuCellLongPress];
-    
+   */
     
 }
 
