@@ -88,27 +88,7 @@
 -(NSURL *)sharingURL{
     RUSOCDataLoadingManager *manager = self.dataLoadingManager;
  
- 
-    /*
-    if(manager.semester == nil)
-    {
-        NSLog(@"ERROR");
-        [manager performWhenSemestersLoaded:^(NSError *error) {
-            NSLog(@"semsester Load error %@" ,error);
-        }];
-        
-    }
-     
-     
-     When the course is directly accessed from the favourties , without going through the
-    heirarchy , the manager.semester returns nil , as that is filled by a RUCource
-     
-    */
-    
- 
     // if the manager.semester is not loaded then we do not have a sharing url.
-    
-   
     if(manager.semester) // if no manager has been set up , then we do not allow the sharing url to be set up.
     {
         return [NSURL rutgersUrlWithPathComponents:@[

@@ -16,6 +16,12 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
     }
 
  // temp solution
+    
+/*
+        Every class is register with the RUChannelManager by calling a register class static method in the load function of each class.
+        The load is called in objc on every class by the run time library...
+        The load handles the registration process .
+ */
     static func registerClass()
     {
          var onceToken : dispatch_once_t = 0;
@@ -40,32 +46,27 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         return RUEditMenuItemsViewController(style: .Grouped);
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         
         tableView.editing = true
         title = "Edit Channels"
         
-        
-        // 
         tableView.allowsSelectionDuringEditing = false ;
         
         let editDataSource = RUEditMenuItemsDataSource()
         dataSource = editDataSource
-        
-        //navigationItem.rightBarButtonItem = editButtonItem()
-        
+       
+        // Set the background image for the edit channels
         let imageView = UIImageView(image: UIImage(named: "bg"))
         imageView.contentMode = .ScaleToFill
         tableView.backgroundView = imageView
         tableView.separatorColor = UIColor.clearColor()
         
        
-        
-        // Add edit button
-
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
+        // Add edit button :: No need for the edit button as the view controller opens in the edit mode and the changes are saved ..
+      //  self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
     }
     

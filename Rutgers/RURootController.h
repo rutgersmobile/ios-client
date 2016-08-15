@@ -10,6 +10,7 @@
 #import "RUContainerController.h"
 
 
+#import <SWRevealViewController.h>
 
 @interface RURootController : NSObject
 +(instancetype)sharedInstance;

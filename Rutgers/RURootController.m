@@ -13,12 +13,15 @@
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
 #import <MMDrawerController.h> // NO LONGER USED // HAD TOO MANY ERRORS RELATED TO SHOWING THE EDIT OPTIONS VIEW PROPERLY
-#import <SWRevealViewController.h>
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"
 #import "Rutgers-Swift.h"
 
+
+// To setup will fail relationship between the swipe gesture in the bus segment contol and the pan gesture to open the drawer
+#import "RUBusViewController.h"
+#import "SegmentedTableViewController.h"
 
 /**
     RUMenu -> the menu displayed in the slide bar
@@ -122,10 +125,12 @@
        //   // add the slide gesture recogniser to the view
        if([self drawerClass] == [SWRevealViewController class])
        {
-               [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
-        ((SWRevealViewController *)_containerViewController).tapGestureRecognizer.cancelsTouchesInView = NO; // inorder to ensure that the tap gesture also is passed to the menu view controller.
-         [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).tapGestureRecognizer];
-        
+            [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).panGestureRecognizer];
+           ((SWRevealViewController *)_containerViewController).tapGestureRecognizer.cancelsTouchesInView = NO; // inorder to ensure that the tap gesture also is passed to the menu view controller.
+           [_containerViewController.view addGestureRecognizer:((SWRevealViewController *)_containerViewController).tapGestureRecognizer];
+       
+           
+           
        // see : https://github.com/John-Lluch/SWRevealViewController/issues/152
        
        }
@@ -135,6 +140,13 @@
     
     return _containerViewController;
 }
+
+/*
+    The panGestureRecognizer of the slide menu should only work if the swipe gesture for the bus view contoller segmented elements have failed.
+    If the segments have been moved then the same gesture should not cause the menu to slide
+ 
+ 
+ */
 
 -(RUMenuViewController *)menuViewController
 {

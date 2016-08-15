@@ -23,7 +23,12 @@
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
 
-@interface RUBusViewController ()
+
+#import "RURootController.h"
+
+#import <SWRevealViewController.h>
+
+@interface RUBusViewController () <UIGestureRecognizerDelegate>
 
 @end
 
@@ -56,7 +61,27 @@
     self.dataSource = [[RUBusDataSource alloc] init];
     self.searchDataSource = [[BusSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search All Routes and Stops";
+    
+   // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
+    self.leftSwipe.delegate = self;
+    self.rightSwipe.delegate = self;
 }
+
+/*
+    Execute the pan gesture to open the drawer if the swip gesture has failed
+ */
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    BOOL result = NO ;
+   
+    if(  (gestureRecognizer == self.leftSwipe || gestureRecognizer == self.rightSwipe) && [otherGestureRecognizer class] == [SWRevealViewControllerPanGestureRecognizer class])
+    {
+        result = YES;
+    }
+    return result;
+}
+
+
 
 //This causes an update timer to start upon the Bus View controller appearing
 -(void)viewWillAppear:(BOOL)animated

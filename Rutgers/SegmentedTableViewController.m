@@ -11,7 +11,7 @@
 #import "TableViewController_Private.h"
 #import "RUAnalyticsManager.h"
 
-@interface SegmentedTableViewController ()
+@interface SegmentedTableViewController ()<UIGestureRecognizerDelegate>
 
 @end
 
@@ -27,18 +27,16 @@
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
     self.toolbarItems = barArray;
-   /*
-    Disbale Gestures for 4.1 release.
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
-    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    //Disbale Gestures for 4.1 release.
+    _leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
+    _leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
     
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
-    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    _rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
+    _rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     
-    [self.tableView addGestureRecognizer:leftSwipe];
-    [self.tableView addGestureRecognizer:rightSwipe];
+    [self.tableView addGestureRecognizer:_leftSwipe];
+    [self.tableView addGestureRecognizer:_rightSwipe];
     
-    */
 }
 
 -(void)viewDidChangeWidth{
@@ -102,21 +100,44 @@
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
-/*
- Disable Swipe in 4.1
--(void)swipeLeft{
+ //Disable Swipe in 4.1
+// use to swipe among the segment controlls
+-(void)swipeLeft
+{
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     if (selectedSegmentIndex == -1) return;
     if (selectedSegmentIndex < self.segmentedControl.numberOfSegments - 1) [self selectSegmentIndex:++selectedSegmentIndex];
 }
 
--(void)swipeRight{
+-(void)swipeRight
+{
     NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
     if (selectedSegmentIndex == -1) return;
     if (selectedSegmentIndex > 0) [self selectSegmentIndex:--selectedSegmentIndex];
 }
 
+/*
+    If the segmented controls are on the last and first positions , then the swipe gesture has to fail
  */
+
+-(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if(gestureRecognizer == self.rightSwipe) // right swipe should fail if at the first positon
+    {
+        NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
+        if (selectedSegmentIndex == UISegmentedControlNoSegment) return NO;
+        if(selectedSegmentIndex == 0) return NO;
+    }
+    else if(gestureRecognizer == self.leftSwipe) // left swipe should fail if at the last position
+    {
+        NSInteger selectedSegmentIndex = self.segmentedControl.selectedSegmentIndex;
+        if (selectedSegmentIndex == UISegmentedControlNoSegment) return NO;
+        if(selectedSegmentIndex == (self.segmentedControl.numberOfSegments -1 )) return NO;
+    }
+    
+    return YES;
+}
+
 
 -(void)selectSegmentIndex:(NSInteger)index{
     [UIView animateWithDuration:0.15 animations:^{

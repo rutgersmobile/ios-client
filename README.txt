@@ -1,5 +1,25 @@
 Wiki About The Rutgers App
 
+
+Prerequisite :
+        Read apple docs on UITableView
+        Watch Advanced Collection View Applications Lecture.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 > ScarletNight :
             ( JUNE 28TH )
             A Dynamics Table View Controller :
@@ -16,6 +36,8 @@ Wiki About The Rutgers App
 
 > For the Web View Controllers , we use an external library for ios 7 called TOWebViewController. This should be kept on version 2.0.14. Updating to higher versions causes clashes with both libraries that can be used within our app to
     create the slide view controllers on the left side of the screen.
+
+
 
 
 
