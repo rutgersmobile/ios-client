@@ -9,15 +9,12 @@
 import Foundation
 
 import MapKit
-import Mapbox
 
 protocol MapViewDelegate {
     
 }
 
-typealias Annotation = protocol<MKAnnotation, MGLAnnotation>
-
-extension RUPlace: MGLAnnotation { }
+typealias Annotation = protocol<MKAnnotation>
 
 protocol MapView {
     var showsUserLocation: Bool { get set }
@@ -33,30 +30,7 @@ protocol MapView {
     func setVisibleMapRect(mapRect: MKMapRect, animated: Bool)
 }
 
-extension MGLMapView: MapView {
-    var userTrackingBarButtonItem: UIBarButtonItem? { return nil }
-    
-    func addAnnotationWrapper(annotation: Annotation) {
-        addAnnotation(annotation)
-    }
-    
-    func removeAnnotationWrapper(annotation: Annotation) {
-        removeAnnotation(annotation)
-    }
-    
-    func showAnnotationsWrapper(annotations: [Annotation], animated: Bool) {
-        showAnnotations(annotations, animated: animated)
-    }
-    
-    func showCoordinate(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, animated: Bool) {
-        let camera = MGLMapCamera(lookingAtCenterCoordinate: coordinate, fromEyeCoordinate: coordinate, eyeAltitude: altitude)
-        setCamera(camera, animated: animated)
-    }
-    
-    func setVisibleMapRect(mapRect: MKMapRect, animated: Bool) {
-        setVisibleCoordinateBounds(MGLCoordinateBounds(rect: mapRect), animated: animated)
-    }
-}
+
 
 extension MKMapView: MapView {
     var userTrackingBarButtonItem: UIBarButtonItem? {
@@ -81,19 +55,6 @@ extension MKMapView: MapView {
     }
 }
 
-let usesMapBox = false
-
-extension MGLCoordinateBounds {
-    init(rect: MKMapRect) {
-        let nep  = MKMapPointMake(rect.origin.x + rect.size.width, rect.origin.y)
-        let ne = MKCoordinateForMapPoint(nep)
-        
-        let swp = MKMapPointMake(rect.origin.x, rect.origin.y + rect.size.height)
-        let sw = MKCoordinateForMapPoint(swp)
-        
-        self = MGLCoordinateBoundsMake(sw, ne)
-    }
-}
 
 public class MapsViewController: UIViewController {
     public static let defaultMapRect = MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)
@@ -118,17 +79,10 @@ public class MapsViewController: UIViewController {
         super.loadView()
         
         let bounds = view.bounds
-        
-        if usesMapBox {
-            let mapView = MGLMapView(frame: bounds)
-            self.mapView = mapView
-            self.view = mapView;
-
-        } else {
+ 
             let mapView = MKMapView(frame: bounds)
             self.mapView = mapView
             self.view = mapView;
-        }
 
         mapView.setVisibleMapRect(MapsViewController.defaultMapRect, animated: false)
         //mkMapView.delegate = self;

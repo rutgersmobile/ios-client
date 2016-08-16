@@ -78,8 +78,6 @@
 		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
 		04EDDE141D05FDB900A59235 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EDDE131D05FDB900A59235 /* SafariServices.framework */; };
-		04FD97C41D1353B900E9877D /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04FD97C21D1353B900E9877D /* Mapbox.bundle */; };
-		04FD97C51D1353B900E9877D /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C31D1353B900E9877D /* Mapbox.framework */; };
 		04FD97C71D13540500E9877D /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C61D13540500E9877D /* GLKit.framework */; };
 		04FD97C91D13540C00E9877D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C81D13540C00E9877D /* ImageIO.framework */; };
 		04FD97CB1D13541500E9877D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97CA1D13541500E9877D /* MobileCoreServices.framework */; };
@@ -386,8 +384,6 @@
 		04DE78F01B6C13D700B06B6F /* RUUIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUIWebViewController.h; sourceTree = "<group>"; };
 		04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUIWebViewController.m; sourceTree = "<group>"; };
 		04EDDE131D05FDB900A59235 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		04FD97C21D1353B900E9877D /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
-		04FD97C31D1353B900E9877D /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		04FD97C61D13540500E9877D /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		04FD97C81D13540C00E9877D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		04FD97CA1D13541500E9877D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -558,8 +554,6 @@
 		A7B970C2192075F40070A414 /* RUMapsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsData.m; path = Rutgers/RUMapsData.m; sourceTree = SOURCE_ROOT; };
 		A7B970C3192075F40070A414 /* RUMapsTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsTileOverlay.h; path = Rutgers/RUMapsTileOverlay.h; sourceTree = SOURCE_ROOT; };
 		A7B970C4192075F40070A414 /* RUMapsTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsTileOverlay.m; path = Rutgers/RUMapsTileOverlay.m; sourceTree = SOURCE_ROOT; };
-		A7B970C5192075F40070A414 /* RUMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUMapsViewController.h; path = Rutgers/RUMapsViewController.h; sourceTree = SOURCE_ROOT; };
-		A7B970C6192075F40070A414 /* RUMapsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUMapsViewController.m; path = Rutgers/RUMapsViewController.m; sourceTree = SOURCE_ROOT; };
 		A7B970CB19215F910070A414 /* RUNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNetworkManager.h; sourceTree = "<group>"; };
 		A7B970CC19215F910070A414 /* RUNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNetworkManager.m; sourceTree = "<group>"; };
 		A7B970D01921603E0070A414 /* RUChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelManager.h; sourceTree = "<group>"; };
@@ -709,7 +703,6 @@
 				A7C92C9819462A0800609549 /* AddressBook.framework in Frameworks */,
 				A7C92C9919462A0800609549 /* AddressBookUI.framework in Frameworks */,
 				A7910E5819181847002DA45F /* MessageUI.framework in Frameworks */,
-				04FD97C51D1353B900E9877D /* Mapbox.framework in Frameworks */,
 				A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */,
 				C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */,
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
@@ -1138,8 +1131,6 @@
 			isa = PBXGroup;
 			children = (
 				A7B3F7B01954897500458B19 /* osm */,
-				A7B970C5192075F40070A414 /* RUMapsViewController.h */,
-				A7B970C6192075F40070A414 /* RUMapsViewController.m */,
 				0430BAC51D13313C0044F5BF /* MapsViewController.swift */,
 				A73F6572193E422E00E26449 /* RUMapsChannelViewController.h */,
 				A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */,
@@ -1540,8 +1531,6 @@
 			isa = PBXGroup;
 			children = (
 				6254D2811D2329220005A31C /* README.txt */,
-				04FD97C21D1353B900E9877D /* Mapbox.bundle */,
-				04FD97C31D1353B900E9877D /* Mapbox.framework */,
 				C262EFB1188345D10035C8F5 /* Rutgers */,
 				049A4CE11B4AFC890006D1FA /* Rutgers Tests */,
 				047D06DC1BE16DB600DFEAA3 /* RutgersUITests */,
@@ -1770,7 +1759,6 @@
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
-				04FD97C41D1353B900E9877D /* Mapbox.bundle in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
