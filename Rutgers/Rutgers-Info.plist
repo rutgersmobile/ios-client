@@ -41,8 +41,6 @@
 	<string>11</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoicnV0Z2Vyc21vYmlsZSIsImEiOiJjaWxjcTRtMTIzZTltdWdrbjBmOWV4dG5lIn0.Oe8md18ARvd38C_i6aY_uA</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Rutgers would like to use your location to find nearby places and bus stops.</string>
 	<key>UILaunchStoryboardName</key>
