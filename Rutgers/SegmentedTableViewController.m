@@ -27,6 +27,8 @@
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     NSArray *barArray = @[flexibleSpace,segmentedControlButtonItem,flexibleSpace];
     self.toolbarItems = barArray;
+    
+    /*
     //Disbale Gestures for 4.1 release.
     _leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
     _leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
@@ -36,6 +38,7 @@
     
     [self.tableView addGestureRecognizer:_leftSwipe];
     [self.tableView addGestureRecognizer:_rightSwipe];
+     */
     
 }
 
@@ -100,6 +103,7 @@
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
+/*
  //Disable Swipe in 4.1
 // use to swipe among the segment controlls
 -(void)swipeLeft
@@ -115,6 +119,8 @@
     if (selectedSegmentIndex == -1) return;
     if (selectedSegmentIndex > 0) [self selectSegmentIndex:--selectedSegmentIndex];
 }
+*/
+
 
 /*
     If the segmented controls are on the last and first positions , then the swipe gesture has to fail

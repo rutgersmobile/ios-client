@@ -66,10 +66,8 @@
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
 }
-
 /*
-    Execute the pan gesture to open the drawer if the swip gesture has failed
- */
+    //Execute the pan gesture to open the drawer if the swip gesture has failed
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     BOOL result = NO ;
@@ -80,6 +78,7 @@
     }
     return result;
 }
+*/
 
 
 
