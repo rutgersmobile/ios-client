@@ -71,13 +71,13 @@
     Create a web View controller ...
  */
 +(id)_channelWithConfiguration:(NSDictionary *)channel{
-    /*
-    if ([SFSafariViewController class]) {
+    if ([SFSafariViewController class])
+    {
         SFSafariViewController *sfWebViewController = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:[channel channelURL]]];
         sfWebViewController.view.tintColor = [UIColor rutgersRedColor];
         return sfWebViewController;
-    } else */
-    if ([WKWebView class])
+    }
+    else if ([WKWebView class])
     {
         RUWKWebViewController *wkWebViewController = [RUWKWebViewController channelWithConfiguration:channel];
         wkWebViewController.showPageTitles = NO;
