@@ -23,7 +23,8 @@
 
 extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
 
-static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
+static inline NSComparisonResult compare(NSInteger int1, NSInteger int2)
+{
     if (int1 < int2) return NSOrderedAscending;
     if (int1 > int2) return NSOrderedDescending;
     return NSOrderedSame;
@@ -31,7 +32,7 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2){
 
 extern BOOL iPad();
 
-static NSString *const gittag = @"4.1-BETA11";
+static NSString *const gittag = @"4.1-GAMMA1";
 
 static NSString *const api = @"2";
 

@@ -8,6 +8,8 @@
 
 #import "RUReaderGameViewController.h"
 #import "RUReaderDataSource.h"
+#import "RUDefines.h"
+
 
 @interface RUReaderGameViewController()
 @property (nonatomic) NSDictionary *channel;
@@ -28,7 +30,7 @@
     [super viewDidLoad];
     
     // CHange the data Source
-    NSLog(@"Game REader VIew Controller loaded");
+    if(DEV) NSLog(@"Game REader VIew Controller loaded");
     NSString * url = [NSString stringWithFormat:@"sports/%@.json" , self.channel[@"data"]];
     
     self.dataSource = [[RUReaderDataSource alloc] initWithUrl:url];
