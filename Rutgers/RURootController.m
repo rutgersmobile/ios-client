@@ -289,7 +289,7 @@
         [self.containerViewController openDrawer]; // use for MD sldie
     }
     
-    NSLog(@"toggle Drawer");
+    if(DEV) NSLog(@"toggle Drawer");
 }
 
 -(void)openDrawerIfNeeded

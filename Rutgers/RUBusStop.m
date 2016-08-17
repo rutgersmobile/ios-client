@@ -32,7 +32,7 @@
         self.location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
         self.stopId = [dictionary[@"stopId"] integerValue];
         
-        NSLog(@" stop : %@", self.title);
+     //   NSLog(@" stop : %@", self.title);
     }
     
     return self;

@@ -130,7 +130,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                         if (channels.count) // if there are multiple items in the channel
                         {
-                            NSLog(@" # CHANNELS : %i " , (int)channels.count);
+                            //NSLog(@" # CHANNELS : %i " , (int)channels.count);
                             latestDate = date;
                             _contentChannels = channels;  // So we create channel from files converted into JSonn Objects ?
                         }
@@ -392,7 +392,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 
     Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
     
-    NSLog(@"%@",class);
+    //NSLog(@"%@",class);
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view]; // all the view controller used to display the channel conforsm to RUChannelProtocol
     
@@ -402,7 +402,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
     
     vc.title = [channel channelTitle];  // channelTitile is implemnted as a category on the channel (NSDictionary)
-    NSLog(@"class : %@", vc);
+   // NSLog(@"class : %@", vc);
     return vc;
 }
 

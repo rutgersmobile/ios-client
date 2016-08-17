@@ -35,7 +35,6 @@
 }
 -(NSString *)title
 {
-//    NSLog(@" multi stop : %@", [[self.stops firstObject] title]);
     return [[self.stops firstObject] title];
 }
 

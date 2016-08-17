@@ -53,7 +53,7 @@
             break;
     }
    
-    NSLog(@"Base URL : %@ " , baseUrl);
+    //NSLog(@"Base URL : %@ " , baseUrl);
     baseUrl = [baseUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"Base URL : %@ " , baseUrl);
     

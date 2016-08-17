@@ -22,7 +22,6 @@
     {
         _title = dictionary[@"title"];
         _stops = dictionary[@"stops"];
-        NSLog(@" route : %@", self.title);
     }
     return self;
 }

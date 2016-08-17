@@ -142,7 +142,7 @@ NSString * const newarkAgency = @"rutgers-newark";
                     // This contains prediction for stops in the route. The stops are requested using the api
                 
                 
-                NSLog(@"%@",predictions);
+                if(DEV) NSLog(@"%@",predictions);
                 NSMutableArray *parsedPredictions = [NSMutableArray array];
                
                 // create prediction objects
