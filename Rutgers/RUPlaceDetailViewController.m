@@ -60,7 +60,7 @@ static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to 
             if([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,0,0}] && ![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,3,0}])
             {
                // NSLog(@"version > 9.0.0 && version < 9.3.0");
-                UIAlertController * mapIssueAlert = [UIAlertController alertControllerWithTitle:@"Map Support" message:@"Due to an issue with some versions of iOS, maps may not display properly on your device. If this affects you, please open the Apple Maps app or upgrade to at least iOS version 9.3" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController * mapIssueAlert = [UIAlertController alertControllerWithTitle:@"Map Support" message:@"Due to an issue with some versions of iOS, maps may not display properly on your device. If this affects you, please open the Apple Maps app or upgrade to at least iOS version 9.3." preferredStyle:UIAlertControllerStyleAlert];
 
                 CLLocationDegrees searchLat = self.place.coordinate.latitude;
                 CLLocationDegrees searchLon = self.place.coordinate.longitude;
