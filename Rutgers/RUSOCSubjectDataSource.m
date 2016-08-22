@@ -59,7 +59,7 @@
             return;
          }
         
-        if(! courseLoadError)
+        if(! courseLoadError && ! error)
         {
            [loading updateWithContent:^(typeof(self) me)
             {
