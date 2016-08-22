@@ -15,6 +15,8 @@
 #import "NSURL+RUAdditions.h"
 #import "Rutgers-Swift.h"
 
+static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to decide whether to show the pop up warning about maps not working well enough on ios 9.0 , 9.1 and 9.2
+
 @interface RUPlaceDetailViewController ()
 @property (nonatomic) RUPlace *place;
 @property (nonatomic) NSString *serializedPlace;
@@ -48,36 +50,42 @@
         self.dataSource = [[RUPlaceDetailDataSource alloc] initWithSerializedPlace:self.serializedPlace];
     }
 
-    // HACK FOR MAP ISSUE ON 9.0 , 9.1 and 9.2
-   // guard aganist craching on ios 7 as isOpertaingSyste.. only on ios 8 >
-    if([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)])
+    if( ! [[ NSUserDefaults standardUserDefaults] boolForKey:PlacesMapPopupKey])
     {
-        // check the version of the ios . If the version is 9.0 , 9.1 , 9.2 : We warn the user about the issue with the maps linkage
-        if([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,0,0}] && ![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,3,0}])
+        // HACK FOR MAP ISSUE ON 9.0 , 9.1 and 9.2
+       // guard aganist craching on ios 7 as isOpertaingSyste.. only on ios 8 >
+        if([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)] )
         {
-            NSLog(@"version > 9.0.0 && version < 9.3.0");
-            UIAlertController * mapIssueAlert = [UIAlertController alertControllerWithTitle:@"Map Support" message:@"Due to an issue with some versions of iOS, maps may not display properly on your device. If this affects you, please open the Apple Maps app or upgrade to at least iOS version 9.3" preferredStyle:UIAlertControllerStyleAlert];
+            // check the version of the ios . If the version is 9.0 , 9.1 , 9.2 : We warn the user about the issue with the maps linkage
+            if([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,0,0}] && ![[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){9,3,0}])
+            {
+               // NSLog(@"version > 9.0.0 && version < 9.3.0");
+                UIAlertController * mapIssueAlert = [UIAlertController alertControllerWithTitle:@"Map Support" message:@"Due to an issue with some versions of iOS, maps may not display properly on your device. If this affects you, please open the Apple Maps app or upgrade to at least iOS version 9.3" preferredStyle:UIAlertControllerStyleAlert];
 
-            CLLocationDegrees searchLat = self.place.coordinate.latitude;
-            CLLocationDegrees searchLon = self.place.coordinate.longitude;
-            NSString* appleMapsLink = [NSString stringWithFormat:@"http://maps.apple.com/?sll=%f,%f", searchLat, searchLon];
+                CLLocationDegrees searchLat = self.place.coordinate.latitude;
+                CLLocationDegrees searchLon = self.place.coordinate.longitude;
+                NSString* appleMapsLink = [NSString stringWithFormat:@"http://maps.apple.com/?sll=%f,%f", searchLat, searchLon];
 
-            UIAlertAction* openMaps = [UIAlertAction actionWithTitle:@"Open Apple Maps" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appleMapsLink]];
-            }];
-            [mapIssueAlert addAction:openMaps];
+                UIAlertAction* openMaps = [UIAlertAction actionWithTitle:@"Open Apple Maps" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appleMapsLink]];
+                }];
+                
+                [mapIssueAlert addAction:openMaps];
 
-            UIAlertAction* ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {}];
-            [mapIssueAlert addAction:ignoreAction];
+                UIAlertAction* ignoreAction = [UIAlertAction actionWithTitle:@"Ignore" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {}];
+                [mapIssueAlert addAction:ignoreAction];
 
-            UIAlertAction* ignorePermanentlyAction = [UIAlertAction actionWithTitle:@"Ignore Permanently" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action) {
+                UIAlertAction* ignorePermanentlyAction = [UIAlertAction actionWithTitle:@"Ignore Permanently" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:PlacesMapPopupKey];
+                }];
+                [mapIssueAlert addAction:ignorePermanentlyAction];
 
-            }];
-            [mapIssueAlert addAction:ignorePermanentlyAction];
-
-            [self presentViewController:mapIssueAlert animated:YES completion:nil];
-        }
+                [self presentViewController:mapIssueAlert animated:YES completion:nil];
+            }
+        }     
     }
+   
 }
 
 -(void)viewWillAppear:(BOOL)animated{

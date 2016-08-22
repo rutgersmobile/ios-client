@@ -63,9 +63,7 @@
         {
            [loading updateWithContent:^(typeof(self) me)
             {
-             
                  // parse out the title
-         
                  for (NSString * key in [index allKeys]) // keys like names , ids , abber..
                  {
                      NSDictionary * dict = [index objectForKey:key] ;
