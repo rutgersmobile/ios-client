@@ -42,6 +42,19 @@
     return timeFormatter;
 }
 
++(NSDateFormatter *)utcDateFormatter {
+    static NSDateFormatter* utcDateFormatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        utcDateFormatter = [[NSDateFormatter alloc] init];
+        utcDateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+        utcDateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+        utcDateFormatter.dateFormat = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'";
+    });
+
+    return utcDateFormatter;
+}
+
 -(instancetype)initWithItem:(NSDictionary *)item{
     self = [super init];
     if (self) {
@@ -120,7 +133,8 @@
         NSString * dateTime = game[@"start"][@"date"];
 
         // parse the date so we can use it in the UI
-        NSDate* date = [self dateFromString:dateTime];
+        // server game dates are in UTC
+        NSDate* date = [[RUReaderItem utcDateFormatter] dateFromString:dateTime];
 
         // Use the formatter to transform the date portion of our date/time
         NSString* dateString = [[RUReaderItem dateFormatter] stringFromDate:date];

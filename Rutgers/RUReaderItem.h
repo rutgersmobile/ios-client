@@ -17,6 +17,7 @@
 -(instancetype)initWithGame:(NSDictionary *)game NS_DESIGNATED_INITIALIZER;
 +(NSDateFormatter *) dateFormatter;
 +(NSDateFormatter *) timeFormatter;
++(NSDateFormatter *) utcDateFormatter;
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSString *dateString;
 @property (nonatomic, readonly) NSURL *imageURL;
