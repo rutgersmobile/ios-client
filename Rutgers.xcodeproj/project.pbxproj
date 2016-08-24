@@ -91,7 +91,8 @@
 		6244DACC1D46849500D275D7 /* RURecreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACB1D46849500D275D7 /* RURecreationViewController.m */; };
 		6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
-		62CB1E8C1D393813001476D7 /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */; };
+		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
+		62CBC2F31D6DF00000061E1E /* RUReaderGameViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
 		A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; };
@@ -404,8 +405,8 @@
 		6244DACD1D4684B100D275D7 /* RURecCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterViewController.h; path = Rutgers/RURecCenterViewController.h; sourceTree = SOURCE_ROOT; };
 		6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterViewController.m; path = Rutgers/RURecCenterViewController.m; sourceTree = SOURCE_ROOT; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUReaderGameViewController.h; path = ../RUReaderGameViewController.h; sourceTree = "<group>"; };
-		62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUReaderGameViewController.m; path = ../RUReaderGameViewController.m; sourceTree = "<group>"; };
+		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
+		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -1260,8 +1261,8 @@
 				A769931F19352B43008C64EE /* RUReaderItem.m */,
 				A794EBE819005D91006E040C /* RUReaderTableViewCell.h */,
 				A794EBE919005D91006E040C /* RUReaderTableViewCell.m */,
-				62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */,
-				62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */,
+				62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */,
+				62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */,
 			);
 			name = rureader;
 			sourceTree = "<group>";
@@ -1838,6 +1839,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				62CBC2F31D6DF00000061E1E /* RUReaderGameViewController.h in Sources */,
 				04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */,
 				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
 				041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */,
@@ -1897,7 +1899,6 @@
 				04B2F3CC1D09E4D20035F96E /* RUMenuDataSource.swift in Sources */,
 				A7D4B64319ABC94B0087A8BC /* RUOptionsViewController.m in Sources */,
 				A770EDC71948AC0F00DD5866 /* RUInfoTableViewController.m in Sources */,
-				62CB1E8C1D393813001476D7 /* RUReaderGameViewController.m in Sources */,
 				A771A27B199AA987000CD174 /* NSArray+Sort.m in Sources */,
 				04A1EFD71A5C508300DE0351 /* RUPredictionsHeaderRow.m in Sources */,
 				04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */,
@@ -1991,6 +1992,7 @@
 				A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */,
 				04A1EFE81A5C509600DE0351 /* ActiveRoutesDataSource.m in Sources */,
 				A7B3F7B41954A06B00458B19 /* FAQViewController.m in Sources */,
+				62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */,
 				04C0D29F1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m in Sources */,
 				A7DD34951981D41C0078023A /* RecentPlacesDataSource.m in Sources */,
 				A7778D7D19A54852003BD8DE /* RUInfoDataSource.m in Sources */,
