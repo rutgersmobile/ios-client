@@ -1,0 +1,88 @@
+ [
+  {
+  "handle" : "bus",
+  "title": "Bus",
+  "view" : "bus",
+  "icon" : "bus"
+  },
+  {
+  "handle" : "news",
+  "title": "News",
+  "url": "news.txt",
+  "grouped" : true,
+  "icon" : "news"
+  },
+  {
+  "handle" : "food",
+  "title": "Food",
+  "view" : "food",
+  "icon" : "food"
+  },
+  {
+  "handle" : "places",
+  "title": "Places",
+  "view" : "places",
+  "icon" : "places"
+  },
+  {
+  "handle" : "recreation",
+  "title": {
+    "homeCampus": "New Brunswick",
+    "homeTitle": "Recreation",
+    "foreignTitle": "NB Recreation"
+  },
+  "url": "rec.txt",
+  "grouped" : true,
+  "icon" : "recreation"
+  },
+  {
+  "handle" : "events",
+  "title": "Events",
+  "url": "events.txt",
+  "grouped" : true,
+  "icon" : "events"
+  },
+  {
+  "handle" : "soc",
+  "title": "Schedule of Classes",
+  "view" : "soc",
+  "icon" : "soc"
+  },
+  {
+  "handle" : "ruinfo",
+  "title": "RU-Info",
+  "view" : "ruinfo",
+  "icon" : "ruinfo"
+  },
+  {
+  "handle" : "career_services",
+  "title": {
+    "homeCampus": "New Brunswick",
+    "homeTitle": "Career Services",
+    "foreignTitle": "NB Career Services"
+  },
+  "url": "csfaq.txt",
+  "grouped" : true,
+  "icon" : "careers"
+  },
+  {
+  "handle" : "campus_status",
+  "title": "Emergency Services",
+  "url": "emergency.txt",
+  "grouped" : true,
+  "icon" : "emergency"
+  },
+  {
+  "handle" : "feedback",
+  "title": "Feedback",
+  "view" : "feedback",
+  "icon" : "feedback"
+  },
+  {
+  "handle" : "knights",
+  "title": "Scarlet Knights",
+  "icon" : "knights",
+  "grouped" : true,
+  "url": "athleticsfaq.txt",
+  }
+]

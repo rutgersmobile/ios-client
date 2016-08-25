@@ -26,7 +26,8 @@
 
 
 +(NSString *)channelHandle{
-    return @"dtable";
+//    return @"dtable";
+    return @"temp";
 }
 +(void)load{
     [[RUChannelManager sharedInstance] registerClass:[self class]];

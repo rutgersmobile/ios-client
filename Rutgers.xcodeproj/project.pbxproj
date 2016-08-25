@@ -88,6 +88,12 @@
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
+		622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */; };
+		622AFBD01D6F41AB00ED4A9D /* AtheleticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBCF1D6F41AB00ED4A9D /* AtheleticsViewController.swift */; };
+		622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */; };
+		622AFBDE1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622AFBDC1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib */; };
+		622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */; };
+		622AFBE21D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */; };
 		6244DACC1D46849500D275D7 /* RURecreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACB1D46849500D275D7 /* RURecreationViewController.m */; };
 		6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
@@ -400,6 +406,13 @@
 		621872C91D340B9500E727E3 /* RUBusMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessageCell.m; sourceTree = "<group>"; };
 		621872CB1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusPredictionsAndMessageDataSource.h; sourceTree = "<group>"; };
 		621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusPredictionsAndMessageDataSource.m; sourceTree = "<group>"; };
+		622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSwiftClassesLoader.h; sourceTree = "<group>"; };
+		622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSwiftClassesLoader.m; sourceTree = "<group>"; };
+		622AFBCF1D6F41AB00ED4A9D /* AtheleticsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtheleticsViewController.swift; sourceTree = "<group>"; };
+		622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewController.swift; sourceTree = "<group>"; };
+		622AFBDC1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
+		622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewCell.xib; sourceTree = "<group>"; };
+		622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewCell.swift; sourceTree = "<group>"; };
 		6244DACA1D46849500D275D7 /* RURecreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecreationViewController.h; path = Rutgers/RURecreationViewController.h; sourceTree = SOURCE_ROOT; };
 		6244DACB1D46849500D275D7 /* RURecreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecreationViewController.m; path = Rutgers/RURecreationViewController.m; sourceTree = SOURCE_ROOT; };
 		6244DACD1D4684B100D275D7 /* RURecCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterViewController.h; path = Rutgers/RURecCenterViewController.h; sourceTree = SOURCE_ROOT; };
@@ -879,6 +892,14 @@
 			name = abstract;
 			sourceTree = "<group>";
 		};
+		622AFBCE1D6F414A00ED4A9D /* athletics */ = {
+			isa = PBXGroup;
+			children = (
+				622AFBCF1D6F41AB00ED4A9D /* AtheleticsViewController.swift */,
+			);
+			name = athletics;
+			sourceTree = "<group>";
+		};
 		71C113FD36A753397BBAA999 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -932,13 +953,6 @@
 				A75E7EC719A3F2F300782AE5 /* NewBrunswickFoodDataSource.m */,
 			);
 			name = DataSources;
-			sourceTree = "<group>";
-		};
-		A7241A4F19899A3B00304436 /* Datasource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Datasource;
 			sourceTree = "<group>";
 		};
 		A72FFFAC1937C32000016C89 /* rusoc */ = {
@@ -1276,15 +1290,10 @@
 				A7E8E1341924846F0089F166 /* rutext */,
 				A7E8E13919249FEB0089F166 /* ruwebview */,
 				04203AF61B15147E005A7099 /* ordered_content.json */,
+				622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */,
+				622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */,
 			);
 			name = channels;
-			sourceTree = "<group>";
-		};
-		A7C155EF19899F9200CDCAE3 /* view */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = view;
 			sourceTree = "<group>";
 		};
 		A7C155F5198AB23400CDCAE3 /* concrete data sources */ = {
@@ -1312,14 +1321,6 @@
 				04FD97D51D14988300E9877D /* PlaceholderDataSource.m */,
 			);
 			name = "concrete data sources";
-			sourceTree = "<group>";
-		};
-		A7C92C8F19460F1C00609549 /* ruathletics */ = {
-			isa = PBXGroup;
-			children = (
-				A7F956511963354E0074305D /* Roster */,
-			);
-			name = ruathletics;
 			sourceTree = "<group>";
 		};
 		A7D73B22197887FD006BC215 /* data source */ = {
@@ -1515,17 +1516,12 @@
 				A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */,
 				A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */,
 				A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */,
+				622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */,
+				622AFBDC1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib */,
+				622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */,
+				622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */,
 			);
 			name = dtable;
-			sourceTree = "<group>";
-		};
-		A7F956511963354E0074305D /* Roster */ = {
-			isa = PBXGroup;
-			children = (
-				A7C155EF19899F9200CDCAE3 /* view */,
-				A7241A4F19899A3B00304436 /* Datasource */,
-			);
-			name = Roster;
 			sourceTree = "<group>";
 		};
 		C262EF9F188345D10035C8F5 = {
@@ -1592,11 +1588,11 @@
 				A75B0AAD1909A3EA00A57149 /* common */,
 				04A1EFC41A5C506900DE0351 /* rubus */,
 				A7B2D98F190ED654003ABEA3 /* rufood */,
+				622AFBCE1D6F414A00ED4A9D /* athletics */,
 				A7910E5919182008002DA45F /* rurecreation */,
 				A70810781906F87C0087EB82 /* ruplaces */,
 				A77028A5191C8880003F5D28 /* rumaps */,
 				A72FFFAC1937C32000016C89 /* rusoc */,
-				A7C92C8F19460F1C00609549 /* ruathletics */,
 				A770EDC41948AC0100DD5866 /* ruinfo */,
 				A7B3F7B51954A66500458B19 /* rufeedback */,
 				A754263019AFAA6B00D4E573 /* options */,
@@ -1754,12 +1750,14 @@
 				04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
+				622AFBDE1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib in Resources */,
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
+				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
@@ -1883,6 +1881,7 @@
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				A7C92C9C19462BA300609549 /* RUPlace.m in Sources */,
 				A7F9029C19A7C02500FD3054 /* ALTableViewToggleCell.m in Sources */,
+				622AFBE21D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift in Sources */,
 				A75E7EC219A3E18D00782AE5 /* UITableView+Selection.m in Sources */,
 				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
@@ -1962,12 +1961,14 @@
 				A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */,
 				A7D4B64F19ABD81F0087A8BC /* RUPlaceDetailDataSource.m in Sources */,
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,
+				622AFBD01D6F41AB00ED4A9D /* AtheleticsViewController.swift in Sources */,
 				A7D73B271978880C006BC215 /* TableViewController.m in Sources */,
 				04C0D2A21C80FB8600FEF0D7 /* RUFoodDataLoadingManager.m in Sources */,
 				A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */,
 				04B2F3D01D09F0680035F96E /* RUEditMenuItemsDataSource.swift in Sources */,
 				A7D73B281978880C006BC215 /* SegmentedTableViewController.m in Sources */,
 				A75E7EC819A3F2F300782AE5 /* NewBrunswickFoodDataSource.m in Sources */,
+				622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */,
 				A7EA4C4B197D67EC00E972DD /* NSObject+KVOBlock.m in Sources */,
 				A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */,
 				A7C15600198ABA4600CDCAE3 /* StringDataSource.m in Sources */,
@@ -1977,6 +1978,7 @@
 				04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */,
 				A7DD34871981B5E80078023A /* RUSOCDataSource.m in Sources */,
 				04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */,
+				622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */,
 				A7241A1B1988168800304436 /* RUFoodDataSource.m in Sources */,
 				04B2F3CA1D09D56E0035F96E /* RUActiveMenuItemDataSource.swift in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
