@@ -43,7 +43,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //Do super to handle item expansion state
+    //Do super to 
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     id item = [self.dataSource itemAtIndexPath:indexPath];

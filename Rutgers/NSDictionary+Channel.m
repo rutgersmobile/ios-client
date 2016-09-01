@@ -17,19 +17,26 @@
 
 @implementation NSDictionary (Channel)
 
--(NSString *)channelTitle{
+-(NSString *)channelTitle
+{
     id title = self[@"title"];
-    if ([title isKindOfClass:[NSString class]]) {
+    if ([title isKindOfClass:[NSString class]])
+    {
         return title = title;
-    } else if ([title isKindOfClass:[NSDictionary class]]) {
+    }
+    else if ([title isKindOfClass:[NSDictionary class]])
+    {
         NSString *campus = title[@"homeCampus"];
         /*
             Based on the campus title , the schools will be different and the campus will be foreign or home based on the 
             campus choosen
          */
-        if ([campus isEqualToString:[RUUserInfoManager currentCampus][@"title"]]) {
+        if ([campus isEqualToString:[RUUserInfoManager currentCampus][@"title"]])
+        {
             return title[@"homeTitle"];
-        } else {
+        }
+        else
+        {
             return title[@"foreignTitle"];
         }
     }

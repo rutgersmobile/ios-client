@@ -14,4 +14,5 @@
 @property (nonatomic) NSUInteger itemLimit;
 @property (nonatomic, readonly) NSInteger numberOfItems;
 - (void)setItems:(NSArray *)items animated:(BOOL)animated;
+- (id)itemAtIndexPath:(NSIndexPath *)indexPath;
 @end

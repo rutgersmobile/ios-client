@@ -12,9 +12,17 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 
+#warning TODO : creating two seperate classes . DataSource for the tableViewController and the DataSource for the CollectionViewController
+
 @implementation DynamicDataSource
 
--(instancetype)initWithChannel:(NSDictionary *)channel{
+-(instancetype)initWithChannel:(NSDictionary *)channel
+{
+    return [self initWithChannel:channel forLayout:NO];
+}
+
+-(instancetype)initWithChannel:(NSDictionary *)channel forLayout:(BOOL)layout
+{
     self = [super init];
     if (self) {
         self.channel = channel;
@@ -27,10 +35,17 @@
                     me.items = children;
                 }];
             }];
+            
+            if(layout)
+            {
+                self.items = children;
+            }
         }
     }
     return self;
 }
+
+
 
 -(void)loadContent{
     //If the channel doesnt have a url it was already loaded in init
@@ -66,6 +81,42 @@
         }];
         
     }];
+}
+
+/*
+    Load the content without the state machine . Update the values and do the completeion block
+    No error handling for now , but more complex features will be added...
+ */
+-(void)loadContentWithAnyBlock:(void(^)(void)) completionBlock
+{
+    if (![self.channel channelURL])
+    {
+        completionBlock();
+        return ;
+    }
+
+        [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject)
+        {
+            if ([responseObject isKindOfClass:[NSDictionary class]])
+            {
+                //Update with the response
+                NSArray *items = responseObject[@"children"];
+                self.items = items;
+            }
+            else
+            {
+                //Clear the items
+                self.items = nil;
+            }
+            
+            completionBlock();
+        }
+        failure:^(NSURLSessionDataTask * task, NSError * error)
+        {
+            self.items = nil ;
+        }];
+    
+   // run the completion block
 }
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView{

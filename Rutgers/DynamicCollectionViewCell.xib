@@ -14,8 +14,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uH9-wH-4fo">
-                        <rect key="frame" x="42" y="76" width="117" height="52"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="90" translatesAutoresizingMaskIntoConstraints="NO" id="pf3-8h-Meg">
+                        <rect key="frame" x="79" y="90" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -26,14 +26,14 @@
             <color key="backgroundColor" red="1" green="0.083881094245163879" blue="0.16845411863064519" alpha="1" colorSpace="calibratedRGB"/>
             <color key="tintColor" red="0.85765224360000003" green="0.0" blue="0.0080291306450000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="uH9-wH-4fo" firstAttribute="centerY" secondItem="1ZJ-QN-Vhi" secondAttribute="centerY" id="JP7-Qq-yvm"/>
-                <constraint firstItem="uH9-wH-4fo" firstAttribute="centerX" secondItem="1ZJ-QN-Vhi" secondAttribute="centerX" id="sWv-zL-OVo"/>
+                <constraint firstItem="pf3-8h-Meg" firstAttribute="centerX" secondItem="1ZJ-QN-Vhi" secondAttribute="centerX" id="66b-xO-aZ1"/>
+                <constraint firstItem="pf3-8h-Meg" firstAttribute="centerY" secondItem="1ZJ-QN-Vhi" secondAttribute="centerY" id="wY1-km-nR4"/>
             </constraints>
             <size key="customSize" width="194" height="120"/>
             <connections>
-                <outlet property="title" destination="uH9-wH-4fo" id="sBY-LY-meg"/>
+                <outlet property="title" destination="pf3-8h-Meg" id="KMj-WQ-4ts"/>
             </connections>
-            <point key="canvasLocation" x="623" y="377"/>
+            <point key="canvasLocation" x="278" y="304"/>
         </collectionViewCell>
     </objects>
 </document>

@@ -32,8 +32,8 @@
     {
         [RUEditMenuItemsViewController registerClass];
         [DynamicCollectionViewController registerClass];
-        
-        
+   
+        [AthleticsCollectionViewController registerClass];
         
         
     });

@@ -10,5 +10,7 @@ import UIKit
 
 class DynamicCollectionViewCell: UICollectionViewCell {
     
+
     @IBOutlet weak var title: UILabel!
+   
 }

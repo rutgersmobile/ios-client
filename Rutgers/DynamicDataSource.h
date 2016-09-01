@@ -12,7 +12,8 @@
     This is the class used to model the infomation for the dynamic tbvc
  */
 @interface DynamicDataSource : BasicDataSource
--(instancetype)initWithChannel:(NSDictionary *)channel NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithChannel:(NSDictionary *)channel ;
+-(instancetype)initWithChannel:(NSDictionary *)channel forLayout:(BOOL)layout  NS_DESIGNATED_INITIALIZER;
 @property NSDictionary *channel;
-
+-(void)loadContentWithAnyBlock:(void(^)(void)) completionBlock;
 @end

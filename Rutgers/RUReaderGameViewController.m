@@ -22,7 +22,8 @@
 
 + (NSString *)channelHandle
 {
-    return @"Athletics";
+//    return @"Athletics";
+    return @"temp2";
 }
 
 - (void)viewDidLoad
