@@ -13,8 +13,98 @@ private let reuseIdentifier = "Cell_Atheletics"
 /*
     Add image chaching mechanism to the Reader Data Source
  */
-extension  RUReaderDataSource
+extension  RUReaderDataSource : UICollectionViewDelegate
 {
+    
+    // MARK: UICollectionViewDataSource
+    
+    override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return self.numberOfSections
+    }
+    
+    
+    override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of items
+        return self.numberOfItemsInSection(section)
+    }
+    
+    override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! AthleticsCollectionViewCell
+        
+        let item : RUReaderItem = self.itemAtIndexPath(indexPath) as! RUReaderItem ;
+        
+        
+        // get the image in a sepereate thread and fill it in
+        
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
+        {
+            let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
+            
+            dispatch_async(dispatch_get_main_queue())
+            {
+                // Update the UI
+                cell.schoolIcon.contentMode = .ScaleAspectFit
+                cell.schoolIcon.image = UIImage(data: imageData!)!
+            }
+        }
+        
+        
+        // if Rutgers is home
+        if(item.isRuHome)
+        {
+            cell.homeScore.text = String(item.ruScore)
+            cell.homeScore.textColor = UIColor.redColor()
+            cell.awayScore.text = String(item.otherScore)
+        }
+        else
+        {
+            cell.awayScore.text = String(item.ruScore)
+            cell.awayScore.textColor = UIColor.redColor()
+            cell.homeScore.text = String(item.otherScore)
+        }
+        
+        // if Ru won
+        if(item.ruWin)
+        {
+            cell.sideIndicator.backgroundColor = UIColor.redColor()
+        }
+        else
+        {
+            cell.sideIndicator.backgroundColor = UIColor.grayColor()
+        }
+        
+        
+        cell.locationLabel.text = item.descriptionText
+        cell.dateTimeLabel.text = item.dateString
+        cell.schoolNameLabel.text = item.title
+        
+        // set the shadow
+        
+        /*
+         self.viewBg!.layer.shadowOffset = CGSizeMake(0, 0)
+         self.viewBg!.layer.shadowColor = UIColor.blackColor().CGColor
+         self.viewBg!.layer.shadowRadius = 4
+         self.viewBg!.layer.shadowOpacity = 0.25
+         self.viewBg!.layer.masksToBounds = false;
+         self.viewBg!.clipsToBounds = false;
+         */
+        
+        
+        cell.layer.shadowOffset = CGSizeZero;
+        cell.layer.shadowColor = UIColor.blackColor().CGColor
+        cell.layer.shadowRadius = 4.0;
+        cell.layer.shadowOpacity = 0.5;
+        cell.layer.masksToBounds = false;
+        
+        return cell
+    }
+    
+    
+
+    
     
 }
 
@@ -73,7 +163,8 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         layout.minimumInteritemSpacing = 18 ;
         self.collectionView!.setCollectionViewLayout(layout, animated: true)
         
-       
+
+        
        // get the url to visit
         let atheleticsUrl = "sports/\(self.channel["data"]!).json"
         self.dataSource = RUReaderDataSource.init(url: atheleticsUrl)
@@ -88,104 +179,17 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
                 }
         }
        
+        self.collectionView?.dataSource = self.dataSource
        // Add notification to handle rotate of the app .. 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AthleticsCollectionViewController.didRotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
     }
 
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return self.dataSource.numberOfSections
-    }
-
-
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return self.dataSource.numberOfItemsInSection(section)
-    }
-
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
-    {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! AthleticsCollectionViewCell
-        
-        let item : RUReaderItem = self.dataSource.itemAtIndexPath(indexPath) as! RUReaderItem ;
-      
-        
-        // get the image in a sepereate thread and fill it in 
-       
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
-        {
-            let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
-            
-            dispatch_async(dispatch_get_main_queue())
-            {
-                // Update the UI
-                cell.schoolIcon.contentMode = .ScaleAspectFit
-                cell.schoolIcon.image = UIImage(data: imageData!)!
-            }
-        }
-        
-
-        // if Rutgers is home
-        if(item.isRuHome)
-        {
-            cell.homeScore.text = String(item.ruScore)
-            cell.homeScore.textColor = UIColor.redColor()
-            cell.awayScore.text = String(item.otherScore)
-        }
-        else
-        {
-            cell.awayScore.text = String(item.ruScore)
-            cell.awayScore.textColor = UIColor.redColor()
-            cell.homeScore.text = String(item.otherScore)
-        }
-       
-        // if Ru won 
-        if(item.ruWin)
-        {
-            cell.sideIndicator.backgroundColor = UIColor.redColor()
-        }
-        else
-        {
-            cell.sideIndicator.backgroundColor = UIColor.grayColor()
-        }
-        
-        
-        cell.locationLabel.text = item.descriptionText
-        cell.dateTimeLabel.text = item.dateString
-        cell.schoolNameLabel.text = item.title
-
-        // set the shadow
-
-        /*
-        self.viewBg!.layer.shadowOffset = CGSizeMake(0, 0)
-        self.viewBg!.layer.shadowColor = UIColor.blackColor().CGColor
-        self.viewBg!.layer.shadowRadius = 4
-        self.viewBg!.layer.shadowOpacity = 0.25
-        self.viewBg!.layer.masksToBounds = false;
-        self.viewBg!.clipsToBounds = false;
-       */
-       
-    
-        cell.layer.shadowOffset = CGSizeZero;
-        cell.layer.shadowColor = UIColor.blackColor().CGColor
-        cell.layer.shadowRadius = 4.0;
-        cell.layer.shadowOpacity = 0.5;
-        cell.layer.masksToBounds = false;
-        
-        return cell
-    }
-
-   
     // MARK: Flow Layout Delegate
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        // deteremine the cell hieght based on the orientation and device .. 
-
+        // deteremine the cell hieght based on the orientation and device ..
+        
         var cellHeight : CGFloat?
         let orientation = UIApplication.sharedApplication().statusBarOrientation
         if(orientation == .LandscapeLeft || orientation == .LandscapeRight)
@@ -196,7 +200,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         {
             cellHeight = (self.collectionView?.bounds.height)! / 5 ;
         }
-
+        
         return CGSizeMake(  (self.collectionView?.bounds.size.width)! - 20 , cellHeight! ) ;
     }
    
