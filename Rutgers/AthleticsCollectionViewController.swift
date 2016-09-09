@@ -8,9 +8,18 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "Cell_Atheletics"
 
-class AthleticsCollectionViewController: UICollectionViewController , RUChannelProtocol
+/*
+    Add image chaching mechanism to the Reader Data Source
+ */
+extension  RUReaderDataSource
+{
+    
+}
+
+
+class AthleticsCollectionViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout ,RUChannelProtocol
 {
     var dataSource : RUReaderDataSource! = nil
     var channel : NSDictionary! = nil
@@ -43,7 +52,8 @@ class AthleticsCollectionViewController: UICollectionViewController , RUChannelP
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
 
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
@@ -52,79 +62,149 @@ class AthleticsCollectionViewController: UICollectionViewController , RUChannelP
         activityIndicator.startAnimating()
         self.view.addSubview(activityIndicator)
         
-        // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        
+        self.collectionView!.registerNib(UINib.init(nibName: "AthleticsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
         
         // Do any additional setup after loading the view.
+        
+
+        let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout();
+        layout.sectionInset = UIEdgeInsetsMake(18, 10 , 18, 10 )
+        layout.minimumLineSpacing = 18 ;
+        layout.minimumInteritemSpacing = 18 ;
+        self.collectionView!.setCollectionViewLayout(layout, animated: true)
+        
+       
+       // get the url to visit
+        let atheleticsUrl = "sports/\(self.channel["data"]!).json"
+        self.dataSource = RUReaderDataSource.init(url: atheleticsUrl)
+        
+        self.dataSource.loadContentWithAnyBlock
+            {
+                dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
+                {
+                    self.collectionView!.reloadData()
+                    self.collectionView!.layoutIfNeeded()
+                    self.activityIndicator.stopAnimating()
+                }
+        }
+       
+       // Add notification to handle rotate of the app .. 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AthleticsCollectionViewController.didRotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return self.dataSource.numberOfSections
     }
 
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return self.dataSource.numberOfItemsInSection(section)
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! AthleticsCollectionViewCell
+        
+        let item : RUReaderItem = self.dataSource.itemAtIndexPath(indexPath) as! RUReaderItem ;
+      
+        
+        // get the image in a sepereate thread and fill it in 
+       
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
+        {
+            let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
+            
+            dispatch_async(dispatch_get_main_queue())
+            {
+                // Update the UI
+                cell.schoolIcon.contentMode = .ScaleAspectFit
+                cell.schoolIcon.image = UIImage(data: imageData!)!
+            }
+        }
+        
+
+        // if Rutgers is home
+        if(item.isRuHome)
+        {
+            cell.homeScore.text = String(item.ruScore)
+            cell.homeScore.textColor = UIColor.redColor()
+            cell.awayScore.text = String(item.otherScore)
+        }
+        else
+        {
+            cell.awayScore.text = String(item.ruScore)
+            cell.awayScore.textColor = UIColor.redColor()
+            cell.homeScore.text = String(item.otherScore)
+        }
+       
+        // if Ru won 
+        if(item.ruWin)
+        {
+            cell.sideIndicator.backgroundColor = UIColor.redColor()
+        }
+        else
+        {
+            cell.sideIndicator.backgroundColor = UIColor.grayColor()
+        }
+        
+        
+        cell.locationLabel.text = item.descriptionText
+        cell.dateTimeLabel.text = item.dateString
+        cell.schoolNameLabel.text = item.title
+
+        // set the shadow
+
+        /*
+        self.viewBg!.layer.shadowOffset = CGSizeMake(0, 0)
+        self.viewBg!.layer.shadowColor = UIColor.blackColor().CGColor
+        self.viewBg!.layer.shadowRadius = 4
+        self.viewBg!.layer.shadowOpacity = 0.25
+        self.viewBg!.layer.masksToBounds = false;
+        self.viewBg!.clipsToBounds = false;
+       */
+       
     
-        // Configure the cell
-    
+        cell.layer.shadowOffset = CGSizeZero;
+        cell.layer.shadowColor = UIColor.blackColor().CGColor
+        cell.layer.shadowRadius = 4.0;
+        cell.layer.shadowOpacity = 0.5;
+        cell.layer.masksToBounds = false;
+        
         return cell
     }
 
-    // MARK: UICollectionViewDelegate
+   
+    // MARK: Flow Layout Delegate
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        // deteremine the cell hieght based on the orientation and device .. 
 
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
+        var cellHeight : CGFloat?
+        let orientation = UIApplication.sharedApplication().statusBarOrientation
+        if(orientation == .LandscapeLeft || orientation == .LandscapeRight)
+        {
+            cellHeight = (self.collectionView?.bounds.height)! / 3 ;
+        }
+        else
+        {
+            cellHeight = (self.collectionView?.bounds.height)! / 5 ;
+        }
 
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+        return CGSizeMake(  (self.collectionView?.bounds.size.width)! - 20 , cellHeight! ) ;
     }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
+   
+   
+    func didRotate()
+    {
+        print("rotate")
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
     
 }

@@ -82,6 +82,8 @@
 
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
 
+#warning TO DO Improve code here
+    // Set the title of the Bus . This usually happens , when we do not have a title ..
     [self.dataSource whenLoaded:^{
         if (self.dataSource != nil)
         {
@@ -96,6 +98,8 @@
             });
         }
     }];
+   
+    
     
     
     self.pullsToRefresh = YES;

@@ -25,7 +25,7 @@
                 <outlet property="dataSource" destination="-1" id="Tng-2m-Rnh"/>
                 <outlet property="delegate" destination="-1" id="9aC-8N-iBw"/>
             </connections>
-            <point key="canvasLocation" x="446" y="628"/>
+            <point key="canvasLocation" x="514" y="621"/>
         </collectionView>
     </objects>
 </document>

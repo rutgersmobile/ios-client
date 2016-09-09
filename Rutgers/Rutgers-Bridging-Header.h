@@ -13,6 +13,7 @@
 
 #import "DynamicDataSource.h"
 #import "RUReaderDataSource.h"
+#import "RUReaderItem.h"
 
 #import "RUMenuTableViewCell.h"
 #import "AAPLPlaceholderView.h"

@@ -122,8 +122,49 @@
     if (self)
     {
         self.item = game;
+        
+        
         _title = game[@"description"];
-
+        // get the title from the description by manipulating it
+       
+        
+        
+        // title is of the form Rutgers at Bucknell (L, 2 - 0)
+         
+        NSMutableCharacterSet * skippedChars = [NSMutableCharacterSet whitespaceCharacterSet]; // skip white spaces
+        [skippedChars formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
+        [skippedChars formUnionWithCharacterSet:[NSCharacterSet symbolCharacterSet]];
+        NSScanner * scanner = [NSScanner scannerWithString:_title];
+        [scanner setCharactersToBeSkipped:skippedChars];
+        NSString * otherSchoolName , * vsOrAtStr ;
+       
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&otherSchoolName]; // store the rutgers name
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&vsOrAtStr]; // store the vs or at
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&otherSchoolName]; // rewrite with the other name
+     
+        NSString * didRuWin ;
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&didRuWin]; // letter for W or L
+   
+        if([didRuWin isEqualToString:@"W"])
+        {
+            _ruWin = true;
+        }
+        else
+        {
+            _ruWin = false ;
+        }
+        
+        
+        if([vsOrAtStr isEqualToString:@"at"])
+        {
+                vsOrAtStr = @"@"; // convert the at to @
+        }
+        
+         //  title now of the form  @ Bucknell
+        _title = [ NSString stringWithFormat:@"%@ %@", vsOrAtStr , otherSchoolName];
+        
+        
+        
         // Ensuring compatability with the new server changes
         // get a num prepresentation of the time tag which determines whether a time is present or not
         NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
@@ -149,6 +190,48 @@
         _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
 
         _descriptionText = game[@"location"];
+        
+        
+        // get the image url ..
+        NSString * imageBaseUrl = @"http://grfx.cstv.com/graphics/school-logos/" ;
+       
+        /*
+            The image we always show is that of the team oposing rutgers . Irrespective of which is home or away.
+            So get the codes from home and away .. Throw out the one which is rutu ( Rutgers code ) 
+            and make the imageBaseUrl point to the other school
+          */
+       
+        NSString * awayCode = game[@"away"][@"code"];
+        NSString * homeCode = game[@"home"][@"code"];
+        
+        NSString * rutgersCode = @"rutu" ;
+        NSString * requiredCode  ; // reguired to get an image of school logo .
+       
+        if( [awayCode isEqualToString:rutgersCode]) // if rutgers is away , then the other school is at home and we display that icon
+        {
+            requiredCode = homeCode ;
+            _isRuHome = false ;
+            // get ru score from away and other score from home
+            _ruScore = [game[@"away"][@"score"] intValue];
+            _otherScore = [game[@"home"][@"score"] intValue];
+        }
+        else
+        {
+            requiredCode = awayCode ;
+            _isRuHome = true ;
+            // get ru score from home
+            _ruScore = [game[@"home"][@"score"] intValue];
+            _otherScore = [game[@"away"][@"score"] intValue];
+        }
+    
+       
+        
+        // Add the -lg.png to the end of the code to get the iamge name
+        requiredCode = [requiredCode stringByAppendingString:@"-lg.png"] ;
+        imageBaseUrl =  [imageBaseUrl stringByAppendingString: requiredCode ] ;
+      
+        _imageURL = [NSURL URLWithString:imageBaseUrl ];
+        
     }
     return self;
 }

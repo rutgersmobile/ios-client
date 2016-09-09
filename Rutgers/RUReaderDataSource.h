@@ -10,4 +10,5 @@
 
 @interface RUReaderDataSource : BasicDataSource
 -(instancetype)initWithUrl:(NSString *)url NS_DESIGNATED_INITIALIZER;
+-(void)loadContentWithAnyBlock:(void(^)(void)) completionBlock; // temp addition 
 @end

@@ -75,8 +75,8 @@ class DynamicCollectionViewController: UICollectionViewController  , RUChannelPr
             dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
             {
                     self.collectionView!.reloadData()
-                   self.collectionView!.layoutIfNeeded()
-                   self.activityIndicator.stopAnimating()
+                    self.collectionView!.layoutIfNeeded()
+                    self.activityIndicator.stopAnimating()
             }
   
         }
