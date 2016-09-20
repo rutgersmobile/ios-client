@@ -99,11 +99,30 @@
         }
     }];
    
+  
+    // Set up the button for opening the maps
+    UIButton *mapsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [mapsView addTarget:self action:@selector(mapsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [mapsView setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
+    UIBarButtonItem *mapsButton = [[UIBarButtonItem alloc] initWithCustomView:mapsView];
+    
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
     
     
     
     self.pullsToRefresh = YES;
 }
+
+
+/*
+    Open the Bus maps View Controller
+ */
+-(void) mapsButtonPressed
+{
+    
+}
+
+
 
 
 /*

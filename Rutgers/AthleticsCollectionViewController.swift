@@ -36,9 +36,7 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         let item : RUReaderItem = self.itemAtIndexPath(indexPath) as! RUReaderItem ;
         
         
-        // get the image in a sepereate thread and fill it in
-        
-        
+        // get the image in a sepereate thread and fill it in later
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
         {
             let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
@@ -82,17 +80,6 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         cell.schoolNameLabel.text = item.title
         
         // set the shadow
-        
-        /*
-         self.viewBg!.layer.shadowOffset = CGSizeMake(0, 0)
-         self.viewBg!.layer.shadowColor = UIColor.blackColor().CGColor
-         self.viewBg!.layer.shadowRadius = 4
-         self.viewBg!.layer.shadowOpacity = 0.25
-         self.viewBg!.layer.masksToBounds = false;
-         self.viewBg!.clipsToBounds = false;
-         */
-        
-        
         cell.layer.shadowOffset = CGSizeZero;
         cell.layer.shadowColor = UIColor.blackColor().CGColor
         cell.layer.shadowRadius = 4.0;

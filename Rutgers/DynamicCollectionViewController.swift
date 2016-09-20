@@ -11,8 +11,12 @@ import Foundation
 
 private let reuseIdentifier = "Cell"
 
-class DynamicCollectionViewController: UICollectionViewController  , RUChannelProtocol{
+class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout , RUChannelProtocol{
   
+    @IBOutlet weak var collectionDisplayView: UIView!
+    @IBOutlet weak var pageDisplayView: UIView!
+    
+    var collectionView : UICollectionView?
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
     var activityIndicator : UIActivityIndicatorView! = nil
@@ -57,17 +61,29 @@ class DynamicCollectionViewController: UICollectionViewController  , RUChannelPr
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
      
-        self.collectionView!.registerNib(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
         
         
         let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout();
         layout.scrollDirection = .Vertical
         layout.itemSize = CGSize(width: 150, height: 150);
         layout.sectionInset = UIEdgeInsetsMake(10, 5, 10, 5)
-        self.collectionView!.setCollectionViewLayout(layout, animated: true)
+        
+        self.collectionView = UICollectionView.init(frame: self.collectionDisplayView.frame, collectionViewLayout: layout)
+        self.collectionView?.dataSource = self;
+        self.collectionView?.delegate = self ;
        
+        self.collectionView!.registerNib(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
         // set up the data source 
+
+        
+        self.view.addSubview(self.collectionView!)
        
+        /*
+ 
+            The data source is not used directly by the collection View for now .. 
+            The view controller acts as a wrapper between the actual collection view and the data source
+ 
+         */
         self.dataSource = DynamicDataSource.init(channel:  self.channel as! [NSObject : AnyObject] , forLayout: true)
         
         self.dataSource.loadContentWithAnyBlock
@@ -96,18 +112,18 @@ class DynamicCollectionViewController: UICollectionViewController  , RUChannelPr
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
     {
             return self.dataSource.numberOfSections
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
            return self.dataSource.numberOfItemsInSection(section)
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DynamicCollectionViewCell
         //cell.backgroundColor = UIColor.blueColor();
       
@@ -131,12 +147,12 @@ class DynamicCollectionViewController: UICollectionViewController  , RUChannelPr
     // MARK: UICollectionViewDelegate
 
     // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+     func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
 
     // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
 
@@ -155,7 +171,7 @@ class DynamicCollectionViewController: UICollectionViewController  , RUChannelPr
     }
     */
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let item:NSDictionary = self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary
        

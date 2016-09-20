@@ -52,7 +52,10 @@
     may be active refers to currently active request ? For a route a bus etc..
  */
 
-
+/*
+    Map between a the route nameas and the route objects
+            also for stops
+ */
 @property NSDictionary<NSString *, RUBusMultipleStopsForSingleLocation *>* stops; // Multi stop is just an array of stops
 @property NSDictionary<NSString *, RUBusRoute *>* routes;
 
@@ -445,7 +448,6 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
  
     called by the load agency config in this class.
     Based on the agency ( NB , vs Newark ) the corresponding object is obtained from the RU server from the *routeConfig.txt files
-    This json dict is passecd to this function for pasing
  
  */
 
