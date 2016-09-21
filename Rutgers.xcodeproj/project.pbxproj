@@ -90,7 +90,6 @@
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
 		622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */; };
 		622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */; };
-		622AFBDE1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622AFBDC1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib */; };
 		622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */; };
 		622AFBE21D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */; };
 		624042681D76085E009AC3D8 /* AthleticsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624042661D76085E009AC3D8 /* AthleticsCollectionViewController.swift */; };
@@ -100,6 +99,7 @@
 		62530D961D78789500BAB5E6 /* AthleticsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */; };
 		62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
+		629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */; };
 		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
 		62CBC2F31D6DF00000061E1E /* RUReaderGameViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
@@ -412,7 +412,6 @@
 		622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSwiftClassesLoader.h; sourceTree = "<group>"; };
 		622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSwiftClassesLoader.m; sourceTree = "<group>"; };
 		622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewController.swift; sourceTree = "<group>"; };
-		622AFBDC1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
 		622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewCell.xib; sourceTree = "<group>"; };
 		622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewCell.swift; sourceTree = "<group>"; };
 		624042661D76085E009AC3D8 /* AthleticsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsCollectionViewController.swift; sourceTree = "<group>"; };
@@ -424,6 +423,7 @@
 		62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsCollectionViewCell.swift; sourceTree = "<group>"; };
 		62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsCollectionViewCell.xib; sourceTree = "<group>"; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
 		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
@@ -1526,9 +1526,9 @@
 				A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */,
 				A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */,
 				622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */,
-				622AFBDC1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib */,
 				622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */,
 				622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */,
+				629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */,
 			);
 			name = dtable;
 			sourceTree = "<group>";
@@ -1759,7 +1759,6 @@
 				04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
-				622AFBDE1D6F50DD00ED4A9D /* DynamicCollectionViewController.xib in Resources */,
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
@@ -1769,6 +1768,7 @@
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
+				629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
