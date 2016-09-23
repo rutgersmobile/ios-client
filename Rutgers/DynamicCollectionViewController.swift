@@ -11,8 +11,8 @@ import Foundation
 
 private let reuseIdentifier = "Cell"
 
-class DynamicCollectionViewController: UICollectionViewController  , RUChannelProtocol{
-  
+class DynamicCollectionViewController: UICollectionViewController, RUChannelProtocol, UICollectionViewDelegateFlowLayout {
+
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
     var activityIndicator : UIActivityIndicatorView! = nil
@@ -107,19 +107,46 @@ class DynamicCollectionViewController: UICollectionViewController  , RUChannelPr
            return self.dataSource.numberOfItemsInSection(section)
     }
 
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let halfWidth = (self.collectionView?.bounds.width)! / 2
+        let reducedSize = halfWidth - 10
+        return CGSizeMake(reducedSize, reducedSize)
+    }
+
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DynamicCollectionViewCell
         //cell.backgroundColor = UIColor.blueColor();
-      
+
         let item : NSDictionary = (self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary)
-   
-        cell.title.text = item.channelTitle
-        cell.title.lineBreakMode  = .ByWordWrapping
-        cell.title.numberOfLines = 0
+
+        let style = NSMutableParagraphStyle()
+        style.firstLineHeadIndent = 5
+        cell.title.attributedText = NSAttributedString(
+            string: item.channelTitle,
+            attributes: [NSParagraphStyleAttributeName: style]
+        )
+        //cell.title.lineBreakMode  = .ByWordWrapping
+        //cell.title.numberOfLines = 0
+        if let imageLocation = item["image"] as? String {
+            let imageUrlString = RUNetworkManager.baseURL().absoluteString! + "img/" + imageLocation
+            let imageUrl = NSURL(string: imageUrlString)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
+            {
+                let imageData : NSData? = NSData(contentsOfURL: imageUrl!)
+                
+                dispatch_async(dispatch_get_main_queue())
+                {
+                    // Update the UI
+                    cell.imageView.contentMode = .ScaleAspectFit
+                    cell.imageView.image = UIImage(data: imageData!)!
+                }
+            }
+        }
         
-        cell.layer.borderColor = UIColor.blackColor().CGColor
-        cell.layer.borderWidth = 5 ;
-        cell.layer.cornerRadius = 8 
+        //cell.layer.borderColor = UIColor.blackColor().CGColor
+        //cell.layer.borderWidth = 5 ;
+        //cell.layer.cornerRadius = 8 
+        cell.layer.cornerRadius = 5
         
         // implement using swift for learning purposes
         

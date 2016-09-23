@@ -67,7 +67,7 @@ extension RUFavorite {
     public func asDictionary() -> NSDictionary {
         return [
             "title": title,
-            "url": url.absoluteString
+            "url": url.absoluteString!
         ]
     }
 }

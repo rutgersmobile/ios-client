@@ -102,7 +102,7 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         
         if item is RUFavorite
         {
-            print(item.url!!.absoluteString)
+            //print(item.url!!.absoluteString)
         }
         else
         {
