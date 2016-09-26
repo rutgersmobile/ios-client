@@ -2232,6 +2232,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2266,6 +2267,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};

@@ -243,6 +243,21 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     });
 }
 
+/*
+    To be used when a crash happens and we want to send the entire queue to RUAnalytics
+ 
+ */
+-(void)flushQueueImmediately
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        @synchronized(self) {
+            [self postAnalyticsEvents:[self.queue copy]];
+        }
+    });
+}
+
+
+
 
 
 /*
@@ -253,13 +268,17 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
  
     Data send as Json
  */
--(void)postAnalyticsEvents:(NSArray *)events{
+-(void)postAnalyticsEvents:(NSArray *)events
+{
     if (!events.count) return;
     // Convert the event array into Json
-    [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject)
+     {
         NSLog(@"Analytics sent successfully");
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error)
+    {
+        if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+        {
             NSLog(@"Error sending analytics, retrying");
             NSLog(@"ERROR : %@", error);
             [self queueAnalyticsEvents:events];
@@ -268,8 +287,38 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 // Creates the json serialization
--(NSString *)jsonStringForObject:(id)object{
+-(NSString *)jsonStringForObject:(id)object
+{
     NSData *data = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
+
+/*
+ 
+    Send the exception plus the entire queue
+ 
+ */
+-(void)postException:(NSException*) exception
+{
+    // create dict with exception
+    
+    NSMutableDictionary *event = [self baseEvent];
+    
+    [event addEntriesFromDictionary:@{
+                                      @"type" : @"exception",
+                                      @"exception" : exception
+                                      }];
+    [self queueAnalyticsEvent:event];
+    
+    // flush queue
+    [self flushQueueImmediately];
+}
+
+
+
+
+
+
+
+
 @end

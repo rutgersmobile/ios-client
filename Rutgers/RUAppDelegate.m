@@ -62,8 +62,29 @@
     
     [[RUMOTDManager sharedManager] showMOTD];
     
+    
+    NSSetUncaughtExceptionHandler(&handleUncaughtException);
+    /*
+    @throw [NSException exceptionWithName:NSGenericException
+                                   reason:@"Test uncaught exception handling"
+                                 userInfo:nil];
+    */
+    
+
     return YES;
 }
+
+
+void handleUncaughtException(NSException *exception)
+{
+    [[RUAnalyticsManager sharedManager] postException:exception];
+
+    NSLog(@"Exception - %@",[exception description]);
+    //exit(EXIT_FAILURE);
+}
+
+
+
 
 /* This is the entry point for application deep links from the ios system */
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{

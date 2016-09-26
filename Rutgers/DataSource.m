@@ -410,7 +410,7 @@
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath]; // the estimiated height is obtained from craeting the cell , applying constrains and then reading the cell's height
-    
+
     if (cachedHeight)
         return [cachedHeight doubleValue];
     
@@ -633,10 +633,12 @@
     // Call the provided block to actually do the load
     block(loading); // block is actually a fuction pointer which takes AAPLLoading as its input
                     // the block might use the loading pointer to change the state based on the content loading state , wether completed , or on going etc..
-    if(self.whenLoadedBlock)
+    /*
+  if(self.whenLoadedBlock)
     {
         self.whenLoadedBlock();
     }
+*/
 }
 
 /*
@@ -850,7 +852,7 @@
 }
 
 - (void)notifySectionsRemoved:(NSIndexSet *)sections
-{
+{
     [self notifySectionsRemoved:sections direction:DataSourceAnimationDirectionNone];
 }
 

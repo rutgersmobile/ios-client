@@ -18,4 +18,5 @@
 
 //Not yet implemented
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction;
+-(void)postException:(NSException*) exception;
 @end

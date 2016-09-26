@@ -65,6 +65,8 @@
    // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
+    
+ //  [NSException raise:@"Invalid foo value" format:@"foo of "];
 }
 /*
     //Execute the pan gesture to open the drawer if the swip gesture has failed

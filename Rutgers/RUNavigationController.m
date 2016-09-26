@@ -31,7 +31,7 @@
 }
 
 -(void)setPreferredStatusBarStyle:(UIStatusBarStyle)preferredStatusBarStyle{
-    _preferredStatusBarStyle = preferredStatusBarStyle;
+    preferredStatusBarStyle = preferredStatusBarStyle;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 @end
