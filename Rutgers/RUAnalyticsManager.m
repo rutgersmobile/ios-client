@@ -19,6 +19,8 @@
 #import "RUUserInfoManager.h"
 #import "RUDefines.h"
 
+
+
 @interface RUAnalyticsManager ()
 @property NSMutableArray *queue;   // Used to keep a queue about the event that take place in the app : Like which channel is being opened etc.
 @property NSTimer *flushTimer;      // Maintains time interval for which to collect user information and at the end of the time, send the queue contents to postAnalytics
@@ -243,30 +245,13 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     });
 }
 
-/*
-    To be used when a crash happens and we want to send the entire queue to RUAnalytics
- 
- */
--(void)flushQueueImmediately
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        @synchronized(self) {
-            [self postAnalyticsEvents:[self.queue copy]];
-        }
-    });
-}
-
-
-
-
 
 /*
     Send the event over the network , if failure stores it for next attempt at sending
-    
+ 
     LOOK AT :   
         analytics.php
  
-    Data send as Json
  */
 -(void)postAnalyticsEvents:(NSArray *)events
 {
@@ -294,11 +279,9 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 /*
- 
     Send the exception plus the entire queue
- 
  */
--(void)postException:(NSException*) exception
+-(void)saveException:(NSException*) exception
 {
     // create dict with exception
     
@@ -306,12 +289,15 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     
     [event addEntriesFromDictionary:@{
                                       @"type" : @"exception",
-                                      @"exception" : exception
+                                      @"exception_name" : [exception name] ,
+                                      @"exception_reason" : [exception reason],
+                                      @"stack_trace": [[exception callStackSymbols] componentsJoinedByString:@"\n"]
                                       }];
     [self queueAnalyticsEvent:event];
     
-    // flush queue
-    [self flushQueueImmediately];
+    // write the queue including the exception into NSUserDefauls and on start up send it to the server
+    [[NSUserDefaults standardUserDefaults] setObject:[self.queue copy] forKey:CrashKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 

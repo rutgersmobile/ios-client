@@ -40,7 +40,10 @@
     Starting point for the app
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    // Get a Global Exception Handler and use it to write exception to disk and on startup send to server
+    NSSetUncaughtExceptionHandler(&handleUncaughtException);
+    
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;  // the circular spining icon ..
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
@@ -55,21 +58,25 @@
     [self initializeDrawer];
    
     self.userInfoManager = [[RUUserInfoManager alloc] init];
-    [self.userInfoManager getUserInfoIfNeededWithCompletion:^{
+    [self.userInfoManager getUserInfoIfNeededWithCompletion:^
+    {
         [[RUAnalyticsManager sharedManager] queueEventForApplicationLaunch];
         [self.rootController openDrawerIfNeeded];
     }];
     
     [[RUMOTDManager sharedManager] showMOTD];
     
-    
+   
+    if([[NSUserDefaults standardUserDefaults] objectForKey:CrashKey] != nil) // we crashed previously 
+    {
+        NSArray * item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
+        [[RUAnalyticsManager sharedManager] postAnalyticsEvents:[item copy]];
+       
+        // Remove the item , now that it has been send 
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
+        
+    }
     NSSetUncaughtExceptionHandler(&handleUncaughtException);
-    /*
-    @throw [NSException exceptionWithName:NSGenericException
-                                   reason:@"Test uncaught exception handling"
-                                 userInfo:nil];
-    */
-    
 
     return YES;
 }
@@ -77,13 +84,12 @@
 
 void handleUncaughtException(NSException *exception)
 {
-    [[RUAnalyticsManager sharedManager] postException:exception];
+    // save the exception + previous channels queue to use send on startup 
+    [[RUAnalyticsManager sharedManager] saveException:exception];
 
     NSLog(@"Exception - %@",[exception description]);
-    //exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 }
-
-
 
 
 /* This is the entry point for application deep links from the ios system */

@@ -852,7 +852,7 @@
 }
 
 - (void)notifySectionsRemoved:(NSIndexSet *)sections
-{
+{
     [self notifySectionsRemoved:sections direction:DataSourceAnimationDirectionNone];
 }
 
