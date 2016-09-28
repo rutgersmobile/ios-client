@@ -19,7 +19,9 @@
 
 #define ASSERT_MAIN_THREAD NSAssert([NSThread isMainThread], @"This method must be called on the main thread")
 
-#define DEV 0
+#define DEV 1
+
+#define GRANULAR_ANALYTICS_NEEDED 1
 
 extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
 

@@ -16,6 +16,8 @@
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
 
+#import "RUAnalyticsManager.h"
+
 @interface RUPlacesViewController ()
 
 @end
@@ -59,6 +61,11 @@
 
     [[RUPlacesDataLoadingManager sharedInstance] userWillViewPlace:place];
 
+    if (GRANULAR_ANALYTICS_NEEDED)
+    {
+        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"RUPlaceDetailViewController"];
+    }
+    
     [self.navigationController pushViewController:[[RUPlaceDetailViewController alloc] initWithPlace:place] animated:YES];
 }
 

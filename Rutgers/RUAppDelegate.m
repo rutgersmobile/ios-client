@@ -88,13 +88,19 @@ void handleUncaughtException(NSException *exception)
     [[RUAnalyticsManager sharedManager] saveException:exception];
 
     NSLog(@"Exception - %@",[exception description]);
-    exit(EXIT_FAILURE);
 }
 
 
 /* This is the entry point for application deep links from the ios system */
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     [self.rootController openURL:url];
+   
+    
+    if(GRANULAR_ANALYTICS_NEEDED)
+    {
+        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"openURL"];
+    }
+    
        return YES;
 }
 

@@ -22,11 +22,10 @@
 #import "RUPredictionsViewController.h"
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
-
-
 #import "RURootController.h"
-
 #import <SWRevealViewController.h>
+#import "RUAnalyticsManager.h"
+
 
 @interface RUBusViewController () <UIGestureRecognizerDelegate>
 
@@ -67,11 +66,9 @@
     self.rightSwipe.delegate = self;
     
  //  [NSException raise:@"Invalid foo value" format:@"foo of "];
-   /*
     @throw [NSException exceptionWithName:NSGenericException
                                    reason:@"Test uncaught exception handling"
                                  userInfo:nil];
-   */
 }
 /*
     //Execute the pan gesture to open the drawer if the swip gesture has failed
@@ -111,6 +108,10 @@
     
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
     // Create a view using the item. Ie. Present the view with the bu stops and their timiings
+    if (GRANULAR_ANALYTICS_NEEDED)
+    {
+        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [item class])];
+    }
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }
 

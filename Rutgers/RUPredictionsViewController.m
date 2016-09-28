@@ -87,6 +87,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^
             {
+                NSAssert([NSThread isMainThread], @"Method called using a thread other than main!");
                 RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
                 if (dataSource.responseTitle == nil) {
                     self.title = @"Bus";
