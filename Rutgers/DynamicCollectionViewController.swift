@@ -19,7 +19,7 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
    /// Conform to RUChannelProtocol
     static func channelHandle() -> String!
     {
-        return "dtable"
+        return "dtable_grid"
     }
    
     static func registerClass()
