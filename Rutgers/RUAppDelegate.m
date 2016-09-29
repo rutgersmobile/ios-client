@@ -70,7 +70,7 @@
     if([[NSUserDefaults standardUserDefaults] objectForKey:CrashKey] != nil) // we crashed previously 
     {
         NSArray * item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
-        [[RUAnalyticsManager sharedManager] postAnalyticsEvents:[item copy]];
+        [[RUAnalyticsManager sharedManager] postExceptionEvents:[item copy]];
        
         // Remove the item , now that it has been send 
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];

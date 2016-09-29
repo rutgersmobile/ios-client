@@ -66,9 +66,17 @@
     self.rightSwipe.delegate = self;
     
  //  [NSException raise:@"Invalid foo value" format:@"foo of "];
-    @throw [NSException exceptionWithName:NSGenericException
-                                   reason:@"Test uncaught exception handling"
-                                 userInfo:nil];
+    
+   
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(36 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        
+        @throw [NSException exceptionWithName:NSGenericException
+                                       reason:@"Test uncaught exception handling"
+                                     userInfo:nil];     
+            
+    });
+   
 }
 /*
     //Execute the pan gesture to open the drawer if the swip gesture has failed

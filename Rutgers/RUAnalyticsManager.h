@@ -26,5 +26,6 @@ static NSString * const CrashKey = @"CRASH_REPORT";
 //Not yet implemented
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction;
 -(void)postAnalyticsEvents:(NSArray *)events;
+-(void)postExceptionEvents:(NSArray *)events;
 
 @end

@@ -14,4 +14,7 @@
 +(AFHTTPSessionManager *)sessionManager;
 +(AFHTTPSessionManager *)readerSessionManager;
 +(NSURL *)baseURL;
+
+
++(AFHTTPSessionManager *)exceptionSessionManager;
 @end

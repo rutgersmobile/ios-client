@@ -231,15 +231,19 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 // Reset the timer to set up the next interval over which to send the event...
--(void)resetFlushTimer{
-    @synchronized(self) {
+-(void)resetFlushTimer
+{
+    @synchronized(self)
+    {
         [self.flushTimer invalidate];
         self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
     }
 }
 
--(void)flushQueue{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+-(void)flushQueue
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^
+    {
         @synchronized(self) {
             [self.flushTimer invalidate];
             [self postAnalyticsEvents:[self.queue copy]];
@@ -294,10 +298,20 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
                                       @"type" : @"exception",
                                       @"exception_name" : [exception name] ,
                                       @"exception_reason" : [exception reason],
-                                      @"stack_trace": [exception callStackSymbols],
-                                      @"class_trace": [self.exceptionQueue copy] // keep track of the last used classes before the except occured
+                                      @"stack_trace": [[exception callStackSymbols] componentsJoinedByString:@"-"],
+                                      @"class_trace": [[self.exceptionQueue copy] componentsJoinedByString:@"-"]  // keep track of the last used classes before the except occured
                                       }];
     [self queueAnalyticsEvent:event];
+   
+    // If the previous crash report has not been send yet due to some issue like the network not being present or something then , we append the new crash report into the old crash report
+    if([[NSUserDefaults standardUserDefaults] objectForKey:CrashKey] != nil) // we have crash report that we have not send yet
+    {
+        NSArray * item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
+        [self.queue addObjectsFromArray:item];
+        
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
+    }
     
     // write the queue including the exception into NSUserDefauls and on start up send it to the server
     [[NSUserDefaults standardUserDefaults] setObject:[self.queue copy] forKey:CrashKey];
@@ -328,7 +342,31 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 
 
 
-
+/*
+ Send the event over the network , if failure stores it for next attempt at sending
+    
+    Sends data in a high priority
+ LOOK AT :
+ analytics.php
+ 
+ */
+-(void)postExceptionEvents:(NSArray *)events
+{
+    if (!events.count) return;
+    // Convert the event array into Json
+    [[RUNetworkManager exceptionSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject)
+     {
+         NSLog(@"Exception sent successfully");
+     } failure:^(NSURLSessionDataTask *task, NSError *error)
+     {
+         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+         {
+             NSLog(@"Error sending analytics, retrying");
+             NSLog(@"ERROR : %@", error);
+             [self queueAnalyticsEvents:events];
+         }
+     }];
+}
 
 
 @end

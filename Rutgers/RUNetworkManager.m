@@ -90,6 +90,7 @@
         // set up at networking with the base url
         backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
        
+        
         // provide serializer to the manager : Which gives us inforamtion on how to parse the response object
         // json and xml parsers
         backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
@@ -129,5 +130,34 @@
     });
     return sessionManager;
 }
+
+
+/*
+ 
+    Exception Manager
+    Send the message in a high priority queue
+ 
+ */
++(AFHTTPSessionManager *)exceptionSessionManager
+{
+    static AFHTTPSessionManager *exceptSessionManager = nil;
+    
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^
+                  {
+                      // set up at networking with the base url
+                      exceptSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
+                      
+                      exceptSessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+                      // provide serializer to the manager : Which gives us inforamtion on how to parse the response object
+                      // json and xml parsers
+                      exceptSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
+                      
+                  });
+    
+    return exceptSessionManager;
+}
+
 
 @end
