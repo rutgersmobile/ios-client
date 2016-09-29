@@ -25,6 +25,9 @@
 
 
 #import "RURootController.h"
+#import "RUDebug.h"
+
+
 
 #import <SWRevealViewController.h>
 
@@ -65,21 +68,13 @@
    // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
+    
+    
+    RUDebug * debug = [[RUDebug alloc ] init];
+  
+    [debug dumpView:self.navigationController.view atIndent:0];
+    
 }
-/*
-    //Execute the pan gesture to open the drawer if the swip gesture has failed
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    BOOL result = NO ;
-   
-    if(  (gestureRecognizer == self.leftSwipe || gestureRecognizer == self.rightSwipe) && [otherGestureRecognizer class] == [SWRevealViewControllerPanGestureRecognizer class])
-    {
-        result = YES;
-    }
-    return result;
-}
-*/
-
 
 
 //This causes an update timer to start upon the Bus View controller appearing
@@ -107,12 +102,6 @@
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }
 
-/*
-    Descript : 
-        Part of the Channel ? 
- 
- 
- */
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
     RUPredictionsViewController *viewController = [[RUPredictionsViewController alloc] initWithSerializedItem:pathComponents title:destinationTitle];
     return @[viewController];

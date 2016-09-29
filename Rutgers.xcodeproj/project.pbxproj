@@ -88,6 +88,8 @@
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
+		621E60371D9D9D3400BAF3B7 /* RUDebug.h in Sources */ = {isa = PBXBuildFile; fileRef = 621E60361D9D9D3400BAF3B7 /* RUDebug.h */; };
+		621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 621E60381D9D9F8300BAF3B7 /* RUDebug.m */; };
 		622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */; };
 		622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */; };
 		622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */; };
@@ -409,6 +411,8 @@
 		621872C91D340B9500E727E3 /* RUBusMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessageCell.m; sourceTree = "<group>"; };
 		621872CB1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusPredictionsAndMessageDataSource.h; sourceTree = "<group>"; };
 		621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusPredictionsAndMessageDataSource.m; sourceTree = "<group>"; };
+		621E60361D9D9D3400BAF3B7 /* RUDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDebug.h; sourceTree = "<group>"; };
+		621E60381D9D9F8300BAF3B7 /* RUDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDebug.m; sourceTree = "<group>"; };
 		622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSwiftClassesLoader.h; sourceTree = "<group>"; };
 		622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSwiftClassesLoader.m; sourceTree = "<group>"; };
 		622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewController.swift; sourceTree = "<group>"; };
@@ -1625,6 +1629,8 @@
 				C262EFB4188345D10035C8F5 /* InfoPlist.strings */,
 				C262EFB7188345D10035C8F5 /* main.m */,
 				C262EFB9188345D10035C8F5 /* Rutgers-Prefix.pch */,
+				621E60361D9D9D3400BAF3B7 /* RUDebug.h */,
+				621E60381D9D9F8300BAF3B7 /* RUDebug.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1856,7 +1862,9 @@
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
+				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
+				621E60371D9D9D3400BAF3B7 /* RUDebug.h in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
 				0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */,
