@@ -15,7 +15,7 @@
 
 @implementation RUNavigationController
 
-@dynamic preferredStatusBarStyle ; 
+@synthesize preferredStatusBarStyle =  _preferredStatusBarStyle ;
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -33,7 +33,7 @@
 }
 
 -(void)setPreferredStatusBarStyle:(UIStatusBarStyle)preferredStatusBarStyle{
-    self.preferredStatusBarStyle = preferredStatusBarStyle;
+    _preferredStatusBarStyle = preferredStatusBarStyle;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 @end
