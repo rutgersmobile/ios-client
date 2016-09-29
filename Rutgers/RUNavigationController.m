@@ -7,13 +7,15 @@
 //
 
 /*
-    Descript: 
-            Might function as the nav controller on which everything is based ? 
+ Descript:
+ Might function as the nav controller on which everything is based ?
  */
 
 #import "RUNavigationController.h"
 
 @implementation RUNavigationController
+
+@dynamic preferredStatusBarStyle ;
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -25,13 +27,13 @@
 
 -(void)viewDiLoad{
     [super viewDidLoad];
-
+    
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
 
 -(void)setPreferredStatusBarStyle:(UIStatusBarStyle)preferredStatusBarStyle{
-    _preferredStatusBarStyle = preferredStatusBarStyle;
+    self.preferredStatusBarStyle = preferredStatusBarStyle;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 @end
