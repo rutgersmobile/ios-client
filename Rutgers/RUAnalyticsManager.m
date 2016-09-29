@@ -309,7 +309,6 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
         NSArray * item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
         [self.queue addObjectsFromArray:item];
         
-        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
     }
     
