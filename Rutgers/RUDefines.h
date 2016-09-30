@@ -66,4 +66,13 @@ extern BOOL isBeta();
 
 extern NSString * betaModeString();
 
+
+/*
+    Takes in an NSURL and returns the absolute string for that URL
+    Without the RU , the name conflicts with internal apple function
+ */
+extern NSString * RUGetAbsoluteString(NSURL * url);
+
+
+
 #endif /* RUDefines_h */

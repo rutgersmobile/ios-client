@@ -53,3 +53,16 @@ NSString * betaModeString() {
             return @"production mode";
     }
 }
+
+
+/*
+ Takes in an NSURL and returns the absolute string for that URL
+ Without the RU , the name conflicts with internal apple function
+ */
+NSString * RUGetAbsoluteString(NSURL * url)
+{
+    return url.absoluteString;
+}
+
+
+
