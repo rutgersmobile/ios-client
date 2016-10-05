@@ -21,3 +21,5 @@
 #import "RUPlace.h"
 
 #import "NSDictionary+Channel.h"
+
+#import "RUDefines.h"

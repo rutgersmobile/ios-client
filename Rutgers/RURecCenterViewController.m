@@ -15,6 +15,8 @@
 #import <NSString+HTML.h>
 #import "NSAttributedString+FromHTML.h"
 
+#import "RUAnalyticsManager.h"
+
 @interface RURecCenterViewController ()
 @property (nonatomic) NSDictionary *recCenter;
 @end
@@ -39,6 +41,11 @@
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[DataTuple class]]) {
         DataTuple *tuple = item;
+        if (GRANULAR_ANALYTICS_NEEDED)
+        {
+            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"MapsViewController"];
+        }
+        
         [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:tuple.object] animated:YES];
     }
 }

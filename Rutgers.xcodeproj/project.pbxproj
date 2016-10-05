@@ -92,6 +92,7 @@
 		6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
 		62CB1E8C1D393813001476D7 /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */; };
+		62EAA17D1D9B242000DD2363 /* NSMutableArray+RUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
 		A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; };
@@ -406,6 +407,8 @@
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUReaderGameViewController.h; path = ../RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUReaderGameViewController.m; path = ../RUReaderGameViewController.m; sourceTree = "<group>"; };
+		62EAA17B1D9B242000DD2363 /* NSMutableArray+RUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+RUQueue.h"; sourceTree = "<group>"; };
+		62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+RUQueue.m"; sourceTree = "<group>"; };
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -1414,6 +1417,8 @@
 				A7C0373719B1287F00F5D962 /* UIApplication+StatusBarHeight.m */,
 				04AF8B411A82B57400619AFC /* NSDate+EpochTime.h */,
 				04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */,
+				62EAA17B1D9B242000DD2363 /* NSMutableArray+RUQueue.h */,
+				62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1845,6 +1850,7 @@
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
+				62EAA17D1D9B242000DD2363 /* NSMutableArray+RUQueue.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
@@ -2176,6 +2182,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2217,6 +2224,7 @@
 				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2233,10 +2241,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = E5335P94A9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2251,6 +2261,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
@@ -2269,10 +2280,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = E5335P94A9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2287,6 +2300,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "";

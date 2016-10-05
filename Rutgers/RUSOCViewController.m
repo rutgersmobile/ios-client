@@ -21,6 +21,7 @@
 
 // User Defaults to set the values if it is not specified
 #import "RUUserInfoManager.h"
+#import "RUAnalyticsManager.h"
 
 @interface RUSOCViewController () <UISearchDisplayDelegate, RUSOCOptionsDelegate>
 @property (nonatomic) UIBarButtonItem *optionsButton;
@@ -136,15 +137,35 @@
     if (item.object[@"courseNumber"]) {
         RUSOCCourseViewController *courseVC = [[RUSOCCourseViewController alloc] initWithCourse:item.object];
         courseVC.dataLoadingManager = self.dataLoadingManager;
+        
+        if (GRANULAR_ANALYTICS_NEEDED)
+        {
+            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [courseVC class])];
+        }
+        
+        
         [self.navigationController pushViewController:courseVC animated:YES];
     } else {
         RUSOCSubjectViewController *subjectVC = [[RUSOCSubjectViewController alloc] initWithSubject:item.object];
         subjectVC.dataLoadingManager = self.dataLoadingManager;
+        
+        if (GRANULAR_ANALYTICS_NEEDED)
+        {
+            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [subjectVC class])];
+        }
+        
         [self.navigationController pushViewController:subjectVC animated:YES];
     }
 }
 
--(void)optionsButtonPressed{
+-(void)optionsButtonPressed
+{
+    
+    if (GRANULAR_ANALYTICS_NEEDED)
+    {
+        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"RUSocOptionsViewController"];
+    }
+    
     [self.navigationController pushViewController:[[RUSOCOptionsViewController alloc] initWithDelegate:self] animated:YES];
 }
 
@@ -152,7 +173,6 @@
     self.optionsDidChange = YES;
     self.title = [RUSOCDataLoadingManager sharedInstance].titleForCurrentConfiguration;
 }
-
 
 
 /*

@@ -17,13 +17,16 @@
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUUserInfoManager.h"
-#import "RUDefines.h"
 
+#import "NSMutableArray+RUQueue.h"
 
+static const int exceptQueueSize = 30 ; // The number of items which should be kept  in the exceptionQueue send to server on exception
 
 @interface RUAnalyticsManager ()
 @property NSMutableArray *queue;   // Used to keep a queue about the event that take place in the app : Like which channel is being opened etc.
 @property NSTimer *flushTimer;      // Maintains time interval for which to collect user information and at the end of the time, send the queue contents to postAnalytics
+@property NSMutableArray * exceptionQueue ; // Keeps [exceptQueueSize] number of items for sending to the server on except. Contains Strings of view controllers that have been visited and hence much more granular than the other queue used here
+
 
 //This property is backed by persistent storage
 @property BOOL firstLaunch;
@@ -47,7 +50,7 @@
     self = [super init];
     if (self) {
         self.queue = [NSMutableArray array];
-        
+        self.exceptionQueue = [NSMutableArray array];
         //Register for notifications to flush before the application dies
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flushQueue) name:UIApplicationDidEnterBackgroundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(flushQueue) name:UIApplicationWillTerminateNotification object:nil];
@@ -228,15 +231,19 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
 }
 
 // Reset the timer to set up the next interval over which to send the event...
--(void)resetFlushTimer{
-    @synchronized(self) {
+-(void)resetFlushTimer
+{
+    @synchronized(self)
+    {
         [self.flushTimer invalidate];
         self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(flushQueue) userInfo:nil repeats:NO];
     }
 }
 
--(void)flushQueue{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+-(void)flushQueue
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^
+    {
         @synchronized(self) {
             [self.flushTimer invalidate];
             [self postAnalyticsEvents:[self.queue copy]];
@@ -291,20 +298,74 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
                                       @"type" : @"exception",
                                       @"exception_name" : [exception name] ,
                                       @"exception_reason" : [exception reason],
-                                      @"stack_trace": [[exception callStackSymbols] componentsJoinedByString:@"\n"]
+                                      @"stack_trace": [[exception callStackSymbols] componentsJoinedByString:@"-"],
+                                      @"class_trace": [[self.exceptionQueue copy] componentsJoinedByString:@"-"]  // keep track of the last used classes before the except occured
                                       }];
     [self queueAnalyticsEvent:event];
+   
+    // If the previous crash report has not been send yet due to some issue like the network not being present or something then , we append the new crash report into the old crash report
+    if([[NSUserDefaults standardUserDefaults] objectForKey:CrashKey] != nil) // we have crash report that we have not send yet
+    {
+        NSArray * item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
+        [self.queue addObjectsFromArray:item];
+        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
+    }
     
     // write the queue including the exception into NSUserDefauls and on start up send it to the server
     [[NSUserDefaults standardUserDefaults] setObject:[self.queue copy] forKey:CrashKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+/*
+    Queue the views used by the user for the last 30 steps before the except happens and send them to the server when except happens ..
+ 
+    Design Choice :   Why implement a different queue for keeping track of the events before except ?
+                            The events logged in the except queue is more granular and more detailed , always maintaining this level of reporting ( by adding these events to the standard queue ) will 
+                            eat up battery + not required
+ 
+    Input : Takes in the name of the class we are going to visit in the app
+ */
+-(void) queueClassStrForExceptReporting:(NSString *)className
+{
+    if( [self.exceptionQueue count] < exceptQueueSize) // if queue not full add item , else remove old item and add new item
+    {
+        [self.exceptionQueue enqueue:className];
+    }
+    else
+    {
+        [self.exceptionQueue dequeue];
+        [self.exceptionQueue enqueue:className];
+    }
+}
 
 
 
-
-
+/*
+ Send the event over the network , if failure stores it for next attempt at sending
+    
+    Sends data in a high priority
+ LOOK AT :
+ analytics.php
+ 
+ */
+-(void)postExceptionEvents:(NSArray *)events
+{
+    if (!events.count) return;
+    // Convert the event array into Json
+    [[RUNetworkManager exceptionSessionManager] POST:@"analytics.php" parameters:@{@"payload" : [self jsonStringForObject:events]} success:^(NSURLSessionDataTask *task, id responseObject)
+     {
+         NSLog(@"Exception sent successfully");
+     } failure:^(NSURLSessionDataTask *task, NSError *error)
+     {
+         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+         {
+             NSLog(@"Error sending analytics, retrying");
+             NSLog(@"ERROR : %@", error);
+             [self queueAnalyticsEvents:events];
+         }
+     }];
+}
 
 
 @end

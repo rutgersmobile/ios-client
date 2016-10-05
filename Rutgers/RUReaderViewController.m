@@ -104,6 +104,7 @@
     NSDictionary * readerChannel = [[NSDictionary alloc] initWithObjectsAndKeys:row.title ,@"title", @"www" ,@"view" ,row.url ,@"url" ,  nil];
     //@{@"title" : row.title, @"view" : @"www", @"url" : row.url}
     //Push a new view controller with a web view
+   
     [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:readerChannel] animated:YES];
 }
 
