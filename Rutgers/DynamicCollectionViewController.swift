@@ -13,9 +13,8 @@ private let reuseIdentifier = "Cell"
 
 class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout , RUChannelProtocol{
   
-    @IBOutlet weak var collectionDisplayView: UIView!
-    @IBOutlet weak var pageDisplayView: UIView!
-    
+
+    var pageViewController : UIPageViewController?
     var collectionView : UICollectionView?
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
@@ -67,8 +66,7 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
         layout.scrollDirection = .Vertical
         layout.itemSize = CGSize(width: 150, height: 150);
         layout.sectionInset = UIEdgeInsetsMake(10, 5, 10, 5)
-        
-        self.collectionView = UICollectionView.init(frame: self.collectionDisplayView.frame, collectionViewLayout: layout)
+        self.collectionView = UICollectionView.init(frame: CGRectMake(0,0,500, 500) , collectionViewLayout: layout)
         self.collectionView?.dataSource = self;
         self.collectionView?.delegate = self ;
        
@@ -78,6 +76,45 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
         
         self.view.addSubview(self.collectionView!)
        
+        
+        self.pageViewController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: nil)
+        self.pageViewController!.view.frame = CGRectMake(0,0, 500, 500)
+        self.view.addSubview((self.pageViewController?.view)!)
+        
+       
+        // try to set up constraints on the collection view and page view
+        
+       /*
+                Constaint horizontally
+        */
+     
+        self.pageViewController?.view.backgroundColor = UIColor.redColor()
+        self.pageViewController?.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        self.collectionView?.backgroundColor = UIColor.blueColor()
+        self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        let views = ["collectionView" : self.collectionView! , "pageView" : self.pageViewController!.view]
+        let hConstraintCollectionView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        
+        
+
+       let hConstraintPageView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[pageView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+
+
+       // let hConstraintPageView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[pageView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        
+       // let verticalConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        self.view.addConstraints(hConstraintCollectionView)
+        //self.view.addConstraint(<#T##constraint: NSLayoutConstraint##NSLayoutConstraint#>)
+      
+        print(self.collectionView?.frame)
+        print(self.pageViewController?.view.frame)
+        
+        
+        
         /*
  
             The data source is not used directly by the collection View for now .. 

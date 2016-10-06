@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10117"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DynamicCollectionViewController" customModule="Rutgers" customModuleProvider="target">
             <connections>
-                <outlet property="collectionDisplayView" destination="Xp9-x2-dl4" id="LFO-Pz-3ba"/>
-                <outlet property="pageDisplayView" destination="FNh-7B-izx" id="HsD-EU-Ico"/>
                 <outlet property="view" destination="iN0-l3-epB" id="2Bo-Zh-P8S"/>
             </connections>
         </placeholder>
@@ -17,60 +15,9 @@
         <view clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="FNh-7B-izx">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
-                <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Xp9-x2-dl4">
-                    <rect key="frame" x="0.0" y="210" width="320" height="390"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="Xp9-x2-dl4" secondAttribute="trailing" id="1uu-e3-jZU"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3G3-Bu-GHY"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="5b5-4D-9gw"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="6kd-hl-c1h"/>
-                <constraint firstAttribute="trailing" secondItem="Xp9-x2-dl4" secondAttribute="trailing" constant="8" id="9Hc-ac-iXB"/>
-                <constraint firstAttribute="trailing" secondItem="Xp9-x2-dl4" secondAttribute="trailing" id="BZy-sf-660"/>
-                <constraint firstAttribute="bottom" secondItem="Xp9-x2-dl4" secondAttribute="bottom" id="GyC-TY-ANg"/>
-                <constraint firstAttribute="trailing" secondItem="FNh-7B-izx" secondAttribute="trailing" id="IjX-zg-lJl"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="LmX-rs-J15"/>
-                <constraint firstAttribute="trailing" secondItem="Xp9-x2-dl4" secondAttribute="trailing" id="Prv-SS-dtf"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="QB1-d7-YtP"/>
-                <constraint firstAttribute="bottom" secondItem="Xp9-x2-dl4" secondAttribute="bottom" constant="8" id="QHm-bR-oaI"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="RON-8B-AlS"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Rqx-1J-OOQ"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ULV-eR-SN7"/>
-                <constraint firstAttribute="bottom" secondItem="Xp9-x2-dl4" secondAttribute="bottom" id="VOQ-PT-GJA"/>
-                <constraint firstAttribute="trailing" secondItem="FNh-7B-izx" secondAttribute="trailing" id="ZNR-O5-nwl"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bQs-YN-YXy"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cC3-xJ-evO"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="d6Z-q3-Quk"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="etp-Im-Hpx"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.9" id="hnt-nG-ZF2"/>
-                <constraint firstAttribute="bottom" secondItem="Xp9-x2-dl4" secondAttribute="bottom" id="o2f-AH-x8r"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="obO-0K-2R3"/>
-                <constraint firstAttribute="trailing" secondItem="FNh-7B-izx" secondAttribute="trailing" constant="8" id="ui6-i3-PBp"/>
-                <constraint firstItem="FNh-7B-izx" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.3" id="vW0-eJ-NhF"/>
-                <constraint firstItem="Xp9-x2-dl4" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.65" id="yqi-0W-Mb0"/>
-            </constraints>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="5b5-4D-9gw"/>
-                    <exclude reference="Rqx-1J-OOQ"/>
-                    <exclude reference="etp-Im-Hpx"/>
-                    <exclude reference="ui6-i3-PBp"/>
-                    <exclude reference="6kd-hl-c1h"/>
-                    <exclude reference="9Hc-ac-iXB"/>
-                    <exclude reference="QHm-bR-oaI"/>
-                    <exclude reference="hnt-nG-ZF2"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="732" y="374"/>
+            <point key="canvasLocation" x="668" y="376"/>
         </view>
     </objects>
 </document>
