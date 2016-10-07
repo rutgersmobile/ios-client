@@ -61,24 +61,20 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
         // self.clearsSelectionOnViewWillAppear = false
      
         
-        
         let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout();
         layout.scrollDirection = .Vertical
         layout.itemSize = CGSize(width: 150, height: 150);
         layout.sectionInset = UIEdgeInsetsMake(10, 5, 10, 5)
-        self.collectionView = UICollectionView.init(frame: CGRectMake(0,0,500, 500) , collectionViewLayout: layout)
+        self.collectionView = UICollectionView.init(frame: CGRectMake(0,-320, 320, 300) , collectionViewLayout: layout)
         self.collectionView?.dataSource = self;
         self.collectionView?.delegate = self ;
        
         self.collectionView!.registerNib(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
-        // set up the data source 
-
-        
         self.view.addSubview(self.collectionView!)
        
         
         self.pageViewController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: nil)
-        self.pageViewController!.view.frame = CGRectMake(0,0, 500, 500)
+        self.pageViewController!.view.frame = CGRectMake(0,0, 320, 300)
         self.view.addSubview((self.pageViewController?.view)!)
         
        
@@ -87,32 +83,32 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
        /*
                 Constaint horizontally
         */
-     
-        self.pageViewController?.view.backgroundColor = UIColor.redColor()
-        self.pageViewController?.view.translatesAutoresizingMaskIntoConstraints = false
         
+        self.pageViewController?.view.backgroundColor = UIColor.redColor()
+        self.pageViewController?.view.translatesAutoresizingMaskIntoConstraints = true
         
         self.collectionView?.backgroundColor = UIColor.blueColor()
-        self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
+        self.collectionView?.translatesAutoresizingMaskIntoConstraints = true
         
         
         let views = ["collectionView" : self.collectionView! , "pageView" : self.pageViewController!.view]
-        let hConstraintCollectionView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let hConstraintCollectionView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
         
 
-       let hConstraintPageView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[pageView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+       let hConstraintPageView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[pageView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
 
-
-       // let hConstraintPageView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[pageView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
+        let vConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView(>=0)]-(>=5)-[pageView(>=0)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
         
        // let verticalConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
         self.view.addConstraints(hConstraintCollectionView)
-        //self.view.addConstraint(<#T##constraint: NSLayoutConstraint##NSLayoutConstraint#>)
-      
+        self.view.addConstraints(hConstraintPageView)
+        
+        self.view.addConstraints(vConstraint)
+    
+        
         print(self.collectionView?.frame)
         print(self.pageViewController?.view.frame)
-        
         
         
         /*
