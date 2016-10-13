@@ -8,21 +8,20 @@
 
 import Foundation
 
-
 private let reuseIdentifier = "Cell"
 
 class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout , RUChannelProtocol{
-  
-
-    var pageViewController : UIPageViewController?
-    var collectionView : UICollectionView?
+ 
+    // use the collection view to display both the banner as well as the cells
+    
+    @IBOutlet weak var collectionView: UICollectionView!
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
     var activityIndicator : UIActivityIndicatorView! = nil
    /// Conform to RUChannelProtocol
     static func channelHandle() -> String!
     {
-        return "dtable"
+        return "dtable.temp"
     }
    
     static func registerClass()
@@ -32,7 +31,6 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
    
     static func channelWithConfiguration(channel : [NSObject : AnyObject]!) -> AnyObject!
     {
-        //   let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         return DynamicCollectionViewController(channel: channel) // load the view for the controller from the nib file
     }
 
@@ -48,15 +46,27 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
     
     override func viewDidLoad()
     {
-        
 
         super.viewDidLoad()
-
+        self.dataSource = DynamicDataSource.init(channel:  self.channel as! [NSObject : AnyObject] , forLayout: true)
+        
+        self.navigationController?.view.addSubview(self.view)
+        self.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let hConstraintView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[v0]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["v0" : self.view])
+        let vConstraintView = NSLayoutConstraint.constraintsWithVisualFormat("V:|[v0]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["v0" : self.view])
+        
+        self.navigationController?.view.addConstraints(hConstraintView)
+        self.navigationController?.view.addConstraints(vConstraintView)
+        self.navigationController?.view.layoutIfNeeded()
+       
+        
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         activityIndicator.hidesWhenStopped = true;
         activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
         self.view.addSubview(activityIndicator)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
      
@@ -65,50 +75,34 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
         layout.scrollDirection = .Vertical
         layout.itemSize = CGSize(width: 150, height: 150);
         layout.sectionInset = UIEdgeInsetsMake(10, 5, 10, 5)
-        self.collectionView = UICollectionView.init(frame: CGRectMake(0,-320, 320, 300) , collectionViewLayout: layout)
         self.collectionView?.dataSource = self;
         self.collectionView?.delegate = self ;
        
         self.collectionView!.registerNib(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
+      
+        // set up the view constraints
+        
         self.view.addSubview(self.collectionView!)
-       
+        self.collectionView?.translatesAutoresizingMaskIntoConstraints = false
         
-        self.pageViewController = UIPageViewController(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: nil)
-        self.pageViewController!.view.frame = CGRectMake(0,0, 320, 300)
-        self.view.addSubview((self.pageViewController?.view)!)
-        
-       
-        // try to set up constraints on the collection view and page view
-        
-       /*
-                Constaint horizontally
-        */
-        
-        self.pageViewController?.view.backgroundColor = UIColor.redColor()
-        self.pageViewController?.view.translatesAutoresizingMaskIntoConstraints = true
-        
+        // try to set up constraints on the collection view 
         self.collectionView?.backgroundColor = UIColor.blueColor()
-        self.collectionView?.translatesAutoresizingMaskIntoConstraints = true
         
+        let hConstraintCollectionView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["collectionView" : collectionView])
         
-        let views = ["collectionView" : self.collectionView! , "pageView" : self.pageViewController!.view]
-        let hConstraintCollectionView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        
-        
+        let vConstraintCollectionView = NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["collectionView" : collectionView])
 
-       let hConstraintPageView = NSLayoutConstraint.constraintsWithVisualFormat("H:|[pageView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-
-        let vConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|[collectionView(>=0)]-(>=5)-[pageView(>=0)]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: views)
-        
        // let verticalConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView(>=0)]|", options: .AlignAllCenterY, metrics: nil, views: views)
         self.view.addConstraints(hConstraintCollectionView)
-        self.view.addConstraints(hConstraintPageView)
+        self.view.addConstraints(vConstraintCollectionView)
+      //  self.view.layoutIfNeeded()
+  
+       
         
-        self.view.addConstraints(vConstraint)
-    
+        
         
         print(self.collectionView?.frame)
-        print(self.pageViewController?.view.frame)
+        print(self.view.frame)
         
         
         /*
@@ -117,13 +111,13 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
             The view controller acts as a wrapper between the actual collection view and the data source
  
          */
-        self.dataSource = DynamicDataSource.init(channel:  self.channel as! [NSObject : AnyObject] , forLayout: true)
         
         self.dataSource.loadContentWithAnyBlock
         {
             dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
             {
                     self.collectionView!.reloadData()
+                    self.view.layoutIfNeeded()
                     self.collectionView!.layoutIfNeeded()
                     self.activityIndicator.stopAnimating()
             }
@@ -189,20 +183,7 @@ class DynamicCollectionViewController: UIViewController ,UICollectionViewDataSou
         return true
     }
 
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
 
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         

@@ -25,7 +25,7 @@
     return self;
 }
 
--(void)viewDiLoad{
+-(void)viewDidLoad{
     [super viewDidLoad];
     
     
