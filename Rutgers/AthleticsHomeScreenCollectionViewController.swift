@@ -21,6 +21,9 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
     var activityIndicator : UIActivityIndicatorView! = nil
+  
+    var imagesInBanner = 5;
+    
     
     let flowLayout : UICollectionViewFlowLayout =
     {
@@ -36,7 +39,7 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
         super.viewDidLoad()
         self.dataSource = DynamicDataSource.init(channel:  self.channel as! [NSObject : AnyObject] , forLayout: true)
        
-        
+        self.collectionView?.backgroundColor = UIColor.whiteColor()
         
         // set the data source and the delegate for the collection view
         self.collectionView?.delegate = self ;
@@ -110,9 +113,77 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
     {
         return self.dataSource.numberOfItemsInSection(section)
     }
+   
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    {
+        var cellWidth:CGFloat = 0 ;
+        var cellSize:CGSize ;
+        
+        let screenWidth = self.collectionView?.frame.width
+        
+        if(indexPath.row == 0)
+        {
+            let aspectRatio:CGFloat = 0.8 ;  // the height will be (value) more than the width
+            cellWidth = (screenWidth! - 20 );
+            cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
+        }
+        else
+        {
+            let aspectRatio:CGFloat = 1.2 ;  // the height will be (value) more than the width
+            cellWidth = (screenWidth! ) / 2.5;
+            cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
+        }
+       
+        
+        return cellSize
+    }
     
     
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    {
+        
+       if(indexPath.row == 0 )
+       {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(bannerElem, forIndexPath: indexPath) as! BannerCell
+        
+           
+            var pageVC:[UIViewController] = []
+            for index in 0..<5
+            {
+                let bm =  BannerImage.init(image: UIImage(named: "ru_banner_1")! , frame: cell.bounds , index: index)
+                pageVC.append(bm)
+            }
+       
+            cell.viewControllersInPage = pageVC
+       
+            cell.setupViews()
+        
+            return cell;
+        
+       }
+        else
+       {
+        
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(viewElem, forIndexPath: indexPath) as! DynamicCollectionViewCell
+            //cell.backgroundColor = UIColor.blueColor();
+            
+            let item : NSDictionary = (self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary)
+            
+            cell.title.text = item.channelTitle
+            cell.title.lineBreakMode  = .ByWordWrapping
+            cell.title.numberOfLines = 0
+            
+            cell.layer.borderColor = UIColor.blackColor().CGColor
+            cell.layer.borderWidth = 5 ;
+            cell.layer.cornerRadius = 8
+            
+            return cell 
+            
+        }
+       
+    }
     
+ 
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let item:NSDictionary = self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary
@@ -140,37 +211,65 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
 
 
 
-extension AthleticsHomeScreenCollectionViewController : UIPageViewControllerDataSource , UIPageViewControllerDelegate
-{
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        return nil;
-    }
-    
-    
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        return nil;
-    }
-}
+
 
 
 
 class BannerImage : UIViewController
 {
     let image : UIImage;
+    let imageView : UIImageView ;
+    let superViewFrame : CGRect ;
+    let index : Int;
     
-    init(image : UIImage)
+    
+    init(image : UIImage , frame : CGRect , index : Int)
     {
         self.image = image ;
+        self.superViewFrame = frame ;
+        imageView = UIImageView(frame: superViewFrame)
+        
+        // make the image fit the view
+        UIGraphicsBeginImageContext(CGSizeMake(self.imageView.frame.width, self.imageView.frame.width))
+        let imageRect = imageView.bounds
+        self.image.drawInRect(imageRect)
+        imageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        
+        // set index of the image for tracking in the page view controller
+        self.index = index
+        
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+  
+    /*
+        The super view of this  view should set the frame of the this view view controller for it to show up properly
+     */
+    override func loadView()
+    {
+        self.view = UIView.init(frame: CGRectZero)
+        self.view.frame = self.superViewFrame
+        self.imageView.frame = self.view.frame
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let imageView : UIImageView = UIImageView(image: UIImage(named: <#T##String#>));
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         
+        self.view.addSubview(imageView)
+        imageView.contentMode = .ScaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false ;
+        NSLayoutConstraint.constraintsWithVisualFormat("H:|[imv]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil , views: ["imv" : imageView])
+        NSLayoutConstraint.constraintsWithVisualFormat("V:|[imv]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil , views: ["imv" : imageView])
         
+        self.view.layoutIfNeeded()
         
     }
 }
@@ -181,17 +280,17 @@ class BannerImage : UIViewController
 class BannerCell : UICollectionViewCell
 {
     let pageViewController = UIPageViewController.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: nil)
+    var viewControllersInPage : [UIViewController] = []
+    
+    
     override init(frame: CGRect)
     {
         super.init(frame: frame)
         
         // set the data source for the pageViewController to be the AtheleticHomeScreen , keep the design simple for now
-      
-        self.pageViewController.dataSource = AthleticsHomeScreenCollectionViewController.self as! UIPageViewControllerDataSource
-        self.pageViewController.delegate = AthleticsHomeScreenCollectionViewController.self as! UIPageViewControllerDelegate
-       
-        setupViews()
-          
+        self.pageViewController.dataSource = self as! UIPageViewControllerDataSource
+        self.pageViewController.delegate = self as! UIPageViewControllerDelegate
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -200,14 +299,57 @@ class BannerCell : UICollectionViewCell
     
     func setupViews()
     {
+        self.contentView.backgroundColor = UIColor.redColor()
         self.pageViewController.view.frame = self.contentView.bounds
-        
+      
+        self.pageViewController.setViewControllers([viewControllersInPage[0]], direction: .Forward, animated: false, completion: nil)
+       
         self.contentView.addSubview(self.pageViewController.view)
     }
+    
     
 }
 
 
-
+extension BannerCell : UIPageViewControllerDataSource , UIPageViewControllerDelegate
+{
+    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+        return self.viewControllersInPage.count
+    }
+    
+    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+        return 0
+    }
+    
+    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+        
+        let bm : BannerImage = viewController as! BannerImage
+        var vcIndex : Int = bm.index
+       
+        vcIndex += 1;
+        
+        if(vcIndex == self.viewControllersInPage.count) // if at the zero index , the no more vc to show
+        {
+            return nil ;
+        }
+       
+        return self.viewControllersInPage[vcIndex];
+    }
+    
+    
+    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+        let bm : BannerImage = viewController as! BannerImage
+        var vcIndex : Int = bm.index
+       
+        if(vcIndex == 0) // if at the zero index , the no more vc to show
+        {
+            return nil ;
+        }
+       
+        vcIndex -= 1;
+        
+        return self.viewControllersInPage[vcIndex];
+    }
+}
 
 
