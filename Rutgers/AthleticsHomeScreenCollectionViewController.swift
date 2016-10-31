@@ -37,7 +37,7 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.dataSource = DynamicDataSource.init(channel:  self.channel as! [NSObject : AnyObject] , forLayout: true)
+        self.dataSource = DynamicDataSource.init(channel:  self.channel as [NSObject : AnyObject] , forLayout: true)
        
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         
@@ -142,15 +142,16 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
         
-       if(indexPath.row == 0 )
+       if(indexPath.row == 0 ) // the zeroth index is the banner
        {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(bannerElem, forIndexPath: indexPath) as! BannerCell
         
-           
+            // Create a array of UIViewControllers that page view controller will use to display its data
+            // Putting a UiViewContoller seems weird but that page view controller needs an array of view controller not views
             var pageVC:[UIViewController] = []
             for index in 0..<5
             {
-                let bm =  BannerImage.init(image: UIImage(named: "ru_banner_1")! , frame: cell.bounds , index: index)
+                let bm =  BannerImage.init(image: UIImage(named: "ru_banner_1")! , frame: cell.frame , index: index)
                 pageVC.append(bm)
             }
        
@@ -230,7 +231,7 @@ class BannerImage : UIViewController
         imageView = UIImageView(frame: superViewFrame)
         
         // make the image fit the view
-        UIGraphicsBeginImageContext(CGSizeMake(self.imageView.frame.width, self.imageView.frame.width))
+        UIGraphicsBeginImageContext(CGSizeMake(self.imageView.frame.width, self.imageView.frame.height))
         let imageRect = imageView.bounds
         self.image.drawInRect(imageRect)
         imageView.image = UIGraphicsGetImageFromCurrentImageContext()
@@ -288,8 +289,8 @@ class BannerCell : UICollectionViewCell
         super.init(frame: frame)
         
         // set the data source for the pageViewController to be the AtheleticHomeScreen , keep the design simple for now
-        self.pageViewController.dataSource = self as! UIPageViewControllerDataSource
-        self.pageViewController.delegate = self as! UIPageViewControllerDelegate
+        self.pageViewController.dataSource = self as UIPageViewControllerDataSource
+        self.pageViewController.delegate = self as UIPageViewControllerDelegate
         
     }
     
@@ -299,11 +300,14 @@ class BannerCell : UICollectionViewCell
     
     func setupViews()
     {
-        self.contentView.backgroundColor = UIColor.redColor()
-        self.pageViewController.view.frame = self.contentView.bounds
+        self.contentView.backgroundColor = UIColor.clearColor()
+        self.pageViewController.view.frame = self.contentView.frame
       
-        self.pageViewController.setViewControllers([viewControllersInPage[0]], direction: .Forward, animated: false, completion: nil)
-       
+        self.pageViewController.setViewControllers([viewControllersInPage[0]], direction: .Forward, animated: true, completion: nil)
+      // add constaints on the pageViewController view so that it lies inside
+        
+        
+        
         self.contentView.addSubview(self.pageViewController.view)
     }
     
@@ -313,6 +317,8 @@ class BannerCell : UICollectionViewCell
 
 extension BannerCell : UIPageViewControllerDataSource , UIPageViewControllerDelegate
 {
+    // implement these two to get the dots 
+    
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
         return self.viewControllersInPage.count
     }
