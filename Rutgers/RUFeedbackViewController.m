@@ -12,6 +12,9 @@
 #import "AlertDataSource.h"
 #import "FeedbackDataSourceDelegate.h"
 #import "RUChannelManager.h"
+#import "RUAnalyticsManager.h"
+
+
 
 @interface RUFeedbackViewController () <FeedbackDataSourceDelegate>
 @property (nonatomic) UIBarButtonItem *sendButton;

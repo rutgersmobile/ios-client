@@ -10,6 +10,7 @@
 #import "DynamicDataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
+#import "RUAnalyticsManager.h"
 
 /*
     This is the generic view used to represent all the inner subviews of the View Contr. from the slideView
@@ -84,7 +85,11 @@
     //Sometimes the title is on the item and not its channel
     if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];
    
-  
+    if (GRANULAR_ANALYTICS_NEEDED)
+    {
+        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [vc class])];
+    }
+    
      // Now move to the next view controller
     [self.navigationController pushViewController:vc animated:YES];
 }

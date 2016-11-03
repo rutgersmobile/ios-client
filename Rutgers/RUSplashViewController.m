@@ -46,9 +46,18 @@
     if(_showWrongUrlAlert )
     {
         // show the alert to the user that the url was wrong
-        [[[UIAlertView alloc] initWithTitle:@" Error Invalid Url " message:@" Given url has a formatting or content error " delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+        [self showAlertView];
     }
 }
+
+
+-(void)showAlertView
+{
+    [[[UIAlertView alloc] initWithTitle:@" Error Invalid Url " message:@" Given url has a formatting or content error " delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil] show];
+}
+
+
+
 
 -(void)loadView
 {

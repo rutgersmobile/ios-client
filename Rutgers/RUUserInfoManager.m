@@ -253,7 +253,7 @@ static NSString *const userInfoManagerUserRoleKey = @"userInfoManagerUserRoleKey
 
 +(void)notifyFavoritesChanged{
     #warning fix this
-    //[[NSNotificationCenter defaultCenter] postNotificationName:MenuItemManagerDidChangeActiveMenuItemsKey object:self];
+  //  [[NSNotificationCenter defaultCenter] postNotificationName:MenuItemManagerDidChangeActiveMenuItemsKey object:self];
 }
 
 /**
