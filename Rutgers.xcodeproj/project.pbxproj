@@ -430,17 +430,14 @@ utgers/RUMenuItemManageection */
 		62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsCollectionViewCell.swift; sourceTree = "<group>"; };
 		62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsCollectionViewCell.xib; sourceTree = "<group>"; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
 		62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsHomeScreenCollectionViewController.swift; sourceTree = "<group>"; };
 		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
-=======
 		62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUReaderGameViewController.h; path = ../RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUReaderGameViewController.m; path = ../RUReaderGameViewController.m; sourceTree = "<group>"; };
 		62EAA17B1D9B242000DD2363 /* NSMutableArray+RUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+RUQueue.h"; sourceTree = "<group>"; };
 		62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+RUQueue.m"; sourceTree = "<group>"; };
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -1876,11 +1873,8 @@ utgers/RUMenuItemManageection */
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
-<<<<<<< HEAD
 				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
-=======
 				62EAA17D1D9B242000DD2363 /* NSMutableArray+RUQueue.m in Sources */,
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				621E60371D9D9D3400BAF3B7 /* RUDebug.h in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
@@ -2219,11 +2213,8 @@ utgers/RUMenuItemManageection */
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-<<<<<<< HEAD
 				SWIFT_VERSION = 2.3;
-=======
 				STRIP_INSTALLED_PRODUCT = YES;
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2265,12 +2256,9 @@ utgers/RUMenuItemManageection */
 				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-<<<<<<< HEAD
 				SWIFT_VERSION = 2.3;
-=======
 				STRIP_INSTALLED_PRODUCT = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2293,21 +2281,21 @@ utgers/RUMenuItemManageection */
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
-				GCC_WARN_UNUSED_PARAMETER = NO;
-				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
+					GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
+					GCC_WARN_UNUSED_PARAMETER = NO;
+					INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
+					IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+					LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+					LIBRARY_SEARCH_PATHS = (
+						"$(inherited)",
+						"$(PROJECT_DIR)",
+					);
+					ONLY_ACTIVE_ARCH = YES;
+					PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
+					PRODUCT_NAME = "$(TARGET_NAME)";
+					PROVISIONING_PROFILE = "";
+					STRIP_INSTALLED_PRODUCT = NO;
+					SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "";
