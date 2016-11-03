@@ -45,7 +45,7 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
         self.collectionView?.delegate = self ;
         self.collectionView?.dataSource = self;
         
-        
+        // Indicator to be showed within the main collectoin view
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         activityIndicator.hidesWhenStopped = true;
         activityIndicator.center = self.view.center
@@ -111,7 +111,7 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return self.dataSource.numberOfItemsInSection(section)
+        return self.dataSource.numberOfItemsInSection(section) + 1  // for the banner
     }
    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
@@ -145,20 +145,19 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
        if(indexPath.row == 0 ) // the zeroth index is the banner
        {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(bannerElem, forIndexPath: indexPath) as! BannerCell
+            cell.layer.borderColor = UIColor.blueColor().CGColor
+            cell.layer.borderWidth = 2
+            cell.layer.cornerRadius = 8
+             // The cell will keep showing the activity view until the images are loaded from the urls
         
-            // Create a array of UIViewControllers that page view controller will use to display its data
-            // Putting a UiViewContoller seems weird but that page view controller needs an array of view controller not views
-            var pageVC:[UIViewController] = []
-            for index in 0..<5
-            {
-                let bm =  BannerImage.init(image: UIImage(named: "ru_banner_1")! , frame: cell.frame , index: index)
-                pageVC.append(bm)
-            }
-       
-            cell.viewControllersInPage = pageVC
-       
-            cell.setupViews()
-        
+            // pass in the urls for the images and the cell will load it in the background
+            let simURLS : [String] = ["http://www.rutgers.edu/sites/default/files/styles/home_featuredbreakpoints_theme_uwide_wide_1x/public/featured_images/UW_RevThinking_hp.png" ,
+                                    "http://news.rutgers.edu/sites/medrel/files/inline-img/groupshot400.jpg",
+                                    "http://www.rutgers.edu/sites/default/files/styles/home_featuredbreakpoints_theme_uwide_wide_1x/public/featured_images/UW_ss_268287005_hp.png",
+                                    "http://www.camden.rutgers.edu/sites/camden/files/styles/ru_homepage_feature/public/callout-golf.png",
+                                    "http://republicbuzz.com/wp-content/uploads/2016/05/20160516/428467_160515152619-obama-rutgers-large-169.jpg"
+                                 ]
+            cell.loadImagesForUrlStrings(simURLS)
             return cell;
         
        }
@@ -167,8 +166,10 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
         
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(viewElem, forIndexPath: indexPath) as! DynamicCollectionViewCell
             //cell.backgroundColor = UIColor.blueColor();
-            
-            let item : NSDictionary = (self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary)
+       
+            let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
+        
+            let item : NSDictionary = (self.dataSource.itemAtIndexPath(indexForDict) as! NSDictionary) // accout for the banner being added at the to
             
             cell.title.text = item.channelTitle
             cell.title.lineBreakMode  = .ByWordWrapping
@@ -177,8 +178,11 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
             cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 5 ;
             cell.layer.cornerRadius = 8
-            
-            return cell 
+        
+        
+        
+        
+            return cell
             
         }
        
@@ -211,7 +215,209 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
 }
 
 
+// loads the banner images for now
+class BannerCellDataSource : NSObject
+{
+    
+    //TODO : use seperate contrainers for the stirng and images to prevent the copy of strings being used as dict keys
+    
+    var strImages : [String]? // since the images are kept in a dict , we cannot keep the order of the images. That is display the images in the same order as on the server
+                            // So to index the dict by number ,we keep an array of strings with the same ordering as present in the server .
+                            // now index by number into the strImages , obtain the string , then use it in a dict to extract the image
+    
+    var cachedImages : [String : UIImage]? // create a cache of the images that are loaded are the network request
+   
+    override init() // do the initial setup
+    {
+        cachedImages = [String : UIImage]()
+    }
+    
+    // load the images from the url strings , then call the callback ..
+    // the call back will be done in a main thread , so it should only be ued to update UIElements
+    func loadImagesFromUrlStrings( array : [String] , callbackUIUpdate : () -> Void)
+    {
+      
+        // set the strImages for indexing into array
+        self.strImages = array
+        
+        for (imageIndex ,imageStr ) in array.enumerate() // iterate through each image string in the array and create a nsurlsession for each and load them
+        {
+            guard cachedImages![imageStr] == nil else
+            {
+                continue
+            }
+            // if the image is not present then load the image from the url , else continue and move to next step
+                
+                let imageUrl = NSURL.init(string: imageStr)!
+                let task = NSURLSession.sharedSession().dataTaskWithURL(imageUrl)
+                {
+                    (let data , let response , let error) in
+                       if let imageData = data
+                       {
+                            let responseImage = UIImage(data: imageData)
+                            self.cachedImages![imageStr] = responseImage
+                            // TODO: Improve the code using queues
+                            // simple stupid implementation for now
+                            if(self.numImages() == (self.strImages?.count)!)
+                            {
+                               // if the last image has been loaded and put in the array , the update the UI
+                               dispatch_async(dispatch_get_main_queue())
+                               {
+                                    callbackUIUpdate()
+                               }
+                                
+                            }
+                       }
+                    
+                }
+                
+                task.resume()
+                
+           
+        }
+        
+        
+    }
+    
+    func imageAtIndex( idx : Int ) -> UIImage?
+    {
+        guard idx < self.numImages() else // acces index largers than the number of images so return nul
+        {
+            return nil
+        }
+        
+        return cachedImages![strImages![idx]]!;
+    }
+   
+    // keep track of the number of images in the banner
+    func numImages() -> Int
+    {
+        return cachedImages!.count
+    }
+    
+    
+    
+}
 
+
+
+
+
+
+/*
+ 
+     // TODO : DOES NOT HANDLE THE CASE WHERE THE URL IS STUPID
+ 
+ */
+
+// The cell containing the banner in it
+class BannerCell : UICollectionViewCell , UIScrollViewDelegate
+{
+    var scrollView : UIScrollView?
+    var pageControl : UIPageControl?
+    var loadingView : UIActivityIndicatorView?
+    var imagesUrls : [UIImageView]?
+    var dataSource : BannerCellDataSource?
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        // set up the data source used to load the images in the cell
+        dataSource = BannerCellDataSource()
+        
+        // set the activity view to take up the entire cell bounds
+        loadingView = UIActivityIndicatorView.init(activityIndicatorStyle: .Gray)
+        loadingView?.center = self.contentView.center
+        loadingView?.startAnimating() // keep on animating till the iamge has been loaded
+        
+        
+        // set the size and pos of the scrollview inside the cell to take up the entire cell
+        scrollView = UIScrollView(frame: CGRectMake(0,0,self.contentView.bounds.width, self.contentView.bounds.height))
+        pageControl = UIPageControl(frame: CGRectMake(0,self.contentView.bounds.height - 50 ,self.contentView.bounds.width,50))
+     
+        
+        scrollView!.delegate = self 
+        
+       // setupViews() // add the page view after the scorllView so that it appears on the top
+        
+        // add the view to the contentView 
+        // the loading view is kept on top of both the scroll view and the pagecontrol
+        // if the hidden when the loading has been done ... So no need to remove the view from the screen
+        loadingView?.hidesWhenStopped = true 
+        self.contentView.addSubview(loadingView!) 
+         
+     /*
+        for index in 0..<4
+        {
+         
+        }
+         */
+       
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    /*
+        Pass in an array of strings and the cell will load it in the scroll view
+     */
+    func loadImagesForUrlStrings(strArray : [String])
+    {
+            dataSource?.loadImagesFromUrlStrings(strArray)
+            {
+                // do the loading into the view and adding to the scrollview in the main thread
+                self.setupViews()
+                for index in 0..<self.dataSource!.numImages()
+                {
+                    // create the proper frame to add the scrollview in
+                     var tempFrame = CGRectMake(0, 0, 0, 0)
+                    tempFrame.origin.x = self.scrollView!.frame.size.width * CGFloat(index)
+                    tempFrame.size = self.scrollView!.frame.size
+                 
+                    let subView = UIImageView(frame: tempFrame)
+                    subView.image = self.dataSource!.imageAtIndex(index)
+                    self.scrollView!.addSubview(subView)
+                    
+                    
+                }
+                self.scrollView!.contentSize = CGSizeMake(self.scrollView!.frame.size.width * CGFloat(self.dataSource!.numImages()) , self.scrollView!.frame.size.height)
+                self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            }
+    }
+    
+    
+    func setupViews()
+    {
+        self.loadingView?.stopAnimating()
+        
+        self.contentView.addSubview(scrollView!) // add the scrollview to the screen
+        
+        self.scrollView!.pagingEnabled = true
+        self.pageControl!.numberOfPages = (self.dataSource?.numImages())!
+        self.pageControl!.currentPage = 0
+        self.pageControl!.tintColor = UIColor.redColor()
+        self.pageControl!.pageIndicatorTintColor = UIColor.blackColor()
+        self.pageControl!.currentPageIndicatorTintColor = UIColor.greenColor()
+        self.contentView.addSubview(pageControl!)
+    }
+    
+   
+    func changePage(sender: AnyObject) -> ()
+    {
+        let x  = CGFloat(pageControl!.currentPage) * scrollView!.frame.size.width
+        scrollView!.setContentOffset(CGPointMake(x,0), animated: true)
+    }
+    
+
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+        pageControl!.currentPage = Int(pageNumber)
+    }
+
+}
 
 
 
@@ -278,42 +484,7 @@ class BannerImage : UIViewController
 
 
 
-class BannerCell : UICollectionViewCell
-{
-    let pageViewController = UIPageViewController.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: nil)
-    var viewControllersInPage : [UIViewController] = []
-    
-    
-    override init(frame: CGRect)
-    {
-        super.init(frame: frame)
-        
-        // set the data source for the pageViewController to be the AtheleticHomeScreen , keep the design simple for now
-        self.pageViewController.dataSource = self as UIPageViewControllerDataSource
-        self.pageViewController.delegate = self as UIPageViewControllerDelegate
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupViews()
-    {
-        self.contentView.backgroundColor = UIColor.clearColor()
-        self.pageViewController.view.frame = self.contentView.frame
-      
-        self.pageViewController.setViewControllers([viewControllersInPage[0]], direction: .Forward, animated: true, completion: nil)
-      // add constaints on the pageViewController view so that it lies inside
-        
-        
-        
-        self.contentView.addSubview(self.pageViewController.view)
-    }
-    
-    
-}
-
+/*
 
 extension BannerCell : UIPageViewControllerDataSource , UIPageViewControllerDelegate
 {
@@ -358,4 +529,4 @@ extension BannerCell : UIPageViewControllerDataSource , UIPageViewControllerDele
     }
 }
 
-
+*/
