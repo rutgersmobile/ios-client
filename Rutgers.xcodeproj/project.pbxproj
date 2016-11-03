@@ -88,7 +88,6 @@
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
-		621E60371D9D9D3400BAF3B7 /* RUDebug.h in Sources */ = {isa = PBXBuildFile; fileRef = 621E60361D9D9D3400BAF3B7 /* RUDebug.h */; };
 		621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 621E60381D9D9F8300BAF3B7 /* RUDebug.m */; };
 		622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */; };
 		622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */; };
@@ -104,7 +103,6 @@
 		629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */; };
 		62C046E81DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */; };
 		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
-		62CBC2F31D6DF00000061E1E /* RUReaderGameViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
 		A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; };
@@ -1857,7 +1855,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62CBC2F31D6DF00000061E1E /* RUReaderGameViewController.h in Sources */,
 				04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */,
 				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
 				041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */,
@@ -1867,7 +1864,6 @@
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
 				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
-				621E60371D9D9D3400BAF3B7 /* RUDebug.h in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
 				0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */,
