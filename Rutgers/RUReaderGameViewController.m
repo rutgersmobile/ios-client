@@ -31,7 +31,7 @@
     [super viewDidLoad];
     
     // CHange the data Source
-    if(DEV) NSLog(@"Game REader VIew Controller loaded");
+    if(DEV) NSLog(@"Game REader VIew Controller loaded");
     NSString * url = [NSString stringWithFormat:@"sports/%@.json" , self.channel[@"data"]];
     
     self.dataSource = [[RUReaderDataSource alloc] initWithUrl:url];

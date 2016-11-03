@@ -125,8 +125,6 @@
                       // makes ui changes: Shows the network error cell : Has to be done on the main thread
                       dispatch_sync(dispatch_get_main_queue(),^
                      {
-                         
-                         NSAssert([NSThread isMainThread], @"Method called using a thread other than main!");
                          [self.busPredictionsDS loadContentWithBlock:^(AAPLLoading *loading)
                          {
                              [loading doneWithError:error];

@@ -51,14 +51,10 @@
 
 -(NSInteger)numberOfItems
 {
-<<<<<<< HEAD
     if(DEV)
     {
         NSLog(@" # items = %lu",(unsigned long)[_items count]);
     }
-=======
-    if(DEV) NSLog(@" # items = %lu",(unsigned long)[_items count]);
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
     return [_items count];
 }
 

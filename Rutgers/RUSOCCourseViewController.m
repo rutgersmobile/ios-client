@@ -13,8 +13,6 @@
 #import "DataTuple.h"
 #import "RUChannelManager.h"
 #import "NSURL+RUAdditions.h"
-#import "RUAnalyticsManager.h"
-
 
 @interface RUSOCCourseViewController ()
 @property (nonatomic) NSDictionary *course;
@@ -111,7 +109,7 @@
                                            sectionRow.section[@"index"]
                                         ]
                                   };
-       
+        
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:channel] animated:YES];
     }
     else if ([item isKindOfClass:[DataTuple class]])

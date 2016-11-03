@@ -26,10 +26,14 @@
 #import "RUFavoritesDynamicHandoffViewController.h"
 #import "RUSplashViewController.h"
 
-#import "RUDefines.h"
+
 
 NSString *const ChannelManagerJsonFileName = @"ordered_content"; // Json file used in the creation of the different channels
-NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey"; /* Update the number of channels and colletevery day ? */
+NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateChannelsKey";
+
+/*
+    Update the number of channels and colletevery day ?
+ */
 #define CHANNEL_CACHE_TIME 60*60*24*1
 
 @interface RUChannelManager ()
@@ -379,27 +383,24 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSString *view = channel[@"view"];
     // based on the view feild in the channel dict we decide which view controller to show for the data
     
+    
     if (!view) view = [self defaultViewForChannel:channel]; // the default for each channel is the dynamic table view contorller or called a dtable
                                                             // If the channel is for faq , then a differnt view is used.
     
+
     Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
     
-    if(DEV) NSLog(@"%@",class);
-    
-    // For analytics
-    if(GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass([class class])]; // need synchronous addition to ensure that we do not miss the class which caused the exception ; for async, the app might creash before the addition happens
-    }
+    //NSLog(@"%@",class);
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view]; // all the view controller used to display the channel conforsm to RUChannelProtocol
     
-    // channelWithConfig is implemented by the view controller conforming to the protocol
-    
+       /*
+                channelWithConfig is implemented by the view controller conforming to the protocol
+        */
     UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
     
     vc.title = [channel channelTitle];  // channelTitile is implemnted as a category on the channel (NSDictionary)
-    if(DEV) NSLog(@"class : %@", vc);
+   // NSLog(@"class : %@", vc);
     return vc;
 }
 
@@ -429,15 +430,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     NSString *viewTag = [[self channelWithHandle:handle] channelView];
     id class = [self classForViewTag:viewTag];
-  
    
-    // For analytics 
-    if(GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass([class class])];
-    }
-    
-    
     // if a wrong url comes along , we show the splash screen
     if(class == nil)
     {

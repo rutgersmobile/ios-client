@@ -15,11 +15,7 @@
 
 @implementation RUNavigationController
 
-<<<<<<< HEAD
 @synthesize  preferredStatusBarStyle = _preferredStatusBarStyle;
-=======
-@synthesize preferredStatusBarStyle =  _preferredStatusBarStyle ;
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

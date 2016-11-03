@@ -22,17 +22,14 @@
 #import "RUPredictionsViewController.h"
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
+
+
 #import "RURootController.h"
-<<<<<<< HEAD
 #import "RUDebug.h"
 
 
 
-=======
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 #import <SWRevealViewController.h>
-#import "RUAnalyticsManager.h"
-
 
 @interface RUBusViewController () <UIGestureRecognizerDelegate>
 
@@ -72,29 +69,11 @@
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
     
-<<<<<<< HEAD
     
     RUDebug * debug = [[RUDebug alloc ] init];
   
     [debug dumpView:self.navigationController.view atIndent:0];
     
-=======
- //  [NSException raise:@"Invalid foo value" format:@"foo of "];
-    
- 
-    if(DEV)
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(36 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0) , ^
-        {
-          /*  @throw [NSException exceptionWithName:NSGenericException
-                                           reason:@"Test uncaught exception handling"
-                                         userInfo:nil];     
-           */
-            [NSException raise:NSInternalInconsistencyException format:@"Error Testing"];
-        });
-    }
-  
->>>>>>> db5b9ae141176d686ca0e418bd7e492d24df1d40
 }
 
 
@@ -120,10 +99,6 @@
     
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
     // Create a view using the item. Ie. Present the view with the bu stops and their timiings
-    if (GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [item class])];
-    }
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }
 

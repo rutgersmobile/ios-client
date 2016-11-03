@@ -21,8 +21,6 @@
 
 #define DEV 0
 
-#define GRANULAR_ANALYTICS_NEEDED 1
-
 extern uint64_t dispatch_benchmark(size_t count, void (^block)(void));
 
 static inline NSComparisonResult compare(NSInteger int1, NSInteger int2)
@@ -34,7 +32,7 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2)
 
 extern BOOL iPad();
 
-static NSString *const gittag = @"4.1.3";
+static NSString *const gittag = @"4.1";
 
 static NSString *const api = @"2";
 
@@ -65,14 +63,5 @@ static RunMode const runMode = BetaMode;
 extern BOOL isBeta();
 
 extern NSString * betaModeString();
-
-
-/*
-    Takes in an NSURL and returns the absolute string for that URL
-    Without the RU , the name conflicts with internal apple function
- */
-extern NSString * RUGetAbsoluteString(NSURL * url);
-
-
 
 #endif /* RUDefines_h */
