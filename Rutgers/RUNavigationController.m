@@ -14,6 +14,7 @@
 #import "RUNavigationController.h"
 
 @implementation RUNavigationController
+@synthesize preferredStatusBarStyle = _preferredStatusBarStyle;
 
 @synthesize  preferredStatusBarStyle = _preferredStatusBarStyle;
 
