@@ -1704,7 +1704,7 @@
 			attributes = {
 				CLASSPREFIX = RU;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Rutgers;
 				TargetAttributes = {
 					047D06DA1BE16DB600DFEAA3 = {
