@@ -37,7 +37,7 @@
   "title": "Scarlet Knights",
   "icon": "knights",
   "grouped": true,
-  "view": "dtable",
+  "view": "athletics",
   "api": "athleticsfaq.txt"
   },
   {
@@ -103,6 +103,7 @@
   "api": "news.txt",
   "grouped": true,
   "view": "dtable",
+  "layout": "grid",
   "icon": "news"
   },
   {

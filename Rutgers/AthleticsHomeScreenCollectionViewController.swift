@@ -17,7 +17,8 @@ private let bannerElem = "banner"
 
 
 
-class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,UICollectionViewDelegateFlowLayout,  RUChannelProtocol{
+class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,UICollectionViewDelegateFlowLayout,  RUChannelProtocol
+{
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
     var activityIndicator : UIActivityIndicatorView! = nil
@@ -79,7 +80,7 @@ class AthleticsHomeScreenCollectionViewController: UICollectionViewController  ,
     /// Conform to RUChannelProtocol
     static func channelHandle() -> String!
     {
-        return "dtable"
+        return "athletics"
     }
     
     static func registerClass()
@@ -231,51 +232,82 @@ class BannerCellDataSource : NSObject
     {
         cachedImages = [String : UIImage]()
     }
+   
+    
+    /*
+        Expensive call , as needs to acces kernel space for the lock
+        Use a serial dispatch queue to ensure that the blocks are exectued in serial
+     */
+    func synchronized(lock: AnyObject , block:() throws -> Void ) rethrows
+    {
+        objc_sync_enter(lock)
+        defer // ensures that even if the block causes an exception , the lock is removed
+        {
+            objc_sync_exit(lock)
+        }
+        try block()
+    }
+    
     
     // load the images from the url strings , then call the callback ..
     // the call back will be done in a main thread , so it should only be ued to update UIElements
-    func loadImagesFromUrlStrings( array : [String] , callbackUIUpdate : () -> Void)
+    func loadImagesFromUrlStrings( array : [String] , callbackUIUpdate : (Bool) -> Void)
     {
-      
         // set the strImages for indexing into array
         self.strImages = array
         
-        for (imageIndex ,imageStr ) in array.enumerate() // iterate through each image string in the array and create a nsurlsession for each and load them
+        let imageCacheAccessQueue : dispatch_queue_t = dispatch_queue_create("com.rutgers.imageCacheQueue", nil) // just setting a name for the queue to be used when we profile
+        
+        // the group is created so that the ui update can be done at the proper time
+        // After every block that has been added to the group has been executed , we will use the group notify to run the uiupdate . Ensures that ui is updated only after all the data has been obtained
+        let imageDownloadGroup : dispatch_group_t = dispatch_group_create()
+        
+        
+        for imageStr  in array // iterate through each image string in the array and create a nsurlsession for each and load them
         {
             guard cachedImages![imageStr] == nil else
             {
                 continue
             }
             // if the image is not present then load the image from the url , else continue and move to next step
+            
+            // enter the group
+            dispatch_group_enter(imageDownloadGroup)
+            
+            let imageUrl = NSURL.init(string: imageStr)!
+            let task = NSURLSession.sharedSession().dataTaskWithURL(imageUrl)
+            {
+                ( data , let response , let error) in
                 
-                let imageUrl = NSURL.init(string: imageStr)!
-                let task = NSURLSession.sharedSession().dataTaskWithURL(imageUrl)
-                {
-                    (let data , let response , let error) in
-                       if let imageData = data
-                       {
-                            let responseImage = UIImage(data: imageData)
+                   if let imageData = data
+                   {
+                        let responseImage = UIImage(data: imageData)
+                  
+                        // put the blocks into a serial qeueue to ensure that the insertion into th dict happens in a thread safe manner and not having to use locks
+                        // we add it to the group so that the group notify will only be called after the images has been added to the dict
+                        dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
+                        {
                             self.cachedImages![imageStr] = responseImage
-                            // TODO: Improve the code using queues
-                            // simple stupid implementation for now
-                            if(self.numImages() == (self.strImages?.count)!)
-                            {
-                               // if the last image has been loaded and put in the array , the update the UI
-                               dispatch_async(dispatch_get_main_queue())
-                               {
-                                    callbackUIUpdate()
-                               }
-                                
-                            }
-                       }
+                        }
+                   }
+                    else // did not obtain the image .. Put some place holder to the image.. Or not show the banner at all ?
+                   {
                     
-                }
-                
-                task.resume()
-                
+                   }
+                  
+                    // leave the group
+                    dispatch_group_leave(imageDownloadGroup)
+            }
+            
+            task.resume()
            
         }
         
+        dispatch_group_notify(imageDownloadGroup, dispatch_get_main_queue())
+        {
+                callbackUIUpdate(true) // update the ui after all the UI has been updated
+        }
+         
         
     }
     
@@ -333,10 +365,11 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         
         // set the size and pos of the scrollview inside the cell to take up the entire cell
         scrollView = UIScrollView(frame: CGRectMake(0,0,self.contentView.bounds.width, self.contentView.bounds.height))
-        pageControl = UIPageControl(frame: CGRectMake(0,self.contentView.bounds.height - 50 ,self.contentView.bounds.width,50))
-     
+        scrollView!.delegate = self
         
-        scrollView!.delegate = self 
+        pageControl = UIPageControl(frame: CGRectMake(0,self.contentView.bounds.height - 50 ,self.contentView.bounds.width,50))
+        self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
         
        // setupViews() // add the page view after the scorllView so that it appears on the top
         
@@ -346,13 +379,6 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         loadingView?.hidesWhenStopped = true 
         self.contentView.addSubview(loadingView!) 
          
-     /*
-        for index in 0..<4
-        {
-         
-        }
-         */
-       
     }
     
     required init?(coder aDecoder: NSCoder)
@@ -367,33 +393,44 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
     {
             dataSource?.loadImagesFromUrlStrings(strArray)
             {
+                success in
                 // do the loading into the view and adding to the scrollview in the main thread
-                self.setupViews()
-                for index in 0..<self.dataSource!.numImages()
+                if(success)
                 {
-                    // create the proper frame to add the scrollview in
-                     var tempFrame = CGRectMake(0, 0, 0, 0)
-                    tempFrame.origin.x = self.scrollView!.frame.size.width * CGFloat(index)
-                    tempFrame.size = self.scrollView!.frame.size
-                 
-                    let subView = UIImageView(frame: tempFrame)
-                    subView.image = self.dataSource!.imageAtIndex(index)
-                    self.scrollView!.addSubview(subView)
-                    
-                    
+                   
+                    self.loadDataFromDataSourceAndDisplay()
                 }
-                self.scrollView!.contentSize = CGSizeMake(self.scrollView!.frame.size.width * CGFloat(self.dataSource!.numImages()) , self.scrollView!.frame.size.height)
-                self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+                else
+                {
+                   // Do Nothing. The Spinner will keep running
+                }
+               
             }
+    }
+    
+    func loadDataFromDataSourceAndDisplay()
+    {
+        
+        self.setupViews()
+        for index in 0..<self.dataSource!.numImages()
+        {
+            // create the proper frame to add the scrollview in
+            var tempFrame = CGRectMake(0, 0, 0, 0)
+            tempFrame.origin.x = self.scrollView!.frame.size.width * CGFloat(index)
+            tempFrame.size = self.scrollView!.frame.size
+         
+            let subView = UIImageView(frame: tempFrame)
+            subView.image = self.dataSource!.imageAtIndex(index)
+            self.scrollView!.addSubview(subView)
+        }
+        self.scrollView!.contentSize = CGSizeMake(self.scrollView!.frame.size.width * CGFloat(self.dataSource!.numImages()) , self.scrollView!.frame.size.height)
     }
     
     
     func setupViews()
     {
         self.loadingView?.stopAnimating()
-        
         self.contentView.addSubview(scrollView!) // add the scrollview to the screen
-        
         self.scrollView!.pagingEnabled = true
         self.pageControl!.numberOfPages = (self.dataSource?.numImages())!
         self.pageControl!.currentPage = 0
@@ -421,112 +458,3 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
 
 
 
-
-class BannerImage : UIViewController
-{
-    let image : UIImage;
-    let imageView : UIImageView ;
-    let superViewFrame : CGRect ;
-    let index : Int;
-    
-    
-    init(image : UIImage , frame : CGRect , index : Int)
-    {
-        self.image = image ;
-        self.superViewFrame = frame ;
-        imageView = UIImageView(frame: superViewFrame)
-        
-        // make the image fit the view
-        UIGraphicsBeginImageContext(CGSizeMake(self.imageView.frame.width, self.imageView.frame.height))
-        let imageRect = imageView.bounds
-        self.image.drawInRect(imageRect)
-        imageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        
-        // set index of the image for tracking in the page view controller
-        self.index = index
-        
-        
-        super.init(nibName: nil, bundle: nil)
-    }
-  
-    /*
-        The super view of this  view should set the frame of the this view view controller for it to show up properly
-     */
-    override func loadView()
-    {
-        self.view = UIView.init(frame: CGRectZero)
-        self.view.frame = self.superViewFrame
-        self.imageView.frame = self.view.frame
-    }
-    
-    required init?(coder aDecoder: NSCoder)
-    {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad()
-    {
-        
-        self.view.addSubview(imageView)
-        imageView.contentMode = .ScaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false ;
-        NSLayoutConstraint.constraintsWithVisualFormat("H:|[imv]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil , views: ["imv" : imageView])
-        NSLayoutConstraint.constraintsWithVisualFormat("V:|[imv]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil , views: ["imv" : imageView])
-        
-        self.view.layoutIfNeeded()
-        
-    }
-}
-
-
-
-
-/*
-
-extension BannerCell : UIPageViewControllerDataSource , UIPageViewControllerDelegate
-{
-    // implement these two to get the dots 
-    
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return self.viewControllersInPage.count
-    }
-    
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
-        return 0
-    }
-    
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        
-        let bm : BannerImage = viewController as! BannerImage
-        var vcIndex : Int = bm.index
-       
-        vcIndex += 1;
-        
-        if(vcIndex == self.viewControllersInPage.count) // if at the zero index , the no more vc to show
-        {
-            return nil ;
-        }
-       
-        return self.viewControllersInPage[vcIndex];
-    }
-    
-    
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        let bm : BannerImage = viewController as! BannerImage
-        var vcIndex : Int = bm.index
-       
-        if(vcIndex == 0) // if at the zero index , the no more vc to show
-        {
-            return nil ;
-        }
-       
-        vcIndex -= 1;
-        
-        return self.viewControllersInPage[vcIndex];
-    }
-}
-
-*/

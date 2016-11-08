@@ -25,18 +25,22 @@
 @implementation DynamicTableViewController
 
 
-+(NSString *)channelHandle{
-//    return @"dtable";
-    return @"temp";
++(NSString *)channelHandle
+{
+    return @"dtable";
 }
-+(void)load{
+
+// called by objc run time when classes start up 
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
 /*
     Sets up specfic features of the dtable
  */
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel
+{
     return [[self alloc] initWithChannel:channel];
 }
 
@@ -44,10 +48,14 @@
     Determine whether the view has to be grouped together or whether is can be displayed as a single group
     and set up the data source of the table view..
  */
--(instancetype)initWithChannel:(NSDictionary *)channel{
-    BOOL grouped = [channel[@"grouped"] boolValue];
-    self = [super initWithStyle:grouped ? UITableViewStyleGrouped : UITableViewStylePlain];
-    if (self) {
+-(instancetype)initWithChannel:(NSDictionary *)channel
+{
+    //BOOL grouped = [channel[@"grouped"] boolValue];
+    //self = [super initWithStyle:grouped ? UITableViewStyleGrouped : UITableViewStylePlain];
+    self = [super initWithStyle: UITableViewStyleGrouped];
+    
+    if (self)
+    {
         self.channel = channel;
     }
     return self;

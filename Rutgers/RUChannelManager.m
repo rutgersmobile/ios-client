@@ -373,40 +373,51 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
  */
 -(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
-        ^{
-            [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];   // used for sending usage reports to the rutgers server
-         }
-    );
+    [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];   // used for sending usage reports to the rutgers server
     
     // Obtains the Identifier for the next VC from the channel and then uses it to create / bind the VC for the channel
-    NSString *view = channel[@"view"];
+    NSString *view = [self specializedViewForChannel:channel];
     // based on the view feild in the channel dict we decide which view controller to show for the data
-    
     
     if (!view) view = [self defaultViewForChannel:channel]; // the default for each channel is the dynamic table view contorller or called a dtable
                                                             // If the channel is for faq , then a differnt view is used.
-    
-
+   
     Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
-    
-    //NSLog(@"%@",class);
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view]; // all the view controller used to display the channel conforsm to RUChannelProtocol
     
-       /*
-                channelWithConfig is implemented by the view controller conforming to the protocol
-        */
+    /*
+                channelWithConfig is implemented by the viewcontrollers conforming to the protocol
+      */
     UIViewController <RUChannelProtocol>*vc = [class channelWithConfiguration:channel];
     
     vc.title = [channel channelTitle];  // channelTitile is implemnted as a category on the channel (NSDictionary)
-   // NSLog(@"class : %@", vc);
     return vc;
 }
 
+
+/*
+    Certain views can be specialized based on the properties in the channel other than the view property
+    This function will hold all such specializations that we might do 
+ 
+    Cases :
+        If the view property is a dtable , then we specialized based on the property layout into dtable or dtable_grid
+    
+*/
+-(NSString *)specializedViewForChannel:(NSDictionary *)channel
+{
+    NSString * view = channel[@"view"];
+    if ([view isEqualToString:@"dtable"] && channel[@"layout"] && [channel[@"layout"] isEqualToString:@"grid"])
+    {
+        view = @"dtable-grid";
+    }
+    return view;
+}
+
+
+
 /*
     Converts the URL into a view controller 
- 
  */
 -(NSArray *)viewControllersForURL:(NSURL *)url destinationTitle:(NSString *)destinationTitle
 {
@@ -456,13 +467,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         Used when moving from a VC to the next section within the VC. Eg : While moving from Scarl... Kni.. to Athe.. Sche..
  
     FIND
-        Why is the channel NSDict ? -> A Dict is used to store the values describing the channel.
             Different keys like handle : ??
                                 view : Name of VC
- icon : icon ??
- title : Name fo title
- 
- 
  */
 -(NSString *)defaultViewForChannel:(NSDictionary *)channel
 {
@@ -471,6 +477,10 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     {
         if (child[@"answer"]) return @"faqview";  // Why this specific case ? Why is faqview different ?
     }
+    
+    // Specific over ride for the new grid layout .
+    
+    
     return @"dtable"; // This is the reply , the name of the view in the channel while a view contrller move to the next section in the table UITableView
     // dtable seems to be used for any generic movement from a TVC (Table Vie. Con. ) to one of the sections in it.
 }

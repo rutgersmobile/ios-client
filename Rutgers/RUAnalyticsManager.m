@@ -144,18 +144,26 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
         and the queue is posted to internet as json after a specific time interval
  
     // Should each event be send to the servers ?
+ 
+    
+    Do the enque in the background
+ 
  */
--(void)queueEventForChannelOpen:(NSDictionary *)channel{
-    NSString *channelHandle = [channel channelHandle];
-    if (!channelHandle) return;
+-(void)queueEventForChannelOpen:(NSDictionary *)channel
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
+    ^{
+        NSString *channelHandle = [channel channelHandle];
+        if (!channelHandle) return;
+        NSMutableDictionary *event = [self baseEvent];
+        [event addEntriesFromDictionary:@{
+                                          @"type" : @"channel",
+                                          @"handle" : channelHandle
+                                          }];
+        [self queueAnalyticsEvent:event];
+    });
     
-    NSMutableDictionary *event = [self baseEvent];
-    
-    [event addEntriesFromDictionary:@{
-                                      @"type" : @"channel",
-                                      @"handle" : channelHandle
-                                      }];
-    [self queueAnalyticsEvent:event];
+   
 }
 
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction{
