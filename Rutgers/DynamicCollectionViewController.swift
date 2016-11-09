@@ -18,6 +18,7 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
     var channel : NSDictionary! = nil
     // the indicator to show before the data is loaded..
     var activityIndicator : UIActivityIndicatorView! = nil
+    var  bannerImageNames : [String]?
     
    /// Conform to RUChannelProtocol
     static func channelHandle() -> String!
@@ -37,7 +38,10 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
 
     init(channel : [NSObject : AnyObject]!)
     {
-        self.channel = channel ;
+        self.channel = channel
+        
+        self.bannerImageNames = self.channel?["banner"] as? [String]
+        
         super.init(nibName: "DynamicCollectionViewController", bundle: NSBundle.mainBundle())
     }
     

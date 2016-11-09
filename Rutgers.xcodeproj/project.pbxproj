@@ -101,6 +101,7 @@
 		62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
 		629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */; };
+		62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B964111DD31BFD00D8399A /* BannerCell.swift */; };
 		62C046E81DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */; };
 		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
@@ -427,6 +428,7 @@
 		62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsCollectionViewCell.xib; sourceTree = "<group>"; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
+		62B964111DD31BFD00D8399A /* BannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
 		62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsHomeScreenCollectionViewController.swift; sourceTree = "<group>"; };
 		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
@@ -1534,6 +1536,7 @@
 				622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */,
 				622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */,
 				629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */,
+				62B964111DD31BFD00D8399A /* BannerCell.swift */,
 			);
 			name = dtable;
 			sourceTree = "<group>";
@@ -1986,6 +1989,7 @@
 				A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */,
 				04B2F3D01D09F0680035F96E /* RUEditMenuItemsDataSource.swift in Sources */,
 				A7D73B281978880C006BC215 /* SegmentedTableViewController.m in Sources */,
+				62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */,
 				A75E7EC819A3F2F300782AE5 /* NewBrunswickFoodDataSource.m in Sources */,
 				622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */,
 				A7EA4C4B197D67EC00E972DD /* NSObject+KVOBlock.m in Sources */,
