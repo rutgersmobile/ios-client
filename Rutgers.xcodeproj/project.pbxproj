@@ -102,7 +102,6 @@
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
 		629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */; };
 		62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B964111DD31BFD00D8399A /* BannerCell.swift */; };
-		62C046E81DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */; };
 		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
@@ -429,7 +428,6 @@
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
 		62B964111DD31BFD00D8399A /* BannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
-		62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsHomeScreenCollectionViewController.swift; sourceTree = "<group>"; };
 		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
@@ -911,7 +909,6 @@
 				624042671D76085E009AC3D8 /* AthleticsCollectionViewController.xib */,
 				62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */,
 				62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */,
-				62C046E61DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift */,
 			);
 			name = athletics;
 			sourceTree = "<group>";
@@ -1900,7 +1897,6 @@
 				A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */,
 				A72FFFBC1937DF9000016C89 /* RUSOCCourseCell.m in Sources */,
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
-				62C046E81DA844F8006DF199 /* AthleticsHomeScreenCollectionViewController.swift in Sources */,
 				A7C92C9C19462BA300609549 /* RUPlace.m in Sources */,
 				A7F9029C19A7C02500FD3054 /* ALTableViewToggleCell.m in Sources */,
 				622AFBE21D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift in Sources */,

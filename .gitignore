@@ -3,4 +3,5 @@ Pods
 *.lock
 *.xcuserstate
 *.xcbkptlist
-
+*.sh
+*.xc*
