@@ -37,7 +37,8 @@
   "title": "Scarlet Knights",
   "icon": "knights",
   "grouped": true,
-  "view": "athletics",
+  "layout": "grid",
+  "view": "dtable",
   "api": "athleticsfaq.txt"
   },
   {

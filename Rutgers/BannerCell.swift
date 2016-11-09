@@ -75,16 +75,33 @@ class BannerCellDataSource : NSObject
                    if let imageData = data
                    {
                         let responseImage = UIImage(data: imageData)
-                  
-                        // put the blocks into a serial qeueue to ensure that the insertion into th dict happens in a thread safe manner and not having to use locks
-                        // we add it to the group so that the group notify will only be called after the images has been added to the dict
+                 
+                        if let image = responseImage // failure to convert the data into image . if so show a default banner
+                        {
+                            // put the blocks into a serial qeueue to ensure that the insertion into th dict happens in a thread safe manner and not having to use locks
+                            // we add it to the group so that the group notify will only be called after the images has been added to the dict
+                            dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
+                            {
+                                self.cachedImages![imageStr] = image
+                            }
+                        }
+                        else
+                        {
+                            dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
+                            {
+                                self.cachedImages![imageStr] = UIImage(named:"default_dynamic_banner_img")
+                            }
+                        }
+                    
+                       
+                   }
+                    else // did not obtain the image .. Put some place holder to the image.. Or not show the banner a
+                   {
+                        // did not get the data and errored out . Put a default image up
                         dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
                         {
-                            self.cachedImages![imageStr] = responseImage
+                            self.cachedImages![imageStr] = UIImage(named:"default_dynamic_banner_img")
                         }
-                   }
-                    else // did not obtain the image .. Put some place holder to the image.. Or not show the banner at all ?
-                   {
                     
                    }
                   
