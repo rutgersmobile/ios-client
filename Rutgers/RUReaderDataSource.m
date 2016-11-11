@@ -147,7 +147,8 @@
     return parsedItems;
 }
 
--(void)registerReusableViewsWithTableView:(UITableView *)tableView{
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView
+{
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[RUReaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUReaderTableViewCell class])];
 }

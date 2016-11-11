@@ -87,6 +87,8 @@
         }
         
         if (!imageUrl) imageUrl = [item[@"media:thumbnail"] firstObject][@"_url"];
+        if (!imageUrl) imageUrl = [item[@"media:content"] firstObject][@"_url"]; 
+        
         
         _imageURL = [NSURL URLWithString:imageUrl];
         _url = [item[@"link"] firstObject];
