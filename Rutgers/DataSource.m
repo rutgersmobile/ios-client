@@ -20,7 +20,6 @@
 #import "AAPLPlaceholderView.h"
 #import "NSObject+KVOBlock.h"
 #import "UIView+LayoutSize.h"
-#import <libkern/OSAtomic.h>
 #import "ALTableViewAbstractCell.h"
 #import "RowHeightCache.h"
 #import "AAPLPlaceholderView.h"

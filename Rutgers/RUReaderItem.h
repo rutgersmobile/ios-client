@@ -30,4 +30,5 @@
 @property (readonly) int otherScore;
 @property (readonly) bool isRuHome; // determine is ru is home , then display the ru score first , else otherwise
 @property (readonly) bool ruWin;
+@property (readonly) bool imagePresent;
 @end

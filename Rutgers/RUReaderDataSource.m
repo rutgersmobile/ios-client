@@ -167,9 +167,12 @@
     cell.imageDisplayView.backgroundColor = [UIColor grayColor];
     
     cell.imageDisplayView.image = nil;
+    
+    [cell.imageDisplayView setContentMode:UIViewContentModeScaleAspectFill];
+    
     [cell.imageDisplayView setImageWithURL:row.imageURL];
     
     cell.descriptionLabel.text = row.descriptionText;
-  //  cell.accessoryType = row.url ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    
 }
 @end

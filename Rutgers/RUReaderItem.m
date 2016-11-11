@@ -225,12 +225,23 @@
         }
     
        
+       
+        if( ! [requiredCode isEqualToString:@""])
+        {
         
-        // Add the -lg.png to the end of the code to get the iamge name
-        requiredCode = [requiredCode stringByAppendingString:@"-lg.png"] ;
-        imageBaseUrl =  [imageBaseUrl stringByAppendingString: requiredCode ] ;
-      
-        _imageURL = [NSURL URLWithString:imageBaseUrl ];
+            // Add the -lg.png to the end of the code to get the iamge name
+            requiredCode = [requiredCode stringByAppendingString:@"-lg.png"] ;
+            imageBaseUrl =  [imageBaseUrl stringByAppendingString: requiredCode ] ;
+          
+            _imageURL = [NSURL URLWithString:imageBaseUrl ];
+            _imagePresent = true;
+        }
+        else
+        {
+            _imagePresent = false;
+        }
+        
+       
         
     }
     return self;

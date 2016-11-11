@@ -34,7 +34,7 @@
         [DynamicCollectionViewController registerClass];
    
         [AthleticsCollectionViewController registerClass];
-        [AthleticsHomeScreenCollectionViewController registerClass];
+  //      [AthleticsHomeScreenCollectionViewController registerClass];
         
     });
 }

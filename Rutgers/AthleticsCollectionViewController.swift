@@ -10,6 +10,29 @@ import UIKit
 
 private let reuseIdentifier = "Cell_Atheletics"
 
+
+struct ImageCache
+{
+    var cachedImages : [String : UIImage] // create a cache of the images that are loaded are the network request
+    init()
+    {
+        cachedImages = [String : UIImage]()
+    }
+    func getImage(named : String) -> UIImage?
+    {
+        return cachedImages[named]
+    }
+    
+    mutating func setImage(named: String , image : UIImage)
+    {
+        cachedImages[named] = image;
+    }
+    
+    
+}
+
+
+
 /*
     Add image chaching mechanism to the Reader Data Source
  */
@@ -17,6 +40,8 @@ extension  RUReaderDataSource : UICollectionViewDelegate
 {
     
     // MARK: UICollectionViewDataSource
+    
+    
     
     override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -35,17 +60,44 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         
         let item : RUReaderItem = self.itemAtIndexPath(indexPath) as! RUReaderItem ;
         
-        
+        var cache : ImageCache = ImageCache()
         // get the image in a sepereate thread and fill it in later
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
         {
-            let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
+            var image : UIImage?
+            
+            
+            if( item.imagePresent)
+            {
+                if let cachedImage = cache.getImage(item.imageURL.absoluteString!)
+                {
+                    image = cachedImage
+                }
+                else
+                {
+                    let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
+                    image = UIImage(data: imageData!)
+                    cache.setImage(item.imageURL.absoluteString!, image: image!)
+                }
+               
+            }
+            else
+            {
+                image = UIImage(named: "default_athletics_score_img")
+            }
+           
+            // in cases where the url does not point to an image and we are unable to form an image. Use the default image
+            // Reason : 
+            // sometimes we are not able to extract the school code, this happens for golf, and we end up with a string web../-lg.png
+            // For some reason this not a 404 at the server side and gives us some rubbish back , so we need to chek if we have been able to form an image from the data
+            
+            
             
             dispatch_async(dispatch_get_main_queue())
             {
                 // Update the UI
                 cell.schoolIcon.contentMode = .ScaleAspectFit
-                cell.schoolIcon.image = UIImage(data: imageData!)!
+                cell.schoolIcon.image = image
             }
         }
         

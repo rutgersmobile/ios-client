@@ -77,10 +77,6 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
         activityIndicator.startAnimating()
         self.view.addSubview(activityIndicator)
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-    
-        
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         
         self.collectionView!.registerNib(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: viewElement)
@@ -105,10 +101,6 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
   
         }
         
-        // Register cell classes
-       // self.collectionView!.registerClass(DynamicCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning()
