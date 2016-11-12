@@ -124,13 +124,50 @@
     if (self)
     {
         self.item = game;
+       
+        // The data and location string works in case of both events and non events
         
-        
-        _title = game[@"description"];
-        // get the title from the description by manipulating it
+        // Ensuring compatability with the api 2 server changes
+        // get a num prepresentation of the time tag which determines whether a time is present or not
+        NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
+
+        // String from the server that we need to parse
+        // Contains a date and a time
+        NSString * dateTime = game[@"start"][@"date"];
+
+        // parse the date so we can use it in the UI
+        // server game dates are in UTC
+        NSDate* date = [[RUReaderItem utcDateFormatter] dateFromString:dateTime];
+
+        // Use the formatter to transform the date portion of our date/time
+        NSString* dateString = [[RUReaderItem dateFormatter] stringFromDate:date];
+
+        // If time exists in the date, get it from there
+        // otherwise get it from the server
+        NSString* timeString = [timePresent boolValue]
+            ? [[RUReaderItem timeFormatter] stringFromDate:date]
+            : game[@"start"][@"timeString"];
+
+        // Put our time and date strings together for the UI
+        _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
+
+        _descriptionText = game[@"location"];
        
         
+        _title = game[@"description"];
+       
+       // TODO : If the game is an event, is there no score ?
         
+        
+        if([ game[@"isEvent"] integerValue] == 1) // if the game is an event, then the formating for the text is different and there is no home away team etc
+        {
+            _imagePresent = false ; // NO images are present
+            return self;
+            
+        }
+        
+        // get the title from the description by manipulating it and overwirting the _title
+       
         // title is of the form Rutgers at Bucknell (L, 2 - 0)
          
         NSMutableCharacterSet * skippedChars = [NSMutableCharacterSet whitespaceCharacterSet]; // skip white spaces
@@ -167,32 +204,7 @@
         
         
         
-        // Ensuring compatability with the new server changes
-        // get a num prepresentation of the time tag which determines whether a time is present or not
-        NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
 
-        // String from the server that we need to parse
-        // Contains a date and a time
-        NSString * dateTime = game[@"start"][@"date"];
-
-        // parse the date so we can use it in the UI
-        // server game dates are in UTC
-        NSDate* date = [[RUReaderItem utcDateFormatter] dateFromString:dateTime];
-
-        // Use the formatter to transform the date portion of our date/time
-        NSString* dateString = [[RUReaderItem dateFormatter] stringFromDate:date];
-
-        // If time exists in the date, get it from there
-        // otherwise get it from the server
-        NSString* timeString = [timePresent boolValue]
-            ? [[RUReaderItem timeFormatter] stringFromDate:date]
-            : game[@"start"][@"timeString"];
-
-        // Put our time and date strings together for the UI
-        _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
-
-        _descriptionText = game[@"location"];
-        
         
         // get the image url ..
         NSString * imageBaseUrl = @"http://grfx.cstv.com/graphics/school-logos/" ;
