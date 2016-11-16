@@ -56,9 +56,7 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
     init(channel : [NSObject : AnyObject]!)
     {
         self.channel = channel
-        
-        self.bannerImageNames = self.channel?["banner"] as? [String]
-    
+        self.bannerImageNames = nil;
         super.init(collectionViewLayout: self.flowLayout)
     }
     
@@ -91,6 +89,8 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
         
         self.dataSource.loadContentWithAnyBlock // when the data has been loaded , we stop the load sign and layout the views
         {
+            // extract the banner images into an array
+            self.extractBannerNamesFromDataSource()
             dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
             {
                     self.collectionView!.reloadData()
@@ -109,6 +109,24 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
         // Dispose of any resources that can be recreated.
     }
 
+   
+    func extractBannerNamesFromDataSource() 
+    {
+        // if images exist in the bannerItems. Then add it to
+        
+        guard self.dataSource.bannerItems != nil else
+        {
+            return
+        }
+       
+        self.bannerImageNames = [String]()
+        
+        for item in self.dataSource.bannerItems
+        {
+            let dict : NSDictionary = item as! NSDictionary
+            self.bannerImageNames?.append(dict["image"] as! String)
+        }
+    }
     
 }
 
@@ -167,6 +185,15 @@ extension DynamicCollectionViewController
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool
     {
+        
+        if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
+        {
+            if(indexPath.row == 0)
+            {
+                return false
+            }
+        }
+        
         return true
     }
 
@@ -174,7 +201,13 @@ extension DynamicCollectionViewController
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        
+        if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
+        {
+         
+       
+            
+            
+                      let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
         let item:NSDictionary = self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary
        
         var channel = item["channel"]
@@ -193,6 +226,13 @@ extension DynamicCollectionViewController
         
         
         self.navigationController?.pushViewController(vc, animated: true)
+        
+        
+        if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
+        {
+            
+            if(indexPath.row == 0)
+            {
         
     }
 
@@ -229,6 +269,7 @@ extension DynamicCollectionViewController
         {
             if(indexPath.row == 0)
             {
+                // the banner images will obly have the images, not the url
                 return loadBannerCell(bannerElement, imageNames: bannerImages, indexPath: indexPath)
             }
             else
@@ -257,15 +298,9 @@ extension DynamicCollectionViewController
             cell.layer.cornerRadius = 8
              // The cell will keep showing the activity view until the images are loaded from the urls
        
-        
             // the imageNames will only contain the filename and type , not the url . Ie image.jpg
-            // So we go through each element in the array and append the url to the Rutgers servers
-            var imageUrlStringArr : [String] = [String]()
-            for img in imageNames
-            {
-                let imageUrlString = RUNetworkManager.baseURL().absoluteString! + "img/" + img
-                imageUrlStringArr.append(imageUrlString)
-            }
+            let imageBaseUrlString = RUNetworkManager.baseURL().absoluteString! + "img/"
+            let imageUrlStringArr = imageNames.map({"\(imageBaseUrlString)\($0)"})
         
             cell.loadImagesForUrlStrings(imageUrlStringArr)
             return cell;
@@ -306,7 +341,6 @@ extension DynamicCollectionViewController
                     {
                         // Update the UI
                         cell.imageView.contentMode = .ScaleAspectFit
-             
                         if let image = image // if we have an image , then update the image, else keep the default image we set earlier
                         {
                             cell.imageView.image = image

@@ -104,7 +104,7 @@ class BannerCellDataSource : NSObject
                         }
                     
                    }
-                  
+                
                     // leave the group
                     dispatch_group_leave(imageDownloadGroup)
             }
@@ -134,7 +134,7 @@ class BannerCellDataSource : NSObject
     // keep track of the number of images in the banner
     func numImages() -> Int
     {
-        return cachedImages!.count
+        return self.strImages!.count
     }
     
     
