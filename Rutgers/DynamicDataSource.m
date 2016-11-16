@@ -29,8 +29,10 @@
         
         //If the channel has children load them right away
         NSArray *children = channel[@"children"];
-        if (children) {
-            [self loadContentWithBlock:^(AAPLLoading *loading) {
+        if (children)
+        {
+            [self loadContentWithBlock:^(AAPLLoading *loading)
+            {
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = children;
                 }];
@@ -63,8 +65,10 @@
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 //Update with the response
                 NSArray *items = responseObject[@"children"];
+                NSArray * bannerItems = responseObject[@"banner"];
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = items;
+                    me.bannerItems= bannerItems;
                 }];
             } else {
                 //Clear the items
@@ -102,11 +106,15 @@
                 //Update with the response
                 NSArray *items = responseObject[@"children"];
                 self.items = items;
+                
+                NSArray *bannerItems = responseObject[@"banner"];
+                self.bannerItems = bannerItems;
             }
             else
             {
                 //Clear the items
                 self.items = nil;
+                self.bannerItems = nil;
             }
             
             completionBlock();
@@ -114,6 +122,7 @@
         failure:^(NSURLSessionDataTask * task, NSError * error)
         {
             self.items = nil ;
+            self.bannerItems = nil;
         }];
     
    // run the completion block

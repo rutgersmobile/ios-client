@@ -297,21 +297,24 @@ extension DynamicCollectionViewController
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
             {
                 let imageData : NSData? = NSData(contentsOfURL: imageUrl!)
-                
-                // if no image has been obtained from the server then use a generic image
-                let image = UIImage(data: imageData!)
-                          
-                dispatch_async(dispatch_get_main_queue())
+              
+                if let imageData = imageData
                 {
-                    // Update the UI
-                    cell.imageView.contentMode = .ScaleAspectFit
-         
-                    if let image = image // if we have an image , then update the image, else keep the default image we set earlier
-                    {
-                        cell.imageView.image = image
-                    }
+                    let image = UIImage(data: imageData)
                     
+                    dispatch_async(dispatch_get_main_queue())
+                    {
+                        // Update the UI
+                        cell.imageView.contentMode = .ScaleAspectFit
+             
+                        if let image = image // if we have an image , then update the image, else keep the default image we set earlier
+                        {
+                            cell.imageView.image = image
+                        }
+                        
+                    }    
                 }
+                
             }
         }
         cell.layer.cornerRadius = 5

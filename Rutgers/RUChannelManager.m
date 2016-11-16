@@ -381,10 +381,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     
     if (!view) view = [self defaultViewForChannel:channel]; // the default for each channel is the dynamic table view contorller or called a dtable
                                                             // If the channel is for faq , then a differnt view is used.
-    if ([view isEqualToString:@"dtable"] && channel[@"layout"] && [channel[@"layout"] isEqualToString:@"grid"]) {
-        view = @"dtable_grid";
-    }
-    
+
     Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view]; // all the view controller used to display the channel conforsm to RUChannelProtocol

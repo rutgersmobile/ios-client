@@ -16,4 +16,7 @@
 -(instancetype)initWithChannel:(NSDictionary *)channel forLayout:(BOOL)layout  NS_DESIGNATED_INITIALIZER;
 @property NSDictionary *channel;
 -(void)loadContentWithAnyBlock:(void(^)(void)) completionBlock;
+
+// TODO simple solution for now. Rewirte the data source in swift later
+@property (nonatomic) NSArray * bannerItems; // this stores the elements to be kept in the banner. This breaks all oop good practices. Rewrite.
 @end
