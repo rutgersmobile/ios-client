@@ -201,14 +201,19 @@ extension DynamicCollectionViewController
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
+        let item:NSDictionary!
+        
+        if let _ = bannerImageNames // if we have to add the banner , then index to old data source is -1
         {
-         
-       
+                let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
+                item = self.dataSource.itemAtIndexPath(indexForDict) as! NSDictionary
+        }
+        else
+        {
+                item = self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary
+        }
+        
             
-            
-                      let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
-        let item:NSDictionary = self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary
        
         var channel = item["channel"]
         
@@ -227,13 +232,7 @@ extension DynamicCollectionViewController
         
         self.navigationController?.pushViewController(vc, animated: true)
         
-        
-        if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
-        {
-            
-            if(indexPath.row == 0)
-            {
-        
+       
     }
 
  }

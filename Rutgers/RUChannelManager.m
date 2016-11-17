@@ -374,14 +374,18 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 -(UIViewController <RUChannelProtocol>*)viewControllerForChannel:(NSDictionary *)channel
 {
     [[RUAnalyticsManager sharedManager] queueEventForChannelOpen:channel];   // used for sending usage reports to the rutgers server
-    
-    // Obtains the Identifier for the next VC from the channel and then uses it to create / bind the VC for the channel
-    NSString *view = [self specializedViewForChannel:channel];
-    // based on the view feild in the channel dict we decide which view controller to show for the data
-    
+
+    NSString * view = channel[@"view"];
+   
     if (!view) view = [self defaultViewForChannel:channel]; // the default for each channel is the dynamic table view contorller or called a dtable
                                                             // If the channel is for faq , then a differnt view is used.
 
+     
+    // Obtains the Identifier for the next VC from the channel and then uses it to create / bind the VC for the channel
+    view = [self specializedViewForChannel:view channel:channel];
+    // based on the view feild in the channel dict we decide which view controller to show for the data
+    
+    
     Class class = [self classForViewTag:view]; // uses the class view mapping stored in the viewTagsToClassNameMapping dict to obtain the class used for displaying the view
     
     if (![class conformsToProtocol:@protocol(RUChannelProtocol)]) [NSException raise:@"Invalid View" format:@"No way to handle view type %@",view]; // all the view controller used to display the channel conforsm to RUChannelProtocol
@@ -404,9 +408,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
         If the view property is a dtable , then we specialized based on the property layout into dtable or dtable_grid
     
 */
--(NSString *)specializedViewForChannel:(NSDictionary *)channel
+-(NSString *)specializedViewForChannel:(NSString *)view channel:(NSDictionary*)channel
 {
-    NSString * view = channel[@"view"];
     if ([view isEqualToString:@"dtable"] && channel[@"layout"] && [channel[@"layout"] isEqualToString:@"grid"])
     {
         view = @"dtable-grid";
