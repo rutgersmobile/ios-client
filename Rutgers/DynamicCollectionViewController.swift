@@ -63,6 +63,12 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+   
+    func isBannerPresent() -> Bool
+    {
+        return self.bannerImageNames != nil;
+    }
+    
     
     override func viewDidLoad()
     {
@@ -112,13 +118,12 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
    
     func extractBannerNamesFromDataSource() 
     {
-        // if images exist in the bannerItems. Then add it to
-        
+        // if images exist in the bannerItems. Then create the banner
         guard self.dataSource.bannerItems != nil else
         {
             return
         }
-       
+        // images present in the datasource for the banner and hence we add it to the view
         self.bannerImageNames = [String]()
         
         for item in self.dataSource.bannerItems
@@ -145,34 +150,20 @@ extension DynamicCollectionViewController
         let screenWidth = self.collectionView?.bounds.width
         
         
-        if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
+        if(indexPath.row == 0 && self.isBannerPresent())
         {
-            
-            if(indexPath.row == 0)
-            {
-                let aspectRatio:CGFloat = 0.8 ;  // the height will be (value) more than the width
-                cellWidth = (screenWidth! - 20 );
-                cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
-            }
-            else
-            {
-                let aspectRatio:CGFloat = 1.2 ;  // the height will be (value) more than the width
-                cellWidth = (screenWidth! ) / 2.3;
-                cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
-            }
-            
-            return cellSize
-            
+            let aspectRatio:CGFloat = 0.8 ;  // the height will be (value) more than the width
+            cellWidth = (screenWidth! - 20 );
+            cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
         }
         else
         {
             let aspectRatio:CGFloat = 1.2 ;  // the height will be (value) more than the width
             cellWidth = (screenWidth! ) / 2.3;
             cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
-            
-            return cellSize
         }
         
+        return cellSize
         
     }
     
@@ -203,7 +194,7 @@ extension DynamicCollectionViewController
     {
         let item:NSDictionary!
         
-        if let _ = bannerImageNames // if we have to add the banner , then index to old data source is -1
+        if (isBannerPresent()) // if we have to add the banner , then index to old data source is -1
         {
                 let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
                 item = self.dataSource.itemAtIndexPath(indexForDict) as! NSDictionary
@@ -264,12 +255,12 @@ extension DynamicCollectionViewController
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        if let bannerImages = bannerImageNames // if we have to add banner to the view 
+        if(isBannerPresent())
         {
             if(indexPath.row == 0)
             {
                 // the banner images will obly have the images, not the url
-                return loadBannerCell(bannerElement, imageNames: bannerImages, indexPath: indexPath)
+                return loadBannerCell(bannerElement, imageNames: self.bannerImageNames! , indexPath: indexPath)
             }
             else
             {
@@ -354,5 +345,12 @@ extension DynamicCollectionViewController
         
         return cell
     }
+    
+}
+
+// Rotation Support
+extension DynamicCollectionViewController
+{
+    
     
 }
