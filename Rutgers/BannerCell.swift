@@ -154,6 +154,12 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
     var loadingView : UIActivityIndicatorView?
     var imagesUrls : [UIImageView]?
     var dataSource : BannerCellDataSource?
+   
+    override func prepareForReuse()
+    {
+        
+    }
+    
     
     override init(frame: CGRect)
     {
@@ -167,14 +173,7 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         loadingView?.startAnimating() // keep on animating till the iamge has been loaded
         
         
-        // set the size and pos of the scrollview inside the cell to take up the entire cell
-        scrollView = UIScrollView(frame: CGRectMake(0,0,self.contentView.bounds.width, self.contentView.bounds.height))
-        scrollView!.delegate = self
-        
-        pageControl = UIPageControl(frame: CGRectMake(0,self.contentView.bounds.height - 50 ,self.contentView.bounds.width,50))
-        self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        
-        
+       
        // setupViews() // add the page view after the scorllView so that it appears on the top
         
         // add the view to the contentView 
@@ -232,6 +231,22 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
     
     func setupViews()
     {
+        
+        if(scrollView != nil)
+        {
+            self.scrollView?.removeFromSuperview()
+            self.pageControl?.removeFromSuperview()
+        }
+        
+        
+        // set the size and pos of the scrollview inside the cell to take up the entire cell
+        scrollView = UIScrollView(frame: CGRectMake(0,0,self.contentView.bounds.width, self.contentView.bounds.height))
+        scrollView!.delegate = self
+        
+        pageControl = UIPageControl(frame: CGRectMake(0,self.contentView.bounds.height - 50 ,self.contentView.bounds.width,50))
+        self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        
+ 
         self.loadingView?.stopAnimating()
         self.contentView.addSubview(scrollView!) // add the scrollview to the screen
         self.scrollView!.pagingEnabled = true

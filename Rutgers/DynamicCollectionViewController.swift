@@ -30,7 +30,7 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
     let flowLayout : UICollectionViewFlowLayout =
     {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsetsMake(18, 10 , 18, 10 )
+        layout.sectionInset = UIEdgeInsetsMake( 18, 10 , 18, 20 )
         layout.minimumLineSpacing = 18 ;
         layout.minimumInteritemSpacing = 18 ;
         return layout
@@ -167,6 +167,21 @@ extension DynamicCollectionViewController
         
     }
     
+  
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
+    {
+        self.collectionView?.collectionViewLayout.invalidateLayout()
+        self.collectionView?.reloadData()
+       /*
+        if(isBannerPresent())
+        {
+            let bannerIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+            self.collectionView?.reloadItemsAtIndexPaths([bannerIndexPath])
+        }
+         */
+    }
+   
+
     
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool
      {
@@ -276,13 +291,14 @@ extension DynamicCollectionViewController
            return loadDynamicCollectionViewCell(viewElement, indexPath: indexPath)
         }
         
-        
     }
     
     
     func loadBannerCell(reuseIdentifier : String , imageNames : [String] , indexPath : NSIndexPath) -> BannerCell
     {
             let cell = collectionView!.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! BannerCell
+            print(cell.frame)
+
             cell.layer.borderColor = UIColor.blueColor().CGColor
             cell.layer.borderWidth = 2
             cell.layer.cornerRadius = 8
