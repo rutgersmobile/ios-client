@@ -38,7 +38,7 @@
     switch (runMode)
     {
         case LocalDevMode:
-            baseUrl = @"http://localhost:8000/mobile/";
+            baseUrl = @"http://127.0.0.1:8000/mobile/";
             //[NSException raise:NSInvalidArgumentException format:@"LocalDevMode Not Defined"];
             break;
         case AlphaMode:

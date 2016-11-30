@@ -9,10 +9,8 @@
 /*
             Set up the initial Table View Contoller On Tapping the Bus Icon
             On tapping Cell Segues into predictions page
- 
         To Do :     
             Convert this into a map
- 
  */
 
 #import "RUBusViewController.h"
@@ -30,6 +28,8 @@
 
 
 #import <SWRevealViewController.h>
+#import "Rutgers-Swift.h"
+
 
 @interface RUBusViewController () <UIGestureRecognizerDelegate>
 
@@ -71,10 +71,33 @@
     
     
     RUDebug * debug = [[RUDebug alloc ] init];
-  
     [debug dumpView:self.navigationController.view atIndent:0];
     
+    
+    /*
+    UIButton *mapButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [mapButton addTarget:self action:@selector(optionsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [mapButton setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:settingsView];
+    
+   
+    // add map button to the top right of the navigation view
+    UIBarButtonItem * mapButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"map"] style:UIBarButtonItemStylePlain target:self action:@selector(openMapWithRoutes)];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapButton, nil]];
+     */
 }
+
+-(void)openMapWithRoutes // show the map in a different view controller
+{
+    MapRouteViewController* vc =  [[MapRouteViewController alloc] init];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    
+}
+
+
 
 
 //This causes an update timer to start upon the Bus View controller appearing

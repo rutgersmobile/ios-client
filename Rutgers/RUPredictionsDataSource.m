@@ -90,4 +90,15 @@
     [tableView registerClass:[RUPredictionsHeaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsHeaderTableViewCell class])];
 }
 
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id item = [self itemAtIndexPath:indexPath];
+
+    
+    
+    [super configureCell:cell forRowAtIndexPath:indexPath];
+}
+    
+
+
 @end

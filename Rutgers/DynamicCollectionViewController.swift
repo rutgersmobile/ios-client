@@ -13,9 +13,7 @@ private let bannerElement = "banner"
 
 /*
     If the channel has the banner tag to it , then the banner will be added to the top
- 
  */
-
 
 // initialization and view setup
 class DynamicCollectionViewController: UICollectionViewController, RUChannelProtocol
@@ -30,9 +28,9 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
     let flowLayout : UICollectionViewFlowLayout =
     {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsetsMake( 18, 10 , 18, 20 )
-        layout.minimumLineSpacing = 18 ;
-        layout.minimumInteritemSpacing = 18 ;
+        layout.sectionInset = UIEdgeInsetsMake( 18, 18 , 18, 20 )
+        layout.minimumLineSpacing = 15 ;
+        layout.minimumInteritemSpacing = 15 ;
         return layout
     }()
     
@@ -60,7 +58,8 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
         super.init(collectionViewLayout: self.flowLayout)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder)
+    {
         fatalError("init(coder:) has not been implemented")
     }
    
@@ -100,8 +99,6 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
             dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
             {
                     self.collectionView!.reloadData()
-                    self.view.layoutIfNeeded()
-                    self.collectionView!.layoutIfNeeded()
                     self.activityIndicator.stopAnimating()
             }
   
@@ -159,7 +156,7 @@ extension DynamicCollectionViewController
         else
         {
             let aspectRatio:CGFloat = 1.2 ;  // the height will be (value) more than the width
-            cellWidth = (screenWidth! ) / 2.3;
+            cellWidth = (screenWidth! ) / 2.4;
             cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
         }
         
@@ -171,16 +168,13 @@ extension DynamicCollectionViewController
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
     {
         self.collectionView?.collectionViewLayout.invalidateLayout()
-        self.collectionView?.reloadData()
-       /*
         if(isBannerPresent())
         {
             let bannerIndexPath = NSIndexPath(forRow: 0, inSection: 0)
             self.collectionView?.reloadItemsAtIndexPaths([bannerIndexPath])
         }
-         */
     }
-   
+  
 
     
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool
@@ -220,7 +214,6 @@ extension DynamicCollectionViewController
         }
         
             
-       
         var channel = item["channel"]
         
         if ((channel == nil))
@@ -241,6 +234,8 @@ extension DynamicCollectionViewController
        
     }
 
+    
+    
  }
 
     

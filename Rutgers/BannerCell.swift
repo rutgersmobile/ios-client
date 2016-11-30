@@ -160,7 +160,6 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         
     }
     
-    
     override init(frame: CGRect)
     {
         super.init(frame: frame)
