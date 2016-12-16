@@ -182,7 +182,6 @@
 
 /*
     Make the messges unselectable
- 
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -194,6 +193,12 @@
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
+}
+
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    
 }
 
 

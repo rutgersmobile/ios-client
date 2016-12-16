@@ -93,11 +93,7 @@
 -(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
    
-    id item = [self itemAtIndexPath:indexPath];
-    
-    UITableViewCell * c = cell;
-    c.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bell"]];
-    
+
     [super configureCell:cell forRowAtIndexPath:indexPath];
 }
 

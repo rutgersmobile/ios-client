@@ -27,4 +27,10 @@
     return (indexPath.row == 0);
 }
 
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
 @end
