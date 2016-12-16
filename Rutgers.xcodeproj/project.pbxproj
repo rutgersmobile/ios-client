@@ -101,6 +101,7 @@
 		62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
 		629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */; };
+		62AACB001DE3AE2900DF8E70 /* MapRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AACAFF1DE3AE2900DF8E70 /* MapRouteViewController.swift */; };
 		62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B964111DD31BFD00D8399A /* BannerCell.swift */; };
 		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
@@ -427,6 +428,7 @@
 		62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsCollectionViewCell.xib; sourceTree = "<group>"; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
+		62AACAFF1DE3AE2900DF8E70 /* MapRouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapRouteViewController.swift; path = Rutgers/MapRouteViewController.swift; sourceTree = SOURCE_ROOT; };
 		62B964111DD31BFD00D8399A /* BannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
 		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
@@ -1162,6 +1164,7 @@
 				0430BAC51D13313C0044F5BF /* MapsViewController.swift */,
 				A73F6572193E422E00E26449 /* RUMapsChannelViewController.h */,
 				A73F6573193E422E00E26449 /* RUMapsChannelViewController.m */,
+				62AACAFF1DE3AE2900DF8E70 /* MapRouteViewController.swift */,
 			);
 			name = rumaps;
 			path = ../Pods/ruinfo;
@@ -1904,6 +1907,7 @@
 				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
+				62AACB001DE3AE2900DF8E70 /* MapRouteViewController.swift in Sources */,
 				6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */,
 				A7E8E137192484B00089F166 /* RUTextViewController.m in Sources */,
 				04A1EFE91A5C509600DE0351 /* ActiveStopsDataSource.m in Sources */,
