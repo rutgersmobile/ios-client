@@ -59,7 +59,8 @@
     }
     return self;
 }
-- (void)viewDidLoad{
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     /*
@@ -77,12 +78,11 @@
     
     /*
         RUPrediction... is an interface which depends on the superclass expandingcells...
-        Which in turn inherits from composed data source which in turn inherits from the Data Source class
+        Which in turn inherits from composed data source which in turn is made up from the Data Source class
      */
 
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
 
-#warning TO DO Improve code here
     // Set the title of the Bus . This usually happens , when we do not have a title ..
     [self.dataSource whenLoaded:^{
         if (self.dataSource != nil)

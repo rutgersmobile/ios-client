@@ -92,9 +92,6 @@
     MapRouteViewController* vc =  [[MapRouteViewController alloc] init];
     
     [self.navigationController pushViewController:vc animated:YES];
-    
-    
-    
 }
 
 
