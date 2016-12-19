@@ -10,5 +10,4 @@ target 'Rutgers' do
     pod 'HexColors', "~> 3.0"
     pod 'MSWeakTimer', "~> 1.0"
     pod 'MMDrawerController', "~> 0.5"
-    pod 'StreamingKit', "~> 0.1"
 end

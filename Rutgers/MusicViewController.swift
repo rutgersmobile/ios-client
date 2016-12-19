@@ -7,19 +7,21 @@
 //
 
 import UIKit
-
+import AVFoundation
+import MediaPlayer
 
 class MusicViewController: UIViewController , RUChannelProtocol
 {
 
-    var audioPlayer : STKAudioPlayer?
-    
+    var audioPlayer : AVPlayer?
+    var playing = false
+
+    @IBOutlet weak var playButton: UIButton!
+
     static func channelHandle() -> String!
     {
         return "music";
     }
-    
-
     /*
      Every class is register with the RUChannelManager by calling a register class static method in the load function of each class.
      The load is called in objc on every class by the run time library...
@@ -39,8 +41,7 @@ class MusicViewController: UIViewController , RUChannelProtocol
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
     {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil);
-        audioPlayer = STKAudioPlayer();
-        
+        audioPlayer = AVPlayer(URL: NSURL(string: "http://crystalout.surfernetwork.com:8001/WRNU-FM_MP3")!)
     }
 
     
@@ -51,8 +52,31 @@ class MusicViewController: UIViewController , RUChannelProtocol
     override func viewDidLoad()
     {
         super.viewDidLoad()
+    }
 
-        // Do any additional setup after loading the view.
+    override func viewWillAppear(animated: Bool) {
+        playButton.setTitle(playing ? "Pause" : "Play", forState: .Normal)
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        if #available(iOS 7.1, *) {
+            let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+            commandCenter.playCommand.addTargetWithHandler({ event in
+                self.toggleRadio()
+                return .Success
+            })
+            commandCenter.pauseCommand.addTargetWithHandler({ event in
+                self.toggleRadio()
+                return .Success
+            })
+        }
     }
 
     override func didReceiveMemoryWarning()
@@ -60,12 +84,22 @@ class MusicViewController: UIViewController , RUChannelProtocol
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
+    func toggleRadio() {
+        if (!playing) {
+            audioPlayer?.play()
+            playButton.setTitle("Pause", forState: .Normal)
+            playing = true
+        } else {
+            audioPlayer?.pause()
+            playButton.setTitle("Play", forState: .Normal)
+            playing = false
+        }
+    }
 
 
-    @IBAction func playRadio(sender: AnyObject)
-    {
-        audioPlayer?.play("http://crystalout.surfernetwork.com:8001/WRNU-FM_MP3")
+    @IBAction func playRadio(sender: AnyObject) {
+        toggleRadio()
     }
   
 }
