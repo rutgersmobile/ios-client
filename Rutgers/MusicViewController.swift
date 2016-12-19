@@ -52,14 +52,22 @@ class MusicViewController: UIViewController , RUChannelProtocol
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setPlayingState), name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
-        playButton.setTitle(playing ? "Pause" : "Play", forState: .Normal)
+        setPlayingState()
+        print("dank")
+    }
+
+    func setPlayingState() {
+        playing = audioPlayer?.rate != 0 && audioPlayer?.error == nil
+        playButton?.setTitle(playing ? "Pause" : "Play", forState: .Normal)
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        print("memes")
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
