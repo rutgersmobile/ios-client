@@ -85,6 +85,8 @@
 		04FD97CF1D13543400E9877D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97CE1D13543400E9877D /* libsqlite3.tbd */; };
 		04FD97D11D13543900E9877D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97D01D13543900E9877D /* libz.tbd */; };
 		04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD97D51D14988300E9877D /* PlaceholderDataSource.m */; };
+		621347741E04279600786570 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621347721E04279600786570 /* MusicViewController.swift */; };
+		621347751E04279600786570 /* MusicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 621347731E04279600786570 /* MusicViewController.xib */; };
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
@@ -405,6 +407,8 @@
 		04FD97D41D14988300E9877D /* PlaceholderDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderDataSource.h; sourceTree = "<group>"; };
 		04FD97D51D14988300E9877D /* PlaceholderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderDataSource.m; sourceTree = "<group>"; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		621347721E04279600786570 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
+		621347731E04279600786570 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
 		621872C51D3407DC00E727E3 /* RUBusMessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessagesDataSource.h; sourceTree = "<group>"; };
 		621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessagesDataSource.m; sourceTree = "<group>"; };
 		621872C81D340B9500E727E3 /* RUBusMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessageCell.h; sourceTree = "<group>"; };
@@ -1617,6 +1621,8 @@
 				C262EFBD188345D10035C8F5 /* Images.xcassets */,
 				04BA07331BD6BCA5009AB651 /* Launch.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
+				621347721E04279600786570 /* MusicViewController.swift */,
+				621347731E04279600786570 /* MusicViewController.xib */,
 			);
 			path = Rutgers;
 			sourceTree = "<group>";
@@ -1774,6 +1780,7 @@
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
+				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
@@ -2039,6 +2046,7 @@
 				04A1EFFD1A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m in Sources */,
 				04B3D6581B98C8B7006D0BF6 /* SwitchDataSource.m in Sources */,
 				A7EA4C54197D6BD800E972DD /* SegmentedDataSource.m in Sources */,
+				621347741E04279600786570 /* MusicViewController.swift in Sources */,
 				A7EA4C46197D65C000E972DD /* AAPLContentLoading.m in Sources */,
 				621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */,
 				04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */,

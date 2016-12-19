@@ -156,5 +156,11 @@
   "title": "Feedback",
   "view": "feedback",
   "icon": "feedback"
+  },
+  {
+  "handle": "music",
+  "title": "Music",
+  "view": "music",
+  "icon": "music"
   }
 ]

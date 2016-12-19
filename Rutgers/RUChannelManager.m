@@ -126,11 +126,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                     if (data)
                     {
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                        if (channels.count) // if there are multiple items in the channel
+                        if (channels.count)
                         {
                             //NSLog(@" # CHANNELS : %i " , (int)channels.count);
                             latestDate = date;
-                            _contentChannels = channels;  // So we create channel from files converted into JSonn Objects ?
+                            _contentChannels = channels;
                         }
                     }
                 }

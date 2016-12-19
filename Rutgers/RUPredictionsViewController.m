@@ -22,11 +22,10 @@
 
 /*
     Handles the predictions for the BUS app.
- 
  */
 
 @interface RUPredictionsViewController ()
-@property (nonatomic) MSWeakTimer *timer;
+@property (nonatomic) MSWeakTimer *timer; 
 @property (nonatomic) id item;
 @property (nonatomic) id serializedItem;
 @end
