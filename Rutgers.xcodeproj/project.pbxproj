@@ -88,11 +88,21 @@
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
+		621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 621E60381D9D9F8300BAF3B7 /* RUDebug.m */; };
+		622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */; };
+		622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */; };
+		622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */; };
+		622AFBE21D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */; };
+		624042681D76085E009AC3D8 /* AthleticsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624042661D76085E009AC3D8 /* AthleticsCollectionViewController.swift */; };
+		624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 624042671D76085E009AC3D8 /* AthleticsCollectionViewController.xib */; };
 		6244DACC1D46849500D275D7 /* RURecreationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACB1D46849500D275D7 /* RURecreationViewController.m */; };
 		6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */; };
+		62530D961D78789500BAB5E6 /* AthleticsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */; };
+		62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */; };
 		6254D2821D2329220005A31C /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6254D2811D2329220005A31C /* README.txt */; };
-		62CB1E8C1D393813001476D7 /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */; };
-		62EAA17D1D9B242000DD2363 /* NSMutableArray+RUQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */; };
+		629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */; };
+		62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B964111DD31BFD00D8399A /* BannerCell.swift */; };
+		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
 		A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; };
@@ -401,15 +411,26 @@
 		621872C91D340B9500E727E3 /* RUBusMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessageCell.m; sourceTree = "<group>"; };
 		621872CB1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusPredictionsAndMessageDataSource.h; sourceTree = "<group>"; };
 		621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusPredictionsAndMessageDataSource.m; sourceTree = "<group>"; };
+		621E60361D9D9D3400BAF3B7 /* RUDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDebug.h; sourceTree = "<group>"; };
+		621E60381D9D9F8300BAF3B7 /* RUDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDebug.m; sourceTree = "<group>"; };
+		622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSwiftClassesLoader.h; sourceTree = "<group>"; };
+		622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSwiftClassesLoader.m; sourceTree = "<group>"; };
+		622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewController.swift; sourceTree = "<group>"; };
+		622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewCell.xib; sourceTree = "<group>"; };
+		622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCollectionViewCell.swift; sourceTree = "<group>"; };
+		624042661D76085E009AC3D8 /* AthleticsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsCollectionViewController.swift; sourceTree = "<group>"; };
+		624042671D76085E009AC3D8 /* AthleticsCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsCollectionViewController.xib; sourceTree = "<group>"; };
 		6244DACA1D46849500D275D7 /* RURecreationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecreationViewController.h; path = Rutgers/RURecreationViewController.h; sourceTree = SOURCE_ROOT; };
 		6244DACB1D46849500D275D7 /* RURecreationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecreationViewController.m; path = Rutgers/RURecreationViewController.m; sourceTree = SOURCE_ROOT; };
 		6244DACD1D4684B100D275D7 /* RURecCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterViewController.h; path = Rutgers/RURecCenterViewController.h; sourceTree = SOURCE_ROOT; };
 		6244DACE1D4684B100D275D7 /* RURecCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterViewController.m; path = Rutgers/RURecCenterViewController.m; sourceTree = SOURCE_ROOT; };
+		62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AthleticsCollectionViewCell.swift; sourceTree = "<group>"; };
+		62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AthleticsCollectionViewCell.xib; sourceTree = "<group>"; };
 		6254D2811D2329220005A31C /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RUReaderGameViewController.h; path = ../RUReaderGameViewController.h; sourceTree = "<group>"; };
-		62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RUReaderGameViewController.m; path = ../RUReaderGameViewController.m; sourceTree = "<group>"; };
-		62EAA17B1D9B242000DD2363 /* NSMutableArray+RUQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+RUQueue.h"; sourceTree = "<group>"; };
-		62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+RUQueue.m"; sourceTree = "<group>"; };
+		629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DynamicCollectionViewController.xib; sourceTree = "<group>"; };
+		62B964111DD31BFD00D8399A /* BannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
+		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
+		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
 		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -886,6 +907,17 @@
 			name = abstract;
 			sourceTree = "<group>";
 		};
+		622AFBCE1D6F414A00ED4A9D /* athletics */ = {
+			isa = PBXGroup;
+			children = (
+				624042661D76085E009AC3D8 /* AthleticsCollectionViewController.swift */,
+				624042671D76085E009AC3D8 /* AthleticsCollectionViewController.xib */,
+				62530D941D78789500BAB5E6 /* AthleticsCollectionViewCell.swift */,
+				62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */,
+			);
+			name = athletics;
+			sourceTree = "<group>";
+		};
 		71C113FD36A753397BBAA999 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -939,13 +971,6 @@
 				A75E7EC719A3F2F300782AE5 /* NewBrunswickFoodDataSource.m */,
 			);
 			name = DataSources;
-			sourceTree = "<group>";
-		};
-		A7241A4F19899A3B00304436 /* Datasource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Datasource;
 			sourceTree = "<group>";
 		};
 		A72FFFAC1937C32000016C89 /* rusoc */ = {
@@ -1268,8 +1293,8 @@
 				A769931F19352B43008C64EE /* RUReaderItem.m */,
 				A794EBE819005D91006E040C /* RUReaderTableViewCell.h */,
 				A794EBE919005D91006E040C /* RUReaderTableViewCell.m */,
-				62CB1E8A1D393813001476D7 /* RUReaderGameViewController.h */,
-				62CB1E8B1D393813001476D7 /* RUReaderGameViewController.m */,
+				62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */,
+				62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */,
 			);
 			name = rureader;
 			sourceTree = "<group>";
@@ -1283,15 +1308,10 @@
 				A7E8E1341924846F0089F166 /* rutext */,
 				A7E8E13919249FEB0089F166 /* ruwebview */,
 				04203AF61B15147E005A7099 /* ordered_content.json */,
+				622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */,
+				622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */,
 			);
 			name = channels;
-			sourceTree = "<group>";
-		};
-		A7C155EF19899F9200CDCAE3 /* view */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = view;
 			sourceTree = "<group>";
 		};
 		A7C155F5198AB23400CDCAE3 /* concrete data sources */ = {
@@ -1319,14 +1339,6 @@
 				04FD97D51D14988300E9877D /* PlaceholderDataSource.m */,
 			);
 			name = "concrete data sources";
-			sourceTree = "<group>";
-		};
-		A7C92C8F19460F1C00609549 /* ruathletics */ = {
-			isa = PBXGroup;
-			children = (
-				A7F956511963354E0074305D /* Roster */,
-			);
-			name = ruathletics;
 			sourceTree = "<group>";
 		};
 		A7D73B22197887FD006BC215 /* data source */ = {
@@ -1422,8 +1434,6 @@
 				A7C0373719B1287F00F5D962 /* UIApplication+StatusBarHeight.m */,
 				04AF8B411A82B57400619AFC /* NSDate+EpochTime.h */,
 				04AF8B421A82B57400619AFC /* NSDate+EpochTime.m */,
-				62EAA17B1D9B242000DD2363 /* NSMutableArray+RUQueue.h */,
-				62EAA17C1D9B242000DD2363 /* NSMutableArray+RUQueue.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1524,17 +1534,13 @@
 				A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */,
 				A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */,
 				A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */,
+				622AFBDB1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift */,
+				622AFBDF1D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib */,
+				622AFBE11D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift */,
+				629F85271D907FD300A0D6D3 /* DynamicCollectionViewController.xib */,
+				62B964111DD31BFD00D8399A /* BannerCell.swift */,
 			);
 			name = dtable;
-			sourceTree = "<group>";
-		};
-		A7F956511963354E0074305D /* Roster */ = {
-			isa = PBXGroup;
-			children = (
-				A7C155EF19899F9200CDCAE3 /* view */,
-				A7241A4F19899A3B00304436 /* Datasource */,
-			);
-			name = Roster;
 			sourceTree = "<group>";
 		};
 		C262EF9F188345D10035C8F5 = {
@@ -1601,11 +1607,11 @@
 				A75B0AAD1909A3EA00A57149 /* common */,
 				04A1EFC41A5C506900DE0351 /* rubus */,
 				A7B2D98F190ED654003ABEA3 /* rufood */,
+				622AFBCE1D6F414A00ED4A9D /* athletics */,
 				A7910E5919182008002DA45F /* rurecreation */,
 				A70810781906F87C0087EB82 /* ruplaces */,
 				A77028A5191C8880003F5D28 /* rumaps */,
 				A72FFFAC1937C32000016C89 /* rusoc */,
-				A7C92C8F19460F1C00609549 /* ruathletics */,
 				A770EDC41948AC0100DD5866 /* ruinfo */,
 				A7B3F7B51954A66500458B19 /* rufeedback */,
 				A754263019AFAA6B00D4E573 /* options */,
@@ -1629,6 +1635,8 @@
 				C262EFB4188345D10035C8F5 /* InfoPlist.strings */,
 				C262EFB7188345D10035C8F5 /* main.m */,
 				C262EFB9188345D10035C8F5 /* Rutgers-Prefix.pch */,
+				621E60361D9D9D3400BAF3B7 /* RUDebug.h */,
+				621E60381D9D9F8300BAF3B7 /* RUDebug.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1765,10 +1773,14 @@
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
+				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
+				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
+				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
+				629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
@@ -1855,7 +1867,7 @@
 				04A1EFDE1A5C508D00DE0351 /* BusBasicDataSource.m in Sources */,
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
-				62EAA17D1D9B242000DD2363 /* NSMutableArray+RUQueue.m in Sources */,
+				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
@@ -1892,6 +1904,7 @@
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				A7C92C9C19462BA300609549 /* RUPlace.m in Sources */,
 				A7F9029C19A7C02500FD3054 /* ALTableViewToggleCell.m in Sources */,
+				622AFBE21D6F5F3A00ED4A9D /* DynamicCollectionViewCell.swift in Sources */,
 				A75E7EC219A3E18D00782AE5 /* UITableView+Selection.m in Sources */,
 				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
@@ -1909,7 +1922,6 @@
 				04B2F3CC1D09E4D20035F96E /* RUMenuDataSource.swift in Sources */,
 				A7D4B64319ABC94B0087A8BC /* RUOptionsViewController.m in Sources */,
 				A770EDC71948AC0F00DD5866 /* RUInfoTableViewController.m in Sources */,
-				62CB1E8C1D393813001476D7 /* RUReaderGameViewController.m in Sources */,
 				A771A27B199AA987000CD174 /* NSArray+Sort.m in Sources */,
 				04A1EFD71A5C508300DE0351 /* RUPredictionsHeaderRow.m in Sources */,
 				04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */,
@@ -1943,6 +1955,7 @@
 				A72FFFB21937C55F00016C89 /* RUSOCDataLoadingManager.m in Sources */,
 				A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */,
 				A7EA4C58197D6C2900E972DD /* BasicDataSource.m in Sources */,
+				624042681D76085E009AC3D8 /* AthleticsCollectionViewController.swift in Sources */,
 				A7DD348F1981D3D90078023A /* PlacesDataSource.m in Sources */,
 				A7EA3F48197DA60800D4BC9E /* ExpandingTableViewDataSource.m in Sources */,
 				A7F9029F19A7C21C00FD3054 /* ALTableViewTextFieldCell.m in Sources */,
@@ -1978,7 +1991,9 @@
 				A7E8E12C192464870089F166 /* UIColor+RutgersColors.m in Sources */,
 				04B2F3D01D09F0680035F96E /* RUEditMenuItemsDataSource.swift in Sources */,
 				A7D73B281978880C006BC215 /* SegmentedTableViewController.m in Sources */,
+				62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */,
 				A75E7EC819A3F2F300782AE5 /* NewBrunswickFoodDataSource.m in Sources */,
+				622AFBDD1D6F50DD00ED4A9D /* DynamicCollectionViewController.swift in Sources */,
 				A7EA4C4B197D67EC00E972DD /* NSObject+KVOBlock.m in Sources */,
 				A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */,
 				A7C15600198ABA4600CDCAE3 /* StringDataSource.m in Sources */,
@@ -1987,7 +2002,9 @@
 				A7907CCB19A2997300711DCB /* AlertDataSource.m in Sources */,
 				04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */,
 				A7DD34871981B5E80078023A /* RUSOCDataSource.m in Sources */,
+				62530D961D78789500BAB5E6 /* AthleticsCollectionViewCell.swift in Sources */,
 				04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */,
+				622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */,
 				A7241A1B1988168800304436 /* RUFoodDataSource.m in Sources */,
 				04B2F3CA1D09D56E0035F96E /* RUActiveMenuItemDataSource.swift in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
@@ -2003,6 +2020,7 @@
 				A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */,
 				04A1EFE81A5C509600DE0351 /* ActiveRoutesDataSource.m in Sources */,
 				A7B3F7B41954A06B00458B19 /* FAQViewController.m in Sources */,
+				62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */,
 				04C0D29F1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m in Sources */,
 				A7DD34951981D41C0078023A /* RecentPlacesDataSource.m in Sources */,
 				A7778D7D19A54852003BD8DE /* RUInfoDataSource.m in Sources */,
@@ -2157,29 +2175,19 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Sandeep Mattappali (85RTFG4DHB)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -2188,7 +2196,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2202,25 +2210,15 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Sandeep Mattappali (85RTFG4DHB)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_OPTIMIZATION_LEVEL = fast;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -2230,8 +2228,7 @@
 				LLVM_LTO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2247,12 +2244,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = E5335P94A9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2267,10 +2262,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2286,12 +2279,10 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = E5335P94A9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rutgers/Rutgers-Prefix.pch";
 				GCC_WARN_UNUSED_PARAMETER = NO;
@@ -2306,9 +2297,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Rutgers/Rutgers-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "";
 				WRAPPER_EXTENSION = app;
 			};

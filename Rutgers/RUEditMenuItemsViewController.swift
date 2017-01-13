@@ -24,16 +24,12 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
  */
     static func registerClass()
     {
-         var onceToken : dispatch_once_t = 0;
-        dispatch_once(&onceToken)
-        {
             RUChannelManager.sharedInstance().registerClass(RUEditMenuItemsViewController.self)
-        }
     }
 
     //   // register the channel with j
     //   override class func initialize()
-    //   {
+    //   
     //       var onceToken : dispatch_once_t = 0;
     //       dispatch_once(&onceToken)
     //       {
@@ -106,7 +102,7 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         
         if item is RUFavorite
         {
-            print(item.url!!.absoluteString)
+            //print(item.url!!.absoluteString)
         }
         else
         {

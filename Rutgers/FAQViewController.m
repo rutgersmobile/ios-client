@@ -11,7 +11,6 @@
 #import "FAQDataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
-#import "RUAnalyticsManager.h"
 
 @interface FAQViewController ()
 @property NSDictionary *channel;
@@ -44,7 +43,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //Do super to handle item expansion state
+    //Do super to 
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     id item = [self.dataSource itemAtIndexPath:indexPath];
@@ -58,11 +57,6 @@
         //Get view controller for channel
         UIViewController *vc = [[RUChannelManager sharedInstance] viewControllerForChannel:channel];
         vc.title = [item channelTitle];
-        
-        if (GRANULAR_ANALYTICS_NEEDED)
-        {
-            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [vc class])];
-        }
         
         [self.navigationController pushViewController:vc animated:YES];
     }

@@ -10,7 +10,6 @@
 #import "DynamicDataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
-#import "RUAnalyticsManager.h"
 
 /*
     This is the generic view used to represent all the inner subviews of the View Contr. from the slideView
@@ -26,17 +25,22 @@
 @implementation DynamicTableViewController
 
 
-+(NSString *)channelHandle{
++(NSString *)channelHandle
+{
     return @"dtable";
 }
-+(void)load{
+
+// called by objc run time when classes start up 
++(void)load
+{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
 /*
     Sets up specfic features of the dtable
  */
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel
+{
     return [[self alloc] initWithChannel:channel];
 }
 
@@ -44,10 +48,14 @@
     Determine whether the view has to be grouped together or whether is can be displayed as a single group
     and set up the data source of the table view..
  */
--(instancetype)initWithChannel:(NSDictionary *)channel{
-    BOOL grouped = [channel[@"grouped"] boolValue];
-    self = [super initWithStyle:grouped ? UITableViewStyleGrouped : UITableViewStylePlain];
-    if (self) {
+-(instancetype)initWithChannel:(NSDictionary *)channel
+{
+    //BOOL grouped = [channel[@"grouped"] boolValue];
+    //self = [super initWithStyle:grouped ? UITableViewStyleGrouped : UITableViewStylePlain];
+    self = [super initWithStyle: UITableViewStyleGrouped];
+    
+    if (self)
+    {
         self.channel = channel;
     }
     return self;
@@ -84,11 +92,7 @@
     //Sometimes the title is on the item and not its channel
     if (![channel channelTitle] && [item channelTitle]) vc.title = [item channelTitle];
    
-    if (GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [vc class])];
-    }
-    
+  
      // Now move to the next view controller
     [self.navigationController pushViewController:vc animated:YES];
 }

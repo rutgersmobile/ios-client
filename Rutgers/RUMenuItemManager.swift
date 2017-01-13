@@ -6,20 +6,27 @@
 //  Copyright © 2016 Rutgers. All rights reserved.
 //
 
-
-
 import Foundation
 
-
-
-
+/*
+ 
+ +(NSArray <NSDictionary *>*)favorites;
+ +(void)addFavorite:(NSDictionary *)favorite;
+ +(void)removeFavorite:(NSDictionary *)favorite;
+ 
+ */
 
 protocol DictionaryConvertible {
     init?(dictionary: NSDictionary)
     func asDictionary() -> NSDictionary
 }
 
-;
+
+/*
+ 
+ 
+ 
+ */
 public class RUFavorite: NSObject
 {
     public let title: String
@@ -58,12 +65,9 @@ extension RUFavorite {
     }
     
     public func asDictionary() -> NSDictionary {
-        
-        
-        
         return [
             "title": title,
-            "url": RUGetAbsoluteString(url)
+            "url": url.absoluteString!
         ]
     }
 }

@@ -14,7 +14,6 @@
 #import <MSWeakTimer.h>
 #import "RUChannelManager.h"
 
-#import "RUAnalyticsManager.h"
 @interface RUFoodViewController ()
 @property MSWeakTimer *timer;
 @end
@@ -47,16 +46,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     DataTuple *item = [self.dataSource itemAtIndexPath:indexPath];
     NSDictionary *object = item.object;
-    if (object[@"view"])
-    {
+    if (object[@"view"]) {
         [self.navigationController pushViewController:[[RUChannelManager sharedInstance] viewControllerForChannel:object] animated:YES];
-    } else if ([object isDiningHallOpen])
-    {
-        if (GRANULAR_ANALYTICS_NEEDED)
-        {
-            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [object class])];
-        }
-        
+    } else if ([object isDiningHallOpen]){
         [self.navigationController pushViewController:[[RUDiningHallViewController alloc] initWithDiningHall:object] animated:YES];
     }
 }

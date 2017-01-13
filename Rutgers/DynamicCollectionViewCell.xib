@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="1ZJ-QN-Vhi" customClass="DynamicCollectionViewCell" customModule="Rutgers" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="M4S-ZC-9Bp"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="90" translatesAutoresizingMaskIntoConstraints="NO" id="pf3-8h-Meg">
+                        <color key="backgroundColor" red="0.37254901960784315" green="0.41568627450980389" blue="0.44705882352941173" alpha="0.67063577586206902" colorSpace="calibratedRGB"/>
+                        <attributedString key="attributedText">
+                            <fragment content="Title">
+                                <attributes>
+                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <font key="NSFont" metaFont="system" size="14"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" headIndent="10" tighteningFactorForTruncation="0.0"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="pf3-8h-Meg" firstAttribute="height" secondItem="1ZJ-QN-Vhi" secondAttribute="height" multiplier="0.1" id="3Wf-T8-8SA"/>
+                <constraint firstItem="M4S-ZC-9Bp" firstAttribute="height" secondItem="1ZJ-QN-Vhi" secondAttribute="height" id="5XM-9d-ftS"/>
+                <constraint firstItem="pf3-8h-Meg" firstAttribute="width" secondItem="1ZJ-QN-Vhi" secondAttribute="width" id="C21-5e-jea"/>
+                <constraint firstItem="M4S-ZC-9Bp" firstAttribute="centerY" secondItem="1ZJ-QN-Vhi" secondAttribute="centerY" id="X8x-rE-aub"/>
+                <constraint firstItem="pf3-8h-Meg" firstAttribute="top" secondItem="1ZJ-QN-Vhi" secondAttribute="top" id="g2J-hr-DNd"/>
+                <constraint firstItem="M4S-ZC-9Bp" firstAttribute="centerX" secondItem="1ZJ-QN-Vhi" secondAttribute="centerX" id="pik-4N-lp1"/>
+                <constraint firstItem="pf3-8h-Meg" firstAttribute="centerX" secondItem="1ZJ-QN-Vhi" secondAttribute="centerX" id="sZw-sW-Kwr"/>
+                <constraint firstItem="M4S-ZC-9Bp" firstAttribute="width" secondItem="1ZJ-QN-Vhi" secondAttribute="width" id="wlK-yF-ZBs"/>
+            </constraints>
+            <size key="customSize" width="194" height="120"/>
+            <connections>
+                <outlet property="imageView" destination="M4S-ZC-9Bp" id="N8l-i2-UcH"/>
+                <outlet property="title" destination="pf3-8h-Meg" id="KMj-WQ-4ts"/>
+            </connections>
+            <point key="canvasLocation" x="278" y="304"/>
+        </collectionViewCell>
+    </objects>
+</document>

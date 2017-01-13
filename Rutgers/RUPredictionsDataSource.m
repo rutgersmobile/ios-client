@@ -45,88 +45,6 @@
     return self;
 }
 
-
-/*
-
-    NO LONGER NEED : DATA LOADED IN ANOTHER CLASS AND PASSED ALONG
--(void)loadContent
-{
-    [self loadContentWithBlock:^
-     (AAPLLoading *loading)
-    {
-        
-        void (^getPredictions)(id item) = ^(id item)
-        {
-            
-            [[RUBusDataLoadingManager sharedInstance] getPredictionsForItem:item completion:^
-                (NSArray *predictions, NSError *error)
-                {
-                    if (!loading.current) // state chanage <?>
-                    {
-                        [loading ignore];
-                        return;
-                    }
-                    
-                    if (!error)
-                    {
-                        if (predictions.count) // If content was loaded
-                        {
-                            [loading updateWithContent:^(typeof(self) me)
-                            {
-                                [me updateSectionsForResponse:predictions]; // add the obtained prediction to self (data source)
-                            }];
-                        }
-                        else
-                        {
-                            [loading updateWithNoContent:^(typeof(self) me)
-                            {
-                                [me updateSectionsForResponse:nil];
-                            }];
-                        }
-                        
-                    }
-                    else
-                    {
-                        [loading doneWithError:error];
-                    }
-                }
-             ];
-        };
-        
-        
-        if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] || [self.item isKindOfClass:[RUBusRoute class]])
-        {
-            getPredictions(self.item);
-        }
-        else if ([self.item isKindOfClass:[NSArray class]] && [self.item count] >= 2)
-        {
-            [
-             [RUBusDataLoadingManager sharedInstance] getSerializedItemWithName:self.item[1] type:self.item[0] completion:^
-                (id item, NSError *error)
-                {
-                    if (item)
-                    {
-                        self.item = item;
-                        getPredictions(item);
-                    }
-                    else
-                    {
-                        [loading doneWithError:error];
-                    }
-                }
-             ];
-        }
-        else
-        {
-            [loading doneWithError:nil];
-        }
-    }];
-}
-
-*/
-
-
-
 /*
     Add the objects which were recieved in the data request to the data source
  
@@ -174,5 +92,14 @@
 
     
 }
+
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+   
+
+    [super configureCell:cell forRowAtIndexPath:indexPath];
+}
+
+
 
 @end

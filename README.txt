@@ -55,11 +55,3 @@ TableViewController and DataSource
 
 
 
-> TEST SEQUENCE BEFORE RELEASE 
-    > Run on all emulators ios 7 - ios 10 
-                > Do not skip minor releases 
-                > Spend 5 minutes testing on each of the devices 
-    > Run on all physical devices 
-
-
-

@@ -12,8 +12,7 @@
 #import "RUSOCSubjectDataSource.h"
 #import "NSURL+RUAdditions.h"
 #import "RUSOCDataLoadingManager.h"
-#import "RUAnalyticsManager.h"
-        
+
 @interface RUSOCSubjectViewController ()
 @property (nonatomic) NSDictionary *subject;
 @end
@@ -95,12 +94,6 @@
     RUSOCCourseRow *row = [self.dataSource itemAtIndexPath:indexPath];
     RUSOCCourseViewController *courseVC = [[RUSOCCourseViewController alloc] initWithCourse:row.course];
     courseVC.dataLoadingManager = self.dataLoadingManager;
-    if (GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [courseVC class])];
-    }
-    
-    
     [self.navigationController pushViewController:courseVC animated:YES];
 }
 

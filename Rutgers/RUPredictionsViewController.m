@@ -89,30 +89,53 @@
      */
     
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
-    
+
+#warning TO DO Improve code here
+    // Set the title of the Bus . This usually happens , when we do not have a title ..
+
     [self.dataSource whenLoaded:^{
         if (self.dataSource != nil)
         {
             dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               NSAssert([NSThread isMainThread], @"Method called using a thread other than main!");
-                               RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
-                               
-                               if (dataSource.responseTitle == nil) {
-                                   self.title = @"Bus";
-                               } else {
-                                   self.title = dataSource.responseTitle;
-                               }
-                           });
+            {
+                RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
+                if (dataSource.responseTitle == nil) {
+                    self.title = @"Bus";
+                } else {
+                    self.title = dataSource.responseTitle;
+                }
+            });
         }
     }];
+   
+  
+    // Set up the button for opening the maps
+    UIButton *mapsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [mapsView addTarget:self action:@selector(mapsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [mapsView setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
+    UIBarButtonItem *mapsButton = [[UIBarButtonItem alloc] initWithCustomView:mapsView];
+    
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
+    
     
     self.pullsToRefresh = YES;
 }
 
 
 /*
- the self.item is set by the init , and can either represent the route or a stop and based on that
+    Open the Bus maps View Controller
+ */
+-(void) mapsButtonPressed
+{
+    
+}
+
+
+
+
+/*
+    the self.item is set by the init , and can either represent the route or a stop and based on that 
+>>>>>>> 9b1a0d76f8d6741fada18869a2fbceca3d346fc3
  */
 -(NSURL *)sharingURL
 {
@@ -162,9 +185,9 @@
             //break;
     }
 }
+
 /*
  Make the messges unselectable
- 
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -217,6 +240,12 @@
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
+}
+
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    
 }
 
 

@@ -9,10 +9,8 @@
 /*
             Set up the initial Table View Contoller On Tapping the Bus Icon
             On tapping Cell Segues into predictions page
- 
         To Do :     
             Convert this into a map
- 
  */
 
 #import "RUBusViewController.h"
@@ -22,9 +20,15 @@
 #import "RUPredictionsViewController.h"
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
+
+
 #import "RURootController.h"
+#import "RUDebug.h"
+
+
+
 #import <SWRevealViewController.h>
-#import "RUAnalyticsManager.h"
+#import "Rutgers-Swift.h"
 
 
 @interface RUBusViewController () <UIGestureRecognizerDelegate>
@@ -65,35 +69,34 @@
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
     
- //  [NSException raise:@"Invalid foo value" format:@"foo of "];
     
- 
-    if(DEV)
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(36 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0) , ^
-        {
-          /*  @throw [NSException exceptionWithName:NSGenericException
-                                           reason:@"Test uncaught exception handling"
-                                         userInfo:nil];     
-           */
-            [NSException raise:NSInternalInconsistencyException format:@"Error Testing"];
-        });
-    }
-  
-}
-/*
-    //Execute the pan gesture to open the drawer if the swip gesture has failed
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    BOOL result = NO ;
+    RUDebug * debug = [[RUDebug alloc ] init];
+    [debug dumpView:self.navigationController.view atIndent:0];
+    
+    
+    /*
+    UIButton *mapButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    [mapButton addTarget:self action:@selector(optionsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [mapButton setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:settingsView];
+    
    
-    if(  (gestureRecognizer == self.leftSwipe || gestureRecognizer == self.rightSwipe) && [otherGestureRecognizer class] == [SWRevealViewControllerPanGestureRecognizer class])
-    {
-        result = YES;
-    }
-    return result;
+    // add map button to the top right of the navigation view
+    UIBarButtonItem * mapButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"map"] style:UIBarButtonItemStylePlain target:self action:@selector(openMapWithRoutes)];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapButton, nil]];
+     */
 }
-*/
+
+-(void)openMapWithRoutes // show the map in a different view controller
+{
+    MapRouteViewController* vc =  [[MapRouteViewController alloc] init];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+    
+}
+
 
 
 
@@ -119,19 +122,9 @@
     
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
     // Create a view using the item. Ie. Present the view with the bu stops and their timiings
-    if (GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [item class])];
-    }
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }
 
-/*
-    Descript : 
-        Part of the Channel ? 
- 
- 
- */
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
     RUPredictionsViewController *viewController = [[RUPredictionsViewController alloc] initWithSerializedItem:pathComponents title:destinationTitle];
     return @[viewController];
