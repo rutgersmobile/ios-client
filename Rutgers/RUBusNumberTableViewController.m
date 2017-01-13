@@ -2,48 +2,60 @@
 //  RUBusNumberTableViewController.m
 //  Rutgers
 //
-//  Created by cfw37 on 1/12/17.
+//  Created by cfw37 on 1/13/17.
 //  Copyright © 2017 Rutgers. All rights reserved.
 //
 
 #import "RUBusNumberTableViewController.h"
-#import "ALTableViewAbstractCell.h"
+#import "ALTableViewRightDetailCell.h"
 #import "RUBusPredictionsAndMessageDataSource.h"
-#import "RUBusPredictionsAndMessageDataSource.h"
-#import "RUBusArrival.h"
+#import "RUBusRoute.h"
+#import "RUBusStop.h"
 
 @interface RUBusNumberTableViewController ()
 
-
+@property (nonatomic) id item;
 
 @end
 
 @implementation RUBusNumberTableViewController
-/*
+
+
+-(instancetype)initWithItem:(id)item
+{
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+     
+        self.item = item; // RUBusRoute or RUBusStop
+        self.title = [self.item title];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-   
-    self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
     
-    [self.dataSource whenLoaded:^{
-        if (self.dataSource != nil)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               NSAssert([NSThread isMainThread], @"Method called using a thread other than main!");
-                               RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
-                               
-                               if (dataSource.responseTitle == nil) {
-                                   self.title = @"Bus";
-                               } else {
-                                   self.title = dataSource.responseTitle;
-                               }
-                           });
+    
+    
+    
+    if ([self.item isKindOfClass:[RUBusPredictionsAndMessageDataSource class]]) {
+        
+        RUBusPredictionsAndMessageDataSource* data = (RUBusPredictionsAndMessageDataSource*)self.item;
+        
+        if ([data.item isKindOfClass:[RUBusRoute class]]) {
+            
+            RUBusRoute* route = (RUBusRoute*)data.item;
+             NSLog(@"%@", route.stops);
+        
+        } else if ([data.item isKindOfClass:[RUBusStop class]]) {
+        
+            NSLog(@"%@", data.item);
         }
-    }];
+       
+        
+    }
     
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,6 +63,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -58,33 +74,23 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.routeObject.stops.count;
+    return 1;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     ALTableViewAbstractCell* testCell = [[ALTableViewAbstractCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"defaultCell"];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"defaultCell" forIndexPath:indexPath];
     
-    RUBusArrival* arrival = self.predictionTimes[indexPath.row];
+    ALTableViewRightDetailCell *cell = [[ALTableViewRightDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"default"];
     
-    NSLog(@"%li", arrival.minutes);
+    cell.textLabel.text = @"Hey";
     
+    cell.detailTextLabel.text = @"How are things?";
     
+    // Configure the cell...
     
-   
-    
-    NSString* stop = self.routeObject.stops[indexPath.row];
-    
-    testCell.textLabel.text = stop;
- //   testCell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%li", arrival.minutes];
-    
-    return testCell;
+    return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-@end
-*/
 
 @end

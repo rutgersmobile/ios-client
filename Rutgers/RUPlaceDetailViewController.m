@@ -13,7 +13,7 @@
 #import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUPlace.h"
 #import "NSURL+RUAdditions.h"
-#import "Rutgers-Swift.h"
+//#import "Rutgers-Swift.h"
 #import "RUAnalyticsManager.h"
 static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to decide whether to show the pop up warning about maps not working well enough on ios 9.0 , 9.1 and 9.2
 
@@ -126,7 +126,7 @@ static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to 
             [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"MapsViewController"];
         }
         
-        [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:item] animated:YES];
+       // [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:item] animated:YES];
     }
     else if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]])
     {

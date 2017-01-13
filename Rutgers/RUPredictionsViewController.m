@@ -20,7 +20,6 @@
 #import "AlertDataSource.h"
 #import "RUPredictionsBodyRow.h"
 #import "RUBusArrival.h"
-#import "RUBusNumberViewController.h"
 
 
 
@@ -163,14 +162,10 @@
             //break;
     }
 }
-
 /*
  Make the messges unselectable
  
  */
-
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -180,65 +175,44 @@
         
     } else if (indexPath.row == 1) {
         
-        //NSMutableArray* routeArray = [NSMutableArray new];
-        
         /* Essentially this code just controls what happens when a user taps an expanding cell.  When a user does, an alert pops up with available bus numbers.  The user can then select a bus number in order to see what times the bus will arrive at a given stop.  Pulls the data from RUPredictionsBodyRow.
          
          !-----------------FIGURE OUT A SOLUTION TO ADDING REDUNDANT BUS NUMBERS IN vehicleArray-----------------!
          
          Pass vehicle number and filter through RUBusPrediction?
          */
+    
+    id item = self.dataSource;
+    
+    DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
+    
+    if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
         
-//        RUBusNumberTableViewController* vc = [[RUBusNumberTableViewController alloc] ini];
+        __weak __typeof__(self) weakSelf = self;
         
+        RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
         
-        /*
-         
-         Need to initialize this with a data store of some sort in order to make this work
+        self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"Bus Numbers" alertButtonTitles: bodyRow.vehicleArray];
         
-        RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:basicDataSource];
-         
-        */
+        self.busNumberDataSource.alertTitle = @"Bus Numbers";
         
-//        if ([self.item isKindOfClass:[RUBusRoute class]]) {
-//            RUBusRoute* routeObject = (RUBusRoute*)self.item;
-//            
-//            //vc.routeObject = routeObject;
-//        }
-        
-        DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
-        
-        
-        
-        
-        if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
-            RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
+        self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
             
-            __weak typeof(self) weakSelf = self;
-            
-            self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"Bus Numbers" alertButtonTitles: bodyRow.vehicleArray];
-            
-            self.busNumberDataSource.alertTitle = @"Bus Numbers";
-            
-            self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
-                
-                //vc.predictionTimes = bodyRow.predictionTimes;
-                
-                [weakSelf presentViewController: vc animated:YES completion:nil];
-                
-                
-                NSLog(@"%@ BUTTON PRESSED! INDEX = %li", buttonTitle, buttonIndex);
-                
-                
-            };
-            
-            [self.busNumberDataSource showAlertInView:self.view];
+            [weakSelf.navigationController presentViewController: [[RUBusNumberTableViewController alloc] initWithItem:item] animated:YES completion:nil];
             
             
+            NSLog(@"%@ BUTTON PRESSED! INDEX = %li", buttonTitle, buttonIndex);
             
-        }
-
+            
+        };
+        
+        [self.busNumberDataSource showAlertInView:self.view];
+        
     }
+        
+    }
+    
+    
     else // pass on the message to the super class
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
