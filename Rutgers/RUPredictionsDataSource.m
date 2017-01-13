@@ -165,11 +165,14 @@
      */
 }
 
+
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView
 {
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[RUPredictionsBodyTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsBodyTableViewCell class])];
     [tableView registerClass:[RUPredictionsHeaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsHeaderTableViewCell class])];
+
+    
 }
 
 @end

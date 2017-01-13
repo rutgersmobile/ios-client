@@ -15,7 +15,10 @@
  */
 @interface RUPredictionsBodyRow : NSObject
 -(instancetype)initWithPredictions:(RUBusPrediction *)predictions;
-@property (nonatomic, readonly) NSString *minutesString;
-@property (nonatomic, readonly) NSString *descriptionString;
-@property (nonatomic, readonly) NSString *timeString;
+@property (nonatomic) NSString *stop;
+@property (nonatomic) NSArray *predictionTimes;
+@property (nonatomic) NSString *minutesString;
+@property (nonatomic) NSString *descriptionString;
+@property (nonatomic) NSString *timeString;
+@property (nonatomic) NSArray *vehicleArray;
 @end

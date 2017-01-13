@@ -41,6 +41,8 @@
             [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newCount, oldCount-newCount) inSection:0]];
         }];
     }
+    
+    
 }
 
 -(NSInteger)numberOfItems{

@@ -13,6 +13,7 @@
     But is that being used to display anything ? 
         What is the use of composed data source ? 
     May be is it used to display items in a table view ?
+    Seems as if ComposedDataSource is the constructed version of the DataSource delegate. This class is used as an aggregate object to hold all available data sources - used globally to access relevant data. 
  
  */
 

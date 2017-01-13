@@ -57,11 +57,12 @@
    else
     {
         [self.busPredictionsDS toggleExpansionForSection: section - 1];
+        
     }
 }
 
 /*
-    Load the content and pass it to the prediction and messgaes data source
+    Load the content and pass it to the prediction and messages data source
  
  */
 -(void)loadContent

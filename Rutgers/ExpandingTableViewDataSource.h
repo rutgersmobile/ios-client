@@ -14,7 +14,8 @@
  */
 @interface ExpandingTableViewDataSource : ComposedDataSource
 
-@property (nonatomic) NSArray *sections; // holds the sections ? / Then why the multiple data sources in the composedDS ? 
+@property (nonatomic) NSArray *sections; // holds the sections ? / Then why the multiple data sources in the composedDS ?
+@property (nonatomic) BOOL isExpanded;
 
 -(void)toggleExpansionForSection:(NSUInteger)section; // toogle whether the section has been expanded or not .
 

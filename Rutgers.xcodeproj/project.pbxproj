@@ -217,6 +217,8 @@
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
 		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
+		B5EFF4A31E27E68900E39017 /* RUBusNumberTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EFF4A21E27E68900E39017 /* RUBusNumberTableViewController.m */; };
+		B5EFF4A61E2811C100E39017 /* RUBusNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5EFF4A51E2811C100E39017 /* RUBusNumberViewController.m */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -658,6 +660,10 @@
 		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
 		B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5EFF4A11E27E68900E39017 /* RUBusNumberTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberTableViewController.h; sourceTree = "<group>"; };
+		B5EFF4A21E27E68900E39017 /* RUBusNumberTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberTableViewController.m; sourceTree = "<group>"; };
+		B5EFF4A41E2811C100E39017 /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
+		B5EFF4A51E2811C100E39017 /* RUBusNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberViewController.m; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -815,6 +821,10 @@
 			children = (
 				04A1EFF61A5C50B700DE0351 /* RUBusViewController.h */,
 				04A1EFF71A5C50B700DE0351 /* RUBusViewController.m */,
+				B5EFF4A11E27E68900E39017 /* RUBusNumberTableViewController.h */,
+				B5EFF4A21E27E68900E39017 /* RUBusNumberTableViewController.m */,
+				B5EFF4A41E2811C100E39017 /* RUBusNumberViewController.h */,
+				B5EFF4A51E2811C100E39017 /* RUBusNumberViewController.m */,
 				04A1EFD11A5C508300DE0351 /* RUPredictionsViewController.h */,
 				04A1EFD21A5C508300DE0351 /* RUPredictionsViewController.m */,
 			);
@@ -1891,6 +1901,7 @@
 				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
+				B5EFF4A31E27E68900E39017 /* RUBusNumberTableViewController.m in Sources */,
 				6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */,
 				A7E8E137192484B00089F166 /* RUTextViewController.m in Sources */,
 				04A1EFE91A5C509600DE0351 /* ActiveStopsDataSource.m in Sources */,
@@ -1976,6 +1987,7 @@
 				A7EA4C4B197D67EC00E972DD /* NSObject+KVOBlock.m in Sources */,
 				A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */,
 				A7C15600198ABA4600CDCAE3 /* StringDataSource.m in Sources */,
+				B5EFF4A61E2811C100E39017 /* RUBusNumberViewController.m in Sources */,
 				A7177BB1199E80B70092126F /* RUSOCCourseDataSource.m in Sources */,
 				0422C9841A69C3C100344828 /* RURecCenterDataSource.m in Sources */,
 				A7907CCB19A2997300711DCB /* AlertDataSource.m in Sources */,

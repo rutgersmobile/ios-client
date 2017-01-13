@@ -18,8 +18,10 @@
  */
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
+    
     if (self)
     {
+      
         _title = dictionary[@"title"];
         _stops = dictionary[@"stops"];
     }

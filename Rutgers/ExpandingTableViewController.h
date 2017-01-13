@@ -8,6 +8,7 @@
 
 #import "TableViewController.h"
 
-@interface ExpandingTableViewController : TableViewController 
+@interface ExpandingTableViewController : TableViewController
+@property (nonatomic) BOOL isExpanded;
 
 @end

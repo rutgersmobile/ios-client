@@ -20,6 +20,8 @@
 @property RUPredictionsBodyRow *bodyRow;
 @end
 
+//
+
 @implementation RUPredictionsExpandingSection
 -(instancetype)initWithPredictions:(RUBusPrediction *)predictions forItem:(id)item{
  
@@ -39,6 +41,7 @@
 
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
+        
         return NSStringFromClass([RUPredictionsHeaderTableViewCell class]);
     }
     return NSStringFromClass([RUPredictionsBodyTableViewCell class]);
@@ -69,7 +72,10 @@
         bodyCell.minutesLabel.text = row.minutesString;
         bodyCell.descriptionLabel.text = row.descriptionString;
         bodyCell.timeLabel.text = row.timeString;
+       
     }
+    
     [super configureCell:cell forRowAtIndexPath:indexPath];
+    
 }
 @end
