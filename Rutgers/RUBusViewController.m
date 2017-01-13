@@ -89,7 +89,7 @@
 
 -(void)openMapWithRoutes // show the map in a different view controller
 {
-    MapRouteViewController* vc =  [[MapRouteViewController alloc] init];
+    MapsViewController* vc =  [[MapsViewController alloc] init];
     
     [self.navigationController pushViewController:vc animated:YES];
     
