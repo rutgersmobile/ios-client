@@ -13,14 +13,16 @@ import MediaPlayer
 class MusicViewController: UIViewController , RUChannelProtocol
 {
 
-    var audioPlayer : AVPlayer?
+    let audioPlayer : AVPlayer?
     var playing = false
+    let channel : [NSObject : AnyObject]
 
+    @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
 
     static func channelHandle() -> String!
     {
-        return "music";
+        return "Radio";
     }
     /*
      Every class is register with the RUChannelManager by calling a register class static method in the load function of each class.
@@ -34,16 +36,14 @@ class MusicViewController: UIViewController , RUChannelProtocol
     
     static func channelWithConfiguration(channelConfiguration: [NSObject : AnyObject]!) -> AnyObject!
     {
-        return MusicViewController();
-    }
-    
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?)
-    {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil);
-        audioPlayer = AVPlayer(URL: NSURL(string: "http://crystalout.surfernetwork.com:8001/WRNU-FM_MP3")!)
+        return MusicViewController(channel: channelConfiguration)
     }
 
+    init(channel: [NSObject : AnyObject]) {
+        self.channel = channel
+        self.audioPlayer = AVPlayer(URL: NSURL(string: channel["url"] as! String)!)
+        super.init(nibName: .None, bundle: .None)
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -57,7 +57,6 @@ class MusicViewController: UIViewController , RUChannelProtocol
 
     override func viewWillAppear(animated: Bool) {
         setPlayingState()
-        print("dank")
     }
 
     func setPlayingState() {
@@ -67,7 +66,11 @@ class MusicViewController: UIViewController , RUChannelProtocol
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        print("memes")
+
+        volumeContainerView.backgroundColor = UIColor.clearColor()
+        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
+        volumeContainerView.addSubview(volumeView)
+
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
@@ -105,9 +108,7 @@ class MusicViewController: UIViewController , RUChannelProtocol
         }
     }
 
-
-    @IBAction func playRadio(sender: AnyObject) {
+    @IBAction func playRadio(sender: UIButton) {
         toggleRadio()
     }
-  
 }
