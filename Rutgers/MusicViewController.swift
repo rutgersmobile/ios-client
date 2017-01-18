@@ -16,9 +16,13 @@ class MusicViewController: UIViewController , RUChannelProtocol
     let audioPlayer : AVPlayer?
     var playing = false
     let channel : [NSObject : AnyObject]
+    let playImageName = "ic_play_arrow_white_48pt"
+    let pauseImageName = "ic_pause_white_48pt"
 
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var wrnuLogo: UIImageView!
+    @IBOutlet weak var backgroundView: UIView!
 
     static func channelHandle() -> String!
     {
@@ -52,7 +56,17 @@ class MusicViewController: UIViewController , RUChannelProtocol
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setPlayingState), name: UIApplicationWillEnterForegroundNotification, object: nil)
+        backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
+        backgroundView.opaque = false
+        backgroundView.layer.opaque = false
+        NSNotificationCenter
+            .defaultCenter()
+            .addObserver(
+                self,
+                selector: #selector(setPlayingState),
+                name: UIApplicationWillEnterForegroundNotification,
+                object: nil
+            )
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -61,7 +75,7 @@ class MusicViewController: UIViewController , RUChannelProtocol
 
     func setPlayingState() {
         playing = audioPlayer?.rate != 0 && audioPlayer?.error == nil
-        playButton?.setTitle(playing ? "Pause" : "Play", forState: .Normal)
+        playButton?.setImage(UIImage(named: playing ? pauseImageName : playImageName), forState: .Normal)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -99,11 +113,11 @@ class MusicViewController: UIViewController , RUChannelProtocol
     func toggleRadio() {
         if (!playing) {
             audioPlayer?.play()
-            playButton.setTitle("Pause", forState: .Normal)
+            playButton.setImage(UIImage(named: pauseImageName), forState: .Normal)
             playing = true
         } else {
             audioPlayer?.pause()
-            playButton.setTitle("Play", forState: .Normal)
+            playButton.setImage(UIImage(named: playImageName), forState: .Normal)
             playing = false
         }
     }
