@@ -21,9 +21,13 @@
 
 @interface RUBusPredictionsAndMessageDataSource()
 
+
+ 
 @property (nonatomic) RUPredictionsDataSource * busPredictionsDS;
 @property (nonatomic) RUBusMessagesDataSource * busMessagesDS;
 
+ 
+ 
 -(void)getTitleFromInternetResponse:(NSArray  *)prediction;
 
 @end
@@ -41,7 +45,24 @@
         
         [self addDataSource:self.busMessagesDS];
         [self addDataSource:self.busPredictionsDS];
+    
     }
+    return self;
+}
+
+
+- (instancetype)initWithItem:(id)item busNumber: (NSString*)busNumber {
+    self = [super init];
+    
+    if (self) {
+        self.item = item;
+        self.busMessagesDS = [[RUBusMessagesDataSource alloc]initWithItem:item];
+        self.busPredictionsDS = [[RUPredictionsDataSource alloc] initWithItem:item busNumber:busNumber];
+        
+        [self addDataSource:self.busMessagesDS];
+        [self addDataSource:self.busPredictionsDS];
+    }
+
     return self;
 }
 

@@ -25,6 +25,7 @@
     if (self) {
         self.predictionTimes = predictions.arrivals;
         self.stop = predictions.stopTitle;
+        self.precdictionsSaved = predictions;
     }
     return self;
 }
@@ -66,13 +67,30 @@
         
         [timeString appendFormat:@" - Bus #%@", vehicle];
         
-        [vehicleArray addObject:vehicle];
+        //Checks to see if there is a duplicate vehicle number object to be added in the vehicle array
+        
+        BOOL objectIsSame = NO;
+        
+        if (vehicleArray.count == 0) {
+            [vehicleArray addObject:vehicle];
+        } else {
+            for (NSString* check in vehicleArray) {
+                if (check == vehicle) {
+                    objectIsSame = YES;
+                } else if (objectIsSame == NO && check == vehicleArray.lastObject) {
+                    [vehicleArray addObject:vehicle];
+                }
+            }
+        }
+        
     }];
 
     self.minutesString = minutesString;
     self.descriptionString = descriptionString;
     self.timeString = timeString;
     self.vehicleArray = vehicleArray;
+    
+    
 }
 
 -(NSString *)formatDate:(NSDate *)date{

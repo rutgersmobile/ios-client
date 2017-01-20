@@ -9,25 +9,33 @@
 #import "RUBusNumberTableViewController.h"
 #import "ALTableViewRightDetailCell.h"
 #import "RUBusPredictionsAndMessageDataSource.h"
+#import "RUBusPrediction.h"
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
+#import "RUPredictionsDataSource.h"
 
 @interface RUBusNumberTableViewController ()
 
-@property (nonatomic) id item;
+
+@property (nonatomic) NSArray* stopArray;
+@property (nonatomic) RUBusPredictionsAndMessageDataSource* dataSource;
 
 @end
 
 @implementation RUBusNumberTableViewController
 
 
--(instancetype)initWithItem:(id)item
+-(instancetype)initWithItem:(id)item busNumber:(NSString*)busNumber
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-     
+        
         self.item = item; // RUBusRoute or RUBusStop
+        
+        self.busNumber = busNumber;
+        
         self.title = [self.item title];
+        
     }
     return self;
 }
@@ -35,27 +43,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem: self.item busNumber: self.busNumber];
     
+    // Set the title of the Bus . This usually happens , when we do not have a title ..
     
-    
-    if ([self.item isKindOfClass:[RUBusPredictionsAndMessageDataSource class]]) {
-        
-        RUBusPredictionsAndMessageDataSource* data = (RUBusPredictionsAndMessageDataSource*)self.item;
-        
-        if ([data.item isKindOfClass:[RUBusRoute class]]) {
-            
-            RUBusRoute* route = (RUBusRoute*)data.item;
-             NSLog(@"%@", route.stops);
-        
-        } else if ([data.item isKindOfClass:[RUBusStop class]]) {
-        
-            NSLog(@"%@", data.item);
+    [self.dataSource whenLoaded:^{
+        if (self.dataSource != nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
+                               if (dataSource.responseTitle == nil) {
+                                   self.title = @"Bus";
+                                   
+                               } else {
+                                   self.title = dataSource.responseTitle;
+                               }
+                           });
         }
-       
+    }];
+    
+    RUPredictionsDataSource* predictionDataSource = (RUPredictionsDataSource*)self.dataSource;
+    
+    if ([predictionDataSource isKindOfClass:[RUPredictionsDataSource class]]) {
+        NSLog(@"CONFIRMED!");
         
+    } else {
+        NSLog(@"Nope.");
     }
     
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,20 +91,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return 2;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"defaultCell" forIndexPath:indexPath];
+    //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"defaultCell" forIndexPath:indexPath];
     
     ALTableViewRightDetailCell *cell = [[ALTableViewRightDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"default"];
     
-    cell.textLabel.text = @"Hey";
+    cell.textLabel.text = @"Suh dude";
     
-    cell.detailTextLabel.text = @"How are things?";
-    
-    // Configure the cell...
+    cell.detailTextLabel.text = @"0";
     
     return cell;
 }

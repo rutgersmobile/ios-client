@@ -1,12 +1,16 @@
 //
-//  RUPredictionsViewController.m
+//  RUBusNumberViewController.m
 //  Rutgers
 //
-//  Created by Kyle Bailey on 4/24/14.
-//  Copyright (c) 2014 Rutgers. All rights reserved.
+//  Created by cfw37 on 1/18/17.
+//  Copyright © 2017 Rutgers. All rights reserved.
 //
 
-#import "RUPredictionsViewController.h"
+/* So far this class is a near exact copy of RUPredictionsViewConroller in order to see how the data is passed and whether or not it can be filtered such that a user should only see a particular bus number and the stops it will make 
+    This class will ultimately be heavily modified, or even deleted.
+ */
+
+#import "RUBusNumberViewController.h"
 #import "RUPredictionsDataSource.h"
 #import "RUBusRoute.h"
 #import "RUBusMultipleStopsForSingleLocation.h"
@@ -22,20 +26,19 @@
 #import "RUBusArrival.h"
 #import "RUPredictionsDataSource.h"
 
-
-
 #define PREDICTION_TIMER_INTERVAL 30.0
 
+@interface RUBusNumberViewController ()
 
-@interface RUPredictionsViewController ()
 @property (nonatomic) MSWeakTimer *timer;
 @property (nonatomic) id item;
 @property (nonatomic) id serializedItem;
 @property (nonatomic) BOOL didExpand;
 @property (nonatomic) AlertDataSource *busNumberDataSource;
+@property (nonatomic) NSString* busNumber;
 @end
 
-@implementation RUPredictionsViewController
+@implementation RUBusNumberViewController
 
 /*
  Is called from the BUS table view when a user clicks on the row
@@ -63,6 +66,19 @@
     }
     return self;
 }
+
+-(instancetype)initWithItem:(id)item busNumber:(NSString*)busNumber
+{
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        self.item = item; // RUBusRoute or RUBusStop
+        self.title = [self.item title];
+        self.busNumber = busNumber;
+        if(DEV) NSLog(@"title : %@" , self.title);
+    }
+    return self;
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     
@@ -83,30 +99,31 @@
      Which in turn inherits from composed data source which in turn inherits from the Data Source class
      */
     
-    NSLog(@"%@", self.item);
+
     
-    self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
-
-#warning TO DO Improve code here
+    self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item busNumber:self.busNumber];
+    
     // Set the title of the Bus . This usually happens , when we do not have a title ..
-
+    
     [self.dataSource whenLoaded:^{
         if (self.dataSource != nil)
         {
             dispatch_async(dispatch_get_main_queue(), ^
-            {
-                RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
-                if (dataSource.responseTitle == nil) {
-                    self.title = @"Bus";
-                    
-                } else {
-                    self.title = dataSource.responseTitle;
-                }
-            });
+                           {
+                               RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
+                               if (dataSource.responseTitle == nil) {
+                                   self.title = @"Bus";
+                                   
+                               } else {
+                                   
+                                   NSString* formattedTitle = [[NSString alloc] initWithFormat:@"%@ - %@", dataSource.responseTitle, self.busNumber];
+                                   self.title = formattedTitle;
+                               }
+                           });
         }
     }];
-   
-  
+    
+    
     // Set up the button for opening the maps
     UIButton *mapsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [mapsView addTarget:self action:@selector(mapsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -120,8 +137,9 @@
 }
 
 
+
 /*
-    Open the Bus maps View Controller
+ Open the Bus maps View Controller
  */
 -(void) mapsButtonPressed
 {
@@ -132,8 +150,8 @@
 
 
 /*
-    the self.item is set by the init , and can either represent the route or a stop and based on that 
->>>>>>> 9b1a0d76f8d6741fada18869a2fbceca3d346fc3
+ the self.item is set by the init , and can either represent the route or a stop and based on that
+ >>>>>>> 9b1a0d76f8d6741fada18869a2fbceca3d346fc3
  */
 -(NSURL *)sharingURL
 {
@@ -194,46 +212,12 @@
     {
         [tableView cellForRowAtIndexPath:indexPath].selectionStyle = UITableViewCellSelectionStyleNone;
         
-    } else if (indexPath.row == 1) {
-        
-
-    DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
-    
-    if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
-        
-        __weak __typeof__(self) weakSelf = self;
-        
-        RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
-        
-        self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"Bus Numbers" alertButtonTitles: bodyRow.vehicleArray];
-        
-        self.busNumberDataSource.alertTitle = @"Bus Numbers";
-        
-        self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
-            
-            RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:weakSelf.item busNumber:buttonTitle];
-            
-            
-            [weakSelf.navigationController pushViewController: vc animated:YES];
-            
-            
-            
-            
-            NSLog(@"%@ BUTTON PRESSED! INDEX = %li", buttonTitle, buttonIndex);
-            
-            
-        };
-        
-        [self.busNumberDataSource showAlertInView:self.view];
-        
     }
-        
-    }
-    
     
     else // pass on the message to the super class
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        
     }
 }
 
@@ -242,6 +226,5 @@
 {
     
 }
-
 
 @end

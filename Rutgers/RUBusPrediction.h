@@ -22,7 +22,7 @@
 @property (nonatomic, readonly) NSString *routeTitle;
 
 @property (nonatomic, readonly) BOOL active;
-@property (nonatomic, readonly) NSArray *arrivals;
+@property (nonatomic) NSArray *arrivals;
 
 @property (nonatomic , readonly) NSArray * messages ;
 @end

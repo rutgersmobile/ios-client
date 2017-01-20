@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUBusPrediction.h"
 
 @interface RUBusNumberTableViewController : UITableViewController
 
+@property (nonatomic) id item;
+@property (nonatomic) NSString* busNumber;
 
--(instancetype)initWithItem:(id)item;
+-(instancetype)initWithItem:(id)item busNumber:(NSString*)busNumber;
 
 
 @end

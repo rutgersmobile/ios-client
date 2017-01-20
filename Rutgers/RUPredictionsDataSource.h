@@ -13,8 +13,12 @@
  */
 
 @interface RUPredictionsDataSource : ExpandingTableViewDataSource <UIGestureRecognizerDelegate>
+
+@property (nonatomic) NSString* busNumber;
+
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithItem:(id)item busNumber: (NSString*) busNumber;
 
 -(void)updateSectionsForResponse:(NSArray *)response;
 
