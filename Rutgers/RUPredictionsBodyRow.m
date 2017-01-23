@@ -31,18 +31,23 @@
 }
 
 -(void)setPredictionTimes:(NSArray *)predictionTimes{
+    
     _predictionTimes = predictionTimes;
     
     NSMutableString *minutesString = [NSMutableString new];
     NSMutableString *descriptionString = [NSMutableString new];
     NSMutableString *timeString = [NSMutableString new];
+    NSMutableString *busTimeString = [NSMutableString new];
     NSMutableArray *vehicleArray = [NSMutableArray new];
+    
+    NSLog(@"%@", self.predictionTimes);
 
     
     [self.predictionTimes enumerateObjectsUsingBlock:^(RUBusArrival *arrivals, NSUInteger idx, BOOL *stop) {
         NSInteger minutes = arrivals.minutes;
         NSInteger seconds = arrivals.seconds;
         NSString *vehicle = arrivals.vehicle;
+        
         
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:seconds];
         
@@ -65,11 +70,17 @@
         }
         [timeString appendString:[self formatDate:date]];
         
-        [timeString appendFormat:@" - Bus #%@", vehicle];
+        [vehicleArray addObject:vehicle];
         
-        //Checks to see if there is a duplicate vehicle number object to be added in the vehicle array
+//        [busTimeString appendString:[self formatDate:date]];
+//        
+//        [busTimeString appendFormat:@" - Bus #%@", vehicle];
         
-        BOOL objectIsSame = NO;
+        
+        //Checks to see if there is a duplicate vehicle number string, only adds if there are no duplicates
+     
+        
+       /* BOOL objectIsSame = NO;
         
         if (vehicleArray.count == 0) {
             [vehicleArray addObject:vehicle];
@@ -78,10 +89,10 @@
                 if (check == vehicle) {
                     objectIsSame = YES;
                 } else if (objectIsSame == NO && check == vehicleArray.lastObject) {
-                    [vehicleArray addObject:vehicle];
+        
                 }
             }
-        }
+        } */
         
     }];
 
@@ -89,9 +100,11 @@
     self.descriptionString = descriptionString;
     self.timeString = timeString;
     self.vehicleArray = vehicleArray;
-    
+    self.busTimeString = busTimeString;
     
 }
+
+
 
 -(NSString *)formatDate:(NSDate *)date{
     static NSDateFormatter *dateFormatter = nil;

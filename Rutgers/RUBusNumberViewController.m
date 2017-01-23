@@ -124,14 +124,10 @@
     }];
     
     
-    // Set up the button for opening the maps
-    UIButton *mapsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [mapsView addTarget:self action:@selector(mapsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [mapsView setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
-    UIBarButtonItem *mapsButton = [[UIBarButtonItem alloc] initWithCustomView:mapsView];
+
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.shareButton, nil]];
     
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
-    
+     
     
     self.pullsToRefresh = YES;
 }
@@ -149,10 +145,7 @@
 
 
 
-/*
- the self.item is set by the init , and can either represent the route or a stop and based on that
- >>>>>>> 9b1a0d76f8d6741fada18869a2fbceca3d346fc3
- */
+
 -(NSURL *)sharingURL
 {
     NSString *type;

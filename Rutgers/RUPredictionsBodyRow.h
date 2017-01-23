@@ -18,6 +18,7 @@
 @property (nonatomic) RUBusPrediction* precdictionsSaved;
 @property (nonatomic) NSString *stop;
 @property (nonatomic) NSArray *predictionTimes;
+@property (nonatomic) NSString *busTimeString;
 @property (nonatomic) NSString *minutesString;
 @property (nonatomic) NSString *descriptionString;
 @property (nonatomic) NSString *timeString;

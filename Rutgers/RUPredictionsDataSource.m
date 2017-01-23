@@ -75,12 +75,10 @@
     for (RUBusPrediction *prediction in response)
     {
         if (![self.busNumber isEqualToString: @""]) {
-            NSLog(@"%@ exists!", self.busNumber);
-            
-             NSMutableArray* newArrivals = [[NSMutableArray alloc] init];
+            NSMutableArray* newArrivals = [[NSMutableArray alloc] init];
             
             for (RUBusArrival *arrival in prediction.arrivals) {
-        
+                
                 if ([arrival.vehicle isEqualToString:self.busNumber]) {
                     [newArrivals addObject:arrival];
                 }
@@ -88,7 +86,7 @@
             
             prediction.arrivals = newArrivals;
             
-        } 
+        }
         
         [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:prediction forItem:self.item]];
     }

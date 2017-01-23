@@ -86,27 +86,27 @@
     NSLog(@"%@", self.item);
     
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
-
+    
 #warning TO DO Improve code here
     // Set the title of the Bus . This usually happens , when we do not have a title ..
-
+    
     [self.dataSource whenLoaded:^{
         if (self.dataSource != nil)
         {
             dispatch_async(dispatch_get_main_queue(), ^
-            {
-                RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
-                if (dataSource.responseTitle == nil) {
-                    self.title = @"Bus";
-                    
-                } else {
-                    self.title = dataSource.responseTitle;
-                }
-            });
+                           {
+                               RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
+                               if (dataSource.responseTitle == nil) {
+                                   self.title = @"Bus";
+                                   
+                               } else {
+                                   self.title = dataSource.responseTitle;
+                               }
+                           });
         }
     }];
-   
-  
+    
+    
     // Set up the button for opening the maps
     UIButton *mapsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [mapsView addTarget:self action:@selector(mapsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -121,20 +121,13 @@
 
 
 /*
-    Open the Bus maps View Controller
+ Open the Bus maps View Controller
  */
 -(void) mapsButtonPressed
 {
     
 }
 
-
-
-
-/*
-    the self.item is set by the init , and can either represent the route or a stop and based on that 
->>>>>>> 9b1a0d76f8d6741fada18869a2fbceca3d346fc3
- */
 -(NSURL *)sharingURL
 {
     NSString *type;
@@ -196,37 +189,44 @@
         
     } else if (indexPath.row == 1) {
         
-
-    DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
-    
-    if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
         
-        __weak __typeof__(self) weakSelf = self;
+        DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
         
-        RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
-        
-        self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"Bus Numbers" alertButtonTitles: bodyRow.vehicleArray];
-        
-        self.busNumberDataSource.alertTitle = @"Bus Numbers";
-        
-        self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
+        if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
             
-            RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:weakSelf.item busNumber:buttonTitle];
+            __weak __typeof__(self) weakSelf = self;
             
+            RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
             
-            [weakSelf.navigationController pushViewController: vc animated:YES];
+            NSMutableArray* predictionTimes = [NSMutableArray new];
             
+            for (RUBusArrival* arrivals in bodyRow.predictionTimes) {
+                [predictionTimes addObject:[NSString stringWithFormat:@"%li minutes", arrivals.minutes]];
+                
+            }
             
+            NSLog(@"%@", predictionTimes);
             
+            self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"Times" alertButtonTitles: predictionTimes];
             
-            NSLog(@"%@ BUTTON PRESSED! INDEX = %li", buttonTitle, buttonIndex);
+            self.busNumberDataSource.alertTitle = @"Times";
             
+            self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
+                
+                NSLog(@"%@", bodyRow.vehicleArray);
+                
+                NSString* vehicleID = bodyRow.vehicleArray[buttonIndex];
+                
+                RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:((RUBusPredictionsAndMessageDataSource*)weakSelf.dataSource).item busNumber:vehicleID];
+                
+                [weakSelf.navigationController pushViewController: vc animated:YES];
+                
+                
+            };
             
-        };
-        
-        [self.busNumberDataSource showAlertInView:self.view];
-        
-    }
+            [self.busNumberDataSource showAlertInView:self.view];
+            
+        }
         
     }
     

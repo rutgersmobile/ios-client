@@ -20,8 +20,6 @@
 @property RUPredictionsBodyRow *bodyRow;
 @end
 
-//
-
 @implementation RUPredictionsExpandingSection
 -(instancetype)initWithPredictions:(RUBusPrediction *)predictions forItem:(id)item{
  
