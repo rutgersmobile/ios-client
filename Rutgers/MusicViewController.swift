@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 
-class MusicViewController: UIViewController , RUChannelProtocol
+class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverControllerDelegate
 {
 
     let audioPlayer : AVPlayer?
@@ -18,6 +18,8 @@ class MusicViewController: UIViewController , RUChannelProtocol
     let channel : [NSObject : AnyObject]
     let playImageName = "ic_play_arrow_white_48pt"
     let pauseImageName = "ic_pause_white_48pt"
+    var sharingPopoverController : UIPopoverController? = nil
+    var shareButton : UIBarButtonItem? = nil
 
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
@@ -52,10 +54,32 @@ class MusicViewController: UIViewController , RUChannelProtocol
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    func actionButtonTapped() {
+        if let url = sharingURL() {
+            let favoriteActivity = RUFavoriteActivity(title: "WRNU")
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity])
+            activityVC.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeAddToReadingList]
+            if (UI_USER_INTERFACE_IDIOM() == .Phone) {
+                self.presentViewController(activityVC, animated: true, completion: nil)
+                return
+            }
+            if let popover = self.sharingPopoverController {
+                popover.dismissPopoverAnimated(false)
+                self.sharingPopoverController = nil
+            } else {
+                self.sharingPopoverController = UIPopoverController(contentViewController: activityVC)
+                self.sharingPopoverController?.delegate = self
+                self.sharingPopoverController?.presentPopoverFromBarButtonItem(self.shareButton!, permittedArrowDirections: .Any, animated: true)
+            }
+        }
+    }
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionButtonTapped))
+        self.navigationItem.rightBarButtonItem = self.shareButton
         backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
         backgroundView.opaque = false
         backgroundView.layer.opaque = false
@@ -71,6 +95,10 @@ class MusicViewController: UIViewController , RUChannelProtocol
 
     override func viewWillAppear(animated: Bool) {
         setPlayingState()
+    }
+
+    func sharingURL() -> NSURL? {
+        return DynamicTableViewController.buildDynamicSharingURL(self.navigationController!, channel: self.channel)
     }
 
     func setPlayingState() {

@@ -46,27 +46,7 @@
 }
 
 -(NSURL *)sharingURL {
-    return [self buildDynamicSharingURL];
-}
-
-/*
-    Goes over the view controllers and collects the channel names into an array
-    and returns them as a url
- */
--(NSURL *)buildDynamicSharingURL {
-    NSMutableArray *pathComponents = [NSMutableArray array];
-    for (id viewController in self.navigationController.viewControllers) {
-        if ([viewController respondsToSelector:@selector(channel)]) {
-            NSDictionary *channel = [viewController channel];
-            NSString *handle = [channel channelHandle];
-            if (handle) {
-                [pathComponents addObject:handle];
-            } else {
-                [pathComponents addObject:[[channel channelTitle] rutgersStringEscape]];
-            }
-        }
-    }
-    return [NSURL rutgersUrlWithPathComponents:pathComponents];
+    return [DynamicTableViewController buildDynamicSharingURL:self.navigationController channel:self.channel];
 }
 
 -(void)dataSource:(DataSource *)dataSource didLoadContentWithError:(NSError *)error{

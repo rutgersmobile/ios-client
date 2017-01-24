@@ -46,7 +46,7 @@
             baseUrl = @"http://localhost:8000/mobile/";
             break;
         case BetaMode:
-            baseUrl = @"https://doxa.rutgers.edu/mobile-mattro/";
+            baseUrl = @"https://doxa.rutgers.edu/mobile/";
             break;
         case ProductionMode:
             baseUrl = @"https://rumobile.rutgers.edu/";

@@ -15,4 +15,5 @@
  */
 @interface DynamicTableViewController : TableViewController <RUChannelProtocol>
 
++(NSURL *)buildDynamicSharingURL:(UINavigationController*)navigationController channel:(NSDictionary*)channel;
 @end

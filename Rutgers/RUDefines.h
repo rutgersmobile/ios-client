@@ -34,7 +34,7 @@ extern BOOL iPad();
 
 static NSString *const gittag = @"4.1";
 
-static NSString *const api = @"2";
+static NSString *const api = @"3";
 
 /*
     Different RUN Modes for the App to run in .
