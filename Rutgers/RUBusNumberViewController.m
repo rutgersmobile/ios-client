@@ -125,46 +125,13 @@
     
     
 
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.shareButton, nil]];
+    //[self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.shareButton, nil]];
     
      
     
     self.pullsToRefresh = YES;
 }
 
-
-
-/*
- Open the Bus maps View Controller
- */
--(void) mapsButtonPressed
-{
-    
-}
-
-
-
-
-
--(NSURL *)sharingURL
-{
-    NSString *type;
-    NSString *identifier;
-    if ([self.item isKindOfClass:[RUBusRoute class]]) {
-        type = @"route";
-        identifier = [(RUBusRoute*)self.item tag];
-    } else if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
-        type = @"stop";
-        identifier = [self.item title];
-    }
-    else if([self.item isKindOfClass:[NSArray class]]) // add support for showing the url when the bus has been favourited..
-    {
-        type = self.item[0];
-        identifier = self.item[1];
-    }
-    if (!type) return nil;
-    return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, identifier]]; // eg rut../bus/route/f
-}
 
 //This causes an update timer to start upon the Predictions View controller appearing
 -(void)viewWillAppear:(BOOL)animated{
