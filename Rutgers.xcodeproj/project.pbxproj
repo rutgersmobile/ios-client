@@ -106,6 +106,7 @@
 		62AACB001DE3AE2900DF8E70 /* MapRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AACAFF1DE3AE2900DF8E70 /* MapRouteViewController.swift */; };
 		62B964121DD31BFD00D8399A /* BannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B964111DD31BFD00D8399A /* BannerCell.swift */; };
 		62CBC2F21D6DEFDC00061E1E /* RUReaderGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */; };
+		7671904A8A579BB5562654C8 /* Pods_Rutgers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 075CBA6012FC0B19D7960DBA /* Pods_Rutgers.framework */; };
 		A70810771906EE6E0087EB82 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70810761906EE6E0087EB82 /* MapKit.framework */; };
 		A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD2198BF498004F82D4 /* RULabel.m */; };
 		A70C2BE0198C2C60004F82D4 /* ALTableViewAbstractCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BD8198C2C60004F82D4 /* ALTableViewAbstractCell.m */; };
@@ -239,7 +240,7 @@
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
-		F0799491216F9AC23449C5E4 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
+		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -408,6 +409,7 @@
 		04FD97D01D13543900E9877D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		04FD97D41D14988300E9877D /* PlaceholderDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderDataSource.h; sourceTree = "<group>"; };
 		04FD97D51D14988300E9877D /* PlaceholderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderDataSource.m; sourceTree = "<group>"; };
+		075CBA6012FC0B19D7960DBA /* Pods_Rutgers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rutgers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		621347721E04279600786570 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
 		621347731E04279600786570 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
@@ -704,6 +706,7 @@
 		C262EFC4188345D10035C8F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
+		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
 		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -744,7 +747,7 @@
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
 				C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */,
 				0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */,
-				F0799491216F9AC23449C5E4 /* libPods-Rutgers.a in Frameworks */,
+				7671904A8A579BB5562654C8 /* Pods_Rutgers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1603,7 +1606,7 @@
 				C262EFAF188345D10035C8F5 /* UIKit.framework */,
 				C262EFC4188345D10035C8F5 /* XCTest.framework */,
 				2127C0710965413FBE553ECA /* libPods.a */,
-				B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */,
+				075CBA6012FC0B19D7960DBA /* Pods_Rutgers.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1611,6 +1614,7 @@
 		C262EFB1188345D10035C8F5 /* Rutgers */ = {
 			isa = PBXGroup;
 			children = (
+				C41E66181E38E96600562CCB /* api */,
 				A777C2B3190C248500F978D7 /* barr.gpx */,
 				A7DD347519816F120078023A /* arc stop.gpx */,
 				A777C2B1190C243100F978D7 /* rockoff.gpx */,
@@ -1653,6 +1657,14 @@
 				621E60381D9D9F8300BAF3B7 /* RUDebug.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C41E66181E38E96600562CCB /* api */ = {
+			isa = PBXGroup;
+			children = (
+				C41E66191E38E9A800562CCB /* RutgersService.swift */,
+			);
+			name = api;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1963,6 +1975,7 @@
 				A7B8DB9219A65FE400EF1953 /* NSArray+LimitedToCount.m in Sources */,
 				A7E8E13C192547190089F166 /* RURootController.m in Sources */,
 				A72FFFB51937D8E500016C89 /* RUSOCSubjectViewController.m in Sources */,
+				C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */,
 				A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */,
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
 				04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */,
