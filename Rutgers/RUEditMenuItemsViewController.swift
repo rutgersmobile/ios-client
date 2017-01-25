@@ -103,7 +103,7 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         }
     }
     
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool
+    internal func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool
     {
         return true
     }

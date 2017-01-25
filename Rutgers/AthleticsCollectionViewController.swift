@@ -28,7 +28,6 @@ struct ImageCache
         cachedImages[named] = image;
     }
     
-    
 }
 
 
@@ -142,9 +141,6 @@ extension  RUReaderDataSource : UICollectionViewDelegate
     }
     
     
-
-    
-    
 }
 
 
@@ -195,16 +191,13 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         
         // Do any additional setup after loading the view.
         
-
         let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout();
         layout.sectionInset = UIEdgeInsetsMake(18, 10 , 18, 10 )
         layout.minimumLineSpacing = 18 ;
         layout.minimumInteritemSpacing = 18 ;
         self.collectionView!.setCollectionViewLayout(layout, animated: true)
         
-
-        
-       // get the url to visit
+        // get the url to visit
         let atheleticsUrl = "sports/\(self.channel["data"]!).json"
         self.dataSource = RUReaderDataSource.init(url: atheleticsUrl)
         
