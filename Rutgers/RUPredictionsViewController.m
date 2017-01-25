@@ -119,7 +119,7 @@
     [mapsView setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
     UIBarButtonItem *mapsButton = [[UIBarButtonItem alloc] initWithCustomView:mapsView];
     
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
+//    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
     
 
     
