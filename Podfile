@@ -1,4 +1,5 @@
-platform :ios, '7.0'
+platform :ios, '8.0'
+use_frameworks!
 
 target 'Rutgers' do
     pod 'AFNetworking', "~> 2.0"
@@ -10,4 +11,5 @@ target 'Rutgers' do
     pod 'HexColors', "~> 3.0"
     pod 'MSWeakTimer', "~> 1.0"
     pod 'MMDrawerController', "~> 0.5"
+    pod 'Moya', '8.0.1'
 end
