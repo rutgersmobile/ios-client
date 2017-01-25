@@ -170,7 +170,7 @@ extension DynamicCollectionViewController
         self.collectionView?.collectionViewLayout.invalidateLayout()
         if(isBannerPresent())
         {
-            let bannerIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+            let bannerIndexPath = IndexPath(row: 0, section: 0)
             self.collectionView?.reloadItemsAtIndexPaths([bannerIndexPath])
         }
     }
@@ -205,7 +205,7 @@ extension DynamicCollectionViewController
         
         if (isBannerPresent()) // if we have to add the banner , then index to old data source is -1
         {
-                let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
+                let indexForDict : IndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
                 item = self.dataSource.itemAtIndexPath(indexForDict) as! NSDictionary
         }
         else
@@ -276,7 +276,7 @@ extension DynamicCollectionViewController
             {
                 
                 // In order to compensate for the data source requring elements zero indexed , but here the zero index is the banner , we decrement by 1
-                let indexForDict : NSIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
+                let indexForDict : IndexPath = IndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
                 return loadDynamicCollectionViewCell(viewElement, indexPath: indexForDict)
             }
             
@@ -328,17 +328,17 @@ extension DynamicCollectionViewController
         if let imageLocation = item["image"] as? String
         {
             let imageUrlString = RUNetworkManager.baseURL().absoluteString! + "img/" + imageLocation
-            let imageUrl = NSURL(string: imageUrlString)
+            let imageUrl = URL(string: imageUrlString)
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async
             {
-                let imageData : NSData? = NSData(contentsOfURL: imageUrl!)
+                let imageData : Data? = Data(contentsOfURL: imageUrl!)
               
                 if let imageData = imageData
                 {
                     let image = UIImage(data: imageData)
                     
-                    dispatch_async(dispatch_get_main_queue())
+                    DispatchQueue.main.async
                     {
                         // Update the UI
                         cell.imageView.contentMode = .ScaleAspectFit
