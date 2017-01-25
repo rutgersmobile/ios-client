@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ExpandingTableViewController.h"
 
-@interface RUPredictionsViewController : ExpandingTableViewController
+@interface RUPredictionsViewController : ExpandingTableViewController <UIActionSheetDelegate>
 /**
  *  The predictions view controller is initialized with an item to display.
  *

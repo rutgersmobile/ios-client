@@ -188,7 +188,7 @@
     self.webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.webView.backgroundColor = [UIColor clearColor];
     self.webView.opaque = YES;
-
+    
     [self.view addSubview:self.webView];
     
     //Set up the loading bar
@@ -204,7 +204,7 @@
     [self.loadingBarView autoPinToTopLayoutGuideOfViewController:self withInset:0];
     
     self.loadingBarView.tintColor = self.loadingBarTintColor;
-
+    
     //only load the buttons if we need to
     if (self.navigationButtonsHidden == NO)
         [self setUpNavigationButtons];
@@ -217,7 +217,7 @@
     CGRect buttonFrame = CGRectZero; buttonFrame.size = NAVIGATION_BUTTON_SIZE;
     
     UIButtonType buttonType = UIButtonTypeSystem;
-
+    
     //set up the back button
     UIImage *backButtonImage = [UIImage TOWebViewControllerIcon_backButtonWithAttributes:self.buttonThemeAttributes];
     if (self.backButton == nil) {
@@ -587,7 +587,7 @@
 
 - (void)doneButtonTapped:(id)sender
 {
-   // [self.presentingViewController dismissViewControllerAnimated:YES completion:self.modalCompletionHandler];
+    // [self.presentingViewController dismissViewControllerAnimated:YES completion:self.modalCompletionHandler];
 }
 
 
@@ -619,7 +619,7 @@
         self.sharingPopoverController.delegate = self;
         [self.sharingPopoverController presentPopoverFromRect:self.actionButton.frame inView:self.actionButton.superview permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
-}
+} 
 
 - (void)handleLoadRequestCompletion
 {
@@ -653,7 +653,7 @@
         
         _url = self.webView.URL;
     }];
-
+    
 }
 
 - (void)startLoadProgress
@@ -696,11 +696,11 @@
 - (void)setLoadingProgress:(CGFloat)loadingProgress
 {
     //NSLog(@"%f",loadingProgress);
-    //Update the loading bar progress to match 
+    //Update the loading bar progress to match
     if (self.showLoadingBar)
     {
         [self.loadingBarView setProgress:(float)loadingProgress animated:YES];
-
+        
         if (loadingProgress >= 1.0f - FLT_EPSILON)
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -784,7 +784,7 @@
             
             return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
         }(rgbString);
-
+        
     }];
 }
 

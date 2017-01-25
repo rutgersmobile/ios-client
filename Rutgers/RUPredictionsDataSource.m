@@ -19,16 +19,19 @@
 
 #import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusRoute.h"
+#import "RUBusArrival.h"
+#import "RUBusPrediction.h"
 
 #import "TextViewDataSource.h"
 
 
 /*
-    This class obtains the prediction using the rubusdataloading manager
-    This class and another class containing the messages will be placed in a composed data source and that will be displayed..
-
+ This class obtains the prediction using the rubusdataloading manager
+ This class and another class containing the messages will be placed in a composed data source and that will be displayed..
+ 
  */
 @interface RUPredictionsDataSource ()
+
 @end
 
 @implementation RUPredictionsDataSource
@@ -41,28 +44,64 @@
     {
         self.item = item;
         self.noContentTitle = @"No predictions available";
-       
+        self.busNumber = @"";
+    }
+    return self;
+}
+
+-(instancetype)initWithItem:(id)item busNumber: (NSString*) busNumber
+{
+    self = [self initWithItem: item];
+    
+    if (self)
+    {
+        self.item = item;
+        self.noContentTitle = @"No predictions available";
+        self.busNumber = busNumber;
+        NSLog(@"%@", self.busNumber);
+        
     }
     return self;
 }
 
 /*
-    Add the objects which were recieved in the data request to the data source
+ Add the objects which were recieved in the data request to the data source
  
  */
+
 -(void)updateSectionsForResponse:(NSArray *)response
 {
     NSMutableArray *sections = [NSMutableArray array];
     
     for (RUBusPrediction *prediction in response)
     {
+        if (![self.busNumber isEqualToString: @""]) {
+            NSMutableArray* newArrivals = [[NSMutableArray alloc] init];
+            
+            for (RUBusArrival *arrival in prediction.arrivals) {
+                
+                if ([arrival.vehicle isEqualToString:self.busNumber]) {
+                    [newArrivals addObject:arrival];
+                }
+            }
+            
+            prediction.arrivals = newArrivals;
+            
+        }
+        
         [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:prediction forItem:self.item]];
     }
-
+    
     [self restoreExpansionStateFromCurrentSectionsToNewSections:sections];
     
     self.sections = sections;
+    
 }
+
+
+
+
+
 
 -(void)restoreExpansionStateFromCurrentSectionsToNewSections:(NSArray *)newSections
 {
@@ -80,21 +119,24 @@
     }
     
     /*
-        This is done when say a section is removed or added . Or refresed and we want to save which of the sections the user has expanded and expand them again , if they are present  in the new state
+     This is done when say a section is removed or added . Or refresed and we want to save which of the sections the user has expanded and expand them again , if they are present  in the new state
      */
 }
+
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView
 {
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[RUPredictionsBodyTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsBodyTableViewCell class])];
     [tableView registerClass:[RUPredictionsHeaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsHeaderTableViewCell class])];
+    
+    
 }
 
 -(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
-
+    
+    
     [super configureCell:cell forRowAtIndexPath:indexPath];
 }
 
