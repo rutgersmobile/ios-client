@@ -27,12 +27,13 @@ class AthleticsCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         homeScore.text = nil ;
-        homeScore.textColor = UIColor.grayColor()
         homeScore.hidden = false
+        homeScore.textColor = UIColor.gray
         
-        awayScore.text = nil ;
-        awayScore.textColor = UIColor.grayColor()
         awayScore.hidden = false
+        awayScore.text = nil ;
+        awayScore.textColor = UIColor.gray
+        
         sideIndicator.backgroundColor = nil ;
         schoolIcon.image = nil ;
         schoolNameLabel.text = nil ;

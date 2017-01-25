@@ -16,7 +16,7 @@
  */
 #import <UIKit/UIKit.h>
 #import "AAPLContentLoading.h"
-#import <AFNetworkReachabilityManager.h>
+#import <AFNetworking/AFNetworkReachabilityManager.h>
 
 
 @class DataSource;

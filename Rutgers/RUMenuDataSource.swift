@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class RUMenuDataSource: ComposedDataSource {
+open class RUMenuDataSource: ComposedDataSource {
     let activeMenuItemsDataSource: RUMenuBasicDataSource
     
     override init() {
         activeMenuItemsDataSource = RUMenuBasicDataSource()
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: MenuItemManagerDidChangeActiveMenuItemsKey, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: ChannelManagerDidUpdateChannelsKey, object: nil)
+        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: MenuItemManagerDidChangeActiveMenuItemsKey, object: nil)
+        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: ChannelManagerDidUpdateChannelsKey, object: nil)
 
         activeMenuItemsDataSource.items = RUMenuItemManager.sharedManager.menuItems
         
@@ -28,10 +28,10 @@ public class RUMenuDataSource: ComposedDataSource {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    override public func loadContent() {
+    override open func loadContent() {
         super.loadContent()
         activeMenuItemsDataSource.items = RUMenuItemManager.sharedManager.menuItems
     }

@@ -38,7 +38,7 @@ class MapRouteViewController: UIViewController
         // set properties of the map view[
         self.mapView?.setVisibleMapRect(self.defaultMapRect, animated: false)
         self.mapView?.showsUserLocation = true
-        self.mapView?.mapType = .Standard
+        self.mapView?.mapType = .standard
         
         super.viewDidLoad()
 

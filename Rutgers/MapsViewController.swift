@@ -56,11 +56,11 @@ extension MKMapView: MapView {
 }
 
 
-public class MapsViewController: UIViewController {
-    public static let defaultMapRect = MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)
+open class MapsViewController: UIViewController {
+    open static let defaultMapRect = MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)
     
     var mapView: MapView!
-    public var place: RUPlace?
+    open var place: RUPlace?
     
     public init(place: RUPlace) {
         self.place = place
@@ -75,7 +75,7 @@ public class MapsViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
-    override public func loadView() {
+    override open func loadView() {
         super.loadView()
         
         let bounds = view.bounds
@@ -90,9 +90,9 @@ public class MapsViewController: UIViewController {
         
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        view.opaque = true
+        view.isOpaque = true
 
         navigationItem.rightBarButtonItem = mapView.userTrackingBarButtonItem
         loadPlace(false)
@@ -111,13 +111,13 @@ public class MapsViewController: UIViewController {
     }
 }
 
-public class EmbeddedMapsViewController: MapsViewController {
-    override public func viewDidLoad() {
+open class EmbeddedMapsViewController: MapsViewController {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        view.userInteractionEnabled = false
+        view.isUserInteractionEnabled = false
     }
     
-    override public var place: RUPlace? {
+    override open var place: RUPlace? {
         didSet {
             if let place = oldValue {
                 mapView.removeAnnotationWrapper(place)

@@ -55,7 +55,7 @@ extension  RUReaderDataSource : UICollectionViewDelegate
     
     override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
     {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! AthleticsCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! AthleticsCollectionViewCell
         
         let item : RUReaderItem = self.itemAtIndexPath(indexPath) as! RUReaderItem ;
         
@@ -75,7 +75,7 @@ extension  RUReaderDataSource : UICollectionViewDelegate
                 else
                 {
                     let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
-                    image = UIImage(data: imageData!)
+                    image = UIImage(data: imageData! as Data)
                     cache.setImage(item.imageURL.absoluteString!, image: image!)
                 }
                
@@ -110,16 +110,16 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         if(item.isRuHome)
         {
             cell.homeScore.text = String(item.ruScore)
-            cell.homeScore.textColor = UIColor.redColor()
+            cell.homeScore.textColor = UIColor.red
             cell.awayScore.text = String(item.otherScore)
-            cell.sideIndicator.backgroundColor = UIColor.redColor()
+            cell.sideIndicator.backgroundColor = UIColor.red
         }
         else
         {
             cell.awayScore.text = String(item.ruScore)
-            cell.awayScore.textColor = UIColor.redColor()
+            cell.awayScore.textColor = UIColor.red
             cell.homeScore.text = String(item.otherScore)
-            cell.sideIndicator.backgroundColor = UIColor.grayColor()
+            cell.sideIndicator.backgroundColor = UIColor.gray
         }
 
         cell.locationLabel.text = item.descriptionText
@@ -128,7 +128,7 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         
         // set the shadow
         cell.layer.shadowOffset = CGSizeZero;
-        cell.layer.shadowColor = UIColor.blackColor().CGColor
+        cell.layer.shadowColor = UIColor.black.cgColor
         cell.layer.shadowRadius = 4.0;
         cell.layer.shadowOpacity = 0.5;
         cell.layer.masksToBounds = false;
@@ -177,7 +177,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     {
         super.viewDidLoad()
 
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.hidesWhenStopped = true;
         activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
@@ -199,7 +199,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         
         self.dataSource.loadContentWithAnyBlock
             {
-                dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
+                DispatchQueue.main.async // call reload on main thread otherwise veryt laggy
                 {
                     self.collectionView!.reloadData()
                     self.collectionView!.layoutIfNeeded()
@@ -209,7 +209,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
        
         self.collectionView?.dataSource = self.dataSource
        // Add notification to handle rotate of the app .. 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AthleticsCollectionViewController.didRotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AthleticsCollectionViewController.didRotate), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
     }
 
@@ -219,8 +219,8 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         // deteremine the cell hieght based on the orientation and device ..
         
         var cellHeight : CGFloat?
-        let orientation = UIApplication.sharedApplication().statusBarOrientation
-        if(orientation == .LandscapeLeft || orientation == .LandscapeRight)
+        let orientation = UIApplication.shared.statusBarOrientation
+        if(orientation == .landscapeLeft || orientation == .landscapeRight)
         {
             cellHeight = (self.collectionView?.bounds.height)! / 3 ;
         }
@@ -229,7 +229,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
             cellHeight = (self.collectionView?.bounds.height)! / 5 ;
         }
         
-        return CGSizeMake(  (self.collectionView?.bounds.size.width)! - 20 , cellHeight! ) ;
+        return CGSize(  width: (self.collectionView?.bounds.size.width)! - 20 , height: cellHeight! ) ;
     }
    
    
