@@ -24,6 +24,5 @@
 #import "NSDictionary+Channel.h"
 
 #import "RUNetworkManager.h"
-
-
+#import "RUFavoriteActivity.h"
 

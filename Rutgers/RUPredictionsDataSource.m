@@ -14,6 +14,7 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUPredictionsBodyRow.h"
+#import "RUBusPrediction.h"
 #import "DataSource_Private.h"
 
 #import "RUBusMultipleStopsForSingleLocation.h"

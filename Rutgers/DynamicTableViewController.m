@@ -10,6 +10,7 @@
 #import "DynamicDataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
+#import "NSURL+RUAdditions.h"
 
 /*
     This is the generic view used to represent all the inner subviews of the View Contr. from the slideView
@@ -61,6 +62,26 @@
     return self;
 }
 
+
+/*
+    Goes over the view controllers and collects the channel names into an array
+    and returns them as a url
+ */
++(NSURL *)buildDynamicSharingURL:(UINavigationController*)navigationController channel:(NSDictionary*)channel {
+    NSMutableArray *pathComponents = [NSMutableArray array];
+    for (id viewController in navigationController.viewControllers) {
+        if ([viewController respondsToSelector:@selector(channel)]) {
+            NSDictionary *channel = [viewController channel];
+            NSString *handle = [channel channelHandle];
+            if (handle) {
+                [pathComponents addObject:handle];
+            } else {
+                [pathComponents addObject:[[channel channelTitle] rutgersStringEscape]];
+            }
+        }
+    }
+    return [NSURL rutgersUrlWithPathComponents:pathComponents];
+}
 
 
 - (void)viewDidLoad

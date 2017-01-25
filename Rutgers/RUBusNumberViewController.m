@@ -123,10 +123,6 @@
         }
     }];
     
-    
-
-    //[self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: self.shareButton, nil]];
-    
      
     
     self.pullsToRefresh = YES;

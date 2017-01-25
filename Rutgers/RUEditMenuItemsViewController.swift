@@ -27,16 +27,6 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
             RUChannelManager.sharedInstance().registerClass(RUEditMenuItemsViewController.self)
     }
 
-    //   // register the channel with j
-    //   override class func initialize()
-    //   
-    //       var onceToken : dispatch_once_t = 0;
-    //       dispatch_once(&onceToken)
-    //       {
-    //           RUChannelManager.sharedInstance().registerClass(RUEditMenuItemsViewController.self)
-    //       }
-    //   }
-       
     static func channelWithConfiguration(channelConfiguration: [NSObject : AnyObject]!) -> AnyObject!
     {
         return RUEditMenuItemsViewController(style: .Grouped);
@@ -113,7 +103,7 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         }
     }
     
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool
+    internal func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool
     {
         return true
     }

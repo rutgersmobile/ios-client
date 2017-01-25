@@ -69,21 +69,9 @@
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
     
-    
     RUDebug * debug = [[RUDebug alloc ] init];
     [debug dumpView:self.navigationController.view atIndent:0];
-    
-    /*
-     UIButton *mapButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-     [mapButton addTarget:self action:@selector(optionsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-     [mapButton setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
-     UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithCustomView:settingsView];
-     
-     
-     // add map button to the top right of the navigation view
-     UIBarButtonItem * mapButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"map"] style:UIBarButtonItemStylePlain target:self action:@selector(openMapWithRoutes)];
-     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapButton, nil]];
-     */
+
 }
 
 -(void)openMapWithRoutes // show the map in a different view controller
@@ -91,9 +79,6 @@
     MapsViewController* vc =  [[MapsViewController alloc] init];
     
     [self.navigationController pushViewController:vc animated:YES];
-    
-    
-    
 }
 
 

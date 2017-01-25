@@ -26,9 +26,12 @@
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
+/*
+    Handles the predictions for the BUS app.
+ */
 
 @interface RUPredictionsViewController ()
-@property (nonatomic) MSWeakTimer *timer;
+@property (nonatomic) MSWeakTimer *timer; 
 @property (nonatomic) id item;
 @property (nonatomic) id serializedItem;
 @property (nonatomic) BOOL didExpand;
@@ -63,7 +66,8 @@
     }
     return self;
 }
-- (void)viewDidLoad{
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     /*
@@ -79,8 +83,10 @@
     //All of the content loading happens in the data source
     
     /*
+
      RUPrediction... is an interface which depends on the superclass expandingcells...
      Which in turn inherits from composed data source which in turn inherits from the Data Source class
+     
      */
     
     NSLog(@"%@", self.item);
@@ -115,10 +121,10 @@
     
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
     
+
     
     self.pullsToRefresh = YES;
 }
-
 
 /*
  Open the Bus maps View Controller
@@ -127,6 +133,10 @@
 {
     
 }
+
+/*
+    the self.item is set by the init , and can either represent the route or a stop and based on that 
+ */
 
 -(NSURL *)sharingURL
 {

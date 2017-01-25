@@ -1,0 +1,15 @@
+Discussion About Git Workflow : 
+
+Jan 20th 2017.
+	Currently the most stable branch is 4.2-exp-2
+	This was created from 4.2-exp	
+	4.2-exp has the atheletics implementations
+	4.2-exp-2 was created due to errors when I tried to keep both xcode 7 and xcode 8.
+
+	For now branch everything off of 4.2-exp-2. 
+	I will remove the banner feature which we will not be releasing when all the different features branches 
+	have been merged into 4.2-exp-2.
+
+Jan 25th 2017.
+	4.2-bus-redesign was merged into 4.2-exp-2 as it has a few code changes for the beta release
+		The bus has not been redesigned, that will be done in the near future	

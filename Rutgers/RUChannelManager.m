@@ -126,11 +126,11 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
                     if (data)
                     {
                         NSArray *channels = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                        if (channels.count) // if there are multiple items in the channel
+                        if (channels.count)
                         {
                             //NSLog(@" # CHANNELS : %i " , (int)channels.count);
                             latestDate = date;
-                            _contentChannels = channels;  // So we create channel from files converted into JSonn Objects ?
+                            _contentChannels = channels;
                         }
                     }
                 }
@@ -412,7 +412,15 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 {
     if ([view isEqualToString:@"dtable"] && channel[@"layout"] && [channel[@"layout"] isEqualToString:@"grid"])
     {
-        view = @"dtable-grid";
+        // Support the Grid layout in iOS version 9.0 and above , for iOS 8 and below default to the old grid view
+        if([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:(NSOperatingSystemVersion){.majorVersion = 9, .minorVersion = 0, .patchVersion = 0}])
+        {
+            view = @"dtable-grid";
+        }
+        else
+        {
+            view = @"dtable";
+        }
     }
     return view;
 }

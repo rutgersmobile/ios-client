@@ -90,7 +90,7 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
         self.collectionView?.delegate = self ;
      
         
-        self.dataSource = DynamicDataSource.init(channel:  self.channel as! [NSObject : AnyObject] , forLayout: true)
+        self.dataSource = DynamicDataSource.init(channel:  self.channel as [NSObject : AnyObject] , forLayout: true)
         
         self.dataSource.loadContentWithAnyBlock // when the data has been loaded , we stop the load sign and layout the views
         {
