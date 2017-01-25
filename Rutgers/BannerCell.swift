@@ -49,11 +49,11 @@ class BannerCellDataSource : NSObject
         // set the strImages for indexing into array
         self.strImages = array
         
-        let imageCacheAccessQueue : dispatch_queue_t = dispatch_queue_create("com.rutgers.imageCacheQueue", nil) // just setting a name for the queue to be used when we profile
+        let imageCacheAccessQueue : DispatchQueue = DispatchQueue(label: "com.rutgers.imageCacheQueue", attributes: []) // just setting a name for the queue to be used when we profile
         
         // the group is created so that the ui update can be done at the proper time
         // After every block that has been added to the group has been executed , we will use the group notify to run the uiupdate . Ensures that ui is updated only after all the data has been obtained
-        let imageDownloadGroup : dispatch_group_t = dispatch_group_create()
+        let imageDownloadGroup : DispatchGroup = DispatchGroup()
         
         
         for imageStr  in array // iterate through each image string in the array and create a nsurlsession for each and load them
@@ -65,12 +65,11 @@ class BannerCellDataSource : NSObject
             // if the image is not present then load the image from the url , else continue and move to next step
             
             // enter the group
-            dispatch_group_enter(imageDownloadGroup)
+            imageDownloadGroup.enter()
             
-            let imageUrl = NSURL.init(string: imageStr)!
-            let task = NSURLSession.sharedSession().dataTaskWithURL(imageUrl)
-            {
-                ( data , let response , let error) in
+            let imageUrl = URL.init(string: imageStr)!
+            let task = URLSession.shared.dataTask(with: imageUrl, completionHandler: {
+                ( data , response , error) in
                 
                    if let imageData = data
                    {
@@ -80,14 +79,14 @@ class BannerCellDataSource : NSObject
                         {
                             // put the blocks into a serial qeueue to ensure that the insertion into th dict happens in a thread safe manner and not having to use locks
                             // we add it to the group so that the group notify will only be called after the images has been added to the dict
-                            dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
+                            imageCacheAccessQueue.async(group: imageDownloadGroup)
                             {
                                 self.cachedImages![imageStr] = image
                             }
                         }
                         else
                         {
-                            dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
+                            imageCacheAccessQueue.async(group: imageDownloadGroup)
                             {
                                 self.cachedImages![imageStr] = UIImage(named:"default_dynamic_banner_img")
                             }
@@ -98,7 +97,7 @@ class BannerCellDataSource : NSObject
                     else // did not obtain the image .. Put some place holder to the image.. Or not show the banner a
                    {
                         // did not get the data and errored out . Put a default image up
-                        dispatch_group_async(imageDownloadGroup, imageCacheAccessQueue)
+                        imageCacheAccessQueue.async(group: imageDownloadGroup)
                         {
                             self.cachedImages![imageStr] = UIImage(named:"default_dynamic_banner_img")
                         }
@@ -106,14 +105,15 @@ class BannerCellDataSource : NSObject
                    }
                 
                     // leave the group
-                    dispatch_group_leave(imageDownloadGroup)
-            }
+                    imageDownloadGroup.leave()
+            })            
+
             
             task.resume()
            
         }
         
-        dispatch_group_notify(imageDownloadGroup, dispatch_get_main_queue())
+        imageDownloadGroup.notify(queue: DispatchQueue.main)
         {
                 callbackUIUpdate(true) // update the ui after all the UI has been updated
         }

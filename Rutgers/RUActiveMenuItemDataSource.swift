@@ -25,7 +25,7 @@ class RUMenuBasicDataSource: BasicDataSource {
         //warning move this into the cell
         switch item {
         case let favorite as RUFavorite:
-            if let handle = favorite.channelHandle, channel = RUChannelManager.sharedInstance().channelWithHandle(handle) {
+            if let handle = favorite.channelHandle, let channel = RUChannelManager.sharedInstance().channelWithHandle(handle) {
                 menuCell.setupForChannel(channel)
                 menuCell.channelTitleLabel.text = favorite.title
             }

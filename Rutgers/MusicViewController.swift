@@ -53,15 +53,15 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     init(channel: [NSObject : AnyObject]) {
         self.channel = channel
         self.streamUrl = channel["url"] as! String
-        super.init(nibName: .None, bundle: .None)
+        super.init(nibName: .none, bundle: .none)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     func setupPlayer() {
-        MusicViewController.audioPlayer = AVPlayer(URL: NSURL(string: streamUrl)!)
+        MusicViewController.audioPlayer = AVPlayer(URL: URL(string: streamUrl)!)
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [
             MPMediaItemPropertyTitle : "WRNU",
             MPMediaItemPropertyArtwork : MPMediaItemArtwork(image: UIImage(named: "radio_album")!)
@@ -131,6 +131,26 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
             pause()
         }
     }
+    
+    func actionButtonTapped() {
+        if let url = sharingURL() {
+            let favoriteActivity = RUFavoriteActivity(title: "WRNU")
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity])
+            activityVC.excludedActivityTypes = [UIActivityType.print, UIActivityType.addToReadingList]
+            if (UI_USER_INTERFACE_IDIOM() == .phone) {
+                self.presentViewController(activityVC, animated: true, completion: nil)
+                return
+            }
+            if let popover = self.sharingPopoverController {
+                popover.dismiss(animated: false)
+                self.sharingPopoverController = nil
+            } else {
+                self.sharingPopoverController = UIPopoverController(contentViewController: activityVC)
+                self.sharingPopoverController?.delegate = self
+                self.sharingPopoverController?.present(from: self.shareButton!, permittedArrowDirections: .any, animated: true)
+            }
+        }
+    }
 
     func applicationWillEnterForeground() {
         recreateIfStopped()
@@ -150,17 +170,16 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         } else {
             setPlayingState()
         }
-        self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionButtonTapped))
+        self.shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionButtonTapped))
         self.navigationItem.rightBarButtonItem = self.shareButton
         backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
-        backgroundView.opaque = false
-        backgroundView.layer.opaque = false
-        NSNotificationCenter
-            .defaultCenter()
+        backgroundView.isOpaque = false
+        backgroundView.layer.isOpaque = false
+        NotificationCenter.default
             .addObserver(
                 self,
                 selector: #selector(applicationWillEnterForeground),
-                name: UIApplicationWillEnterForegroundNotification,
+                name: NSNotification.Name.UIApplicationWillEnterForeground,
                 object: nil
             )
     }
@@ -172,7 +191,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        volumeContainerView.backgroundColor = UIColor.clearColor()
+        volumeContainerView.backgroundColor = UIColor.clear
         let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
         volumeContainerView.addSubview(volumeView)
 
