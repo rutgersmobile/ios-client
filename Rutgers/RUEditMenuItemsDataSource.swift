@@ -80,7 +80,7 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         //warning move this into the cell
         switch item {
         case let favorite as RUFavorite:
-            if let handle = favorite.channelHandle, channel = RUChannelManager.sharedInstance().channelWithHandle(handle) {
+            if let handle = favorite.channelHandle, let channel = RUChannelManager.sharedInstance().channelWithHandle(handle) {
                 menuCell.setupForChannel(channel)
                 menuCell.channelTitleLabel.text = favorite.title
             }
@@ -142,7 +142,7 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
             visible.append(item)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             
-            let indexPath = NSIndexPath(forRow: visible.count - 1, inSection: 0)
+            let indexPath = IndexPath(row: visible.count - 1, section: 0)
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             
         case .Delete:
@@ -150,8 +150,8 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             
             if !(item is RUFavorite) {
-                hidden.insert(item, atIndex: 0)
-                let indexPath = NSIndexPath(forRow: 0, inSection: 1)
+                hidden.insert(item, at: 0)
+                let indexPath = IndexPath(row: 0, section: 1)
                 tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
             

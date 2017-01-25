@@ -27,10 +27,10 @@ protocol DictionaryConvertible {
  
  
  */
-public class RUFavorite: NSObject
+open class RUFavorite: NSObject
 {
-    public let title: String
-    public let url: NSURL
+    open let title: String
+    open let url: URL
     
     public init(title: String, url: NSURL)
     {
@@ -50,7 +50,7 @@ public class RUFavorite: NSObject
         return self.title == other.title && self.url == other.url
     }
     
-    public override var hash: Int {
+    open override var hash: Int {
         return title.hashValue &+ url.hashValue
     }
 }
@@ -58,8 +58,8 @@ public class RUFavorite: NSObject
 extension RUFavorite {
     public convenience init?(dictionary: NSDictionary) {
         guard let title = dictionary["title"] as? String,
-            urlString = dictionary["url"] as? String,
-            url = NSURL(string: urlString) else { return nil }
+            let urlString = dictionary["url"] as? String,
+            let url = URL(string: urlString) else { return nil }
         
         self.init(title: title, url: url)
     }
@@ -67,7 +67,7 @@ extension RUFavorite {
     public func asDictionary() -> NSDictionary {
         return [
             "title": title,
-            "url": url.absoluteString!
+            "url": url.absoluteString
         ]
     }
 }
@@ -86,16 +86,16 @@ extension RUFavorite {
 private let MenuItemManagerActiveMenuItemsKey = "MenuItemManagerFavoritesKey"
 public let MenuItemManagerDidChangeActiveMenuItemsKey = "MenuItemManagerDidChangeActiveMenuItemsKey"
 
-public class RUMenuItemManager: NSObject {
+open class RUMenuItemManager: NSObject {
     static let sharedManager = RUMenuItemManager()
     
     public func addFavorite(favorite: RUFavorite) {
         var rawMenuItems = self.rawMenuItems
         let favoriteDict = favorite.asDictionary()
         
-        let optionalIndex = rawMenuItems.indexOf { $0.isEqual(favoriteDict) }
+        let optionalIndex = rawMenuItems.index { $0.isEqual(favoriteDict) }
         if optionalIndex == nil {
-            rawMenuItems.insert(favoriteDict, atIndex: 0)
+            rawMenuItems.insert(favoriteDict, at: 0)
         }
         
         self.rawMenuItems = rawMenuItems
@@ -105,29 +105,29 @@ public class RUMenuItemManager: NSObject {
         var rawMenuItems = self.rawMenuItems
         
         let favoriteDict = favorite.asDictionary()
-        let optionalIndex = rawMenuItems.indexOf { $0.isEqual(favoriteDict) }
+        let optionalIndex = rawMenuItems.index { $0.isEqual(favoriteDict) }
         if let index = optionalIndex {
-            rawMenuItems.removeAtIndex(index)
+            rawMenuItems.remove(at: index)
         }
         
         self.rawMenuItems = rawMenuItems
     }
     
-    private func notifyMenuItemsDidChange() {
-        NSNotificationCenter.defaultCenter().postNotificationName(MenuItemManagerDidChangeActiveMenuItemsKey, object: self)
+    fileprivate func notifyMenuItemsDidChange() {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: MenuItemManagerDidChangeActiveMenuItemsKey), object: self)
     }
     
-    private var rawMenuItems: [AnyObject] {
+    fileprivate var rawMenuItems: [AnyObject] {
         set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: MenuItemManagerActiveMenuItemsKey)
+            UserDefaults.standard.set(newValue, forKey: MenuItemManagerActiveMenuItemsKey)
             notifyMenuItemsDidChange()
         }
         get {
-            return NSUserDefaults.standardUserDefaults().arrayForKey(MenuItemManagerActiveMenuItemsKey) ?? RUChannelManager.sharedInstance().contentChannels.flatMap { $0.channelHandle }
+            return UserDefaults.standardUserDefaults().arrayForKey(MenuItemManagerActiveMenuItemsKey) ?? RUChannelManager.sharedInstance().contentChannels.flatMap { $0.channelHandle }
         }
     }
     
-    public var menuItems: [AnyObject] {
+    open var menuItems: [AnyObject] {
         set {
             rawMenuItems = newValue.flatMap { menuItem in
                 switch menuItem {
