@@ -243,6 +243,7 @@
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
 		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
+		C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -711,6 +712,7 @@
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
+		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
 		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1669,6 +1671,7 @@
 				C4B1E15F1E3BD0E0008DC388 /* model */,
 				C4B1E15E1E3BD0CC008DC388 /* services */,
 				C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */,
+				C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -2019,6 +2022,7 @@
 				046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */,
 				041502321BB0964A00D23AB8 /* RUDefines.m in Sources */,
 				04A1EFEB1A5C509600DE0351 /* AllStopsDataSource.m in Sources */,
+				C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
 				A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */,
 				A7600E371950E752008DA667 /* RUSOCSectionCell.m in Sources */,
