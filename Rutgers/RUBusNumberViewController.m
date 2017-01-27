@@ -15,7 +15,7 @@
 #import "RUBusRoute.h"
 #import "RUBusMultipleStopsForSingleLocation.h"
 #import "TableViewController_Private.h"
-#import <MSWeakTimer.h>
+#import "MSWeakTimer.h"
 #import "NSURL+RUAdditions.h"
 #import "RUBusDataLoadingManager.h"
 #import "RUDefines.h"
