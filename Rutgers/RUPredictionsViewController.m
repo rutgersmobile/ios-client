@@ -225,7 +225,7 @@
                         [predictionTimes addObject:[NSString stringWithFormat:@"%li minutes", arrivals.minutes]];
                     }
                 }
-                
+                 
             }
             
             self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"" alertButtonTitles: predictionTimes];
