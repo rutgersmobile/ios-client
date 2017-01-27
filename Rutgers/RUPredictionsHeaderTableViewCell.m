@@ -8,7 +8,7 @@
 
 #import "RUPredictionsHeaderTableViewCell.h"
 #import "RULabel.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "UIFont+DynamicType.h"
 
 @interface RUPredictionsHeaderTableViewCell ()

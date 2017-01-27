@@ -19,28 +19,26 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         
         let allItems = RUChannelManager.sharedInstance().contentChannels
         
-        let allItemsSet = NSMutableOrderedSet(array: allItems)
+        let allItemsSet = NSMutableOrderedSet(array: allItems!)
         let activeItemsSet = NSOrderedSet(array: visible)
         
-        allItemsSet.minusOrderedSet(activeItemsSet)
+        allItemsSet.minus(activeItemsSet)
         
-        hidden = allItemsSet.array
+        hidden = allItemsSet.array as [AnyObject]
     }
     
     var visible = [AnyObject]()
     var hidden = [AnyObject]()
     
     func registerReuseableViewsWithTableView(tableView: UITableView) {
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     override var numberOfSections: Int {
         return 2
     }
     
-  
-
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Visible"
         } else {
@@ -48,7 +46,7 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         }
     }
     
-    override func numberOfItemsInSection(section: Int) -> Int {
+    override func numberOfItems(inSection section: Int) -> Int {
         if section == 0 {
             return visible.count
         } else {
@@ -56,7 +54,7 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         }
     }
     
-    override func itemAtIndexPath(indexPath: NSIndexPath) -> AnyObject {
+    override func item(at indexPath: IndexPath!) -> Any! {
         if indexPath.section == 0 {
             return visible[indexPath.row]
         } else {
@@ -64,28 +62,28 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         }
     }
     
-    override func registerReusableViewsWithTableView(tableView: UITableView!) {
-        super.registerReusableViewsWithTableView(tableView)
-        tableView.registerClass(RUMenuTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(RUMenuTableViewCell.self))
+    override func registerReusableViews(with tableView: UITableView!) {
+        super.registerReusableViews(with: tableView)
+        tableView.register(RUMenuTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(RUMenuTableViewCell.self))
     }
     
-    override func reuseIdentifierForRowAtIndexPath(indexPath: NSIndexPath!) -> String! {
+    override func reuseIdentifierForRow(at indexPath: IndexPath!) -> String! {
         return NSStringFromClass(RUMenuTableViewCell.self)
     }
     
-    override func configureCell(cell: AnyObject!, forRowAtIndexPath indexPath: NSIndexPath!) {
-        let item = itemAtIndexPath(indexPath)
+    override func configureCell(_ cell: Any!, forRowAt indexPath: IndexPath!) {
+        let indexItem = item(at: indexPath as IndexPath!)
         let menuCell = cell as! RUMenuTableViewCell
         
         //warning move this into the cell
-        switch item {
+        switch indexItem {
         case let favorite as RUFavorite:
-            if let handle = favorite.channelHandle, let channel = RUChannelManager.sharedInstance().channelWithHandle(handle) {
-                menuCell.setupForChannel(channel)
+            if let handle = favorite.channelHandle, let channel = RUChannelManager.sharedInstance().channel(withHandle: handle) {
+                menuCell.setup(forChannel: channel)
                 menuCell.channelTitleLabel.text = favorite.title
             }
         case let channel as [NSObject : AnyObject]:
-            menuCell.setupForChannel(channel)
+            menuCell.setup(forChannel: channel)
         default: return
         }
     }
@@ -94,37 +92,37 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
     
     func removeItemAtIndexPath(indexPath: NSIndexPath) -> AnyObject {
         if indexPath.section == 0 {
-            return visible.removeAtIndex(indexPath.row)
+            return visible.remove(at: indexPath.row)
         } else {
-            return hidden.removeAtIndex(indexPath.row)
+            return hidden.remove(at: indexPath.row)
         }
     }
     
     func insertItem(item: AnyObject, atIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
-            visible.insert(item, atIndex: indexPath.row)
+            visible.insert(item, at: indexPath.row)
         } else {
-            hidden.insert(item, atIndex: indexPath.row)
+            hidden.insert(item, at: indexPath.row)
         }
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if indexPath.section == 0 {
-            return .Delete
+            return .delete
         } else {
-            return .Insert
+            return .insert
         }
     }
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         guard sourceIndexPath != destinationIndexPath else { return }
-        
-        let item = removeItemAtIndexPath(sourceIndexPath)
-        insertItem(item, atIndexPath: destinationIndexPath)
+
+        let item = removeItemAtIndexPath(indexPath: sourceIndexPath as NSIndexPath)
+        insertItem(item: item, atIndexPath: destinationIndexPath as NSIndexPath)
         
         tableView.reloadData()
         
@@ -132,30 +130,29 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         saveChanges()
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         tableView.beginUpdates()
         
         switch editingStyle {
-        case .Insert:
-            let item = removeItemAtIndexPath(indexPath)
+        case .insert:
+            let item = removeItemAtIndexPath(indexPath: indexPath as NSIndexPath)
             visible.append(item)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
             
             let indexPath = IndexPath(row: visible.count - 1, section: 0)
-            tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.insertRows(at: [indexPath], with: .fade)
             
-        case .Delete:
-            let item = removeItemAtIndexPath(indexPath)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        case .delete:
+            let item = removeItemAtIndexPath(indexPath: indexPath as NSIndexPath)
+            tableView.deleteRows(at: [indexPath as IndexPath], with: .fade)
             
             if !(item is RUFavorite) {
                 hidden.insert(item, at: 0)
                 let indexPath = IndexPath(row: 0, section: 1)
-                tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                tableView.insertRows(at: [indexPath], with: .fade)
             }
             
-        case .None: fatalError()
+        case .none: fatalError()
         }
         
         tableView.endUpdates()

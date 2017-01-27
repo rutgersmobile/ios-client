@@ -7,7 +7,7 @@
 //
 
 #import "RUPlacesDataLoadingManager.h"
-#import <AFNetworking.h>
+#import "AFNetworking.h"
 #import "RULocationManager.h"
 #import "RUPlace.h"
 #import "NSDictionary+ObjectsForKeys.h"

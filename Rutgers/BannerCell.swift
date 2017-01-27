@@ -44,7 +44,7 @@ class BannerCellDataSource : NSObject
     
     // load the images from the url strings , then call the callback ..
     // the call back will be done in a main thread , so it should only be ued to update UIElements
-    func loadImagesFromUrlStrings( array : [String] , callbackUIUpdate : (Bool) -> Void)
+    func loadImagesFromUrlStrings( array : [String] , callbackUIUpdate : @escaping (Bool) -> Void)
     {
         // set the strImages for indexing into array
         self.strImages = array
@@ -167,7 +167,7 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         dataSource = BannerCellDataSource()
         
         // set the activity view to take up the entire cell bounds
-        loadingView = UIActivityIndicatorView.init(activityIndicatorStyle: .Gray)
+        loadingView = UIActivityIndicatorView.init(activityIndicatorStyle: .gray)
         loadingView?.center = self.contentView.center
         loadingView?.startAnimating() // keep on animating till the iamge has been loaded
         
@@ -193,7 +193,7 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
      */
     func loadImagesForUrlStrings(strArray : [String])
     {
-            dataSource?.loadImagesFromUrlStrings(strArray)
+            dataSource?.loadImagesFromUrlStrings(array: strArray)
             {
                 success in
                 // do the loading into the view and adding to the scrollview in the main thread
@@ -216,15 +216,15 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         for index in 0..<self.dataSource!.numImages()
         {
             // create the proper frame to add the scrollview in
-            var tempFrame = CGRectMake(0, 0, 0, 0)
+            var tempFrame = CGRect(x:0, y:0, width:0, height:0)
             tempFrame.origin.x = self.scrollView!.frame.size.width * CGFloat(index)
             tempFrame.size = self.scrollView!.frame.size
          
             let subView = UIImageView(frame: tempFrame)
-            subView.image = self.dataSource!.imageAtIndex(index)
+            subView.image = self.dataSource!.imageAtIndex(idx: index)
             self.scrollView!.addSubview(subView)
         }
-        self.scrollView!.contentSize = CGSizeMake(self.scrollView!.frame.size.width * CGFloat(self.dataSource!.numImages()) , self.scrollView!.frame.size.height)
+        self.scrollView!.contentSize = CGSize(width:self.scrollView!.frame.size.width * CGFloat(self.dataSource!.numImages()) , height:self.scrollView!.frame.size.height)
     }
     
     
@@ -239,21 +239,21 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
         
         
         // set the size and pos of the scrollview inside the cell to take up the entire cell
-        scrollView = UIScrollView(frame: CGRectMake(0,0,self.contentView.bounds.width, self.contentView.bounds.height))
+        scrollView = UIScrollView(frame: CGRect(x:0, y:0, width:self.contentView.bounds.width, height:self.contentView.bounds.height))
         scrollView!.delegate = self
-        
-        pageControl = UIPageControl(frame: CGRectMake(0,self.contentView.bounds.height - 50 ,self.contentView.bounds.width,50))
-        self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(_:)), forControlEvents: UIControlEvents.ValueChanged)
+
+        pageControl = UIPageControl(frame: CGRect(x:0, y:self.contentView.bounds.height - 50, width:self.contentView.bounds.width, height:50))
+        self.pageControl!.addTarget(self, action: #selector(BannerCell.changePage(sender:)), for: UIControlEvents.valueChanged)
         
  
         self.loadingView?.stopAnimating()
         self.contentView.addSubview(scrollView!) // add the scrollview to the screen
-        self.scrollView!.pagingEnabled = true
+        self.scrollView!.isPagingEnabled = true
         self.pageControl!.numberOfPages = (self.dataSource?.numImages())!
         self.pageControl!.currentPage = 0
-        self.pageControl!.tintColor = UIColor.redColor()
-        self.pageControl!.pageIndicatorTintColor = UIColor.blackColor()
-        self.pageControl!.currentPageIndicatorTintColor = UIColor.greenColor()
+        self.pageControl!.tintColor = UIColor.red
+        self.pageControl!.pageIndicatorTintColor = UIColor.black
+        self.pageControl!.currentPageIndicatorTintColor = UIColor.green
         self.contentView.addSubview(pageControl!)
     }
     
@@ -261,12 +261,11 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
     func changePage(sender: AnyObject) -> ()
     {
         let x  = CGFloat(pageControl!.currentPage) * scrollView!.frame.size.width
-        scrollView!.setContentOffset(CGPointMake(x,0), animated: true)
+        scrollView!.setContentOffset(CGPoint(x:x, y:0), animated: true)
     }
     
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
         pageControl!.currentPage = Int(pageNumber)
     }

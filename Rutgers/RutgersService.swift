@@ -14,8 +14,8 @@ enum RutgersService {
     case getGames(sport: String)
 }
 
-extension RutgersService : TargetType {
-    var baseURL: URL {
-        return URL(string: "https://doxa.rutgers.edu")!
-    }
-}
+//extension RutgersService : TargetType {
+//    var baseURL: URL {
+//        return URL(string: "https://doxa.rutgers.edu")!
+//    }
+//}

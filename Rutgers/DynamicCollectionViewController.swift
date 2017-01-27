@@ -18,7 +18,6 @@ private let bannerElement = "banner"
 // initialization and view setup
 class DynamicCollectionViewController: UICollectionViewController, RUChannelProtocol
 {
-
     var dataSource : DynamicDataSource! = nil
     var channel : NSDictionary! = nil
     // the indicator to show before the data is loaded..
@@ -43,17 +42,16 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
   
     static func registerClass()
     {
-        RUChannelManager.sharedInstance().registerClass(DynamicCollectionViewController.self)
+        RUChannelManager.sharedInstance().register(DynamicCollectionViewController.self)
     }
    
-    static func channelWithConfiguration(channel : [NSObject : AnyObject]!) -> AnyObject!
-    {
-        return DynamicCollectionViewController(channel: channel) // load the view for the controller from the nib file
+    public static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any! {
+        return DynamicCollectionViewController(channel: channelConfiguration as [NSObject : AnyObject]) // load the view for the controller from the nib file
     }
 
     init(channel : [NSObject : AnyObject]!)
     {
-        self.channel = channel
+        self.channel = channel as NSDictionary!
         self.bannerImageNames = nil;
         super.init(collectionViewLayout: self.flowLayout)
     }
@@ -68,38 +66,37 @@ class DynamicCollectionViewController: UICollectionViewController, RUChannelProt
         return self.bannerImageNames != nil;
     }
     
-    
+
     override func viewDidLoad()
     {
 
         super.viewDidLoad()
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.hidesWhenStopped = true;
         activityIndicator.center = self.view.center
         activityIndicator.startAnimating()
         self.view.addSubview(activityIndicator)
         
-        self.collectionView?.backgroundColor = UIColor.whiteColor()
+        self.collectionView?.backgroundColor = UIColor.white
         
-        self.collectionView!.registerNib(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: viewElement)
-        self.collectionView!.registerClass(BannerCell.self, forCellWithReuseIdentifier: bannerElement)
+        self.collectionView!.register(UINib.init(nibName: "DynamicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: viewElement)
+        self.collectionView!.register(BannerCell.self, forCellWithReuseIdentifier: bannerElement)
         
         
         self.collectionView?.dataSource = self;
         self.collectionView?.delegate = self ;
-     
+
         
         self.dataSource = DynamicDataSource.init(channel:  self.channel as [NSObject : AnyObject] , forLayout: true)
         
-        self.dataSource.loadContentWithAnyBlock // when the data has been loaded , we stop the load sign and layout the views
+        self.dataSource.loadContent // when the data has been loaded , we stop the load sign and layout the views
         {
             // extract the banner images into an array
             self.extractBannerNamesFromDataSource()
-            dispatch_async(dispatch_get_main_queue()) // call reload on main thread otherwise veryt laggy
-            {
-                    self.collectionView!.reloadData()
-                    self.activityIndicator.stopAnimating()
+            DispatchQueue.main.async {
+                self.collectionView!.reloadData()
+                self.activityIndicator.stopAnimating()
             }
   
         }
@@ -151,13 +148,13 @@ extension DynamicCollectionViewController
         {
             let aspectRatio:CGFloat = 0.8 ;  // the height will be (value) more than the width
             cellWidth = (screenWidth! - 20 );
-            cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
+            cellSize = CGSize(width:cellWidth, height:cellWidth * aspectRatio)
         }
         else
         {
             let aspectRatio:CGFloat = 1.2 ;  // the height will be (value) more than the width
             cellWidth = (screenWidth! ) / 2.4;
-            cellSize = CGSizeMake( cellWidth, cellWidth * aspectRatio)
+            cellSize = CGSize(width:cellWidth, height:cellWidth * aspectRatio)
         }
         
         return cellSize
@@ -165,27 +162,23 @@ extension DynamicCollectionViewController
     }
     
   
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator)
-    {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.collectionView?.collectionViewLayout.invalidateLayout()
         if(isBannerPresent())
         {
             let bannerIndexPath = IndexPath(row: 0, section: 0)
-            self.collectionView?.reloadItemsAtIndexPaths([bannerIndexPath])
+            self.collectionView?.reloadItems(at: [bannerIndexPath])
         }
     }
   
 
     
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool
-     {
+    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         return true
-     }
+    }
 
     // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool
-    {
-        
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if let _ = bannerImageNames // if we have to add the banner , then decide the size for the banner too
         {
             if(indexPath.row == 0)
@@ -198,19 +191,18 @@ extension DynamicCollectionViewController
     }
 
 
-    
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
-    {
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item:NSDictionary!
-        
+
         if (isBannerPresent()) // if we have to add the banner , then index to old data source is -1
         {
                 let indexForDict : IndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
-                item = self.dataSource.itemAtIndexPath(indexForDict) as! NSDictionary
+                item = self.dataSource.item(at: indexForDict) as! NSDictionary
         }
         else
         {
-                item = self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary
+                item = self.dataSource.item(at: indexPath) as! NSDictionary
         }
         
             
@@ -221,9 +213,9 @@ extension DynamicCollectionViewController
             channel = item ;
         }
        
-        let vc : UIViewController = RUChannelManager.sharedInstance().viewControllerForChannel(channel as! [NSObject : AnyObject]!)
+        let vc : UIViewController = RUChannelManager.sharedInstance().viewController(forChannel: channel as! [NSObject : AnyObject]!)
        
-        if( (channel!.channelTitle == nil) && (item.channelTitle != nil))
+        if( ((channel! as AnyObject).channelTitle == nil) && (item.channelTitle != nil))
         {
             vc.title = item.channelTitle
         }
@@ -242,48 +234,46 @@ extension DynamicCollectionViewController
 // Data Source Items
 extension DynamicCollectionViewController
 {
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
-    {
-            return self.dataSource.numberOfSections
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return self.dataSource.numberOfSections
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
        // if the banner has to be added , the we have 1 more element than the number of items in the data source
        if let _ = self.bannerImageNames
        {
-            return self.dataSource.numberOfItemsInSection(section) + 1  // for the banner
+            return self.dataSource.numberOfItems(inSection: section) + 1  // for the banner
        }
        else
        {
-           return self.dataSource.numberOfItemsInSection(section)
+           return self.dataSource.numberOfItems(inSection: section)
        }
         
     }
 
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
-    {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if(isBannerPresent())
         {
             if(indexPath.row == 0)
             {
                 // the banner images will obly have the images, not the url
-                return loadBannerCell(bannerElement, imageNames: self.bannerImageNames! , indexPath: indexPath)
+                return loadBannerCell(reuseIdentifier: bannerElement, imageNames: self.bannerImageNames! , indexPath: indexPath as NSIndexPath)
             }
             else
             {
                 
                 // In order to compensate for the data source requring elements zero indexed , but here the zero index is the banner , we decrement by 1
-                let indexForDict : IndexPath = IndexPath(forRow: indexPath.row - 1, inSection: indexPath.section)
-                return loadDynamicCollectionViewCell(viewElement, indexPath: indexForDict)
+                let indexForDict : IndexPath = IndexPath(row: indexPath.row - 1, section: indexPath.section)
+                return loadDynamicCollectionViewCell(reuseIdentifier: viewElement, indexPath: indexForDict as NSIndexPath)
             }
             
         }
         else
         {
-           return loadDynamicCollectionViewCell(viewElement, indexPath: indexPath)
+           return loadDynamicCollectionViewCell(reuseIdentifier: viewElement, indexPath: indexPath as NSIndexPath)
         }
         
     }
@@ -291,29 +281,29 @@ extension DynamicCollectionViewController
     
     func loadBannerCell(reuseIdentifier : String , imageNames : [String] , indexPath : NSIndexPath) -> BannerCell
     {
-            let cell = collectionView!.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! BannerCell
+            let cell = collectionView!.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! BannerCell
             print(cell.frame)
 
-            cell.layer.borderColor = UIColor.blueColor().CGColor
+            cell.layer.borderColor = UIColor.blue.cgColor
             cell.layer.borderWidth = 2
             cell.layer.cornerRadius = 8
              // The cell will keep showing the activity view until the images are loaded from the urls
        
             // the imageNames will only contain the filename and type , not the url . Ie image.jpg
-            let imageBaseUrlString = RUNetworkManager.baseURL().absoluteString! + "img/"
+            let imageBaseUrlString = RUNetworkManager.baseURL().absoluteString + "img/"
             let imageUrlStringArr = imageNames.map({"\(imageBaseUrlString)\($0)"})
         
-            cell.loadImagesForUrlStrings(imageUrlStringArr)
+            cell.loadImagesForUrlStrings(strArray: imageUrlStringArr)
             return cell;
     }
 
     func loadDynamicCollectionViewCell(reuseIdentifier : String , indexPath : NSIndexPath) -> DynamicCollectionViewCell
     {
         
-        let cell = self.collectionView!.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DynamicCollectionViewCell
+        let cell = self.collectionView!.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! DynamicCollectionViewCell
         
 
-        let item : NSDictionary = (self.dataSource.itemAtIndexPath(indexPath) as! NSDictionary)
+        let item : NSDictionary = (self.dataSource.item(at: indexPath as IndexPath!) as! NSDictionary)
 
         let style = NSMutableParagraphStyle()
         style.firstLineHeadIndent = 5
@@ -327,13 +317,18 @@ extension DynamicCollectionViewController
         
         if let imageLocation = item["image"] as? String
         {
-            let imageUrlString = RUNetworkManager.baseURL().absoluteString! + "img/" + imageLocation
+            let imageUrlString = RUNetworkManager.baseURL().absoluteString + "img/" + imageLocation
             let imageUrl = URL(string: imageUrlString)
             
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async
+            DispatchQueue.global(qos: .background).async
             {
-                let imageData : Data? = Data(contentsOfURL: imageUrl!)
-              
+                let imageData : Data?
+                do {
+                    imageData = try Data(contentsOf: imageUrl!)
+                } catch {
+                    imageData = nil
+                }
+
                 if let imageData = imageData
                 {
                     let image = UIImage(data: imageData)
@@ -341,7 +336,7 @@ extension DynamicCollectionViewController
                     DispatchQueue.main.async
                     {
                         // Update the UI
-                        cell.imageView.contentMode = .ScaleAspectFit
+                        cell.imageView.contentMode = .scaleAspectFit
                         if let image = image // if we have an image , then update the image, else keep the default image we set earlier
                         {
                             cell.imageView.image = image

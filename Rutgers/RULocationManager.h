@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-NSString *LocationManagerDidChangeLocationKey;
-NSString *LocationManagerNotificationLocationKey;
+#define LocationManagerDidChangeLocationKey @"LocationManagerDidChangeLocationKey"
+#define LocationManagerNotificationLocationKey @"LocationManagerNotificationLocationKey"
 
 #define NEARBY_DISTANCE 300
 

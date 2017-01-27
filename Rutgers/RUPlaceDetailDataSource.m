@@ -19,7 +19,7 @@
 #import "MiniMapDataSource.h"
 
 #import <AddressBookUI/AddressBookUI.h>
-#import <MSWeakTimer.h>
+#import "MSWeakTimer.h"
 
 #import "RUPlacesDataLoadingManager.h"
 #import "ALTableViewTextCell.h"

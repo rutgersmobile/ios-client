@@ -14,7 +14,7 @@ protocol MapViewDelegate {
     
 }
 
-typealias Annotation = protocol<MKAnnotation>
+typealias Annotation = MKAnnotation
 
 protocol MapView {
     var showsUserLocation: Bool { get set }
@@ -27,7 +27,6 @@ protocol MapView {
     //func showAnnotationsWrapper(annotations: [Annotation], animated: Bool)
    
     func showCoordinate(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, animated: Bool)
-    func setVisibleMapRect(mapRect: MKMapRect, animated: Bool)
 }
 
 
@@ -46,10 +45,10 @@ extension MKMapView: MapView {
     }
     
     func showCoordinate(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, animated: Bool) {
-        let camera = MKMapCamera(lookingAtCenterCoordinate: coordinate, fromEyeCoordinate: coordinate, eyeAltitude: altitude)
+        let camera = MKMapCamera(lookingAtCenter: coordinate, fromEyeCoordinate: coordinate, eyeAltitude: altitude)
         setCamera(camera, animated: animated)
     }
-    
+
     func showAnnotationsWrapper(annotations: [Annotation], animated: Bool) {
         showAnnotations(annotations, animated: animated)
     }
@@ -67,7 +66,7 @@ open class MapsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -95,19 +94,19 @@ open class MapsViewController: UIViewController {
         view.isOpaque = true
 
         navigationItem.rightBarButtonItem = mapView.userTrackingBarButtonItem
-        loadPlace(false)
+        loadPlace(animated: false)
     }
     
     func loadPlace(animated: Bool) {
         title = place?.title
         
-        zoomToPlace(animated)
+        zoomToPlace(animated: animated)
     }
     
     func zoomToPlace(animated: Bool) {
         guard let place = place else { return }
-        mapView.addAnnotationWrapper(place)
-        mapView.showCoordinate(place.coordinate, altitude: 850, animated: animated)
+        mapView.addAnnotationWrapper(annotation: place)
+        mapView.showCoordinate(coordinate: place.coordinate, altitude: 850, animated: animated)
     }
 }
 
@@ -120,10 +119,10 @@ open class EmbeddedMapsViewController: MapsViewController {
     override open var place: RUPlace? {
         didSet {
             if let place = oldValue {
-                mapView.removeAnnotationWrapper(place)
+                mapView.removeAnnotationWrapper(annotation: place)
             }
             
-            zoomToPlace(false)
+            zoomToPlace(animated: false)
         }
     }
 }

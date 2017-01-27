@@ -8,7 +8,7 @@
 
 #import "RUMapsTableViewCell.h"
 #import "Rutgers-Swift.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 
 @interface RUMapsTableViewCell ()
 @property (nonatomic) UIView *controllerView;
