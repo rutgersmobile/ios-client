@@ -9,9 +9,6 @@
 #import "RULocationManager.h"
 #import <MapKit/MapKit.h>
 
-NSString *LocationManagerDidChangeLocationKey = @"LocationManagerDidChangeLocationKey";
-NSString *LocationManagerNotificationLocationKey = @"LocationManagerNotificationLocationKey";
-
 
 @interface RULocationManager () <CLLocationManagerDelegate>
 @property CLLocationManager *locationManager;

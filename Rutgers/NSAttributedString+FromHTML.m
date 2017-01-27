@@ -7,7 +7,7 @@
 //
 
 #import "NSAttributedString+FromHTML.h"
-#import <NSString+HTML.h>
+#import "NSString+HTML.h"
 #import "UIFont+DynamicType.h"
 
 @implementation NSAttributedString (FromHTML)

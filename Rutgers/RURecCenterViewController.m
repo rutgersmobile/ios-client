@@ -12,7 +12,7 @@
 #import "DataTuple.h"
 
 #import "Rutgers-Swift.h"
-#import <NSString+HTML.h>
+#import "NSString+HTML.h"
 #import "NSAttributedString+FromHTML.h"
 
 @interface RURecCenterViewController ()

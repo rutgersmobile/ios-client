@@ -7,7 +7,7 @@
 //
 
 #import "RUSOCDataLoadingManager.h"
-#import <AFNetworking.h>
+#import "AFNetworking.h"
 #import "RUUserInfoManager.h"
 #import "RUSOCCourseRow.h"
 #import "RUDataLoadingManager_Private.h"

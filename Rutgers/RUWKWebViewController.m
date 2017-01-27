@@ -9,7 +9,7 @@
 #import "RUWKWebViewController.h"
 #import "UIImage+TOWebViewControllerIcons.h"
 #import "NSObject+KVOBlock.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "NSDictionary+Channel.h"
 #import "TOActivitySafari.h"
 #import "TOActivityChrome.h"
