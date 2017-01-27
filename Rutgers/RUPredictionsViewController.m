@@ -233,16 +233,11 @@
             self.busNumberDataSource.alertTitle = @"Track bus arriving in...";
             
             self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
-                
-            }
-            
                 NSString* vehicleID = bodyRow.vehicleArray[buttonIndex];
                 
                 RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:((RUBusPredictionsAndMessageDataSource*)weakSelf.dataSource).item busNumber:vehicleID];
                 
                 [weakSelf.navigationController pushViewController: vc animated:YES];
-                
-                
             };
             
             [self.busNumberDataSource showAlertInView:self.view];
