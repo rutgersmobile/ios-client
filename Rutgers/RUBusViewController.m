@@ -7,10 +7,10 @@
 //
 
 /*
-            Set up the initial Table View Contoller On Tapping the Bus Icon
-            On tapping Cell Segues into predictions page
-        To Do :     
-            Convert this into a map
+ Set up the initial Table View Contoller On Tapping the Bus Icon
+ On tapping Cell Segues into predictions page
+ To Do :
+ Convert this into a map
  */
 
 #import "RUBusViewController.h"
@@ -48,8 +48,8 @@
 
 
 /*
-    Descript :
-    Since each of the View Controller are Handled by a Generic Channel , this functions allows us to set up specific Configurations for a particular View Controller...
+ Descript :
+ Since each of the View Controller are Handled by a Generic Channel , this functions allows us to set up specific Configurations for a particular View Controller...
  */
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel
 {
@@ -65,15 +65,18 @@
     self.searchDataSource = [[BusSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search All Routes and Stops";
     
-   // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
+    // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
     
+    RUDebug * debug = [[RUDebug alloc ] init];
+    [debug dumpView:self.navigationController.view atIndent:0];
+
 }
 
 -(void)openMapWithRoutes // show the map in a different view controller
 {
-    MapRouteViewController* vc =  [[MapRouteViewController alloc] init];
+    MapsViewController* vc =  [[MapsViewController alloc] init];
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -90,7 +93,7 @@
 
 //And stops the timer
 /*
-    View is being update / but with what <q>
+ View is being update / but with what <q>
  */
 -(void)viewWillDisappear:(BOOL)animated{
     [(RUBusDataSource *)self.dataSource stopUpdates];
@@ -102,6 +105,7 @@
 {
     
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
+    
     // Create a view using the item. Ie. Present the view with the bu stops and their timiings
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }

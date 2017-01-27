@@ -11,6 +11,14 @@
 #import <PureLayout.h>
 #import "UIFont+DynamicType.h"
 
+
+
+/***
+ 
+ Sets up constraints for items within the expanded cell in RUBusPredictionsVC
+ 
+ ***/
+
 @implementation RUPredictionsBodyTableViewCell
 
 -(void)initializeSubviews{
@@ -24,7 +32,7 @@
     
     self.minutesLabel.textAlignment = NSTextAlignmentRight;
     self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
-
+    
     ((RULabel *)self.minutesLabel).ignoresPreferredLayoutWidth = YES;
     ((RULabel *)self.descriptionLabel).ignoresPreferredLayoutWidth = YES;
     ((RULabel *)self.timeLabel).ignoresPreferredLayoutWidth = YES;
@@ -32,6 +40,7 @@
     [self.contentView addSubview:self.minutesLabel];
     [self.contentView addSubview:self.descriptionLabel];
     [self.contentView addSubview:self.timeLabel];
+    
 }
 
 -(void)updateFonts{

@@ -23,6 +23,7 @@
     
     if (self)
     {
+        
         self.routes = @[]; // filled up in the parseConfig method
         self.title = dictionary[@"title"];
         

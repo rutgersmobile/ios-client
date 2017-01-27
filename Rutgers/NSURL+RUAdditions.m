@@ -25,7 +25,7 @@
  
 */
 +(NSURL *)rutgersUrlWithPathComponents:(NSArray <NSString *>*)pathComponents{
-//    NSMutableString *string = [NSMutableString stringWithString:@"http://rumobile.rutgers.edu/link/"];
+
     
     NSMutableString *string = [NSMutableString stringWithString:@"rutgers://"];
     for (NSString *component in pathComponents) {

@@ -32,6 +32,7 @@
 
 -(NSString *)title{
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
+        
         return self.predictions.stopTitle;
     } else {
         return self.predictions.routeTitle;
