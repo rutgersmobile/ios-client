@@ -22,15 +22,11 @@
     }
 }
 
+
+
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     if (![super tableView:tableView shouldHighlightRowAtIndexPath:indexPath]) return NO;
     return (indexPath.row == 0);
-}
-
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    
 }
 
 @end

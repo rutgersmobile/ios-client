@@ -34,6 +34,8 @@
     NSMutableString *minutesString = [NSMutableString new];
     NSMutableString *descriptionString = [NSMutableString new];
     NSMutableString *timeString = [NSMutableString new];
+    NSMutableString *busTimeString = [NSMutableString new];
+    NSMutableArray *vehicleArray = [NSMutableArray new];
     
     [self.predictionTimes enumerateObjectsUsingBlock:^(RUBusArrival *arrivals, NSUInteger idx, BOOL *stop) {
         NSInteger minutes = arrivals.minutes;
@@ -59,6 +61,9 @@
             }
         }
         [timeString appendString:[self formatDate:date]];
+        
+        [vehicleArray addObject:vehicle];
+        
     }];
 
     self.minutesString = minutesString;

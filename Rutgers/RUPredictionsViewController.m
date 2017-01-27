@@ -15,17 +15,24 @@
 #import "NSURL+RUAdditions.h"
 #import "RUBusDataLoadingManager.h"
 #import "RUDefines.h"
+#import "RUBusNumberViewController.h"
+#import "RUBusPredictionsAndMessageDataSource.h"
+#import "AlertDataSource.h"
+#import "RUPredictionsBodyRow.h"
+#import "RUBusArrival.h"
+#import "RUPredictionsDataSource.h"
+#import "RUPredictionsBodyTableViewCell.h"
 
 #import "RUBusPredictionsAndMessageDataSource.h"
 
 #define PREDICTION_TIMER_INTERVAL 30.0
 
 /*
-    Handles the predictions for the BUS app.
+ Handles the predictions for the BUS app.
  */
 
 @interface RUPredictionsViewController ()
-@property (nonatomic) MSWeakTimer *timer; 
+@property (nonatomic) MSWeakTimer *timer;
 @property (nonatomic) id item;
 @property (nonatomic) id serializedItem;
 @end
@@ -81,7 +88,6 @@
      */
 
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
-
     // Set the title of the Bus . This usually happens , when we do not have a title ..
     [self.dataSource whenLoaded:^{
         if (self.dataSource != nil)
@@ -97,8 +103,20 @@
             });
         }
     }];
-   
-   
+    
+    /* Maps button to be implemented.  Currently does not do anything */
+    
+    /*
+     // Set up the button for opening the maps
+     UIButton *mapsView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [mapsView addTarget:self action:@selector(mapsButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+     [mapsView setBackgroundImage:[UIImage imageNamed:@"map"] forState:UIControlStateNormal];
+     UIBarButtonItem *mapsButton = [[UIBarButtonItem alloc] initWithCustomView:mapsView];
+     */
+    
+    // [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
+    
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , nil]];
     
     self.pullsToRefresh = YES;
 }
@@ -161,24 +179,78 @@
 
 
 /*
-    Make the messges unselectable
+ Make the messges unselectable
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 0) // if message then make it unselectable
     {
+        
         [tableView cellForRowAtIndexPath:indexPath].selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        
+    } else if (indexPath.row == 1) {
+        
+        
+        
+        DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
+        
+        if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
+            
+            __weak __typeof__(self) weakSelf = self;
+            
+            RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
+            
+            NSMutableArray* predictionTimes = [NSMutableArray new];
+            
+            for (RUBusArrival* arrivals in bodyRow.predictionTimes) {
+                if (arrivals.minutes < 1) {
+                    if (arrivals.seconds == 1) {
+                        [predictionTimes addObject:[NSString stringWithFormat:@"%li second", arrivals.seconds]];
+                    } else {
+                        [predictionTimes addObject:[NSString stringWithFormat:@"%li seconds", arrivals.seconds]];
+                    }
+                } else {
+                    if (arrivals.minutes == 1) {
+                        [predictionTimes addObject:[NSString stringWithFormat:@"%li minute", arrivals.minutes]];}
+                    else {
+                        [predictionTimes addObject:[NSString stringWithFormat:@"%li minutes", arrivals.minutes]];
+                    }
+                }
+                
+            }
+            
+            self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"" alertButtonTitles: predictionTimes];
+            
+            self.busNumberDataSource.alertTitle = @"Track bus arriving in...";
+            
+            self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
+                
+                NSString* vehicleID = bodyRow.vehicleArray[buttonIndex];
+                
+                RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:((RUBusPredictionsAndMessageDataSource*)weakSelf.dataSource).item busNumber:vehicleID];
+                
+                [weakSelf.navigationController pushViewController: vc animated:YES];
+                
+                
+            };
+            
+            [self.busNumberDataSource showAlertInView:self.view];
+            
+        }
     }
     else // pass on the message to the super class
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        
+        NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+        UITableViewCell* cell = [tableView cellForRowAtIndexPath:newIndexPath];
+        UIImageView *busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bus_pin"]];
+        
+        
+        cell.accessoryView = busImageView;
+        cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
     }
-}
-
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    
 }
 
 
