@@ -10,7 +10,7 @@
 
 #import "AAPLPlaceholderView.h"
 #import "RULabel.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "UIFont+DynamicType.h"
 
 #define CORNER_RADIUS 3.0
