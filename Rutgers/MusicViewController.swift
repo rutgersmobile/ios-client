@@ -42,12 +42,12 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
      */
     static func registerClass()
     {
-        RUChannelManager.sharedInstance().registerClass(MusicViewController.self)
+        RUChannelManager.sharedInstance().register(MusicViewController.self)
     }
     
-    static func channelWithConfiguration(channelConfiguration: [NSObject : AnyObject]!) -> AnyObject!
+    static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any!
     {
-        return MusicViewController(channel: channelConfiguration)
+        return MusicViewController(channel: channelConfiguration as [NSObject : AnyObject])
     }
 
     init(channel: [NSObject : AnyObject]) {
@@ -135,10 +135,10 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     func actionButtonTapped() {
         if let url = sharingURL() {
             let favoriteActivity = RUFavoriteActivity(title: "WRNU")
-            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity])
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity!])
             activityVC.excludedActivityTypes = [UIActivityType.print, UIActivityType.addToReadingList]
             if (UI_USER_INTERFACE_IDIOM() == .phone) {
-                self.presentViewController(activityVC, animated: true, completion: nil)
+                self.present(activityVC, animated: true, completion: nil)
                 return
             }
             if let popover = self.sharingPopoverController {
@@ -184,11 +184,11 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
             )
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         setPlayingState()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         volumeContainerView.backgroundColor = UIColor.clear
@@ -222,7 +222,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         return DynamicTableViewController.buildDynamicSharingURL(self.navigationController!, channel: self.channel)
     }
 
-    @IBAction func playRadio(sender: UIButton) {
+    @IBAction func playRadio(_ sender: UIButton) {
         toggleRadio()
     }
 }

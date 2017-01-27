@@ -35,16 +35,16 @@ open class RUFavorite: NSObject
     public init(title: String, url: NSURL)
     {
         self.title = title
-        self.url = url
+        self.url = url as URL
     }
-   
+
     /*
          Equality for objc objects :
          If two things are equal then there hashes must be equal : but two hashes being equal does not mean that the objects are equal
      
       */
     
-    public override func isEqual(object: AnyObject?) -> Bool
+    open override func isEqual(_ object: Any?) -> Bool
     {
         guard let other = object as? RUFavorite else { return false }
         return self.title == other.title && self.url == other.url
@@ -61,7 +61,7 @@ extension RUFavorite {
             let urlString = dictionary["url"] as? String,
             let url = URL(string: urlString) else { return nil }
         
-        self.init(title: title, url: url)
+        self.init(title: title, url: url as NSURL)
     }
     
     public func asDictionary() -> NSDictionary {
@@ -123,7 +123,12 @@ open class RUMenuItemManager: NSObject {
             notifyMenuItemsDidChange()
         }
         get {
-            return UserDefaults.standardUserDefaults().arrayForKey(MenuItemManagerActiveMenuItemsKey) ?? RUChannelManager.sharedInstance().contentChannels.flatMap { $0.channelHandle }
+            return UserDefaults
+                .standard
+                .array(forKey: MenuItemManagerActiveMenuItemsKey) as [AnyObject]?
+                    ?? RUChannelManager.sharedInstance().contentChannels.map {
+                        ($0 as AnyObject).channelHandle as AnyObject
+                    }
         }
     }
     
@@ -134,7 +139,7 @@ open class RUMenuItemManager: NSObject {
                 case let favorite as RUFavorite:
                     return favorite.asDictionary()
                 case let channel as NSDictionary:
-                    return channel.channelHandle
+                    return channel.channelHandle as AnyObject?
                 default: return nil
                 }
             }
@@ -145,7 +150,7 @@ open class RUMenuItemManager: NSObject {
                 case let dictionary as NSDictionary:
                     return RUFavorite(dictionary: dictionary)
                 case let string as String:
-                    return RUChannelManager.sharedInstance().channelWithHandle(string)
+                    return RUChannelManager.sharedInstance().channel(withHandle: string) as AnyObject?
                 default: return nil
                 }
             }

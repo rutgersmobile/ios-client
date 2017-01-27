@@ -8,9 +8,9 @@
 
 #import "RUTextViewController.h"
 #import "ALTableViewTextCell.h"
-#import <NSString+HTML.h>
+#import "NSString+HTML.h"
 #import "NSAttributedString+FromHTML.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "RUChannelManager.h"
 
 @interface RUTextViewController ()

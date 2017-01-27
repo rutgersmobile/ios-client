@@ -7,9 +7,9 @@
 //
 
 #import "RUReaderItem.h"
-#import <NSString+HTML.h>
+#import "NSString+HTML.h"
 #import "RUReaderTableViewCell.h"
-#import <XMLDictionary.h>
+#import "XMLDictionary.h"
 
 @interface RUReaderItem ()
 @property (nonatomic) NSDictionary *item;

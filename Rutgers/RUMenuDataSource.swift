@@ -15,16 +15,16 @@ open class RUMenuDataSource: ComposedDataSource {
         activeMenuItemsDataSource = RUMenuBasicDataSource()
         super.init()
         
-        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: MenuItemManagerDidChangeActiveMenuItemsKey, object: nil)
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: ChannelManagerDidUpdateChannelsKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: NSNotification.Name(rawValue: MenuItemManagerDidChangeActiveMenuItemsKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: NSNotification.Name(rawValue: ChannelManagerDidUpdateChannelsKey), object: nil)
 
         activeMenuItemsDataSource.items = RUMenuItemManager.sharedManager.menuItems
         
         let otherItemsDataSource = RUMenuBasicDataSource()
         otherItemsDataSource.items = RUChannelManager.sharedInstance().otherChannels
         
-        addDataSource(activeMenuItemsDataSource)
-        addDataSource(otherItemsDataSource)
+        add(activeMenuItemsDataSource)
+        add(otherItemsDataSource)
     }
     
     deinit {

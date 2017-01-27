@@ -7,7 +7,7 @@
 //
 
 #import "ALTableViewAbstractCell.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 
 @implementation ALTableViewAbstractCell
 

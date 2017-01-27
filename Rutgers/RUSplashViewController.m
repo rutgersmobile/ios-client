@@ -7,7 +7,7 @@
 //
 
 #import "RUSplashViewController.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "RUChannelManager.h"
 
 @interface RUSplashViewController ()

@@ -12,7 +12,7 @@
 #import "RUUserInfoManager.h"
 #import "RUNavigationController.h"
 #import "TableViewController_Private.h"
-#import <MMDrawerController.h> // NO LONGER USED // HAD TOO MANY ERRORS RELATED TO SHOWING THE EDIT OPTIONS VIEW PROPERLY
+#import "MMDrawerController.h" // NO LONGER USED // HAD TOO MANY ERRORS RELATED TO SHOWING THE EDIT OPTIONS VIEW PROPERLY
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
 #import "RUAppearance.h"

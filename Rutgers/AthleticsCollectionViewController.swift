@@ -41,42 +41,40 @@ extension  RUReaderDataSource : UICollectionViewDelegate
     // MARK: UICollectionViewDataSource
     
     
-    
-    override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+
+    override open func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return self.numberOfSections
     }
     
     
-    override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return self.numberOfItemsInSection(section)
+        return self.numberOfItems(inSection: section)
     }
     
-    override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
-    {
+    override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! AthleticsCollectionViewCell
         
-        let item : RUReaderItem = self.itemAtIndexPath(indexPath) as! RUReaderItem ;
+        let item : RUReaderItem = self.item(at: indexPath) as! RUReaderItem ;
         
         var cache : ImageCache = ImageCache()
         // get the image in a sepereate thread and fill it in later
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0))
-        {
+        DispatchQueue.global(qos: .background).async {
             var image : UIImage?
-            
+
             
             if( item.imagePresent)
             {
-                if let cachedImage = cache.getImage(item.imageURL.absoluteString!)
+                if let cachedImage = cache.getImage(named: item.imageURL.absoluteString)
                 {
                     image = cachedImage
                 }
                 else
                 {
-                    let imageData : NSData? = NSData(contentsOfURL: item.imageURL)
+                    let imageData : NSData? = NSData(contentsOf: item.imageURL)
                     image = UIImage(data: imageData! as Data)
-                    cache.setImage(item.imageURL.absoluteString!, image: image!)
+                    cache.setImage(named: item.imageURL.absoluteString, image: image!)
                 }
                
             }
@@ -91,11 +89,10 @@ extension  RUReaderDataSource : UICollectionViewDelegate
             // For some reason this not a 404 at the server side and gives us some rubbish back , so we need to chek if we have been able to form an image from the data
             
             
-            
-            dispatch_async(dispatch_get_main_queue())
-            {
+
+            DispatchQueue.main.async {
                 // Update the UI
-                cell.schoolIcon.contentMode = .ScaleAspectFit
+                cell.schoolIcon.contentMode = .scaleAspectFit
                 cell.schoolIcon.image = image
             }
         }
@@ -127,7 +124,7 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         cell.schoolNameLabel.text = item.title
         
         // set the shadow
-        cell.layer.shadowOffset = CGSizeZero;
+        cell.layer.shadowOffset = CGSize.zero;
         cell.layer.shadowColor = UIColor.black.cgColor
         cell.layer.shadowRadius = 4.0;
         cell.layer.shadowOpacity = 0.5;
@@ -147,26 +144,25 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     var activityIndicator : UIActivityIndicatorView! = nil
    
     /// Conform to RUChannelProtocol
-    static func channelHandle() -> String!
+    static func channelHandle() -> String
     {
         return "Athletics"
     }
     
     static func registerClass()
     {
-        RUChannelManager.sharedInstance().registerClass(AthleticsCollectionViewController.self)
+        RUChannelManager.sharedInstance().register(AthleticsCollectionViewController.self)
     }
     
-    static func channelWithConfiguration(channel : [NSObject : AnyObject]!) -> AnyObject!
-    {
+    static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any! {
         //   let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        return AthleticsCollectionViewController(channel: channel) // load the view for the controller from the nib file
+        return AthleticsCollectionViewController(channel: channelConfiguration as [NSObject : AnyObject]!) // load the view for the controller from the nib file
     }
    
     init(channel : [NSObject : AnyObject]!)
     {
-        self.channel = channel ;
-        super.init(nibName: "AthleticsCollectionViewController", bundle: NSBundle.mainBundle())
+        self.channel = channel as NSDictionary! ;
+        super.init(nibName: "AthleticsCollectionViewController", bundle: Bundle.main)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -183,7 +179,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         activityIndicator.startAnimating()
         self.view.addSubview(activityIndicator)
         
-        self.collectionView!.registerNib(UINib.init(nibName: "AthleticsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.register(UINib.init(nibName: "AthleticsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
         
         // Do any additional setup after loading the view.
         
@@ -197,7 +193,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         let atheleticsUrl = "sports/\(self.channel["data"]!).json"
         self.dataSource = RUReaderDataSource.init(url: atheleticsUrl)
         
-        self.dataSource.loadContentWithAnyBlock
+        self.dataSource.loadContent
             {
                 DispatchQueue.main.async // call reload on main thread otherwise veryt laggy
                 {
@@ -209,12 +205,12 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
        
         self.collectionView?.dataSource = self.dataSource
        // Add notification to handle rotate of the app .. 
-        NotificationCenter.default.addObserver(self, selector: #selector(AthleticsCollectionViewController.didRotate), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(AthleticsCollectionViewController.orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
     }
 
     // MARK: Flow Layout Delegate
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         // deteremine the cell hieght based on the orientation and device ..
         
@@ -233,7 +229,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     }
    
    
-    func didRotate()
+    func orientationChanged()
     {
         print("rotate")
         collectionView?.collectionViewLayout.invalidateLayout()

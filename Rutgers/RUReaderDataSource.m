@@ -10,7 +10,7 @@
 #import "RUReaderTableViewCell.h"
 #import "RUReaderItem.h"
 #import "DataSource_Private.h"
-#import <UIKit+AFNetworking.h>
+#import "UIKit+AFNetworking.h"
 #import "RUNetworkManager.h"
 
 @interface RUReaderDataSource ()
