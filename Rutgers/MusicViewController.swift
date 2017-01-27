@@ -191,6 +191,8 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        RutgersAPI.sharedInstance.getDiningHalls()
+        
         volumeContainerView.backgroundColor = UIColor.clear
         let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
         volumeContainerView.addSubview(volumeView)

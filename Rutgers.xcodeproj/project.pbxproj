@@ -241,6 +241,8 @@
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
+		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
+		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -707,6 +709,8 @@
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
+		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
+		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1662,9 +1666,27 @@
 		C41E66181E38E96600562CCB /* api */ = {
 			isa = PBXGroup;
 			children = (
-				C41E66191E38E9A800562CCB /* RutgersService.swift */,
+				C4B1E15F1E3BD0E0008DC388 /* model */,
+				C4B1E15E1E3BD0CC008DC388 /* services */,
+				C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */,
 			);
 			name = api;
+			sourceTree = "<group>";
+		};
+		C4B1E15E1E3BD0CC008DC388 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				C41E66191E38E9A800562CCB /* RutgersService.swift */,
+			);
+			name = services;
+			sourceTree = "<group>";
+		};
+		C4B1E15F1E3BD0E0008DC388 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				C4B1E1601E3BD101008DC388 /* Food.swift */,
+			);
+			name = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1939,6 +1961,7 @@
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
 				62AACB001DE3AE2900DF8E70 /* MapRouteViewController.swift in Sources */,
 				6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */,
+				C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */,
 				A7E8E137192484B00089F166 /* RUTextViewController.m in Sources */,
 				04A1EFE91A5C509600DE0351 /* ActiveStopsDataSource.m in Sources */,
 				A7B435EF1912E286001FE8B6 /* RUFoodViewController.m in Sources */,
@@ -2007,6 +2030,7 @@
 				A72795EB195B5FD900C21165 /* RUFeedbackViewController.m in Sources */,
 				04A1EFD51A5C508300DE0351 /* RUPredictionsDataSource.m in Sources */,
 				04A1EFDF1A5C508D00DE0351 /* BusSearchDataSource.m in Sources */,
+				C4B1E1611E3BD101008DC388 /* Food.swift in Sources */,
 				B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */,
 				04C0D2D01C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift in Sources */,
 				04A1EFF01A5C50A700DE0351 /* RUBusDataAgencyManager.m in Sources */,
