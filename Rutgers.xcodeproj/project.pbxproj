@@ -232,6 +232,7 @@
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
 		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
 		B5971AA91E3FC5EA00FABC70 /* RUBusNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */; };
+		B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528E0061E3BE9CC00A9DE6C /* Sport.swift */; };
 		B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
@@ -694,6 +695,7 @@
 		B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5971AA71E3FC5EA00FABC70 /* RUBusNumberButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberButton.h; sourceTree = "<group>"; };
 		B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberButton.m; sourceTree = "<group>"; };
+		B528E0061E3BE9CC00A9DE6C /* Sport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
 		B5ACFDC41E2FE6EC00E9281C /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
 		B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberViewController.m; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1688,6 +1690,7 @@
 			isa = PBXGroup;
 			children = (
 				C4B1E1601E3BD101008DC388 /* Food.swift */,
+				B528E0061E3BE9CC00A9DE6C /* Sport.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -2105,6 +2108,7 @@
 				621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */,
 				04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */,
 				A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */,
+				B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */,
 				A7778D7419A4FEEF003BD8DE /* RowHeightCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

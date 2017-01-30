@@ -10,6 +10,9 @@ import UIKit
 
 private let reuseIdentifier = "Cell_Atheletics"
 
+let sharedInstance = RutgersAPI.sharedInstance
+
+
 
 struct ImageCache
 {
@@ -172,7 +175,9 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
+        
+        sharedInstance.getGamesForSport(sport: "baseball")
+        
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.hidesWhenStopped = true;
         activityIndicator.center = self.view.center
