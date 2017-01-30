@@ -22,6 +22,7 @@
 #import "RUBusArrival.h"
 #import "RUPredictionsDataSource.h"
 #import "RUPredictionsBodyTableViewCell.h"
+#import "RUBusNumberButton.h"
 
 
 
@@ -84,14 +85,14 @@
     //All of the content loading happens in the data source
     
     /*
-
+     
      RUPrediction... is an interface which depends on the superclass expandingcells...
      Which in turn inherits from composed data source which in turn inherits from the Data Source class
      
      */
     
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
-
+    
     // Set the title of the Bus . This usually happens , when we do not have a title ..
     
     [self.dataSource whenLoaded:^{
@@ -136,7 +137,7 @@
 }
 
 /*
-    the self.item is set by the init , and can either represent the route or a stop and based on that 
+ the self.item is set by the init , and can either represent the route or a stop and based on that
  */
 
 -(NSURL *)sharingURL
@@ -173,6 +174,8 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [self.timer invalidate];
     [super viewWillDisappear:animated];
+    
+    
 }
 
 -(UITableViewRowAnimation)rowAnimationForOperationDirection:(DataSourceAnimationDirection)direction{
@@ -188,9 +191,92 @@
     }
 }
 
-/*
- Make the messges unselectable
- */
+//The IBAction uses the data from sender in order to return the indexPath so the compiler knows which times/what bus to display to the user
+
+- (IBAction)busPinButtonTapped:(id)sender {
+    
+    //Casts the sender data as the RUBusNumberButton class in order to access the indexPath property
+    RUBusNumberButton* busNumberButton = (RUBusNumberButton*)sender;
+    
+    //Uses the busNumberButton indexPath property in order to access the correct data to display
+    DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:busNumberButton.indexPath];
+    
+    if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
+        
+        __weak __typeof__(self) weakSelf = self;
+        
+        RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
+        
+        NSMutableArray* predictionTimes = [NSMutableArray new];
+        
+        //Filters through the arrival times and formats the times accrodingly - if minutes == 0 display seconds etc. etc.
+        for (RUBusArrival* arrivals in bodyRow.predictionTimes) {
+            if (arrivals.minutes < 1) {
+                if (arrivals.seconds == 1) {
+                    [predictionTimes addObject:[NSString stringWithFormat:@"%li second", arrivals.seconds]];
+                } else {
+                    [predictionTimes addObject:[NSString stringWithFormat:@"%li seconds", arrivals.seconds]];
+                }
+            } else {
+                if (arrivals.minutes == 1) {
+                    [predictionTimes addObject:[NSString stringWithFormat:@"%li minute", arrivals.minutes]];}
+                else {
+                    [predictionTimes addObject:[NSString stringWithFormat:@"%li minutes", arrivals.minutes]];
+                }
+            }
+            
+        }
+        
+        //Initializes the AlertDataSource (popup) with the predictionTimes array
+        self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"" alertButtonTitles: predictionTimes];
+        
+        self.busNumberDataSource.alertTitle = @"Track bus arriving in...";
+        
+        //This closure controls what happens when a user taps on a row in the alertView that pops up
+        self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
+            NSString* vehicleID = bodyRow.vehicleArray[buttonIndex];
+            
+            RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:((RUBusPredictionsAndMessageDataSource*)weakSelf.dataSource).item busNumber:vehicleID];
+            
+            [weakSelf.navigationController pushViewController: vc animated:YES];
+        };
+        
+        //Displays Alert
+        [self.busNumberDataSource showAlertInView:self.view];
+    }
+    
+}
+
+
+//This method assures that the images/buttons get realloc when the view reloads
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    //Since the expanding cells are in indexPath.row(1) and we only act on the expanding cells, this assures us that nothing will be displayed in the headerRows
+    if (indexPath.row == 1) {
+        UIImageView *busPinImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bus_pin"]];
+        
+        RUBusNumberButton *busPinButton = [RUBusNumberButton buttonWithType:UIButtonTypeCustom];
+        [busPinButton setFrame:CGRectMake(10, 5, 55, 55)];
+        
+        busPinButton.indexPath = indexPath;
+        [busPinButton addTarget:self action:@selector(busPinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell addSubview:busPinButton];
+        
+        //May not be necessary, but just in case the button gets buried
+        [cell bringSubviewToFront:busPinButton];
+        
+        cell.accessoryView = busPinButton;
+        
+        //Initializing a UIButton with a image failed to work as intended, so this adds a subview of the necessary image to the same location as the button
+        [cell.accessoryView addSubview:busPinImageView];
+        
+        
+        cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    }
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -199,64 +285,12 @@
         
         [tableView cellForRowAtIndexPath:indexPath].selectionStyle = UITableViewCellSelectionStyleNone;
         
-    } else if (indexPath.row == 1) {
-        
-        DataSource *basicDataSource = [(BasicDataSource *)self.dataSource itemAtIndexPath:indexPath];
-        
-        if ([basicDataSource isKindOfClass:[RUPredictionsBodyRow class]]) {
-            
-            __weak __typeof__(self) weakSelf = self;
-            
-            RUPredictionsBodyRow* bodyRow = (RUPredictionsBodyRow*)basicDataSource;
-            
-            NSMutableArray* predictionTimes = [NSMutableArray new];
-            
-            for (RUBusArrival* arrivals in bodyRow.predictionTimes) {
-                if (arrivals.minutes < 1) {
-                    if (arrivals.seconds == 1) {
-                        [predictionTimes addObject:[NSString stringWithFormat:@"%li second", arrivals.seconds]];
-                    } else {
-                        [predictionTimes addObject:[NSString stringWithFormat:@"%li seconds", arrivals.seconds]];
-                    }
-                } else {
-                    if (arrivals.minutes == 1) {
-                        [predictionTimes addObject:[NSString stringWithFormat:@"%li minute", arrivals.minutes]];}
-                    else {
-                        [predictionTimes addObject:[NSString stringWithFormat:@"%li minutes", arrivals.minutes]];
-                    }
-                }
-                 
-            }
-            
-            self.busNumberDataSource = [[AlertDataSource alloc] initWithInitialText:@"" alertButtonTitles: predictionTimes];
-            
-            self.busNumberDataSource.alertTitle = @"Track bus arriving in...";
-            
-            self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
-                NSString* vehicleID = bodyRow.vehicleArray[buttonIndex];
-                
-                RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:((RUBusPredictionsAndMessageDataSource*)weakSelf.dataSource).item busNumber:vehicleID];
-                
-                [weakSelf.navigationController pushViewController: vc animated:YES];
-            };
-            
-            [self.busNumberDataSource showAlertInView:self.view];
-            
-        }
     }
     
     
     else // pass on the message to the super class
     {
         [super tableView:tableView didSelectRowAtIndexPath:indexPath];
-        
-        NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-        UITableViewCell* cell = [tableView cellForRowAtIndexPath:newIndexPath];
-        UIImageView *busImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bus_pin"]];
-        
-        
-        cell.accessoryView = busImageView;
-        cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
     }
 }
 
