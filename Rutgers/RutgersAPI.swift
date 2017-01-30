@@ -15,12 +15,13 @@ class RutgersAPI {
     static let sharedInstance = RutgersAPI()
 
     let provider : RxMoyaProvider<RutgersService>
-    
+
     private init() {
         self.provider = RxMoyaProvider<RutgersService>()
     }
 
     public func getDiningHalls() -> Observable<[DiningHall]> {
-        return self.provider.request(.getDiningHalls).mapUnboxArray(type: DiningHall.self)
+        return self.provider.request(.getDiningHalls)
+            .mapUnboxArray(type: DiningHall.self)
     }
 }
