@@ -253,10 +253,15 @@
     
     //Since the expanding cells are in indexPath.row(1) and we only act on the expanding cells, this assures us that nothing will be displayed in the headerRows
     if (indexPath.row == 1) {
-        UIImageView *busPinImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bus_pin"]];
         
         RUBusNumberButton *busPinButton = [RUBusNumberButton buttonWithType:UIButtonTypeCustom];
         [busPinButton setFrame:CGRectMake(10, 5, 55, 55)];
+        
+         UIImage *image = [[UIImage imageNamed:@"bus_pin"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+        
+        [busPinButton setImage:image forState:UIControlStateNormal];
+        busPinButton.tintColor = [UIColor grayColor];
         
         busPinButton.indexPath = indexPath;
         [busPinButton addTarget:self action:@selector(busPinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -267,10 +272,6 @@
         [cell bringSubviewToFront:busPinButton];
         
         cell.accessoryView = busPinButton;
-        
-        //Initializing a UIButton with a image failed to work as intended, so this adds a subview of the necessary image to the same location as the button
-        [cell.accessoryView addSubview:busPinImageView];
-        
         
         cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
     }
