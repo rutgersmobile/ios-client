@@ -67,8 +67,23 @@
                 //Update with the response
                 NSArray *items = responseObject[@"children"];
                 NSArray * bannerItems = responseObject[@"banner"];
+
+                NSMutableArray* home = [NSMutableArray new];
+                NSMutableArray* away = [NSMutableArray new];
+                for (NSDictionary* item in items) {
+                    if ([item isHome]) {
+                        [home addObject:item];
+                    } else {
+                        [away addObject:item];
+                    }
+                }
+
+                NSMutableArray* sortedItems = [NSMutableArray new];
+                [sortedItems addObjectsFromArray:home];
+                [sortedItems addObjectsFromArray:away];
+
                 [loading updateWithContent:^(typeof(self) me) {
-                    me.items = items;
+                    me.items = [sortedItems copy];
                     me.bannerItems= bannerItems;
                 }];
             } else {

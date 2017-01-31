@@ -43,6 +43,22 @@
     return nil;
 }
 
+-(BOOL)isVariable
+{
+    if ([self[@"title"] isKindOfClass:[NSString class]]) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+-(BOOL)isHome
+{
+    return [self isVariable] && [self[@"title"][@"homeCampus"]
+        isEqualToString:[RUUserInfoManager currentCampus][@"title"]
+    ];
+}
+
 /*
     Create a cache to store the items in
  
