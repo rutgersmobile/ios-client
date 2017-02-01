@@ -38,11 +38,7 @@ extension Meal: Unboxable {
     init(unboxer: Unboxer) throws {
         self.name = try unboxer.unbox(key: "meal_name")
         self.isAvailable = try unboxer.unbox(key: "meal_avail")
-        do {
-            self.genres = try unboxer.unbox(key: "genres")
-        } catch {
-            self.genres = []
-        }
+        self.genres = (try? unboxer.unbox(key: "genres")) ?? []
     }
 }
 

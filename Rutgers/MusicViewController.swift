@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import MediaPlayer
+import RxSwift
 
 class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverControllerDelegate
 {
@@ -25,6 +26,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 
     static var playHandle : AnyObject?
     static var pauseHandle : AnyObject?
+    let disposeBag = DisposeBag()
 
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
@@ -182,6 +184,18 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
                 name: NSNotification.Name.UIApplicationWillEnterForeground,
                 object: nil
             )
+
+        RutgersAPI.sharedInstance.getGamesForSport(sport: "baseball")
+            .subscribe { event in
+                switch event {
+                case let .next(sport):
+                    print(sport)
+                case let .error(error):
+                    print(error)
+                default:
+                    break
+                }
+            }.addDisposableTo(disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
