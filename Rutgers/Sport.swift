@@ -10,76 +10,53 @@ import Foundation
 import Unbox
 
 struct Sport {
-    let games : [Games]
+    let description : String
+    let games : [Game]
 }
 
-struct Games {
+struct Game {
     let gameDescription : String
-    let home : Home
-    let away : Away
+    let home : Team
+    let away : Team
     let location : String
+    let isEvent : Bool
 }
 
-struct Home {
+struct Team {
     let name : String
     let code : String
-    let score : Int
-}
-
-struct Away {
-    let name : String
-    let code : String
-    let score : String
+    let score : Int?
 }
 
 struct Start {
     let date : String
-    let time : String
+    let time : Bool
     let timeString : String
 }
 
 extension Sport: Unboxable {
     init(unboxer: Unboxer) throws {
         self.games = try unboxer.unbox(key: "games")
+        self.description = try unboxer.unbox(key: "description")
     }
-    
-    
 }
 
-extension Games: Unboxable {
+extension Game: Unboxable {
     init(unboxer: Unboxer) throws {
         self.gameDescription = try unboxer.unbox(key: "description")
         self.home = try unboxer.unbox(key: "home")
         self.away = try unboxer.unbox(key: "away")
         self.location = try unboxer.unbox(key: "location")
+        self.isEvent = try unboxer.unbox(key: "isEvent")
     }
 }
 
-extension Home: Unboxable {
+extension Team: Unboxable {
     init(unboxer: Unboxer) throws {
         self.name = try unboxer.unbox(key: "name")
         self.code = try unboxer.unbox(key: "code")
-        
-      
-        self.score = try unboxer.unbox(key: "score")
-        
-//        else {
-//            self.score = 0
-//        }
-        
-            
-        
+        self.score = try? unboxer.unbox(key: "score")
     }
-    
-}
-
-extension Away: Unboxable {
-    init(unboxer: Unboxer) throws {
-        self.name = try unboxer.unbox(key: "name")
-        self.code = try unboxer.unbox(key: "code")
-        self.score = try unboxer.unbox(key: "score")
-    }
-    
 }
 
 extension Start: Unboxable {
@@ -88,5 +65,4 @@ extension Start: Unboxable {
         self.time = try unboxer.unbox(key: "time")
         self.timeString = try unboxer.unbox(key: "timeString")
     }
-    
 }
