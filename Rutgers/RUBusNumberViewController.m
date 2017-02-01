@@ -6,8 +6,8 @@
 //  Copyright © 2017 Rutgers. All rights reserved.
 //
 
-/* So far this class is a near exact copy of RUPredictionsViewConroller in order to see how the data is passed and whether or not it can be filtered such that a user should only see a particular bus number and the stops it will make 
-    This class will ultimately be heavily modified, or even deleted.
+/* So far this class is a near exact copy of RUPredictionsViewConroller in order to see how the data is passed and whether or not it can be filtered such that a user should only see a particular bus number and the stops it will make
+ This class will ultimately be heavily modified, or even deleted.
  */
 
 #import "RUBusNumberViewController.h"
@@ -99,9 +99,11 @@
      Which in turn inherits from composed data source which in turn inherits from the Data Source class
      */
     
-
+    
     
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item busNumber:self.busNumber];
+    
+    
     
     // Set the title of the Bus . This usually happens , when we do not have a title ..
     
@@ -123,7 +125,7 @@
         }
     }];
     
-     
+    
     
     self.pullsToRefresh = YES;
 }
@@ -132,6 +134,8 @@
 //This causes an update timer to start upon the Predictions View controller appearing
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    
     
     // Sets up a timer that repeatedly calls setNeeds... on the data source .
     // What determine what information the data source will request ????? <q>
@@ -163,6 +167,8 @@
  */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    
     
     if(indexPath.section == 0) // if message then make it unselectable
     {

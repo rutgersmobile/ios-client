@@ -23,6 +23,7 @@
 #import "RUPredictionsDataSource.h"
 #import "RUPredictionsBodyTableViewCell.h"
 #import "RUBusNumberButton.h"
+#import <Foundation/Foundation.h>
 
 
 
@@ -236,6 +237,7 @@
         self.busNumberDataSource.alertAction = ^(NSString *buttonTitle, NSInteger buttonIndex) {
             NSString* vehicleID = bodyRow.vehicleArray[buttonIndex];
             
+            
             RUBusNumberViewController* vc = [[RUBusNumberViewController alloc] initWithItem:((RUBusPredictionsAndMessageDataSource*)weakSelf.dataSource).item busNumber:vehicleID];
             
             [weakSelf.navigationController pushViewController: vc animated:YES];
@@ -245,6 +247,21 @@
         [self.busNumberDataSource showAlertInView:self.view];
     }
     
+}
+
+//Tried to use an extension on UIImage, but it proved to be too cumbersome to implement.  Could be added to an extension at some point in the future.
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 
@@ -258,12 +275,17 @@
         [busPinButton setFrame:CGRectMake(10, 5, 55, 55)];
         
          UIImage *image = [[UIImage imageNamed:@"bus_pin"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
+        
+        
         
         [busPinButton setImage:image forState:UIControlStateNormal];
         busPinButton.tintColor = [UIColor grayColor];
         
+        
+        
         busPinButton.indexPath = indexPath;
+        [busPinButton setBackgroundImage:[self imageWithColor:[UIColor darkGrayColor]] forState:UIControlEventAllTouchEvents];
+        
         [busPinButton addTarget:self action:@selector(busPinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell addSubview:busPinButton];
@@ -277,6 +299,8 @@
     }
     
 }
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -296,4 +320,9 @@
 }
 
 
+
+
 @end
+
+
+
