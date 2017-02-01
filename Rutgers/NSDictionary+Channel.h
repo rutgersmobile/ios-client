@@ -12,6 +12,8 @@
 @interface NSDictionary (Channel)
 
 @property (nonatomic, readonly) NSString *channelTitle;
+@property (nonatomic, readonly) BOOL isVariable;
+@property (nonatomic, readonly) BOOL isHome;
 
 @property (nonatomic, readonly) UIImage *channelIcon;
 @property (nonatomic, readonly) UIImage *filledChannelIcon;
