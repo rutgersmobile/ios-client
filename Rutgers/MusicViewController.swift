@@ -13,13 +13,14 @@ import MediaPlayer
 class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverControllerDelegate
 {
 
-    let audioPlayer : AVPlayer?
+    static var audioPlayer : AVPlayer?
     var playing = false
     let channel : [NSObject : AnyObject]
     let playImageName = "ic_play_arrow_white_48pt"
     let pauseImageName = "ic_pause_white_48pt"
     var sharingPopoverController : UIPopoverController? = nil
     var shareButton : UIBarButtonItem? = nil
+    let streamUrl : String
 
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
@@ -45,9 +46,15 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         return MusicViewController(channel: channelConfiguration)
     }
 
+    func setupPlayerIfNil() {
+        if (MusicViewController.audioPlayer == nil || MusicViewController.audioPlayer?.error != nil) {
+            MusicViewController.audioPlayer = AVPlayer(URL: NSURL(string: streamUrl)!)
+        }
+    }
+
     init(channel: [NSObject : AnyObject]) {
         self.channel = channel
-        self.audioPlayer = AVPlayer(URL: NSURL(string: channel["url"] as! String)!)
+        self.streamUrl = channel["url"] as! String
         super.init(nibName: .None, bundle: .None)
     }
     
@@ -78,6 +85,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        setupPlayerIfNil()
         self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionButtonTapped))
         self.navigationItem.rightBarButtonItem = self.shareButton
         backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
@@ -87,10 +95,23 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
             .defaultCenter()
             .addObserver(
                 self,
-                selector: #selector(setPlayingState),
+                selector: #selector(applicationWillEnterForeground),
                 name: UIApplicationWillEnterForegroundNotification,
                 object: nil
             )
+    }
+
+    func recreateIfStopped() {
+        if (MusicViewController.audioPlayer?.rate == 0) {
+            MusicViewController.audioPlayer = nil
+        }
+        setupPlayerIfNil()
+    }
+
+    func applicationWillEnterForeground() {
+        recreateIfStopped()
+        setupAudioSession()
+        setPlayingState()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -102,23 +123,18 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     }
 
     func setPlayingState() {
-        playing = audioPlayer?.rate != 0 && audioPlayer?.error == nil
+        playing = MusicViewController.audioPlayer?.rate != 0 && MusicViewController.audioPlayer?.error == nil
         playButton?.setImage(UIImage(named: playing ? pauseImageName : playImageName), forState: .Normal)
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        volumeContainerView.backgroundColor = UIColor.clearColor()
-        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeContainerView.addSubview(volumeView)
-
+    func setupAudioSession() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+
         if #available(iOS 7.1, *) {
             let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
             commandCenter.playCommand.addTargetWithHandler({ event in
@@ -132,6 +148,16 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         }
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        volumeContainerView.backgroundColor = UIColor.clearColor()
+        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
+        volumeContainerView.addSubview(volumeView)
+
+        setupAudioSession()
+    }
+
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
@@ -139,12 +165,13 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     }
 
     func toggleRadio() {
+        setupPlayerIfNil()
         if (!playing) {
-            audioPlayer?.play()
+            MusicViewController.audioPlayer?.play()
             playButton.setImage(UIImage(named: pauseImageName), forState: .Normal)
             playing = true
         } else {
-            audioPlayer?.pause()
+            MusicViewController.audioPlayer?.pause()
             playButton.setImage(UIImage(named: playImageName), forState: .Normal)
             playing = false
         }
