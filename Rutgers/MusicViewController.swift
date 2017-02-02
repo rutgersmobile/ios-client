@@ -22,6 +22,9 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     var shareButton : UIBarButtonItem? = nil
     let streamUrl : String
 
+    var playHandle : AnyObject?
+    var pauseHandle : AnyObject?
+
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var wrnuLogo: UIImageView!
@@ -137,14 +140,25 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 
         if #available(iOS 7.1, *) {
             let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
-            commandCenter.playCommand.addTargetWithHandler({ event in
-                self.toggleRadio()
+            playHandle = commandCenter.playCommand.addTargetWithHandler({ event in
+                MusicViewController.play(self)
                 return .Success
             })
-            commandCenter.pauseCommand.addTargetWithHandler({ event in
-                self.toggleRadio()
+            pauseHandle = commandCenter.pauseCommand.addTargetWithHandler({ event in
+                MusicViewController.pause(self)
                 return .Success
             })
+        }
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if (!playing) {
+            if #available(iOS 7.1, *) {
+                let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+                commandCenter.playCommand.removeTarget(playHandle)
+                commandCenter.pauseCommand.removeTarget(pauseHandle)
+            }
         }
     }
 
@@ -164,16 +178,24 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         // Dispose of any resources that can be recreated.
     }
 
+    static func play(me: MusicViewController) {
+        MusicViewController.audioPlayer?.play()
+        me.playButton.setImage(UIImage(named: me.pauseImageName), forState: .Normal)
+        me.playing = true
+    }
+
+    static func pause(me: MusicViewController) {
+        MusicViewController.audioPlayer?.pause()
+        me.playButton.setImage(UIImage(named: me.playImageName), forState: .Normal)
+        me.playing = false
+    }
+
     func toggleRadio() {
         setupPlayerIfNil()
         if (!playing) {
-            MusicViewController.audioPlayer?.play()
-            playButton.setImage(UIImage(named: pauseImageName), forState: .Normal)
-            playing = true
+            MusicViewController.play(self)
         } else {
-            MusicViewController.audioPlayer?.pause()
-            playButton.setImage(UIImage(named: playImageName), forState: .Normal)
-            playing = false
+            MusicViewController.pause(self)
         }
     }
 
