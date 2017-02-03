@@ -16,4 +16,5 @@ target 'Rutgers' do
     pod 'Unbox'
     pod 'RxSwift', '~> 3.0'
     pod 'RxCocoa', '~> 3.0'
+    pod 'JSQDataSourcesKit'
 end
