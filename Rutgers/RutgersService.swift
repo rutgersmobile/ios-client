@@ -16,12 +16,13 @@ enum RutgersService {
     case getMotd
     case getChannel
     case getNBAgency
+    case getCinema
 }
 
 extension RutgersService : TargetType {
     var baseURL: URL {
-//        return URL(string: "https://doxa.rutgers.edu/mobile-mattro/3")!
-        return URL(string: "https://doxa.rutgers.edu/mobile/3")!
+        return URL(string: "https://doxa.rutgers.edu/mobile-mattro/3")!
+//        return URL(string: "https://doxa.rutgers.edu/mobile/3")!
     }
 
     var path: String {
@@ -36,6 +37,8 @@ extension RutgersService : TargetType {
             return "/ordered_content.json"
         case .getNBAgency:
             return "/rutgersrouteconfig.txt"
+        case .getCinema:
+            return "/rutgers-cinema.txt"
         }
     }
 
@@ -57,7 +60,7 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema:
             return .request
         }
     }
