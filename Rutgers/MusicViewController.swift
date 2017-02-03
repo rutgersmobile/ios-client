@@ -21,9 +21,10 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     var sharingPopoverController : UIPopoverController? = nil
     var shareButton : UIBarButtonItem? = nil
     let streamUrl : String
+    var newTaskID = UIBackgroundTaskInvalid
 
-    var playHandle : AnyObject?
-    var pauseHandle : AnyObject?
+    static var playHandle : AnyObject?
+    static var pauseHandle : AnyObject?
 
     @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
@@ -49,12 +50,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         return MusicViewController(channel: channelConfiguration)
     }
 
-    func setupPlayerIfNil() {
-        if (MusicViewController.audioPlayer == nil || MusicViewController.audioPlayer?.error != nil) {
-            MusicViewController.audioPlayer = AVPlayer(URL: NSURL(string: streamUrl)!)
-        }
-    }
-
     init(channel: [NSObject : AnyObject]) {
         self.channel = channel
         self.streamUrl = channel["url"] as! String
@@ -63,6 +58,122 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupPlayer() {
+        MusicViewController.audioPlayer = AVPlayer(URL: NSURL(string: streamUrl)!)
+    }
+
+    func setupPlayerIfInvalid() {
+        print(newTaskID)
+        if (MusicViewController.audioPlayer == nil || MusicViewController.audioPlayer?.error != nil || newTaskID == UIBackgroundTaskInvalid) {
+            setupPlayer()
+        }
+    }
+
+    func recreateIfStopped() {
+        if (MusicViewController.audioPlayer?.rate == 0) {
+            MusicViewController.audioPlayer = nil
+        }
+        setupPlayerIfInvalid()
+    }
+
+    func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+
+        if #available(iOS 7.1, *) {
+            let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+            commandCenter.playCommand.removeTarget(MusicViewController.playHandle)
+            MusicViewController.playHandle = commandCenter.playCommand.addTargetWithHandler({ event in
+                self.play()
+                return .Success
+            })
+            commandCenter.pauseCommand.removeTarget(MusicViewController.pauseHandle)
+            MusicViewController.pauseHandle = commandCenter.pauseCommand.addTargetWithHandler({ event in
+                self.pause()
+                return .Success
+            })
+        }
+    }
+
+    func setPlayingState() {
+        playing = MusicViewController.audioPlayer?.rate != 0 && MusicViewController.audioPlayer?.error == nil
+        playButton?.setImage(UIImage(named: playing ? pauseImageName : playImageName), forState: .Normal)
+    }
+
+    func play() {
+        setupPlayerIfInvalid()
+        MusicViewController.audioPlayer?.play()
+        self.playButton.setImage(UIImage(named: self.pauseImageName), forState: .Normal)
+        self.playing = true
+    }
+
+    func pause() {
+        setupPlayerIfInvalid()
+        MusicViewController.audioPlayer?.pause()
+        self.playButton.setImage(UIImage(named: self.playImageName), forState: .Normal)
+        self.playing = false
+    }
+
+    func toggleRadio() {
+        if (!playing) {
+            play()
+        } else {
+            pause()
+        }
+    }
+
+    func applicationWillEnterForeground() {
+        recreateIfStopped()
+        setupAudioSession()
+        setPlayingState()
+    }
+
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        newTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
+            print("asploding")
+            UIApplication.sharedApplication().endBackgroundTask(self.newTaskID)
+            self.newTaskID = UIBackgroundTaskInvalid
+        })
+        if (MusicViewController.audioPlayer == nil) {
+            setupPlayer()
+        } else {
+            setPlayingState()
+        }
+        self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionButtonTapped))
+        self.navigationItem.rightBarButtonItem = self.shareButton
+        backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
+        backgroundView.opaque = false
+        backgroundView.layer.opaque = false
+        NSNotificationCenter
+            .defaultCenter()
+            .addObserver(
+                self,
+                selector: #selector(applicationWillEnterForeground),
+                name: UIApplicationWillEnterForegroundNotification,
+                object: nil
+            )
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        setPlayingState()
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        volumeContainerView.backgroundColor = UIColor.clearColor()
+        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
+        volumeContainerView.addSubview(volumeView)
+
+        setupAudioSession()
     }
 
     func actionButtonTapped() {
@@ -85,118 +196,8 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         }
     }
 
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-        setupPlayerIfNil()
-        self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionButtonTapped))
-        self.navigationItem.rightBarButtonItem = self.shareButton
-        backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
-        backgroundView.opaque = false
-        backgroundView.layer.opaque = false
-        NSNotificationCenter
-            .defaultCenter()
-            .addObserver(
-                self,
-                selector: #selector(applicationWillEnterForeground),
-                name: UIApplicationWillEnterForegroundNotification,
-                object: nil
-            )
-    }
-
-    func recreateIfStopped() {
-        if (MusicViewController.audioPlayer?.rate == 0) {
-            MusicViewController.audioPlayer = nil
-        }
-        setupPlayerIfNil()
-    }
-
-    func applicationWillEnterForeground() {
-        recreateIfStopped()
-        setupAudioSession()
-        setPlayingState()
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        setPlayingState()
-    }
-
     func sharingURL() -> NSURL? {
         return DynamicTableViewController.buildDynamicSharingURL(self.navigationController!, channel: self.channel)
-    }
-
-    func setPlayingState() {
-        playing = MusicViewController.audioPlayer?.rate != 0 && MusicViewController.audioPlayer?.error == nil
-        playButton?.setImage(UIImage(named: playing ? pauseImageName : playImageName), forState: .Normal)
-    }
-
-    func setupAudioSession() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-
-        if #available(iOS 7.1, *) {
-            let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
-            playHandle = commandCenter.playCommand.addTargetWithHandler({ event in
-                MusicViewController.play(self)
-                return .Success
-            })
-            pauseHandle = commandCenter.pauseCommand.addTargetWithHandler({ event in
-                MusicViewController.pause(self)
-                return .Success
-            })
-        }
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        if (!playing) {
-            if #available(iOS 7.1, *) {
-                let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
-                commandCenter.playCommand.removeTarget(playHandle)
-                commandCenter.pauseCommand.removeTarget(pauseHandle)
-            }
-        }
-    }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        volumeContainerView.backgroundColor = UIColor.clearColor()
-        let volumeView = MPVolumeView(frame: volumeContainerView.bounds)
-        volumeContainerView.addSubview(volumeView)
-
-        setupAudioSession()
-    }
-
-    override func didReceiveMemoryWarning()
-    {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    static func play(me: MusicViewController) {
-        MusicViewController.audioPlayer?.play()
-        me.playButton.setImage(UIImage(named: me.pauseImageName), forState: .Normal)
-        me.playing = true
-    }
-
-    static func pause(me: MusicViewController) {
-        MusicViewController.audioPlayer?.pause()
-        me.playButton.setImage(UIImage(named: me.playImageName), forState: .Normal)
-        me.playing = false
-    }
-
-    func toggleRadio() {
-        setupPlayerIfNil()
-        if (!playing) {
-            MusicViewController.play(self)
-        } else {
-            MusicViewController.pause(self)
-        }
     }
 
     @IBAction func playRadio(sender: UIButton) {
