@@ -15,6 +15,7 @@ enum RutgersService {
     case getGames(sport: String)
     case getMotd
     case getChannel
+    case getNBAgency
 }
 
 extension RutgersService : TargetType {
@@ -33,6 +34,8 @@ extension RutgersService : TargetType {
             return "/motd.txt"
         case .getChannel:
             return "/ordered_content.json"
+        case .getNBAgency:
+            return "/rutgersrouteconfig.txt"
         }
     }
 
@@ -54,7 +57,7 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency:
             return .request
         }
     }
