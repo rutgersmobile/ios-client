@@ -14,6 +14,7 @@ struct AgencyConfig {
     let stop : [String : Stop]
     let stopsByTitle : [String : StopsByTitle]
     let sortedStops : [SortedStops]
+    let sortedRoutes : [SortedRoutes]
 }
 
 struct Route {
@@ -32,7 +33,7 @@ struct Stop {
     let title : String
     let lat : Double
     let long : Double
-    //let stopId : String //Cannot find key?  Copy/pasted from API - still does not work
+    let stopId : Int?
 }
 
 struct StopsByTitle {
@@ -45,12 +46,18 @@ struct SortedStops {
     let geoHash: String
 }
 
+struct SortedRoutes {
+    let tag: String
+    let title: String
+}
+
 extension AgencyConfig: Unboxable {
     init(unboxer: Unboxer) throws {
         self.route = try unboxer.unbox(keyPath: "routes")
         self.stop = try unboxer.unbox(keyPath: "stops")
         self.stopsByTitle = try unboxer.unbox(keyPath: "stopsByTitle")
         self.sortedStops = try unboxer.unbox(keyPath: "sortedStops")
+        self.sortedRoutes = try unboxer.unbox(keyPath: "sortedRoutes")
     }
 }
 
@@ -75,7 +82,7 @@ extension Stop: Unboxable {
         self.title = try unboxer.unbox(keyPath: "title")
         self.lat = try unboxer.unbox(keyPath: "lat")
         self.long = try unboxer.unbox(keyPath: "lon")
-        //self.stopId = try unboxer.unbox(keyPath: "stopId")
+        self.stopId = try? unboxer.unbox(keyPath: "stopId")
     }
 }
 
@@ -90,5 +97,12 @@ extension SortedStops: Unboxable {
     init(unboxer: Unboxer) throws {
         self.title = try unboxer.unbox(keyPath: "title")
         self.geoHash = try unboxer.unbox(keyPath: "geoHash")
+    }
+}
+
+extension SortedRoutes: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.title = try unboxer.unbox(keyPath: "title")
+        self.tag = try unboxer.unbox(keyPath: "tag")
     }
 }
