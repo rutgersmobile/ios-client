@@ -25,7 +25,9 @@ enum Title {
 }
 
 extension Channel: Unboxable {
+    
     init(unboxer: Unboxer) throws {
+        
         self.handle = try unboxer.unbox(key: "handle")
         do {
             let title = try unboxer.unbox(key: "title") as String
