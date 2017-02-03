@@ -44,4 +44,9 @@ class RutgersAPI {
         return provider.request(.getNBAgency)
             .mapUnboxObject(type: AgencyConfig.self)
     }
+    
+    public func getCinema() -> Observable<[Cinema]> {
+        return provider.request(.getCinema)
+        .mapUnboxArray(type: Cinema.self)
+    }
 }
