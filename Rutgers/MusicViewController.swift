@@ -135,6 +135,13 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     }
     
     func actionButtonTapped() {
+        
+
+        
+        let vc = RUCinemaCollectionViewController()
+        
+        self.navigationController?.present(vc, animated: false, completion: nil)
+        
         if let url = sharingURL() {
             let favoriteActivity = RUFavoriteActivity(title: "WRNU")
             let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity!])
