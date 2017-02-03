@@ -236,6 +236,7 @@
 		B5432FF21E426C6D006F036A /* Motd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF11E426C6D006F036A /* Motd.swift */; };
 		B5432FF41E427244006F036A /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF31E427244006F036A /* Channel.swift */; };
 		B5870B8A1E44E32C00D51523 /* AgencyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B891E44E32C00D51523 /* AgencyConfig.swift */; };
+		B5870B8C1E44FECC00D51523 /* Cinema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B8B1E44FECC00D51523 /* Cinema.swift */; };
 		B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
@@ -702,6 +703,7 @@
 		B5432FF11E426C6D006F036A /* Motd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Motd.swift; sourceTree = "<group>"; };
 		B5432FF31E427244006F036A /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B5870B891E44E32C00D51523 /* AgencyConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgencyConfig.swift; sourceTree = "<group>"; };
+		B5870B8B1E44FECC00D51523 /* Cinema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cinema.swift; sourceTree = "<group>"; };
 		B5ACFDC41E2FE6EC00E9281C /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
 		B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberViewController.m; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1697,6 +1699,7 @@
 			children = (
 				C4B1E1601E3BD101008DC388 /* Food.swift */,
 				B5870B891E44E32C00D51523 /* AgencyConfig.swift */,
+				B5870B8B1E44FECC00D51523 /* Cinema.swift */,
 				B528E0061E3BE9CC00A9DE6C /* Sport.swift */,
 				B5432FF11E426C6D006F036A /* Motd.swift */,
 				B5432FF31E427244006F036A /* Channel.swift */,
@@ -1940,6 +1943,7 @@
 				A7907CD119A2B83700711DCB /* UIFont+DynamicType.m in Sources */,
 				04A1EFD41A5C508300DE0351 /* RUPredictionsBodyTableViewCell.m in Sources */,
 				A73248F7190E2B8F008DF9A8 /* AFXMLResponseSerializer.m in Sources */,
+				B5870B8C1E44FECC00D51523 /* Cinema.swift in Sources */,
 				C262EFB8188345D10035C8F5 /* main.m in Sources */,
 				A7D4B65219ABDCBE0087A8BC /* KeyValueDataSource.m in Sources */,
 				A7241A4219896A9400304436 /* RUReaderDataSource.m in Sources */,
