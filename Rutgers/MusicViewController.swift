@@ -210,7 +210,19 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 //            }.addDisposableTo(disposeBag)
         
         
-        RutgersAPI.sharedInstance.getOrderedContent()
+//        RutgersAPI.sharedInstance.getOrderedContent()
+//            .subscribe { event in
+//                switch event {
+//                case let .next(data):
+//                    print(data)
+//                case let .error(error):
+//                    print(error)
+//                default:
+//                    break
+//                }
+//            }.addDisposableTo(disposeBag)
+        
+        RutgersAPI.sharedInstance.getAgency()
             .subscribe { event in
                 switch event {
                 case let .next(data):
