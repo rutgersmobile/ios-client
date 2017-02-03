@@ -39,4 +39,9 @@ class RutgersAPI {
         return provider.request(.getChannel)
             .mapUnboxArray(type: Channel.self)
     }
+    
+    public func getAgency() -> Observable<AgencyConfig> {
+        return provider.request(.getNBAgency)
+            .mapUnboxObject(type: AgencyConfig.self)
+    }
 }
