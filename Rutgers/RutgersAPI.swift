@@ -29,4 +29,14 @@ class RutgersAPI {
         return provider.request(.getGames(sport: sport))
             .mapUnboxObject(type: Sport.self)
     }
+    
+    public func getMotd() -> Observable<Motd> {
+        return provider.request(.getMotd)
+            .mapUnboxObject(type: Motd.self)
+    }
+    
+    public func getOrderedContent() -> Observable<[Channel]> {
+        return provider.request(.getChannel)
+            .mapUnboxArray(type: Channel.self)
+    }
 }

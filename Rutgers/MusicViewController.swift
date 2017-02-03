@@ -185,17 +185,43 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
                 object: nil
             )
 
-        RutgersAPI.sharedInstance.getGamesForSport(sport: "baseball")
+//        RutgersAPI.sharedInstance.getGamesForSport(sport: "baseball")
+//            .subscribe { event in
+//                switch event {
+//                case let .next(sport):
+//                    print(sport)
+//                case let .error(error):
+//                    print(error)
+//                default:
+//                    break
+//                }
+//            }.addDisposableTo(disposeBag)
+//        
+//        RutgersAPI.sharedInstance.getMotd()
+//            .subscribe { event in
+//                switch event {
+//                case let .next(data):
+//                    print(data)
+//                case let .error(error):
+//                    print(error)
+//                default:
+//                    break
+//                }
+//            }.addDisposableTo(disposeBag)
+        
+        
+        RutgersAPI.sharedInstance.getOrderedContent()
             .subscribe { event in
                 switch event {
-                case let .next(sport):
-                    print(sport)
+                case let .next(data):
+                    print(data)
                 case let .error(error):
                     print(error)
                 default:
                     break
                 }
             }.addDisposableTo(disposeBag)
+            
     }
 
     override func viewWillAppear(_ animated: Bool) {
