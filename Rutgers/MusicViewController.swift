@@ -135,19 +135,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     }
     
     func actionButtonTapped() {
-        
-
-        
-        
-        
-       
-        
-        let vc = RUCinemaCollectionViewController()
-        
-        self.navigationController?.present(vc, animated: false, completion: nil)
-        
-        
-        
         if let url = sharingURL() {
             let favoriteActivity = RUFavoriteActivity(title: "WRNU")
             let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity!])
@@ -197,69 +184,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
                 name: NSNotification.Name.UIApplicationWillEnterForeground,
                 object: nil
             )
-
-//        RutgersAPI.sharedInstance.getGamesForSport(sport: "baseball")
-//            .subscribe { event in
-//                switch event {
-//                case let .next(sport):
-//                    print(sport)
-//                case let .error(error):
-//                    print(error)
-//                default:
-//                    break
-//                }
-//            }.addDisposableTo(disposeBag)
-//        
-//        RutgersAPI.sharedInstance.getMotd()
-//            .subscribe { event in
-//                switch event {
-//                case let .next(data):
-//                    print(data)
-//                case let .error(error):
-//                    print(error)
-//                default:
-//                    break
-//                }
-//            }.addDisposableTo(disposeBag)
-        
-        
-//        RutgersAPI.sharedInstance.getOrderedContent()
-//            .subscribe { event in
-//                switch event {
-//                case let .next(data):
-//                    print(data)
-//                case let .error(error):
-//                    print(error)
-//                default:
-//                    break
-//                }
-//            }.addDisposableTo(disposeBag)
-        
-//        RutgersAPI.sharedInstance.getAgency()
-//            .subscribe { event in
-//                switch event {
-//                case let .next(data):
-//                    print(data)
-//                case let .error(error):
-//                    print(error)
-//                default:
-//                    break
-//                }
-//            }.addDisposableTo(disposeBag)
-        
-        
-//        RutgersAPI.sharedInstance.getCinema()
-//            .subscribe { event in
-//                switch event {
-//                case let .next(data):
-//                    print(type(of:data))
-//                case let .error(error):
-//                    print(error)
-//                default:
-//                    break
-//                }
-//        }.addDisposableTo(disposeBag)
-        
     }
     
 

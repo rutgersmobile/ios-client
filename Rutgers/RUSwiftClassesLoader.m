@@ -35,6 +35,8 @@
    
         [AthleticsCollectionViewController registerClass];
         [MusicViewController registerClass];
+
+        [RUCinemaCollectionViewController registerClass];
         
   //      [AthleticsHomeScreenCollectionViewController registerClass];
         
