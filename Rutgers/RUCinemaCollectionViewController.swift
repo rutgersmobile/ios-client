@@ -8,17 +8,21 @@
 
 import UIKit
 import JSQDataSourcesKit
+import RxSwift
+import Foundation
 
 let CellId = "cell"
 
 
 final class RUCinemaCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, RUChannelProtocol {
     
-    
+    let disposeBag = DisposeBag()
     
     typealias Source = JSQDataSourcesKit.DataSource< Section <Cinema> >
     typealias CollectionCellFactory = ViewFactory<Cinema, RUCinemaCollectionViewCell>
     typealias HeaderViewFactory = TitledSupplementaryViewFactory<Cinema>
+    
+    var cinemaArray : [Cinema]?
     
     var channel : [NSObject : AnyObject]
     
@@ -43,6 +47,7 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
     init(channel: [NSObject: AnyObject]) {
         
         self.channel = channel
+        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         
         
@@ -57,19 +62,25 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
         super.viewDidLoad()
         configureCollectionView(collectionView!)
         
-        let dummy = Cinema(
-            movieId: 1,
-            tmdbId: 2,
-            name: "Movie",
-            rating: "5/5",
-            runtime: 3,
-            studio: "Studio",
-            showings: []
-        )
+//        let dummy = Cinema(
+//            movieId: 1,
+//            tmdbId: 2,
+//            name: "Movie",
+//            rating: "5/5",
+//            runtime: 3,
+//            studio: "Studio",
+//            showings: []
+//        )
         
-        let section0 : Section<Cinema> = Section(items: dummy)
+        let section0 : Section<Cinema>?
         
-        let dataSource : Source = DataSource(sections: section0)
+        if let dataArray = self.cinemaArray {
+            section0 = Section(dataArray)
+        } else {
+            section0 = Section([Cinema]())
+        }
+        
+        let dataSource : Source = DataSource(sections: section0!)
         
         let cellFactory = ViewFactory(reuseIdentifier: CellId) {(
             cell,
@@ -84,7 +95,7 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
                     + "\n\(indexPath.section), \(indexPath.item)"
             }
             
-            cell.setNeedsDisplay()
+            //            cell.setNeedsDisplay()
             cell.accessibilityIdentifier =
             "\(indexPath.section), \(indexPath.item)"
             return cell
@@ -97,10 +108,10 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
             collectionView,
             indexPath
             ) -> TitledSupplementaryView in
-            header.label.text = "Section \(indexPath.section)"
-            header.backgroundColor = UIColor.gray
+            
             return header
         }
+        
         
         self.dataSourceProvider = DataSourceProvider(
             dataSource: dataSource,
@@ -110,35 +121,42 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
         
         collectionView?.dataSource = self.dataSourceProvider?.collectionViewDataSource
         
-        collectionView?.reloadData()
+        //        collectionView?.reloadData()
         
         
-        //        RutgersAPI.sharedInstance.getCinema()
-        //            .subscribe { event in
-        //                switch event {
-        //                case let .next(data):
-        //                    print(type(of:data))
-        //                case let .error(error):
-        //                    print(error)
-        //                default:
-        //                    break
-        //                }
-        //        }.addDisposableTo(disposeBag)
+     
         
         
+        
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        RutgersAPI.sharedInstance.getCinema()
+            .subscribe { event in
+                switch event {
+                case let .next(data):
+                    self.cinemaArray = data as [Cinema]
+                    
+                    OperationQueue.main.addOperation {
+                        self.viewDidLoad()
+                    }
+                case let .error(error):
+                    print(error)
+                default:
+                    break
+                }
+            }.addDisposableTo(disposeBag)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width, height: 50)
+        return CGSize(width: collectionView.frame.size.width, height: 0)
     }
     
     func configureCollectionView(_ collectionView: UICollectionView) {
-        
-        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        layout.headerReferenceSize = CGSize(width: collectionView.frame.size.width, height: 50)
         
         collectionView.register(
             UINib(nibName: "RUCinemaCollectionViewCell", bundle: nil),

@@ -1585,9 +1585,9 @@
 		B5870B921E45128800D51523 /* rucinema */ = {
 			isa = PBXGroup;
 			children = (
+				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
 				B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */,
-				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
 				B5870BA21E45303600D51523 /* RUCinemaCollectionViewController.xib */,
 			);
 			name = rucinema;

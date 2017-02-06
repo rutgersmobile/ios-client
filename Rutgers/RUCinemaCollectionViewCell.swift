@@ -13,8 +13,11 @@ class RUCinemaCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        selectedBackgroundView = UIView()
-//        selectedBackgroundView?.backgroundColor = .lightGray
+        
+        self.backgroundColor = .red
+        
+        selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = .lightGray
     }
 
 
