@@ -153,10 +153,19 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        
+        
         return CGSize(width: collectionView.frame.size.width, height: 0)
     }
     
     func configureCollectionView(_ collectionView: UICollectionView) {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 1
+        layout.minimumLineSpacing = 1
+        layout.itemSize = CGSize(width: (self.collectionView?.frame.width)!, height: 100)
+        layout.sectionInset = UIEdgeInsetsMake(30, 0, 10, 10)
+        self.collectionView?.setCollectionViewLayout(layout, animated: false)
         
         collectionView.register(
             UINib(nibName: "RUCinemaCollectionViewCell", bundle: nil),
