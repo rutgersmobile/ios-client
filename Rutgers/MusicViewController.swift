@@ -62,10 +62,13 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 
     func setupPlayer() {
         MusicViewController.audioPlayer = AVPlayer(URL: NSURL(string: streamUrl)!)
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [
+            MPMediaItemPropertyTitle : "WRNU",
+            MPMediaItemPropertyArtwork : MPMediaItemArtwork(image: UIImage(named: "radio_album")!)
+        ]
     }
 
     func setupPlayerIfInvalid() {
-        print(newTaskID)
         if (MusicViewController.audioPlayer == nil || MusicViewController.audioPlayer?.error != nil || newTaskID == UIBackgroundTaskInvalid) {
             setupPlayer()
         }
@@ -139,7 +142,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     {
         super.viewDidLoad()
         newTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
-            print("asploding")
             UIApplication.sharedApplication().endBackgroundTask(self.newTaskID)
             self.newTaskID = UIBackgroundTaskInvalid
         })
