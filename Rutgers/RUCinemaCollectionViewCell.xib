@@ -6,20 +6,21 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="gTV-IL-0wX" customClass="RUCinemaCollectionViewCell" customModule="Rutgers" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
+            <rect key="frame" x="0.0" y="0.0" width="500" height="250"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
+                <rect key="frame" x="0.0" y="0.0" width="500" height="250"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vy1-db-VX8">
-                        <rect key="frame" x="104" y="114.5" width="42" height="21"/>
+                        <rect key="frame" x="416.5" y="114.5" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -28,7 +29,7 @@
             </view>
             <constraints>
                 <constraint firstItem="vy1-db-VX8" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="8R1-gN-SGD"/>
-                <constraint firstItem="vy1-db-VX8" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="PAp-De-Tx6"/>
+                <constraint firstItem="vy1-db-VX8" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" multiplier="1.75" id="PAp-De-Tx6"/>
             </constraints>
             <connections>
                 <outlet property="label" destination="vy1-db-VX8" id="YSJ-mh-BIb"/>
