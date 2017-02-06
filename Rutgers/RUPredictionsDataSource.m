@@ -58,8 +58,6 @@
         self.item = item;
         self.noContentTitle = @"No predictions available";
         self.busNumber = busNumber;
-        NSLog(@"%@", self.busNumber);
-        
     }
     return self;
 }
