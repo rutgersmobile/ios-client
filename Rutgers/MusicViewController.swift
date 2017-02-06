@@ -138,9 +138,15 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         
 
         
+        
+        
+       
+        
         let vc = RUCinemaCollectionViewController()
         
         self.navigationController?.present(vc, animated: false, completion: nil)
+        
+        
         
         if let url = sharingURL() {
             let favoriteActivity = RUFavoriteActivity(title: "WRNU")
@@ -242,17 +248,17 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 //            }.addDisposableTo(disposeBag)
         
         
-        RutgersAPI.sharedInstance.getCinema()
-            .subscribe { event in
-                switch event {
-                case let .next(data):
-                    print(type(of:data))
-                case let .error(error):
-                    print(error)
-                default:
-                    break
-                }
-        }.addDisposableTo(disposeBag)
+//        RutgersAPI.sharedInstance.getCinema()
+//            .subscribe { event in
+//                switch event {
+//                case let .next(data):
+//                    print(type(of:data))
+//                case let .error(error):
+//                    print(error)
+//                default:
+//                    break
+//                }
+//        }.addDisposableTo(disposeBag)
         
     }
     
