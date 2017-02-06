@@ -90,6 +90,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
             let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
             commandCenter.playCommand.removeTarget(MusicViewController.playHandle)
             MusicViewController.playHandle = commandCenter.playCommand.addTargetWithHandler({ event in
+                self.recreateIfStopped()
                 self.play()
                 return .Success
             })
