@@ -11,16 +11,34 @@ import JSQDataSourcesKit
 
 let CellId = "cell"
 
-final class RUCinemaCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+final class RUCinemaCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, RUChannelProtocol {
     
     
     typealias Source = JSQDataSourcesKit.DataSource< Section <Cinema> >
     typealias CollectionCellFactory = ViewFactory<Cinema, RUCinemaCollectionViewCell>
     typealias HeaderViewFactory = TitledSupplementaryViewFactory<Cinema>
+
+    let channel : [NSObject : AnyObject]
+
+    static func channelHandle() -> String!
+    {
+        return "cinema";
+    }
+
+    static func registerClass()
+    {
+        RUChannelManager.sharedInstance().register(RUCinemaCollectionViewController.self)
+    }
+
+    static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any!
+    {
+        return RUCinemaCollectionViewController(channel: channelConfiguration as [NSObject : AnyObject])
+    }
     
     var dataSourceProvider: DataSourceProvider<Source, CollectionCellFactory, HeaderViewFactory>?
     
-    init() {
+    init(channel: [NSObject: AnyObject]) {
+        self.channel = channel
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -50,7 +68,7 @@ final class RUCinemaCollectionViewController: UICollectionViewController, UIColl
             header.backgroundColor = UIColor.gray
             return header
         }
-        
+
         self.dataSourceProvider = DataSourceProvider(dataSource: dataSource, cellFactory: cellFactory, supplementaryFactory: headerFactory)
         
         collectionView?.dataSource = self.dataSourceProvider?.collectionViewDataSource

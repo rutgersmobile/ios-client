@@ -39,7 +39,6 @@
     {
         case LocalDevMode:
             baseUrl = @"http://127.0.0.1:8000/mobile/";
-            //[NSException raise:NSInvalidArgumentException format:@"LocalDevMode Not Defined"];
             break;
         case AlphaMode:
             baseUrl = @"https://doxa.rutgers.edu/mobile-mattro/";
