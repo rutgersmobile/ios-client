@@ -112,25 +112,16 @@ extension  RUReaderDataSource : UICollectionViewDelegate
             cell.homeScore.text = String(item.ruScore)
             cell.homeScore.textColor = UIColor.redColor()
             cell.awayScore.text = String(item.otherScore)
+            cell.sideIndicator.backgroundColor = UIColor.redColor()
         }
         else
         {
             cell.awayScore.text = String(item.ruScore)
             cell.awayScore.textColor = UIColor.redColor()
             cell.homeScore.text = String(item.otherScore)
-        }
-        
-        // if Ru won
-        if(item.ruWin)
-        {
-            cell.sideIndicator.backgroundColor = UIColor.redColor()
-        }
-        else
-        {
             cell.sideIndicator.backgroundColor = UIColor.grayColor()
         }
-        
-        
+
         cell.locationLabel.text = item.descriptionText
         cell.dateTimeLabel.text = item.dateString
         cell.schoolNameLabel.text = item.title
