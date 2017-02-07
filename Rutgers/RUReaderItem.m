@@ -201,9 +201,11 @@
         {
                 vsOrAtStr = @"@"; // convert the at to @
         }
+
+        NSString* osn = [game[@"home"][@"code"] isEqualToString:@"rutu"] ? game[@"away"][@"name"] : game[@"home"][@"name"];
         
          //  title now of the form  @ Bucknell
-        _title = [ NSString stringWithFormat:@"%@ %@", vsOrAtStr , otherSchoolName];
+        _title = [ NSString stringWithFormat:@"%@ %@", vsOrAtStr , osn];
         
         
         
