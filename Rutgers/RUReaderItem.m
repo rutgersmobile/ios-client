@@ -162,9 +162,12 @@
         if([ game[@"isEvent"] integerValue] == 1) // if the game is an event, then the formating for the text is different and there is no home away team etc
         {
             _imagePresent = false ; // NO images are present
+            _isEvent = true;
             return self;
             
         }
+
+        _isEvent = false;
         
         // get the title from the description by manipulating it and overwirting the _title
        
@@ -220,6 +223,12 @@
         
         NSString * rutgersCode = @"rutu" ;
         NSString * requiredCode  ; // reguired to get an image of school logo .
+
+        if (game[@"away"][@"score"] == nil || game[@"home"][@"score"] == nil) {
+            _nilScores = true;
+        } else {
+            _nilScores = false;
+        }
        
         if( [awayCode isEqualToString:rutgersCode]) // if rutgers is away , then the other school is at home and we display that icon
         {

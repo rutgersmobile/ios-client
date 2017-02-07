@@ -23,18 +23,23 @@ class AthleticsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var schoolNameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var dateTimeLabel: UILabel!
+    @IBOutlet weak var scoreDivider: UILabel!
 
     override func prepareForReuse() {
         homeScore.text = nil ;
         homeScore.textColor = UIColor.grayColor()
+        homeScore.hidden = false
         
         awayScore.text = nil ;
         awayScore.textColor = UIColor.grayColor()
+        awayScore.hidden = false
         sideIndicator.backgroundColor = nil ;
         schoolIcon.image = nil ;
         schoolNameLabel.text = nil ;
         locationLabel.text = nil ;
         dateTimeLabel.text = nil ;
+
+        scoreDivider.hidden = false
     }
     
 }

@@ -99,7 +99,12 @@ extension  RUReaderDataSource : UICollectionViewDelegate
                 cell.schoolIcon.image = image
             }
         }
-        
+
+        if (item.isEvent || item.nilScores) {
+            cell.homeScore.hidden = true
+            cell.awayScore.hidden = true
+            cell.scoreDivider.hidden = true
+        }
         
         // if Rutgers is home
         if(item.isRuHome)
