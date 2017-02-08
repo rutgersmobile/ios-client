@@ -231,7 +231,6 @@
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
 		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
-		B5971AA91E3FC5EA00FABC70 /* RUBusNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */; };
 		B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528E0061E3BE9CC00A9DE6C /* Sport.swift */; };
 		B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */; };
 		B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */; };
@@ -240,7 +239,7 @@
 		B5870B8A1E44E32C00D51523 /* AgencyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B891E44E32C00D51523 /* AgencyConfig.swift */; };
 		B5870B8C1E44FECC00D51523 /* Cinema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B8B1E44FECC00D51523 /* Cinema.swift */; };
 		B5870BA31E45303600D51523 /* RUCinemaCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */; };
-		B5870BA41E45303600D51523 /* RUCinemaCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5870BA21E45303600D51523 /* RUCinemaCollectionViewController.xib */; };
+		B5971AA91E3FC5EA00FABC70 /* RUBusNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */; };
 		B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
@@ -250,6 +249,7 @@
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
+		C44640261E4B84F200441FF1 /* RUCinemaCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44640251E4B84F200441FF1 /* RUCinemaCollectionViewController.xib */; };
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
 		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
 		C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */; };
@@ -700,9 +700,6 @@
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
 		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
-		B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5971AA71E3FC5EA00FABC70 /* RUBusNumberButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberButton.h; sourceTree = "<group>"; };
-		B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberButton.m; sourceTree = "<group>"; };
 		B528E0061E3BE9CC00A9DE6C /* Sport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
 		B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewCell.swift; sourceTree = "<group>"; };
 		B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -711,7 +708,8 @@
 		B5870B891E44E32C00D51523 /* AgencyConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgencyConfig.swift; sourceTree = "<group>"; };
 		B5870B8B1E44FECC00D51523 /* Cinema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cinema.swift; sourceTree = "<group>"; };
 		B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewController.swift; sourceTree = "<group>"; };
-		B5870BA21E45303600D51523 /* RUCinemaCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewController.xib; sourceTree = "<group>"; };
+		B5971AA71E3FC5EA00FABC70 /* RUBusNumberButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberButton.h; sourceTree = "<group>"; };
+		B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberButton.m; sourceTree = "<group>"; };
 		B5ACFDC41E2FE6EC00E9281C /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
 		B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberViewController.m; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -728,6 +726,7 @@
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
+		C44640251E4B84F200441FF1 /* RUCinemaCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewController.xib; sourceTree = "<group>"; };
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
@@ -968,6 +967,7 @@
 		A70810781906F87C0087EB82 /* ruplaces */ = {
 			isa = PBXGroup;
 			children = (
+				A77028A5191C8880003F5D28 /* rumaps */,
 				A746689F1982CE4A00A5EBE0 /* model */,
 				A777C2AB190AF0DA00F978D7 /* RUPlacesViewController.h */,
 				A777C2AC190AF0DA00F978D7 /* RUPlacesViewController.m */,
@@ -1588,7 +1588,7 @@
 				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
 				B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */,
-				B5870BA21E45303600D51523 /* RUCinemaCollectionViewController.xib */,
+				C44640251E4B84F200441FF1 /* RUCinemaCollectionViewController.xib */,
 			);
 			name = rucinema;
 			sourceTree = "<group>";
@@ -1662,7 +1662,6 @@
 				622AFBCE1D6F414A00ED4A9D /* athletics */,
 				A7910E5919182008002DA45F /* rurecreation */,
 				A70810781906F87C0087EB82 /* ruplaces */,
-				A77028A5191C8880003F5D28 /* rumaps */,
 				A72FFFAC1937C32000016C89 /* rusoc */,
 				A770EDC41948AC0100DD5866 /* ruinfo */,
 				A7B3F7B51954A66500458B19 /* rufeedback */,
@@ -1863,6 +1862,7 @@
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
+				C44640261E4B84F200441FF1 /* RUCinemaCollectionViewController.xib in Resources */,
 				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
@@ -1871,7 +1871,6 @@
 				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
 				629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
-				B5870BA41E45303600D51523 /* RUCinemaCollectionViewController.xib in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
 			);
