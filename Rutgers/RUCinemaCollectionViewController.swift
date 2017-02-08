@@ -57,7 +57,10 @@ final class RUCinemaCollectionViewController:
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        collectionView?.dataSource = nil
+
         RutgersAPI.sharedInstance.getCinema()
+    
             .asDriver(onErrorJustReturn: [])
             .drive((self.collectionView?.rx.items(
                 cellIdentifier: CellId,
