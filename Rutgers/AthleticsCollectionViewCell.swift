@@ -27,10 +27,10 @@ class AthleticsCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         homeScore.text = nil ;
-        homeScore.hidden = false
+        homeScore.isHidden = false
         homeScore.textColor = UIColor.gray
         
-        awayScore.hidden = false
+        awayScore.isHidden = false
         awayScore.text = nil ;
         awayScore.textColor = UIColor.gray
         
@@ -40,7 +40,7 @@ class AthleticsCollectionViewCell: UICollectionViewCell {
         locationLabel.text = nil ;
         dateTimeLabel.text = nil ;
 
-        scoreDivider.hidden = false
+        scoreDivider.isHidden = false
     }
     
 }

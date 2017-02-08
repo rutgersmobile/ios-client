@@ -101,9 +101,9 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         }
 
         if (item.isEvent || item.nilScores) {
-            cell.homeScore.hidden = true
-            cell.awayScore.hidden = true
-            cell.scoreDivider.hidden = true
+            cell.homeScore.isHidden = true
+            cell.awayScore.isHidden = true
+            cell.scoreDivider.isHidden = true
         }
         
         // if Rutgers is home
@@ -175,8 +175,6 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
-        sharedInstance.getGamesForSport(sport: "baseball")
         
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicator.hidesWhenStopped = true;

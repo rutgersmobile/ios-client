@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import JSQDataSourcesKit
 import RxSwift
+import RxDataSources
 import Foundation
 
 let CellId = "cell"
@@ -19,17 +19,8 @@ final class RUCinemaCollectionViewController:
     RUChannelProtocol {
 
     let disposeBag = DisposeBag()
-
-    typealias Source = JSQDataSourcesKit.DataSource<Section<Cinema>>
-    typealias CollectionCellFactory =
-        ViewFactory<Cinema, RUCinemaCollectionViewCell>
-    typealias HeaderViewFactory = TitledSupplementaryViewFactory<Cinema>
-
     var cinemaArray: [Cinema]?
-
     var channel: [NSObject : AnyObject]
-    var dataSourceProvider:
-        DataSourceProvider<Source, CollectionCellFactory, HeaderViewFactory>?
 
     static func channelHandle() -> String! {
         return "cinema";
@@ -41,8 +32,8 @@ final class RUCinemaCollectionViewController:
     }
 
     static func channel(
-        withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any!
-    {
+        withConfiguration channelConfiguration: [AnyHashable : Any]!
+    ) -> Any! {
         return RUCinemaCollectionViewController(
             channel: channelConfiguration as [NSObject : AnyObject]
         )
@@ -61,67 +52,26 @@ final class RUCinemaCollectionViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView(collectionView!)
-
-        let section0 = Section(self.cinemaArray ?? [])
-
-        let dataSource : Source = DataSource(sections: section0)
-
-        let cellFactory = ViewFactory(reuseIdentifier: CellId) {(
-            cell,
-            model: Cinema?,
-            type,
-            collectionView,
-            indexPath
-        ) -> RUCinemaCollectionViewCell in
-            if let name = model?.name {
-                cell.label.text
-                    = String(name)
-                    + "\n\(indexPath.section), \(indexPath.item)"
-            }
-
-            cell.accessibilityIdentifier =
-                "\(indexPath.section), \(indexPath.item)"
-            return cell
-        }
-
-        let headerFactory = TitledSupplementaryViewFactory {(
-            header,
-            item: Cinema?,
-            kind,
-            collectionView,
-            indexPath
-        ) -> TitledSupplementaryView in
-            return header
-        }
-
-        self.dataSourceProvider = DataSourceProvider(
-            dataSource: dataSource,
-            cellFactory: cellFactory,
-            supplementaryFactory: headerFactory
-        )
-
-        collectionView?.dataSource =
-            self.dataSourceProvider?.collectionViewDataSource
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         RutgersAPI.sharedInstance.getCinema()
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { data in
-                self.cinemaArray = data
-                self.viewDidLoad()
-            }, onError: { err in
-                print(err)
-            }).addDisposableTo(disposeBag)
+            .asDriver(onErrorJustReturn: [])
+            .drive((self.collectionView?.rx.items(
+                cellIdentifier: CellId,
+                cellType: RUCinemaCollectionViewCell.self
+            ))!) { (_, result, cell) in
+                cell.label.text = result.name
+            }.addDisposableTo(disposeBag)
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int) -> CGSize
-    {
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 0)
     }
 
@@ -139,18 +89,6 @@ final class RUCinemaCollectionViewController:
         collectionView.register(
             UINib(nibName: "RUCinemaCollectionViewCell", bundle: nil),
             forCellWithReuseIdentifier: CellId
-        )
-
-        collectionView.register(
-            TitledSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-            withReuseIdentifier: TitledSupplementaryView.identifier
-        )
-
-        collectionView.register(
-            TitledSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionElementKindSectionFooter,
-            withReuseIdentifier: TitledSupplementaryView.identifier
         )
     }
 }
