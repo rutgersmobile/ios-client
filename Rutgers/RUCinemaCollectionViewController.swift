@@ -73,14 +73,17 @@ RUChannelProtocol {
                 ))!) { (_, result, cell) in
                     let (movie, tmdbMovie) = result
                     
-                    var tempData : Data!
+                    
+                    var tempData : Data?
                     let url = URL(string: "http://image.tmdb.org/t/p/original/\(tmdbMovie.posterPath!)")
                     
-                    if let url = url {
-                        tempData = try! Data(contentsOf: url)
-                    }
+                   
+                        tempData = try? Data(contentsOf: url!)
                     
-                    let requestedImage = UIImage(data: tempData)
+                  
+                       let requestedImage = UIImage(data: tempData!)!
+                    
+                    
                     
                     var genreString = ""
                     
@@ -121,6 +124,9 @@ RUChannelProtocol {
                             }
                         }
                         
+                    
+                        showingArray.reverse()
+                        
                         var timeStamp1 = ""
                         var timeStamp2 = ""
                         var timeStamp3 = ""
@@ -129,17 +135,17 @@ RUChannelProtocol {
                             cell.time1.isHidden = false
                             cell.time2.isHidden = false
                             
-                            timeStamp1 = dateFormatter.string(from: sortedArray[0].dateTime)
-                            timeStamp2 = dateFormatter.string(from: sortedArray[1].dateTime)
+                            timeStamp1 = dateFormatter.string(from: showingArray[0])
+                            timeStamp2 = dateFormatter.string(from: showingArray[1])
                         } else {
                             
                             cell.time1.isHidden = false
                             cell.time2.isHidden = false
                             cell.time3.isHidden = false
                             
-                            timeStamp1 = dateFormatter.string(from: sortedArray[0].dateTime)
-                            timeStamp2 = dateFormatter.string(from: sortedArray[1].dateTime)
-                            timeStamp3 = dateFormatter.string(from: sortedArray[2].dateTime)
+                            timeStamp1 = dateFormatter.string(from: showingArray[0])
+                            timeStamp2 = dateFormatter.string(from: showingArray[1])
+                            timeStamp3 = dateFormatter.string(from: showingArray[2])
                         }
                         
                         cell.time1.text = timeStamp1
