@@ -22,7 +22,7 @@ struct Cinema {
 struct Showings {
     let sessionId: Int
     let movieId: Int
-    let dateTime: String
+    let dateTime: Date
     let audId: Int
 }
 
@@ -42,7 +42,29 @@ extension Showings: Unboxable {
     init(unboxer: Unboxer) throws {
         self.sessionId = try unboxer.unbox(keyPath: "session_id")
         self.movieId = try unboxer.unbox(keyPath: "movie_id")
-        self.dateTime = try unboxer.unbox(keyPath: "dateTime")
+        let dateString : String = try unboxer.unbox(keyPath: "dateTime")
+        
+        if let dateTime = showingDateFormatter.dateFormatter.date(from: dateString) {
+            self.dateTime = dateTime
+        } else {
+            self.dateTime = Date()
+        }
         self.audId = try unboxer.unbox(keyPath: "aud_id")
+    }
+    
+    
+}
+
+struct showingDateFormatter {
+    static let dateFormatter = newDateFormatter()
+    
+    static func newDateFormatter () -> DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"
+        
+        return dateFormatter
     }
 }
