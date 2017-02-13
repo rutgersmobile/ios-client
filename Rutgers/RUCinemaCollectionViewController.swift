@@ -98,9 +98,6 @@ RUChannelProtocol {
                         }
                     }
                     
-                    print(movie.name)
-                    print(movie.showings.count)
-                    
                     if (movie.showings.count != 0) {
                         let calendar = Calendar.current
                         
@@ -155,14 +152,16 @@ RUChannelProtocol {
                         
                     }
                     
+                    let index = tmdbMovie.releaseDate?.index((tmdbMovie.releaseDate?.startIndex)!, offsetBy: 4)
                     
+                    let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
                     
                     cell.descriptionText.textColor = .white
                     
                     cell.posterImage.image = requestedImage
                     cell.tagsLabel.text = genreString
                     cell.descriptionText.text = tmdbMovie.overview
-                    cell.label.text = tmdbMovie.title!
+                    cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
             }.addDisposableTo(disposeBag)
     }
     
