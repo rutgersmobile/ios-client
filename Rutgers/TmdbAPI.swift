@@ -24,4 +24,14 @@ class TmdbAPI {
         return provider.request(.getTmdbData(movieId: movieId))
             .mapUnboxObject(type: TmdbData.self)
     }
+    
+    public func getTmdbCredits(movieId: Int) -> Observable<TmdbCredits> {
+        return provider.request(.getCastCrew(movieId: movieId))
+            .mapUnboxObject(type: TmdbCredits.self)
+    }
+    
+    public func getPosterImage(data: TmdbData) -> Observable<UIImage?> {
+        return ImageAPI.sharedInstance.getImage(reqUrl: URL(string: "http://image.tmdb.org/t/p/w500\(data.posterPath!)")!)
+    }
+    
 }

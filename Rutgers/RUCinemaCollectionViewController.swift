@@ -10,13 +10,15 @@ import UIKit
 import RxSwift
 import RxDataSources
 import Foundation
+import Alamofire
 
-let CellId = "cell"
+
 
 final class RUCinemaCollectionViewController:
     UICollectionViewController,
-    UICollectionViewDelegateFlowLayout,
 RUChannelProtocol {
+    
+    let CellId = "cell"
     
     let disposeBag = DisposeBag()
     
@@ -57,7 +59,7 @@ RUChannelProtocol {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        collectionView?.dataSource = nil
+        self.collectionView?.dataSource = nil
         
         RutgersAPI.sharedInstance.getCinema()
             .flatMap { movies in Observable.from(movies) }
@@ -70,20 +72,14 @@ RUChannelProtocol {
             .drive((self.collectionView?.rx.items(
                 cellIdentifier: CellId,
                 cellType: RUCinemaCollectionViewCell.self
-                ))!) { (_, result, cell) in
+                ))!) { (idxPath, result, cell) in
                     let (movie, tmdbMovie) = result
-                    
-                    
-                    var tempData : Data?
-                    let url = URL(string: "http://image.tmdb.org/t/p/original/\(tmdbMovie.posterPath!)")
-                    
-                   
-                        tempData = try? Data(contentsOf: url!)
-                    
-                  
-                       let requestedImage = UIImage(data: tempData!)!
-                    
-                    
+                
+                    TmdbAPI.sharedInstance.getPosterImage(data: tmdbMovie)
+                        .observeOn(MainScheduler.instance)
+                        .subscribe(onNext: { image in
+                            cell.posterImage.image = image!
+                        }).addDisposableTo(self.disposeBag)
                     
                     var genreString = ""
                     
@@ -104,7 +100,7 @@ RUChannelProtocol {
                         let dateFormatter = DateFormatter()
                         
                         dateFormatter.timeStyle = .short
-
+                        
                         let sortedArray = movie.showings.sorted { $0.dateTime > $1.dateTime }
                         
                         let baseDay = calendar.component(.day, from: sortedArray[0].dateTime as Date)
@@ -121,7 +117,7 @@ RUChannelProtocol {
                             }
                         }
                         
-                    
+                        
                         showingArray.reverse()
                         
                         var timeStamp1 = ""
@@ -156,12 +152,15 @@ RUChannelProtocol {
                     
                     let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
                     
-                    cell.descriptionText.textColor = .white
-                    
-                    cell.posterImage.image = requestedImage
+                    cell.descriptionLabel.textColor = .white
                     cell.tagsLabel.text = genreString
-                    cell.descriptionText.text = tmdbMovie.overview
+                    cell.descriptionLabel.text = tmdbMovie.overview
                     cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
+                    cell.movieId = Int(tmdbMovie.id!)
+                    
+                    self.collectionView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tap)))
+                    
+                    
             }.addDisposableTo(disposeBag)
     }
     
@@ -171,6 +170,19 @@ RUChannelProtocol {
         referenceSizeForHeaderInSection section: Int
         ) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 0)
+    }
+    
+    func tap(sender: UITapGestureRecognizer) {
+        if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
+            let cell : RUCinemaCollectionViewCell = self.collectionView?.cellForItem(at: indexPath) as! RUCinemaCollectionViewCell
+            
+            let vc = RUCinemaDetailCollectionViewController.init(movieId: cell.movieId)
+            
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        } else {
+            print("collection view was tapped")
+        }
     }
     
     func configureCollectionView(_ collectionView: UICollectionView) {
