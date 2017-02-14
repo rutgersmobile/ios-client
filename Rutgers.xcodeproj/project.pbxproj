@@ -251,11 +251,16 @@
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
+		C4004EB61E525CA500A5FEDD /* RUFoodStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */; };
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
-		C44640261E4B84F200441FF1 /* RUCinemaCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44640251E4B84F200441FF1 /* RUCinemaCollectionViewController.xib */; };
+		C42245FF1E5223F2001FD27B /* RUFoodCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42245FE1E5223F2001FD27B /* RUFoodCollectionViewController.swift */; };
+		C42246071E523292001FD27B /* RUFoodCollectionViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42246061E523292001FD27B /* RUFoodCollectionViewControllerCell.swift */; };
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
 		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
 		C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */; };
+		C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
+		C4D047041E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
+		C4D047051E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -731,11 +736,14 @@
 		C262EFC4188345D10035C8F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
+		C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RUFoodStoryboard.storyboard; sourceTree = "<group>"; };
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
-		C44640251E4B84F200441FF1 /* RUCinemaCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewController.xib; sourceTree = "<group>"; };
+		C42245FE1E5223F2001FD27B /* RUFoodCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodCollectionViewController.swift; sourceTree = "<group>"; };
+		C42246061E523292001FD27B /* RUFoodCollectionViewControllerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodCollectionViewControllerCell.swift; sourceTree = "<group>"; };
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
+		C4D047021E53565A00A71268 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1285,6 +1293,9 @@
 				0401C4E31B39E5680053B10B /* NSDictionary+DiningHall.h */,
 				0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */,
 				A7241A1C1988174E00304436 /* DataSources */,
+				C42245FE1E5223F2001FD27B /* RUFoodCollectionViewController.swift */,
+				C42246061E523292001FD27B /* RUFoodCollectionViewControllerCell.swift */,
+				C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */,
 			);
 			name = rufood;
 			sourceTree = "<group>";
@@ -1594,7 +1605,6 @@
 				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
 				B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */,
-				C44640251E4B84F200441FF1 /* RUCinemaCollectionViewController.xib */,
 			);
 			name = rucinema;
 			sourceTree = "<group>";
@@ -1685,6 +1695,7 @@
 		C262EFB2188345D10035C8F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C4D047021E53565A00A71268 /* GoogleService-Info.plist */,
 				04C0D2981C7E4B3900FEF0D7 /* Rutgers-Bridging-Header.h */,
 				041502331BB0965400D23AB8 /* RUDefines.h */,
 				041502311BB0964A00D23AB8 /* RUDefines.m */,
@@ -1845,6 +1856,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4D047051E53565A00A71268 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1852,6 +1864,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4D047041E53565A00A71268 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1871,12 +1884,13 @@
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
-				C44640261E4B84F200441FF1 /* RUCinemaCollectionViewController.xib in Resources */,
 				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
+				C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */,
+				C4004EB61E525CA500A5FEDD /* RUFoodStoryboard.storyboard in Resources */,
 				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
 				629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
@@ -1968,6 +1982,7 @@
 				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */,
+				C42246071E523292001FD27B /* RUFoodCollectionViewControllerCell.swift in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
 				0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */,
@@ -2009,6 +2024,7 @@
 				A75E7EC219A3E18D00782AE5 /* UITableView+Selection.m in Sources */,
 				0430BAC61D13313C0044F5BF /* MapsViewController.swift in Sources */,
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
+				C42245FF1E5223F2001FD27B /* RUFoodCollectionViewController.swift in Sources */,
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
 				62AACB001DE3AE2900DF8E70 /* MapRouteViewController.swift in Sources */,
 				6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */,
