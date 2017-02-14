@@ -25,6 +25,8 @@
 #import "RUAnalyticsManager.h"
 #import "RUUserInfoManager.h"
 
+@import Firebase;
+
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property (nonatomic) RUUserInfoManager *userInfoManager;
 @property RURootController *rootController;
@@ -53,6 +55,7 @@
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 
     [application setStatusBarHidden:YES];
+    [FIRApp configure];
     
         // set up apperance
     [RUAppearance applyAppearance];

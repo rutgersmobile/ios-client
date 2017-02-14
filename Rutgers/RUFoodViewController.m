@@ -20,7 +20,7 @@
 
 @implementation RUFoodViewController
 +(NSString *)channelHandle{
-    return @"food";
+    return @"food-removed";
 }
 +(void)load{
     [[RUChannelManager sharedInstance] registerClass:[self class]];
