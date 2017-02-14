@@ -37,7 +37,7 @@
         [MusicViewController registerClass];
 
         [RUCinemaCollectionViewController registerClass];
-        
+        [RUFoodCollectionViewController registerClass];
   //      [AthleticsHomeScreenCollectionViewController registerClass];
         
     });
