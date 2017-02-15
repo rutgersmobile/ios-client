@@ -70,98 +70,98 @@ RUChannelProtocol {
             .drive((self.collectionView?.rx.items(
                 cellIdentifier: CellId,
                 cellType: RUCinemaCollectionViewCell.self
-                ))!) { (_, result, cell) in
-                    let (movie, tmdbMovie) = result
-                    
-                    
-                    var tempData : Data?
-                    let url = URL(string: "http://image.tmdb.org/t/p/original/\(tmdbMovie.posterPath!)")
-                    
-                   
-                        tempData = try? Data(contentsOf: url!)
-                    
-                  
-                       let requestedImage = UIImage(data: tempData!)!
-                    
-                    
-                    
-                    var genreString = ""
-                    
-                    if let genres = tmdbMovie.genres {
-                        for genre in genres {
-                            
-                            if (genre.name != (genres.last!).name) {
-                                genreString.append(genre.name + ", ")}
-                            else {
-                                genreString.append(genre.name)
-                            }
+            ))!) { (_, result, cell) in
+                let (movie, tmdbMovie) = result
+                
+                
+                var tempData : Data?
+                let url = URL(string: "http://image.tmdb.org/t/p/original/\(tmdbMovie.posterPath!)")
+                
+               
+                    tempData = try? Data(contentsOf: url!)
+                
+              
+                   let requestedImage = UIImage(data: tempData!)!
+                
+                
+                
+                var genreString = ""
+                
+                if let genres = tmdbMovie.genres {
+                    for genre in genres {
+                        
+                        if (genre.name != (genres.last!).name) {
+                            genreString.append(genre.name + ", ")}
+                        else {
+                            genreString.append(genre.name)
                         }
                     }
+                }
+                
+                if (movie.showings.count != 0) {
+                    let calendar = Calendar.current
                     
-                    if (movie.showings.count != 0) {
-                        let calendar = Calendar.current
-                        
-                        let dateFormatter = DateFormatter()
-                        
-                        dateFormatter.timeStyle = .short
+                    let dateFormatter = DateFormatter()
+                    
+                    dateFormatter.timeStyle = .short
 
-                        let sortedArray = movie.showings.sorted { $0.dateTime > $1.dateTime }
-                        
-                        let baseDay = calendar.component(.day, from: sortedArray[0].dateTime as Date)
-                        
-                        var showingArray = [Date]()
-                        
-                        for i in 0..<sortedArray.count {
-                            let day = calendar.component(.day, from: sortedArray[i].dateTime as Date)
-                            
-                            if (day == baseDay) {
-                                showingArray.append(sortedArray[i].dateTime)
-                            } else {
-                                break
-                            }
-                        }
-                        
+                    let sortedArray = movie.showings.sorted { $0.dateTime > $1.dateTime }
                     
-                        showingArray.reverse()
+                    let baseDay = calendar.component(.day, from: sortedArray[0].dateTime as Date)
+                    
+                    var showingArray = [Date]()
+                    
+                    for i in 0..<sortedArray.count {
+                        let day = calendar.component(.day, from: sortedArray[i].dateTime as Date)
                         
-                        var timeStamp1 = ""
-                        var timeStamp2 = ""
-                        var timeStamp3 = ""
-                        
-                        if showingArray.count < 3 && showingArray.count >= 2 {
-                            cell.time1.isHidden = false
-                            cell.time2.isHidden = false
-                            
-                            timeStamp1 = dateFormatter.string(from: showingArray[0])
-                            timeStamp2 = dateFormatter.string(from: showingArray[1])
+                        if (day == baseDay) {
+                            showingArray.append(sortedArray[i].dateTime)
                         } else {
-                            
-                            cell.time1.isHidden = false
-                            cell.time2.isHidden = false
-                            cell.time3.isHidden = false
-                            
-                            timeStamp1 = dateFormatter.string(from: showingArray[0])
-                            timeStamp2 = dateFormatter.string(from: showingArray[1])
-                            timeStamp3 = dateFormatter.string(from: showingArray[2])
+                            break
                         }
-                        
-                        cell.time1.text = timeStamp1
-                        cell.time2.text = timeStamp2
-                        cell.time3.text = timeStamp3
-                        
-                        
                     }
                     
-                    let index = tmdbMovie.releaseDate?.index((tmdbMovie.releaseDate?.startIndex)!, offsetBy: 4)
+                
+                    showingArray.reverse()
                     
-                    let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
+                    var timeStamp1 = ""
+                    var timeStamp2 = ""
+                    var timeStamp3 = ""
                     
-                    cell.descriptionText.textColor = .white
+                    if showingArray.count < 3 && showingArray.count >= 2 {
+                        cell.time1.isHidden = false
+                        cell.time2.isHidden = false
+                        
+                        timeStamp1 = dateFormatter.string(from: showingArray[0])
+                        timeStamp2 = dateFormatter.string(from: showingArray[1])
+                    } else {
+                        
+                        cell.time1.isHidden = false
+                        cell.time2.isHidden = false
+                        cell.time3.isHidden = false
+                        
+                        timeStamp1 = dateFormatter.string(from: showingArray[0])
+                        timeStamp2 = dateFormatter.string(from: showingArray[1])
+                        timeStamp3 = dateFormatter.string(from: showingArray[2])
+                    }
                     
-                    cell.posterImage.image = requestedImage
-                    cell.tagsLabel.text = genreString
-                    cell.descriptionText.text = tmdbMovie.overview
-                    cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
+                    cell.time1.text = timeStamp1
+                    cell.time2.text = timeStamp2
+                    cell.time3.text = timeStamp3
+                    
+                    
+                }
+                
+                let index = tmdbMovie.releaseDate?.index((tmdbMovie.releaseDate?.startIndex)!, offsetBy: 4)
+                
+                let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
+                
+                cell.descriptionText.textColor = .white
+                
+                cell.posterImage.image = requestedImage
+                cell.tagsLabel.text = genreString
+                cell.descriptionText.text = tmdbMovie.overview
+                cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
             }.addDisposableTo(disposeBag)
     }
     
