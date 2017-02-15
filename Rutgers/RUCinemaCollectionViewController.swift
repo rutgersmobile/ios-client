@@ -78,7 +78,7 @@ RUChannelProtocol {
                     TmdbAPI.sharedInstance.getPosterImage(data: tmdbMovie)
                         .observeOn(MainScheduler.instance)
                         .subscribe(onNext: { image in
-                            cell.posterImage.image = image!
+                            cell.posterImage.image = image ?? UIImage(named: "bus_pin")
                         }).addDisposableTo(self.disposeBag)
                     
                     var genreString = ""
