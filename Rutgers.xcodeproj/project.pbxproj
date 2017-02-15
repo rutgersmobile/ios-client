@@ -254,7 +254,7 @@
 		C4004EB61E525CA500A5FEDD /* RUFoodStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */; };
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
 		C42245FF1E5223F2001FD27B /* RUFoodCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42245FE1E5223F2001FD27B /* RUFoodCollectionViewController.swift */; };
-		C42246071E523292001FD27B /* RUFoodCollectionViewControllerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42246061E523292001FD27B /* RUFoodCollectionViewControllerCell.swift */; };
+		C42246071E523292001FD27B /* RUFoodCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42246061E523292001FD27B /* RUFoodCollectionViewCell.swift */; };
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
 		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
 		C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */; };
@@ -739,7 +739,7 @@
 		C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RUFoodStoryboard.storyboard; sourceTree = "<group>"; };
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
 		C42245FE1E5223F2001FD27B /* RUFoodCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodCollectionViewController.swift; sourceTree = "<group>"; };
-		C42246061E523292001FD27B /* RUFoodCollectionViewControllerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodCollectionViewControllerCell.swift; sourceTree = "<group>"; };
+		C42246061E523292001FD27B /* RUFoodCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodCollectionViewCell.swift; sourceTree = "<group>"; };
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
@@ -1294,7 +1294,7 @@
 				0401C4E41B39E5680053B10B /* NSDictionary+DiningHall.m */,
 				A7241A1C1988174E00304436 /* DataSources */,
 				C42245FE1E5223F2001FD27B /* RUFoodCollectionViewController.swift */,
-				C42246061E523292001FD27B /* RUFoodCollectionViewControllerCell.swift */,
+				C42246061E523292001FD27B /* RUFoodCollectionViewCell.swift */,
 				C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */,
 			);
 			name = rufood;
@@ -1982,7 +1982,7 @@
 				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */,
-				C42246071E523292001FD27B /* RUFoodCollectionViewControllerCell.swift in Sources */,
+				C42246071E523292001FD27B /* RUFoodCollectionViewCell.swift in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
 				0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */,
