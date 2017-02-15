@@ -53,23 +53,15 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
          - Release Information
          */
         
-//        TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
-//            .map({.some($0)})
-//            .asDriver(onErrorJustReturn: nil)
-//            .drive(self.collectionView?.rx.items(
-//                cellIdentifier: CellId,
-//                cellType: RUCinemaDetailCollectionViewCell.self
-//                )) { (idxPath, result, cell) in
-//                    return cell
-//                    //                            cell.testLabel.text =
-//                    
-//                    
-//                    //        TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
-//                    
-//                    //
-//                    //
-//                    //        }
-//        }
+        TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
+            .toArray()
+            .asDriver(onErrorJustReturn: [])
+            .drive((self.collectionView?.rx.items(
+                cellIdentifier: CellId,
+                cellType: RUCinemaDetailCollectionViewCell.self
+            ))!) { (idxPath, result, cell) in
+                    return cell
+            }.addDisposableTo(disposeBag)
     }
     
         func collectionView(
