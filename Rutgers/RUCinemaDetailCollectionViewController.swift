@@ -68,13 +68,18 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
         
         TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
             .flatMap { general in
-                print("Got data")
-                return TmdbAPI.sharedInstance.getTmdbCredits(movieId: general.id!)
+                TmdbAPI.sharedInstance.getTmdbCredits(movieId: general.id!)
                     .map { credits in (general, credits)}
             }
-            .map {tmdbData in .GeneralSection(title: tmdbData.title!
-                , items: [.GeneralSectionItem(title: tmdbData.title!)]) }
-            .toArray()
+            .map { stupidSyntax in
+                let (tmdbData, tmdbCredits) = stupidSyntax
+                return [.GeneralSection(
+                    title: tmdbData.title!,
+                    items: [
+                        .GeneralSectionItem(title: tmdbData.title!)
+                    ]
+                )]
+            }
             .asDriver(onErrorJustReturn: [])
             .drive((self.collectionView?.rx.items(dataSource: dataSource))!)
             .addDisposableTo(disposeBag)
