@@ -8,6 +8,6 @@
 
 import Foundation
 
-class RUFoodCollectionViewControllerCell: UICollectionViewCell {
+class RUFoodCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var label: UILabel!
 }
