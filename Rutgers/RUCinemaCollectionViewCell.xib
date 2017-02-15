@@ -27,17 +27,17 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFh-np-gSG">
-                        <rect key="frame" x="112.5" y="38.5" width="26.5" height="12"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <rect key="frame" x="112.5" y="38.5" width="26" height="12"/>
+                        <fontDescription key="fontDescription" type="italicSystem" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vy1-db-VX8">
-                        <rect key="frame" x="112.5" y="19" width="35.5" height="18"/>
+                        <rect key="frame" x="112.5" y="19" width="37.5" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="CYs-hQ-wuo"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -59,9 +59,9 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5f-Nr-h3N">
-                        <rect key="frame" x="112.5" y="70.5" width="165" height="78"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5f-Nr-h3N">
+                        <rect key="frame" x="112.5" y="70.5" width="165" height="95"/>
+                        <fontDescription key="fontDescription" type="italicSystem" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -80,7 +80,7 @@
                 <constraint firstItem="YB5-lC-67G" firstAttribute="leading" secondItem="4Ej-Yg-gT0" secondAttribute="trailing" constant="30" id="chC-i4-0Wg"/>
                 <constraint firstItem="gEO-o4-can" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="dB5-es-xMY"/>
                 <constraint firstItem="4Ej-Yg-gT0" firstAttribute="leading" secondItem="gEO-o4-can" secondAttribute="trailing" constant="15.25" id="i6q-vg-ofW"/>
-                <constraint firstItem="F5f-Nr-h3N" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.45" id="rKJ-lH-1iW"/>
+                <constraint firstItem="F5f-Nr-h3N" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.55" id="rKJ-lH-1iW"/>
                 <constraint firstItem="vy1-db-VX8" firstAttribute="top" secondItem="gEO-o4-can" secondAttribute="top" id="veD-WG-S3I"/>
                 <constraint firstItem="vy1-db-VX8" firstAttribute="leading" secondItem="gEO-o4-can" secondAttribute="trailing" constant="15" id="vta-Rq-j3v"/>
                 <constraint firstItem="F5f-Nr-h3N" firstAttribute="top" secondItem="4Ej-Yg-gT0" secondAttribute="top" constant="15" id="xHP-RY-29g"/>
