@@ -21,7 +21,7 @@ struct Cast {
     let id : Int
     let name : String
     let order : Int
-    let profilePath : String
+    let profilePath : String?
 }
 
 extension TmdbCredits : Unboxable {
@@ -39,7 +39,7 @@ extension Cast : Unboxable {
         self.id = try unboxer.unbox(key: "id")
         self.name = try unboxer.unbox(key: "name")
         self.order = try unboxer.unbox(key: "order")
-        self.profilePath = try unboxer.unbox(key: "profile_path")
+        self.profilePath = try? unboxer.unbox(key: "profile_path")
     }
     
 }

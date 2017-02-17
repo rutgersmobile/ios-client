@@ -11,15 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="generalCell" id="gTV-IL-0wX" customClass="GeneralItem" customModule="Rutgers" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="195" height="50"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="videoRatings" id="gTV-IL-0wX" customClass="VideoRatingsCell" customModule="Rutgers" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="295" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="195" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="295" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YE0-Q8-hfA">
-                        <rect key="frame" x="76" y="15" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxH-qb-MeA">
+                        <rect key="frame" x="126" y="15" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -27,14 +27,14 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="YE0-Q8-hfA" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="GHl-9n-zTB"/>
-                <constraint firstItem="YE0-Q8-hfA" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="s1G-Us-udh"/>
+                <constraint firstItem="FxH-qb-MeA" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Rh2-uJ-IzV"/>
+                <constraint firstItem="FxH-qb-MeA" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="sfc-8S-SsR"/>
             </constraints>
-            <size key="customSize" width="195" height="50"/>
+            <size key="customSize" width="295" height="50"/>
             <connections>
-                <outlet property="titleLabel" destination="YE0-Q8-hfA" id="Xbf-zg-2OG"/>
+                <outlet property="titleLabel" destination="FxH-qb-MeA" id="3f9-gG-wdZ"/>
             </connections>
-            <point key="canvasLocation" x="33" y="46"/>
+            <point key="canvasLocation" x="-55" y="34"/>
         </collectionViewCell>
     </objects>
 </document>

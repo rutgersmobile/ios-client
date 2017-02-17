@@ -36,11 +36,12 @@ extension TmdbService : TargetType {
     }
     
     var parameters: [String: Any]? {
-        let apiArg = ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "language" : "en-US"]
+        let apiArgWithVideos = ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "append_to_response" : "videos"]
+        let apiArg = ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "language" : "en-US"];
         
         switch self {
         case .getTmdbData( _):
-            return apiArg
+            return apiArgWithVideos
         case .getCastCrew( _):
             return apiArg
         }

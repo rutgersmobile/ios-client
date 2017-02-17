@@ -11,6 +11,8 @@ import RxSwift
 import RxDataSources
 import Foundation
 import Alamofire
+import YouTubePlayer
+
 
 final class RUCinemaDetailCollectionViewController: UICollectionViewController {
     
@@ -71,15 +73,24 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
                 TmdbAPI.sharedInstance.getTmdbCredits(movieId: general.id!)
                     .map { credits in (general, credits)}
             }
-            .map { stupidSyntax in
-                let (tmdbData, tmdbCredits) = stupidSyntax
-                return [.GeneralSection(
-                    title: tmdbData.title!,
-                    items: [
-                        .GeneralSectionItem(title: tmdbData.title!)
-                    ]
-                )]
+            .map { (tmdbData, tmdbCredits) in
+                
+                //https://www.youtube.com/watch?v=KEY(SUXWAEX2jlg)
+                
+                [
+                    .VideoSection(title: tmdbData.title!,
+                                  items: [.VideoTitleItem(title: tmdbData.title!),
+                                          .VideoContentItem(title: "Video", key: tmdbData.videos!.videoResult[0].key),
+                                          .VideoRatingsItem(title: tmdbData.homePage!)])
+                  
+                ]
+                
+                
+                
+                
+                
             }
+            .do(onError: {error in print(error)})
             .asDriver(onErrorJustReturn: [])
             .drive((self.collectionView?.rx.items(dataSource: dataSource))!)
             .addDisposableTo(disposeBag)
@@ -89,38 +100,42 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
     func skinTableViewDataSource(_ dataSource: RxCollectionViewSectionedReloadDataSource<MultipleSectionModel>) {
         dataSource.configureCell = { (dataSource, collection, idxPath, _) in
             switch dataSource[idxPath] {
-            case let .VideoSectionItem(title):
-                let cell: VideoItemCell = collection.dequeueReusableCell(withReuseIdentifier: "videoCell", for: idxPath) as! VideoItemCell
-                cell.titleLabel.text = title
-                
-                
-                return cell
-            case let .GeneralSectionItem(title):
-                let cell: GeneralItem = collection.dequeueReusableCell(withReuseIdentifier: "generalCell", for: idxPath) as! GeneralItem
+            case let .VideoTitleItem(title):
+                let cell: VideoTitleCell = collection.dequeueReusableCell(withReuseIdentifier: "videoTitle", for: idxPath) as! VideoTitleCell
+            
                 cell.titleLabel.text = title
                 
                 return cell
+            case let .VideoContentItem(_, key):
+                let cell: VideoContentCell = collection.dequeueReusableCell(withReuseIdentifier: "videoContent", for: idxPath) as! VideoContentCell
+                
+                let videoPlayer = YouTubePlayerView(frame: CGRect(x: cell.videoPlayer.center.x, y: cell.videoPlayer.center.y, width: 300, height: 300))
+                
+                    let myVideoURL = URL(string: "https://www.youtube.com/watch?v=\(key)")
+                    print(myVideoURL!)
+                    videoPlayer.loadVideoURL(myVideoURL!)
+                
+                cell.sizeToFit()
+                
+                cell.videoPlayer = videoPlayer
+//                cell.titleLabel.text = title
+                
+                return cell
+            case let .VideoRatingsItem(title):
+                let cell: VideoRatingsCell = collection.dequeueReusableCell(withReuseIdentifier: "videoRatings", for: idxPath) as! VideoRatingsCell
+                cell.titleLabel.text = title
+                
+                return cell
+                
             }
+            
         }
         
         
-        
-        //        dataSource.titleForHeaderInSection = { dataSource, index in
-        //            let section = dataSource[index]
-        //
-        //            return section.title
-        //        }
-        
     }
     
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-        ) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width, height: 0)
-    }
+
     
     func configureCollectionView(_ collectionView: UICollectionView) {
         let layout = UICollectionViewFlowLayout()
@@ -128,29 +143,42 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
         layout.minimumLineSpacing = 1
         layout.itemSize = CGSize(
             width: (self.collectionView?.frame.width)!,
-            height: 150
+            height: 300
         )
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         self.collectionView?.setCollectionViewLayout(layout, animated: false)
         self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
         
         collectionView.register(
-            UINib(nibName: "VideoItemCell", bundle: nil),
-            forCellWithReuseIdentifier: "videoCell"
+            UINib(nibName: "VideoTitleCell", bundle: nil),
+            forCellWithReuseIdentifier: "videoTitle"
         )
         
-        collectionView.register(UINib(nibName: "GeneralItem", bundle: nil), forCellWithReuseIdentifier: "generalCell")
+        collectionView.register(
+            UINib(nibName: "VideoContentCell", bundle: nil),
+            forCellWithReuseIdentifier: "videoContent"
+        )
+        
+        collectionView.register(
+            UINib(nibName: "VideoRatingsCell", bundle: nil),
+            forCellWithReuseIdentifier: "videoRatings"
+        )
     }
 }
 
 enum MultipleSectionModel {
     case VideoSection(title: String, items: [SectionItem])
-    case GeneralSection(title: String, items: [SectionItem])
+    case ShowtimesSection(title: String, items: [SectionItem])
+    case InfoSection(title: String, items: [SectionItem])
+    case MovieDataSection(title: String, items: [SectionItem])
 }
 
 enum SectionItem {
-    case VideoSectionItem(title: String)
-    case GeneralSectionItem(title: String)
+    case VideoTitleItem(title: String)
+    case VideoContentItem(title: String, key: String)
+    case VideoRatingsItem(title: String)
+    
+    
 }
 
 extension MultipleSectionModel: SectionModelType {
@@ -160,7 +188,11 @@ extension MultipleSectionModel: SectionModelType {
         switch self {
         case .VideoSection(title: _, items: let items):
             return items.map {$0}
-        case .GeneralSection(title: _, items: let items):
+        case .ShowtimesSection(title: _, items: let items):
+            return items.map {$0}
+        case .InfoSection(title: _, items: let items):
+            return items.map {$0}
+        case .MovieDataSection(title: _, items: let items):
             return items.map {$0}
         }
     }
@@ -169,8 +201,12 @@ extension MultipleSectionModel: SectionModelType {
         switch original {
         case let .VideoSection(title: title, items: _):
             self = .VideoSection(title: title, items: items)
-        case let .GeneralSection(title: title, items: _):
-            self = .GeneralSection(title: title, items: items)
+        case let .ShowtimesSection(title: title, items: _):
+            self = .ShowtimesSection(title: title, items: items)
+        case let .InfoSection(title: title, items: _):
+            self = .InfoSection(title: title, items: items)
+        case let .MovieDataSection(title: title, items: _):
+            self = .MovieDataSection(title: title, items: items)
         }
     }
 }
@@ -180,7 +216,11 @@ extension MultipleSectionModel {
         switch self {
         case .VideoSection(title: let title, items: _):
             return title
-        case .GeneralSection(title: let title, items: _):
+        case .ShowtimesSection(title: let title, items: _):
+            return title
+        case .InfoSection(title: let title, items: _):
+            return title
+        case .MovieDataSection(title: let title, items: _):
             return title
         }
     }

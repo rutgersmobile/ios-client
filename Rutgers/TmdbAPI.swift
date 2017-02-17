@@ -17,6 +17,7 @@ class TmdbAPI {
     let provider : RxMoyaProvider<TmdbService>
     
     private init() {
+//        self.provider = RxMoyaProvider<TmdbService>(plugins: [NetworkLoggerPlugin(verbose: true)]) //Check what we're getting back from API
         self.provider = RxMoyaProvider<TmdbService>()
     }
     
