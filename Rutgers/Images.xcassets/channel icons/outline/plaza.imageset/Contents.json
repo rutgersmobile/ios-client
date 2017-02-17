@@ -2,14 +2,30 @@
   "images" : [
     {
       "idiom" : "universal",
+<<<<<<< HEAD
       "filename" : "plaza.pdf"
+=======
+      "filename" : "plaza.pdf",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+>>>>>>> daf7ac7... Updated regular
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
+<<<<<<< HEAD
   },
   "properties" : {
     "template-rendering-intent" : "template"
+=======
+>>>>>>> daf7ac7... Updated regular
   }
 }
