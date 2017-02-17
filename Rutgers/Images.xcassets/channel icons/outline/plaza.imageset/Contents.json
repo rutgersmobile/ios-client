@@ -3,6 +3,7 @@
     {
       "idiom" : "universal",
 <<<<<<< HEAD
+<<<<<<< HEAD
       "filename" : "plaza.pdf"
 =======
       "filename" : "plaza.pdf",
@@ -16,6 +17,9 @@
       "idiom" : "universal",
       "scale" : "3x"
 >>>>>>> daf7ac7... Updated regular
+=======
+      "filename" : "plaza.pdf"
+>>>>>>> 14ec0d6... Updated image type
     }
   ],
   "info" : {
