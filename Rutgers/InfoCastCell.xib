@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="infoCast" id="gTV-IL-0wX" customClass="InfoCastCell" customModule="Rutgers" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="490" height="196"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="490" height="196"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="juX-Ng-Aqg">
+                        <rect key="frame" x="20" y="5" width="37" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h1B-nK-wWx">
+                        <rect key="frame" x="0.0" y="34.5" width="490" height="147"/>
+                    </scrollView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.75" id="GnG-lR-mIV"/>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="MKU-2d-NI8"/>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" multiplier="1.1" id="Urd-Ft-Rau"/>
+                <constraint firstItem="juX-Ng-Aqg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="uqo-fx-itQ"/>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="vGK-0Z-1YY"/>
+                <constraint firstItem="juX-Ng-Aqg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="y7a-o0-AJk"/>
+            </constraints>
+            <size key="customSize" width="490" height="196"/>
+            <point key="canvasLocation" x="-62" y="11"/>
+        </collectionViewCell>
+    </objects>
+</document>

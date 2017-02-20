@@ -19,16 +19,16 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rjr-wN-qA9">
-                        <rect key="frame" x="140" y="15" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="20" y="12.5" width="54" height="26.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="Rjr-wN-qA9" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="E9V-Y8-t7x"/>
                 <constraint firstItem="Rjr-wN-qA9" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Wa3-Yh-wmz"/>
+                <constraint firstItem="Rjr-wN-qA9" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="pNj-sV-Z18"/>
             </constraints>
             <size key="customSize" width="323" height="50"/>
             <connections>

@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxH-qb-MeA">
-                        <rect key="frame" x="126" y="15" width="42" height="21"/>
+                        <rect key="frame" x="243" y="15" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -28,7 +28,7 @@
             </view>
             <constraints>
                 <constraint firstItem="FxH-qb-MeA" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Rh2-uJ-IzV"/>
-                <constraint firstItem="FxH-qb-MeA" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="sfc-8S-SsR"/>
+                <constraint firstAttribute="trailing" secondItem="FxH-qb-MeA" secondAttribute="trailing" constant="10" id="igS-4u-of8"/>
             </constraints>
             <size key="customSize" width="295" height="50"/>
             <connections>
