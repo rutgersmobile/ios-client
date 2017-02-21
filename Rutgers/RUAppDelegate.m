@@ -41,6 +41,8 @@
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
+    NSSetUncaughtExceptionHandler(&handleUncaughtException);
+
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;  // the circular spining icon ..
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     
@@ -61,8 +63,20 @@
     }];
     
     [[RUMOTDManager sharedManager] showMOTD];
+
+    NSArray* item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
+    if (item != nil) {
+        [[RUAnalyticsManager sharedManager] postAnalyticsEvents:[item copy]];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
+    }
     
     return YES;
+}
+
+void handleUncaughtException(NSException* exception) {
+    // Add exception to analytics and rethrow
+    [[RUAnalyticsManager sharedManager] saveException:exception];
+    @throw exception;
 }
 
 /* This is the entry point for application deep links from the ios system */

@@ -91,6 +91,8 @@
      Which in turn inherits from composed data source which in turn inherits from the Data Source class
      
      */
+
+    @throw [[NSException alloc] initWithName:@"TestException" reason:@"Test reason" userInfo:nil];
     
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
     

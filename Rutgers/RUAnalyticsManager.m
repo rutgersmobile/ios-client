@@ -251,6 +251,26 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     });
 }
 
+-(void)saveException:(NSException *)exception {
+    NSMutableDictionary* event = [self baseEvent];
+    [event addEntriesFromDictionary: @{
+        @"type": @"exception",
+        @"exception_name": [exception name],
+        @"exception_reason": [exception reason],
+        @"stack_trace": [[exception callStackSymbols] componentsJoinedByString:@"\n"]
+    }];
+    [self queueAnalyticsEvent:event];
+
+    // If we have an old crash report that didn't get sent, append it to the
+    // current queue
+    NSArray* item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
+    if (item != nil) {
+        [self.queue addObjectsFromArray:item];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:[self.queue copy] forKey:CrashKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 
 /*
