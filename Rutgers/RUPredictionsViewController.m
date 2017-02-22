@@ -92,8 +92,6 @@
      
      */
 
-    @throw [[NSException alloc] initWithName:@"TestException" reason:@"Test reason" userInfo:nil];
-    
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
     
     // Set the title of the Bus . This usually happens , when we do not have a title ..
