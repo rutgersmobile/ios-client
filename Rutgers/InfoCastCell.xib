@@ -39,6 +39,9 @@
                 <constraint firstItem="juX-Ng-Aqg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="y7a-o0-AJk"/>
             </constraints>
             <size key="customSize" width="490" height="196"/>
+            <connections>
+                <outlet property="scrollView" destination="h1B-nK-wWx" id="A3N-ld-tWq"/>
+            </connections>
             <point key="canvasLocation" x="-62" y="11"/>
         </collectionViewCell>
     </objects>

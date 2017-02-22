@@ -145,6 +145,8 @@ RUChannelProtocol {
                         cell.time2.text = timeStamp2
                         cell.time3.text = timeStamp3
                         
+                        showingArray.removeAll()
+                        
                         
                     }
                     
@@ -159,6 +161,7 @@ RUChannelProtocol {
                     cell.movieId = Int(tmdbMovie.id!)
                     
                     self.collectionView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tap)))
+                    
                     
                     
             }.addDisposableTo(disposeBag)

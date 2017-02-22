@@ -14,7 +14,7 @@ import Alamofire
 import YouTubePlayer
 
 
-final class RUCinemaDetailCollectionViewController: UICollectionViewController {
+final class RUCinemaDetailCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let CellId = "cell"
     
@@ -131,16 +131,21 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
                 self.collectionView?.layoutAttributesForItem(at: idxPath)?.size = CGSize(width: 300, height: 300)
                 let cell: VideoContentCell = collection.dequeueReusableCell(withReuseIdentifier: "videoContent", for: idxPath) as! VideoContentCell
                 
-//                let videoPlayer = YouTubePlayerView(frame: CGRect(x: cell.videoPlayer.center.x, y: cell.videoPlayer.center.y, width: 300, height: 300))
-//                
-//                let myVideoURL = URL(string: "https://www.youtube.com/watch?v=\(key)")
-//                print(myVideoURL!)
-//                videoPlayer.loadVideoURL(myVideoURL!)
-//                
-//                cell.sizeToFit()
-//                
-//                cell.videoPlayer = videoPlayer
+                //                let videoPlayer = YouTubePlayerView(frame: CGRect(x: cell.videoPlayer.center.x, y: cell.videoPlayer.center.y, width: 300, height: 300))
+                //
+                //                let myVideoURL = URL(string: "https://www.youtube.com/watch?v=\(key)")
+                //                print(myVideoURL!)
+                //                videoPlayer.loadVideoURL(myVideoURL!)
+                //
+                //                cell.sizeToFit()
+                //
+                //                cell.videoPlayer = videoPlayer
                 //                cell.titleLabel.text = title
+                
+                cell.layoutIfNeeded()
+                
+                var size = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+                size.height = 300
                 
                 return cell
             case let .VideoRatingsItem(title):
@@ -173,6 +178,34 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
                 
                 let cell: InfoCastCell = collection.dequeueReusableCell(withReuseIdentifier: "infoCast", for: idxPath) as! InfoCastCell
                 
+                
+                
+                
+                let image = UIImage(named: "bus_pin")
+                
+                let testArray = [image, image, image, image, image]
+                
+                cell.scrollView.contentSize = CGSize(width: cell.scrollView.frame.size.width * CGFloat(testArray.count), height: cell.scrollView.frame.size.height)
+                
+                
+                
+                for i in 0..<testArray.count {
+                    let imageView = UIImageView()
+                    imageView.frame = CGRect(x: cell.scrollView.frame.origin.x, y: cell.scrollView.frame.origin.y, width: (image?.size.width)!, height: (image?.size.height)!)
+                    imageView.image = testArray[i]
+                    imageView.contentMode = UIViewContentMode.scaleAspectFill
+                    imageView.clipsToBounds = true
+                    
+                    cell.addSubview(imageView)
+                }
+                cell.scrollView.backgroundColor = .white
+                cell.scrollView.isPagingEnabled = true
+//                cell.scrollView.contentSize = imageView.bounds.size
+                //scrollView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+                
+//                cell.scrollView.addSubview(imageView)
+                
+                
                 return cell
                 
             case let .GeneralPurposeItem(title, data):
@@ -189,38 +222,50 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController {
         
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //Seems to be the answer to fixing the layout
-        let width : CGFloat
-        let height : CGFloat
+        let width = (self.collectionView?.frame.width)!
+        var height = CGFloat(50.0)
+        var size = CGSize(width: width, height: height)
         
         if indexPath.section == 0 {
-            // First section
-            width = collectionView.frame.width/7
-            height = 50
-            return CGSize(width: width, height: height)
-        } else {
-            // Second section
-            width = collectionView.frame.width/3
-            height = 50
-            return CGSize(width: width, height: height)
+            if indexPath.row == 1 {
+                height = 200
+                size = CGSize(width: width, height: height)
+            }
         }
+        
+        if indexPath.section == 2 {
+            if indexPath.row == 0 || indexPath.row == 2 {
+                height = 200
+                size = CGSize(width: width, height: height)
+            }
+        }
+        
+        return size
     }
-
+    
+    func heightForComment(comment:NSString,font: UIFont, width: CGFloat) -> CGFloat {
+        let rect = NSString(string: comment).boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        return ceil(rect.height)
+    }
     
     func configureCollectionView(_ collectionView: UICollectionView) {
-        let layout = UICollectionViewFlowLayout()
+        //        let layout = UICollectionViewFlowLayout()
         
-        layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
+        //        layout.minimumInteritemSpacing = 1
+        //        layout.minimumLineSpacing = 1
         //        layout.estimatedItemSize = CGSize(width: (self.collectionView?.frame.width)!, height: 50)
-//        layout.itemSize = CGSize(
-//            width: (self.collectionView?.frame.width)!,
-//            height: 50
-//        )
-        layout.sectionInset = UIEdgeInsetsMake(10, 0, 0, 0)
-        self.collectionView?.setCollectionViewLayout(layout, animated: false)
+        //        layout.itemSize = CGSize(
+        //            width: (self.collectionView?.frame.width)!,
+        //            height: 50
+        //        )
+        
+        
+        //        layout.sectionInset = UIEdgeInsetsMake(10, 0, 0, 0)
+        //        self.collectionView?.setCollectionViewLayout(layout, animated: false)
         
         self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
         
