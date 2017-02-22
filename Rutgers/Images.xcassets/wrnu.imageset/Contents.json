@@ -2,7 +2,6 @@
   "images" : [
     {
       "idiom" : "universal",
-<<<<<<< HEAD:Rutgers/Images.xcassets/wrnu.imageset/Contents.json
       "filename" : "wrnu.png",
       "scale" : "1x"
     },
@@ -13,9 +12,6 @@
     {
       "idiom" : "universal",
       "scale" : "3x"
-=======
-      "filename" : "no-icon.pdf"
->>>>>>> Updated images:Rutgers/Images.xcassets/channel icons/filled/no-icon.imageset/Contents.json
     }
   ],
   "info" : {
