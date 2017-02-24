@@ -14,13 +14,17 @@ class RUFoodCollectionViewController
     : UICollectionViewController
     , RUChannelProtocol
 {
-    var channel: [NSObject : AnyObject] = [:]
+    var channel: [NSObject : AnyObject]!
+
     let cellId = "FoodCellId"
+    let headerId = "FoodHeaderId"
 
     let disposeBag = DisposeBag()
 
-    typealias DiningHallDataSource =
+    typealias RxDiningHallDataSource =
         RxCollectionViewSectionedReloadDataSource<DiningHallSection>
+    typealias DiningHallDataSource =
+        CollectionViewSectionedDataSource<DiningHallSection>
 
     static func channelHandle() -> String! {
         return "food";
@@ -37,7 +41,9 @@ class RUFoodCollectionViewController
         let storyboard = UIStoryboard(name: "RUFoodStoryboard", bundle: nil)
         let me = storyboard.instantiateInitialViewController()
             as! RUFoodCollectionViewController
+
         me.channel = channelConfiguration as [NSObject : AnyObject]
+
         return me
     }
 
@@ -49,10 +55,10 @@ class RUFoodCollectionViewController
         super.viewDidLoad()
         self.collectionView?.dataSource = nil
 
-        let dataSource = DiningHallDataSource()
+        let dataSource = RxDiningHallDataSource()
 
         dataSource.configureCell = {(
-            ds: CollectionViewSectionedDataSource<DiningHallSection>,
+            ds: DiningHallDataSource,
             cv: UICollectionView,
             ip: IndexPath,
             item: DiningHallSectionItem
@@ -74,6 +80,25 @@ class RUFoodCollectionViewController
             return cell
         }
 
+        dataSource.supplementaryViewFactory = {(
+            ds: DiningHallDataSource,
+            cv: UICollectionView,
+            kind: String,
+            ip: IndexPath
+        ) in
+            let header = cv.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: self.headerId,
+                for: ip
+            ) as! RUFoodCollectionViewHeaderView
+
+            let model = ds.sectionModels[ip.section]
+
+            header.label.text = model.header
+
+            return header
+        }
+
         let newarkSection = DiningHallSection(
             header: "Newark",
             items: [.stubMenu("Newark Menu")]
@@ -81,7 +106,7 @@ class RUFoodCollectionViewController
 
         let camdenSection = DiningHallSection(
             header: "Camden",
-            items: [.stubMenu("Camden")]
+            items: [.stubMenu("Camden Menu")]
         )
 
         RutgersAPI.sharedInstance.getDiningHalls()
@@ -93,6 +118,10 @@ class RUFoodCollectionViewController
             .map { sections in sections + [newarkSection, camdenSection] }
             .asDriver(onErrorJustReturn: [])
             .drive(self.collectionView!.rx.items(dataSource: dataSource))
+            .addDisposableTo(disposeBag)
+
+        self.collectionView?.rx.modelSelected(DiningHallSectionItem.self)
+            .subscribe(onNext: { model in print(model) })
             .addDisposableTo(disposeBag)
     }
 }
