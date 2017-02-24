@@ -11,7 +11,7 @@ import RxSwift
 import RxDataSources
 import Foundation
 import Alamofire
-import YouTubePlayer
+
 
 
 final class RUCinemaDetailCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
@@ -43,30 +43,6 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.dataSource = nil
-        
-        print(self.showTimes)
-        //
-        //        /* SECTIONS:
-        //         VIDEO - CustomVideoCell
-        //         INFO - InfoCell
-        //         DIRECTOR - DefaultCell
-        //         CAST - CastCell
-        //         MOVIE DATA - Array of DefaultCells
-        //         - Status
-        //         - Original Language
-        //         - Runtime
-        //         - Budget
-        //         - Release Information
-        //         */
-        //
-        
-        //        let sections: [MultipleSectionModel] = [
-        //            .VideoSection(title: "Section 1",
-        //                                    items: [.VideoSectionItem(title: "Video")]),
-        //            .GeneralSection(title: "Section 2",
-        //                               items: [.GeneralSectionItem(title: "General")]),
-        //
-        //        ]
         
         let dataSource = RxCollectionViewSectionedReloadDataSource<MultipleSectionModel>()
         
@@ -124,6 +100,8 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
             case let .VideoTitleItem(title):
                 let cell: VideoTitleCell = collection.dequeueReusableCell(withReuseIdentifier: "videoTitle", for: idxPath) as! VideoTitleCell
                 
+                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
                 cell.titleLabel.text = title
                 
                 return cell
@@ -131,21 +109,11 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 self.collectionView?.layoutAttributesForItem(at: idxPath)?.size = CGSize(width: 300, height: 300)
                 let cell: VideoContentCell = collection.dequeueReusableCell(withReuseIdentifier: "videoContent", for: idxPath) as! VideoContentCell
                 
-                //                let videoPlayer = YouTubePlayerView(frame: CGRect(x: cell.videoPlayer.center.x, y: cell.videoPlayer.center.y, width: 300, height: 300))
-                //
-                //                let myVideoURL = URL(string: "https://www.youtube.com/watch?v=\(key)")
-                //                print(myVideoURL!)
-                //                videoPlayer.loadVideoURL(myVideoURL!)
-                //
-                //                cell.sizeToFit()
-                //
-                //                cell.videoPlayer = videoPlayer
-                //                cell.titleLabel.text = title
+                cell.playerView.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                 
-                cell.layoutIfNeeded()
+                cell.playerView.load(withVideoId: key)
                 
-                var size = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-                size.height = 300
+                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                 
                 return cell
             case let .VideoRatingsItem(title):
@@ -153,6 +121,8 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 let cell: VideoRatingsCell = collection.dequeueReusableCell(withReuseIdentifier: "videoRatings", for: idxPath) as! VideoRatingsCell
                 
                 cell.titleLabel.text = title
+                
+                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                 
                 return cell
                 
@@ -164,6 +134,8 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 cell.showTime2.text = showtimes[1]
                 cell.showTime3.text = showtimes[2]
                 
+                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
                 return cell
                 
             case let .InfoDescriptionItem(description):
@@ -171,6 +143,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 let cell: InfoDescriptionCell = collection.dequeueReusableCell(withReuseIdentifier: "infoDescription", for: idxPath) as! InfoDescriptionCell
                 
                 cell.descriptionText.text = description
+                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                 
                 return cell
                 
@@ -178,33 +151,55 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 
                 let cell: InfoCastCell = collection.dequeueReusableCell(withReuseIdentifier: "infoCast", for: idxPath) as! InfoCastCell
                 
+                let imageWidth: CGFloat = 50
+                let imageHeight: CGFloat = 50
+                var xPosition: CGFloat = 0
+                var scrollViewContentSize: CGFloat = 0
                 
-                
-                
-                let image = UIImage(named: "bus_pin")
-                
-                let testArray = [image, image, image, image, image]
-                
-                cell.scrollView.contentSize = CGSize(width: cell.scrollView.frame.size.width * CGFloat(testArray.count), height: cell.scrollView.frame.size.height)
-                
-                
-                
-                for i in 0..<testArray.count {
-                    let imageView = UIImageView()
-                    imageView.frame = CGRect(x: cell.scrollView.frame.origin.x, y: cell.scrollView.frame.origin.y, width: (image?.size.width)!, height: (image?.size.height)!)
-                    imageView.image = testArray[i]
-                    imageView.contentMode = UIViewContentMode.scaleAspectFill
-                    imageView.clipsToBounds = true
+                for index in 0..<cast.count {
+                    if cast[index].profilePath != nil {
+                        TmdbAPI.sharedInstance.getCastProfilePicture(castData: cast[index])
+                            .observeOn(MainScheduler.instance)
+                            .subscribe(onNext: { image in
+
+                                let castLabel = UILabel(frame: CGRect(x: xPosition, y: imageHeight, width: imageWidth, height: 30))
+                                castLabel.font = UIFont(name: "HelveticaNeue", size: 10)
+                                castLabel.numberOfLines = 2
+                                castLabel.textAlignment = NSTextAlignment.center
+                                castLabel.text = cast[index].name
+                                castLabel.textColor = .white
+                                cell.scrollView.addSubview(castLabel)
+                                
+                                let myImageView: UIImageView = UIImageView()
+                                if let image = image {
+                                    myImageView.image = image
+                                }
+                                
+                                
+                                myImageView.frame.size.width = imageWidth
+                                myImageView.frame.size.height = imageHeight
+                                
+                                myImageView.layer.cornerRadius = myImageView.frame.size.width/2
+                                myImageView.clipsToBounds = true
+                                
+                                
+                                myImageView.frame.origin.x = xPosition
+                                myImageView.frame.origin.y = 0
+                                
+                                cell.scrollView.addSubview(myImageView)
+                                
+                                xPosition += imageWidth + 20
+                                scrollViewContentSize += imageWidth + 20
+                                
+                                cell.scrollView.contentSize = CGSize(width: scrollViewContentSize, height: imageHeight)
+                                
+                                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                            }).addDisposableTo(self.disposeBag)
+                    } else {
+                        break
+                    }
                     
-                    cell.addSubview(imageView)
                 }
-                cell.scrollView.backgroundColor = .white
-                cell.scrollView.isPagingEnabled = true
-//                cell.scrollView.contentSize = imageView.bounds.size
-                //scrollView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-                
-//                cell.scrollView.addSubview(imageView)
-                
                 
                 return cell
                 
@@ -214,10 +209,30 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 cell.titleLabel.text = title
                 cell.dataLabel.text = data
                 
+                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
                 return cell
             }
             
+        
+            
         }
+        
+        //Does not work, doesn't even get called
+        dataSource.supplementaryViewFactory = { (dataSource, collection, _, idxPath) in
+            let header : CinemaHeaderCell = collection.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell", for: idxPath) as! CinemaHeaderCell
+            
+            let model = dataSource.sectionModels[idxPath.section]
+            print(model)
+            
+            header.backgroundColor = .red
+            
+            header.headerTitle.text = "TITLE"
+            
+            return header
+        }
+        
+        
         
         
     }
@@ -227,7 +242,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = (self.collectionView?.frame.width)!
-        var height = CGFloat(50.0)
+        var height = CGFloat(30.0)
         var size = CGSize(width: width, height: height)
         
         if indexPath.section == 0 {
@@ -239,7 +254,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
         
         if indexPath.section == 2 {
             if indexPath.row == 0 || indexPath.row == 2 {
-                height = 200
+                height = 120
                 size = CGSize(width: width, height: height)
             }
         }
@@ -247,27 +262,17 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
         return size
     }
     
-    func heightForComment(comment:NSString,font: UIFont, width: CGFloat) -> CGFloat {
-        let rect = NSString(string: comment).boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
-        return ceil(rect.height)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
     }
     
     func configureCollectionView(_ collectionView: UICollectionView) {
-        //        let layout = UICollectionViewFlowLayout()
         
-        //        layout.minimumInteritemSpacing = 1
-        //        layout.minimumLineSpacing = 1
-        //        layout.estimatedItemSize = CGSize(width: (self.collectionView?.frame.width)!, height: 50)
-        //        layout.itemSize = CGSize(
-        //            width: (self.collectionView?.frame.width)!,
-        //            height: 50
-        //        )
+//        self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+        self.collectionView?.backgroundColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
         
         
-        //        layout.sectionInset = UIEdgeInsetsMake(10, 0, 0, 0)
-        //        self.collectionView?.setCollectionViewLayout(layout, animated: false)
-        
-        self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+        collectionView.register(UINib(nibName: "CinemaHeaderCell", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell")
         
         collectionView.register(
             UINib(nibName: "VideoTitleCell", bundle: nil),
@@ -331,13 +336,26 @@ extension MultipleSectionModel: SectionModelType {
     var items: [SectionItem] {
         switch self {
         case .VideoSection(title: _, items: let items):
-            return items.map {$0}
+            return items
         case .ShowtimesSection(title: _, items: let items):
-            return items.map {$0}
+            return items
         case .InfoSection(title: _, items: let items):
-            return items.map {$0}
+            return items
         case .MovieDataSection(title: _, items: let items):
-            return items.map {$0}
+            return items
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .VideoSection(title: let title, items: _):
+            return title
+        case .ShowtimesSection(title: let title, items: _):
+            return title
+        case .InfoSection(title: let title, items: _):
+            return title
+        case .MovieDataSection(title: let title, items: _):
+            return title
         }
     }
     
@@ -355,17 +373,4 @@ extension MultipleSectionModel: SectionModelType {
     }
 }
 
-extension MultipleSectionModel {
-    var title: String {
-        switch self {
-        case .VideoSection(title: let title, items: _):
-            return title
-        case .ShowtimesSection(title: let title, items: _):
-            return title
-        case .InfoSection(title: let title, items: _):
-            return title
-        case .MovieDataSection(title: let title, items: _):
-            return title
-        }
-    }
-}
+

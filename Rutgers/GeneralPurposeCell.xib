@@ -21,24 +21,24 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWY-PU-gTh">
                         <rect key="frame" x="5" y="27" width="193" height="21"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                        <nil key="textColor"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUv-aB-Xqh">
-                        <rect key="frame" x="177" y="27" width="197" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="182" y="31" width="197" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="WWY-PU-gTh" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="EcQ-Pi-VLa"/>
+                <constraint firstItem="WWY-PU-gTh" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="EcQ-Pi-VLa"/>
                 <constraint firstItem="WWY-PU-gTh" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" multiplier="0.5" id="W5R-iQ-gmY"/>
                 <constraint firstItem="WWY-PU-gTh" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Y8O-uB-mT3"/>
                 <constraint firstItem="kUv-aB-Xqh" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="cdz-c1-C8P"/>
-                <constraint firstAttribute="trailing" secondItem="kUv-aB-Xqh" secondAttribute="trailing" constant="20" id="iVR-jT-y6n"/>
+                <constraint firstAttribute="trailing" secondItem="kUv-aB-Xqh" secondAttribute="trailing" constant="15" id="iVR-jT-y6n"/>
                 <constraint firstItem="kUv-aB-Xqh" firstAttribute="width" secondItem="WWY-PU-gTh" secondAttribute="width" id="rrp-MV-leb"/>
             </constraints>
             <size key="customSize" width="394" height="75"/>

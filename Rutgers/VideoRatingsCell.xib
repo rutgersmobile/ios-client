@@ -18,23 +18,34 @@
                 <rect key="frame" x="0.0" y="0.0" width="295" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxH-qb-MeA">
-                        <rect key="frame" x="243" y="15" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xC3-b9-G5Y">
+                        <rect key="frame" x="217" y="0.0" width="70" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FxH-qb-MeA">
+                                <rect key="frame" x="29.5" y="17" width="35.5" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="30P-YW-bCZ"/>
+                            <constraint firstAttribute="trailing" secondItem="FxH-qb-MeA" secondAttribute="trailing" constant="5" id="YTV-AW-kyZ"/>
+                            <constraint firstItem="FxH-qb-MeA" firstAttribute="centerY" secondItem="xC3-b9-G5Y" secondAttribute="centerY" id="keP-Ky-gVt"/>
+                            <constraint firstAttribute="height" constant="50" id="vTq-8u-Paz"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="FxH-qb-MeA" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Rh2-uJ-IzV"/>
-                <constraint firstAttribute="trailing" secondItem="FxH-qb-MeA" secondAttribute="trailing" constant="10" id="igS-4u-of8"/>
+                <constraint firstItem="xC3-b9-G5Y" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="7hl-2r-CVm"/>
+                <constraint firstAttribute="trailing" secondItem="xC3-b9-G5Y" secondAttribute="trailing" constant="8" id="FNj-7O-NU6"/>
             </constraints>
             <size key="customSize" width="295" height="50"/>
             <connections>
                 <outlet property="titleLabel" destination="FxH-qb-MeA" id="3f9-gG-wdZ"/>
             </connections>
-            <point key="canvasLocation" x="-55" y="34"/>
+            <point key="canvasLocation" x="-55.5" y="34"/>
         </collectionViewCell>
     </objects>
 </document>

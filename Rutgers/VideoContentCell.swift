@@ -7,41 +7,17 @@
 //
 
 import UIKit
-import YouTubePlayer
+import youtube_ios_player_helper
 
 
 class VideoContentCell: UICollectionViewCell {
 
-    @IBOutlet weak var videoPlayer: YouTubePlayerView!
-    
-    var isHeightCalculated: Bool = false
-    
-    
-    /* FROM:
-    http://stackoverflow.com/questions/25895311/uicollectionview-self-sizing-cells-with-auto-layout
-     Needs some change in autolayout to make this work I believe
-    */
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        //Exhibit A - We need to cache our calculation to prevent a crash.
-        if !isHeightCalculated {
-            setNeedsLayout()
-            layoutIfNeeded()
-            let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-            var newFrame = layoutAttributes.frame
-            newFrame.size.width = CGFloat(ceilf(Float(size.width)))
-            layoutAttributes.frame = newFrame
-            isHeightCalculated = true
-        }
-        return layoutAttributes
-    }
+    @IBOutlet weak var playerView: YTPlayerView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        self.contentView.autoresizingMask = UIViewAutoresizing()
-        self.videoPlayer.bounds = self.contentView.bounds
     }
 
 }

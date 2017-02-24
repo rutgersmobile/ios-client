@@ -18,21 +18,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="493" height="392"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I8X-jV-y7y" customClass="YouTubePlayerView" customModule="YouTubePlayer">
-                        <rect key="frame" x="0.0" y="0.0" width="493" height="392"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ukD-wd-5IJ" customClass="YTPlayerView">
+                        <rect key="frame" x="-0.5" y="0.0" width="493" height="392"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="I8X-jV-y7y" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="FAc-xR-QuU"/>
-                <constraint firstItem="I8X-jV-y7y" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" id="FTf-bn-2uS"/>
-                <constraint firstItem="I8X-jV-y7y" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="b7S-6c-oio"/>
-                <constraint firstItem="I8X-jV-y7y" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="v5W-v1-cUi"/>
+                <constraint firstItem="ukD-wd-5IJ" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="0OR-4h-Kmj"/>
+                <constraint firstItem="ukD-wd-5IJ" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="Bza-fr-Wz9"/>
+                <constraint firstItem="ukD-wd-5IJ" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" id="Ets-rs-3Si"/>
+                <constraint firstItem="ukD-wd-5IJ" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="zVo-nT-iY1"/>
             </constraints>
             <size key="customSize" width="493" height="392"/>
             <connections>
-                <outlet property="videoPlayer" destination="I8X-jV-y7y" id="fUw-FF-gkI"/>
+                <outlet property="playerView" destination="ukD-wd-5IJ" id="7Hh-Wg-iNI"/>
             </connections>
             <point key="canvasLocation" x="-73" y="86"/>
         </collectionViewCell>

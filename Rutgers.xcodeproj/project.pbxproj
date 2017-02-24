@@ -253,11 +253,11 @@
 		B54DFB4D1E4B970300755D2D /* TmdbData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4C1E4B970300755D2D /* TmdbData.swift */; };
 		B54DFB4F1E4B9C2E00755D2D /* TmdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */; };
 		B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */; };
+		B566618C1E60CC6200B8E79E /* CinemaHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566618A1E60CC6200B8E79E /* CinemaHeaderCell.swift */; };
+		B566618D1E60CC6200B8E79E /* CinemaHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B566618B1E60CC6200B8E79E /* CinemaHeaderCell.xib */; };
 		B5694BBF1E520CC100899ED0 /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BBE1E520CC100899ED0 /* ImageAPI.swift */; };
 		B5694BC31E5232A200899ED0 /* TmdbCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BC21E5232A200899ED0 /* TmdbCredits.swift */; };
 		B5694BC51E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BC41E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift */; };
-		B5694BC81E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BC61E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.swift */; };
-		B5694BC91E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5694BC71E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.xib */; };
 		B5870B8A1E44E32C00D51523 /* AgencyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B891E44E32C00D51523 /* AgencyConfig.swift */; };
 		B5870B8C1E44FECC00D51523 /* Cinema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B8B1E44FECC00D51523 /* Cinema.swift */; };
 		B5870BA31E45303600D51523 /* RUCinemaCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */; };
@@ -743,11 +743,11 @@
 		B54DFB4C1E4B970300755D2D /* TmdbData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbData.swift; sourceTree = "<group>"; };
 		B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbService.swift; sourceTree = "<group>"; };
 		B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbAPI.swift; sourceTree = "<group>"; };
+		B566618A1E60CC6200B8E79E /* CinemaHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CinemaHeaderCell.swift; sourceTree = "<group>"; };
+		B566618B1E60CC6200B8E79E /* CinemaHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CinemaHeaderCell.xib; sourceTree = "<group>"; };
 		B5694BBE1E520CC100899ED0 /* ImageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
 		B5694BC21E5232A200899ED0 /* TmdbCredits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbCredits.swift; sourceTree = "<group>"; };
 		B5694BC41E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaDetailCollectionViewController.swift; sourceTree = "<group>"; };
-		B5694BC61E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaDetailCollectionViewCell.swift; sourceTree = "<group>"; };
-		B5694BC71E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaDetailCollectionViewCell.xib; sourceTree = "<group>"; };
 		B5870B891E44E32C00D51523 /* AgencyConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgencyConfig.swift; sourceTree = "<group>"; };
 		B5870B8B1E44FECC00D51523 /* Cinema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cinema.swift; sourceTree = "<group>"; };
 		B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewController.swift; sourceTree = "<group>"; };
@@ -1636,6 +1636,7 @@
 		B52D0FE11E574A6300DBDF26 /* CellViews */ = {
 			isa = PBXGroup;
 			children = (
+				B566618B1E60CC6200B8E79E /* CinemaHeaderCell.xib */,
 				B52D0FDE1E574A5C00DBDF26 /* VideoTitleCell.xib */,
 				B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */,
 				B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */,
@@ -1650,6 +1651,7 @@
 		B52D0FE21E574A7200DBDF26 /* CellSwiftFiles */ = {
 			isa = PBXGroup;
 			children = (
+				B566618A1E60CC6200B8E79E /* CinemaHeaderCell.swift */,
 				B52D0FDD1E574A5C00DBDF26 /* VideoTitleCell.swift */,
 				B52D0FD51E574A2300DBDF26 /* VideoContentCell.swift */,
 				B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */,
@@ -1667,8 +1669,6 @@
 				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
 				B5694BC41E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift */,
 				B52D0FD41E5749F200DBDF26 /* RUCinemaDetailCells */,
-				B5694BC61E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.swift */,
-				B5694BC71E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.xib */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
 				B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */,
 			);
@@ -1946,7 +1946,6 @@
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
 				B51D34751E5B404F00F4BD1F /* InfoCastCell.xib in Resources */,
-				B5694BC91E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.xib in Resources */,
 				B51D34791E5B406600F4BD1F /* ShowtimesCell.xib in Resources */,
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
@@ -1955,6 +1954,7 @@
 				B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
+				B566618D1E60CC6200B8E79E /* CinemaHeaderCell.xib in Resources */,
 				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
@@ -2088,7 +2088,6 @@
 				A72FFFBF1937E6C800016C89 /* RUSOCCourseViewController.m in Sources */,
 				A7EA4C41197D655D00E972DD /* DataSource.m in Sources */,
 				04A1EFFB1A5C50B700DE0351 /* RUBusStop.m in Sources */,
-				B5694BC81E52362F00899ED0 /* RUCinemaDetailCollectionViewCell.swift in Sources */,
 				A74669031986D8F000A5EBE0 /* RUAppDelegate.m in Sources */,
 				A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */,
 				A72FFFBC1937DF9000016C89 /* RUSOCCourseCell.m in Sources */,
@@ -2155,6 +2154,7 @@
 				A7EA3F48197DA60800D4BC9E /* ExpandingTableViewDataSource.m in Sources */,
 				A7F9029F19A7C21C00FD3054 /* ALTableViewTextFieldCell.m in Sources */,
 				A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */,
+				B566618C1E60CC6200B8E79E /* CinemaHeaderCell.swift in Sources */,
 				A7241A4519896FEF00304436 /* TupleDataSource.m in Sources */,
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,

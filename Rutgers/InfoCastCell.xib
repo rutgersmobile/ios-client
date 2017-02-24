@@ -20,23 +20,23 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cast" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="juX-Ng-Aqg">
-                        <rect key="frame" x="20" y="5" width="37" height="21"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="15" y="5" width="27" height="15"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h1B-nK-wWx">
-                        <rect key="frame" x="0.0" y="34.5" width="490" height="147"/>
+                        <rect key="frame" x="25" y="25" width="441" height="147"/>
                     </scrollView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="h1B-nK-wWx" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" multiplier="0.75" id="GnG-lR-mIV"/>
-                <constraint firstItem="h1B-nK-wWx" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="MKU-2d-NI8"/>
-                <constraint firstItem="h1B-nK-wWx" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" multiplier="1.1" id="Urd-Ft-Rau"/>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="top" secondItem="juX-Ng-Aqg" secondAttribute="top" constant="20" id="Rno-Ec-0RJ"/>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="WPo-uy-MOx"/>
                 <constraint firstItem="juX-Ng-Aqg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="uqo-fx-itQ"/>
-                <constraint firstItem="h1B-nK-wWx" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="vGK-0Z-1YY"/>
-                <constraint firstItem="juX-Ng-Aqg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="y7a-o0-AJk"/>
+                <constraint firstItem="h1B-nK-wWx" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" multiplier="0.9" id="vGK-0Z-1YY"/>
+                <constraint firstItem="juX-Ng-Aqg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="y7a-o0-AJk"/>
             </constraints>
             <size key="customSize" width="490" height="196"/>
             <connections>

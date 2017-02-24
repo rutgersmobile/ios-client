@@ -35,4 +35,8 @@ class TmdbAPI {
         return ImageAPI.sharedInstance.getImage(reqUrl: URL(string: "http://image.tmdb.org/t/p/w500\(data.posterPath!)")!)
     }
     
+    public func getCastProfilePicture(castData: Cast) -> Observable<UIImage?> {
+        return ImageAPI.sharedInstance.getImage(reqUrl: URL(string: "http://image.tmdb.org/t/p/w185\(castData.profilePath!)")!)
+    }
+    
 }

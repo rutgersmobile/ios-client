@@ -165,6 +165,7 @@ RUChannelProtocol {
                     
                     
             }.addDisposableTo(disposeBag)
+        
     }
     
     func collectionView(
@@ -182,6 +183,7 @@ RUChannelProtocol {
             let vc = RUCinemaDetailCollectionViewController.init(movieId: cell.movieId)
             
             vc.showTimes = [cell.time1.text ?? "", cell.time2.text ?? "", cell.time3.text ?? ""]
+            
             self.navigationController?.pushViewController(vc, animated: true)
             
         } else {
