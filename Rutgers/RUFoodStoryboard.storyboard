@@ -76,5 +76,37 @@
             </objects>
             <point key="canvasLocation" x="-351.19999999999999" y="51.724137931034484"/>
         </scene>
+        <!--Dining Hall Tab Bar Controller-->
+        <scene sceneID="W5r-Hm-4hd">
+            <objects>
+                <tabBarController storyboardIdentifier="RUDiningHallTabBarController" id="t1u-Go-FG2" customClass="RUDiningHallTabBarController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="JgV-Ym-fPN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EgG-N1-GSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="474" y="-323"/>
+        </scene>
+        <!--Dining Hall Stub View Controller-->
+        <scene sceneID="AVv-DH-c5P">
+            <objects>
+                <viewController storyboardIdentifier="RUDiningHallStubViewController" id="2Hb-63-IBb" customClass="RUDiningHallStubViewController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lMG-BX-ruU"/>
+                        <viewControllerLayoutGuide type="bottom" id="qNc-hb-a8I"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XHs-0i-atL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jfl-7L-Zth" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="473" y="441"/>
+        </scene>
     </scenes>
 </document>
