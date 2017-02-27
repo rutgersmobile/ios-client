@@ -8,7 +8,7 @@
 
 import UIKit
 
-class InfoCastCell: UICollectionViewCell {
+class InfoCastCell: UITableViewCell {
     @IBOutlet weak var scrollView: UIScrollView!
 
     override func awakeFromNib() {

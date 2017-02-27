@@ -8,7 +8,7 @@
 
 import UIKit
 
-class InfoDescriptionCell: UICollectionViewCell {
+class InfoDescriptionCell: UITableViewCell {
     @IBOutlet weak var descriptionText: UILabel!
 
     override func awakeFromNib() {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>837620852067-gaqno31d36ftlvckla2ddd779f7r2mi3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.837620852067-gaqno31d36ftlvckla2ddd779f7r2mi3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAsMUS641xTCTRZKo-5njDZZheYAQqIeFk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>837620852067</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>edu.rutgers.css.Rutgers</string>
+	<key>PROJECT_ID</key>
+	<string>rutgers-mobile-app-android</string>
+	<key>STORAGE_BUCKET</key>
+	<string>rutgers-mobile-app-android.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:837620852067:ios:747b9db8973e86a6</string>
+	<key>DATABASE_URL</key>
+	<string>https://rutgers-mobile-app-android.firebaseio.com</string>
+</dict>
+</plist>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class VideoRatingsCell: UICollectionViewCell {
+class VideoRatingsCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
 
     override func awakeFromNib() {

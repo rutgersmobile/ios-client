@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="TrH-wd-VkD">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Food Collection View Controller-->
+        <scene sceneID="HDb-8W-knH">
+            <objects>
+                <collectionViewController id="TrH-wd-VkD" customClass="RUFoodCollectionViewController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="u86-lT-lym">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jcR-tn-fZj">
+                            <size key="itemSize" width="281" height="50"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FoodCellId" id="IOS-fq-jkc" customClass="RUFoodCollectionViewCell" customModule="Rutgers" customModuleProvider="target">
+                                <rect key="frame" x="47" y="50" width="281" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="281" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIq-mE-Lnx">
+                                            <rect key="frame" x="8" y="15" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottomMargin" secondItem="PIq-mE-Lnx" secondAttribute="bottom" constant="6" id="FeR-3f-2MJ"/>
+                                    <constraint firstAttribute="leadingMargin" secondItem="PIq-mE-Lnx" secondAttribute="leading" id="dc1-Ii-Z4B"/>
+                                    <constraint firstItem="PIq-mE-Lnx" firstAttribute="top" secondItem="IOS-fq-jkc" secondAttribute="topMargin" constant="7" id="zS6-eb-xL4"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="label" destination="PIq-mE-Lnx" id="95R-sL-u7Y"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FoodHeaderId" id="uUl-Ub-XG7" customClass="RUFoodCollectionViewHeaderView" customModule="Rutgers" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i8k-gO-pid">
+                                    <rect key="frame" x="8" y="15" width="42" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottomMargin" secondItem="i8k-gO-pid" secondAttribute="bottom" constant="6" id="Dy8-XL-sHt"/>
+                                <constraint firstAttribute="leadingMargin" secondItem="i8k-gO-pid" secondAttribute="leading" id="Xld-ro-QBG"/>
+                                <constraint firstItem="i8k-gO-pid" firstAttribute="top" secondItem="uUl-Ub-XG7" secondAttribute="topMargin" constant="7" id="dV7-mD-izM"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="label" destination="i8k-gO-pid" id="2HP-Kq-LF6"/>
+                            </connections>
+                        </collectionReusableView>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hgw-WB-7PR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-351.19999999999999" y="51.724137931034484"/>
+        </scene>
+        <!--Dining Hall Tab Bar Controller-->
+        <scene sceneID="W5r-Hm-4hd">
+            <objects>
+                <tabBarController storyboardIdentifier="RUDiningHallTabBarController" id="t1u-Go-FG2" customClass="RUDiningHallTabBarController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="JgV-Ym-fPN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EgG-N1-GSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="474" y="-323"/>
+        </scene>
+        <!--Dining Hall Stub View Controller-->
+        <scene sceneID="AVv-DH-c5P">
+            <objects>
+                <viewController storyboardIdentifier="RUDiningHallStubViewController" id="2Hb-63-IBb" customClass="RUDiningHallStubViewController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lMG-BX-ruU"/>
+                        <viewControllerLayoutGuide type="bottom" id="qNc-hb-a8I"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XHs-0i-atL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jfl-7L-Zth" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="473" y="441"/>
+        </scene>
+    </scenes>
+</document>

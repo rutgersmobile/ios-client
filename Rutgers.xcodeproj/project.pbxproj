@@ -244,8 +244,6 @@
 		B52D0FD81E574A2300DBDF26 /* VideoContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */; };
 		B52D0FDB1E574A4300DBDF26 /* VideoRatingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */; };
 		B52D0FDC1E574A4300DBDF26 /* VideoRatingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */; };
-		B52D0FDF1E574A5C00DBDF26 /* VideoTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D0FDD1E574A5C00DBDF26 /* VideoTitleCell.swift */; };
-		B52D0FE01E574A5C00DBDF26 /* VideoTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FDE1E574A5C00DBDF26 /* VideoTitleCell.xib */; };
 		B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */; };
 		B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */; };
 		B5432FF21E426C6D006F036A /* Motd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF11E426C6D006F036A /* Motd.swift */; };
@@ -253,16 +251,14 @@
 		B54DFB4D1E4B970300755D2D /* TmdbData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4C1E4B970300755D2D /* TmdbData.swift */; };
 		B54DFB4F1E4B9C2E00755D2D /* TmdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */; };
 		B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */; };
-		B566618C1E60CC6200B8E79E /* CinemaHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B566618A1E60CC6200B8E79E /* CinemaHeaderCell.swift */; };
-		B566618D1E60CC6200B8E79E /* CinemaHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B566618B1E60CC6200B8E79E /* CinemaHeaderCell.xib */; };
 		B5694BBF1E520CC100899ED0 /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BBE1E520CC100899ED0 /* ImageAPI.swift */; };
 		B5694BC31E5232A200899ED0 /* TmdbCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BC21E5232A200899ED0 /* TmdbCredits.swift */; };
-		B5694BC51E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BC41E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift */; };
 		B5870B8A1E44E32C00D51523 /* AgencyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B891E44E32C00D51523 /* AgencyConfig.swift */; };
 		B5870B8C1E44FECC00D51523 /* Cinema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B8B1E44FECC00D51523 /* Cinema.swift */; };
 		B5870BA31E45303600D51523 /* RUCinemaCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */; };
 		B5971AA91E3FC5EA00FABC70 /* RUBusNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */; };
 		B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */; };
+		B5E7708E1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -734,8 +730,6 @@
 		B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoContentCell.xib; sourceTree = "<group>"; };
 		B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoRatingsCell.swift; sourceTree = "<group>"; };
 		B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoRatingsCell.xib; sourceTree = "<group>"; };
-		B52D0FDD1E574A5C00DBDF26 /* VideoTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoTitleCell.swift; sourceTree = "<group>"; };
-		B52D0FDE1E574A5C00DBDF26 /* VideoTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoTitleCell.xib; sourceTree = "<group>"; };
 		B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewCell.swift; sourceTree = "<group>"; };
 		B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewCell.xib; sourceTree = "<group>"; };
 		B5432FF11E426C6D006F036A /* Motd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Motd.swift; sourceTree = "<group>"; };
@@ -743,11 +737,8 @@
 		B54DFB4C1E4B970300755D2D /* TmdbData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbData.swift; sourceTree = "<group>"; };
 		B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbService.swift; sourceTree = "<group>"; };
 		B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbAPI.swift; sourceTree = "<group>"; };
-		B566618A1E60CC6200B8E79E /* CinemaHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CinemaHeaderCell.swift; sourceTree = "<group>"; };
-		B566618B1E60CC6200B8E79E /* CinemaHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CinemaHeaderCell.xib; sourceTree = "<group>"; };
 		B5694BBE1E520CC100899ED0 /* ImageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
 		B5694BC21E5232A200899ED0 /* TmdbCredits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbCredits.swift; sourceTree = "<group>"; };
-		B5694BC41E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaDetailCollectionViewController.swift; sourceTree = "<group>"; };
 		B5870B891E44E32C00D51523 /* AgencyConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgencyConfig.swift; sourceTree = "<group>"; };
 		B5870B8B1E44FECC00D51523 /* Cinema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cinema.swift; sourceTree = "<group>"; };
 		B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewController.swift; sourceTree = "<group>"; };
@@ -755,6 +746,7 @@
 		B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberButton.m; sourceTree = "<group>"; };
 		B5ACFDC41E2FE6EC00E9281C /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
 		B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberViewController.m; sourceTree = "<group>"; };
+		B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaDetailTableViewController.swift; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1636,8 +1628,6 @@
 		B52D0FE11E574A6300DBDF26 /* CellViews */ = {
 			isa = PBXGroup;
 			children = (
-				B566618B1E60CC6200B8E79E /* CinemaHeaderCell.xib */,
-				B52D0FDE1E574A5C00DBDF26 /* VideoTitleCell.xib */,
 				B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */,
 				B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */,
 				B51D34771E5B406600F4BD1F /* ShowtimesCell.xib */,
@@ -1651,8 +1641,6 @@
 		B52D0FE21E574A7200DBDF26 /* CellSwiftFiles */ = {
 			isa = PBXGroup;
 			children = (
-				B566618A1E60CC6200B8E79E /* CinemaHeaderCell.swift */,
-				B52D0FDD1E574A5C00DBDF26 /* VideoTitleCell.swift */,
 				B52D0FD51E574A2300DBDF26 /* VideoContentCell.swift */,
 				B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */,
 				B51D34761E5B406600F4BD1F /* ShowtimesCell.swift */,
@@ -1667,7 +1655,7 @@
 			isa = PBXGroup;
 			children = (
 				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
-				B5694BC41E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift */,
+				B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */,
 				B52D0FD41E5749F200DBDF26 /* RUCinemaDetailCells */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
 				B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */,
@@ -1941,7 +1929,6 @@
 				6254D2821D2329220005A31C /* README.txt in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				042C302E1A7977AA0034F89E /* legal in Resources */,
-				B52D0FE01E574A5C00DBDF26 /* VideoTitleCell.xib in Resources */,
 				04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
@@ -1954,7 +1941,6 @@
 				B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
-				B566618D1E60CC6200B8E79E /* CinemaHeaderCell.xib in Resources */,
 				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
@@ -2154,7 +2140,6 @@
 				A7EA3F48197DA60800D4BC9E /* ExpandingTableViewDataSource.m in Sources */,
 				A7F9029F19A7C21C00FD3054 /* ALTableViewTextFieldCell.m in Sources */,
 				A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */,
-				B566618C1E60CC6200B8E79E /* CinemaHeaderCell.swift in Sources */,
 				A7241A4519896FEF00304436 /* TupleDataSource.m in Sources */,
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
@@ -2178,11 +2163,11 @@
 				B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */,
 				04C0D2D01C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift in Sources */,
 				04A1EFF01A5C50A700DE0351 /* RUBusDataAgencyManager.m in Sources */,
+				B5E7708E1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift in Sources */,
 				A79B5DDA199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.m in Sources */,
 				04A1EFFC1A5C50B700DE0351 /* RUBusViewController.m in Sources */,
 				A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */,
 				A7B435F21912EB29001FE8B6 /* RUDiningHallViewController.m in Sources */,
-				B52D0FDF1E574A5C00DBDF26 /* VideoTitleCell.swift in Sources */,
 				B52D0FDB1E574A4300DBDF26 /* VideoRatingsCell.swift in Sources */,
 				A7D4B64F19ABD81F0087A8BC /* RUPlaceDetailDataSource.m in Sources */,
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,
@@ -2246,7 +2231,6 @@
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				04A1EFD81A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m in Sources */,
 				04A1EFFD1A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m in Sources */,
-				B5694BC51E52347E00899ED0 /* RUCinemaDetailCollectionViewController.swift in Sources */,
 				04B3D6581B98C8B7006D0BF6 /* SwitchDataSource.m in Sources */,
 				A7EA4C54197D6BD800E972DD /* SegmentedDataSource.m in Sources */,
 				B5432FF41E427244006F036A /* Channel.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GeneralPurposeCell: UICollectionViewCell {
+class GeneralPurposeCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dataLabel: UILabel!
 

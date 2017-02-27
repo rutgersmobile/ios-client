@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShowtimesCell: UICollectionViewCell {
+class ShowtimesCell: UITableViewCell {
     @IBOutlet weak var showTime1: UILabel!
     @IBOutlet weak var showTime2: UILabel!
     @IBOutlet weak var showTime3: UILabel!

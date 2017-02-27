@@ -180,7 +180,7 @@ RUChannelProtocol {
         if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
             let cell : RUCinemaCollectionViewCell = self.collectionView?.cellForItem(at: indexPath) as! RUCinemaCollectionViewCell
             
-            let vc = RUCinemaDetailCollectionViewController.init(movieId: cell.movieId)
+            let vc = RUCinemaDetailTableViewController.init(movieId: cell.movieId)
             
             vc.showTimes = [cell.time1.text ?? "", cell.time2.text ?? "", cell.time3.text ?? ""]
             

@@ -1,8 +1,8 @@
 //
-//  RUCinemaDetailCollectionViewController.swift
+//  RUCinemaDetailTableViewController.swift
 //  Rutgers
 //
-//  Created by cfw37 on 2/13/17.
+//  Created by cfw37 on 2/27/17.
 //  Copyright © 2017 Rutgers. All rights reserved.
 //
 
@@ -12,11 +12,7 @@ import RxDataSources
 import Foundation
 import Alamofire
 
-
-
-final class RUCinemaDetailCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    let CellId = "cell"
+final class RUCinemaDetailTableViewController: UITableViewController {
     
     let movieId : Int!
     
@@ -26,7 +22,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
     
     init(movieId: Int) {
         self.movieId = movieId
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        super.init(style: .plain)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,13 +31,13 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView?.dataSource = nil
+        self.tableView?.dataSource = nil
         
-        configureCollectionView(collectionView!)
+        configureTableView(self.tableView!)
         
         
         
-        let dataSource = RxCollectionViewSectionedReloadDataSource<MultipleSectionModel>()
+        let dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>()
         
         skinTableViewDataSource(dataSource)
         
@@ -54,8 +50,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 
                 [
                     .VideoSection(title: tmdbData.title!,
-                                  items: [.VideoTitleItem(title: tmdbData.title!),
-                                          .VideoContentItem(title: "Video", key: tmdbData.videos!.videoResult[0].key),
+                                  items: [.VideoContentItem(title: "Video", key: tmdbData.videos!.videoResult[0].key),
                                           .VideoRatingsItem(title: String(tmdbData.voteAverage!))]),
                     
                     .ShowtimesSection(title: "Showtimes",
@@ -82,28 +77,21 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
             }
             .do(onError: {error in print(error)})
             .asDriver(onErrorJustReturn: [])
-            .drive((self.collectionView?.rx.items(dataSource: dataSource))!)
+            .drive((self.tableView?.rx.items(dataSource: dataSource))!)
             .addDisposableTo(disposeBag)
         
     }
     
-    func skinTableViewDataSource(_ dataSource: RxCollectionViewSectionedReloadDataSource<MultipleSectionModel>) {
-        dataSource.configureCell = { (dataSource, collection, idxPath, _) in
+    func skinTableViewDataSource(_ dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>) {
+        dataSource.configureCell = { (dataSource, table, idxPath, _) in
             switch dataSource[idxPath] {
-            case let .VideoTitleItem(title):
-                let cell: VideoTitleCell = collection.dequeueReusableCell(withReuseIdentifier: "videoTitle", for: idxPath) as! VideoTitleCell
-                
-                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                
-                cell.titleLabel.text = title
-                
-                return cell
             case let .VideoContentItem(_, key):
-                self.collectionView?.layoutAttributesForItem(at: idxPath)?.size = CGSize(width: 300, height: 300)
-                let cell: VideoContentCell = collection.dequeueReusableCell(withReuseIdentifier: "videoContent", for: idxPath) as! VideoContentCell
+                let cell: VideoContentCell = table.dequeueReusableCell(withIdentifier: "videoContent", for: idxPath) as! VideoContentCell
+                
+                
                 
                 cell.playerView.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                
+               
                 cell.playerView.load(withVideoId: key)
                 
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
@@ -111,7 +99,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 return cell
             case let .VideoRatingsItem(title):
                 
-                let cell: VideoRatingsCell = collection.dequeueReusableCell(withReuseIdentifier: "videoRatings", for: idxPath) as! VideoRatingsCell
+                let cell: VideoRatingsCell = table.dequeueReusableCell(withIdentifier: "videoRatings", for: idxPath) as! VideoRatingsCell
                 
                 cell.titleLabel.text = title
                 
@@ -121,7 +109,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 
             case let .ShowtimesItem(showtimes):
                 
-                let cell: ShowtimesCell = collection.dequeueReusableCell(withReuseIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
+                let cell: ShowtimesCell = table.dequeueReusableCell(withIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
                 
                 cell.showTime1.text = showtimes[0]
                 cell.showTime2.text = showtimes[1]
@@ -133,7 +121,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 
             case let .InfoDescriptionItem(description):
                 
-                let cell: InfoDescriptionCell = collection.dequeueReusableCell(withReuseIdentifier: "infoDescription", for: idxPath) as! InfoDescriptionCell
+                let cell: InfoDescriptionCell = table.dequeueReusableCell(withIdentifier: "infoDescription", for: idxPath) as! InfoDescriptionCell
                 
                 cell.descriptionText.text = description
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
@@ -142,7 +130,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 
             case let .InfoCastItem(cast):
                 
-                let cell: InfoCastCell = collection.dequeueReusableCell(withReuseIdentifier: "infoCast", for: idxPath) as! InfoCastCell
+                let cell: InfoCastCell = table.dequeueReusableCell(withIdentifier: "infoCast", for: idxPath) as! InfoCastCell
                 
                 let imageWidth: CGFloat = 50
                 let imageHeight: CGFloat = 50
@@ -154,7 +142,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                         TmdbAPI.sharedInstance.getCastProfilePicture(castData: cast[index])
                             .observeOn(MainScheduler.instance)
                             .subscribe(onNext: { image in
-
+                                
                                 let castLabel = UILabel(frame: CGRect(x: xPosition, y: imageHeight, width: imageWidth, height: 30))
                                 castLabel.font = UIFont(name: "HelveticaNeue", size: 10)
                                 castLabel.numberOfLines = 2
@@ -197,7 +185,7 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 return cell
                 
             case let .GeneralPurposeItem(title, data):
-                let cell: GeneralPurposeCell = collection.dequeueReusableCell(withReuseIdentifier: "general", for: idxPath) as! GeneralPurposeCell
+                let cell: GeneralPurposeCell = table.dequeueReusableCell(withIdentifier: "general", for: idxPath) as! GeneralPurposeCell
                 
                 cell.titleLabel.text = title
                 cell.dataLabel.text = data
@@ -207,27 +195,15 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                 return cell
             }
             
-        
+            
             
         }
         
-        //Does not work, doesn't even get called
-        dataSource.supplementaryViewFactory = { (
-            dataSource: CollectionViewSectionedDataSource<MultipleSectionModel>,
-            collection: UICollectionView,
-            kind: String,
-            idxPath: IndexPath
-        ) in
-            let header : CinemaHeaderCell = collection.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerCell", for: idxPath) as! CinemaHeaderCell
+        dataSource.titleForHeaderInSection = { dataSource, index in
             
-            let model = dataSource.sectionModels[idxPath.section]
-            print(model)
+            let section = dataSource[index]
             
-            header.backgroundColor = .red
-            
-            header.headerTitle.text = "TITLE"
-            
-            return header
+            return section.title
         }
         
         
@@ -235,80 +211,61 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
         
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-
+                var height = CGFloat(30.0)
         
-        let width = (self.collectionView?.frame.width)!
-        var height = CGFloat(30.0)
-        var size = CGSize(width: width, height: height)
         
-        if indexPath.section == 0 {
-            if indexPath.row == 1 {
-                height = 200
-                size = CGSize(width: width, height: height)
-            }
-        }
+                if indexPath.section == 0 {
+                    if indexPath.row == 0 {
+                        height = 200
+                        
+                    }
+                }
         
-        if indexPath.section == 2 {
-            if indexPath.row == 0 || indexPath.row == 2 {
-                height = 120
-                size = CGSize(width: width, height: height)
-            }
-        }
+                if indexPath.section == 2 {
+                    if indexPath.row == 0 || indexPath.row == 2 {
+                        height = 120
+                  
+                    }
+                }
+                
+                return height
         
-        return size
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
+       
+            headerView.backgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+        
+        return headerView
+ 
     }
     
-    func configureCollectionView(_ collectionView: UICollectionView) {
+    func configureTableView(_ tableView: UITableView) {
         
-//        self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-        self.collectionView?.backgroundColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
-        
-//        collectionView.register(UINib(nibName: "CinemaHeaderCell", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell"
-//        )
-        
-        collectionView.register(CinemaHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell")
-        
-        collectionView.register(
-            UINib(nibName: "VideoTitleCell", bundle: nil),
-            forCellWithReuseIdentifier: "videoTitle"
+        tableView.backgroundColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
+        tableView.sectionIndexBackgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+    
+        tableView.register(UINib(nibName: "VideoContentCell", bundle: nil),
+                           forCellReuseIdentifier: "videoContent"
         )
-        
-        collectionView.register(
-            UINib(nibName: "VideoContentCell", bundle: nil),
-            forCellWithReuseIdentifier: "videoContent"
+        tableView.register(UINib(nibName: "VideoRatingsCell", bundle: nil),
+                           forCellReuseIdentifier: "videoRatings"
         )
-        
-        collectionView.register(
-            UINib(nibName: "VideoRatingsCell", bundle: nil),
-            forCellWithReuseIdentifier: "videoRatings"
+        tableView.register(UINib(nibName: "ShowtimesCell", bundle: nil),
+                           forCellReuseIdentifier: "showtimes"
         )
-        
-        collectionView.register(
-            UINib(nibName: "ShowtimesCell", bundle: nil),
-            forCellWithReuseIdentifier: "showtimes"
+        tableView.register(UINib(nibName: "InfoDescriptionCell", bundle: nil),
+                           forCellReuseIdentifier: "infoDescription"
         )
-        
-        collectionView.register(
-            UINib(nibName: "InfoDescriptionCell", bundle: nil),
-            forCellWithReuseIdentifier: "infoDescription"
+        tableView.register(UINib(nibName: "InfoCastCell", bundle: nil),
+                           forCellReuseIdentifier: "infoCast"
         )
-        
-        collectionView.register(
-            UINib(nibName: "InfoCastCell", bundle: nil),
-            forCellWithReuseIdentifier: "infoCast"
-        )
-        
-        collectionView.register(
-            UINib(nibName: "GeneralPurposeCell", bundle: nil),
-            forCellWithReuseIdentifier: "general"
+        tableView.register(UINib(nibName: "GeneralPurposeCell", bundle: nil),
+                           forCellReuseIdentifier: "general"
         )
         
     }
@@ -322,7 +279,6 @@ enum MultipleSectionModel {
 }
 
 enum SectionItem {
-    case VideoTitleItem(title: String)
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
     case ShowtimesItem(showTimes: [String])
@@ -374,5 +330,3 @@ extension MultipleSectionModel: SectionModelType {
         }
     }
 }
-
-
