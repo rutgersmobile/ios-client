@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RxDataSources
+import RxSegue
 
 class RUFoodCollectionViewController
     : UICollectionViewController
@@ -25,6 +26,7 @@ class RUFoodCollectionViewController
         RxCollectionViewSectionedReloadDataSource<DiningHallSection>
     typealias DiningHallDataSource =
         CollectionViewSectionedDataSource<DiningHallSection>
+    typealias DiningHallSectionObserver = AnyObserver<DiningHallSectionItem>
 
     static func channelHandle() -> String! {
         return "food";
@@ -120,8 +122,26 @@ class RUFoodCollectionViewController
             .drive(self.collectionView!.rx.items(dataSource: dataSource))
             .addDisposableTo(disposeBag)
 
+        let diningHallSegue: DiningHallSectionObserver = NavigationSegue(
+            fromViewController: self.navigationController!,
+            toViewControllerFactory: { (sender, model) in
+                switch (model) {
+                case .fullMenu(let diningHall):
+                    return RUDiningHallTabBarController.instantiate(
+                        fromStoryboard: self.storyboard!,
+                        diningHall: diningHall
+                    )
+                case .stubMenu(let hallDescription):
+                    return RUDiningHallStubViewController.instantiate(
+                        withStoryboard: self.storyboard!,
+                        hallDescription: hallDescription
+                    )
+                }
+            }
+        ).asObserver()
+
         self.collectionView?.rx.modelSelected(DiningHallSectionItem.self)
-            .subscribe(onNext: { model in print(model) })
+            .bindTo(diningHallSegue)
             .addDisposableTo(disposeBag)
     }
 }
