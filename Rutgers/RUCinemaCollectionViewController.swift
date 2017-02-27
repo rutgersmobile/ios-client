@@ -191,6 +191,8 @@ RUChannelProtocol {
         }
     }
     
+    
+    
     func configureCollectionView(_ collectionView: UICollectionView) {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 1

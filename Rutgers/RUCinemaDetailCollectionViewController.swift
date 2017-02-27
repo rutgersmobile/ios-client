@@ -35,14 +35,11 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.collectionView?.dataSource = nil
+        
         configureCollectionView(collectionView!)
         
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.collectionView?.dataSource = nil
         
         let dataSource = RxCollectionViewSectionedReloadDataSource<MultipleSectionModel>()
         
@@ -54,10 +51,6 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
                     .map { credits in (general, credits)}
             }
             .map { (tmdbData, tmdbCredits) in
-                
-                //https://www.youtube.com/watch?v=KEY(SUXWAEX2jlg)
-                
-                
                 
                 [
                     .VideoSection(title: tmdbData.title!,
@@ -219,8 +212,13 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
         }
         
         //Does not work, doesn't even get called
-        dataSource.supplementaryViewFactory = { (dataSource, collection, _, idxPath) in
-            let header : CinemaHeaderCell = collection.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell", for: idxPath) as! CinemaHeaderCell
+        dataSource.supplementaryViewFactory = { (
+            dataSource: CollectionViewSectionedDataSource<MultipleSectionModel>,
+            collection: UICollectionView,
+            kind: String,
+            idxPath: IndexPath
+        ) in
+            let header : CinemaHeaderCell = collection.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "headerCell", for: idxPath) as! CinemaHeaderCell
             
             let model = dataSource.sectionModels[idxPath.section]
             print(model)
@@ -240,6 +238,8 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+
         
         let width = (self.collectionView?.frame.width)!
         var height = CGFloat(30.0)
@@ -271,8 +271,10 @@ final class RUCinemaDetailCollectionViewController: UICollectionViewController, 
 //        self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
         self.collectionView?.backgroundColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
         
+//        collectionView.register(UINib(nibName: "CinemaHeaderCell", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell"
+//        )
         
-        collectionView.register(UINib(nibName: "CinemaHeaderCell", bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell")
+        collectionView.register(CinemaHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell")
         
         collectionView.register(
             UINib(nibName: "VideoTitleCell", bundle: nil),
