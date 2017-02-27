@@ -14,6 +14,7 @@ import RxSegue
 class RUFoodMainViewController
     : UITableViewController
     , RUChannelProtocol
+    , Linkable
 {
     var channel: [NSObject : AnyObject]!
 
@@ -34,6 +35,10 @@ class RUFoodMainViewController
     static func registerClass() {
         RUChannelManager.sharedInstance()
             .register(RUFoodMainViewController.self)
+    }
+
+    func sharingUrl() -> URL? {
+        return URL(string: "test url please ignore")
     }
 
     static func channel(
