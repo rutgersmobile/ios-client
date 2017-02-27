@@ -11,21 +11,20 @@ import RxSwift
 import RxDataSources
 import RxSegue
 
-class RUFoodCollectionViewController
-    : UICollectionViewController
+class RUFoodMainViewController
+    : UITableViewController
     , RUChannelProtocol
 {
     var channel: [NSObject : AnyObject]!
 
     let cellId = "FoodCellId"
-    let headerId = "FoodHeaderId"
 
     let disposeBag = DisposeBag()
 
     typealias RxDiningHallDataSource =
-        RxCollectionViewSectionedReloadDataSource<DiningHallSection>
+        RxTableViewSectionedReloadDataSource<DiningHallSection>
     typealias DiningHallDataSource =
-        CollectionViewSectionedDataSource<DiningHallSection>
+        TableViewSectionedDataSource<DiningHallSection>
     typealias DiningHallSectionObserver = AnyObserver<DiningHallSectionItem>
 
     static func channelHandle() -> String! {
@@ -34,7 +33,7 @@ class RUFoodCollectionViewController
 
     static func registerClass() {
         RUChannelManager.sharedInstance()
-            .register(RUFoodCollectionViewController.self)
+            .register(RUFoodMainViewController.self)
     }
 
     static func channel(
@@ -42,7 +41,7 @@ class RUFoodCollectionViewController
     ) -> Any! {
         let storyboard = UIStoryboard(name: "RUFoodStoryboard", bundle: nil)
         let me = storyboard.instantiateInitialViewController()
-            as! RUFoodCollectionViewController
+            as! RUFoodMainViewController
 
         me.channel = channelConfiguration as [NSObject : AnyObject]
 
@@ -55,22 +54,23 @@ class RUFoodCollectionViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView?.dataSource = nil
+        self.tableView.dataSource = nil
+        self.tableView.tableFooterView = UIView()
 
         let dataSource = RxDiningHallDataSource()
 
         dataSource.configureCell = {(
             ds: DiningHallDataSource,
-            cv: UICollectionView,
+            tv: UITableView,
             ip: IndexPath,
             item: DiningHallSectionItem
         ) in
-            let cell = cv.dequeueReusableCell(
-                withReuseIdentifier: self.cellId,
+            let cell = tv.dequeueReusableCell(
+                withIdentifier: self.cellId,
                 for: ip
-            ) as! RUFoodCollectionViewCell
+            )
 
-            cell.label.text = {
+            cell.textLabel?.text = {
                 switch item {
                 case .fullMenu(let diningHall):
                     return diningHall.name
@@ -82,23 +82,8 @@ class RUFoodCollectionViewController
             return cell
         }
 
-        dataSource.supplementaryViewFactory = {(
-            ds: DiningHallDataSource,
-            cv: UICollectionView,
-            kind: String,
-            ip: IndexPath
-        ) in
-            let header = cv.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: self.headerId,
-                for: ip
-            ) as! RUFoodCollectionViewHeaderView
-
-            let model = ds.sectionModels[ip.section]
-
-            header.label.text = model.header
-
-            return header
+        dataSource.titleForHeaderInSection = {(ds, ip) in
+            ds.sectionModels[ip].header
         }
 
         let newarkSection = DiningHallSection(
@@ -119,7 +104,7 @@ class RUFoodCollectionViewController
             .toArray()
             .map { sections in sections + [newarkSection, camdenSection] }
             .asDriver(onErrorJustReturn: [])
-            .drive(self.collectionView!.rx.items(dataSource: dataSource))
+            .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(disposeBag)
 
         let diningHallSegue: DiningHallSectionObserver = NavigationSegue(
@@ -140,7 +125,7 @@ class RUFoodCollectionViewController
             }
         ).asObserver()
 
-        self.collectionView?.rx.modelSelected(DiningHallSectionItem.self)
+        self.tableView.rx.modelSelected(DiningHallSectionItem.self)
             .bindTo(diningHallSegue)
             .addDisposableTo(disposeBag)
     }

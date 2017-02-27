@@ -36,18 +36,29 @@ class RUDiningHallTabBarController: UITabBarController, UITabBarControllerDelega
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.viewControllers = diningHall.meals.enumerated().map { (i, meal) in
-            let vc = RUMealCollectionViewController(meal: meal)
-            vc.tabBarItem = UITabBarItem(
-                title: meal.name,
-                image: nil,
-                selectedImage: nil
-            )
-            return vc
-        }
+        self.title = diningHall.name
+
+        self.viewControllers = diningHall.meals
+            .filter { $0.isAvailable }
+            .enumerated()
+            .map { (i, meal) in
+                let vc = RUMealViewController.instantiate(
+                    withStoryboard: self.storyboard!,
+                    meal: meal
+                )
+                vc.tabBarItem = UITabBarItem(
+                    title: meal.name,
+                    image: nil,
+                    selectedImage: nil
+                )
+                return vc
+            }
     }
 
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+    func tabBarController(
+        _ tabBarController: UITabBarController,
+        shouldSelect viewController: UIViewController
+    ) -> Bool {
         return true
     }
 }
