@@ -33,7 +33,6 @@ class RUDiningHallStubViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        label.numberOfLines = 50
         label.text = hallDescription
     }
 }
