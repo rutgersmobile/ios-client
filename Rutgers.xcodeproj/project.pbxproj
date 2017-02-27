@@ -247,6 +247,7 @@
 		C4004EB61E525CA500A5FEDD /* RUFoodStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */; };
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
 		C42245FF1E5223F2001FD27B /* RUFoodMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42245FE1E5223F2001FD27B /* RUFoodMainViewController.swift */; };
+		C43D74391E64C4C6001993E2 /* Linkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D74381E64C4C6001993E2 /* Linkable.swift */; };
 		C46B0FCD1E60BB59006AB739 /* RUDiningHallTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */; };
 		C46B0FCF1E60BEBF006AB739 /* RUDiningHallStubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */; };
 		C46B0FD11E60CBE7006AB739 /* RUMealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */; };
@@ -720,6 +721,7 @@
 		C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RUFoodStoryboard.storyboard; sourceTree = "<group>"; };
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
 		C42245FE1E5223F2001FD27B /* RUFoodMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodMainViewController.swift; sourceTree = "<group>"; };
+		C43D74381E64C4C6001993E2 /* Linkable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Linkable.swift; sourceTree = "<group>"; };
 		C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUDiningHallTabBarController.swift; sourceTree = "<group>"; };
 		C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUDiningHallStubViewController.swift; sourceTree = "<group>"; };
 		C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUMealViewController.swift; sourceTree = "<group>"; };
@@ -1648,6 +1650,7 @@
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 				621347721E04279600786570 /* MusicViewController.swift */,
 				621347731E04279600786570 /* MusicViewController.xib */,
+				C43D74381E64C4C6001993E2 /* Linkable.swift */,
 			);
 			path = Rutgers;
 			sourceTree = "<group>";
@@ -1997,6 +2000,7 @@
 				A794EBEB19005D91006E040C /* RUReaderTableViewCell.m in Sources */,
 				C42245FF1E5223F2001FD27B /* RUFoodMainViewController.swift in Sources */,
 				A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */,
+				C43D74391E64C4C6001993E2 /* Linkable.swift in Sources */,
 				62AACB001DE3AE2900DF8E70 /* MapRouteViewController.swift in Sources */,
 				6244DACF1D4684B100D275D7 /* RURecCenterViewController.m in Sources */,
 				C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */,
