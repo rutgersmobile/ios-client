@@ -8,7 +8,10 @@
 
 import Foundation
 
-class RUDiningHallTabBarController: UITabBarController, UITabBarControllerDelegate {
+class RUDiningHallTabBarController
+    : UITabBarController
+    , UITabBarControllerDelegate
+{
     var diningHall: DiningHall!
 
     static func instantiate(
