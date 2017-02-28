@@ -1256,7 +1256,10 @@
 		A7B2D98F190ED654003ABEA3 /* rufood */ = {
 			isa = PBXGroup;
 			children = (
-				C40E68F41E647863005F1320 /* controller */,
+				C42245FE1E5223F2001FD27B /* RUFoodMainViewController.swift */,
+				C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */,
+				C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */,
+				C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */,
 				C4004EB51E525CA500A5FEDD /* RUFoodStoryboard.storyboard */,
 			);
 			name = rufood;
@@ -1672,17 +1675,6 @@
 				621E60381D9D9F8300BAF3B7 /* RUDebug.m */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C40E68F41E647863005F1320 /* controller */ = {
-			isa = PBXGroup;
-			children = (
-				C42245FE1E5223F2001FD27B /* RUFoodMainViewController.swift */,
-				C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */,
-				C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */,
-				C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */,
-			);
-			name = controller;
 			sourceTree = "<group>";
 		};
 		C41E66181E38E96600562CCB /* api */ = {
