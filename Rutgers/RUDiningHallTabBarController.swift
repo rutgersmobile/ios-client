@@ -68,10 +68,6 @@ class RUDiningHallTabBarController
         super.viewDidLoad()
         self.delegate = self
         setupShareButton()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
         switch (diningHall!) {
         case .fullDiningHall(let fullDiningHall):
