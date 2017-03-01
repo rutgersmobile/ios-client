@@ -133,7 +133,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         }
     }
     
-    func actionButtonTapped() {
+    override func actionButtonTapped() {
         if let url = sharingURL() {
             let favoriteActivity = RUFavoriteActivity(title: "WRNU")
             let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity!])
