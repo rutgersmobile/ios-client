@@ -7,16 +7,36 @@
 //
 
 import Foundation
+import RxSwift
 
 class RUDiningHallTabBarController
     : UITabBarController
     , UITabBarControllerDelegate
 {
-    var diningHall: DiningHall!
+    static let nameShortToLong = [
+        "brower": "Brower Commons",
+        "busch": "Busch Dining Hall",
+        "livi": "Livingston Dining Commons",
+        "neilson": "Neilson Dining Hall"
+    ]
+
+    static let nameLongToShort = [
+        "Brower Commons": "brower",
+        "Busch Dining Hall": "busch",
+        "Livingston Dining Commons": "livi",
+        "Neilson Dining Hall": "neilson"
+    ]
+
+    var diningHall: DiningHallRepr!
+
+    let myNameShortToLong = RUDiningHallTabBarController.nameShortToLong
+    let myNameLongToShort = RUDiningHallTabBarController.nameLongToShort
+
+    let disposeBag = DisposeBag()
 
     static func instantiate(
         fromStoryboard storyboard: UIStoryboard,
-        diningHall: DiningHall
+        diningHall: DiningHallRepr
     ) -> RUDiningHallTabBarController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUDiningHallTabBarController"
@@ -27,6 +47,19 @@ class RUDiningHallTabBarController
         return me
     }
 
+    override func sharingUrl() -> URL? {
+        let name = { () -> String in switch (diningHall!) {
+        case .fullDiningHall(let fullDiningHall):
+            return fullDiningHall.name
+        case .serializedDiningHall(let diningHallName):
+            return diningHallName
+        }}()
+
+        return self.myNameLongToShort[name].flatMap { shortName in
+            NSURL.rutgersUrl(withPathComponents: ["food", shortName])
+        }
+    }
+
     required init(coder: NSCoder) {
         super.init(coder: coder)!
     }
@@ -34,14 +67,32 @@ class RUDiningHallTabBarController
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+        setupShareButton()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.title = diningHall.name
+        switch (diningHall!) {
+        case .fullDiningHall(let fullDiningHall):
+            setup(withFullDiningHall: fullDiningHall)
+        case .serializedDiningHall(let diningHallName):
+            RutgersAPI.sharedInstance.getDiningHalls()
+                .observeOn(MainScheduler.instance)
+                .flatMap { Observable.from($0) }
+                .filter { $0.name == diningHallName }
+                .subscribe(onNext: { fullDiningHall in
+                    self.setup(withFullDiningHall: fullDiningHall)
+                    self.tabBarController?.view.setNeedsDisplay()
+                })
+                .addDisposableTo(disposeBag)
+        }
+    }
 
-        self.viewControllers = diningHall.meals
+    func setup(withFullDiningHall fullDiningHall: DiningHall) {
+        self.title = fullDiningHall.name
+
+        self.viewControllers = fullDiningHall.meals
             .filter { $0.isAvailable }
             .enumerated()
             .map { (i, meal) in
@@ -64,4 +115,9 @@ class RUDiningHallTabBarController
     ) -> Bool {
         return true
     }
+}
+
+enum DiningHallRepr {
+    case fullDiningHall(DiningHall)
+    case serializedDiningHall(String)
 }
