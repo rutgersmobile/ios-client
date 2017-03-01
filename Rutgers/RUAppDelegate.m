@@ -79,6 +79,7 @@
 void handleUncaughtException(NSException* exception) {
     // Add exception to analytics and rethrow
     [[RUAnalyticsManager sharedManager] saveException:exception];
+    NSLog(@"%@", exception);
     @throw exception;
 }
 
