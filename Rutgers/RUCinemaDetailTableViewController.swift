@@ -22,7 +22,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     
     init(movieId: Int) {
         self.movieId = movieId
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
+     
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,6 +39,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         
         let dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>()
+        
+        self.tableView.allowsSelection = false
+    
         
         skinTableViewDataSource(dataSource)
         
@@ -62,12 +66,12 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                                          .InfoCastItem(cast: tmdbCredits.cast)]),
                     
                     
-                    .MovieDataSection(title: "Data",
+                    .MovieDataSection(title: "Movie Data",
                                       items: [.GeneralPurposeItem(title: "Status:", data: tmdbData.status!),
                                               .GeneralPurposeItem(title: "Original Language:", data: "English"),
-                                              .GeneralPurposeItem(title: "Runtime:", data: String(describing: tmdbData.runtime!)),
-                                              .GeneralPurposeItem(title: "Budget:", data: String(describing: tmdbData.budget!)),
-                                              .GeneralPurposeItem(title: "Release Information:", data: tmdbData.releaseDate!)])
+                                              .GeneralPurposeItem(title: "Runtime:", data: self.getFormattedRuntime(runtime: tmdbData.runtime!)),
+                                              .GeneralPurposeItem(title: "Budget:", data: self.getFormattedBudget(budget: tmdbData.budget!)),
+                                              .GeneralPurposeItem(title: "Release Date:", data: self.getFormattedReleaseInfo(date: tmdbData.releaseDate!))])
                 ]
                 
                 
@@ -82,13 +86,66 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
     }
     
+    func getFormattedRuntime (runtime: Int) -> String {
+        let runtimeAsNumber : Double = Double(runtime)
+        
+        let getInitialValue = runtimeAsNumber/60
+        
+        //Gets numbers before and after decimal
+        var intPart : Double = 0;
+        let fractPart = modf(getInitialValue, &intPart)
+        
+        let hours = Int(getInitialValue - fractPart)
+        let minutes = Int(60 * fractPart)
+        
+        var formatString : String = ""
+        
+        if hours == 1 {
+            formatString.append("\(hours) hour")
+        } else {
+            formatString.append("\(hours) hours")
+        }
+        
+        if minutes == 0 {
+            return formatString
+        } else if minutes == 1 {
+            formatString.append(" and \(minutes) minute")
+        } else {
+            formatString.append(" and \(minutes) minutes")
+        }
+
+        return formatString
+    }
+    
+    func getFormattedBudget (budget: Int) -> String {
+        let formattedNum = budget.stringFormattedWithSeparator
+        
+        
+        return "$\(formattedNum)"
+    }
+    
+    func getFormattedReleaseInfo (date: String) -> String {
+        
+        var dateString = date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-dd"
+        dateFormatter.locale = Locale.init(identifier: "en_GB")
+        
+        let dateObj = dateFormatter.date(from: dateString)
+        
+        dateFormatter.dateFormat = "MMMM dd, yyyy"
+        print("Dateobj: \(dateFormatter.string(from: dateObj!))")
+        
+        dateString = dateFormatter.string(from: dateObj!)
+        
+        return dateString
+    }
+    
     func skinTableViewDataSource(_ dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>) {
         dataSource.configureCell = { (dataSource, table, idxPath, _) in
             switch dataSource[idxPath] {
             case let .VideoContentItem(_, key):
                 let cell: VideoContentCell = table.dequeueReusableCell(withIdentifier: "videoContent", for: idxPath) as! VideoContentCell
-                
-                
                 
                 cell.playerView.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                
@@ -100,7 +157,24 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             case let .VideoRatingsItem(title):
                 
                 let cell: VideoRatingsCell = table.dequeueReusableCell(withIdentifier: "videoRatings", for: idxPath) as! VideoRatingsCell
+            
+                let starImage = UIImage(named: "rating")
                 
+                
+                cell.starImage.image = starImage
+                
+               
+                cell.starImage.contentMode = UIViewContentMode.scaleAspectFit
+                
+                cell.starImage.image = cell.starImage.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                cell.starImage.tintColor = .white
+                
+    
+                
+                cell.ratingsBorder.layer.borderWidth = 1.5
+                cell.ratingsBorder.layer.cornerRadius = 8.0
+                cell.ratingsBorder.layer.masksToBounds = true
+                cell.ratingsBorder.layer.borderColor = UIColor.white.cgColor
                 cell.titleLabel.text = title
                 
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
@@ -110,6 +184,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             case let .ShowtimesItem(showtimes):
                 
                 let cell: ShowtimesCell = table.dequeueReusableCell(withIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
+                
                 
                 cell.showTime1.text = showtimes[0]
                 cell.showTime2.text = showtimes[1]
@@ -152,8 +227,11 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                                 cell.scrollView.addSubview(castLabel)
                                 
                                 let myImageView: UIImageView = UIImageView()
-                                if let image = image {
-                                    myImageView.image = image
+                                if let newImage = image {
+               
+                                    
+                                    myImageView.image = newImage
+                                    myImageView.contentMode = UIViewContentMode.scaleAspectFill
                                 }
                                 
                                 
@@ -211,6 +289,14 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 3 {
+            return 30
+        } else {
+            return 0
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
                 var height = CGFloat(30.0)
@@ -221,6 +307,12 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         height = 200
                         
                     }
+                    
+                    if indexPath.row == 1 {
+                        height = 45
+                    }
+                    
+                  
                 }
         
                 if indexPath.section == 2 {
@@ -234,19 +326,25 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-    {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
-       
-            headerView.backgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
-        
-        return headerView
- 
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
     }
+    
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+        view.tintColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        
+        let font = UIFont(name: "HelveticaNeue-Light", size: 14)
+        
+        header.textLabel?.font = font
+    }
+    
     
     func configureTableView(_ tableView: UITableView) {
         
-        tableView.backgroundColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
+        tableView.backgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
         tableView.sectionIndexBackgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
     
         tableView.register(UINib(nibName: "VideoContentCell", bundle: nil),
@@ -268,6 +366,22 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                            forCellReuseIdentifier: "general"
         )
         
+    }
+}
+
+//From stack overflow http://stackoverflow.com/questions/29999024/adding-thousand-separator-to-int-in-swift
+struct Number {
+    static let formatterWithSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = ","
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+}
+
+extension Integer {
+    var stringFormattedWithSeparator: String {
+        return Number.formatterWithSeparator.string(from: self as! NSNumber) ?? ""
     }
 }
 

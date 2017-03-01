@@ -11,30 +11,29 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="videoContent" id="gTV-IL-0wX" customClass="VideoContentCell" customModule="Rutgers" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="493" height="392"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="videoContent" rowHeight="155" id="wc9-4O-Zsp" customClass="VideoContentCell" customModule="Rutgers" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="155"/>
             <autoresizingMask key="autoresizingMask"/>
-            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="493" height="392"/>
-                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wc9-4O-Zsp" id="axK-Wx-7bF">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="155"/>
+                <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ukD-wd-5IJ" customClass="YTPlayerView">
-                        <rect key="frame" x="-0.5" y="0.0" width="493" height="392"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sb9-cQ-QO2" customClass="YTPlayerView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="155"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
-            </view>
-            <constraints>
-                <constraint firstItem="ukD-wd-5IJ" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="0OR-4h-Kmj"/>
-                <constraint firstItem="ukD-wd-5IJ" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="Bza-fr-Wz9"/>
-                <constraint firstItem="ukD-wd-5IJ" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" id="Ets-rs-3Si"/>
-                <constraint firstItem="ukD-wd-5IJ" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="zVo-nT-iY1"/>
-            </constraints>
-            <size key="customSize" width="493" height="392"/>
+                <constraints>
+                    <constraint firstItem="sb9-cQ-QO2" firstAttribute="height" secondItem="axK-Wx-7bF" secondAttribute="height" id="8pz-zu-ziy"/>
+                    <constraint firstItem="sb9-cQ-QO2" firstAttribute="centerX" secondItem="axK-Wx-7bF" secondAttribute="centerX" id="KjR-zH-qJI"/>
+                    <constraint firstItem="sb9-cQ-QO2" firstAttribute="centerY" secondItem="axK-Wx-7bF" secondAttribute="centerY" id="awc-JI-PIt"/>
+                    <constraint firstItem="sb9-cQ-QO2" firstAttribute="width" secondItem="axK-Wx-7bF" secondAttribute="width" id="pKJ-1m-JkY"/>
+                </constraints>
+            </tableViewCellContentView>
             <connections>
-                <outlet property="playerView" destination="ukD-wd-5IJ" id="7Hh-Wg-iNI"/>
+                <outlet property="playerView" destination="sb9-cQ-QO2" id="5LW-gg-pfC"/>
             </connections>
-            <point key="canvasLocation" x="-73" y="86"/>
-        </collectionViewCell>
+            <point key="canvasLocation" x="-495.5" y="-329.5"/>
+        </tableViewCell>
     </objects>
 </document>

@@ -10,6 +10,8 @@ import UIKit
 
 class VideoRatingsCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var ratingsBorder: UIView!
+    @IBOutlet weak var starImage: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
