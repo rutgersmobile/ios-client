@@ -62,7 +62,7 @@ class RUFoodMainViewController
 
         let dataSource = RxDiningHallDataSource()
 
-        dataSource.configureCell = {(
+        dataSource.configureCell = { [unowned self] (
             ds: DiningHallDataSource,
             tv: UITableView,
             ip: IndexPath,
@@ -112,7 +112,7 @@ class RUFoodMainViewController
 
         let diningHallSegue: DiningHallSectionObserver = NavigationSegue(
             fromViewController: self.navigationController!,
-            toViewControllerFactory: { (sender, model) in
+            toViewControllerFactory: { [unowned self] (sender, model) in
                 switch (model) {
                 case .fullMenu(let diningHall):
                     return RUDiningHallTabBarController.instantiate(

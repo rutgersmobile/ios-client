@@ -77,7 +77,7 @@ class RUDiningHallTabBarController
                 .observeOn(MainScheduler.instance)
                 .flatMap { Observable.from($0) }
                 .filter { $0.name == diningHallName }
-                .subscribe(onNext: { fullDiningHall in
+                .subscribe(onNext: { [unowned self] fullDiningHall in
                     self.setup(withFullDiningHall: fullDiningHall)
                     self.tabBarController?.view.setNeedsDisplay()
                 })
