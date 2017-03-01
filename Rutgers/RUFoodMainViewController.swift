@@ -36,10 +36,14 @@ class RUFoodMainViewController
             .register(RUFoodMainViewController.self)
     }
 
+    static func getStoryboard() -> UIStoryboard {
+        return UIStoryboard(name: "RUFoodStoryboard", bundle: nil)
+    }
+
     static func channel(
         withConfiguration channelConfiguration: [AnyHashable : Any]!
     ) -> Any! {
-        let storyboard = UIStoryboard(name: "RUFoodStoryboard", bundle: nil)
+        let storyboard = RUFoodMainViewController.getStoryboard()
         let me = storyboard.instantiateInitialViewController()
             as! RUFoodMainViewController
 
@@ -113,7 +117,7 @@ class RUFoodMainViewController
                 case .fullMenu(let diningHall):
                     return RUDiningHallTabBarController.instantiate(
                         fromStoryboard: self.storyboard!,
-                        diningHall: diningHall
+                        diningHall: .fullDiningHall(diningHall)
                     )
                 case .stubMenu(let hallDescription):
                     return RUDiningHallStubViewController.instantiate(
@@ -127,6 +131,21 @@ class RUFoodMainViewController
         self.tableView.rx.modelSelected(DiningHallSectionItem.self)
             .bindTo(diningHallSegue)
             .addDisposableTo(disposeBag)
+    }
+
+    static func viewControllers(
+        withPathComponents pathComponents: [Any]!,
+        destinationTitle title: String!
+    ) -> [Any]! {
+        if
+            let hall = pathComponents.first as? String,
+            let fullName = RUDiningHallTabBarController.nameShortToLong[hall] {
+            return [RUDiningHallTabBarController.instantiate(
+                fromStoryboard: getStoryboard(),
+                diningHall: .serializedDiningHall(fullName)
+            )]
+        }
+        return []
     }
 }
 
