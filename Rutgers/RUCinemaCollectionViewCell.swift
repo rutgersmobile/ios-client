@@ -37,5 +37,12 @@ class RUCinemaCollectionViewCell: UICollectionViewCell {
         selectedBackgroundView?.backgroundColor = .lightGray
     }
 
+    override func prepareForReuse() {
+        self.label.text = nil
+        self.time1.text = nil
+        self.time2.text = nil
+        self.time3.text = nil
+        self.descriptionLabel.text = nil
+    }
 
 }
