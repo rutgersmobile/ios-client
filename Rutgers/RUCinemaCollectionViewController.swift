@@ -81,19 +81,23 @@ RUChannelProtocol {
                             cell.posterImage.image = image ?? UIImage(named: "bus_pin")
                         }).addDisposableTo(self.disposeBag)
                     
-                    var genreString = ""
-                    
-                    if let genres = tmdbMovie.genres {
-                        for genre in genres {
-                            
-                            if (genre.name != (genres.last!).name) {
-                                genreString.append(genre.name + ", ")}
-                            else {
-                                genreString.append(genre.name)
-                            }
-                        }
-                    }
-                    
+//                    var genreString = ""
+//                    
+//                    if let genres = tmdbMovie.genres {
+//                        for genre in genres {
+//                            
+//                            if (genre.name != (genres.last!).name) {
+//                                genreString.append(genre.name + ", ")}
+//                            else {
+//                                genreString.append(genre.name)
+//                            }
+//                        }
+//                    }
+
+                    let genreString = tmdbMovie.genres.map { genres in
+                        genres.map { $0.name }.joined(separator: ", ")
+                    } ?? ""
+
                     if (movie.showings.count != 0) {
                         let calendar = Calendar.current
                         
