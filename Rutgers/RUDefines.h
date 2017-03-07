@@ -32,7 +32,7 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2)
 
 extern BOOL iPad();
 
-static NSString *const gittag = @"4.2-BETA7";
+static NSString *const gittag = @"4.2-BETA8";
 
 static NSString *const api = @"3";
 
