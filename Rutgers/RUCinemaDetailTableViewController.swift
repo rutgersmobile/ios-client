@@ -23,7 +23,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     init(movieId: Int) {
         self.movieId = movieId
         super.init(nibName: nil, bundle: nil)
-     
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,13 +35,10 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         configureTableView(self.tableView!)
         
-        
-        
         let dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>()
         
         self.tableView.allowsSelection = false
-    
-        
+
         skinTableViewDataSource(dataSource)
         
         TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
@@ -73,10 +69,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                                               .GeneralPurposeItem(title: "Budget:", data: self.getFormattedBudget(budget: tmdbData.budget!)),
                                               .GeneralPurposeItem(title: "Release Date:", data: self.getFormattedReleaseInfo(date: tmdbData.releaseDate!))])
                 ]
-                
-                
-                
-                
                 
             }
             .do(onError: {error in print(error)})
@@ -120,7 +112,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     func getFormattedBudget (budget: Int) -> String {
         let formattedNum = budget.stringFormattedWithSeparator
         
-        
         return "$\(formattedNum)"
     }
     
@@ -153,6 +144,11 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                 
+                //These need to be set individually for every case since we're making different types of cells...otherwise the compilier gets angry.  However, there is likely a more elegant solution
+                cell.preservesSuperviewLayoutMargins = false
+                cell.separatorInset = UIEdgeInsets.zero
+                cell.layoutMargins = UIEdgeInsets.zero
+                
                 return cell
             case let .VideoRatingsItem(title):
                 
@@ -160,24 +156,23 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             
                 let starImage = UIImage(named: "rating")
                 
-                
                 cell.starImage.image = starImage
-                
-               
                 cell.starImage.contentMode = UIViewContentMode.scaleAspectFit
-                
                 cell.starImage.image = cell.starImage.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                 cell.starImage.tintColor = .white
-                
-    
-                
+            
                 cell.ratingsBorder.layer.borderWidth = 1.5
                 cell.ratingsBorder.layer.cornerRadius = 8.0
                 cell.ratingsBorder.layer.masksToBounds = true
                 cell.ratingsBorder.layer.borderColor = UIColor.white.cgColor
+                
                 cell.titleLabel.text = title
                 
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
+                cell.preservesSuperviewLayoutMargins = false
+                cell.separatorInset = UIEdgeInsets.zero
+                cell.layoutMargins = UIEdgeInsets.zero
                 
                 return cell
                 
@@ -185,12 +180,15 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 let cell: ShowtimesCell = table.dequeueReusableCell(withIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
                 
-                
                 cell.showTime1.text = showtimes[0]
                 cell.showTime2.text = showtimes[1]
                 cell.showTime3.text = showtimes[2]
                 
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
+                cell.preservesSuperviewLayoutMargins = false
+                cell.separatorInset = UIEdgeInsets.zero
+                cell.layoutMargins = UIEdgeInsets.zero
                 
                 return cell
                 
@@ -200,6 +198,10 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.descriptionText.text = description
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
+                cell.preservesSuperviewLayoutMargins = false
+                cell.separatorInset = UIEdgeInsets.zero
+                cell.layoutMargins = UIEdgeInsets.zero
                 
                 return cell
                 
@@ -234,7 +236,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                                     myImageView.contentMode = UIViewContentMode.scaleAspectFill
                                 }
                                 
-                                
                                 myImageView.frame.size.width = imageWidth
                                 myImageView.frame.size.height = imageHeight
                                 
@@ -260,6 +261,10 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     
                 }
                 
+                cell.preservesSuperviewLayoutMargins = false
+                cell.separatorInset = UIEdgeInsets.zero
+                cell.layoutMargins = UIEdgeInsets.zero
+                
                 return cell
                 
             case let .GeneralPurposeItem(title, data):
@@ -269,6 +274,10 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 cell.dataLabel.text = data
                 
                 cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                
+                cell.preservesSuperviewLayoutMargins = false
+                cell.separatorInset = UIEdgeInsets.zero
+                cell.layoutMargins = UIEdgeInsets.zero
                 
                 return cell
             }
@@ -311,8 +320,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     if indexPath.row == 1 {
                         height = 45
                     }
-                    
-                  
                 }
         
                 if indexPath.section == 2 {
@@ -332,21 +339,24 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+        
         view.tintColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+        
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.white
         
         let font = UIFont(name: "HelveticaNeue-Light", size: 14)
-        
         header.textLabel?.font = font
+        
     }
     
     
     func configureTableView(_ tableView: UITableView) {
-        
         tableView.backgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
         tableView.sectionIndexBackgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
-    
+        
+        tableView.separatorColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
+        
         tableView.register(UINib(nibName: "VideoContentCell", bundle: nil),
                            forCellReuseIdentifier: "videoContent"
         )

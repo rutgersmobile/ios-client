@@ -43,7 +43,6 @@ RUChannelProtocol {
     
     init(channel: [NSObject: AnyObject]) {
         self.channel = channel
-        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -121,6 +120,7 @@ RUChannelProtocol {
                             }
                         }
                         
+                        print("SHOWING ARRAY: \n \(showingArray)")
                         
                         showingArray.reverse()
                         
