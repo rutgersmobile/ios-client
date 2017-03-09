@@ -21,6 +21,39 @@ protocol DictionaryConvertible {
     func asDictionary() -> NSDictionary
 }
 
+struct VisibleObject {
+    var visible: Bool
+    var object: AnyObject
+
+    init(visible: Bool, object: AnyObject) {
+        self.visible = visible
+        self.object = object
+    }
+
+    func asDict() -> Dictionary<String, AnyObject> {
+        return ["visible": visible as AnyObject, "object": object]
+    }
+
+    static func fromDict(dict: Dictionary<String, AnyObject>) -> VisibleObject? {
+        return (dict["visible"] as? Bool).flatMap { visible in
+            dict["object"].map { VisibleObject(visible: visible, object: $0) }
+        }
+    }
+}
+
+extension Array {
+    // Create a new array for elements where f is not nil
+    func filterMap<T>(f: (Element) -> T?) -> [T] {
+        return self.reduce([]) { (result, x) in
+            if let y = f(x) {
+                return result + [y]
+            } else {
+                return result
+            }
+        }
+    }
+}
+
 
 /*
  
@@ -93,9 +126,9 @@ public class RUMenuItemManager: NSObject {
         var rawMenuItems = self.rawMenuItems
         let favoriteDict = favorite.asDictionary()
         
-        let optionalIndex = rawMenuItems.indexOf { $0.isEqual(favoriteDict) }
+        let optionalIndex = rawMenuItems.indexOf { $0.object.isEqual(favoriteDict) }
         if optionalIndex == nil {
-            rawMenuItems.insert(favoriteDict, atIndex: 0)
+            rawMenuItems.insert(VisibleObject(visible: true, object: favoriteDict), atIndex: 0)
         }
         
         self.rawMenuItems = rawMenuItems
@@ -105,7 +138,7 @@ public class RUMenuItemManager: NSObject {
         var rawMenuItems = self.rawMenuItems
         
         let favoriteDict = favorite.asDictionary()
-        let optionalIndex = rawMenuItems.indexOf { $0.isEqual(favoriteDict) }
+        let optionalIndex = rawMenuItems.indexOf { $0.object.isEqual(favoriteDict) }
         if let index = optionalIndex {
             rawMenuItems.removeAtIndex(index)
         }
@@ -117,38 +150,117 @@ public class RUMenuItemManager: NSObject {
         NSNotificationCenter.defaultCenter().postNotificationName(MenuItemManagerDidChangeActiveMenuItemsKey, object: self)
     }
     
-    private var rawMenuItems: [AnyObject] {
+    private var rawMenuItems: [VisibleObject] {
         set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: MenuItemManagerActiveMenuItemsKey)
+            NSUserDefaults.standardUserDefaults().setValue(newValue.map { $0.asDict() }, forKey: MenuItemManagerActiveMenuItemsKey)
             notifyMenuItemsDidChange()
         }
         get {
-            return NSUserDefaults.standardUserDefaults().arrayForKey(MenuItemManagerActiveMenuItemsKey) ?? RUChannelManager.sharedInstance().contentChannels.flatMap { $0.channelHandle }
+            let contentChannels = RUChannelManager.sharedInstance().contentChannels as [AnyObject]
+            if let dictDefaults = NSUserDefaults.standardUserDefaults()
+                .arrayForKey(MenuItemManagerActiveMenuItemsKey) as? [Dictionary<String, AnyObject>]
+            {
+                let channelHandles = contentChannels.flatMap { $0.channelHandle }
+                let validHandle = { handle in
+                    channelHandles.contains { $0 == handle }
+                }
+                let defaults = dictDefaults.filter {
+                    // throw out any values where we have a handle that no
+                    // longer exists in ordered_content
+                    //
+                    // can't do this for favorites because we might be using
+                    // ordered content from the bundle, and it would trash links
+                    // if it was too old (and didn't have some new handles)
+                    //
+                    // assume that bad handles will not crash and can be removed
+                    // by the user if they don't want them
+                    ($0["object"] as? String).map(validHandle) ?? true
+                }.filterMap { VisibleObject.fromDict($0) }
+
+                // get saved channels (no favorites) and make sure they're valid
+                let defaultHandles: [String] = defaults.filterMap {
+                    // we only store the channel handle, not the whole thing
+                    $0.object as? String
+                }.filter(validHandle)
+
+                // find contentChannels that are not in our defaults at all
+                let newChannels = channelHandles.filter { handle in
+                    !defaultHandles.contains { $0 == handle }
+                }
+                // put those new channels at the top and make them visible
+                return newChannels.map {
+                    VisibleObject(visible: true, object: $0 as AnyObject)
+                } + defaults
+            } else {
+                // If this is the first launch, just make all channels visible
+                return contentChannels.map {
+                    VisibleObject(visible: true, object: $0.channelHandle as AnyObject)
+                }
+            }
         }
     }
-    
+
+    private func rawVisible() -> [VisibleObject] {
+        return rawMenuItems.filter { $0.visible }
+    }
+
+    private func rawHidden() -> [VisibleObject] {
+        return rawMenuItems.filter { !$0.visible }
+    }
+
+    private func serializedItem(object: AnyObject) -> AnyObject? {
+        switch object {
+        case let favorite as RUFavorite:
+            return favorite.asDictionary()
+        case let channel as NSDictionary:
+            return channel.channelHandle as AnyObject?
+        default: return nil
+        }
+    }
+
+    private func fullItem(object: AnyObject) -> AnyObject? {
+        switch object {
+        case let dictionary as NSDictionary:
+            return RUFavorite(dictionary: dictionary)
+        case let string as String:
+            return RUChannelManager.sharedInstance().channelWithHandle(string) as AnyObject?
+        default: return nil
+        }
+    }
+
+    private func serializeNew(objects: [AnyObject], visible: Bool) -> [VisibleObject] {
+        return objects.flatMap(serializedItem).map {
+            VisibleObject(visible: visible, object: $0)
+        }
+    }
+
+    private func deserializeOld(objects: [VisibleObject]) -> [AnyObject] {
+        return objects.map { $0.object }.flatMap(fullItem)
+    }
+
+    // Use this to atomically set both visible and hidden items at once.
+    // Setting them seperately can cause problems because we can't distinguish
+    // between items dropped that will be added back to the other list
+    // immediately and items that we don't have that are new in ordered_content
+    public func updateItems(visible: [AnyObject], hidden: [AnyObject]) {
+        rawMenuItems = serializeNew(visible, visible: true) + serializeNew(hidden, visible: false)
+    }
+
     public var menuItems: [AnyObject] {
         set {
-            rawMenuItems = newValue.flatMap { menuItem in
-                switch menuItem {
-                case let favorite as RUFavorite:
-                    return favorite.asDictionary()
-                case let channel as NSDictionary:
-                    return channel.channelHandle
-                default: return nil
-                }
-            }
+            rawMenuItems = serializeNew(newValue, visible: true) + rawHidden()
         }
         get {
-            return rawMenuItems.flatMap { rawMenuItem in
-                switch rawMenuItem {
-                case let dictionary as NSDictionary:
-                    return RUFavorite(dictionary: dictionary)
-                case let string as String:
-                    return RUChannelManager.sharedInstance().channelWithHandle(string)
-                default: return nil
-                }
-            }
+            return deserializeOld(rawVisible())
+        }
+    }
+
+    public var hiddenItems: [AnyObject] {
+        set {
+            rawMenuItems = rawVisible() + serializeNew(newValue, visible: false)
+        }
+        get {
+            return deserializeOld(rawHidden())
         }
     }
 }
