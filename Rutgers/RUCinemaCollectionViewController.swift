@@ -120,8 +120,6 @@ RUChannelProtocol {
                             }
                         }
                         
-                        print("SHOWING ARRAY: \n \(showingArray)")
-                        
                         showingArray.reverse()
                         
                         var timeStamp1 = ""
@@ -165,8 +163,6 @@ RUChannelProtocol {
                     cell.movieId = Int(tmdbMovie.id!)
                     
                     self.collectionView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tap)))
-                    
-                    
                     
             }.addDisposableTo(disposeBag)
         

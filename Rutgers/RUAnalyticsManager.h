@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString * const CrashKey = @"CRASH_REPORT";
+
 @interface RUAnalyticsManager : NSObject
 +(instancetype)sharedManager;
 
@@ -18,4 +20,6 @@
 
 //Not yet implemented
 -(void)queueEventForUserInteraction:(NSDictionary *)userInteraction;
+-(void)saveException:(NSException*)exception;
+-(void)postAnalyticsEvents:(NSArray*)events;
 @end

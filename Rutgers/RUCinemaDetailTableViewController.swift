@@ -14,30 +14,48 @@ import Alamofire
 
 final class RUCinemaDetailTableViewController: UITableViewController {
     
+    //Passed from previous view controller - used for TmdbAPI credits request
     let movieId : Int!
     
+    //Also passed from previous view controller, displays most recent showtimes
     var showTimes : [String] = []
     
+    //Sets up dispose bag for Rx pods - all observables within disposeBag will
+    //be dealloc when viewcontroller gets dealloc
     let disposeBag = DisposeBag()
     
+    //Initializer for VC - requires movieId to be set
     init(movieId: Int) {
         self.movieId = movieId
         super.init(nibName: nil, bundle: nil)
     }
     
+    /*
+     Req when subclassing UITableViewController - compiler yells at you when
+     removed
+     */
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //Standard viewDidLoad method
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /*
+         Sets the tableView datasource to nil, otherwise when you try to set
+         the dataSource with the Rx version the compiler will get confused and
+         crash - warns you that there is already a datasource set somewhere 
+         previously.  Most likely the Obj-c dataSource written by Kyle Bailey -
+         could also just be a default apple dataSource
+         */
+        
         self.tableView?.dataSource = nil
         
         configureTableView(self.tableView!)
         
-        let dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>()
-        
-        self.tableView.allowsSelection = false
+        let dataSource =
+            RxTableViewSectionedReloadDataSource<MultipleSectionModel>()
 
         skinTableViewDataSource(dataSource)
         
@@ -47,36 +65,78 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     .map { credits in (general, credits)}
             }
             .map { (tmdbData, tmdbCredits) in
-                
                 [
-                    .VideoSection(title: tmdbData.title!,
-                                  items: [.VideoContentItem(title: "Video", key: tmdbData.videos!.videoResult[0].key),
-                                          .VideoRatingsItem(title: String(tmdbData.voteAverage!))]),
-                    
-                    .ShowtimesSection(title: "Showtimes",
-                                      items: [.ShowtimesItem(showTimes: self.showTimes)]),
-                    
-                    .InfoSection(title: "Info",
-                                 items: [.InfoDescriptionItem(description: tmdbData.overview!),
-                                         .GeneralPurposeItem(title: "Director:", data: "David Yates"),
-                                         .InfoCastItem(cast: tmdbCredits.cast)]),
-                    
-                    
-                    .MovieDataSection(title: "Movie Data",
-                                      items: [.GeneralPurposeItem(title: "Status:", data: tmdbData.status!),
-                                              .GeneralPurposeItem(title: "Original Language:", data: "English"),
-                                              .GeneralPurposeItem(title: "Runtime:", data: self.getFormattedRuntime(runtime: tmdbData.runtime!)),
-                                              .GeneralPurposeItem(title: "Budget:", data: self.getFormattedBudget(budget: tmdbData.budget!)),
-                                              .GeneralPurposeItem(title: "Release Date:", data: self.getFormattedReleaseInfo(date: tmdbData.releaseDate!))])
+                    .VideoSection(
+                        title: tmdbData.title!,
+                        items: [
+                            .VideoContentItem(
+                                title: "Video",
+                                key: tmdbData.videos!.videoResult[0].key
+                            ),
+                            .VideoRatingsItem(
+                                title: String(tmdbData.voteAverage!)
+                            )
+                        ]
+                    ),
+                    .ShowtimesSection(
+                        title: "Showtimes",
+                        items: [.ShowtimesItem(showTimes: self.showTimes)]
+                    ),
+                    .InfoSection(
+                        title: "Info",
+                        items: [
+                            .InfoDescriptionItem(
+                                description: tmdbData.overview!
+                            ),
+                            .GeneralPurposeItem(
+                                title: "Director:",
+                                data: "David Yates"
+                            ),
+                            .InfoCastItem(cast: tmdbCredits.cast)
+                        ]
+                    ),
+                    .MovieDataSection(
+                        title: "Movie Data",
+                        items: [
+                            .GeneralPurposeItem(
+                                title: "Status:",
+                                data: tmdbData.status!
+                            ),
+                            .GeneralPurposeItem(
+                                title: "Original Language:",
+                                data: "English"
+                            ),
+                            .GeneralPurposeItem(
+                                title: "Runtime:",
+                                data: self.getFormattedRuntime(
+                                runtime: tmdbData.runtime!)
+                            ),
+                            .GeneralPurposeItem(
+                                title: "Budget:",
+                                data: self.getFormattedBudget(
+                                budget: tmdbData.budget!
+                                )
+                            ),
+                            .GeneralPurposeItem(
+                                title: "Release Date:",
+                                data: self.getFormattedReleaseInfo(
+                                date: tmdbData.releaseDate!
+                                )
+                            )
+                        ]
+                    )
                 ]
-                
             }
             .do(onError: {error in print(error)})
             .asDriver(onErrorJustReturn: [])
             .drive((self.tableView?.rx.items(dataSource: dataSource))!)
             .addDisposableTo(disposeBag)
-        
     }
+    
+    /*
+     Gets the movie runtime and does some 'fancy' math to format 
+     it into a human readable format
+     */
     
     func getFormattedRuntime (runtime: Int) -> String {
         let runtimeAsNumber : Double = Double(runtime)
@@ -92,28 +152,39 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         var formatString : String = ""
         
-        if hours == 1 {
+        switch hours {
+        case 1:
             formatString.append("\(hours) hour")
-        } else {
+        default:
             formatString.append("\(hours) hours")
         }
         
-        if minutes == 0 {
+        switch minutes {
+        case 0:
             return formatString
-        } else if minutes == 1 {
+        case 1:
             formatString.append(" and \(minutes) minute")
-        } else {
+        default:
             formatString.append(" and \(minutes) minutes")
         }
 
         return formatString
     }
     
+    /*
+     Uses the extension on String, stringFormattedWithSeparator, in order to
+     format the number into something understandable see extension at end of
+     file to see how it works
+     */
     func getFormattedBudget (budget: Int) -> String {
         let formattedNum = budget.stringFormattedWithSeparator
-        
         return "$\(formattedNum)"
     }
+    
+    
+    /*
+     Formats the release date
+     */
     
     func getFormattedReleaseInfo (date: String) -> String {
         
@@ -132,33 +203,62 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         return dateString
     }
     
-    func skinTableViewDataSource(_ dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>) {
+    /*
+     Function to reduce some of the boilerplate making the cells:
+     Takes in a type of tableView cell, converts it to UITableViewCell (so the
+     compilier knows what methods/properties to access) and returns the inital
+     cell type
+     */
+    
+    func skinTableViewCells<T>(cell: T) -> T {
+        let cell = cell as! UITableViewCell
+        cell.backgroundColor =
+            UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+        cell.preservesSuperviewLayoutMargins = false
+        cell.separatorInset = UIEdgeInsets.zero
+        cell.layoutMargins = UIEdgeInsets.zero
+        
+        return cell as! T
+    }
+    
+    
+    /*
+     This method configures the dataSource based off what enum cell value you
+     put under the enum secion identifier when you map the TMDB data to the
+     cells in the viewDidLoad method. 
+     
+     TL;DR - sets the cells up
+     */
+    func skinTableViewDataSource(_
+        dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
+        ) {
         dataSource.configureCell = { (dataSource, table, idxPath, _) in
             switch dataSource[idxPath] {
             case let .VideoContentItem(_, key):
-                let cell: VideoContentCell = table.dequeueReusableCell(withIdentifier: "videoContent", for: idxPath) as! VideoContentCell
+                let cell: VideoContentCell = table.dequeueReusableCell(
+                    withIdentifier: "videoContent",
+                    for: idxPath) as! VideoContentCell
                 
-                cell.playerView.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+                cell.playerView.backgroundColor =
+                    UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                
                 cell.playerView.load(withVideoId: key)
                 
-                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                
-                //These need to be set individually for every case since we're making different types of cells...otherwise the compilier gets angry.  However, there is likely a more elegant solution
-                cell.preservesSuperviewLayoutMargins = false
-                cell.separatorInset = UIEdgeInsets.zero
-                cell.layoutMargins = UIEdgeInsets.zero
-                
-                return cell
+                return self.skinTableViewCells(cell: cell)
             case let .VideoRatingsItem(title):
                 
-                let cell: VideoRatingsCell = table.dequeueReusableCell(withIdentifier: "videoRatings", for: idxPath) as! VideoRatingsCell
+                let cell: VideoRatingsCell =
+                    table.dequeueReusableCell(
+                        withIdentifier: "videoRatings",
+                        for: idxPath) as! VideoRatingsCell
             
                 let starImage = UIImage(named: "rating")
                 
                 cell.starImage.image = starImage
                 cell.starImage.contentMode = UIViewContentMode.scaleAspectFit
-                cell.starImage.image = cell.starImage.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                cell.starImage.image =
+                    cell.starImage.image!
+                        .withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                 cell.starImage.tintColor = .white
             
                 cell.ratingsBorder.layer.borderWidth = 1.5
@@ -168,118 +268,53 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.titleLabel.text = title
                 
-                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                
-                cell.preservesSuperviewLayoutMargins = false
-                cell.separatorInset = UIEdgeInsets.zero
-                cell.layoutMargins = UIEdgeInsets.zero
-                
-                return cell
+                return self.skinTableViewCells(cell: cell)
                 
             case let .ShowtimesItem(showtimes):
                 
-                let cell: ShowtimesCell = table.dequeueReusableCell(withIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
+                let cell: ShowtimesCell =
+                    table.dequeueReusableCell(
+                        withIdentifier: "showtimes",
+                        for: idxPath) as! ShowtimesCell
                 
                 cell.showTime1.text = showtimes[0]
                 cell.showTime2.text = showtimes[1]
                 cell.showTime3.text = showtimes[2]
-                
-                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                
-                cell.preservesSuperviewLayoutMargins = false
-                cell.separatorInset = UIEdgeInsets.zero
-                cell.layoutMargins = UIEdgeInsets.zero
-                
-                return cell
+
+                return self.skinTableViewCells(cell: cell)
                 
             case let .InfoDescriptionItem(description):
                 
-                let cell: InfoDescriptionCell = table.dequeueReusableCell(withIdentifier: "infoDescription", for: idxPath) as! InfoDescriptionCell
+                let cell: InfoDescriptionCell =
+                    table.dequeueReusableCell(
+                        withIdentifier: "infoDescription",
+                        for: idxPath) as! InfoDescriptionCell
                 
                 cell.descriptionText.text = description
-                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
                 
-                cell.preservesSuperviewLayoutMargins = false
-                cell.separatorInset = UIEdgeInsets.zero
-                cell.layoutMargins = UIEdgeInsets.zero
-                
-                return cell
+                return self.skinTableViewCells(cell: cell)
                 
             case let .InfoCastItem(cast):
                 
-                let cell: InfoCastCell = table.dequeueReusableCell(withIdentifier: "infoCast", for: idxPath) as! InfoCastCell
+                let cell: InfoCastCell =
+                    table.dequeueReusableCell(
+                        withIdentifier: "infoCast",
+                        for: idxPath) as! InfoCastCell
                 
-                let imageWidth: CGFloat = 50
-                let imageHeight: CGFloat = 50
-                var xPosition: CGFloat = 0
-                var scrollViewContentSize: CGFloat = 0
+                self.populateScrollView(cell: cell, castArray: cast)
                 
-                for index in 0..<cast.count {
-                    if cast[index].profilePath != nil {
-                        TmdbAPI.sharedInstance.getCastProfilePicture(castData: cast[index])
-                            .observeOn(MainScheduler.instance)
-                            .subscribe(onNext: { image in
-                                
-                                let castLabel = UILabel(frame: CGRect(x: xPosition, y: imageHeight, width: imageWidth, height: 30))
-                                castLabel.font = UIFont(name: "HelveticaNeue", size: 10)
-                                castLabel.numberOfLines = 2
-                                castLabel.textAlignment = NSTextAlignment.center
-                                castLabel.text = cast[index].name
-                                castLabel.textColor = .white
-                                cell.scrollView.addSubview(castLabel)
-                                
-                                let myImageView: UIImageView = UIImageView()
-                                if let newImage = image {
-               
-                                    
-                                    myImageView.image = newImage
-                                    myImageView.contentMode = UIViewContentMode.scaleAspectFill
-                                }
-                                
-                                myImageView.frame.size.width = imageWidth
-                                myImageView.frame.size.height = imageHeight
-                                
-                                myImageView.layer.cornerRadius = myImageView.frame.size.width/2
-                                myImageView.clipsToBounds = true
-                                
-                                
-                                myImageView.frame.origin.x = xPosition
-                                myImageView.frame.origin.y = 0
-                                
-                                cell.scrollView.addSubview(myImageView)
-                                
-                                xPosition += imageWidth + 20
-                                scrollViewContentSize += imageWidth + 20
-                                
-                                cell.scrollView.contentSize = CGSize(width: scrollViewContentSize, height: imageHeight)
-                                
-                                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                            }).addDisposableTo(self.disposeBag)
-                    } else {
-                        break
-                    }
-                    
-                }
-                
-                cell.preservesSuperviewLayoutMargins = false
-                cell.separatorInset = UIEdgeInsets.zero
-                cell.layoutMargins = UIEdgeInsets.zero
-                
-                return cell
+                return self.skinTableViewCells(cell: cell)
                 
             case let .GeneralPurposeItem(title, data):
-                let cell: GeneralPurposeCell = table.dequeueReusableCell(withIdentifier: "general", for: idxPath) as! GeneralPurposeCell
+                let cell: GeneralPurposeCell =
+                    table.dequeueReusableCell(withIdentifier: "general",
+                                              for: idxPath)
+                                              as! GeneralPurposeCell
                 
                 cell.titleLabel.text = title
                 cell.dataLabel.text = data
                 
-                cell.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
-                
-                cell.preservesSuperviewLayoutMargins = false
-                cell.separatorInset = UIEdgeInsets.zero
-                cell.layoutMargins = UIEdgeInsets.zero
-                
-                return cell
+                return self.skinTableViewCells(cell: cell)
             }
             
             
@@ -287,58 +322,188 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         }
         
         dataSource.titleForHeaderInSection = { dataSource, index in
-            
-            let section = dataSource[index]
-            
-            return section.title
+            dataSource[index].title
         }
+    }
+    
+    /*
+     This method populates the scrollview with all the cast members' headshots 
+     of a given movie cast.  If a headshot (profilePath) is null, it breaks 
+     out of the loop and returns any/all available profile shots.  
+     ScrollViews are notoriously obnoxious to implement, but I found this 
+     method to be the most efficient. The constraints just for setting the 
+     position of the scrollView are set in IB while everything else is 
+     done here programatically.
+     */
+    func populateScrollView(cell: InfoCastCell, castArray: [Cast]) {
+        let imageWidth: CGFloat = 50
+        let imageHeight: CGFloat = 50
+        var xPosition: CGFloat = 0
+        var scrollViewContentSize: CGFloat = 0
         
+        for index in 0..<castArray.count {
+            if castArray[index].profilePath != nil {
+                TmdbAPI.sharedInstance
+                    .getCastProfilePicture(castData: castArray[index])
+                    .observeOn(MainScheduler.instance)
+                    .subscribe(onNext: { image in
+                        
+                        
+                        //Adds the cast member's name underneath their photo
+                        cell.scrollView.addSubview(
+                            self.createCastLabel(name: castArray[index].name,
+                                            x: xPosition,
+                                            imageHeight: imageHeight,
+                                            imageWidth: imageWidth
+                            )
+                        )
+                        
+                        //Initializes ImageView for UIImage
+                        let castImageView: UIImageView = UIImageView()
+                        
+                        //Optional chaining in case image is nil for some reason
+                        if let newImage = image {
+                            castImageView.image = newImage
+                            castImageView.contentMode =
+                                UIViewContentMode.scaleAspectFill
+                        }
+                        
+                        //Sets the frame of the imageView's width and height
+                        castImageView.frame.size.width = imageWidth
+                        castImageView.frame.size.height = imageHeight
+                        
+                        //This makes the circle effect for the photos, only 
+                        //works on square photos
+                        castImageView.layer.cornerRadius =
+                            castImageView.frame.size.width/2
+                        castImageView.clipsToBounds = true
+                        
+                        //Sets the x origin for photo
+                        castImageView.frame.origin.x = xPosition
+                        castImageView.frame.origin.y = 0
+                        
+                        //Adds the castPhoto to the scrollView
+                        cell.scrollView.addSubview(castImageView)
+                        
+                        /*In order for the scrollView to display the pictures
+                        properly, the x position needs to be set after every
+                        iteration - otherwise all the photos and labels
+                         will just stack on top of one another.  Furthermore,
+                         the scrollView needs to be adjusted every time we add
+                         a new photo.  We add 20 in both cases to add spacing
+                         between photos
+                        */
+                        
+                        let iterativeSize = imageWidth + 20
+                        xPosition += iterativeSize
+                        scrollViewContentSize += iterativeSize
+                        
+                        //Sets the new contentSize for the scrollView
+                        cell.scrollView.contentSize =
+                            CGSize(width: scrollViewContentSize,
+                                   height: imageHeight)
+                        
+                    }).addDisposableTo(self.disposeBag)
+            } else {
+                break
+            }
+        }
+    }
+    
+    /*
+     Used in populateScrollView - reduces some of the extraneous lines of code
+     Essentially just creates the name label under each cast member's photo
+    */
+    func createCastLabel(name: String,
+                         x: CGFloat,
+                         imageHeight: CGFloat,
+                         imageWidth: CGFloat) -> UILabel {
         
+        let castLabel =
+            UILabel(
+                frame: CGRect(
+                    x: x,
+                    y: imageHeight,
+                    width: imageWidth,
+                    height: 30)
+        )
         
+        castLabel.font =
+            UIFont(name: "HelveticaNeue", size: 10)
+        castLabel.numberOfLines = 2
+        castLabel.textAlignment = NSTextAlignment.center
+        castLabel.text = name
+        castLabel.textColor = .white
+        
+        return castLabel
         
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 3 {
+    /*
+     This method just creates some grey space underneath the last section,
+     purely for style
+     */
+    override func tableView(_ tableView: UITableView,
+                            heightForFooterInSection section: Int) -> CGFloat {
+        switch section {
+        case 3:
             return 30
-        } else {
+        default:
             return 0
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    
+    /*
+     This method changes the size of certain cells - for example the videoCell
+     and the descriptionCell.  You can't specify the height of the cells in
+     skinDataSource, that's why this method is used
+     */
+    
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt
+                            indexPath: IndexPath) -> CGFloat {
         
                 var height = CGFloat(30.0)
         
+        switch indexPath.section {
+        case 0: //VideoSection
+            switch indexPath.row {
+            case 0: //VideoCell
+                height = 200
+            case 1: //RatingsCell
+                height = 45
+            default:
+                height = 30
+            }
+        case 2: //InfoSection
+            switch indexPath.row {
+            case 0: //DescriptionCell
+                height = 120
+            case 2: //CastCell
+                height = 120
+            default:
+                height = 30
+            }
+        default:
+            height = 30
+            
+        }
         
-                if indexPath.section == 0 {
-                    if indexPath.row == 0 {
-                        height = 200
-                        
-                    }
-                    
-                    if indexPath.row == 1 {
-                        height = 45
-                    }
-                }
-        
-                if indexPath.section == 2 {
-                    if indexPath.row == 0 || indexPath.row == 2 {
-                        height = 120
-                  
-                    }
-                }
-                
-                return height
+        return height
         
     }
     
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView,
+                            willDisplayFooterView view: UIView,
+                            forSection section: Int) {
+        
         view.tintColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
     }
     
-    
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+    override func tableView(_ tableView: UITableView,
+                            willDisplayHeaderView view: UIView,
+                            forSection section: Int){
         
         view.tintColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
         
@@ -347,15 +512,18 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         let font = UIFont(name: "HelveticaNeue-Light", size: 14)
         header.textLabel?.font = font
-        
     }
     
-    
     func configureTableView(_ tableView: UITableView) {
-        tableView.backgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
-        tableView.sectionIndexBackgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+        tableView.backgroundColor =
+            UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+        tableView.sectionIndexBackgroundColor =
+            UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
         
-        tableView.separatorColor = UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
+        tableView.separatorColor =
+            UIColor(red:0.51, green:0.51, blue:0.52, alpha:1.0)
+        
+        tableView.allowsSelection = false
         
         tableView.register(UINib(nibName: "VideoContentCell", bundle: nil),
                            forCellReuseIdentifier: "videoContent"
@@ -379,7 +547,17 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     }
 }
 
-//From stack overflow http://stackoverflow.com/questions/29999024/adding-thousand-separator-to-int-in-swift
+/*
+ Struct and extension used to format large numbers, essentially makes a Struct
+ with a computed property using NumberFormatter, then uses Number in an extension
+ on Integer to create a String out of whatever numberFormatter created.  Then it
+ formats a string by passing itself as an NSNumber for the final result.
+ Pretty cool stuff
+ 
+ For more info check out this stackoverflow:
+ http://stackoverflow.com/questions/29999024/adding-thousand-separator-to-int-in-swift
+ 
+ */
 struct Number {
     static let formatterWithSeparator: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -391,10 +569,18 @@ struct Number {
 
 extension Integer {
     var stringFormattedWithSeparator: String {
-        return Number.formatterWithSeparator.string(from: self as! NSNumber) ?? ""
+        return Number
+            .formatterWithSeparator
+            .string(from: self as! NSNumber) ?? ""
     }
 }
 
+/*
+ This are the enums used to specify the different sections, what they hold,
+ what they are called, and how they should be implemented.
+ */
+
+//Specifies the different sections within MSM
 enum MultipleSectionModel {
     case VideoSection(title: String, items: [SectionItem])
     case ShowtimesSection(title: String, items: [SectionItem])
@@ -402,6 +588,7 @@ enum MultipleSectionModel {
     case MovieDataSection(title: String, items: [SectionItem])
 }
 
+//Specifies the cells and whatever data they are going to display
 enum SectionItem {
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
@@ -412,6 +599,12 @@ enum SectionItem {
     
 }
 
+/* 
+ This extension essentially has all of the initializers for MSM.
+ It specifies what cells and what titles are going to be used in each section by
+ using computed properties with switch statements.  Then it initalizes whatever
+ Section is being called with the result of the computed property.
+ */
 extension MultipleSectionModel: SectionModelType {
     
     

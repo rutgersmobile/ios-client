@@ -11,6 +11,10 @@ import Foundation
 class RUDiningHallStubViewController: UIViewController {
     var hallDescription: String!
 
+
+    @IBOutlet weak var label: UILabel!
+
+
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
         hallDescription: String
@@ -30,16 +34,8 @@ class RUDiningHallStubViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let label = UILabel(frame: CGRect(
-            x: self.view.center.x,
-            y: self.view.center.y,
-            width: self.view.frame.height,
-            height: self.view.frame.width
-        ))
 
-        label.numberOfLines = 50
+
         label.text = hallDescription
-
-        self.view.addSubview(label)
     }
 }
