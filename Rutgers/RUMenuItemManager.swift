@@ -125,12 +125,12 @@ open class RUMenuItemManager: NSObject {
     public func addFavorite(favorite: RUFavorite) {
         var rawMenuItems = self.rawMenuItems
         let favoriteDict = favorite.asDictionary()
-        
-        let optionalIndex = rawMenuItems.index { $0.isEqual(favoriteDict) }
+
+        let optionalIndex = rawMenuItems.index { $0.object.isEqual(favoriteDict) }
         if optionalIndex == nil {
-            rawMenuItems.insert(favoriteDict, at: 0)
+            rawMenuItems.insert(VisibleObject(visible: true, object: favoriteDict), at: 0)
         }
-        
+
         self.rawMenuItems = rawMenuItems
     }
     
@@ -138,7 +138,7 @@ open class RUMenuItemManager: NSObject {
         var rawMenuItems = self.rawMenuItems
         
         let favoriteDict = favorite.asDictionary()
-        let optionalIndex = rawMenuItems.index { $0.isEqual(favoriteDict) }
+        let optionalIndex = rawMenuItems.index { $0.object.isEqual(favoriteDict) }
         if let index = optionalIndex {
             rawMenuItems.remove(at: index)
         }
@@ -152,13 +152,13 @@ open class RUMenuItemManager: NSObject {
     
     private var rawMenuItems: [VisibleObject] {
         set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue.map { $0.asDict() }, forKey: MenuItemManagerActiveMenuItemsKey)
+            UserDefaults.standard.set(newValue.map { $0.asDict() }, forKey: MenuItemManagerActiveMenuItemsKey)
             notifyMenuItemsDidChange()
         }
         get {
             let contentChannels = RUChannelManager.sharedInstance().contentChannels as [AnyObject]
-            if let dictDefaults = NSUserDefaults.standardUserDefaults()
-                .arrayForKey(MenuItemManagerActiveMenuItemsKey) as? [Dictionary<String, AnyObject>]
+            if let dictDefaults = UserDefaults.standard
+                .array(forKey: MenuItemManagerActiveMenuItemsKey) as? [Dictionary<String, AnyObject>]
             {
                 let channelHandles = contentChannels.flatMap { $0.channelHandle }
                 let validHandle = { handle in
@@ -175,7 +175,7 @@ open class RUMenuItemManager: NSObject {
                     // assume that bad handles will not crash and can be removed
                     // by the user if they don't want them
                     ($0["object"] as? String).map(validHandle) ?? true
-                }.filterMap { VisibleObject.fromDict($0) }
+                }.filterMap { VisibleObject.fromDict(dict: $0) }
 
                 // get saved channels (no favorites) and make sure they're valid
                 let defaultHandles: [String] = defaults.filterMap {
@@ -223,7 +223,7 @@ open class RUMenuItemManager: NSObject {
         case let dictionary as NSDictionary:
             return RUFavorite(dictionary: dictionary)
         case let string as String:
-            return RUChannelManager.sharedInstance().channelWithHandle(string) as AnyObject?
+            return RUChannelManager.sharedInstance().channel(withHandle: string) as AnyObject?
         default: return nil
         }
     }
@@ -243,24 +243,24 @@ open class RUMenuItemManager: NSObject {
     // between items dropped that will be added back to the other list
     // immediately and items that we don't have that are new in ordered_content
     public func updateItems(visible: [AnyObject], hidden: [AnyObject]) {
-        rawMenuItems = serializeNew(visible, visible: true) + serializeNew(hidden, visible: false)
+        rawMenuItems = serializeNew(objects: visible, visible: true) + serializeNew(objects: hidden, visible: false)
     }
 
     public var menuItems: [AnyObject] {
         set {
-            rawMenuItems = serializeNew(newValue, visible: true) + rawHidden()
+            rawMenuItems = serializeNew(objects: newValue, visible: true) + rawHidden()
         }
         get {
-            return deserializeOld(rawVisible())
+            return deserializeOld(objects: rawVisible())
         }
     }
 
     public var hiddenItems: [AnyObject] {
         set {
-            rawMenuItems = rawVisible() + serializeNew(newValue, visible: false)
+            rawMenuItems = rawVisible() + serializeNew(objects: newValue, visible: false)
         }
         get {
-            return deserializeOld(rawHidden())
+            return deserializeOld(objects: rawHidden())
         }
     }
 }
