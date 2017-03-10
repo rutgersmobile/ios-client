@@ -155,6 +155,6 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
     
     
     func saveChanges() {
-        RUMenuItemManager.sharedManager.updateItems(visible, hidden: hidden)
+        RUMenuItemManager.sharedManager.updateItems(visible: visible, hidden: hidden)
     }
 }
