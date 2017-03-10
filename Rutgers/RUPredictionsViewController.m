@@ -91,7 +91,7 @@
      Which in turn inherits from composed data source which in turn inherits from the Data Source class
      
      */
-    
+
     self.dataSource = [[RUBusPredictionsAndMessageDataSource alloc] initWithItem:self.item];
     
     // Set the title of the Bus . This usually happens , when we do not have a title ..

@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "logoText_only_regularSize.png",
+      "filename" : "seal_logo_text-1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "logoText_only_2x-1.png",
+      "filename" : "seal_logo_text-2x.png",
       "scale" : "2x"
     },
     {

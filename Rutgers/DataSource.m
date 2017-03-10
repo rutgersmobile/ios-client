@@ -632,10 +632,12 @@
     // Call the provided block to actually do the load
     block(loading); // block is actually a fuction pointer which takes AAPLLoading as its input
                     // the block might use the loading pointer to change the state based on the content loading state , wether completed , or on going etc..
-    if(self.whenLoadedBlock)
-    {
-        self.whenLoadedBlock();
-    }
+
+    // I'm commenting this out because reasons
+//    if(self.whenLoadedBlock)
+//    {
+//        self.whenLoadedBlock();
+//    }
 }
 
 /*
