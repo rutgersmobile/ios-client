@@ -60,8 +60,8 @@ class RUMealViewController: UITableViewController {
             return cell
         }
 
-        dataSource.titleForHeaderInSection = {(ds, ip) in
-            return ds.sectionModels[ip].header
+        dataSource.titleForHeaderInSection = { (ds, ip) in
+            ds.sectionModels[ip].header
         }
 
         Observable.from(meal.genres)
