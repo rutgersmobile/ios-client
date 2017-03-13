@@ -147,23 +147,17 @@ RUChannelProtocol {
                         cell.time1.isHidden = false
                         cell.time2.isHidden = false
                         
-                        timeStamp1 = dateFormatter.string(from: showingArray[0])
-                        timeStamp2 = dateFormatter.string(from: showingArray[1])
-                    } else {
-                        
+                        cell.time1.text = timeStamp1
+                        cell.time2.text = timeStamp2
+                        cell.time3.text = timeStamp3
+        
                         cell.time1.isHidden = false
                         cell.time2.isHidden = false
                         cell.time3.isHidden = false
                         
-                        timeStamp1 = dateFormatter.string(from: showingArray[0])
-                        timeStamp2 = dateFormatter.string(from: showingArray[1])
-                        timeStamp3 = dateFormatter.string(from: showingArray[2])
                     }
                     
-                    cell.time1.text = timeStamp1
-                    cell.time2.text = timeStamp2
-                    cell.time3.text = timeStamp3
-                    
+                    let index = tmdbMovie.releaseDate?.index((tmdbMovie.releaseDate?.startIndex)!, offsetBy: 4)
                     showingArray.removeAll()
                     
                     

@@ -60,7 +60,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         /*
          Sets the tableView datasource to nil, otherwise when you try to set
          the dataSource with the Rx version the compiler will get confused and
-         crash - warns you that there is already a datasource set somewhere 
+         crash - warns you that there is already a datasource set somewhere
          previously.  Most likely a default dataSource used by apple
          */
         
@@ -240,7 +240,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      This method configures the dataSource based off what enum cell value you
      put under the enum secion identifier when you map the TMDB data to the
      cells in the viewDidLoad method. 
-     
+    
      TL;DR - sets the cells and sections up
      */
     func skinTableViewDataSource(_
@@ -603,6 +603,7 @@ enum MultipleSectionModel {
 }
 
 //Specifies the cells and whatever data they are going to display
+
 enum CinemaSectionItem {
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
