@@ -32,7 +32,7 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2)
 
 extern BOOL iPad();
 
-static NSString *const gittag = @"4.2-BETA8";
+static NSString *const gittag = @"4.2-BETA9";
 
 static NSString *const api = @"3";
 
@@ -60,7 +60,7 @@ typedef NS_ENUM(NSUInteger, RunMode)
 
 //warning change to BetaMode to enable networking
 
-static RunMode const runMode = AlphaMode;
+static RunMode const runMode = BetaMode;
 
 extern BOOL isBeta();
 
