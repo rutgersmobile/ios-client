@@ -157,9 +157,32 @@ public class RUMenuItemManager: NSObject {
         }
         get {
             let contentChannels = RUChannelManager.sharedInstance().contentChannels as [AnyObject]
-            if let dictDefaults = NSUserDefaults.standardUserDefaults()
-                .arrayForKey(MenuItemManagerActiveMenuItemsKey) as? [Dictionary<String, AnyObject>]
+            if let oldDefaults = NSUserDefaults.standardUserDefaults()
+                .arrayForKey(MenuItemManagerActiveMenuItemsKey)
             {
+                // Since we changed storage formats, we need to check to be sure
+                // we have things in the new format. Older objects are converted
+                let dictDefaults = oldDefaults.filterMap { x -> Dictionary<String, AnyObject>? in
+                    if let channel = x as? String {
+                        // Old channels are stored as strings
+                        // Convert them to visible objects first
+                        let channelObj = RUChannelManager.sharedInstance()
+                            .channelWithHandle(channel)
+                        return VisibleObject(visible: true, object: channelObj)
+                            .asDict()
+                    }
+                    if let dict = x as? Dictionary<String, AnyObject> {
+                        // Old favorites were stored directly as dictionaries
+                        // convert them to visible objects
+                        if let _ = RUFavorite(dictionary: dict) {
+                            return VisibleObject(visible: true, object: dict)
+                                .asDict()
+                        }
+                        // Leave new dictionaries the same
+                        return dict
+                    }
+                    return nil
+                }
                 let channelHandles = contentChannels.flatMap { $0.channelHandle }
                 let validHandle = { handle in
                     channelHandles.contains { $0 == handle }
