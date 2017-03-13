@@ -16,20 +16,12 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         super.init()
         
         visible = RUMenuItemManager.sharedManager.menuItems
-        
-        let allItems = RUChannelManager.sharedInstance().contentChannels
-        
-        let allItemsSet = NSMutableOrderedSet(array: allItems!)
-        let activeItemsSet = NSOrderedSet(array: visible)
-        
-        allItemsSet.minus(activeItemsSet)
-        
-        hidden = allItemsSet.array as [AnyObject]
+        hidden = RUMenuItemManager.sharedManager.hiddenItems
     }
     
     var visible = [AnyObject]()
     var hidden = [AnyObject]()
-    
+
     func registerReuseableViewsWithTableView(tableView: UITableView) {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
@@ -163,6 +155,6 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
     
     
     func saveChanges() {
-        RUMenuItemManager.sharedManager.menuItems = visible
+        RUMenuItemManager.sharedManager.updateItems(visible: visible, hidden: hidden)
     }
 }

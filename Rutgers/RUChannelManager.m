@@ -34,7 +34,8 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 /*
     Update the number of channels and colletevery day ?
  */
-#define CHANNEL_CACHE_TIME 60*60*24*1
+//#define CHANNEL_CACHE_TIME 60*60*24*1
+#define CHANNEL_CACHE_TIME 60
 
 @interface RUChannelManager ()
 @property dispatch_group_t loadingGroup;

@@ -45,9 +45,15 @@
 {    
     NSSetUncaughtExceptionHandler(&handleUncaughtException);
 
+    NSURLCache* sharedCache = [[NSURLCache alloc]
+        initWithMemoryCapacity:2 * 1024 * 1024
+        diskCapacity:100 * 1024 * 1024
+        diskPath:nil
+    ];
+    [NSURLCache setSharedURLCache:sharedCache];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;  // the circular spining icon ..
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    
+
     [application setStatusBarHidden:YES];
     [FIRApp configure];
     

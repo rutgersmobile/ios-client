@@ -11,9 +11,11 @@ import AVFoundation
 import MediaPlayer
 import RxSwift
 
-class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverControllerDelegate
+class MusicViewController
+    : UIViewController
+    , RUChannelProtocol
+    , UIPopoverControllerDelegate
 {
-
     static var audioPlayer : AVPlayer?
     var playing = false
     let channel : [NSObject : AnyObject]
@@ -32,12 +34,12 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     @IBOutlet weak var wrnuLogo: UIImageView!
     @IBOutlet weak var backgroundView: UIView!
 
-    static func channelHandle() -> String!
-    {
+    static func channelHandle() -> String! {
         return "Radio";
     }
     /*
-     Every class is register with the RUChannelManager by calling a register class static method in the load function of each class.
+     Every class is register with the RUChannelManager by calling a register
+     class static method in the load function of each class.
      The load is called in objc on every class by the run time library...
      The load handles the registration process .
      */
@@ -45,10 +47,13 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     {
         RUChannelManager.sharedInstance().register(MusicViewController.self)
     }
-    
-    static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any!
-    {
-        return MusicViewController(channel: channelConfiguration as [NSObject : AnyObject])
+
+    static func channel(
+        withConfiguration channelConfiguration: [AnyHashable : Any]!
+    ) -> Any! {
+        return MusicViewController(
+            channel: channelConfiguration as [NSObject : AnyObject]
+        )
     }
 
     init(channel: [NSObject : AnyObject]) {
@@ -65,12 +70,17 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         MusicViewController.audioPlayer = AVPlayer(url: URL(string: streamUrl)!)
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
             MPMediaItemPropertyTitle : "WRNU",
-            MPMediaItemPropertyArtwork : MPMediaItemArtwork(image: UIImage(named: "radio_album")!)
+            MPMediaItemPropertyArtwork : MPMediaItemArtwork(
+                image: UIImage(named: "radio_album")!
+            )
         ]
     }
 
     func setupPlayerIfInvalid() {
-        if (MusicViewController.audioPlayer == nil || MusicViewController.audioPlayer?.error != nil || newTaskID == UIBackgroundTaskInvalid) {
+        if (MusicViewController.audioPlayer == nil ||
+            MusicViewController.audioPlayer?.error != nil ||
+            newTaskID == UIBackgroundTaskInvalid
+        ) {
             setupPlayer()
         }
     }
@@ -84,44 +94,62 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 
     func setupAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+            try session.setActive(true)
         } catch let error as NSError {
             print(error.localizedDescription)
         }
 
         if #available(iOS 7.1, *) {
             let commandCenter = MPRemoteCommandCenter.shared()
-            commandCenter.playCommand.removeTarget(MusicViewController.playHandle)
-            MusicViewController.playHandle = commandCenter.playCommand.addTarget(handler: { event in
-                self.recreateIfStopped()
-                self.play()
-                return .success
-            }) as AnyObject?
-            commandCenter.pauseCommand.removeTarget(MusicViewController.pauseHandle)
-            MusicViewController.pauseHandle = commandCenter.pauseCommand.addTarget(handler: { event in
-                self.pause()
-                return .success
-            }) as AnyObject?
+            commandCenter.playCommand.removeTarget(
+                MusicViewController.playHandle
+            )
+            MusicViewController.playHandle = commandCenter.playCommand
+                .addTarget(handler: { [weak self] event in
+                    self?.recreateIfStopped()
+                    self?.play()
+                    return .success
+                }) as AnyObject?
+            commandCenter.pauseCommand.removeTarget(
+                MusicViewController.pauseHandle
+            )
+            MusicViewController.pauseHandle = commandCenter.pauseCommand
+                .addTarget(handler: { [weak self] event in
+                    self?.pause()
+                    return .success
+                }) as AnyObject?
         }
     }
 
     func setPlayingState() {
-        playing = MusicViewController.audioPlayer?.rate != 0 && MusicViewController.audioPlayer?.error == nil
-        playButton?.setImage(UIImage(named: playing ? pauseImageName : playImageName), for: .normal)
+        playing =
+            MusicViewController.audioPlayer?.rate != 0 &&
+            MusicViewController.audioPlayer?.error == nil
+        playButton?.setImage(
+            UIImage(named: playing ? pauseImageName : playImageName),
+            for: .normal
+        )
     }
 
     func play() {
         setupPlayerIfInvalid()
         MusicViewController.audioPlayer?.play()
-        self.playButton.setImage(UIImage(named: self.pauseImageName), for: .normal)
+        self.playButton.setImage(
+            UIImage(named: self.pauseImageName),
+            for: .normal
+        )
         self.playing = true
     }
 
     func pause() {
         setupPlayerIfInvalid()
         MusicViewController.audioPlayer?.pause()
-        self.playButton.setImage(UIImage(named: self.playImageName), for: .normal)
+        self.playButton.setImage(
+            UIImage(named: self.playImageName),
+            for: .normal
+        )
         self.playing = false
     }
 
@@ -132,12 +160,18 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
             pause()
         }
     }
-    
+
     override func actionButtonTapped() {
         if let url = sharingURL() {
             let favoriteActivity = RUFavoriteActivity(title: "WRNU")
-            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: [favoriteActivity!])
-            activityVC.excludedActivityTypes = [UIActivityType.print, UIActivityType.addToReadingList]
+            let activityVC = UIActivityViewController(
+                activityItems: [url],
+                applicationActivities: [favoriteActivity!]
+            )
+            activityVC.excludedActivityTypes = [
+                UIActivityType.print,
+                UIActivityType.addToReadingList
+            ]
             if (UI_USER_INTERFACE_IDIOM() == .phone) {
                 self.present(activityVC, animated: true, completion: nil)
                 return
@@ -146,9 +180,15 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
                 popover.dismiss(animated: false)
                 self.sharingPopoverController = nil
             } else {
-                self.sharingPopoverController = UIPopoverController(contentViewController: activityVC)
+                self.sharingPopoverController = UIPopoverController(
+                    contentViewController: activityVC
+                )
                 self.sharingPopoverController?.delegate = self
-                self.sharingPopoverController?.present(from: self.shareButton!, permittedArrowDirections: .any, animated: true)
+                self.sharingPopoverController?.present(
+                    from: self.shareButton!,
+                    permittedArrowDirections: .any,
+                    animated: true
+                )
             }
         }
     }
@@ -162,18 +202,27 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        newTaskID = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            UIApplication.shared.endBackgroundTask(self.newTaskID)
-            self.newTaskID = UIBackgroundTaskInvalid
-        })
+        newTaskID = UIApplication.shared.beginBackgroundTask(
+            expirationHandler: { [weak self] in
+                if let weakSelf = self {
+                    UIApplication.shared.endBackgroundTask(weakSelf.newTaskID)
+                    weakSelf.newTaskID = UIBackgroundTaskInvalid
+                }
+            })
         if (MusicViewController.audioPlayer == nil) {
             setupPlayer()
         } else {
             setPlayingState()
         }
-        self.shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionButtonTapped))
+        self.shareButton = UIBarButtonItem(
+            barButtonSystemItem: .action,
+            target: self,
+            action: #selector(actionButtonTapped)
+        )
         self.navigationItem.rightBarButtonItem = self.shareButton
-        backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
+        backgroundView.backgroundColor = UIColor(
+            patternImage: UIImage(named: "wrnu_background")!
+        )
         backgroundView.isOpaque = false
         backgroundView.layer.isOpaque = false
         NotificationCenter.default
@@ -184,7 +233,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
                 object: nil
             )
     }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         setPlayingState()
@@ -201,7 +249,10 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     }
 
     func sharingURL() -> NSURL? {
-        return DynamicTableViewController.buildDynamicSharingURL(self.navigationController!, channel: self.channel) as NSURL?
+        return DynamicTableViewController.buildDynamicSharingURL(
+            self.navigationController!,
+            channel: self.channel
+        ) as NSURL?
     }
 
     @IBAction func playRadio(_ sender: UIButton) {
