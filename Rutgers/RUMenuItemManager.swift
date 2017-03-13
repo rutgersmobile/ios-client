@@ -166,9 +166,7 @@ public class RUMenuItemManager: NSObject {
                     if let channel = x as? String {
                         // Old channels are stored as strings
                         // Convert them to visible objects first
-                        let channelObj = RUChannelManager.sharedInstance()
-                            .channelWithHandle(channel)
-                        return VisibleObject(visible: true, object: channelObj)
+                        return VisibleObject(visible: true, object: channel)
                             .asDict()
                     }
                     if let dict = x as? Dictionary<String, AnyObject> {
