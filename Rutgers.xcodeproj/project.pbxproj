@@ -239,6 +239,7 @@
 		B52D0FDC1E574A4300DBDF26 /* VideoRatingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */; };
 		B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */; };
 		B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */; };
+		B540E4F11E772353008DED85 /* RUCinemaStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B540E4F01E772353008DED85 /* RUCinemaStoryboard.storyboard */; };
 		B5432FF21E426C6D006F036A /* Motd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF11E426C6D006F036A /* Motd.swift */; };
 		B5432FF41E427244006F036A /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF31E427244006F036A /* Channel.swift */; };
 		B54DFB4D1E4B970300755D2D /* TmdbData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4C1E4B970300755D2D /* TmdbData.swift */; };
@@ -720,6 +721,7 @@
 		B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoRatingsCell.xib; sourceTree = "<group>"; };
 		B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewCell.swift; sourceTree = "<group>"; };
 		B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewCell.xib; sourceTree = "<group>"; };
+		B540E4F01E772353008DED85 /* RUCinemaStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RUCinemaStoryboard.storyboard; sourceTree = "<group>"; };
 		B5432FF11E426C6D006F036A /* Motd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Motd.swift; sourceTree = "<group>"; };
 		B5432FF31E427244006F036A /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B54DFB4C1E4B970300755D2D /* TmdbData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbData.swift; sourceTree = "<group>"; };
@@ -1633,6 +1635,7 @@
 			isa = PBXGroup;
 			children = (
 				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
+				B540E4F01E772353008DED85 /* RUCinemaStoryboard.storyboard */,
 				B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */,
 				B52D0FD41E5749F200DBDF26 /* RUCinemaDetailCells */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
@@ -1929,6 +1932,7 @@
 				B51D347D1E5B40A900F4BD1F /* GeneralPurposeCell.xib in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
+				B540E4F11E772353008DED85 /* RUCinemaStoryboard.storyboard in Resources */,
 				C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */,
 				C4004EB61E525CA500A5FEDD /* RUFoodStoryboard.storyboard in Resources */,
 				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,

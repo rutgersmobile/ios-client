@@ -15,10 +15,10 @@ import Alamofire
 final class RUCinemaDetailTableViewController: UITableViewController {
     
     //Passed from previous view controller - used for TmdbAPI credits request
-    let movieId : Int!
+    var movieId : Int!
     
     //Also passed from previous view controller, displays most recent showtimes
-    var showTimes : [String] = []
+    var showTimes : [String]!
     
     //Sets up dispose bag for Rx pods - all observables within disposeBag will
     //be dealloc when viewcontroller gets dealloc
@@ -31,11 +31,26 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     }
     
     /*
-     Req when subclassing UITableViewController - compiler yells at you when
+     Required when subclassing UITableViewController - compiler yells at you when
      removed
      */
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    static func instantiate(
+        withStoryboard storyboard: UIStoryboard,
+        movieId: Int,
+        showTimes: [String]
+        ) -> RUCinemaDetailTableViewController {
+        let me = storyboard.instantiateViewController(
+            withIdentifier: "RUCinemaDetailTableViewController"
+            ) as! RUCinemaDetailTableViewController
+        
+        me.showTimes = showTimes
+        me.movieId = movieId
+        
+        return me
     }
     
     //Standard viewDidLoad method
@@ -46,8 +61,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
          Sets the tableView datasource to nil, otherwise when you try to set
          the dataSource with the Rx version the compiler will get confused and
          crash - warns you that there is already a datasource set somewhere 
-         previously.  Most likely the Obj-c dataSource written by Kyle Bailey -
-         could also just be a default apple dataSource
+         previously.  Most likely a default dataSource used by apple
          */
         
         self.tableView?.dataSource = nil
@@ -227,7 +241,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      put under the enum secion identifier when you map the TMDB data to the
      cells in the viewDidLoad method. 
      
-     TL;DR - sets the cells up
+     TL;DR - sets the cells and sections up
      */
     func skinTableViewDataSource(_
         dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
@@ -582,14 +596,14 @@ extension Integer {
 
 //Specifies the different sections within MSM
 enum MultipleSectionModel {
-    case VideoSection(title: String, items: [SectionItem])
-    case ShowtimesSection(title: String, items: [SectionItem])
-    case InfoSection(title: String, items: [SectionItem])
-    case MovieDataSection(title: String, items: [SectionItem])
+    case VideoSection(title: String, items: [CinemaSectionItem])
+    case ShowtimesSection(title: String, items: [CinemaSectionItem])
+    case InfoSection(title: String, items: [CinemaSectionItem])
+    case MovieDataSection(title: String, items: [CinemaSectionItem])
 }
 
 //Specifies the cells and whatever data they are going to display
-enum SectionItem {
+enum CinemaSectionItem {
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
     case ShowtimesItem(showTimes: [String])
@@ -608,7 +622,7 @@ enum SectionItem {
 extension MultipleSectionModel: SectionModelType {
     
     
-    var items: [SectionItem] {
+    var items: [CinemaSectionItem] {
         switch self {
         case .VideoSection(title: _, items: let items):
             return items
@@ -634,7 +648,7 @@ extension MultipleSectionModel: SectionModelType {
         }
     }
     
-    init(original: MultipleSectionModel, items: [SectionItem]) {
+    init(original: MultipleSectionModel, items: [CinemaSectionItem]) {
         switch original {
         case let .VideoSection(title: title, items: _):
             self = .VideoSection(title: title, items: items)
