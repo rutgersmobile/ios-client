@@ -216,7 +216,7 @@ final class RUCinemaCollectionViewController:
                     showingArray = showingArray.reversed()
                     
                     for i in 0..<showingArray.count {
-                        cellLabelDictionary["cell\(i+1)"] =
+                        cellLabelDictionary["label\(i+1)"] =
                             dateFormatter.string(
                                 from: showingArray[i].dateTime
                         )

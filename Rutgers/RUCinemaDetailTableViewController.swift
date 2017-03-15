@@ -20,6 +20,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     //Also passed from previous view controller, displays most recent showtimes
     var showTimes : [String]!
     
+    var passedData : TmdbData!
+    
     //Sets up dispose bag for Rx pods - all observables within disposeBag will
     //be dealloc when viewcontroller gets dealloc
     let disposeBag = DisposeBag()
