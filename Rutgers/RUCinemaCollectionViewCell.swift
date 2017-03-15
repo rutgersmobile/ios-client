@@ -24,9 +24,6 @@ class RUCinemaCollectionViewCell: UICollectionViewCell {
         
         self.label.textColor = .white
         self.tagsLabel.textColor = .white
-        self.time1.isHidden = true
-        self.time2.isHidden = true
-        self.time3.isHidden = true
         self.time1.textColor = .white
         self.time2.textColor = .white
         self.time3.textColor = .white

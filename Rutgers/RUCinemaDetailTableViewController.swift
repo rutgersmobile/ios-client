@@ -25,8 +25,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     let disposeBag = DisposeBag()
     
     //Initializer for VC - requires movieId to be set
-    init(movieId: Int) {
+    init(movieId: Int, showTimes: [String]) {
         self.movieId = movieId
+        self.showTimes = showTimes
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,21 +37,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      */
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    static func instantiate(
-        withStoryboard storyboard: UIStoryboard,
-        movieId: Int,
-        showTimes: [String]
-        ) -> RUCinemaDetailTableViewController {
-        let me = storyboard.instantiateViewController(
-            withIdentifier: "RUCinemaDetailTableViewController"
-            ) as! RUCinemaDetailTableViewController
-        
-        me.showTimes = showTimes
-        me.movieId = movieId
-        
-        return me
     }
     
     //Standard viewDidLoad method
@@ -243,10 +229,15 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     
      TL;DR - sets the cells and sections up
      */
-    func skinTableViewDataSource(_
+    fileprivate func skinTableViewDataSource(_
         dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
         ) {
-        dataSource.configureCell = { (dataSource, table, idxPath, _) in
+        dataSource.configureCell = {(
+            dataSource: TableViewSectionedDataSource<MultipleSectionModel>,
+            table: UITableView,
+            idxPath: IndexPath,
+            _
+        ) in
             switch dataSource[idxPath] {
             case let .VideoContentItem(_, key):
                 let cell: VideoContentCell = table.dequeueReusableCell(
@@ -595,7 +586,7 @@ extension Integer {
  */
 
 //Specifies the different sections within MSM
-enum MultipleSectionModel {
+private enum MultipleSectionModel {
     case VideoSection(title: String, items: [CinemaSectionItem])
     case ShowtimesSection(title: String, items: [CinemaSectionItem])
     case InfoSection(title: String, items: [CinemaSectionItem])
@@ -604,7 +595,7 @@ enum MultipleSectionModel {
 
 //Specifies the cells and whatever data they are going to display
 
-enum CinemaSectionItem {
+private enum CinemaSectionItem {
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
     case ShowtimesItem(showTimes: [String])
