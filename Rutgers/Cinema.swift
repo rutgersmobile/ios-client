@@ -17,6 +17,37 @@ struct Cinema {
     let runtime : Int
     let studio : String
     let showings: [Showings]
+
+    func formattedShowings() -> [String] {
+        if (self.showings.isEmpty) {
+            return []
+        }
+
+        //Used for date formatting
+        let calendar = Calendar.current
+
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.timeStyle = .short
+
+        let sortedArray = self.showings.sorted {
+            $0.dateTime < $1.dateTime
+        }
+
+        let baseDay = calendar.component(
+            .day, from: sortedArray[0].dateTime as Date
+        )
+
+        let showingArray = sortedArray.filter {
+            calendar.component(
+                .day, from: $0.dateTime as Date
+            ) == baseDay
+        }
+
+        return showingArray.map {
+            dateFormatter.string(from: $0.dateTime)
+        }
+    }
 }
 
 struct Showings {
