@@ -9,13 +9,14 @@
 import UIKit
 
 class ShowtimesCell: UITableViewCell {
-    @IBOutlet weak var showTime1: UILabel!
-    @IBOutlet weak var showTime2: UILabel!
-    @IBOutlet weak var showTime3: UILabel!
+    @IBOutlet weak var scrollView: UIScrollView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        self.scrollView.showsVerticalScrollIndicator = false
+        self.scrollView.showsHorizontalScrollIndicator = false
     }
 
 }

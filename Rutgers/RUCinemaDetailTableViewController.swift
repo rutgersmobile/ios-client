@@ -81,7 +81,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     ),
                     .ShowtimesSection(
                         title: "Showtimes",
-                        items: [.ShowtimesItem(showTimes: self.movie.formattedShowings())]
+                        items: [.ShowtimesItem(showTimes: self.movie.showings)]
                     ),
                     .InfoSection(
                         title: "Info",
@@ -177,6 +177,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      format the number into something understandable see extension at end of
      file to see how it works
      */
+    
     func getFormattedBudget (budget: Int) -> String {
         let formattedNum = budget.stringFormattedWithSeparator
         return "$\(formattedNum)"
@@ -229,6 +230,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     
      TL;DR - sets the cells and sections up
      */
+    
     fileprivate func skinTableViewDataSource(_
         dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
         ) {
@@ -282,10 +284,84 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "showtimes",
                         for: idxPath) as! ShowtimesCell
                 
-                cell.showTime1.text = showtimes.get(0) ?? ""
-                cell.showTime2.text = showtimes.get(1) ?? ""
-                cell.showTime3.text = showtimes.get(2) ?? ""
-
+                let calendar = Calendar.current
+                
+                let dateFormatter = DateFormatter()
+                    
+                    dateFormatter.timeStyle = .short
+                
+                let formattedArray = showtimes.map{calendar.component(.day, from: $0.dateTime)}
+                
+                var noDuplicates : [Int] = []
+                
+                /*
+                This could most definitely be improved
+                 */
+                
+                for index in 0..<formattedArray.count {
+                
+                    let checkItem = formattedArray[index]
+            
+                    let nextItem = formattedArray.get(index+1) ?? 0
+                    
+                    if checkItem != nextItem {
+                        noDuplicates.append(checkItem)
+                    }
+                    
+                    if nextItem == 0 {
+                        break;
+                    }
+                    
+                }
+                
+                print(noDuplicates)
+                
+                let boxWidth: CGFloat = 65
+                let boxHeight: CGFloat = 65
+                var xPosition: CGFloat = 0
+                var scrollViewContentSize: CGFloat = 0
+                
+                for index in 0..<noDuplicates.count {
+                    
+                    let boxView = UIView.init(frame: CGRect(x: xPosition, y: 0, width: boxWidth, height: boxHeight))
+                    
+                    boxView.backgroundColor = .red
+                    
+                    cell.scrollView.addSubview(boxView)
+                    
+                    let testLabel = UILabel.init(frame: CGRect(x: 0, y: 0, width: boxWidth, height: boxHeight))
+                    
+                    testLabel.center = boxView.center
+                    
+                    testLabel.text = "\(noDuplicates[index])"
+                    
+                    testLabel.textAlignment = .center
+                    
+                    cell.scrollView.addSubview(testLabel)
+                    
+                    let iterativeSize = boxWidth + 2
+                    xPosition += iterativeSize
+                    scrollViewContentSize += iterativeSize
+                    
+                    
+                    cell.scrollView.contentSize =
+                        CGSize(width: scrollViewContentSize,
+                               height: boxHeight)
+                
+                }
+                
+                for item in cell.scrollView.subviews {
+                    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(sender:)))
+                    tapRecognizer.isEnabled = true
+                    tapRecognizer.cancelsTouchesInView = false
+                    
+                    if let boxView = item as? UIView {
+                        boxView.addGestureRecognizer(tapRecognizer)
+                    } 
+                }
+                
+                
+                
                 return self.skinTableViewCells(cell: cell)
                 
             case let .InfoDescriptionItem(description):
@@ -306,7 +382,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "infoCast",
                         for: idxPath) as! InfoCastCell
                 
-                self.populateScrollView(cell: cell, castArray: cast)
+                self.populateCastScrollView(cell: cell, castArray: cast)
                 
                 return self.skinTableViewCells(cell: cell)
                 
@@ -331,6 +407,16 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         }
     }
     
+    func singleTap(sender: UITapGestureRecognizer? = nil) {
+       print("something was tapped")
+        
+        if (sender?.view?.backgroundColor != .blue) {
+            sender?.view?.backgroundColor = .blue
+        } else {
+            sender?.view?.backgroundColor = .red
+        }
+    }
+    
     /*
      This method populates the scrollview with all the cast members' headshots 
      of a given movie cast.  If a headshot (profilePath) is null, it breaks 
@@ -340,7 +426,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      position of the scrollView are set in IB while everything else is 
      done here programatically.
      */
-    func populateScrollView(cell: InfoCastCell, castArray: [Cast]) {
+    
+    func populateCastScrollView(cell: InfoCastCell, castArray: [Cast]) {
         let imageWidth: CGFloat = 50
         let imageHeight: CGFloat = 50
         var xPosition: CGFloat = 0
@@ -419,6 +506,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      Used in populateScrollView - reduces some of the extraneous lines of code
      Essentially just creates the name label under each cast member's photo
     */
+    
     func createCastLabel(name: String,
                          x: CGFloat,
                          imageHeight: CGFloat,
@@ -448,6 +536,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      This method just creates some grey space underneath the last section,
      purely for style
      */
+    
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         switch section {
@@ -481,6 +570,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             default:
                 height = 30
             }
+        case 1:
+            height = 150
         case 2: //InfoSection
             switch indexPath.row {
             case 0: //DescriptionCell
@@ -563,6 +654,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
  http://stackoverflow.com/questions/29999024/adding-thousand-separator-to-int-in-swift
  
  */
+
 struct Number {
     static let formatterWithSeparator: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -598,7 +690,7 @@ private enum MultipleSectionModel {
 private enum CinemaSectionItem {
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
-    case ShowtimesItem(showTimes: [String])
+    case ShowtimesItem(showTimes: [Showings])
     case InfoDescriptionItem(description: String)
     case InfoCastItem(cast: [Cast])
     case GeneralPurposeItem(title: String, data: String)

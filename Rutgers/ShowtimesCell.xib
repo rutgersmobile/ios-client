@@ -6,52 +6,37 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="showtimes" rowHeight="177" id="hiT-7W-oDa" customClass="ShowtimesCell" customModule="Rutgers" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="177"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="showtimes" rowHeight="356" id="hiT-7W-oDa" customClass="ShowtimesCell" customModule="Rutgers" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="666" height="356"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hiT-7W-oDa" id="lMX-F1-drH">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="176.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="666" height="356"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQL-Co-eEu">
-                        <rect key="frame" x="15" y="81" width="31" height="14.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9wq-Ej-BVB">
-                        <rect key="frame" x="66" y="81" width="31" height="14.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5w-ms-noK">
-                        <rect key="frame" x="117" y="81" width="31" height="14.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8dX-XN-akv">
+                        <rect key="frame" x="8" y="8" width="641" height="75"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="65" id="Iwr-iR-tOj"/>
+                        </constraints>
+                    </scrollView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="9wq-Ej-BVB" firstAttribute="leading" secondItem="nQL-Co-eEu" secondAttribute="trailing" constant="20" id="91V-KB-2Qp"/>
-                    <constraint firstItem="c5w-ms-noK" firstAttribute="centerY" secondItem="lMX-F1-drH" secondAttribute="centerY" id="Eal-SA-xsI"/>
-                    <constraint firstItem="c5w-ms-noK" firstAttribute="leading" secondItem="9wq-Ej-BVB" secondAttribute="trailing" constant="20" id="IyD-hK-FQT"/>
-                    <constraint firstItem="nQL-Co-eEu" firstAttribute="leading" secondItem="lMX-F1-drH" secondAttribute="leading" constant="15" id="Jya-tK-5kj"/>
-                    <constraint firstItem="9wq-Ej-BVB" firstAttribute="centerY" secondItem="lMX-F1-drH" secondAttribute="centerY" id="obj-1N-gxe"/>
-                    <constraint firstItem="nQL-Co-eEu" firstAttribute="centerY" secondItem="lMX-F1-drH" secondAttribute="centerY" id="yR9-8R-70D"/>
+                    <constraint firstItem="8dX-XN-akv" firstAttribute="width" secondItem="lMX-F1-drH" secondAttribute="width" multiplier="0.95" id="RBm-2x-AoK"/>
+                    <constraint firstItem="8dX-XN-akv" firstAttribute="centerX" secondItem="lMX-F1-drH" secondAttribute="centerX" id="ToE-Zh-n3b"/>
+                    <constraint firstItem="8dX-XN-akv" firstAttribute="top" secondItem="lMX-F1-drH" secondAttribute="topMargin" id="gqH-Qd-ex6"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="showTime1" destination="nQL-Co-eEu" id="bgL-A2-3h1"/>
-                <outlet property="showTime2" destination="9wq-Ej-BVB" id="L0I-Va-P9L"/>
-                <outlet property="showTime3" destination="c5w-ms-noK" id="hYv-c0-VyP"/>
+                <outlet property="scrollView" destination="8dX-XN-akv" id="6nS-Qs-5cU"/>
             </connections>
-            <point key="canvasLocation" x="-107" y="62"/>
+            <point key="canvasLocation" x="-5" y="18"/>
         </tableViewCell>
     </objects>
 </document>
