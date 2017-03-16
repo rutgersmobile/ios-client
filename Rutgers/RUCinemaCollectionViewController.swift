@@ -136,10 +136,13 @@ final class RUCinemaCollectionViewController:
         )
     }
     
-    /*
-     Helper function for the posterImage api request.  Upon completion returns
-     either the image we want or an initialized (blank) UIImage.
-     */
+    // MARK: HELPER FUNCTIONS
+    
+        /*
+        Helper function for the posterImage api request.  Upon completion 
+        returns either the image we want or an initialized (blank) UIImage.
+        */
+    
     func getPosterImage(data: TmdbData,
                         completion: @escaping (_ result: UIImage) -> Void){
         
@@ -154,9 +157,11 @@ final class RUCinemaCollectionViewController:
     }
     
     /*
-     Mainly described from before, but essentially just prevents viewDidLoad
-     from being an absolutely incomprehensible mess
-     */
+    Mainly described from before, but essentially just prevents viewDidLoad
+    from being an absolutely incomprehensible mess - used primarily to set up
+    how the cells will display data
+    */
+    
     fileprivate func skinCollectionViewDataSource(
         dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>) {
         dataSource.configureCell = {(
@@ -279,13 +284,10 @@ final class RUCinemaCollectionViewController:
 
     func configureCollectionView(_ collectionView: UICollectionView) {
         let layout = UICollectionViewFlowLayout()
-//        layout.minimumInteritemSpacing = 10
-//        layout.minimumLineSpacing = 10
         layout.itemSize = CGSize(
             width: (self.collectionView?.frame.width)!,
             height: 150
         )
-//        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         self.collectionView?.setCollectionViewLayout(layout, animated: true)
         self.collectionView?.backgroundColor =
             UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
