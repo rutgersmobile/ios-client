@@ -13,7 +13,15 @@ import Foundation
 import Alamofire
 import RxSegue
 
-
+extension Array {
+    func get(_ i: Int) -> Element? {
+        if i < self.count {
+            return self[i]
+        } else {
+            return nil
+        }
+    }
+}
 
 final class RUCinemaCollectionViewController:
     UICollectionViewController,
@@ -95,8 +103,7 @@ final class RUCinemaCollectionViewController:
          */
         
         RutgersAPI.sharedInstance.getCinema()
-            .flatMap { movies in
-                Observable.from(movies)}
+            .flatMap { Observable.from($0) }
             .flatMap{ movie in
                 TmdbAPI.sharedInstance.getTmdbData(movieId: movie.tmdbId)
                     .map { tmdbMovie in
@@ -111,12 +118,12 @@ final class RUCinemaCollectionViewController:
                  
                  CinemaSection struct is at the end of the file for more info
                 */
-                CinemaSection(header: "Movies",
-                              items: [
-                                .defaultItem(
-                                    movieItem: movie,
-                                    tmdbItem: tmdbMovie)
-                    ]
+                CinemaSection(
+                    header: "Movies",
+                    items: [CVCinemaSectionItem(
+                        movieItem: movie,
+                        tmdbItem: tmdbMovie
+                    )]
                 )
             }
             .toArray()
@@ -128,12 +135,13 @@ final class RUCinemaCollectionViewController:
         Passes necessary info to next view controller, and then displays it
         when a user taps a cell
         */
-        
-        self.collectionView?.addGestureRecognizer(
-            UITapGestureRecognizer(target: self,
-                                   action: #selector(self.tap)
-            )
-        )
+
+        self.collectionView?.rx.modelSelected(CVCinemaSectionItem.self)
+            .subscribe(onNext: { [unowned self] model in
+                let vc = RUCinemaDetailTableViewController.init(movie: model.movieItem, data: model.tmdbItem)
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .addDisposableTo(disposeBag)
     }
     
     // MARK: HELPER FUNCTIONS
@@ -170,85 +178,44 @@ final class RUCinemaCollectionViewController:
              idxPath: IndexPath,
              item: CVCinemaSectionItem
         ) in
-            switch dataSource[idxPath] {
-            case let .defaultItem(movieItem: movie, tmdbItem: tmdbMovie):
-                
-                let cell: RUCinemaCollectionViewCell =
-                    collectionView.dequeueReusableCell(
-                        withReuseIdentifier: self.CellId,
-                        for: idxPath) as! RUCinemaCollectionViewCell
-                
-                self.getPosterImage(data: tmdbMovie, completion: { image in
-                    cell.posterImage.image = image
-                })
-                
-                let genreString = tmdbMovie.genres.map { genres in
-                    genres.map { $0.name }.joined(separator: ", ")
-                    } ?? ""
-                
-                var showingArray: [Showings] = []
-                
-                var cellLabelDictionary : [String : String] = [
-                    "label1": "",
-                    "label2": "",
-                    "label3": ""
-                ]
-                
-                if (movie.showings.count != 0) {
-                    //Used for date formatting
-                    let calendar = Calendar.current
-                    
-                    let dateFormatter = DateFormatter()
-                    
-                    dateFormatter.timeStyle = .short
-                    
-                    let sortedArray =
-                        movie.showings.sorted { $0.dateTime > $1.dateTime }
-                    
-                    let baseDay = calendar.component(
-                                            .day,
-                                            from:
-                                            sortedArray[0].dateTime as Date)
-                    
-                    showingArray = sortedArray.filter({
-                            calendar.component(
-                                .day,
-                                from:
-                                $0.dateTime as Date
-                            ) == baseDay
-                    })
-                    
-                    showingArray = showingArray.reversed()
-                    
-                    for i in 0..<showingArray.count {
-                        cellLabelDictionary["label\(i+1)"] =
-                            dateFormatter.string(
-                                from: showingArray[i].dateTime
-                        )
-                    }
-                
-                }
-                
-                cell.time1.text = cellLabelDictionary["label1"]
-                cell.time2.text = cellLabelDictionary["label2"]
-                cell.time3.text = cellLabelDictionary["label3"]
-                
-                let index =
-                    tmdbMovie.releaseDate?.index(
-                        (tmdbMovie.releaseDate?.startIndex)!,
-                        offsetBy: 4
-                    )
-                
-                let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
-                
-                cell.descriptionLabel.textColor = .white
-                cell.tagsLabel.text = genreString
-                cell.descriptionLabel.text = tmdbMovie.overview
-                cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
-                cell.movieId = Int(tmdbMovie.id!)
-                
-                return cell
-            }
+            let model = dataSource[idxPath]
+            let movie = model.movieItem
+            let tmdbMovie = model.tmdbItem
+            
+            let cell: RUCinemaCollectionViewCell =
+                collectionView.dequeueReusableCell(
+                    withReuseIdentifier: self.CellId,
+                    for: idxPath) as! RUCinemaCollectionViewCell
+            
+            self.getPosterImage(data: tmdbMovie, completion: { image in
+                cell.posterImage.image = image
+            })
+            
+            let genreString = tmdbMovie.genres.map { genres in
+                genres.map { $0.name }.joined(separator: ", ")
+            } ?? ""
+
+            let formattedShowings = movie.formattedShowings()
+
+            cell.time1.text = formattedShowings.get(0) ?? ""
+            cell.time2.text = formattedShowings.get(1) ?? ""
+            cell.time3.text = formattedShowings.get(2) ?? ""
+            
+            let index =
+                tmdbMovie.releaseDate?.index(
+                    (tmdbMovie.releaseDate?.startIndex)!,
+                    offsetBy: 4
+                )
+            
+            let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
+            
+            cell.descriptionLabel.textColor = .white
+            cell.tagsLabel.text = genreString
+            cell.descriptionLabel.text = tmdbMovie.overview
+            cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
+            cell.movieId = Int(tmdbMovie.id!)
+            
+            return cell
         }
     }
     
@@ -256,30 +223,8 @@ final class RUCinemaCollectionViewController:
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
-        ) -> CGSize {
+    ) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 0)
-    }
-    
-    func tap(sender: UITapGestureRecognizer) {
-        if let indexPath = self.collectionView?.indexPathForItem(
-            at: sender.location(
-                in: self.collectionView)
-            ) {
-
-            let cell : RUCinemaCollectionViewCell =
-                self.collectionView?
-                    .cellForItem(at: indexPath) as! RUCinemaCollectionViewCell
-            
-            let vc = RUCinemaDetailTableViewController.init(
-                movieId: cell.movieId,
-                showTimes:
-                    [cell.time1.text ?? "",
-                     cell.time2.text ?? "",
-                     cell.time3.text ?? ""]
-            )
- 
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
     }
 
     func configureCollectionView(_ collectionView: UICollectionView) {
@@ -309,8 +254,9 @@ private struct CinemaSection {
     }
 }
 
-private enum CVCinemaSectionItem {
-    case defaultItem(movieItem: Cinema, tmdbItem: TmdbData)
+private struct CVCinemaSectionItem {
+    let movieItem: Cinema
+    let tmdbItem: TmdbData
 }
 
 extension CinemaSection: SectionModelType {

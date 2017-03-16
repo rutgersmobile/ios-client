@@ -47,6 +47,6 @@ class RutgersAPI {
     
     public func getCinema() -> Observable<[Cinema]> {
         return provider.request(.getCinema)
-        .mapUnboxArray(type: Cinema.self)
+            .mapUnboxArray(type: Cinema.self)
     }
 }

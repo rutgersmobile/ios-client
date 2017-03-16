@@ -20,16 +20,18 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     //Also passed from previous view controller, displays most recent showtimes
     var showTimes : [String]!
     
-    var passedData : TmdbData!
+    var tmdbData : TmdbData!
+    
+    var movie: Cinema!
     
     //Sets up dispose bag for Rx pods - all observables within disposeBag will
     //be dealloc when viewcontroller gets dealloc
     let disposeBag = DisposeBag()
     
-    //Initializer for VC - requires movieId to be set
-    init(movieId: Int, showTimes: [String]) {
-        self.movieId = movieId
-        self.showTimes = showTimes
+    
+    init(movie: Cinema, data: TmdbData) {
+        self.tmdbData = data
+        self.movie = movie
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,34 +63,31 @@ final class RUCinemaDetailTableViewController: UITableViewController {
 
         skinTableViewDataSource(dataSource)
         
-        TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
-            .flatMap { general in
-                TmdbAPI.sharedInstance.getTmdbCredits(movieId: general.id!)
-                    .map { credits in (general, credits)}
-            }
-            .map { (tmdbData, tmdbCredits) in
+        
+        TmdbAPI.sharedInstance.getTmdbCredits(movieId: self.tmdbData.id!)
+            .map { (tmdbCredits) in
                 [
                     .VideoSection(
-                        title: tmdbData.title!,
+                        title: self.tmdbData.title!,
                         items: [
                             .VideoContentItem(
                                 title: "Video",
-                                key: tmdbData.videos!.videoResult[0].key
+                                key: self.tmdbData.videos!.videoResult[0].key
                             ),
                             .VideoRatingsItem(
-                                title: String(tmdbData.voteAverage!)
+                                title: String(self.tmdbData.voteAverage!)
                             )
                         ]
                     ),
                     .ShowtimesSection(
                         title: "Showtimes",
-                        items: [.ShowtimesItem(showTimes: self.showTimes)]
+                        items: [.ShowtimesItem(showTimes: self.movie.formattedShowings())]
                     ),
                     .InfoSection(
                         title: "Info",
                         items: [
                             .InfoDescriptionItem(
-                                description: tmdbData.overview!
+                                description: self.tmdbData.overview!
                             ),
                             .GeneralPurposeItem(
                                 title: "Director:",
@@ -102,7 +101,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         items: [
                             .GeneralPurposeItem(
                                 title: "Status:",
-                                data: tmdbData.status!
+                                data: self.tmdbData.status!
                             ),
                             .GeneralPurposeItem(
                                 title: "Original Language:",
@@ -111,18 +110,18 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                             .GeneralPurposeItem(
                                 title: "Runtime:",
                                 data: self.getFormattedRuntime(
-                                runtime: tmdbData.runtime!)
+                                runtime: self.tmdbData.runtime!)
                             ),
                             .GeneralPurposeItem(
                                 title: "Budget:",
                                 data: self.getFormattedBudget(
-                                budget: tmdbData.budget!
+                                budget: self.tmdbData.budget!
                                 )
                             ),
                             .GeneralPurposeItem(
                                 title: "Release Date:",
                                 data: self.getFormattedReleaseInfo(
-                                date: tmdbData.releaseDate!
+                                date: self.tmdbData.releaseDate!
                                 )
                             )
                         ]
@@ -198,7 +197,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         let dateObj = dateFormatter.date(from: dateString)
         
         dateFormatter.dateFormat = "MMMM dd, yyyy"
-        print("Dateobj: \(dateFormatter.string(from: dateObj!))")
         
         dateString = dateFormatter.string(from: dateObj!)
         
@@ -284,9 +282,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "showtimes",
                         for: idxPath) as! ShowtimesCell
                 
-                cell.showTime1.text = showtimes[0]
-                cell.showTime2.text = showtimes[1]
-                cell.showTime3.text = showtimes[2]
+                cell.showTime1.text = showtimes.get(0) ?? ""
+                cell.showTime2.text = showtimes.get(1) ?? ""
+                cell.showTime3.text = showtimes.get(2) ?? ""
 
                 return self.skinTableViewCells(cell: cell)
                 
