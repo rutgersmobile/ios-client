@@ -30,7 +30,7 @@
 
 @implementation RUSOCViewController
 +(NSString *)channelHandle{
-    return @"soc";
+    return @"not_soc";
 }
 
 +(void)load{

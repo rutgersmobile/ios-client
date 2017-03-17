@@ -38,6 +38,7 @@
 
         [RUCinemaCollectionViewController registerClass];
         [RUFoodMainViewController registerClass];
+        [RUSOCViewController registerClass];
   //      [AthleticsHomeScreenCollectionViewController registerClass];
         
     });

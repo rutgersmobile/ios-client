@@ -251,6 +251,11 @@
 		C46B0FCD1E60BB59006AB739 /* RUDiningHallTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */; };
 		C46B0FCF1E60BEBF006AB739 /* RUDiningHallStubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */; };
 		C46B0FD11E60CBE7006AB739 /* RUMealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */; };
+		C49ED7761E7B092E00852023 /* SOCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7751E7B092E00852023 /* SOCService.swift */; };
+		C49ED7781E7B17BF00852023 /* SOC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7771E7B17BF00852023 /* SOC.swift */; };
+		C49ED77A1E7B198800852023 /* SOCAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7791E7B198800852023 /* SOCAPI.swift */; };
+		C49ED77E1E7B249900852023 /* RUSOCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED77D1E7B249900852023 /* RUSOCViewController.swift */; };
+		C49ED7801E7C642D00852023 /* RUSOCStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */; };
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
 		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
 		C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */; };
@@ -725,6 +730,11 @@
 		C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUDiningHallTabBarController.swift; sourceTree = "<group>"; };
 		C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUDiningHallStubViewController.swift; sourceTree = "<group>"; };
 		C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUMealViewController.swift; sourceTree = "<group>"; };
+		C49ED7751E7B092E00852023 /* SOCService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCService.swift; sourceTree = "<group>"; };
+		C49ED7771E7B17BF00852023 /* SOC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOC.swift; sourceTree = "<group>"; };
+		C49ED7791E7B198800852023 /* SOCAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCAPI.swift; sourceTree = "<group>"; };
+		C49ED77D1E7B249900852023 /* RUSOCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCViewController.swift; sourceTree = "<group>"; };
+		C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RUSOCStoryboard.storyboard; sourceTree = "<group>"; };
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
@@ -1011,6 +1021,8 @@
 				A72FFFB41937D8E500016C89 /* RUSOCSubjectViewController.m */,
 				A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */,
 				A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */,
+				C49ED77D1E7B249900852023 /* RUSOCViewController.swift */,
+				C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */,
 			);
 			name = rusoc;
 			sourceTree = "<group>";
@@ -1685,6 +1697,7 @@
 				C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */,
 				B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */,
 				C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */,
+				C49ED7791E7B198800852023 /* SOCAPI.swift */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -1694,6 +1707,7 @@
 			children = (
 				C41E66191E38E9A800562CCB /* RutgersService.swift */,
 				B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */,
+				C49ED7751E7B092E00852023 /* SOCService.swift */,
 			);
 			name = services;
 			sourceTree = "<group>";
@@ -1708,6 +1722,7 @@
 				B528E0061E3BE9CC00A9DE6C /* Sport.swift */,
 				B5432FF11E426C6D006F036A /* Motd.swift */,
 				B5432FF31E427244006F036A /* Channel.swift */,
+				C49ED7771E7B17BF00852023 /* SOC.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -1839,6 +1854,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */,
+				C49ED7801E7C642D00852023 /* RUSOCStoryboard.storyboard in Resources */,
 				6254D2821D2329220005A31C /* README.txt in Resources */,
 				A777C2B2190C243100F978D7 /* rockoff.gpx in Resources */,
 				042C302E1A7977AA0034F89E /* legal in Resources */,
@@ -2031,6 +2047,7 @@
 				04A1EFD61A5C508300DE0351 /* RUPredictionsExpandingSection.m in Sources */,
 				A777C2B0190B35C400F978D7 /* RUPlacesDataLoadingManager.m in Sources */,
 				A7B8DB9219A65FE400EF1953 /* NSArray+LimitedToCount.m in Sources */,
+				C49ED77E1E7B249900852023 /* RUSOCViewController.swift in Sources */,
 				A7E8E13C192547190089F166 /* RURootController.m in Sources */,
 				A72FFFB51937D8E500016C89 /* RUSOCSubjectViewController.m in Sources */,
 				C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */,
@@ -2051,6 +2068,7 @@
 				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
 				046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */,
+				C49ED7781E7B17BF00852023 /* SOC.swift in Sources */,
 				041502321BB0964A00D23AB8 /* RUDefines.m in Sources */,
 				04A1EFEB1A5C509600DE0351 /* AllStopsDataSource.m in Sources */,
 				C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */,
@@ -2119,6 +2137,7 @@
 				A70C2BE3198C2C60004F82D4 /* ALTableViewTextCell.m in Sources */,
 				04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */,
 				A79B5DE3199C23C900DAEFC1 /* CLLocation+Centroid.m in Sources */,
+				C49ED7761E7B092E00852023 /* SOCService.swift in Sources */,
 				A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */,
 				A7DDA01719991E1C00F6C102 /* NSDictionary+ObjectsForKeys.m in Sources */,
 				A7241A481989743D00304436 /* RUSOCSubjectDataSource.m in Sources */,
@@ -2138,6 +2157,7 @@
 				04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */,
 				A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */,
 				B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */,
+				C49ED77A1E7B198800852023 /* SOCAPI.swift in Sources */,
 				A7778D7419A4FEEF003BD8DE /* RowHeightCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
