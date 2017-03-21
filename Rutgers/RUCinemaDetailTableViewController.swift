@@ -279,10 +279,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
             case let .ShowtimesItem(showtimes):
                 
-                let cell: ShowtimesCell =
-                    table.dequeueReusableCell(
-                        withIdentifier: "showtimes",
-                        for: idxPath) as! ShowtimesCell
+                let cell = table.dequeueReusableCell(withIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
                 
                 let calendar = Calendar.current
                 
@@ -314,53 +311,11 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     
                 }
                 
-                print(noDuplicates)
+                let frame: CGRect = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
                 
-                let boxWidth: CGFloat = 65
-                let boxHeight: CGFloat = 65
-                var xPosition: CGFloat = 0
-                var scrollViewContentSize: CGFloat = 0
+                let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes)
                 
-                for index in 0..<noDuplicates.count {
-                    
-                    let boxView = UIView.init(frame: CGRect(x: xPosition, y: 0, width: boxWidth, height: boxHeight))
-                    
-                    boxView.backgroundColor = .red
-                    
-                    cell.scrollView.addSubview(boxView)
-                    
-                    let testLabel = UILabel.init(frame: CGRect(x: 0, y: 0, width: boxWidth, height: boxHeight))
-                    
-                    testLabel.center = boxView.center
-                    
-                    testLabel.text = "\(noDuplicates[index])"
-                    
-                    testLabel.textAlignment = .center
-                    
-                    cell.scrollView.addSubview(testLabel)
-                    
-                    let iterativeSize = boxWidth + 2
-                    xPosition += iterativeSize
-                    scrollViewContentSize += iterativeSize
-                    
-                    
-                    cell.scrollView.contentSize =
-                        CGSize(width: scrollViewContentSize,
-                               height: boxHeight)
-                
-                }
-                
-                for item in cell.scrollView.subviews {
-                    let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(sender:)))
-                    tapRecognizer.isEnabled = true
-                    tapRecognizer.cancelsTouchesInView = false
-                    
-                    if let boxView = item as? UIView {
-                        boxView.addGestureRecognizer(tapRecognizer)
-                    } 
-                }
-                
-                
+                cell.addSubview(showtimesCollectionView)
                 
                 return self.skinTableViewCells(cell: cell)
                 
@@ -404,16 +359,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         dataSource.titleForHeaderInSection = { dataSource, index in
             dataSource[index].title
-        }
-    }
-    
-    func singleTap(sender: UITapGestureRecognizer? = nil) {
-       print("something was tapped")
-        
-        if (sender?.view?.backgroundColor != .blue) {
-            sender?.view?.backgroundColor = .blue
-        } else {
-            sender?.view?.backgroundColor = .red
         }
     }
     
@@ -571,7 +516,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 height = 30
             }
         case 1:
-            height = 150
+            height = 120
         case 2: //InfoSection
             switch indexPath.row {
             case 0: //DescriptionCell
@@ -704,7 +649,6 @@ private enum CinemaSectionItem {
  Section is being called with the result of the computed property.
  */
 extension MultipleSectionModel: SectionModelType {
-    
     
     var items: [CinemaSectionItem] {
         switch self {
