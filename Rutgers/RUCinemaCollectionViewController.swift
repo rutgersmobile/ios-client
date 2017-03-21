@@ -138,7 +138,9 @@ final class RUCinemaCollectionViewController:
 
         self.collectionView?.rx.modelSelected(CVCinemaSectionItem.self)
             .subscribe(onNext: { [unowned self] model in
+
                 let vc = RUCinemaDetailTableViewController.init(movie: model.movieItem, data: model.tmdbItem)
+
                 self.navigationController?.pushViewController(vc, animated: true)
             })
             .addDisposableTo(disposeBag)
