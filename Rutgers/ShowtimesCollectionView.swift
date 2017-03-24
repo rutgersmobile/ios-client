@@ -15,6 +15,8 @@ class ShowtimesCollectionView: UICollectionView, UICollectionViewDelegate, UICol
     
     let showtimes: [Showings]!
     
+    var formattedShowtimes: [String]!
+    
     let showtimeLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -22,9 +24,10 @@ class ShowtimesCollectionView: UICollectionView, UICollectionViewDelegate, UICol
         return layout
     }()
     
-    init(frame: CGRect, daysToDisplay: [Int], showtimes: [Showings]) {
+    init(frame: CGRect, daysToDisplay: [Int], showtimes: [Showings], formattedShowtimes: [String]) {
         self.daysToDisplay = daysToDisplay
         self.showtimes = showtimes
+        self.formattedShowtimes = formattedShowtimes
         
         super.init(frame: frame, collectionViewLayout: showtimeLayout)
         setup()
@@ -60,7 +63,10 @@ class ShowtimesCollectionView: UICollectionView, UICollectionViewDelegate, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected!")
+        
+        self.formattedShowtimes = ["1", "2", "3", "4"]
+        self.reloadData()
+        print("selected: \(daysToDisplay[indexPath.row])")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

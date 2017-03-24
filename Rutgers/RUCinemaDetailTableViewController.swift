@@ -311,11 +311,16 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     
                 }
                 
-                let frame: CGRect = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
+                var formattedShowtimes = ["", "", "", ""]
                 
-                let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes)
+                let frame: CGRect = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height/2)
+                
+                let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes, formattedShowtimes: formattedShowtimes)
                 
                 cell.addSubview(showtimesCollectionView)
+                
+                formattedShowtimes = showtimesCollectionView.formattedShowtimes
+                print(formattedShowtimes)
                 
                 return self.skinTableViewCells(cell: cell)
                 
