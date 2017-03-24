@@ -90,7 +90,7 @@ final class RUCinemaCollectionViewController:
          */
         let dataSource =
             RxCollectionViewSectionedReloadDataSource<CinemaSection>()
-        
+       
         /*
          Does all the heavy lifting specifying how and what the cells will
          display
@@ -119,7 +119,6 @@ final class RUCinemaCollectionViewController:
                  CinemaSection struct is at the end of the file for more info
                 */
                 CinemaSection(
-                    header: "Movies",
                     items: [CVCinemaSectionItem(
                         movieItem: movie,
                         tmdbItem: tmdbMovie
@@ -142,8 +141,11 @@ final class RUCinemaCollectionViewController:
                 let vc = RUCinemaDetailTableViewController.init(movie: model.movieItem, data: model.tmdbItem)
 
                 self.navigationController?.pushViewController(vc, animated: true)
+                
             })
             .addDisposableTo(disposeBag)
+        
+        
     }
     
     // MARK: HELPER FUNCTIONS
@@ -174,7 +176,7 @@ final class RUCinemaCollectionViewController:
     
     fileprivate func skinCollectionViewDataSource(
         dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>) {
-        dataSource.configureCell = {(
+        dataSource.configureCell = {[weak self] (
              dataSource: CollectionViewSectionedDataSource<CinemaSection>,
              collectionView: UICollectionView,
              idxPath: IndexPath,
@@ -186,10 +188,10 @@ final class RUCinemaCollectionViewController:
             
             let cell: RUCinemaCollectionViewCell =
                 collectionView.dequeueReusableCell(
-                    withReuseIdentifier: self.CellId,
+                    withReuseIdentifier: (self?.CellId)!,
                     for: idxPath) as! RUCinemaCollectionViewCell
             
-            self.getPosterImage(data: tmdbMovie, completion: { image in
+            self?.getPosterImage(data: tmdbMovie, completion: { image in
                 cell.posterImage.image = image
             })
             
@@ -247,11 +249,9 @@ final class RUCinemaCollectionViewController:
 }
 
 private struct CinemaSection {
-    var header: String
     var items : [CVCinemaSectionItem]
     
-    init(header: String, items: [CVCinemaSectionItem]) {
-        self.header = header
+    init(items: [CVCinemaSectionItem]) {
         self.items = items
     }
 }

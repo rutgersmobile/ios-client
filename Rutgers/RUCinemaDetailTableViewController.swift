@@ -65,29 +65,34 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         
         TmdbAPI.sharedInstance.getTmdbCredits(movieId: self.tmdbData.id!)
-            .map { (tmdbCredits) in
-                [
-                    .VideoSection(
-                        title: self.tmdbData.title!,
+            .map { [weak self] (tmdbCredits) in
+                var tableViewSections: [MultipleSectionModel] = [.VideoSection(
+                        title: self?.tmdbData.title ?? "",
                         items: [
                             .VideoContentItem(
                                 title: "Video",
-                                key: self.tmdbData.videos!.videoResult[0].key
+                                key: self?.tmdbData.videos!.videoResult[0].key ?? ""
                             ),
                             .VideoRatingsItem(
-                                title: String(self.tmdbData.voteAverage!)
+                                title: String(self?.tmdbData.voteAverage ?? 0.0)
                             )
                         ]
-                    ),
-                    .ShowtimesSection(
+                    )]
+                
+                if self?.movie.showings.count != 0 {
+                    let showTimesSection: [MultipleSectionModel] = [.ShowtimesSection(
                         title: "Showtimes",
-                        items: [.ShowtimesItem(showTimes: self.movie.showings)]
-                    ),
-                    .InfoSection(
+                        items: [.ShowtimesItem(showTimes: self?.movie.showings ?? [])]
+                    )]
+                    
+                    tableViewSections.append(contentsOf: showTimesSection)
+                }
+
+                let generalSection: [MultipleSectionModel] = [.InfoSection(
                         title: "Info",
                         items: [
                             .InfoDescriptionItem(
-                                description: self.tmdbData.overview!
+                                description: self?.tmdbData.overview ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Director:",
@@ -101,7 +106,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         items: [
                             .GeneralPurposeItem(
                                 title: "Status:",
-                                data: self.tmdbData.status!
+                                data: self?.tmdbData.status ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Original Language:",
@@ -109,24 +114,26 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                             ),
                             .GeneralPurposeItem(
                                 title: "Runtime:",
-                                data: self.getFormattedRuntime(
-                                runtime: self.tmdbData.runtime!)
+                                data: self?.getFormattedRuntime(
+                                runtime: self?.tmdbData.runtime ?? 0) ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Budget:",
-                                data: self.getFormattedBudget(
-                                budget: self.tmdbData.budget!
-                                )
+                                data: self?.getFormattedBudget(
+                                budget: self?.tmdbData.budget ?? 0) ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Release Date:",
-                                data: self.getFormattedReleaseInfo(
-                                date: self.tmdbData.releaseDate!
-                                )
-                            )
+                                data: self?.getFormattedReleaseInfo(
+                                date: self?.tmdbData.releaseDate ?? "") ?? "")
                         ]
                     )
                 ]
+                
+                tableViewSections.append(contentsOf: generalSection)
+                
+                return tableViewSections
+                
             }
             .do(onError: {error in print(error)})
             .asDriver(onErrorJustReturn: [])
@@ -234,7 +241,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     fileprivate func skinTableViewDataSource(_
         dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
         ) {
-        dataSource.configureCell = {(
+        dataSource.configureCell = {[weak self] (
             dataSource: TableViewSectionedDataSource<MultipleSectionModel>,
             table: UITableView,
             idxPath: IndexPath,
@@ -251,7 +258,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                
                 cell.playerView.load(withVideoId: key)
                 
-                return self.skinTableViewCells(cell: cell)
+                return self!.skinTableViewCells(cell: cell)
             case let .VideoRatingsItem(title):
                 
                 let cell: VideoRatingsCell =
@@ -275,7 +282,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.titleLabel.text = title
                 
-                return self.skinTableViewCells(cell: cell)
+                return self!.skinTableViewCells(cell: cell)
                 
             case let .ShowtimesItem(showtimes):
                 
@@ -290,10 +297,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 let formattedArray = showtimes.map{calendar.component(.day, from: $0.dateTime)}
                 
                 var noDuplicates : [Int] = []
-                
-                /*
-                This could most definitely be improved
-                 */
                 
                 for index in 0..<formattedArray.count {
                 
@@ -311,18 +314,37 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     
                 }
                 
-                var formattedShowtimes = ["", "", "", ""]
-                
                 let frame: CGRect = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height/2)
                 
-                let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes, formattedShowtimes: formattedShowtimes)
+                let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes)
                 
                 cell.addSubview(showtimesCollectionView)
                 
-                formattedShowtimes = showtimesCollectionView.formattedShowtimes
-                print(formattedShowtimes)
+                cell.showtime1.text = "8--pm"
+                cell.showtime2.text = "8--pm"
+                cell.showtime3.text = "8--pm"
+                cell.showtime4.text = "8--pm"
                 
-                return self.skinTableViewCells(cell: cell)
+                showtimesCollectionView.rx.itemSelected.subscribe{idxObservable in
+                    idxObservable.map{idxPath in
+                    let filteredArray = showtimes.filter{ calendar.component(.day, from: $0.dateTime) == noDuplicates[idxPath.row]}
+                        
+                        let timesArray = filteredArray.map{
+                            dateFormatter.string(from: $0.dateTime)
+                        }
+                        
+                        cell.showtime1.text = timesArray.get(0) ?? ""
+                        cell.showtime2.text = timesArray.get(1) ?? ""
+                        cell.showtime3.text = timesArray.get(2) ?? ""
+                        cell.showtime4.text = timesArray.get(3) ?? ""
+                        
+                    }.element
+                }.addDisposableTo((self?.disposeBag)!)
+                
+                
+           
+                
+                return self!.skinTableViewCells(cell: cell)
                 
             case let .InfoDescriptionItem(description):
                 
@@ -333,7 +355,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.descriptionText.text = description
                 
-                return self.skinTableViewCells(cell: cell)
+                return self!.skinTableViewCells(cell: cell)
                 
             case let .InfoCastItem(cast):
                 
@@ -342,9 +364,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "infoCast",
                         for: idxPath) as! InfoCastCell
                 
-                self.populateCastScrollView(cell: cell, castArray: cast)
+                self?.populateCastScrollView(cell: cell, castArray: cast)
                 
-                return self.skinTableViewCells(cell: cell)
+                return self!.skinTableViewCells(cell: cell)
                 
             case let .GeneralPurposeItem(title, data):
                 let cell: GeneralPurposeCell =
@@ -355,7 +377,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 cell.titleLabel.text = title
                 cell.dataLabel.text = data
                 
-                return self.skinTableViewCells(cell: cell)
+                return self!.skinTableViewCells(cell: cell)
             }
             
             

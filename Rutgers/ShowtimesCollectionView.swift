@@ -8,14 +8,14 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import RxDataSources
 
 class ShowtimesCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     let daysToDisplay: [Int]!
     
     let showtimes: [Showings]!
-    
-    var formattedShowtimes: [String]!
     
     let showtimeLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -24,10 +24,9 @@ class ShowtimesCollectionView: UICollectionView, UICollectionViewDelegate, UICol
         return layout
     }()
     
-    init(frame: CGRect, daysToDisplay: [Int], showtimes: [Showings], formattedShowtimes: [String]) {
+    init(frame: CGRect, daysToDisplay: [Int], showtimes: [Showings]) {
         self.daysToDisplay = daysToDisplay
         self.showtimes = showtimes
-        self.formattedShowtimes = formattedShowtimes
         
         super.init(frame: frame, collectionViewLayout: showtimeLayout)
         setup()
@@ -55,23 +54,51 @@ class ShowtimesCollectionView: UICollectionView, UICollectionViewDelegate, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "showtimesCVCell", for: indexPath) as! ShowtimesCollectionViewCell
         
-        let string = "\(daysToDisplay[indexPath.row])"
+        let calendar = Calendar.current
         
-        cell.dayLabel.text = string
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.timeStyle = .short
+        
+        let filteredArray = showtimes.filter{calendar.component(.day, from: $0.dateTime) == daysToDisplay[indexPath.row]}
+        
+        let monthArray = filteredArray.map{calendar.component(.month, from: $0.dateTime)}
+        
+        let dayString = "\(daysToDisplay[indexPath.row])"
+        
+        let month = monthArray.get(0) ?? 0
+        
+        let monthString = dateFormatter.shortMonthSymbols.get(month-1)
+        
+        cell.dayLabel.text = dayString
+        cell.monthLabel.text = monthString
         
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        self.formattedShowtimes = ["1", "2", "3", "4"]
-        self.reloadData()
-        print("selected: \(daysToDisplay[indexPath.row])")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 75, height: frame.height)
     }
-   
+}
+
+private struct ScrollingSection {
+    var items: [ScrollingSectionItem]
     
+    init(items: [ScrollingSectionItem]) {
+        self.items = items
+    }
+}
+
+private struct ScrollingSectionItem {
+    let day: String
+    let month: String
+}
+
+extension ScrollingSection: SectionModelType {
+    fileprivate typealias Item = ScrollingSectionItem
+    
+    init(original: ScrollingSection, items: [Item]) {
+        self = original
+        self.items = items
+    }
 }

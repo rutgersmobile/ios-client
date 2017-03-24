@@ -20,39 +20,39 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TD-80-Ku5">
-                        <rect key="frame" x="73" y="101" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="135" y="90" width="31" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="41E-rq-TJe">
-                        <rect key="frame" x="135" y="101" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="210" y="90" width="31" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAe-XO-dCw">
-                        <rect key="frame" x="197" y="101" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="135" y="119.5" width="31" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUz-TO-yeY">
-                        <rect key="frame" x="259" y="101" width="42" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="210" y="119.5" width="31" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="pAe-XO-dCw" firstAttribute="leading" secondItem="41E-rq-TJe" secondAttribute="trailing" constant="20" id="3Qg-Xi-AaF"/>
-                    <constraint firstItem="pAe-XO-dCw" firstAttribute="centerY" secondItem="41E-rq-TJe" secondAttribute="centerY" id="ANp-Uw-4LL"/>
-                    <constraint firstItem="7TD-80-Ku5" firstAttribute="centerY" secondItem="77X-Se-Nnm" secondAttribute="centerY" multiplier="1.5" id="GUK-oz-uvK"/>
-                    <constraint firstItem="7TD-80-Ku5" firstAttribute="centerX" secondItem="77X-Se-Nnm" secondAttribute="centerX" multiplier="0.5" id="TuS-gv-fNQ"/>
-                    <constraint firstItem="41E-rq-TJe" firstAttribute="leading" secondItem="7TD-80-Ku5" secondAttribute="trailing" constant="20" id="h75-3C-qBN"/>
-                    <constraint firstItem="qUz-TO-yeY" firstAttribute="centerY" secondItem="pAe-XO-dCw" secondAttribute="centerY" id="tXX-mu-Rhg"/>
-                    <constraint firstItem="qUz-TO-yeY" firstAttribute="leading" secondItem="pAe-XO-dCw" secondAttribute="trailing" constant="20" id="xZR-tc-WJr"/>
-                    <constraint firstItem="41E-rq-TJe" firstAttribute="centerY" secondItem="7TD-80-Ku5" secondAttribute="centerY" id="xxd-9y-Iq2"/>
+                    <constraint firstItem="pAe-XO-dCw" firstAttribute="centerY" secondItem="77X-Se-Nnm" secondAttribute="centerY" multiplier="1.7" id="9p6-4O-Nbj"/>
+                    <constraint firstItem="pAe-XO-dCw" firstAttribute="centerX" secondItem="7TD-80-Ku5" secondAttribute="centerX" id="B4z-kV-dOL"/>
+                    <constraint firstItem="qUz-TO-yeY" firstAttribute="centerX" secondItem="41E-rq-TJe" secondAttribute="centerX" id="Bm7-6b-o3C"/>
+                    <constraint firstItem="7TD-80-Ku5" firstAttribute="centerY" secondItem="77X-Se-Nnm" secondAttribute="centerY" multiplier="1.3" id="Y4B-Dh-ggC"/>
+                    <constraint firstItem="41E-rq-TJe" firstAttribute="centerY" secondItem="77X-Se-Nnm" secondAttribute="centerY" multiplier="1.3" id="f8P-L5-LX0"/>
+                    <constraint firstItem="41E-rq-TJe" firstAttribute="centerX" secondItem="77X-Se-Nnm" secondAttribute="centerX" multiplier="1.2" id="kZE-er-vgn"/>
+                    <constraint firstItem="qUz-TO-yeY" firstAttribute="centerY" secondItem="77X-Se-Nnm" secondAttribute="centerY" multiplier="1.7" id="kvB-h2-c0O"/>
+                    <constraint firstItem="7TD-80-Ku5" firstAttribute="centerX" secondItem="77X-Se-Nnm" secondAttribute="centerX" multiplier="0.8" id="x8X-if-P8u"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -61,7 +61,7 @@
                 <outlet property="showtime3" destination="pAe-XO-dCw" id="lO7-9f-n9O"/>
                 <outlet property="showtime4" destination="qUz-TO-yeY" id="baj-dq-pI2"/>
             </connections>
-            <point key="canvasLocation" x="-84.5" y="-297.5"/>
+            <point key="canvasLocation" x="-112" y="-367"/>
         </tableViewCell>
     </objects>
 </document>

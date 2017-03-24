@@ -17,5 +17,10 @@ class ShowtimesCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.showtime1.textColor = .white
+        self.showtime2.textColor = .white
+        self.showtime3.textColor = .white
+        self.showtime4.textColor = .white
     }
 }
