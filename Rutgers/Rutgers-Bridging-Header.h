@@ -26,3 +26,4 @@
 #import "RUNetworkManager.h"
 #import "RUFavoriteActivity.h"
 
+#import "RUThankMrSOC.h"

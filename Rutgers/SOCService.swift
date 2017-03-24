@@ -37,7 +37,7 @@ extension SOCService: TargetType {
         case .getCourses(let semester, let campus):
             return [
                 "year": semester.year,
-                "term": semester.term,
+                "term": semester.term.asInt(),
                 "campus": campus
             ]
         case .getInit:

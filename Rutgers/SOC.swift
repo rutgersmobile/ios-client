@@ -38,7 +38,7 @@ extension Campus: CustomStringConvertible {
 }
 
 extension Campus {
-    static func fromString(s: String) -> Campus? {
+    static func from(string s: String) -> Campus? {
         switch s {
         case "NB":
             return .newBrunswick
@@ -56,36 +56,158 @@ extension Campus {
             return nil
         }
     }
+
+    var title: String {
+        get {
+            switch self {
+            case .newBrunswick:
+                return "New Brunswick"
+            case .onlineNewBrunswick:
+                return "Online New Brunswick"
+            case .newark:
+                return "Newark"
+            case .onlineNewark:
+                return "Online Newark"
+            case .camden:
+                return "Camden"
+            case .onlineCamden:
+                return "Online Camden"
+            }
+        }
+    }
+
+    static let allValues: [Campus] = [
+        .newBrunswick,
+        .onlineNewBrunswick,
+        .newark,
+        .onlineNewark,
+        .camden,
+        .onlineCamden
+    ]
+}
+
+enum Level {
+    case u
+    case g
+}
+
+extension Level: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .u:
+            return "U"
+        case .g:
+            return "G"
+        }
+    }
+}
+
+extension Level {
+    static func from(string s: String) -> Level? {
+        switch s {
+        case "U":
+            return .u
+        case "G":
+            return .g
+        default:
+            return nil
+        }
+    }
+
+    var title: String {
+        get {
+            switch self {
+            case .u:
+                return "Undergraduate"
+            case .g:
+                return "Graduate"
+            }
+        }
+    }
+
+    static let allValues: [Level] = [.u, .g]
 }
 
 struct Semester {
     let year: Int
-    let term: Int
+    let term: Term
+}
+
+enum Term {
+    case winter
+    case spring
+    case summer
+    case fall
+}
+
+extension Term {
+    init?(_ term: Int) {
+        switch term {
+        case 0:
+            self = .winter
+        case 1:
+            self = .spring
+        case 7:
+            self = .summer
+        case 9:
+            self = .fall
+        default:
+            return nil
+        }
+    }
+
+    func asInt() -> Int {
+        switch self {
+        case .winter:
+            return 0
+        case .spring:
+            return 1
+        case .summer:
+            return 7
+        case .fall:
+            return 9
+        }
+    }
+}
+
+extension Semester {
+    var previous: Semester {
+        switch self.term {
+        case .winter:
+            return Semester(year: self.year - 1, term: .fall)
+        case .spring:
+            return Semester(year: self.year, term: .winter)
+        case .summer:
+            return Semester(year: self.year, term: .spring)
+        case .fall:
+            return Semester(year: self.year, term: .summer)
+        }
+    }
 }
 
 struct Course {
     let title: String
     let subject: String
     let courseNumber: String
-    let courseDescription: String
-    let preReqNotes: String
-    let synopsisUrl: String
-    let credits: Float
+    let courseDescription: String?
+    let preReqNotes: String?
+    let synopsisUrl: String?
+    let credits: Float?
     let sections: [Section]
-    let level: String
+    let level: Level
 }
 
 struct Section {
-    let subtopic: String
-    let subtitle: String
+    let subtopic: String?
+    let subtitle: String?
     let index: String
     let number: String
     let examCode: String
     let printed: String
     let openStatus: Bool
-    let sectionNotes: String
-    let sessionDates: String
-    let sessionDatePrintIndicator: String
+    let sectionNotes: String?
+    let sessionDates: String?
+    let sessionDatePrintIndicator: String?
     let campusCode: String
     let instructors: [Instructor]
     let meetingTimes: [MeetingTime]
@@ -96,14 +218,14 @@ struct Instructor {
 }
 
 struct MeetingTime {
-    let meetingDay: String
+    let meetingDay: String?
     let meetingModeDesc: String
-    let startTime: String
-    let endTime: String
-    let pmCode: String
-    let campusAbbrev: String
-    let buildingCode: String
-    let roomNumber: String
+    let startTime: String?
+    let endTime: String?
+    let pmCode: String?
+    let campusAbbrev: String?
+    let buildingCode: String?
+    let roomNumber: String?
 }
 
 struct Init {
@@ -113,14 +235,24 @@ struct Init {
 
 struct TermDate {
     let date: String
-    let year: String
+    let year: Int
     let campus: String
-    let term: String
+    let term: Int
+}
+
+extension TermDate {
+    func asSemester() -> Semester {
+        return Semester(year: self.year, term: Term(self.term)!)
+    }
 }
 
 struct Subject {
-    let description: String
+    let subjectDescription: String
     let code: String
+}
+
+enum SOCParseError: Error {
+    case invalidValueFormat(message: String)
 }
 
 extension Course: Unboxable {
@@ -128,28 +260,34 @@ extension Course: Unboxable {
         self.title = try unboxer.unbox(key: "title")
         self.subject = try unboxer.unbox(key: "subject")
         self.courseNumber = try unboxer.unbox(key: "courseNumber")
-        self.courseDescription = try unboxer.unbox(key: "courseDescription")
-        self.preReqNotes = try unboxer.unbox(key: "preReqNotes")
-        self.synopsisUrl = try unboxer.unbox(key: "synopsisUrl")
-        self.credits = try unboxer.unbox(key: "credits")
+        self.courseDescription = try? unboxer.unbox(key: "courseDescription")
+        self.preReqNotes = try? unboxer.unbox(key: "preReqNotes")
+        self.synopsisUrl = try? unboxer.unbox(key: "synopsisUrl")
+        self.credits = try? unboxer.unbox(key: "credits")
         self.sections = try unboxer.unbox(key: "sections")
-        self.level = try unboxer.unbox(key: "level")
+        let levelString = try unboxer.unbox(key: "level") as String
+        guard let level = Level.from(string: levelString) else {
+            throw SOCParseError.invalidValueFormat(
+                message: "Couldn't parse level: \(levelString)"
+            )
+        }
+        self.level = level
     }
 }
 
 extension Section: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.subtopic = try unboxer.unbox(key: "subtopic")
-        self.subtitle = try unboxer.unbox(key: "subtitle")
+        self.subtopic = try? unboxer.unbox(key: "subtopic")
+        self.subtitle = try? unboxer.unbox(key: "subtitle")
         self.index = try unboxer.unbox(key: "index")
         self.number = try unboxer.unbox(key: "number")
         self.examCode = try unboxer.unbox(key: "examCode")
         self.printed = try unboxer.unbox(key: "printed")
         self.openStatus = try unboxer.unbox(key: "openStatus")
-        self.sectionNotes = try unboxer.unbox(key: "sectionNotes")
-        self.sessionDates = try unboxer.unbox(key: "sessionDates")
+        self.sectionNotes = try? unboxer.unbox(key: "sectionNotes")
+        self.sessionDates = try? unboxer.unbox(key: "sessionDates")
         self.sessionDatePrintIndicator =
-            try unboxer.unbox(key: "sessionDatePrintIndicator")
+            try? unboxer.unbox(key: "sessionDatePrintIndicator")
         self.campusCode = try unboxer.unbox(key: "campusCode")
         self.instructors = try unboxer.unbox(key: "instructors")
         self.meetingTimes = try unboxer.unbox(key: "meetingTimes")
@@ -164,14 +302,14 @@ extension Instructor: Unboxable {
 
 extension MeetingTime: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.meetingDay = try unboxer.unbox(key: "meetingDay")
+        self.meetingDay = try? unboxer.unbox(key: "meetingDay")
         self.meetingModeDesc = try unboxer.unbox(key: "meetingModeDesc")
-        self.startTime = try unboxer.unbox(key: "startTime")
-        self.endTime = try unboxer.unbox(key: "endTime")
-        self.pmCode = try unboxer.unbox(key: "pmCode")
-        self.campusAbbrev = try unboxer.unbox(key: "campusAbbrev")
-        self.buildingCode = try unboxer.unbox(key: "buildingCode")
-        self.roomNumber = try unboxer.unbox(key: "roomNumber")
+        self.startTime = try? unboxer.unbox(key: "startTime")
+        self.endTime = try? unboxer.unbox(key: "endTime")
+        self.pmCode = try? unboxer.unbox(key: "pmCode")
+        self.campusAbbrev = try? unboxer.unbox(key: "campusAbbrev")
+        self.buildingCode = try? unboxer.unbox(key: "buildingCode")
+        self.roomNumber = try? unboxer.unbox(key: "roomNumber")
     }
 }
 
@@ -193,7 +331,7 @@ extension TermDate: Unboxable {
 
 extension Subject: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.description = try unboxer.unbox(key: "description")
+        self.subjectDescription = try unboxer.unbox(key: "description")
         self.code = try unboxer.unbox(key: "code")
     }
 }

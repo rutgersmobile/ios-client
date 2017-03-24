@@ -19,4 +19,5 @@ target 'Rutgers' do
     pod 'RxDataSources', '~> 1.0'
     pod 'RxSegue'
     pod 'Firebase/Core'
+    pod 'JSONKit'
 end

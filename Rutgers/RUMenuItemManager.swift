@@ -35,19 +35,6 @@ struct VisibleObject {
     }
 }
 
-extension Array {
-    // Create a new array for elements where f is not nil
-    func filterMap<T>(f: (Element) -> T?) -> [T] {
-        return self.reduce([]) { (result, x) in
-            if let y = f(x) {
-                return result + [y]
-            } else {
-                return result
-            }
-        }
-    }
-}
-
 open class RUFavorite: NSObject
 {
     open let title: String
