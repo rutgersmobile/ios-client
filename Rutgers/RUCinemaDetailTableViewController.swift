@@ -65,24 +65,24 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         
         TmdbAPI.sharedInstance.getTmdbCredits(movieId: self.tmdbData.id!)
-            .map { [weak self] (tmdbCredits) in
+            .map { [unowned self] (tmdbCredits) in
                 var tableViewSections: [MultipleSectionModel] = [.VideoSection(
-                        title: self?.tmdbData.title ?? "",
+                        title: self.tmdbData.title ?? "",
                         items: [
                             .VideoContentItem(
                                 title: "Video",
-                                key: self?.tmdbData.videos!.videoResult[0].key ?? ""
+                                key: self.tmdbData.videos!.videoResult[0].key 
                             ),
                             .VideoRatingsItem(
-                                title: String(self?.tmdbData.voteAverage ?? 0.0)
+                                title: String(self.tmdbData.voteAverage ?? 0.0)
                             )
                         ]
                     )]
                 
-                if self?.movie.showings.count != 0 {
+                if self.movie.showings.count != 0 {
                     let showTimesSection: [MultipleSectionModel] = [.ShowtimesSection(
                         title: "Showtimes",
-                        items: [.ShowtimesItem(showTimes: self?.movie.showings ?? [])]
+                        items: [.ShowtimesItem(showTimes: self.movie.showings)]
                     )]
                     
                     tableViewSections.append(contentsOf: showTimesSection)
@@ -92,7 +92,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         title: "Info",
                         items: [
                             .InfoDescriptionItem(
-                                description: self?.tmdbData.overview ?? ""
+                                description: self.tmdbData.overview ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Director:",
@@ -106,7 +106,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         items: [
                             .GeneralPurposeItem(
                                 title: "Status:",
-                                data: self?.tmdbData.status ?? ""
+                                data: self.tmdbData.status ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Original Language:",
@@ -114,18 +114,18 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                             ),
                             .GeneralPurposeItem(
                                 title: "Runtime:",
-                                data: self?.getFormattedRuntime(
-                                runtime: self?.tmdbData.runtime ?? 0) ?? ""
+                                data: self.getFormattedRuntime(
+                                runtime: self.tmdbData.runtime ?? 0) 
                             ),
                             .GeneralPurposeItem(
                                 title: "Budget:",
-                                data: self?.getFormattedBudget(
-                                budget: self?.tmdbData.budget ?? 0) ?? ""
+                                data: self.getFormattedBudget(
+                                budget: self.tmdbData.budget ?? 0) 
                             ),
                             .GeneralPurposeItem(
                                 title: "Release Date:",
-                                data: self?.getFormattedReleaseInfo(
-                                date: self?.tmdbData.releaseDate ?? "") ?? "")
+                                data: self.getFormattedReleaseInfo(
+                                date: self.tmdbData.releaseDate ?? "") )
                         ]
                     )
                 ]
@@ -241,7 +241,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     fileprivate func skinTableViewDataSource(_
         dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
         ) {
-        dataSource.configureCell = {[weak self] (
+        dataSource.configureCell = {[unowned self] (
             dataSource: TableViewSectionedDataSource<MultipleSectionModel>,
             table: UITableView,
             idxPath: IndexPath,
@@ -258,7 +258,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                
                 cell.playerView.load(withVideoId: key)
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.skinTableViewCells(cell: cell)
             case let .VideoRatingsItem(title):
                 
                 let cell: VideoRatingsCell =
@@ -282,7 +282,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.titleLabel.text = title
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.skinTableViewCells(cell: cell)
                 
             case let .ShowtimesItem(showtimes):
                 
@@ -320,6 +320,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.addSubview(showtimesCollectionView)
                 
+                
+                
                 cell.showtime1.text = "8--pm"
                 cell.showtime2.text = "8--pm"
                 cell.showtime3.text = "8--pm"
@@ -339,12 +341,12 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         cell.showtime4.text = timesArray.get(3) ?? ""
                         
                     }.element
-                }.addDisposableTo((self?.disposeBag)!)
+                }.addDisposableTo(self.disposeBag)
                 
                 
            
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.skinTableViewCells(cell: cell)
                 
             case let .InfoDescriptionItem(description):
                 
@@ -355,7 +357,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.descriptionText.text = description
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.skinTableViewCells(cell: cell)
                 
             case let .InfoCastItem(cast):
                 
@@ -364,9 +366,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "infoCast",
                         for: idxPath) as! InfoCastCell
                 
-                self?.populateCastScrollView(cell: cell, castArray: cast)
+                self.populateCastScrollView(cell: cell, castArray: cast)
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.skinTableViewCells(cell: cell)
                 
             case let .GeneralPurposeItem(title, data):
                 let cell: GeneralPurposeCell =
@@ -377,7 +379,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 cell.titleLabel.text = title
                 cell.dataLabel.text = data
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.skinTableViewCells(cell: cell)
             }
             
             
@@ -405,12 +407,14 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         var xPosition: CGFloat = 0
         var scrollViewContentSize: CGFloat = 0
         
+        /*  Break this up so that only an array of cast images is returned
+         rather than doing an api request for every single actor*/
         for index in 0..<castArray.count {
             if castArray[index].profilePath != nil {
                 TmdbAPI.sharedInstance
                     .getCastProfilePicture(castData: castArray[index])
                     .observeOn(MainScheduler.instance)
-                    .subscribe(onNext: { image in
+                    .subscribe(onNext: {[unowned self] image in
                         
                         
                         //Adds the cast member's name underneath their photo
@@ -472,6 +476,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 break
             }
         }
+
     }
     
     /*
@@ -532,30 +537,55 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
                 var height = CGFloat(30.0)
         
-        switch indexPath.section {
-        case 0: //VideoSection
-            switch indexPath.row {
-            case 0: //VideoCell
-                height = 200
-            case 1: //RatingsCell
-                height = 45
-            default:
-                height = 30
-            }
-        case 1:
-            height = 120
-        case 2: //InfoSection
-            switch indexPath.row {
-            case 0: //DescriptionCell
+        switch tableView.numberOfSections {
+        case 4:
+            switch indexPath.section {
+            case 0: //VideoSection
+                switch indexPath.row {
+                case 0: //VideoCell
+                    height = 200
+                case 1: //RatingsCell
+                    height = 45
+                default:
+                    height = 30
+                }
+            case 1:
                 height = 120
-            case 2: //CastCell
-                height = 120
+            case 2: //InfoSection
+                switch indexPath.row {
+                case 0: //DescriptionCell
+                    height = 120
+                case 2: //CastCell
+                    height = 120
+                default:
+                    height = 30
+                }
             default:
                 height = 30
             }
         default:
-            height = 30
-            
+            switch indexPath.section {
+            case 0:
+                switch indexPath.row {
+                case 0: //VideoCell
+                    height = 200
+                case 1: //RatingsCell
+                    height = 45
+                default:
+                    height = 30
+                }
+            case 1:
+                switch indexPath.row {
+                case 0: //DescriptionCell
+                    height = 120
+                case 2: //CastCell
+                    height = 120
+                default:
+                    height = 30
+                }
+            default:
+                height = 30
+            }
         }
         
         return height

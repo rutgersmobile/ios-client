@@ -176,7 +176,7 @@ final class RUCinemaCollectionViewController:
     
     fileprivate func skinCollectionViewDataSource(
         dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>) {
-        dataSource.configureCell = {[weak self] (
+        dataSource.configureCell = {[unowned self] (
              dataSource: CollectionViewSectionedDataSource<CinemaSection>,
              collectionView: UICollectionView,
              idxPath: IndexPath,
@@ -188,10 +188,10 @@ final class RUCinemaCollectionViewController:
             
             let cell: RUCinemaCollectionViewCell =
                 collectionView.dequeueReusableCell(
-                    withReuseIdentifier: (self?.CellId)!,
+                    withReuseIdentifier: (self.CellId),
                     for: idxPath) as! RUCinemaCollectionViewCell
             
-            self?.getPosterImage(data: tmdbMovie, completion: { image in
+            self.getPosterImage(data: tmdbMovie, completion: { image in
                 cell.posterImage.image = image
             })
             
