@@ -85,7 +85,7 @@ class RUFoodMainViewController
             return cell
         }
 
-        dataSource.titleForHeaderInSection = {(ds, ip) in
+        dataSource.titleForHeaderInSection = { (ds, ip) in
             ds.sectionModels[ip].header
         }
 

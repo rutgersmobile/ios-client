@@ -66,23 +66,20 @@ extension  RUReaderDataSource : UICollectionViewDelegate
         DispatchQueue.global(qos: .background).async {
             var image : UIImage?
 
-            
-            if( item.imagePresent)
+            if let cachedImage = cache.getImage(
+                named: item.imageURL.absoluteString
+            ) {
+                image = cachedImage
+            } else if
+                let imageData = NSData(contentsOf: item.imageURL),
+                let validImage = UIImage(data: imageData as Data)
             {
-                if let cachedImage = cache.getImage(named: item.imageURL.absoluteString)
-                {
-                    image = cachedImage
-                }
-                else
-                {
-                    let imageData : NSData? = NSData(contentsOf: item.imageURL)
-                    image = UIImage(data: imageData! as Data)
-                    cache.setImage(named: item.imageURL.absoluteString, image: image!)
-                }
-               
-            }
-            else
-            {
+                image = validImage
+                cache.setImage(
+                    named: item.imageURL.absoluteString,
+                    image: validImage
+                )
+            } else {
                 image = UIImage(named: "default_athletics_score_img")
             }
            

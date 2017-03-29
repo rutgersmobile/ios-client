@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxSegue
 
 class RUSOCViewController
     : UITableViewController
@@ -21,6 +22,8 @@ class RUSOCViewController
     let activityIndicator = UIActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 40, height: 40)
     )
+
+    var courses: [Course] = []
 
     static func channelHandle() -> String! {
         return "soc"
@@ -82,16 +85,6 @@ class RUSOCViewController
             frame: CGRect(x: 0, y: 0, width: 30, height: 30)
         )
         settingsViewButton.setBackgroundImage(#imageLiteral(resourceName: "gear"), for: .normal)
-        settingsViewButton.rx.tap.flatMap
-        { [unowned self] () -> Observable<SOCOptions> in
-            let (vc, options) = self.socOptions(semesters: [])
-            self.navigationController?.pushViewController(vc, animated: true)
-            return options
-        }
-        .subscribe(onNext: { (options: SOCOptions) in
-            print(options)
-        })
-        .addDisposableTo(disposeBag)
 
         let settingsButtonItem = UIBarButtonItem(customView: settingsViewButton)
         self.navigationItem
@@ -109,18 +102,45 @@ class RUSOCViewController
             .addDisposableTo(disposeBag)
 
         SOCAPI.instance.getInit()
-            .flatMap { socInit in
-                SOCAPI.instance.getCourses(
-                    semester: socInit.currentTermDate.asSemester(),
-                    campus: .newBrunswick,
-                    level: .u
-                ).map { courses in
-                    SOCAPI.getSubjects(for: courses, from: socInit.subjects)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .flatMap { (socInit: Init) -> Observable<[Subject]> in
+                let currentSemester = socInit.currentTermDate.asSemester()
+                let socOptionsSelected = settingsViewButton.rx.tap.flatMap
+                    { [unowned self] () -> Observable<SOCOptions> in
+                        let (vc, options) = self.socOptions(
+                            semesters: currentSemester.previousSemesters(
+                                number: 9
+                            )
+                        )
+                        self.navigationController?
+                            .pushViewController(vc, animated: true)
+                        return options
+                    }
+
+                let socOptions = Observable.of(
+                    Observable.of(RUSOCOptionsViewController.defaultOptions(
+                        semester: currentSemester
+                    )),
+                    socOptionsSelected
+                ).merge()
+
+                return socOptions.flatMap { options in
+                    SOCAPI.instance.getCourses(
+                        semester: options.semester,
+                        campus: options.campus,
+                        level: options.level
+                    ).map { courses in
+                        self.courses = courses
+                        return SOCAPI.getSubjects(
+                            for: courses,
+                            from: socInit.subjects
+                        )
+                    }
                 }
             }
 
-            .flatMap { [weak self] subjects in
-                self!.searchController.searchBar.rx.text.orEmpty
+            .flatMap { [unowned self] subjects in
+                self.searchController.searchBar.rx.text.orEmpty
                     .throttle(0.3, scheduler: MainScheduler.instance)
                     .distinctUntilChanged()
                     .map { search in
@@ -141,6 +161,17 @@ class RUSOCViewController
             { idx, model, cell in
                 cell.textLabel?.text = model.subjectDescription
             }
+            .addDisposableTo(disposeBag)
+
+        self.tableView.rx.modelSelected(Subject.self)
+            .subscribe(onNext: { subject in
+                let vc = RUSOCSubjectViewController.instantiate(
+                    withStoryboard: self.storyboard!,
+                    subject: subject,
+                    courses: self.courses.filter { $0.subject == subject.code }
+                )
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
             .addDisposableTo(disposeBag)
     }
 }

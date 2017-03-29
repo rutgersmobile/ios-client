@@ -12,12 +12,10 @@ target 'Rutgers' do
     pod 'MSWeakTimer', "~> 1.0"
     pod 'MMDrawerController', "~> 0.5"
     pod 'Moya', '8.0.1'
-    pod 'Moya/RxSwift'
     pod 'Unbox'
     pod 'RxSwift', '~> 3.0'
     pod 'RxCocoa', '~> 3.0'
     pod 'RxDataSources', '~> 1.0'
     pod 'RxSegue'
     pod 'Firebase/Core'
-    pod 'JSONKit'
 end

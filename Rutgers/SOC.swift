@@ -133,6 +133,54 @@ struct Semester {
     let term: Term
 }
 
+extension Semester {
+    func toDict() -> [String: Any] {
+        return [
+            "year": self.year,
+            "term": self.term.asInt()
+        ]
+    }
+
+    var previous: Semester {
+        switch self.term {
+        case .winter:
+            return Semester(year: self.year - 1, term: .fall)
+        case .spring:
+            return Semester(year: self.year, term: .winter)
+        case .summer:
+            return Semester(year: self.year, term: .spring)
+        case .fall:
+            return Semester(year: self.year, term: .summer)
+        }
+    }
+
+    func previousSemesters(number: Int) -> [Semester] {
+        var semester = self
+        var semesters: [Semester] = []
+        for _ in 0..<number {
+            semesters.append(semester)
+            semester = semester.previous
+        }
+        return semesters
+    }
+
+    static func fromDict(dict: [String: Any]) -> Semester? {
+        return (dict["year"] as? Int).flatMap { year in
+            (dict["term"] as? Int).flatMap { intTerm in
+                Term(intTerm).map { term in
+                    Semester(year: year, term: term)
+                }
+            }
+        }
+    }
+}
+
+extension Semester: CustomStringConvertible {
+    var description: String {
+        return "\(self.term) \(self.year)"
+    }
+}
+
 enum Term {
     case winter
     case spring
@@ -166,21 +214,6 @@ extension Term {
             return 7
         case .fall:
             return 9
-        }
-    }
-}
-
-extension Semester {
-    var previous: Semester {
-        switch self.term {
-        case .winter:
-            return Semester(year: self.year - 1, term: .fall)
-        case .spring:
-            return Semester(year: self.year, term: .winter)
-        case .summer:
-            return Semester(year: self.year, term: .spring)
-        case .fall:
-            return Semester(year: self.year, term: .summer)
         }
     }
 }
