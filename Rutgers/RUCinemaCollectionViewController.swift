@@ -90,7 +90,9 @@ final class RUCinemaCollectionViewController:
          */
         let dataSource =
             RxCollectionViewSectionedReloadDataSource<CinemaSection>()
-       
+        
+        dataSource.canMoveItemAtIndexPath = {(ds, idx) in false}
+    
         /*
          Does all the heavy lifting specifying how and what the cells will
          display
@@ -119,15 +121,19 @@ final class RUCinemaCollectionViewController:
                  CinemaSection struct is at the end of the file for more info
                 */
                 CinemaSection(
-                    items: [CVCinemaSectionItem(
-                        movieItem: movie,
-                        tmdbItem: tmdbMovie
-                    )]
+                    items: [
+                        CVCinemaSectionItem(
+                            movieItem: movie,
+                            tmdbItem: tmdbMovie
+                        )
+                    ]
                 )
             }
             .toArray()
             .asDriver(onErrorJustReturn: [])
-            .drive(self.collectionView!.rx.items(dataSource: dataSource))
+            .drive(
+                self.collectionView!.rx.items(dataSource: dataSource)
+            )
             .addDisposableTo(disposeBag)
 
         /*
@@ -136,14 +142,25 @@ final class RUCinemaCollectionViewController:
         */
 
         self.collectionView?.rx.modelSelected(CVCinemaSectionItem.self)
-            .subscribe(onNext: { [unowned self] model in
+            .subscribe(
+                onNext: {[unowned self] model in
 
-                let vc = RUCinemaDetailTableViewController.init(movie: model.movieItem, data: model.tmdbItem)
+                let vc =
+                    RUCinemaDetailTableViewController.init(
+                        movie: model.movieItem,
+                        data: model.tmdbItem
+                    )
 
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(
+                    vc,
+                    animated: true
+                )
+                    
+               
                 
-            })
-            .addDisposableTo(disposeBag)
+            }
+        )
+        .addDisposableTo(disposeBag)
         
         
     }
@@ -175,12 +192,14 @@ final class RUCinemaCollectionViewController:
     */
     
     fileprivate func skinCollectionViewDataSource(
-        dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>) {
-        dataSource.configureCell = {[unowned self] (
-             dataSource: CollectionViewSectionedDataSource<CinemaSection>,
-             collectionView: UICollectionView,
-             idxPath: IndexPath,
-             item: CVCinemaSectionItem
+        dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>
+        ) {
+        dataSource.configureCell = {
+        [unowned self] (
+            dataSource: CollectionViewSectionedDataSource<CinemaSection>,
+            collectionView: UICollectionView,
+            idxPath: IndexPath,
+            item: CVCinemaSectionItem
         ) in
             let model = dataSource[idxPath]
             let movie = model.movieItem
@@ -191,12 +210,20 @@ final class RUCinemaCollectionViewController:
                     withReuseIdentifier: (self.CellId),
                     for: idxPath) as! RUCinemaCollectionViewCell
             
-            self.getPosterImage(data: tmdbMovie, completion: { image in
-                cell.posterImage.image = image
-            })
+            self.getPosterImage(
+                data: tmdbMovie,
+                completion: {
+                    image in
+                    cell.posterImage.image = image
+                }
+            )
             
-            let genreString = tmdbMovie.genres.map { genres in
-                genres.map { $0.name }.joined(separator: ", ")
+            let genreString = tmdbMovie.genres.map {
+                genres in
+                genres.map {
+                    $0.name
+                }
+                .joined(separator: ", ")
             } ?? ""
 
             let formattedShowings = movie.formattedShowings()
@@ -222,14 +249,6 @@ final class RUCinemaCollectionViewController:
             return cell
         }
     }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width, height: 0)
-    }
 
     func configureCollectionView(_ collectionView: UICollectionView) {
         let layout = UICollectionViewFlowLayout()
@@ -238,13 +257,38 @@ final class RUCinemaCollectionViewController:
             height: 150
         )
         self.collectionView?.setCollectionViewLayout(layout, animated: true)
-        self.collectionView?.backgroundColor =
-            UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+        self.collectionView?.backgroundColor = UIColor(
+                                                    red:0.33,
+                                                    green:0.32,
+                                                    blue:0.33,
+                                                    alpha:1.0
+                                                )
         
         collectionView.register(
-            UINib(nibName: "RUCinemaCollectionViewCell", bundle: nil),
+            UINib(
+                nibName: "RUCinemaCollectionViewCell",
+                bundle: nil
+            ),
             forCellWithReuseIdentifier: CellId
         )
+    }
+}
+
+extension RUCinemaCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+        ) -> CGSize {
+            return CGSize(width: 0, height: 0)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+        ) -> CGSize {
+            return CGSize(width: 0, height:0)
     }
 }
 

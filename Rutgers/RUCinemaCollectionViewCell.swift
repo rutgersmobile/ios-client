@@ -28,7 +28,12 @@ class RUCinemaCollectionViewCell: UICollectionViewCell {
         self.time2.textColor = .white
         self.time3.textColor = .white
        
-        self.backgroundColor = UIColor(red:0.23, green:0.23, blue:0.24, alpha:1.0)
+        self.backgroundColor = UIColor(
+                                    red:0.23,
+                                    green:0.23,
+                                    blue:0.24,
+                                    alpha:1.0
+                                )
         
         selectedBackgroundView = UIView()
         selectedBackgroundView?.backgroundColor = .lightGray

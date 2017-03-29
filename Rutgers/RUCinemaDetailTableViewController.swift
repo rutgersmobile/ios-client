@@ -47,6 +47,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         
         /*
          Sets the tableView datasource to nil, otherwise when you try to set
          the dataSource with the Rx version the compiler will get confused and
@@ -66,29 +67,38 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         TmdbAPI.sharedInstance.getTmdbCredits(movieId: self.tmdbData.id!)
             .map { [unowned self] (tmdbCredits) in
-                var tableViewSections: [MultipleSectionModel] = [.VideoSection(
+                var tableViewSections: [MultipleSectionModel] = [
+                    .VideoSection(
                         title: self.tmdbData.title ?? "",
                         items: [
                             .VideoContentItem(
                                 title: "Video",
-                                key: self.tmdbData.videos!.videoResult[0].key 
+                                key: self.tmdbData.videos!.videoResult[0].key
                             ),
                             .VideoRatingsItem(
-                                title: String(self.tmdbData.voteAverage ?? 0.0)
+                                title:
+                                String(self.tmdbData.voteAverage ?? 0.0)
                             )
                         ]
-                    )]
+                    )
+                ]
                 
                 if self.movie.showings.count != 0 {
-                    let showTimesSection: [MultipleSectionModel] = [.ShowtimesSection(
-                        title: "Showtimes",
-                        items: [.ShowtimesItem(showTimes: self.movie.showings)]
-                    )]
-                    
+                    let showTimesSection: [MultipleSectionModel] = [
+                        .ShowtimesSection(
+                            title: "Showtimes",
+                            items: [
+                                .ShowtimesItem(
+                                    showTimes: self.movie.showings
+                                )
+                            ]
+                        )
+                    ]
                     tableViewSections.append(contentsOf: showTimesSection)
                 }
 
-                let generalSection: [MultipleSectionModel] = [.InfoSection(
+                let generalSection: [MultipleSectionModel] = [
+                    .InfoSection(
                         title: "Info",
                         items: [
                             .InfoDescriptionItem(
@@ -133,7 +143,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 tableViewSections.append(contentsOf: generalSection)
                 
                 return tableViewSections
-                
             }
             .do(onError: {error in print(error)})
             .asDriver(onErrorJustReturn: [])
@@ -229,7 +238,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         return cell as! T
     }
     
-    
     /*
      This method configures the dataSource based off what enum cell value you
      put under the enum secion identifier when you map the TMDB data to the
@@ -286,7 +294,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
             case let .ShowtimesItem(showtimes):
                 
-                let cell = table.dequeueReusableCell(withIdentifier: "showtimes", for: idxPath) as! ShowtimesCell
+                let cell = table.dequeueReusableCell(withIdentifier: "showtimes",
+                                                     for: idxPath
+                                                     ) as! ShowtimesCell
                 
                 let calendar = Calendar.current
                 
@@ -294,7 +304,12 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     
                     dateFormatter.timeStyle = .short
                 
-                let formattedArray = showtimes.map{calendar.component(.day, from: $0.dateTime)}
+                let formattedArray = showtimes.map{
+                                        calendar.component(
+                                            .day,
+                                            from: $0.dateTime
+                                        )
+                                    }
                 
                 var noDuplicates : [Int] = []
                 
@@ -319,8 +334,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes)
                 
                 cell.addSubview(showtimesCollectionView)
-                
-                
                 
                 cell.showtime1.text = "8--pm"
                 cell.showtime2.text = "8--pm"
@@ -366,7 +379,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "infoCast",
                         for: idxPath) as! InfoCastCell
                 
-                self.populateCastScrollView(cell: cell, castArray: cast)
+                let filteredCast = cast.filter{$0.profilePath != nil}
+                
+                self.populateCastScrollView(cell: cell, castArray: filteredCast)
                 
                 return self.skinTableViewCells(cell: cell)
                 
@@ -386,7 +401,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             
         }
         
-        dataSource.titleForHeaderInSection = { dataSource, index in
+        dataSource.titleForHeaderInSection = {dataSource, index in
             dataSource[index].title
         }
     }
@@ -401,82 +416,158 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      done here programatically.
      */
     
+    func getCastPhoto(castMember: Cast) -> UIImageView {
+        let castImageView: UIImageView = UIImageView()
+        
+        TmdbAPI.sharedInstance.getCastProfilePicture(castData: castMember).observeOn(MainScheduler.instance)
+            .subscribe(onNext: {image in
+                //Initializes ImageView for UIImage
+                
+                
+                //Optional chaining in case image is nil for some reason
+                if let newImage = image {
+                    castImageView.image = newImage
+                    castImageView.contentMode =
+                        UIViewContentMode.scaleAspectFill
+                }
+            }).addDisposableTo(self.disposeBag)
+        
+        return castImageView
+    }
+    
     func populateCastScrollView(cell: InfoCastCell, castArray: [Cast]) {
+        
         let imageWidth: CGFloat = 50
         let imageHeight: CGFloat = 50
         var xPosition: CGFloat = 0
         var scrollViewContentSize: CGFloat = 0
-        
-        /*  Break this up so that only an array of cast images is returned
-         rather than doing an api request for every single actor*/
-        for index in 0..<castArray.count {
-            if castArray[index].profilePath != nil {
-                TmdbAPI.sharedInstance
-                    .getCastProfilePicture(castData: castArray[index])
-                    .observeOn(MainScheduler.instance)
-                    .subscribe(onNext: {[unowned self] image in
-                        
-                        
-                        //Adds the cast member's name underneath their photo
-                        cell.scrollView.addSubview(
-                            self.createCastLabel(name: castArray[index].name,
-                                            x: xPosition,
-                                            imageHeight: imageHeight,
-                                            imageWidth: imageWidth
-                            )
-                        )
-                        
-                        //Initializes ImageView for UIImage
-                        let castImageView: UIImageView = UIImageView()
-                        
-                        //Optional chaining in case image is nil for some reason
-                        if let newImage = image {
-                            castImageView.image = newImage
-                            castImageView.contentMode =
-                                UIViewContentMode.scaleAspectFill
-                        }
-                        
-                        //Sets the frame of the imageView's width and height
-                        castImageView.frame.size.width = imageWidth
-                        castImageView.frame.size.height = imageHeight
-                        
-                        //This makes the circle effect for the photos, only 
-                        //works on square photos
-                        castImageView.layer.cornerRadius =
-                            castImageView.frame.size.width/2
-                        castImageView.clipsToBounds = true
-                        
-                        //Sets the x origin for photo
-                        castImageView.frame.origin.x = xPosition
-                        castImageView.frame.origin.y = 0
-                        
-                        //Adds the castPhoto to the scrollView
-                        cell.scrollView.addSubview(castImageView)
-                        
-                        /*In order for the scrollView to display the pictures
-                        properly, the x position needs to be set after every
-                        iteration - otherwise all the photos and labels
-                         will just stack on top of one another.  Furthermore,
-                         the scrollView needs to be adjusted every time we add
-                         a new photo.  We add 20 in both cases to add spacing
-                         between photos
-                        */
-                        
-                        let iterativeSize = imageWidth + 20
-                        xPosition += iterativeSize
-                        scrollViewContentSize += iterativeSize
-                        
-                        //Sets the new contentSize for the scrollView
-                        cell.scrollView.contentSize =
-                            CGSize(width: scrollViewContentSize,
-                                   height: imageHeight)
-                        
-                    }).addDisposableTo(self.disposeBag)
-            } else {
-                break
+ 
+ 
+        let castPhotoAndNamesDict =
+            castArray
+                .map{$0}
+                .reduce([String : UIImageView]()) {[weak self] in
+                    var finalDict:[String : UIImageView] = $0
+            
+                    finalDict[$1.name] = self?.getCastPhoto(castMember: $1)
+            
+                    return finalDict
             }
-        }
+            
+        
+        for index in 0..<castPhotoAndNamesDict.count {
+            cell.scrollView.addSubview(
+                self.createCastLabel(
+                    name: castArray[index].name,
+                    x: xPosition,
+                    imageHeight: imageHeight,
+                    imageWidth: imageWidth
+                )
+            )
 
+            let castImageView: UIImageView = castPhotoAndNamesDict[castArray[index].name]!
+            
+            //Sets the frame of the imageView's width and height
+            castImageView.frame.size.width = imageWidth
+            castImageView.frame.size.height = imageHeight
+            
+            //This makes the circle effect for the photos, only
+            //works on square photos
+            castImageView.layer.cornerRadius =
+            castImageView.frame.size.width/2
+            
+            castImageView.clipsToBounds = true
+            
+            //Sets the x origin for photo
+            castImageView.frame.origin.x = xPosition
+            castImageView.frame.origin.y = 0
+                                    
+            //Adds the castPhoto to the scrollView
+            cell.scrollView.addSubview(castImageView)
+            
+            let iterativeSize = imageWidth + 20
+                xPosition += iterativeSize
+                scrollViewContentSize += iterativeSize
+            
+            //Sets the new contentSize for the scrollView
+                cell.scrollView.contentSize =
+                    CGSize(width: scrollViewContentSize,
+                           height: imageHeight)
+        
+        
+        }
+        
+        
+        
+        print(castPhotoAndNamesDict)
+            
+        // Have to do every single actor
+//        for index in 0..<castArray.count {
+//            TmdbAPI.sharedInstance
+//                .getCastProfilePicture(castData: castArray[index])
+//                .observeOn(MainScheduler.instance)
+//                .subscribe(onNext: {[weak self, weak cell] image in
+//                    
+//                //Adds the cast member's name underneath their photo
+//                cell?.scrollView.addSubview(
+//                    self?.createCastLabel(
+//                        name: castArray[index].name,
+//                        x: xPosition,
+//                        imageHeight: imageHeight,
+//                        imageWidth: imageWidth
+//                        ) ?? UILabel()
+//                )
+//                        
+//                //Initializes ImageView for UIImage
+//                let castImageView: UIImageView = UIImageView()
+//                        
+//                //Optional chaining in case image is nil for some reason
+//                if let newImage = image {
+//                    castImageView.image = newImage
+//                    castImageView.contentMode =
+//                        UIViewContentMode.scaleAspectFill
+//                }
+//                        
+//                //Sets the frame of the imageView's width and height
+//                castImageView.frame.size.width = imageWidth
+//                castImageView.frame.size.height = imageHeight
+//                        
+//                //This makes the circle effect for the photos, only
+//                //works on square photos
+//                castImageView.layer.cornerRadius =
+//                    castImageView.frame.size.width/2
+//                
+//                castImageView.clipsToBounds = true
+//                        
+//                //Sets the x origin for photo
+//                castImageView.frame.origin.x = xPosition
+//                castImageView.frame.origin.y = 0
+//                        
+//                //Adds the castPhoto to the scrollView
+//                cell?.scrollView.addSubview(castImageView)
+//                        
+//                /*
+//                In order for the scrollView to display the pictures
+//                properly, the x position needs to be set after every
+//                iteration - otherwise all the photos and labels
+//                will just stack on top of one another.  Furthermore,
+//                the scrollView needs to be adjusted every time we add
+//                a new photo.  We add 20 in both cases to add spacing
+//                between photos
+//                */
+//                        
+//                let iterativeSize = imageWidth + 20
+//                xPosition += iterativeSize
+//                scrollViewContentSize += iterativeSize
+//                        
+//                //Sets the new contentSize for the scrollView
+//                cell?.scrollView.contentSize =
+//                    CGSize(width: scrollViewContentSize,
+//                           height: imageHeight)
+//                    
+//                }
+//            ).addDisposableTo(self.disposeBag)
+//        }
     }
     
     /*
