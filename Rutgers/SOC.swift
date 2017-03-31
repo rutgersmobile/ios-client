@@ -252,7 +252,7 @@ struct Instructor {
 
 struct MeetingTime {
     let meetingDay: String?
-    let meetingModeDesc: String
+    let meetingModeDesc: String?
     let startTime: String?
     let endTime: String?
     let pmCode: String?
@@ -336,7 +336,7 @@ extension Instructor: Unboxable {
 extension MeetingTime: Unboxable {
     init(unboxer: Unboxer) throws {
         self.meetingDay = try? unboxer.unbox(key: "meetingDay")
-        self.meetingModeDesc = try unboxer.unbox(key: "meetingModeDesc")
+        self.meetingModeDesc = try? unboxer.unbox(key: "meetingModeDesc")
         self.startTime = try? unboxer.unbox(key: "startTime")
         self.endTime = try? unboxer.unbox(key: "endTime")
         self.pmCode = try? unboxer.unbox(key: "pmCode")

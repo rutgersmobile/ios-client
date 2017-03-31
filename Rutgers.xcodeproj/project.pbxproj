@@ -258,6 +258,7 @@
 		C46B0FCD1E60BB59006AB739 /* RUDiningHallTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */; };
 		C46B0FCF1E60BEBF006AB739 /* RUDiningHallStubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */; };
 		C46B0FD11E60CBE7006AB739 /* RUMealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */; };
+		C475DB7D1E8C3EFB00F7A63D /* Schedulers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475DB7C1E8C3EFB00F7A63D /* Schedulers.swift */; };
 		C499E33C1E8AE3FF006B6978 /* RUSOCCourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */; };
 		C499E33E1E8AFBBC006B6978 /* RUSOCSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */; };
 		C49ED7761E7B092E00852023 /* SOCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7751E7B092E00852023 /* SOCService.swift */; };
@@ -746,6 +747,7 @@
 		C46B0FCC1E60BB59006AB739 /* RUDiningHallTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUDiningHallTabBarController.swift; sourceTree = "<group>"; };
 		C46B0FCE1E60BEBF006AB739 /* RUDiningHallStubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUDiningHallStubViewController.swift; sourceTree = "<group>"; };
 		C46B0FD01E60CBE7006AB739 /* RUMealViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUMealViewController.swift; sourceTree = "<group>"; };
+		C475DB7C1E8C3EFB00F7A63D /* Schedulers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedulers.swift; sourceTree = "<group>"; };
 		C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCCourseViewController.swift; sourceTree = "<group>"; };
 		C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCSectionCell.swift; sourceTree = "<group>"; };
 		C49ED7751E7B092E00852023 /* SOCService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCService.swift; sourceTree = "<group>"; };
@@ -1666,7 +1668,7 @@
 		C262EFB1188345D10035C8F5 /* Rutgers */ = {
 			isa = PBXGroup;
 			children = (
-				C42F4A991E844C8400C59E68 /* RxDelegates */,
+				C475DB7B1E8C3EDD00F7A63D /* Rx */,
 				C41E66181E38E96600562CCB /* api */,
 				A777C2B3190C248500F978D7 /* barr.gpx */,
 				A7DD347519816F120078023A /* arc stop.gpx */,
@@ -1735,6 +1737,15 @@
 				C42F4A9A1E844CA500C59E68 /* RxUIActionSheetDelegateProxy.swift */,
 			);
 			name = RxDelegates;
+			sourceTree = "<group>";
+		};
+		C475DB7B1E8C3EDD00F7A63D /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				C42F4A991E844C8400C59E68 /* RxDelegates */,
+				C475DB7C1E8C3EFB00F7A63D /* Schedulers.swift */,
+			);
+			name = Rx;
 			sourceTree = "<group>";
 		};
 		C4B1E15E1E3BD0CC008DC388 /* services */ = {
@@ -2129,6 +2140,7 @@
 				04A1EFF01A5C50A700DE0351 /* RUBusDataAgencyManager.m in Sources */,
 				A79B5DDA199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.m in Sources */,
 				04A1EFFC1A5C50B700DE0351 /* RUBusViewController.m in Sources */,
+				C475DB7D1E8C3EFB00F7A63D /* Schedulers.swift in Sources */,
 				A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */,
 				A7D4B64F19ABD81F0087A8BC /* RUPlaceDetailDataSource.m in Sources */,
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,

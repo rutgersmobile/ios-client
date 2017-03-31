@@ -29,4 +29,12 @@ extension Array {
 
         return false
     }
+
+    func get(_ idx: Int) -> Element? {
+        if idx >= 0 && idx < self.count {
+            return self[idx]
+        } else {
+            return nil
+        }
+    }
 }

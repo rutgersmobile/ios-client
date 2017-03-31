@@ -39,7 +39,7 @@ class SOCAPI {
     ) -> Observable<[Course]> {
         return self.provider.request(
             .getCourses(semester: semester, campus: campus)
-        ).map { response in
+        ).observeOn(Schedulers.instance.background).map { response in
             guard
                 let latin1String = String(
                     data: response.data,
@@ -68,6 +68,7 @@ class SOCAPI {
 
     public func getInit() -> Observable<Init> {
         return self.provider.request(.getInit).mapUnboxObject(type: Init.self)
+            .observeOn(Schedulers.instance.background)
             .map { socInit in Init(
                 currentTermDate: socInit.currentTermDate,
                 subjects: socInit.subjects.map { subject in Subject(

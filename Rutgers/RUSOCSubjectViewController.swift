@@ -49,7 +49,7 @@ class RUSOCSubjectViewController : UITableViewController {
                     $0.openStatus
                 }.count
                 cell.sectionsLabel.text =
-                    "\(openSectionCount)/\(model.sections.count)"
+                    "\(openSectionCount) / \(model.sections.count)"
             }
             .addDisposableTo(disposeBag)
 

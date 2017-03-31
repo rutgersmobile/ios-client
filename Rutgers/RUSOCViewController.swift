@@ -102,7 +102,7 @@ class RUSOCViewController
             .addDisposableTo(disposeBag)
 
         SOCAPI.instance.getInit()
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.asyncInstance)
             .flatMap { (socInit: Init) -> Observable<[Subject]> in
                 let currentSemester = socInit.currentTermDate.asSemester()
                 let socOptionsSelected = settingsViewButton.rx.tap.flatMap
@@ -129,7 +129,7 @@ class RUSOCViewController
                         semester: options.semester,
                         campus: options.campus,
                         level: options.level
-                    ).map { courses in
+                    ).observeOn(Schedulers.instance.background).map { courses in
                         self.courses = courses
                         return SOCAPI.getSubjects(
                             for: courses,
@@ -138,6 +138,7 @@ class RUSOCViewController
                     }
                 }
             }
+            .observeOn(MainScheduler.asyncInstance)
 
             .flatMap { [unowned self] subjects in
                 self.searchController.searchBar.rx.text.orEmpty
