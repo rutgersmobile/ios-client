@@ -20,8 +20,8 @@ struct TmdbData {
     let overview : String?
     let popularity : Double?
     let posterPath : String?
-    let productionCompanies : ProductionCompanies?
-    let productionCountries : ProductionCountries?
+    let productionCompanies : [ProductionCompanies]?
+    let productionCountries : [ProductionCountries]?
     let releaseDate : String?
     let revenue : Int?
     let runtime : Int?
@@ -30,8 +30,19 @@ struct TmdbData {
     let title : String?
     let voteAverage : Double?
     let voteCount : Int?
+    let videos : Videos?
     
     
+}
+
+struct Videos {
+    let videoResult : [VideoResults]
+}
+
+struct VideoResults {
+    let id : String
+    let key : String
+    let name : String
 }
 
 struct Genres {
@@ -71,6 +82,24 @@ extension TmdbData: Unboxable {
         self.title = try? unboxer.unbox(key: "title")
         self.voteAverage = try? unboxer.unbox(key: "vote_average")
         self.voteCount = try? unboxer.unbox(key: "vote_count")
+        self.videos = try? unboxer.unbox(key: "videos")
+    }
+    
+    
+}
+
+extension Videos: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.videoResult = try unboxer.unbox(key: "results")
+
+    }
+}
+
+extension VideoResults: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.id = try unboxer.unbox(key: "id")
+        self.key = try unboxer.unbox(key: "key")
+        self.name = try unboxer.unbox(key: "name")
     }
 }
 
@@ -94,5 +123,5 @@ extension ProductionCountries: Unboxable {
         self.name = try unboxer.unbox(key: "name")
         self.iso = try unboxer.unbox(key: "id")
     }
-
+    
 }

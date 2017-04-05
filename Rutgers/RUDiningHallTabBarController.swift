@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 import RxSwift
 
 class RUDiningHallTabBarController
@@ -37,6 +38,7 @@ class RUDiningHallTabBarController
     static func instantiate(
         fromStoryboard storyboard: UIStoryboard,
         diningHall: DiningHallRepr
+
     ) -> RUDiningHallTabBarController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUDiningHallTabBarController"
@@ -46,6 +48,7 @@ class RUDiningHallTabBarController
 
         return me
     }
+
 
     override func sharingUrl() -> URL? {
         let name = { () -> String in switch (diningHall!) {
@@ -67,6 +70,7 @@ class RUDiningHallTabBarController
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+
         setupShareButton()
 
         switch (diningHall!) {
@@ -117,3 +121,4 @@ enum DiningHallRepr {
     case fullDiningHall(DiningHall)
     case serializedDiningHall(String)
 }
+

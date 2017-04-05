@@ -284,7 +284,9 @@
         
         
         busPinButton.indexPath = indexPath;
-        [busPinButton setBackgroundImage:[self imageWithColor:[UIColor darkGrayColor]] forState:UIControlEventAllTouchEvents];
+        //[busPinButton setBackgroundImage:[self imageWithColor:[UIColor darkGrayColor]] forState:UIControlEventAllTouchEvents];
+        
+        [busPinButton setBackgroundImage:[self imageWithColor:[UIColor darkGrayColor]] forState:UIControlStateSelected];
         
         [busPinButton addTarget:self action:@selector(busPinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         

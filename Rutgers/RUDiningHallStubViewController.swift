@@ -11,7 +11,9 @@ import Foundation
 class RUDiningHallStubViewController: UIViewController {
     var hallDescription: String!
 
+
     @IBOutlet weak var label: UILabel!
+
 
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
@@ -32,6 +34,7 @@ class RUDiningHallStubViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
 
         label.text = hallDescription
     }

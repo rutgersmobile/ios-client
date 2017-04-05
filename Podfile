@@ -16,6 +16,7 @@ target 'Rutgers' do
     pod 'Unbox'
     pod 'RxSwift', '~> 3.0'
     pod 'RxCocoa', '~> 3.0'
+    pod "youtube-ios-player-helper", "~> 0.1.4"
     pod 'RxDataSources', '~> 1.0'
     pod 'RxSegue'
     pod 'Firebase/Core'
