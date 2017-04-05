@@ -148,6 +148,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             .asDriver(onErrorJustReturn: [])
             .drive((self.tableView?.rx.items(dataSource: dataSource))!)
             .addDisposableTo(disposeBag)
+    
     }
     
     /*
@@ -329,9 +330,17 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                     
                 }
                 
-                let frame: CGRect = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height/2)
+                let frame: CGRect = CGRect(x: 0,
+                                           y: 0,
+                                           width: cell.frame.width,
+                                           height: cell.frame.height/2
+                                           )
                 
-                let showtimesCollectionView = ShowtimesCollectionView.init(frame: frame, daysToDisplay: noDuplicates, showtimes: showtimes)
+                let showtimesCollectionView =
+                    ShowtimesCollectionView.init(frame: frame,
+                                                 daysToDisplay: noDuplicates,
+                                                 showtimes: showtimes
+                                                 )
                 
                 cell.addSubview(showtimesCollectionView)
                 
@@ -340,24 +349,30 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 cell.showtime3.text = "8--pm"
                 cell.showtime4.text = "8--pm"
                 
-                showtimesCollectionView.rx.itemSelected.subscribe{idxObservable in
-                    idxObservable.map{idxPath in
-                    let filteredArray = showtimes.filter{ calendar.component(.day, from: $0.dateTime) == noDuplicates[idxPath.row]}
+                showtimesCollectionView.rx.itemSelected
+                    .subscribe {
+                        idxObservable in
+                        idxObservable.map {
+                            idxPath in
+                            
+                            let filteredArray =
+                                showtimes.filter{
+                                calendar.component(.day,
+                                                   from: $0.dateTime
+                                ) == noDuplicates[idxPath.row]
+                            }
                         
-                        let timesArray = filteredArray.map{
-                            dateFormatter.string(from: $0.dateTime)
-                        }
+                            let timesArray = filteredArray.map{
+                                dateFormatter.string(from: $0.dateTime)
+                            }
                         
-                        cell.showtime1.text = timesArray.get(0) ?? ""
-                        cell.showtime2.text = timesArray.get(1) ?? ""
-                        cell.showtime3.text = timesArray.get(2) ?? ""
-                        cell.showtime4.text = timesArray.get(3) ?? ""
+                            cell.showtime1.text = timesArray.get(0) ?? ""
+                            cell.showtime2.text = timesArray.get(1) ?? ""
+                            cell.showtime3.text = timesArray.get(2) ?? ""
+                            cell.showtime4.text = timesArray.get(3) ?? ""
                         
-                    }.element
-                }.addDisposableTo(self.disposeBag)
-                
-                
-           
+                            }.element
+                    }.addDisposableTo(self.disposeBag)
                 
                 return self.skinTableViewCells(cell: cell)
                 
@@ -418,17 +433,16 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     
     func getCastPhoto(castMember: Cast) -> UIImageView {
         let castImageView: UIImageView = UIImageView()
+        castImageView.contentMode = UIViewContentMode.scaleAspectFill
         
-        TmdbAPI.sharedInstance.getCastProfilePicture(castData: castMember).observeOn(MainScheduler.instance)
+        TmdbAPI.sharedInstance.getCastProfilePicture(castData: castMember)
+            .observeOn(MainScheduler.instance)
             .subscribe(onNext: {image in
                 //Initializes ImageView for UIImage
                 
-                
-                //Optional chaining in case image is nil for some reason
-                if let newImage = image {
-                    castImageView.image = newImage
-                    castImageView.contentMode =
-                        UIViewContentMode.scaleAspectFill
+                //Optional mapping so it ignores nil values
+                image.map {unwrappedImage in
+                    castImageView.image = unwrappedImage
                 }
             }).addDisposableTo(self.disposeBag)
         
@@ -446,10 +460,10 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         let castPhotoAndNamesDict =
             castArray
                 .map{$0}
-                .reduce([String : UIImageView]()) {[weak self] in
+                .reduce([String : UIImageView]()) {[unowned self] in
                     var finalDict:[String : UIImageView] = $0
             
-                    finalDict[$1.name] = self?.getCastPhoto(castMember: $1)
+                    finalDict[$1.name] = self.getCastPhoto(castMember: $1)
             
                     return finalDict
             }
@@ -465,7 +479,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 )
             )
 
-            let castImageView: UIImageView = castPhotoAndNamesDict[castArray[index].name]!
+            let castImageView: UIImageView =
+                castPhotoAndNamesDict[castArray[index].name]!
             
             //Sets the frame of the imageView's width and height
             castImageView.frame.size.width = imageWidth
@@ -496,78 +511,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
         
         }
-        
-        
-        
-        print(castPhotoAndNamesDict)
-            
-        // Have to do every single actor
-//        for index in 0..<castArray.count {
-//            TmdbAPI.sharedInstance
-//                .getCastProfilePicture(castData: castArray[index])
-//                .observeOn(MainScheduler.instance)
-//                .subscribe(onNext: {[weak self, weak cell] image in
-//                    
-//                //Adds the cast member's name underneath their photo
-//                cell?.scrollView.addSubview(
-//                    self?.createCastLabel(
-//                        name: castArray[index].name,
-//                        x: xPosition,
-//                        imageHeight: imageHeight,
-//                        imageWidth: imageWidth
-//                        ) ?? UILabel()
-//                )
-//                        
-//                //Initializes ImageView for UIImage
-//                let castImageView: UIImageView = UIImageView()
-//                        
-//                //Optional chaining in case image is nil for some reason
-//                if let newImage = image {
-//                    castImageView.image = newImage
-//                    castImageView.contentMode =
-//                        UIViewContentMode.scaleAspectFill
-//                }
-//                        
-//                //Sets the frame of the imageView's width and height
-//                castImageView.frame.size.width = imageWidth
-//                castImageView.frame.size.height = imageHeight
-//                        
-//                //This makes the circle effect for the photos, only
-//                //works on square photos
-//                castImageView.layer.cornerRadius =
-//                    castImageView.frame.size.width/2
-//                
-//                castImageView.clipsToBounds = true
-//                        
-//                //Sets the x origin for photo
-//                castImageView.frame.origin.x = xPosition
-//                castImageView.frame.origin.y = 0
-//                        
-//                //Adds the castPhoto to the scrollView
-//                cell?.scrollView.addSubview(castImageView)
-//                        
-//                /*
-//                In order for the scrollView to display the pictures
-//                properly, the x position needs to be set after every
-//                iteration - otherwise all the photos and labels
-//                will just stack on top of one another.  Furthermore,
-//                the scrollView needs to be adjusted every time we add
-//                a new photo.  We add 20 in both cases to add spacing
-//                between photos
-//                */
-//                        
-//                let iterativeSize = imageWidth + 20
-//                xPosition += iterativeSize
-//                scrollViewContentSize += iterativeSize
-//                        
-//                //Sets the new contentSize for the scrollView
-//                cell?.scrollView.contentSize =
-//                    CGSize(width: scrollViewContentSize,
-//                           height: imageHeight)
-//                    
-//                }
-//            ).addDisposableTo(self.disposeBag)
-//        }
+    
     }
     
     /*
@@ -629,7 +573,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 var height = CGFloat(30.0)
         
         switch tableView.numberOfSections {
-        case 4:
+        case 4: //If there are showtimes available, do this layout
             switch indexPath.section {
             case 0: //VideoSection
                 switch indexPath.row {
@@ -640,7 +584,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 default:
                     height = 30
                 }
-            case 1:
+            case 1: //ShowtimesSection
                 height = 120
             case 2: //InfoSection
                 switch indexPath.row {
@@ -651,12 +595,12 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 default:
                     height = 30
                 }
-            default:
+            default: //GeneralCells
                 height = 30
             }
-        default:
+        default: //Otherwise do this layout
             switch indexPath.section {
-            case 0:
+            case 0: //VideoSection
                 switch indexPath.row {
                 case 0: //VideoCell
                     height = 200
@@ -665,7 +609,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 default:
                     height = 30
                 }
-            case 1:
+            case 1: //InfoSection
                 switch indexPath.row {
                 case 0: //DescriptionCell
                     height = 120
@@ -674,7 +618,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 default:
                     height = 30
                 }
-            default:
+            default: //GeneralCells
                 height = 30
             }
         }
