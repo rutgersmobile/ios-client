@@ -11,7 +11,7 @@ target 'Rutgers' do
     pod 'HexColors', "~> 3.0"
     pod 'MSWeakTimer', "~> 1.0"
     pod 'MMDrawerController', "~> 0.5"
-    pod 'Moya', '8.0.1'
+    pod 'Moya', '8.0.3'
     pod 'Moya/RxSwift'
     pod 'Unbox'
     pod 'RxSwift', '~> 3.0'

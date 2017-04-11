@@ -166,14 +166,14 @@ open class RUMenuItemManager: NSObject {
                     if let channel = x as? String {
                         // Old channels are stored as strings
                         // Convert them to visible objects first
-                        return VisibleObject(visible: true, object: channel)
+                        return VisibleObject(visible: true, object: channel as AnyObject)
                             .asDict()
                     }
                     if let dict = x as? Dictionary<String, AnyObject> {
                         // Old favorites were stored directly as dictionaries
                         // convert them to visible objects
-                        if let _ = RUFavorite(dictionary: dict) {
-                            return VisibleObject(visible: true, object: dict)
+                        if let _ = RUFavorite(dictionary: dict as NSDictionary) {
+                            return VisibleObject(visible: true, object: dict as AnyObject)
                                 .asDict()
                         }
                         // Leave new dictionaries the same
