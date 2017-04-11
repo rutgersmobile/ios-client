@@ -10,27 +10,45 @@ import UIKit
 import RxSwift
 import RxDataSources
 import Foundation
+import Alamofire
+import RxSegue
 
-let CellId = "cell"
+extension Array {
+    func get(_ i: Int) -> Element? {
+        if i < self.count {
+            return self[i]
+        } else {
+            return nil
+        }
+    }
+}
+
+
 
 final class RUCinemaCollectionViewController:
     UICollectionViewController,
-    UICollectionViewDelegateFlowLayout,
-RUChannelProtocol {
+    RUChannelProtocol {
     
+    //Self explanatory
+    let CellId = "cell"
+    //Dispose bag used by Rx in order to dealloc all objects used by Rx
     let disposeBag = DisposeBag()
     
-    var channel: [NSObject : AnyObject]
+    //Used for the left sidebar
+    var channel: [NSObject : AnyObject]!
     
+    //Defines the channel handle
     static func channelHandle() -> String! {
         return "cinema";
     }
     
+    //Registers the viewController so the channel manager knows what vc to init
     static func registerClass() {
         RUChannelManager.sharedInstance()
             .register(RUCinemaCollectionViewController.self)
     }
     
+    //Initializes viewController with channel
     static func channel(
         withConfiguration channelConfiguration: [AnyHashable : Any]!
         ) -> Any! {
@@ -39,155 +57,220 @@ RUChannelProtocol {
         )
     }
     
-    init(channel: [NSObject: AnyObject]) {
+    //Defines init
+    init(channel: [NSObject : AnyObject]) {
         self.channel = channel
-        
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        super.init(collectionViewLayout: .init())
     }
     
+    //Used so IB knows what to deserialize
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
+    //Most things happen here
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureCollectionView(collectionView!)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        collectionView?.dataSource = nil
+        /*
+        Resets the collectionView.dataSource to nil - otherwise the app will
+        crash since RxDataSource tries to implement it's own datasource.
+        */
+        
+        self.collectionView?.dataSource = nil
+        
+        /*
+        Essentially configues everything with collectionView programatically
+        See method for more info
+        */
+        
+        configureCollectionView(collectionView!)
+        
+        /*
+         Defines dataSource to be used by RxDataSource - specifies type as 
+         CinemaSection
+         */
+        let dataSource =
+            RxCollectionViewSectionedReloadDataSource<CinemaSection>()
+        
+        /*
+         Does all the heavy lifting specifying how and what the cells will
+         display
+         */
+        
+        skinCollectionViewDataSource(dataSource: dataSource)
+        
+        /*
+         Does the main API request to get both Rutgers cinema data and tmdb data
+         */
         
         RutgersAPI.sharedInstance.getCinema()
-            .flatMap { movies in Observable.from(movies) }
-            .flatMap { movie in
+            .flatMap { Observable.from($0) }
+            .flatMap{ movie in
                 TmdbAPI.sharedInstance.getTmdbData(movieId: movie.tmdbId)
-                    .map { tmdbMovie in (movie, tmdbMovie) }
+                    .map { tmdbMovie in
+                        (movie, tmdbMovie)
+                }
+            }
+            .map { (movie, tmdbMovie) in
+                /*
+                Initializes the CinemaSection with a header, and dafaultItem
+                cell, which, in turn, takes two arguments in order for the
+                cell to display necessary information
+                 
+                 CinemaSection struct is at the end of the file for more info
+                */
+                CinemaSection(
+                    header: "Movies",
+                    items: [CVCinemaSectionItem(
+                        movieItem: movie,
+                        tmdbItem: tmdbMovie
+                    )]
+                )
             }
             .toArray()
             .asDriver(onErrorJustReturn: [])
-            .drive((self.collectionView?.rx.items(
-                cellIdentifier: CellId,
-                cellType: RUCinemaCollectionViewCell.self
-            ))!) { (_, result, cell) in
-                let (movie, tmdbMovie) = result
-                
-                
-                var tempData : Data?
-                let url = URL(string: "http://image.tmdb.org/t/p/original/\(tmdbMovie.posterPath!)")
-                
-               
-                    tempData = try? Data(contentsOf: url!)
-                
-              
-                   let requestedImage = UIImage(data: tempData!)!
-                
-                
-                
-                var genreString = ""
-                
-                if let genres = tmdbMovie.genres {
-                    for genre in genres {
-                        
-                        if (genre.name != (genres.last!).name) {
-                            genreString.append(genre.name + ", ")}
-                        else {
-                            genreString.append(genre.name)
-                        }
-                    }
-                }
-                
-                if (movie.showings.count != 0) {
-                    let calendar = Calendar.current
-                    
-                    let dateFormatter = DateFormatter()
-                    
-                    dateFormatter.timeStyle = .short
+            .drive(self.collectionView!.rx.items(dataSource: dataSource))
+            .addDisposableTo(disposeBag)
 
-                    let sortedArray = movie.showings.sorted { $0.dateTime > $1.dateTime }
-                    
-                    let baseDay = calendar.component(.day, from: sortedArray[0].dateTime as Date)
-                    
-                    var showingArray = [Date]()
-                    
-                    for i in 0..<sortedArray.count {
-                        let day = calendar.component(.day, from: sortedArray[i].dateTime as Date)
-                        
-                        if (day == baseDay) {
-                            showingArray.append(sortedArray[i].dateTime)
-                        } else {
-                            break
-                        }
-                    }
-                    
-                
-                    showingArray.reverse()
-                    
-                    var timeStamp1 = ""
-                    var timeStamp2 = ""
-                    var timeStamp3 = ""
-                    
-                    if showingArray.count < 3 && showingArray.count >= 2 {
-                        cell.time1.isHidden = false
-                        cell.time2.isHidden = false
-                        
-                        timeStamp1 = dateFormatter.string(from: showingArray[0])
-                        timeStamp2 = dateFormatter.string(from: showingArray[1])
-                    } else {
-                        
-                        cell.time1.isHidden = false
-                        cell.time2.isHidden = false
-                        cell.time3.isHidden = false
-                        
-                        timeStamp1 = dateFormatter.string(from: showingArray[0])
-                        timeStamp2 = dateFormatter.string(from: showingArray[1])
-                        timeStamp3 = dateFormatter.string(from: showingArray[2])
-                    }
-                    
-                    cell.time1.text = timeStamp1
-                    cell.time2.text = timeStamp2
-                    cell.time3.text = timeStamp3
-                    
-                    
-                }
-                
-                let index = tmdbMovie.releaseDate?.index((tmdbMovie.releaseDate?.startIndex)!, offsetBy: 4)
-                
-                let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
-                
-                cell.descriptionText.textColor = .white
-                
-                cell.posterImage.image = requestedImage
-                cell.tagsLabel.text = genreString
-                cell.descriptionText.text = tmdbMovie.overview
-                cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
-            }.addDisposableTo(disposeBag)
+        /*
+        Passes necessary info to next view controller, and then displays it
+        when a user taps a cell
+        */
+
+        self.collectionView?.rx.modelSelected(CVCinemaSectionItem.self)
+            .subscribe(onNext: { [unowned self] model in
+                let formatted = model.movieItem.formattedShowings()
+                let format1 = formatted.get(0) ?? ""
+                let format2 = formatted.get(1) ?? ""
+                let format3 = formatted.get(2) ?? ""
+                let vc = RUCinemaDetailTableViewController(
+                    movieId: model.tmdbItem.id!,
+                    showTimes: [format1, format2, format3]
+                )
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .addDisposableTo(disposeBag)
+    }
+    
+    /*
+     Helper function for the posterImage api request.  Upon completion returns
+     either the image we want or an initialized (blank) UIImage.
+     */
+    func getPosterImage(data: TmdbData,
+                        completion: @escaping (_ result: UIImage) -> Void){
+        
+        var returnImage: UIImage!
+        
+        TmdbAPI.sharedInstance.getPosterImage(data: data)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { image in
+                 returnImage = image ?? UIImage()
+                 completion(returnImage)
+            }).addDisposableTo(self.disposeBag)
+    }
+    
+    /*
+     Mainly described from before, but essentially just prevents viewDidLoad
+     from being an absolutely incomprehensible mess
+     */
+    fileprivate func skinCollectionViewDataSource(
+        dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>) {
+        dataSource.configureCell = {(
+             dataSource: CollectionViewSectionedDataSource<CinemaSection>,
+             collectionView: UICollectionView,
+             idxPath: IndexPath,
+             item: CVCinemaSectionItem
+        ) in
+            let model = dataSource[idxPath]
+            let movie = model.movieItem
+            let tmdbMovie = model.tmdbItem
+            
+            let cell: RUCinemaCollectionViewCell =
+                collectionView.dequeueReusableCell(
+                    withReuseIdentifier: self.CellId,
+                    for: idxPath) as! RUCinemaCollectionViewCell
+            
+            self.getPosterImage(data: tmdbMovie, completion: { image in
+                cell.posterImage.image = image
+            })
+            
+            let genreString = tmdbMovie.genres.map { genres in
+                genres.map { $0.name }.joined(separator: ", ")
+            } ?? ""
+
+            let formattedShowings = movie.formattedShowings()
+
+            cell.time1.text = formattedShowings.get(0) ?? ""
+            cell.time2.text = formattedShowings.get(1) ?? ""
+            cell.time3.text = formattedShowings.get(2) ?? ""
+            
+            let index =
+                tmdbMovie.releaseDate?.index(
+                    (tmdbMovie.releaseDate?.startIndex)!,
+                    offsetBy: 4
+                )
+            
+            let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
+            
+            cell.descriptionLabel.textColor = .white
+            cell.tagsLabel.text = genreString
+            cell.descriptionLabel.text = tmdbMovie.overview
+            cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
+            cell.movieId = Int(tmdbMovie.id!)
+            
+            return cell
+        }
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
-        ) -> CGSize {
+    ) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 0)
     }
-    
+
     func configureCollectionView(_ collectionView: UICollectionView) {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
+//        layout.minimumInteritemSpacing = 10
+//        layout.minimumLineSpacing = 10
         layout.itemSize = CGSize(
             width: (self.collectionView?.frame.width)!,
             height: 150
         )
-        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        self.collectionView?.setCollectionViewLayout(layout, animated: false)
-        self.collectionView?.backgroundColor = UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
+//        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        self.collectionView?.setCollectionViewLayout(layout, animated: true)
+        self.collectionView?.backgroundColor =
+            UIColor(red:0.33, green:0.32, blue:0.33, alpha:1.0)
         
         collectionView.register(
             UINib(nibName: "RUCinemaCollectionViewCell", bundle: nil),
             forCellWithReuseIdentifier: CellId
         )
+    }
+}
+
+private struct CinemaSection {
+    var header: String
+    var items : [CVCinemaSectionItem]
+    
+    init(header: String, items: [CVCinemaSectionItem]) {
+        self.header = header
+        self.items = items
+    }
+}
+
+private struct CVCinemaSectionItem {
+    let movieItem: Cinema
+    let tmdbItem: TmdbData
+}
+
+extension CinemaSection: SectionModelType {
+    typealias Item = CVCinemaSectionItem
+    
+    init(original: CinemaSection, items: [Item]) {
+        self = original
+        self.items = items
     }
 }

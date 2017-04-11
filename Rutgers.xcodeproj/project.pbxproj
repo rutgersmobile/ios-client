@@ -225,6 +225,19 @@
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
 		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
 		B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528E0061E3BE9CC00A9DE6C /* Sport.swift */; };
+		B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */; };
+		B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */; };
+		B51D34741E5B404F00F4BD1F /* InfoCastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D34721E5B404F00F4BD1F /* InfoCastCell.swift */; };
+		B51D34751E5B404F00F4BD1F /* InfoCastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D34731E5B404F00F4BD1F /* InfoCastCell.xib */; };
+		B51D34781E5B406600F4BD1F /* ShowtimesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D34761E5B406600F4BD1F /* ShowtimesCell.swift */; };
+		B51D34791E5B406600F4BD1F /* ShowtimesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D34771E5B406600F4BD1F /* ShowtimesCell.xib */; };
+		B51D347C1E5B40A900F4BD1F /* GeneralPurposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D347A1E5B40A900F4BD1F /* GeneralPurposeCell.swift */; };
+		B51D347D1E5B40A900F4BD1F /* GeneralPurposeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D347B1E5B40A900F4BD1F /* GeneralPurposeCell.xib */; };
+		B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528E0061E3BE9CC00A9DE6C /* Sport.swift */; };
+		B52D0FD71E574A2300DBDF26 /* VideoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D0FD51E574A2300DBDF26 /* VideoContentCell.swift */; };
+		B52D0FD81E574A2300DBDF26 /* VideoContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */; };
+		B52D0FDB1E574A4300DBDF26 /* VideoRatingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */; };
+		B52D0FDC1E574A4300DBDF26 /* VideoRatingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */; };
 		B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */; };
 		B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */; };
 		B5432FF21E426C6D006F036A /* Motd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF11E426C6D006F036A /* Motd.swift */; };
@@ -232,11 +245,14 @@
 		B54DFB4D1E4B970300755D2D /* TmdbData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4C1E4B970300755D2D /* TmdbData.swift */; };
 		B54DFB4F1E4B9C2E00755D2D /* TmdbService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */; };
 		B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */; };
+		B5694BBF1E520CC100899ED0 /* ImageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BBE1E520CC100899ED0 /* ImageAPI.swift */; };
+		B5694BC31E5232A200899ED0 /* TmdbCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5694BC21E5232A200899ED0 /* TmdbCredits.swift */; };
 		B5870B8A1E44E32C00D51523 /* AgencyConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B891E44E32C00D51523 /* AgencyConfig.swift */; };
 		B5870B8C1E44FECC00D51523 /* Cinema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870B8B1E44FECC00D51523 /* Cinema.swift */; };
 		B5870BA31E45303600D51523 /* RUCinemaCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */; };
 		B5971AA91E3FC5EA00FABC70 /* RUBusNumberButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */; };
 		B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */; };
+		B5E7708E1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -691,6 +707,19 @@
 		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
 		B528E0061E3BE9CC00A9DE6C /* Sport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
+		B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDescriptionCell.swift; sourceTree = "<group>"; };
+		B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoDescriptionCell.xib; sourceTree = "<group>"; };
+		B51D34721E5B404F00F4BD1F /* InfoCastCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCastCell.swift; sourceTree = "<group>"; };
+		B51D34731E5B404F00F4BD1F /* InfoCastCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoCastCell.xib; sourceTree = "<group>"; };
+		B51D34761E5B406600F4BD1F /* ShowtimesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCell.swift; sourceTree = "<group>"; };
+		B51D34771E5B406600F4BD1F /* ShowtimesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCell.xib; sourceTree = "<group>"; };
+		B51D347A1E5B40A900F4BD1F /* GeneralPurposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPurposeCell.swift; sourceTree = "<group>"; };
+		B51D347B1E5B40A900F4BD1F /* GeneralPurposeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralPurposeCell.xib; sourceTree = "<group>"; };
+		B528E0061E3BE9CC00A9DE6C /* Sport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
+		B52D0FD51E574A2300DBDF26 /* VideoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoContentCell.swift; sourceTree = "<group>"; };
+		B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoContentCell.xib; sourceTree = "<group>"; };
+		B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoRatingsCell.swift; sourceTree = "<group>"; };
+		B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoRatingsCell.xib; sourceTree = "<group>"; };
 		B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewCell.swift; sourceTree = "<group>"; };
 		B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewCell.xib; sourceTree = "<group>"; };
 		B5432FF11E426C6D006F036A /* Motd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Motd.swift; sourceTree = "<group>"; };
@@ -698,6 +727,8 @@
 		B54DFB4C1E4B970300755D2D /* TmdbData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbData.swift; sourceTree = "<group>"; };
 		B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbService.swift; sourceTree = "<group>"; };
 		B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbAPI.swift; sourceTree = "<group>"; };
+		B5694BBE1E520CC100899ED0 /* ImageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAPI.swift; sourceTree = "<group>"; };
+		B5694BC21E5232A200899ED0 /* TmdbCredits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbCredits.swift; sourceTree = "<group>"; };
 		B5870B891E44E32C00D51523 /* AgencyConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgencyConfig.swift; sourceTree = "<group>"; };
 		B5870B8B1E44FECC00D51523 /* Cinema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cinema.swift; sourceTree = "<group>"; };
 		B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewController.swift; sourceTree = "<group>"; };
@@ -705,6 +736,7 @@
 		B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberButton.m; sourceTree = "<group>"; };
 		B5ACFDC41E2FE6EC00E9281C /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
 		B5ACFDC51E2FE6EC00E9281C /* RUBusNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberViewController.m; sourceTree = "<group>"; };
+		B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaDetailTableViewController.swift; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1564,10 +1596,47 @@
 			name = dtable;
 			sourceTree = "<group>";
 		};
+		B52D0FD41E5749F200DBDF26 /* RUCinemaDetailCells */ = {
+			isa = PBXGroup;
+			children = (
+				B52D0FE11E574A6300DBDF26 /* CellViews */,
+				B52D0FE21E574A7200DBDF26 /* CellSwiftFiles */,
+			);
+			name = RUCinemaDetailCells;
+			sourceTree = "<group>";
+		};
+		B52D0FE11E574A6300DBDF26 /* CellViews */ = {
+			isa = PBXGroup;
+			children = (
+				B52D0FD61E574A2300DBDF26 /* VideoContentCell.xib */,
+				B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */,
+				B51D34771E5B406600F4BD1F /* ShowtimesCell.xib */,
+				B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */,
+				B51D34731E5B404F00F4BD1F /* InfoCastCell.xib */,
+				B51D347B1E5B40A900F4BD1F /* GeneralPurposeCell.xib */,
+			);
+			name = CellViews;
+			sourceTree = "<group>";
+		};
+		B52D0FE21E574A7200DBDF26 /* CellSwiftFiles */ = {
+			isa = PBXGroup;
+			children = (
+				B52D0FD51E574A2300DBDF26 /* VideoContentCell.swift */,
+				B52D0FD91E574A4300DBDF26 /* VideoRatingsCell.swift */,
+				B51D34761E5B406600F4BD1F /* ShowtimesCell.swift */,
+				B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */,
+				B51D34721E5B404F00F4BD1F /* InfoCastCell.swift */,
+				B51D347A1E5B40A900F4BD1F /* GeneralPurposeCell.swift */,
+			);
+			name = CellSwiftFiles;
+			sourceTree = "<group>";
+		};
 		B5870B921E45128800D51523 /* rucinema */ = {
 			isa = PBXGroup;
 			children = (
 				B5870BA11E45303600D51523 /* RUCinemaCollectionViewController.swift */,
+				B5E7708D1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift */,
+				B52D0FD41E5749F200DBDF26 /* RUCinemaDetailCells */,
 				B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */,
 				B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */,
 			);
@@ -1684,6 +1753,7 @@
 				C4B1E15E1E3BD0CC008DC388 /* services */,
 				C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */,
 				B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */,
+				B5694BBE1E520CC100899ED0 /* ImageAPI.swift */,
 				C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */,
 			);
 			name = api;
@@ -1703,6 +1773,7 @@
 			children = (
 				C4B1E1601E3BD101008DC388 /* Food.swift */,
 				B54DFB4C1E4B970300755D2D /* TmdbData.swift */,
+				B5694BC21E5232A200899ED0 /* TmdbCredits.swift */,
 				B5870B891E44E32C00D51523 /* AgencyConfig.swift */,
 				B5870B8B1E44FECC00D51523 /* Cinema.swift */,
 				B528E0061E3BE9CC00A9DE6C /* Sport.swift */,
@@ -1845,14 +1916,19 @@
 				04BA07341BD6BCA5009AB651 /* Launch.xcassets in Resources */,
 				A777C2B4190C248500F978D7 /* barr.gpx in Resources */,
 				A7DD347819816F120078023A /* arc stop.gpx in Resources */,
+				B51D34751E5B404F00F4BD1F /* InfoCastCell.xib in Resources */,
+				B51D34791E5B406600F4BD1F /* ShowtimesCell.xib in Resources */,
 				04AEDE3619D32EB800A20D1E /* Splash Screen.xib in Resources */,
 				044BD6C41B2A13790031FE5E /* Launch Screen.storyboard in Resources */,
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
+				B52D0FDC1E574A4300DBDF26 /* VideoRatingsCell.xib in Resources */,
+				B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
 				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
+				B51D347D1E5B40A900F4BD1F /* GeneralPurposeCell.xib in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */,
@@ -1862,6 +1938,7 @@
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
+				B52D0FD81E574A2300DBDF26 /* VideoContentCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1946,8 +2023,10 @@
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
 				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
+				B51D34741E5B404F00F4BD1F /* InfoCastCell.swift in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */,
+				B5694BBF1E520CC100899ED0 /* ImageAPI.swift in Sources */,
 				A7E8E133192480A60089F166 /* RUWebViewController.m in Sources */,
 				041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */,
 				0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */,
@@ -1972,6 +2051,8 @@
 				621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */,
 				04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */,
 				A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */,
+				B52D0FD71E574A2300DBDF26 /* VideoContentCell.swift in Sources */,
+				B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */,
 				A75B1C8019B0EEDD00268214 /* TextViewDataSource.m in Sources */,
 				A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */,
 				A7D4B64C19ABD3CC0087A8BC /* RULegalViewController.m in Sources */,
@@ -2002,6 +2083,7 @@
 				A7241A4E1989915A00304436 /* PlacesSearchDataSource.m in Sources */,
 				A72CF0DE1951F5920024F950 /* RUSOCSectionRow.m in Sources */,
 				A7EA4C53197D6BD800E972DD /* ComposedDataSource.m in Sources */,
+				B51D34781E5B406600F4BD1F /* ShowtimesCell.swift in Sources */,
 				A7EA3F3E197D8D4000D4BC9E /* UIView+LayoutSize.m in Sources */,
 				04B2F3CC1D09E4D20035F96E /* RUMenuDataSource.swift in Sources */,
 				A7D4B64319ABC94B0087A8BC /* RUOptionsViewController.m in Sources */,
@@ -2069,9 +2151,11 @@
 				B5ACFDC61E2FE6EC00E9281C /* RUBusNumberViewController.m in Sources */,
 				04C0D2D01C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift in Sources */,
 				04A1EFF01A5C50A700DE0351 /* RUBusDataAgencyManager.m in Sources */,
+				B5E7708E1E64A368009D62F7 /* RUCinemaDetailTableViewController.swift in Sources */,
 				A79B5DDA199BCD1600DAEFC1 /* NSPredicate+SearchPredicate.m in Sources */,
 				04A1EFFC1A5C50B700DE0351 /* RUBusViewController.m in Sources */,
 				A790C3EA194F651000D27B5F /* NSIndexPath+RowExtensions.m in Sources */,
+				B52D0FDB1E574A4300DBDF26 /* VideoRatingsCell.swift in Sources */,
 				A7D4B64F19ABD81F0087A8BC /* RUPlaceDetailDataSource.m in Sources */,
 				A748ECED191602C400CB91FF /* RULocationManager.m in Sources */,
 				A7D73B271978880C006BC215 /* TableViewController.m in Sources */,
@@ -2094,10 +2178,12 @@
 				04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */,
 				B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */,
 				622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */,
+				B51D347C1E5B40A900F4BD1F /* GeneralPurposeCell.swift in Sources */,
 				04B2F3CA1D09D56E0035F96E /* RUActiveMenuItemDataSource.swift in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
 				A771A27F199AB790000CD174 /* RUSOCSearchIndex.m in Sources */,
 				A74668AC1983783300A5EBE0 /* UIMotionEffect+FloatingMotionEffect.m in Sources */,
+				B5694BC31E5232A200899ED0 /* TmdbCredits.swift in Sources */,
 				A70C2BE2198C2C60004F82D4 /* ALTableViewRightDetailCell.m in Sources */,
 				A7C155FD198AB6A800CDCAE3 /* FAQSectionDataSource.m in Sources */,
 				041D5F8C1B4F196E00BBCBFC /* RURecCenterTableViewCell.m in Sources */,
