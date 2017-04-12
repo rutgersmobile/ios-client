@@ -239,7 +239,7 @@
 		C262EFB8188345D10035C8F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFB7188345D10035C8F5 /* main.m */; };
 		C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C262EFBD188345D10035C8F5 /* Images.xcassets */; };
 		C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */; };
-		F0799491216F9AC23449C5E4 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */; };
+		C8E0767FD8DBDD9F8C692E89 /* libPods-Rutgers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77904E5AE57DA014147F0FAD /* libPods-Rutgers.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -408,7 +408,7 @@
 		04FD97D01D13543900E9877D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		04FD97D41D14988300E9877D /* PlaceholderDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderDataSource.h; sourceTree = "<group>"; };
 		04FD97D51D14988300E9877D /* PlaceholderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderDataSource.m; sourceTree = "<group>"; };
-		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2849FB0FAF441B70EE2A932F /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		621347721E04279600786570 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
 		621347731E04279600786570 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
 		621872C51D3407DC00E727E3 /* RUBusMessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessagesDataSource.h; sourceTree = "<group>"; };
@@ -438,7 +438,8 @@
 		62B964111DD31BFD00D8399A /* BannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerCell.swift; sourceTree = "<group>"; };
 		62CBC2F01D6DEFDC00061E1E /* RUReaderGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUReaderGameViewController.h; sourceTree = "<group>"; };
 		62CBC2F11D6DEFDC00061E1E /* RUReaderGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderGameViewController.m; sourceTree = "<group>"; };
-		7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
+		77904E5AE57DA014147F0FAD /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		831F4539164ADA4C857C8F4A /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 		A704C7821921E9EE00ED9E36 /* RUChannelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUChannelProtocol.h; sourceTree = "<group>"; };
 		A70810761906EE6E0087EB82 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A70C2BD1198BF498004F82D4 /* RULabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RULabel.h; sourceTree = "<group>"; };
@@ -686,7 +687,6 @@
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
 		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
-		B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Rutgers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5971AA71E3FC5EA00FABC70 /* RUBusNumberButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberButton.h; sourceTree = "<group>"; };
 		B5971AA81E3FC5EA00FABC70 /* RUBusNumberButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusNumberButton.m; sourceTree = "<group>"; };
 		B5ACFDC41E2FE6EC00E9281C /* RUBusNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusNumberViewController.h; sourceTree = "<group>"; };
@@ -704,7 +704,6 @@
 		C262EFC4188345D10035C8F5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C262EFDA1883473E0035C8F5 /* RUMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMenuViewController.h; sourceTree = "<group>"; };
 		C262EFDB1883473E0035C8F5 /* RUMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMenuViewController.m; sourceTree = "<group>"; };
-		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -744,7 +743,7 @@
 				C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */,
 				C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */,
 				0490DC9A1B4DB85A00E76EEF /* WebKit.framework in Frameworks */,
-				F0799491216F9AC23449C5E4 /* libPods-Rutgers.a in Frameworks */,
+				C8E0767FD8DBDD9F8C692E89 /* libPods-Rutgers.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -927,15 +926,6 @@
 				62530D951D78789500BAB5E6 /* AthleticsCollectionViewCell.xib */,
 			);
 			name = athletics;
-			sourceTree = "<group>";
-		};
-		71C113FD36A753397BBAA999 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */,
-				7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		A70810781906F87C0087EB82 /* ruplaces */ = {
@@ -1564,7 +1554,7 @@
 				047D06DC1BE16DB600DFEAA3 /* RutgersUITests */,
 				C262EFAA188345D10035C8F5 /* Frameworks */,
 				C262EFA9188345D10035C8F5 /* Products */,
-				71C113FD36A753397BBAA999 /* Pods */,
+				E96426F50898763700E93650 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1602,8 +1592,7 @@
 				C262EFAD188345D10035C8F5 /* CoreGraphics.framework */,
 				C262EFAF188345D10035C8F5 /* UIKit.framework */,
 				C262EFC4188345D10035C8F5 /* XCTest.framework */,
-				2127C0710965413FBE553ECA /* libPods.a */,
-				B4DEBEA4EBFB7CC5C6AF8292 /* libPods-Rutgers.a */,
+				77904E5AE57DA014147F0FAD /* libPods-Rutgers.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1655,6 +1644,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E96426F50898763700E93650 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				831F4539164ADA4C857C8F4A /* Pods-Rutgers.debug.xcconfig */,
+				2849FB0FAF441B70EE2A932F /* Pods-Rutgers.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1698,13 +1696,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C262EFD4188345D10035C8F5 /* Build configuration list for PBXNativeTarget "Rutgers" */;
 			buildPhases = (
-				027474BDB74F4A8B95CB6031 /* [CP] Check Pods Manifest.lock */,
+				F43F663218DFC9BC4B0623FA /* [CP] Check Pods Manifest.lock */,
 				C262EFA4188345D10035C8F5 /* Sources */,
 				C262EFA5188345D10035C8F5 /* Frameworks */,
 				C262EFA6188345D10035C8F5 /* Resources */,
-				F64F9DA88AFF4B3A8763F4C1 /* [CP] Copy Pods Resources */,
-				17D319ABBBF33B5AA50442EF /* [CP] Embed Pods Frameworks */,
 				0430BAC11D1324C00044F5BF /* Embed Frameworks */,
+				D2DDD883C69EE99EC596E1E3 /* [CP] Embed Pods Frameworks */,
+				8B1038CF8612AC29B64F24B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1805,22 +1803,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		027474BDB74F4A8B95CB6031 /* [CP] Check Pods Manifest.lock */ = {
+		8B1038CF8612AC29B64F24B4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		17D319ABBBF33B5AA50442EF /* [CP] Embed Pods Frameworks */ = {
+		D2DDD883C69EE99EC596E1E3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1835,19 +1833,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F64F9DA88AFF4B3A8763F4C1 /* [CP] Copy Pods Resources */ = {
+		F43F663218DFC9BC4B0623FA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2254,7 +2252,7 @@
 		};
 		C262EFD5188345D10035C8F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */;
+			baseConfigurationReference = 831F4539164ADA4C857C8F4A /* Pods-Rutgers.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2273,11 +2271,7 @@
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2290,7 +2284,7 @@
 		};
 		C262EFD6188345D10035C8F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7FAC13F564359707F88A70B4 /* Pods-Rutgers.release.xcconfig */;
+			baseConfigurationReference = 2849FB0FAF441B70EE2A932F /* Pods-Rutgers.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2309,11 +2303,7 @@
 				INFOPLIST_FILE = "Rutgers/Rutgers-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.rutgers.css.Rutgers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

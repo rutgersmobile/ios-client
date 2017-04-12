@@ -26,10 +26,13 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     static var playHandle : AnyObject?
     static var pauseHandle : AnyObject?
 
-    @IBOutlet weak var volumeContainerView: UIView!
     @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var wrnuLogo: UIImageView!
-    @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var volumeContainerView: UIView!
+
+    @IBOutlet weak var twitterLogo: UIImageView!
+    @IBOutlet weak var instagramLogo: UIImageView!
+    @IBOutlet weak var facebookLogo: UIImageView!
+    @IBOutlet weak var soundcloudLogo: UIImageView!
 
     static func channelHandle() -> String!
     {
@@ -141,10 +144,10 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        newTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
+        newTaskID = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler {
             UIApplication.sharedApplication().endBackgroundTask(self.newTaskID)
             self.newTaskID = UIBackgroundTaskInvalid
-        })
+        }
         if (MusicViewController.audioPlayer == nil) {
             setupPlayer()
         } else {
@@ -152,9 +155,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         }
         self.shareButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: #selector(actionButtonTapped))
         self.navigationItem.rightBarButtonItem = self.shareButton
-        backgroundView.backgroundColor = UIColor(patternImage: UIImage(named: "wrnu_background")!)
-        backgroundView.opaque = false
-        backgroundView.layer.opaque = false
         NSNotificationCenter
             .defaultCenter()
             .addObserver(
