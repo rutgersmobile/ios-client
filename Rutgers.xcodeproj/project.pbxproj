@@ -14,6 +14,7 @@
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
 		041D5F891B4F195900BBCBFC /* RURecreationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F881B4F195900BBCBFC /* RURecreationDataSource.m */; };
 		041D5F8C1B4F196E00BBCBFC /* RURecCenterTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 041D5F8B1B4F196E00BBCBFC /* RURecCenterTableViewCell.m */; };
+		041FA63F1E9FC5B300C1B39B /* MusicViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 041FA63E1E9FC5B300C1B39B /* MusicViewController.storyboard */; };
 		04203AF71B15147E005A7099 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = 04203AF61B15147E005A7099 /* ordered_content.json */; };
 		0422C9841A69C3C100344828 /* RURecCenterDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9831A69C3C100344828 /* RURecCenterDataSource.m */; };
 		0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9881A69C95500344828 /* MiniMapDataSource.m */; };
@@ -86,7 +87,6 @@
 		04FD97D11D13543900E9877D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97D01D13543900E9877D /* libz.tbd */; };
 		04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD97D51D14988300E9877D /* PlaceholderDataSource.m */; };
 		621347741E04279600786570 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621347721E04279600786570 /* MusicViewController.swift */; };
-		621347751E04279600786570 /* MusicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 621347731E04279600786570 /* MusicViewController.xib */; };
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
@@ -287,6 +287,7 @@
 		041D5F881B4F195900BBCBFC /* RURecreationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecreationDataSource.m; path = Rutgers/RURecreationDataSource.m; sourceTree = SOURCE_ROOT; };
 		041D5F8A1B4F196E00BBCBFC /* RURecCenterTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterTableViewCell.h; path = Rutgers/RURecCenterTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		041D5F8B1B4F196E00BBCBFC /* RURecCenterTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterTableViewCell.m; path = Rutgers/RURecCenterTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		041FA63E1E9FC5B300C1B39B /* MusicViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MusicViewController.storyboard; sourceTree = "<group>"; };
 		04203AF61B15147E005A7099 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ordered_content.json; sourceTree = "<group>"; };
 		0422C9821A69C3C100344828 /* RURecCenterDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterDataSource.h; path = Rutgers/RURecCenterDataSource.h; sourceTree = SOURCE_ROOT; };
 		0422C9831A69C3C100344828 /* RURecCenterDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterDataSource.m; path = Rutgers/RURecCenterDataSource.m; sourceTree = SOURCE_ROOT; };
@@ -410,7 +411,6 @@
 		04FD97D51D14988300E9877D /* PlaceholderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderDataSource.m; sourceTree = "<group>"; };
 		2849FB0FAF441B70EE2A932F /* Pods-Rutgers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.release.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.release.xcconfig"; sourceTree = "<group>"; };
 		621347721E04279600786570 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
-		621347731E04279600786570 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
 		621872C51D3407DC00E727E3 /* RUBusMessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessagesDataSource.h; sourceTree = "<group>"; };
 		621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessagesDataSource.m; sourceTree = "<group>"; };
 		621872C81D340B9500E727E3 /* RUBusMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessageCell.h; sourceTree = "<group>"; };
@@ -1621,7 +1621,7 @@
 				04BA07331BD6BCA5009AB651 /* Launch.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 				621347721E04279600786570 /* MusicViewController.swift */,
-				621347731E04279600786570 /* MusicViewController.xib */,
+				041FA63E1E9FC5B300C1B39B /* MusicViewController.storyboard */,
 			);
 			path = Rutgers;
 			sourceTree = "<group>";
@@ -1788,7 +1788,7 @@
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
-				621347751E04279600786570 /* MusicViewController.xib in Resources */,
+				041FA63F1E9FC5B300C1B39B /* MusicViewController.storyboard in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,

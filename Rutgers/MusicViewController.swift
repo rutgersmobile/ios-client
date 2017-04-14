@@ -15,12 +15,12 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 
     static var audioPlayer : AVPlayer?
     var playing = false
-    let channel : [NSObject : AnyObject]
+    var channel : [NSObject : AnyObject]!
     let playImageName = "ic_play_arrow_white_48pt"
     let pauseImageName = "ic_pause_white_48pt"
     var sharingPopoverController : UIPopoverController? = nil
     var shareButton : UIBarButtonItem? = nil
-    let streamUrl : String
+    var streamUrl : String!
     var newTaskID = UIBackgroundTaskInvalid
 
     static var playHandle : AnyObject?
@@ -28,11 +28,6 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
 
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var volumeContainerView: UIView!
-
-    @IBOutlet weak var twitterLogo: UIImageView!
-    @IBOutlet weak var instagramLogo: UIImageView!
-    @IBOutlet weak var facebookLogo: UIImageView!
-    @IBOutlet weak var soundcloudLogo: UIImageView!
 
     static func channelHandle() -> String!
     {
@@ -50,17 +45,15 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     
     static func channelWithConfiguration(channelConfiguration: [NSObject : AnyObject]!) -> AnyObject!
     {
-        return MusicViewController(channel: channelConfiguration)
+        let storyboard = UIStoryboard(name: "MusicViewController", bundle: nil)
+        let me = storyboard.instantiateInitialViewController() as! MusicViewController
+        me.channel = channelConfiguration
+        me.streamUrl = channelConfiguration["url"] as! String
+        return me
     }
 
-    init(channel: [NSObject : AnyObject]) {
-        self.channel = channel
-        self.streamUrl = channel["url"] as! String
-        super.init(nibName: .None, bundle: .None)
-    }
-    
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
 
     func setupPlayer() {
@@ -95,16 +88,16 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         if #available(iOS 7.1, *) {
             let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
             commandCenter.playCommand.removeTarget(MusicViewController.playHandle)
-            MusicViewController.playHandle = commandCenter.playCommand.addTargetWithHandler({ event in
+            MusicViewController.playHandle = commandCenter.playCommand.addTargetWithHandler { event in
                 self.recreateIfStopped()
                 self.play()
                 return .Success
-            })
+            }
             commandCenter.pauseCommand.removeTarget(MusicViewController.pauseHandle)
-            MusicViewController.pauseHandle = commandCenter.pauseCommand.addTargetWithHandler({ event in
+            MusicViewController.pauseHandle = commandCenter.pauseCommand.addTargetWithHandler { event in
                 self.pause()
                 return .Success
-            })
+            }
         }
     }
 
@@ -202,8 +195,54 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     func sharingURL() -> NSURL? {
         return DynamicTableViewController.buildDynamicSharingURL(self.navigationController!, channel: self.channel)
     }
+    
+    func openWebView(url: NSURL) {
+        if #available(iOS 8.0, *) {
+            let vc = RUWKWebViewController(URL: url)
+            vc.showPageTitles = false
+            vc.hideWebViewBoundaries = true
+            vc.showUrlWhileLoading = false
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            let vc = RUUIWebViewController(URL: url)
+            vc.showPageTitles = false
+            vc.hideWebViewBoundaries = true
+            vc.showUrlWhileLoading = false
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
+    @IBAction func writeEmail(sender: UIButton) {
+        if let url = NSURL(string: "mailto:wrnurutgersradio@gmail.com") {
+            UIApplication.sharedApplication().openURL(url)
+        }
+    }
 
     @IBAction func playRadio(sender: UIButton) {
         toggleRadio()
+    }
+
+    @IBAction func openTwitter(sender: UIButton) {
+        if let url = NSURL(string: "https://twitter.com/WRNU") {
+            openWebView(url)
+        }
+    }
+
+    @IBAction func openInstagram(sender: UIButton) {
+        if let url = NSURL(string: "https://www.instagram.com/_wrnu/") {
+            openWebView(url)
+        }
+    }
+
+    @IBAction func openFacebook(sender: UIButton) {
+        if let url = NSURL(string: "https://www.facebook.com/CampusBeatRadio") {
+            openWebView(url)
+        }
+    }
+
+    @IBAction func openSoundcloud(sender: UIButton) {
+        if let url = NSURL(string: "https://soundcloud.com/rutgers-wrnu") {
+            openWebView(url)
+        }
     }
 }
