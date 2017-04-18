@@ -157,7 +157,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
                 object: nil
             )
     }
-
+    
     override func viewWillAppear(animated: Bool) {
         setPlayingState()
     }

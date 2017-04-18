@@ -6,11 +6,13 @@
 //  Copyright (c) 2014 Rutgers. All rights reserved.
 //
 
+
+
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-NSString *LocationManagerDidChangeLocationKey;
-NSString *LocationManagerNotificationLocationKey;
+extern NSString *LocationManagerDidChangeLocationKey;
+extern NSString *LocationManagerNotificationLocationKey;
 
 #define NEARBY_DISTANCE 300
 
@@ -20,3 +22,4 @@ NSString *LocationManagerNotificationLocationKey;
 - (void)startUpdatingLocation;
 - (void)stopUpdatingLocation;
 @end
+
