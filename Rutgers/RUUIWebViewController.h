@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Rutgers. All rights reserved.
 //
 
-#import "TOWebViewController.h"
+#import <TOWebViewController/TOWebViewController.h>
 #import "RUChannelProtocol.h"
 
 @interface RUUIWebViewController : TOWebViewController <RUChannelProtocol>

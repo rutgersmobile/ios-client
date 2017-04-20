@@ -84,7 +84,6 @@
 		04FD97D11D13543900E9877D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97D01D13543900E9877D /* libz.tbd */; };
 		04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD97D51D14988300E9877D /* PlaceholderDataSource.m */; };
 		621347741E04279600786570 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621347721E04279600786570 /* MusicViewController.swift */; };
-		621347751E04279600786570 /* MusicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 621347731E04279600786570 /* MusicViewController.xib */; };
 		621872C71D3407DC00E727E3 /* RUBusMessagesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */; };
 		621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872C91D340B9500E727E3 /* RUBusMessageCell.m */; };
 		621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 621872CC1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m */; };
@@ -224,7 +223,6 @@
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
 		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
-		B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */ = {isa = PBXBuildFile; fileRef = B528E0061E3BE9CC00A9DE6C /* Sport.swift */; };
 		B5184DBD1E816C3500E64254 /* ShowtimesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */; };
 		B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */; };
 		B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */; };
@@ -276,6 +274,7 @@
 		C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
 		C4D047041E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
 		C4D047051E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
+		C4FF5AED1EA906F800B62DC7 /* MusicViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4FF5AEC1EA906F800B62DC7 /* MusicViewController.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -443,7 +442,6 @@
 		075CBA6012FC0B19D7960DBA /* Pods_Rutgers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rutgers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2127C0710965413FBE553ECA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		621347721E04279600786570 /* MusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
-		621347731E04279600786570 /* MusicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MusicViewController.xib; sourceTree = "<group>"; };
 		621872C51D3407DC00E727E3 /* RUBusMessagesDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessagesDataSource.h; sourceTree = "<group>"; };
 		621872C61D3407DC00E727E3 /* RUBusMessagesDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMessagesDataSource.m; sourceTree = "<group>"; };
 		621872C81D340B9500E727E3 /* RUBusMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMessageCell.h; sourceTree = "<group>"; };
@@ -709,7 +707,6 @@
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
 		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
 		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
-		B528E0061E3BE9CC00A9DE6C /* Sport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sport.swift; sourceTree = "<group>"; };
 		B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionView.swift; sourceTree = "<group>"; };
 		B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDescriptionCell.swift; sourceTree = "<group>"; };
 		B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoDescriptionCell.xib; sourceTree = "<group>"; };
@@ -767,6 +764,7 @@
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
 		C4D047021E53565A00A71268 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C4FF5AEC1EA906F800B62DC7 /* MusicViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MusicViewController.storyboard; sourceTree = "<group>"; };
 		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1738,7 +1736,7 @@
 				04BA07331BD6BCA5009AB651 /* Launch.xcassets */,
 				C262EFB2188345D10035C8F5 /* Supporting Files */,
 				621347721E04279600786570 /* MusicViewController.swift */,
-				621347731E04279600786570 /* MusicViewController.xib */,
+				C4FF5AEC1EA906F800B62DC7 /* MusicViewController.storyboard */,
 				C43D74381E64C4C6001993E2 /* Linkable.swift */,
 			);
 			path = Rutgers;
@@ -1939,10 +1937,10 @@
 				624042691D76085E009AC3D8 /* AthleticsCollectionViewController.xib in Resources */,
 				B5F8CF111E7C93F9008D8C23 /* ShowtimesCell.xib in Resources */,
 				B52D0FDC1E574A4300DBDF26 /* VideoRatingsCell.xib in Resources */,
+				C4FF5AED1EA906F800B62DC7 /* MusicViewController.storyboard in Resources */,
 				B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */,
 				04AEDE3919D32FC000A20D1E /* rutgerscopyright@2x.png in Resources */,
 				62530D971D78789500BAB5E6 /* AthleticsCollectionViewCell.xib in Resources */,
-				621347751E04279600786570 /* MusicViewController.xib in Resources */,
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
 				B51D347D1E5B40A900F4BD1F /* GeneralPurposeCell.xib in Resources */,

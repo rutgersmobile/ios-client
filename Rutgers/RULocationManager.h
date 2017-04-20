@@ -11,8 +11,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-extern NSString *LocationManagerDidChangeLocationKey;
-extern NSString *LocationManagerNotificationLocationKey;
+#define LocationManagerDidChangeLocationKey @"LocationManagerDidChangeLocationKey"
+#define LocationManagerNotificationLocationKey @"LocationManagerNotificationLocationKey"
 
 #define NEARBY_DISTANCE 300
 
