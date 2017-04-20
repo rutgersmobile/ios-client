@@ -214,35 +214,35 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         }
     }
 
-    @IBAction func writeEmail(sender: UIButton) {
+    @IBAction func writeEmail(_ sender: UIButton) {
         if let url = NSURL(string: "mailto:wrnurutgersradio@gmail.com") {
             UIApplication.shared.openURL(url as URL)
         }
     }
 
-    @IBAction func playRadio(sender: UIButton) {
+    @IBAction func playRadio(_ sender: UIButton) {
         toggleRadio()
     }
 
-    @IBAction func openTwitter(sender: UIButton) {
+    @IBAction func openTwitter(_ sender: UIButton) {
         if let url = NSURL(string: "https://twitter.com/WRNU") {
             openWebView(url: url)
         }
     }
 
-    @IBAction func openInstagram(sender: UIButton) {
+    @IBAction func openInstagram(_ sender: UIButton) {
         if let url = NSURL(string: "https://www.instagram.com/_wrnu/") {
             openWebView(url: url)
         }
     }
 
-    @IBAction func openFacebook(sender: UIButton) {
+    @IBAction func openFacebook(_ sender: UIButton) {
         if let url = NSURL(string: "https://www.facebook.com/CampusBeatRadio") {
             openWebView(url: url)
         }
     }
 
-    @IBAction func openSoundcloud(sender: UIButton) {
+    @IBAction func openSoundcloud(_ sender: UIButton) {
         if let url = NSURL(string: "https://soundcloud.com/rutgers-wrnu") {
             openWebView(url: url)
         }
