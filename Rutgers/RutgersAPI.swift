@@ -17,7 +17,8 @@ class RutgersAPI {
     let provider : RxMoyaProvider<RutgersService>
 
     private init() {
-        self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+//        self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        self.provider = RxMoyaProvider<RutgersService>()
     }
 
     public func getDiningHalls() -> Observable<[DiningHall]> {

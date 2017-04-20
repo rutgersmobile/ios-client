@@ -9,13 +9,18 @@
 import UIKit
 
 class ShowtimesCell: UITableViewCell {
-    @IBOutlet weak var showTime1: UILabel!
-    @IBOutlet weak var showTime2: UILabel!
-    @IBOutlet weak var showTime3: UILabel!
-
+    
+    @IBOutlet weak var showtime1: UILabel!
+    @IBOutlet weak var showtime2: UILabel!
+    @IBOutlet weak var showtime3: UILabel!
+    @IBOutlet weak var showtime4: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        self.showtime1.textColor = .white
+        self.showtime2.textColor = .white
+        self.showtime3.textColor = .white
+        self.showtime4.textColor = .white
     }
-
 }

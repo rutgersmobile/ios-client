@@ -20,16 +20,18 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     //Also passed from previous view controller, displays most recent showtimes
     var showTimes : [String]!
     
-    var passedData : TmdbData!
+    var tmdbData : TmdbData!
+    
+    var movie: Cinema!
     
     //Sets up dispose bag for Rx pods - all observables within disposeBag will
     //be dealloc when viewcontroller gets dealloc
     let disposeBag = DisposeBag()
     
-    //Initializer for VC - requires movieId to be set
-    init(movieId: Int, showTimes: [String]) {
-        self.movieId = movieId
-        self.showTimes = showTimes
+    
+    init(movie: Cinema, data: TmdbData) {
+        self.tmdbData = data
+        self.movie = movie
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,6 +47,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         
         /*
          Sets the tableView datasource to nil, otherwise when you try to set
          the dataSource with the Rx version the compiler will get confused and
@@ -61,34 +64,45 @@ final class RUCinemaDetailTableViewController: UITableViewController {
 
         skinTableViewDataSource(dataSource)
         
-        TmdbAPI.sharedInstance.getTmdbData(movieId: self.movieId)
-            .flatMap { general in
-                TmdbAPI.sharedInstance.getTmdbCredits(movieId: general.id!)
-                    .map { credits in (general, credits)}
-            }
-            .map { (tmdbData, tmdbCredits) in
-                [
+        
+        TmdbAPI.sharedInstance.getTmdbCredits(movieId: self.tmdbData.id!)
+            .map { [unowned self] (tmdbCredits) in
+                var tableViewSections: [MultipleSectionModel] = [
                     .VideoSection(
-                        title: tmdbData.title!,
+                        title: self.tmdbData.title ?? "",
                         items: [
                             .VideoContentItem(
                                 title: "Video",
-                                key: tmdbData.videos!.videoResult[0].key
+                                key: self.tmdbData.videos!.videoResult[0].key
                             ),
                             .VideoRatingsItem(
-                                title: String(tmdbData.voteAverage!)
+                                title:
+                                String(self.tmdbData.voteAverage ?? 0.0)
                             )
                         ]
-                    ),
-                    .ShowtimesSection(
-                        title: "Showtimes",
-                        items: [.ShowtimesItem(showTimes: self.showTimes)]
-                    ),
+                    )
+                ]
+                
+                if self.movie.showings.count != 0 {
+                    let showTimesSection: [MultipleSectionModel] = [
+                        .ShowtimesSection(
+                            title: "Showtimes",
+                            items: [
+                                .ShowtimesItem(
+                                    showTimes: self.movie.showings
+                                )
+                            ]
+                        )
+                    ]
+                    tableViewSections.append(contentsOf: showTimesSection)
+                }
+
+                let generalSection: [MultipleSectionModel] = [
                     .InfoSection(
                         title: "Info",
                         items: [
                             .InfoDescriptionItem(
-                                description: tmdbData.overview!
+                                description: self.tmdbData.overview ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Director:",
@@ -102,7 +116,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         items: [
                             .GeneralPurposeItem(
                                 title: "Status:",
-                                data: tmdbData.status!
+                                data: self.tmdbData.status ?? ""
                             ),
                             .GeneralPurposeItem(
                                 title: "Original Language:",
@@ -111,28 +125,30 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                             .GeneralPurposeItem(
                                 title: "Runtime:",
                                 data: self.getFormattedRuntime(
-                                runtime: tmdbData.runtime!)
+                                runtime: self.tmdbData.runtime ?? 0) 
                             ),
                             .GeneralPurposeItem(
                                 title: "Budget:",
                                 data: self.getFormattedBudget(
-                                budget: tmdbData.budget!
-                                )
+                                budget: self.tmdbData.budget ?? 0) 
                             ),
                             .GeneralPurposeItem(
                                 title: "Release Date:",
                                 data: self.getFormattedReleaseInfo(
-                                date: tmdbData.releaseDate!
-                                )
-                            )
+                                date: self.tmdbData.releaseDate ?? "") )
                         ]
                     )
                 ]
+                
+                tableViewSections.append(contentsOf: generalSection)
+                
+                return tableViewSections
             }
             .do(onError: {error in print(error)})
             .asDriver(onErrorJustReturn: [])
             .drive((self.tableView?.rx.items(dataSource: dataSource))!)
             .addDisposableTo(disposeBag)
+    
     }
     
     /*
@@ -178,6 +194,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      format the number into something understandable see extension at end of
      file to see how it works
      */
+    
     func getFormattedBudget (budget: Int) -> String {
         let formattedNum = budget.stringFormattedWithSeparator
         return "$\(formattedNum)"
@@ -198,7 +215,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         let dateObj = dateFormatter.date(from: dateString)
         
         dateFormatter.dateFormat = "MMMM dd, yyyy"
-        print("Dateobj: \(dateFormatter.string(from: dateObj!))")
         
         dateString = dateFormatter.string(from: dateObj!)
         
@@ -223,7 +239,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         return cell as! T
     }
     
-    
     /*
      This method configures the dataSource based off what enum cell value you
      put under the enum secion identifier when you map the TMDB data to the
@@ -231,10 +246,11 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     
      TL;DR - sets the cells and sections up
      */
+    
     fileprivate func skinTableViewDataSource(_
         dataSource: RxTableViewSectionedReloadDataSource<MultipleSectionModel>
         ) {
-        dataSource.configureCell = {(
+        dataSource.configureCell = {[unowned self] (
             dataSource: TableViewSectionedDataSource<MultipleSectionModel>,
             table: UITableView,
             idxPath: IndexPath,
@@ -279,15 +295,85 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
             case let .ShowtimesItem(showtimes):
                 
-                let cell: ShowtimesCell =
-                    table.dequeueReusableCell(
-                        withIdentifier: "showtimes",
-                        for: idxPath) as! ShowtimesCell
+                let cell = table.dequeueReusableCell(withIdentifier: "showtimes",
+                                                     for: idxPath
+                                                     ) as! ShowtimesCell
                 
-                cell.showTime1.text = showtimes[0]
-                cell.showTime2.text = showtimes[1]
-                cell.showTime3.text = showtimes[2]
-
+                let calendar = Calendar.current
+                
+                let dateFormatter = DateFormatter()
+                    
+                    dateFormatter.timeStyle = .short
+                
+                let formattedArray = showtimes.map{
+                                        calendar.component(
+                                            .day,
+                                            from: $0.dateTime
+                                        )
+                                    }
+                
+                var noDuplicates : [Int] = []
+                
+                for index in 0..<formattedArray.count {
+                
+                    let checkItem = formattedArray[index]
+            
+                    let nextItem = formattedArray.get(index+1) ?? 0
+                    
+                    if checkItem != nextItem {
+                        noDuplicates.append(checkItem)
+                    }
+                    
+                    if nextItem == 0 {
+                        break;
+                    }
+                    
+                }
+                
+                let frame: CGRect = CGRect(x: 0,
+                                           y: 0,
+                                           width: cell.frame.width,
+                                           height: cell.frame.height/2
+                                           )
+                
+                let showtimesCollectionView =
+                    ShowtimesCollectionView.init(frame: frame,
+                                                 daysToDisplay: noDuplicates,
+                                                 showtimes: showtimes
+                                                 )
+                
+                cell.addSubview(showtimesCollectionView)
+                
+                cell.showtime1.text = "8--pm"
+                cell.showtime2.text = "8--pm"
+                cell.showtime3.text = "8--pm"
+                cell.showtime4.text = "8--pm"
+                
+                showtimesCollectionView.rx.itemSelected
+                    .subscribe {
+                        idxObservable in
+                        idxObservable.map {
+                            idxPath in
+                            
+                            let filteredArray =
+                                showtimes.filter{
+                                calendar.component(.day,
+                                                   from: $0.dateTime
+                                ) == noDuplicates[idxPath.row]
+                            }
+                        
+                            let timesArray = filteredArray.map{
+                                dateFormatter.string(from: $0.dateTime)
+                            }
+                        
+                            cell.showtime1.text = timesArray.get(0) ?? ""
+                            cell.showtime2.text = timesArray.get(1) ?? ""
+                            cell.showtime3.text = timesArray.get(2) ?? ""
+                            cell.showtime4.text = timesArray.get(3) ?? ""
+                        
+                            }.element
+                    }.addDisposableTo(self.disposeBag)
+                
                 return self.skinTableViewCells(cell: cell)
                 
             case let .InfoDescriptionItem(description):
@@ -308,7 +394,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                         withIdentifier: "infoCast",
                         for: idxPath) as! InfoCastCell
                 
-                self.populateScrollView(cell: cell, castArray: cast)
+                let filteredCast = cast.filter{$0.profilePath != nil}
+                
+                self.populateCastScrollView(cell: cell, castArray: filteredCast)
                 
                 return self.skinTableViewCells(cell: cell)
                 
@@ -328,7 +416,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
             
         }
         
-        dataSource.titleForHeaderInSection = { dataSource, index in
+        dataSource.titleForHeaderInSection = {dataSource, index in
             dataSource[index].title
         }
     }
@@ -342,85 +430,95 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      position of the scrollView are set in IB while everything else is 
      done here programatically.
      */
-    func populateScrollView(cell: InfoCastCell, castArray: [Cast]) {
+    
+    func getCastPhoto(castMember: Cast) -> UIImageView {
+        let castImageView: UIImageView = UIImageView()
+        castImageView.contentMode = UIViewContentMode.scaleAspectFill
+        
+        TmdbAPI.sharedInstance.getCastProfilePicture(castData: castMember)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: {image in
+                //Initializes ImageView for UIImage
+                
+                //Optional mapping so it ignores nil values
+                image.map {unwrappedImage in
+                    castImageView.image = unwrappedImage
+                }
+            }).addDisposableTo(self.disposeBag)
+        
+        return castImageView
+    }
+    
+    func populateCastScrollView(cell: InfoCastCell, castArray: [Cast]) {
+        
         let imageWidth: CGFloat = 50
         let imageHeight: CGFloat = 50
         var xPosition: CGFloat = 0
         var scrollViewContentSize: CGFloat = 0
-        
-        for index in 0..<castArray.count {
-            if castArray[index].profilePath != nil {
-                TmdbAPI.sharedInstance
-                    .getCastProfilePicture(castData: castArray[index])
-                    .observeOn(MainScheduler.instance)
-                    .subscribe(onNext: { image in
-                        
-                        
-                        //Adds the cast member's name underneath their photo
-                        cell.scrollView.addSubview(
-                            self.createCastLabel(name: castArray[index].name,
-                                            x: xPosition,
-                                            imageHeight: imageHeight,
-                                            imageWidth: imageWidth
-                            )
-                        )
-                        
-                        //Initializes ImageView for UIImage
-                        let castImageView: UIImageView = UIImageView()
-                        
-                        //Optional chaining in case image is nil for some reason
-                        if let newImage = image {
-                            castImageView.image = newImage
-                            castImageView.contentMode =
-                                UIViewContentMode.scaleAspectFill
-                        }
-                        
-                        //Sets the frame of the imageView's width and height
-                        castImageView.frame.size.width = imageWidth
-                        castImageView.frame.size.height = imageHeight
-                        
-                        //This makes the circle effect for the photos, only 
-                        //works on square photos
-                        castImageView.layer.cornerRadius =
-                            castImageView.frame.size.width/2
-                        castImageView.clipsToBounds = true
-                        
-                        //Sets the x origin for photo
-                        castImageView.frame.origin.x = xPosition
-                        castImageView.frame.origin.y = 0
-                        
-                        //Adds the castPhoto to the scrollView
-                        cell.scrollView.addSubview(castImageView)
-                        
-                        /*In order for the scrollView to display the pictures
-                        properly, the x position needs to be set after every
-                        iteration - otherwise all the photos and labels
-                         will just stack on top of one another.  Furthermore,
-                         the scrollView needs to be adjusted every time we add
-                         a new photo.  We add 20 in both cases to add spacing
-                         between photos
-                        */
-                        
-                        let iterativeSize = imageWidth + 20
-                        xPosition += iterativeSize
-                        scrollViewContentSize += iterativeSize
-                        
-                        //Sets the new contentSize for the scrollView
-                        cell.scrollView.contentSize =
-                            CGSize(width: scrollViewContentSize,
-                                   height: imageHeight)
-                        
-                    }).addDisposableTo(self.disposeBag)
-            } else {
-                break
+ 
+ 
+        let castPhotoAndNamesDict =
+            castArray
+                .map{$0}
+                .reduce([String : UIImageView]()) {[unowned self] in
+                    var finalDict:[String : UIImageView] = $0
+            
+                    finalDict[$1.name] = self.getCastPhoto(castMember: $1)
+            
+                    return finalDict
             }
+            
+        
+        for index in 0..<castPhotoAndNamesDict.count {
+            cell.scrollView.addSubview(
+                self.createCastLabel(
+                    name: castArray[index].name,
+                    x: xPosition,
+                    imageHeight: imageHeight,
+                    imageWidth: imageWidth
+                )
+            )
+
+            let castImageView: UIImageView =
+                castPhotoAndNamesDict[castArray[index].name]!
+            
+            //Sets the frame of the imageView's width and height
+            castImageView.frame.size.width = imageWidth
+            castImageView.frame.size.height = imageHeight
+            
+            //This makes the circle effect for the photos, only
+            //works on square photos
+            castImageView.layer.cornerRadius =
+            castImageView.frame.size.width/2
+            
+            castImageView.clipsToBounds = true
+            
+            //Sets the x origin for photo
+            castImageView.frame.origin.x = xPosition
+            castImageView.frame.origin.y = 0
+                                    
+            //Adds the castPhoto to the scrollView
+            cell.scrollView.addSubview(castImageView)
+            
+            let iterativeSize = imageWidth + 20
+                xPosition += iterativeSize
+                scrollViewContentSize += iterativeSize
+            
+            //Sets the new contentSize for the scrollView
+                cell.scrollView.contentSize =
+                    CGSize(width: scrollViewContentSize,
+                           height: imageHeight)
+        
+        
         }
+    
     }
     
     /*
      Used in populateScrollView - reduces some of the extraneous lines of code
      Essentially just creates the name label under each cast member's photo
     */
+    
     func createCastLabel(name: String,
                          x: CGFloat,
                          imageHeight: CGFloat,
@@ -450,6 +548,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
      This method just creates some grey space underneath the last section,
      purely for style
      */
+    
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         switch section {
@@ -473,28 +572,55 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         
                 var height = CGFloat(30.0)
         
-        switch indexPath.section {
-        case 0: //VideoSection
-            switch indexPath.row {
-            case 0: //VideoCell
-                height = 200
-            case 1: //RatingsCell
-                height = 45
-            default:
+        switch tableView.numberOfSections {
+        case 4: //If there are showtimes available, do this layout
+            switch indexPath.section {
+            case 0: //VideoSection
+                switch indexPath.row {
+                case 0: //VideoCell
+                    height = 200
+                case 1: //RatingsCell
+                    height = 45
+                default:
+                    height = 30
+                }
+            case 1: //ShowtimesSection
+                height = 120
+            case 2: //InfoSection
+                switch indexPath.row {
+                case 0: //DescriptionCell
+                    height = 120
+                case 2: //CastCell
+                    height = 120
+                default:
+                    height = 30
+                }
+            default: //GeneralCells
                 height = 30
             }
-        case 2: //InfoSection
-            switch indexPath.row {
-            case 0: //DescriptionCell
-                height = 120
-            case 2: //CastCell
-                height = 120
-            default:
+        default: //Otherwise do this layout
+            switch indexPath.section {
+            case 0: //VideoSection
+                switch indexPath.row {
+                case 0: //VideoCell
+                    height = 200
+                case 1: //RatingsCell
+                    height = 45
+                default:
+                    height = 30
+                }
+            case 1: //InfoSection
+                switch indexPath.row {
+                case 0: //DescriptionCell
+                    height = 120
+                case 2: //CastCell
+                    height = 120
+                default:
+                    height = 30
+                }
+            default: //GeneralCells
                 height = 30
             }
-        default:
-            height = 30
-            
         }
         
         return height
@@ -565,6 +691,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
  http://stackoverflow.com/questions/29999024/adding-thousand-separator-to-int-in-swift
  
  */
+
 struct Number {
     static let formatterWithSeparator: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -600,7 +727,7 @@ private enum MultipleSectionModel {
 private enum CinemaSectionItem {
     case VideoContentItem(title: String, key: String)
     case VideoRatingsItem(title: String)
-    case ShowtimesItem(showTimes: [String])
+    case ShowtimesItem(showTimes: [Showings])
     case InfoDescriptionItem(description: String)
     case InfoCastItem(cast: [Cast])
     case GeneralPurposeItem(title: String, data: String)
@@ -614,7 +741,6 @@ private enum CinemaSectionItem {
  Section is being called with the result of the computed property.
  */
 extension MultipleSectionModel: SectionModelType {
-    
     
     var items: [CinemaSectionItem] {
         switch self {
