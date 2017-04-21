@@ -291,7 +291,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.titleLabel.text = title
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self.map{ unwrappedSelf in
+                    unwrappedSelf.skinTableViewCells(cell: cell)
+                } ?? VideoContentCell()
                 
             case let .ShowtimesItem(showtimes):
                 
@@ -374,7 +376,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                             }.element
                     }.addDisposableTo(self!.disposeBag)
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self?.skinTableViewCells(cell: cell) ?? ShowtimesCell()
                 
             case let .InfoDescriptionItem(description):
                 
@@ -385,7 +387,8 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 cell.descriptionText.text = description
                 
-                return self!.skinTableViewCells(cell: cell)
+                return
+                    self?.skinTableViewCells(cell: cell) ?? InfoDescriptionCell()
                 
             case let .InfoCastItem(cast):
                 
@@ -398,7 +401,7 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 
                 self!.populateCastScrollView(cell: cell, castArray: filteredCast)
                 
-                return self!.skinTableViewCells(cell: cell)
+                return self?.skinTableViewCells(cell: cell) ?? InfoCastCell()
                 
             case let .GeneralPurposeItem(title, data):
                 let cell: GeneralPurposeCell =
@@ -409,7 +412,9 @@ final class RUCinemaDetailTableViewController: UITableViewController {
                 cell.titleLabel.text = title
                 cell.dataLabel.text = data
                 
-                return self!.skinTableViewCells(cell: cell)
+                
+                return
+                    self?.skinTableViewCells(cell: cell) ?? GeneralPurposeCell()
             }
             
             
