@@ -143,7 +143,7 @@ final class RUCinemaCollectionViewController:
 
         self.collectionView?.rx.modelSelected(CVCinemaSectionItem.self)
             .subscribe(
-                onNext: {[unowned self] model in
+                onNext: {[weak self] model in
 
                 let vc =
                     RUCinemaDetailTableViewController.init(
@@ -151,7 +151,7 @@ final class RUCinemaCollectionViewController:
                         data: model.tmdbItem
                     )
 
-                self.navigationController?.pushViewController(
+                self!.navigationController?.pushViewController(
                     vc,
                     animated: true
                 )
@@ -195,7 +195,7 @@ final class RUCinemaCollectionViewController:
         dataSource: RxCollectionViewSectionedReloadDataSource<CinemaSection>
         ) {
         dataSource.configureCell = {
-        [unowned self] (
+        [weak self] (
             dataSource: CollectionViewSectionedDataSource<CinemaSection>,
             collectionView: UICollectionView,
             idxPath: IndexPath,
@@ -207,10 +207,10 @@ final class RUCinemaCollectionViewController:
             
             let cell: RUCinemaCollectionViewCell =
                 collectionView.dequeueReusableCell(
-                    withReuseIdentifier: (self.CellId),
+                    withReuseIdentifier: (self!.CellId),
                     for: idxPath) as! RUCinemaCollectionViewCell
             
-            self.getPosterImage(
+            self!.getPosterImage(
                 data: tmdbMovie,
                 completion: {
                     image in
