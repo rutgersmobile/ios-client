@@ -129,7 +129,7 @@ class RUFoodMainViewController
         ).asObserver()
 
         self.tableView.rx.modelSelected(DiningHallSectionItem.self)
-            .bindTo(diningHallSegue)
+            .bind(to: diningHallSegue)
             .addDisposableTo(disposeBag)
     }
 

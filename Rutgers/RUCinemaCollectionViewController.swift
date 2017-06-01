@@ -13,16 +13,6 @@ import Foundation
 import Alamofire
 import RxSegue
 
-extension Array {
-    func get(_ i: Int) -> Element? {
-        if i < self.count {
-            return self[i]
-        } else {
-            return nil
-        }
-    }
-}
-
 final class RUCinemaCollectionViewController:
     UICollectionViewController,
     RUChannelProtocol {

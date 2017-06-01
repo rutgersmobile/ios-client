@@ -21,14 +21,15 @@ enum RutgersService {
 
 extension RutgersService : TargetType {
     var baseURL: URL {
-        return URL(string: "https://doxa.rutgers.edu/mobile-mattro/3")!
+        return URL(string: "http://localhost")!
+        //return URL(string: "https://doxa.rutgers.edu/mobile-mattro/3")!
 //        return URL(string: "https://doxa.rutgers.edu/mobile/3")!
     }
 
     var path: String {
         switch self {
         case .getDiningHalls:
-            return "/rutgers-dining.txt"
+            return "/food.json"
         case .getGames(let sport):
             return "/sports/\(sport).json"
         case .getMotd:

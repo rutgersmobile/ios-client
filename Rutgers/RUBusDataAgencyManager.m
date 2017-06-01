@@ -29,8 +29,8 @@
     The perdictions are obtained from the next bus servers directly
  
  */
-#define URLS @{newBrunswickAgency: @"rutgersrouteconfig.txt", newarkAgency: @"rutgers-newarkrouteconfig.txt"}
-#define ACTIVE_URLS @{newBrunswickAgency: @"nbactivestops.txt", newarkAgency: @"nwkactivestops.txt"}
+#define URLS @{newBrunswickAgency: @"nb-route-config.json", newarkAgency: @"nwk-route-config.json"}
+#define ACTIVE_URLS @{newBrunswickAgency: @"nb-active-stops.json", newarkAgency: @"nwk-active-stops.json"}
 
 @interface RUBusDataAgencyManager ()
 @property NSString *agency;
