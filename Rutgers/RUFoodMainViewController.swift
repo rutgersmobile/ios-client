@@ -28,7 +28,7 @@ class RUFoodMainViewController
     typealias DiningHallSectionObserver = AnyObserver<DiningHallSectionItem>
 
     static func channelHandle() -> String! {
-        return "food";
+        return "food"
     }
 
     static func registerClass() {
@@ -85,7 +85,7 @@ class RUFoodMainViewController
             return cell
         }
 
-        dataSource.titleForHeaderInSection = {(ds, ip) in
+        dataSource.titleForHeaderInSection = { (ds, ip) in
             ds.sectionModels[ip].header
         }
 
