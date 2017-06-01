@@ -28,7 +28,7 @@ class SOCAPI {
         self.provider = RxMoyaProvider<SOCService>(
             plugins: [NetworkActivityPlugin { [weak networkVariable] change in
                 networkVariable?.value = change
-            }, NetworkLoggerPlugin(verbose: true)]
+            }]
         )
         self.networkVariable = networkVariable
     }
