@@ -48,7 +48,7 @@ class RUDiningHallTabBarController
     }
 
     override func sharingUrl() -> URL? {
-        let name = { () -> String in switch (diningHall!) {
+        let name = { () -> String in switch (self.diningHall!) {
         case .fullDiningHall(let fullDiningHall):
             return fullDiningHall.name
         case .serializedDiningHall(let diningHallName):

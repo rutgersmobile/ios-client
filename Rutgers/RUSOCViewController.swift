@@ -97,8 +97,6 @@ class RUSOCViewController
             let socOptions = Observable.of(RUSOCOptionsViewController.defaultOptions(
                     semester: currentSemester))
             
-                
-            
             return socOptions.flatMap { options in
                 SOCAPI.instance.getCourses(
                     semester: options.semester,
@@ -112,8 +110,9 @@ class RUSOCViewController
                         )
                 }
             }
-        }.toArray().do(onError: { print($0) })
-    
+            }.subscribe().addDisposableTo(disposeBag)
+        
+        print(testArray)
         
 
         SOCAPI.instance.networkStatus
@@ -189,7 +188,7 @@ class RUSOCViewController
                 cell.textLabel?.text = model.subjectDescription
             }
             .addDisposableTo(disposeBag)
-
+        
         self.tableView.rx.modelSelected(Subject.self)
             .subscribe(onNext: { subject in
                 let vc = RUSOCSubjectViewController.instantiate(
