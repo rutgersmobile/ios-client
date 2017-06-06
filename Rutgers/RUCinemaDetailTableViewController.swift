@@ -47,7 +47,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         
         /*
          Sets the tableView datasource to nil, otherwise when you try to set
          the dataSource with the Rx version the compiler will get confused and

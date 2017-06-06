@@ -89,6 +89,32 @@ class RUSOCViewController
         let settingsButtonItem = UIBarButtonItem(customView: settingsViewButton)
         self.navigationItem
             .setRightBarButton(settingsButtonItem, animated: false)
+        
+        let testArray = RutgersAPI.sharedInstance.getSOCInit().flatMap { (initObj: Init) -> Observable<[Subject]> in
+            
+            let currentSemester = initObj.currentTermDate.asSemester()
+            
+            let socOptions = Observable.of(RUSOCOptionsViewController.defaultOptions(
+                    semester: currentSemester))
+            
+                
+            
+            return socOptions.flatMap { options in
+                SOCAPI.instance.getCourses(
+                    semester: options.semester,
+                    campus: options.campus,
+                    level: options.level
+                    ).observeOn(Schedulers.instance.background).map { courses in
+                        self.courses = courses
+                        return SOCAPI.getSubjects(
+                            for: courses,
+                            from: initObj.subjects
+                        )
+                }
+            }
+        }.toArray().do(onError: { print($0) })
+    
+        
 
         SOCAPI.instance.networkStatus
             .subscribe(onNext: { [weak self] change in

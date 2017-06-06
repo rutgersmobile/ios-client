@@ -20,7 +20,40 @@ class RutgersAPI {
 //        self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
         self.provider = RxMoyaProvider<RutgersService>()
     }
-
+    
+    public func getSOCInit() -> Observable<Init> {
+        return self.provider.request(.getSOCInit).mapUnboxObject(type: Init.self)
+            .observeOn(Schedulers.instance.background)
+            .map { socInit in Init(
+                currentTermDate: socInit.currentTermDate,
+                subjects: socInit.subjects.map { subject in Subject(
+                    subjectDescription: subject.subjectDescription
+                        .trimmingCharacters(in: .whitespaces),
+                    code: subject.code
+                    )}
+                )}
+    }
+    
+    public func getSubjects(semester: Semester, campus: Campus, level: Level) -> Observable<[Subject]> {
+        return self.provider.request(.getSubjects(semester: semester, campus: campus, level: level))
+            .mapUnboxArray(type: Subject.self)
+    }
+    
+    public func getCourse(semester: Semester, campus: Campus, level: Level, course: Course) -> Observable<Course> {
+        return self.provider.request(.getCourse(semester: semester, campus: campus, level: level, course: course))
+            .mapUnboxObject(type: Course.self)
+    }
+    
+    public func getCourses(semester: Semester, campus: Campus, level: Level, course: Course) -> Observable<[Course]> {
+        return self.provider.request(.getCourses(semester: semester, campus: campus, level: level, course: course))
+            .mapUnboxArray(type: Course.self)
+    }
+    
+    public func getSections(semester: Semester, campus: Campus, level: Level, course: Course) -> Observable<[Section]> {
+        return self.provider.request(.getSections(semester: semester, campus: campus, level: level, course: course))
+            .mapUnboxArray(type: Section.self)
+    }
+    
     public func getDiningHalls() -> Observable<[DiningHall]> {
         return self.provider.request(.getDiningHalls)
             .mapUnboxArray(type: DiningHall.self)

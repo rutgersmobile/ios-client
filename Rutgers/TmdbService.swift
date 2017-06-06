@@ -36,14 +36,14 @@ extension TmdbService : TargetType {
     }
     
     var parameters: [String: Any]? {
-        let apiArgWithVideos = ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "append_to_response" : "videos"]
-        let apiArg = ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "language" : "en-US"];
+        
+        //MOVE API KEY TO SECRET FILE
         
         switch self {
         case .getTmdbData( _):
-            return apiArgWithVideos
+            return ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "append_to_response" : "videos"]
         case .getCastCrew( _):
-            return apiArg
+            return ["api_key" : "a44c0fb255f2eca735d6ed30883fe27a", "language" : "en-US"]
         }
     }
     
