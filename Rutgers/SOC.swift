@@ -130,17 +130,19 @@ extension Level {
 
 struct Semester {
     let year: Int
-    let term: Term
+    let term: Int
 }
 
+/*
 extension Semester {
     func toDict() -> [String: Any] {
         return [
             "year": self.year,
-            "term": self.term.asInt()
+            "term": self.term
         ]
     }
-
+  */
+    /*
     var previous: Semester {
         switch self.term {
         case .winter:
@@ -173,14 +175,16 @@ extension Semester {
             }
         }
     }
-}
-
+ */
+//}
+/*
 extension Semester: CustomStringConvertible {
     var description: String {
         return "\(self.term) \(self.year)"
     }
-}
+}*/
 
+/*
 enum Term {
     case winter
     case spring
@@ -217,6 +221,7 @@ extension Term {
         }
     }
 }
+ */
 
 struct Course {
     let title: String
@@ -262,8 +267,8 @@ struct MeetingTime {
 }
 
 struct Init {
-    let currentTermDate: TermDate
-    let subjects: [Subject]
+    let semesters: [Semester]
+    let campus: [String]
 }
 
 struct TermDate {
@@ -273,12 +278,6 @@ struct TermDate {
     let term: Int
 }
 
-extension TermDate {
-    func asSemester() -> Semester {
-        return Semester(year: self.year, term: Term(self.term)!)
-    }
-}
-
 struct Subject {
     let subjectDescription: String
     let code: String
@@ -286,6 +285,13 @@ struct Subject {
 
 enum SOCParseError: Error {
     case invalidValueFormat(message: String)
+}
+
+extension Semester: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.term = try unboxer.unbox(key: "term")
+        self.year = try unboxer.unbox(key: "year")
+    }
 }
 
 extension Course: Unboxable {
@@ -348,8 +354,8 @@ extension MeetingTime: Unboxable {
 
 extension Init: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.currentTermDate = try unboxer.unbox(key: "currentTermDate")
-        self.subjects = try unboxer.unbox(key: "subjects")
+        self.semesters = try unboxer.unbox(keyPath: "semesters")
+        self.campus = try unboxer.unbox(key: "campuses")
     }
 }
 

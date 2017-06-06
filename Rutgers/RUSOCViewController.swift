@@ -53,7 +53,7 @@ class RUSOCViewController
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+/*
     func socOptions(
         semesters: [Semester]
     ) -> (RUSOCOptionsViewController, Observable<SOCOptions>) {
@@ -66,7 +66,7 @@ class RUSOCViewController
             return Disposables.create()
         }
         return (vc, observable)
-    }
+    }*/
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,31 +90,7 @@ class RUSOCViewController
         self.navigationItem
             .setRightBarButton(settingsButtonItem, animated: false)
         
-        let testArray = RutgersAPI.sharedInstance.getSOCInit().flatMap { (initObj: Init) -> Observable<[Subject]> in
-            
-            let currentSemester = initObj.currentTermDate.asSemester()
-            
-            let socOptions = Observable.of(RUSOCOptionsViewController.defaultOptions(
-                    semester: currentSemester))
-            
-            return socOptions.flatMap { options in
-                SOCAPI.instance.getCourses(
-                    semester: options.semester,
-                    campus: options.campus,
-                    level: options.level
-                    ).observeOn(Schedulers.instance.background).map { courses in
-                        self.courses = courses
-                        return SOCAPI.getSubjects(
-                            for: courses,
-                            from: initObj.subjects
-                        )
-                }
-            }
-            }.subscribe().addDisposableTo(disposeBag)
-        
-        print(testArray)
-        
-
+        /*
         SOCAPI.instance.networkStatus
             .subscribe(onNext: { [weak self] change in
                 switch change {
@@ -125,7 +101,31 @@ class RUSOCViewController
                 }
             })
             .addDisposableTo(disposeBag)
-
+        */
+        let level = Level.from(string: "U")
+        
+        //var subjArr : [Subject] = []
+        
+        let campus = Campus.newBrunswick
+        
+        RutgersAPI.sharedInstance.getSOCInit()
+            .observeOn(MainScheduler.asyncInstance)
+            .flatMap { initObj -> Observable<[Subject]> in
+                let currentSemester = initObj.semesters[0]
+            
+                return RutgersAPI.sharedInstance.getSubjects(semester: currentSemester, campus: campus, level: level!)}
+            .do(onError: { print($0) })
+            .asDriver(onErrorJustReturn: [])
+            .drive(self.tableView.rx.items(cellIdentifier: cellId))
+            { idx, model, cell in
+                cell.textLabel?.text = model.subjectDescription
+            }.addDisposableTo(disposeBag)
+        
+        
+        
+        
+        
+        /*
         SOCAPI.instance.getInit()
             .observeOn(MainScheduler.asyncInstance)
             .flatMap { (socInit: Init) -> Observable<[Subject]> in
@@ -188,6 +188,8 @@ class RUSOCViewController
                 cell.textLabel?.text = model.subjectDescription
             }
             .addDisposableTo(disposeBag)
+        */
+        
         
         self.tableView.rx.modelSelected(Subject.self)
             .subscribe(onNext: { subject in

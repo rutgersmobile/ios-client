@@ -68,34 +68,34 @@ extension RutgersService : TargetType {
         switch self {
         case .getSubjects(let semester, let campus, let level):
             return [
-                "term" : semester.term.asInt(),
+                "term" : semester.term,
                 "year" : semester.year,
-                "level" : level.title,
-                "campus" : campus.title
+                "level" : level.description,
+                "campus" : campus.description
                 ]
         case .getCourse(let semester, let campus, let level, let course):
             return [
-                "term" : semester.term.asInt(),
+                "term" : semester.term,
                 "year" : semester.year,
-                "level" : level.title,
-                "campus" : campus.title,
+                "level" : level.description,
+                "campus" : campus.description,
                 "subject": course.subject,
                 "course" : course.title
             ]
         case .getCourses(let semester, let campus, let level, let course):
             return [
-                "term" : semester.term.asInt(),
+                "term" : semester.term,
                 "year" : semester.year,
-                "level" : level.title,
-                "campus" : campus.title,
+                "level" : level.description,
+                "campus" : campus.description,
                 "subject" : course.subject
             ]
         case .getSections(let semester, let campus, let level, let course):
             return [
-                "term" : semester.term.asInt(),
+                "term" : semester.term,
                 "year" : semester.year,
-                "level" : level.title,
-                "campus" : campus.title,
+                "level" : level.description,
+                "campus" : campus.description,
                 "subject" : course.subject,
                 "course" : course.title
             ]

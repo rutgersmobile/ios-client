@@ -17,21 +17,12 @@ class RutgersAPI {
     let provider : RxMoyaProvider<RutgersService>
 
     private init() {
-//        self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        self.provider = RxMoyaProvider<RutgersService>()
+        self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+//        self.provider = RxMoyaProvider<RutgersService>()
     }
     
     public func getSOCInit() -> Observable<Init> {
         return self.provider.request(.getSOCInit).mapUnboxObject(type: Init.self)
-            .observeOn(Schedulers.instance.background)
-            .map { socInit in Init(
-                currentTermDate: socInit.currentTermDate,
-                subjects: socInit.subjects.map { subject in Subject(
-                    subjectDescription: subject.subjectDescription
-                        .trimmingCharacters(in: .whitespaces),
-                    code: subject.code
-                    )}
-                )}
     }
     
     public func getSubjects(semester: Semester, campus: Campus, level: Level) -> Observable<[Subject]> {

@@ -73,7 +73,6 @@
 		04C0D29F1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C0D29E1C7E4B9800FEF0D7 /* RUFavoritesDynamicHandoffViewController.m */; };
 		04C0D2D01C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C0D2CF1C90DCD600FEF0D7 /* RUFavoritesDynamicHandoffDataSource.swift */; };
 		04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */; };
-		04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */; };
 		04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */; };
 		04EDDE141D05FDB900A59235 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04EDDE131D05FDB900A59235 /* SafariServices.framework */; };
 		04FD97C71D13540500E9877D /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04FD97C61D13540500E9877D /* GLKit.framework */; };
@@ -110,23 +109,13 @@
 		A70C2BE2198C2C60004F82D4 /* ALTableViewRightDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BDA198C2C60004F82D4 /* ALTableViewRightDetailCell.m */; };
 		A70C2BE3198C2C60004F82D4 /* ALTableViewTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70C2BDB198C2C60004F82D4 /* ALTableViewTextCell.m */; };
 		A7177BAE199DC0CD0092126F /* RUNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7177BAD199DC0CD0092126F /* RUNavigationController.m */; };
-		A7177BB1199E80B70092126F /* RUSOCCourseDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7177BB0199E80B70092126F /* RUSOCCourseDataSource.m */; };
-		A7177BB4199E86660092126F /* RUSOCCourseSectionsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7177BB3199E86660092126F /* RUSOCCourseSectionsDataSource.m */; };
 		A7241A2D1988537100304436 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A2C1988537100304436 /* CollectionViewController.m */; };
 		A7241A3B1989583500304436 /* DataTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A3A1989583500304436 /* DataTuple.m */; };
 		A7241A4219896A9400304436 /* RUReaderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A4119896A9400304436 /* RUReaderDataSource.m */; };
 		A7241A4519896FEF00304436 /* TupleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A4319896FEF00304436 /* TupleDataSource.m */; };
-		A7241A481989743D00304436 /* RUSOCSubjectDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A471989743D00304436 /* RUSOCSubjectDataSource.m */; };
 		A7241A4E1989915A00304436 /* PlacesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7241A4D1989915A00304436 /* PlacesSearchDataSource.m */; };
 		A72795EB195B5FD900C21165 /* RUFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */; };
-		A72CF0DE1951F5920024F950 /* RUSOCSectionRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */; };
 		A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */; };
-		A72FFFAF1937C3E100016C89 /* RUSOCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFAE1937C3E100016C89 /* RUSOCViewController.m */; };
-		A72FFFB21937C55F00016C89 /* RUSOCDataLoadingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFB11937C55F00016C89 /* RUSOCDataLoadingManager.m */; };
-		A72FFFB51937D8E500016C89 /* RUSOCSubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFB41937D8E500016C89 /* RUSOCSubjectViewController.m */; };
-		A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFB81937DDDE00016C89 /* RUSOCCourseRow.m */; };
-		A72FFFBC1937DF9000016C89 /* RUSOCCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFBB1937DF9000016C89 /* RUSOCCourseCell.m */; };
-		A72FFFBF1937E6C800016C89 /* RUSOCCourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFBE1937E6C800016C89 /* RUSOCCourseViewController.m */; };
 		A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFC21938DF3700016C89 /* ExpandingTableViewController.m */; };
 		A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A72FFFC51938E16200016C89 /* ExpandingTableViewSection.m */; };
 		A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A731C39B1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m */; };
@@ -139,19 +128,15 @@
 		A748ECED191602C400CB91FF /* RULocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A748ECEC191602C400CB91FF /* RULocationManager.m */; };
 		A75425E719C8B216003F0D58 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A786C71119C8AC8E00347BBD /* libxml2.dylib */; };
 		A75B1C8019B0EEDD00268214 /* TextViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */; };
-		A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75D6AA8199A73D5009E94D3 /* RUSOCSearchDataSource.m */; };
 		A75E7EC219A3E18D00782AE5 /* UITableView+Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = A75E7EC119A3E18D00782AE5 /* UITableView+Selection.m */; };
-		A7600E371950E752008DA667 /* RUSOCSectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7600E361950E752008DA667 /* RUSOCSectionCell.m */; };
 		A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993021934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m */; };
 		A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993041934E9C1008C64EE /* RURecCenterHoursSection.m */; };
 		A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A76993081934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m */; };
 		A769932019352B43008C64EE /* RUReaderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A769931F19352B43008C64EE /* RUReaderItem.m */; };
 		A770EDC71948AC0F00DD5866 /* RUInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A770EDC61948AC0F00DD5866 /* RUInfoTableViewController.m */; };
 		A771A27B199AA987000CD174 /* NSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = A771A27A199AA987000CD174 /* NSArray+Sort.m */; };
-		A771A27F199AB790000CD174 /* RUSOCSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = A771A27E199AB790000CD174 /* RUSOCSearchIndex.m */; };
 		A771A282199ABD09000CD174 /* NSString+WordsInString.m in Sources */ = {isa = PBXBuildFile; fileRef = A771A281199ABD09000CD174 /* NSString+WordsInString.m */; };
 		A7778D7419A4FEEF003BD8DE /* RowHeightCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7778D7319A4FEEF003BD8DE /* RowHeightCache.m */; };
-		A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7778D7619A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m */; };
 		A7778D7D19A54852003BD8DE /* RUInfoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7778D7C19A54852003BD8DE /* RUInfoDataSource.m */; };
 		A7778D8319A54897003BD8DE /* RUInfoTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7778D8219A54897003BD8DE /* RUInfoTableSection.m */; };
 		A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A777C2AC190AF0DA00F978D7 /* RUPlacesViewController.m */; };
@@ -196,7 +181,6 @@
 		A7DD347819816F120078023A /* arc stop.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A7DD347519816F120078023A /* arc stop.gpx */; };
 		A7DD347919816F120078023A /* hill center stop.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A7DD347619816F120078023A /* hill center stop.gpx */; };
 		A7DD347A19816F120078023A /* werblin parking lot.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A7DD347719816F120078023A /* werblin parking lot.gpx */; };
-		A7DD34871981B5E80078023A /* RUSOCDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD34861981B5E80078023A /* RUSOCDataSource.m */; };
 		A7DD348C1981D3CB0078023A /* PlacesBasicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD348B1981D3CB0078023A /* PlacesBasicDataSource.m */; };
 		A7DD348F1981D3D90078023A /* PlacesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD348E1981D3D90078023A /* PlacesDataSource.m */; };
 		A7DD34921981D4110078023A /* NearbyPlacesDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD34911981D4110078023A /* NearbyPlacesDataSource.m */; };
@@ -222,7 +206,6 @@
 		A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */; };
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
-		A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */; };
 		B5184DBD1E816C3500E64254 /* ShowtimesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */; };
 		B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */; };
 		B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */; };
@@ -278,9 +261,7 @@
 		C475DB7D1E8C3EFB00F7A63D /* Schedulers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475DB7C1E8C3EFB00F7A63D /* Schedulers.swift */; };
 		C499E33C1E8AE3FF006B6978 /* RUSOCCourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */; };
 		C499E33E1E8AFBBC006B6978 /* RUSOCSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */; };
-		C49ED7761E7B092E00852023 /* SOCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7751E7B092E00852023 /* SOCService.swift */; };
 		C49ED7781E7B17BF00852023 /* SOC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7771E7B17BF00852023 /* SOC.swift */; };
-		C49ED77A1E7B198800852023 /* SOCAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED7791E7B198800852023 /* SOCAPI.swift */; };
 		C49ED77E1E7B249900852023 /* RUSOCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49ED77D1E7B249900852023 /* RUSOCViewController.swift */; };
 		C49ED7801E7C642D00852023 /* RUSOCStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */; };
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
@@ -441,8 +422,6 @@
 		04C937DC1B31CB300055BC03 /* RUDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDataLoadingManager.h; sourceTree = "<group>"; };
 		04C937DD1B31CB300055BC03 /* RUDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUDataLoadingManager.m; sourceTree = "<group>"; };
 		04C937E01B31CD770055BC03 /* RUDataLoadingManager_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUDataLoadingManager_Private.h; sourceTree = "<group>"; };
-		04D0856A1B2798E90009E78F /* RUSOCSearchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSearchOperation.h; sourceTree = "<group>"; };
-		04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSearchOperation.m; sourceTree = "<group>"; };
 		04DE78F01B6C13D700B06B6F /* RUUIWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUIWebViewController.h; sourceTree = "<group>"; };
 		04DE78F11B6C13D700B06B6F /* RUUIWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUIWebViewController.m; sourceTree = "<group>"; };
 		04EDDE131D05FDB900A59235 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -497,10 +476,6 @@
 		A70C2BDF198C2C60004F82D4 /* ALTableViewRightDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALTableViewRightDetailCell.h; sourceTree = "<group>"; };
 		A7177BAC199DC0CD0092126F /* RUNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNavigationController.h; sourceTree = "<group>"; };
 		A7177BAD199DC0CD0092126F /* RUNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUNavigationController.m; sourceTree = "<group>"; };
-		A7177BAF199E80B70092126F /* RUSOCCourseDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseDataSource.h; sourceTree = "<group>"; };
-		A7177BB0199E80B70092126F /* RUSOCCourseDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCCourseDataSource.m; sourceTree = "<group>"; };
-		A7177BB2199E86660092126F /* RUSOCCourseSectionsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseSectionsDataSource.h; sourceTree = "<group>"; };
-		A7177BB3199E86660092126F /* RUSOCCourseSectionsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCCourseSectionsDataSource.m; sourceTree = "<group>"; };
 		A7241A2B1988537100304436 /* CollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
 		A7241A2C1988537100304436 /* CollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
 		A7241A391989583500304436 /* DataTuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataTuple.h; sourceTree = "<group>"; };
@@ -509,28 +484,12 @@
 		A7241A4119896A9400304436 /* RUReaderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUReaderDataSource.m; sourceTree = "<group>"; };
 		A7241A4319896FEF00304436 /* TupleDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TupleDataSource.m; sourceTree = "<group>"; };
 		A7241A4419896FEF00304436 /* TupleDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TupleDataSource.h; sourceTree = "<group>"; };
-		A7241A461989743D00304436 /* RUSOCSubjectDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSubjectDataSource.h; sourceTree = "<group>"; };
-		A7241A471989743D00304436 /* RUSOCSubjectDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSubjectDataSource.m; sourceTree = "<group>"; };
 		A7241A4C1989915A00304436 /* PlacesSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacesSearchDataSource.h; sourceTree = "<group>"; };
 		A7241A4D1989915A00304436 /* PlacesSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacesSearchDataSource.m; sourceTree = "<group>"; };
 		A72795E9195B5FD900C21165 /* RUFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFeedbackViewController.h; sourceTree = "<group>"; };
 		A72795EA195B5FD900C21165 /* RUFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUFeedbackViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		A72CF0DC1951F5920024F950 /* RUSOCSectionRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSectionRow.h; sourceTree = "<group>"; };
-		A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSectionRow.m; sourceTree = "<group>"; };
 		A72F001A193A5D8A00016C89 /* RUUserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUserInfoManager.h; sourceTree = "<group>"; };
 		A72F001B193A5D8A00016C89 /* RUUserInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUserInfoManager.m; sourceTree = "<group>"; };
-		A72FFFAD1937C3E100016C89 /* RUSOCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCViewController.h; sourceTree = "<group>"; };
-		A72FFFAE1937C3E100016C89 /* RUSOCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSOCViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		A72FFFB01937C55F00016C89 /* RUSOCDataLoadingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCDataLoadingManager.h; sourceTree = "<group>"; };
-		A72FFFB11937C55F00016C89 /* RUSOCDataLoadingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCDataLoadingManager.m; sourceTree = "<group>"; };
-		A72FFFB31937D8E500016C89 /* RUSOCSubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSubjectViewController.h; sourceTree = "<group>"; };
-		A72FFFB41937D8E500016C89 /* RUSOCSubjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSOCSubjectViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		A72FFFB71937DDDE00016C89 /* RUSOCCourseRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseRow.h; sourceTree = "<group>"; };
-		A72FFFB81937DDDE00016C89 /* RUSOCCourseRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCCourseRow.m; sourceTree = "<group>"; };
-		A72FFFBA1937DF9000016C89 /* RUSOCCourseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseCell.h; sourceTree = "<group>"; };
-		A72FFFBB1937DF9000016C89 /* RUSOCCourseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCCourseCell.m; sourceTree = "<group>"; };
-		A72FFFBD1937E6C800016C89 /* RUSOCCourseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseViewController.h; sourceTree = "<group>"; };
-		A72FFFBE1937E6C800016C89 /* RUSOCCourseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSOCCourseViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A72FFFC11938DF3700016C89 /* ExpandingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandingTableViewController.h; sourceTree = "<group>"; };
 		A72FFFC21938DF3700016C89 /* ExpandingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandingTableViewController.m; sourceTree = "<group>"; };
 		A72FFFC41938E16200016C89 /* ExpandingTableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandingTableViewSection.h; sourceTree = "<group>"; };
@@ -554,12 +513,8 @@
 		A748ECEC191602C400CB91FF /* RULocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RULocationManager.m; sourceTree = "<group>"; };
 		A75B1C7E19B0EEDD00268214 /* TextViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewDataSource.h; sourceTree = "<group>"; };
 		A75B1C7F19B0EEDD00268214 /* TextViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewDataSource.m; sourceTree = "<group>"; };
-		A75D6AA7199A73D5009E94D3 /* RUSOCSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSearchDataSource.h; sourceTree = "<group>"; };
-		A75D6AA8199A73D5009E94D3 /* RUSOCSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSearchDataSource.m; sourceTree = "<group>"; };
 		A75E7EC019A3E18D00782AE5 /* UITableView+Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+Selection.h"; sourceTree = "<group>"; };
 		A75E7EC119A3E18D00782AE5 /* UITableView+Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+Selection.m"; sourceTree = "<group>"; };
-		A7600E351950E752008DA667 /* RUSOCSectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSectionCell.h; sourceTree = "<group>"; };
-		A7600E361950E752008DA667 /* RUSOCSectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCSectionCell.m; sourceTree = "<group>"; };
 		A76993011934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterHoursHeaderTableViewCell.h; path = Rutgers/RURecCenterHoursHeaderTableViewCell.h; sourceTree = SOURCE_ROOT; };
 		A76993021934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RURecCenterHoursHeaderTableViewCell.m; path = Rutgers/RURecCenterHoursHeaderTableViewCell.m; sourceTree = SOURCE_ROOT; };
 		A76993031934E9C1008C64EE /* RURecCenterHoursSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RURecCenterHoursSection.h; path = Rutgers/RURecCenterHoursSection.h; sourceTree = SOURCE_ROOT; };
@@ -572,14 +527,10 @@
 		A770EDC61948AC0F00DD5866 /* RUInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUInfoTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A771A279199AA987000CD174 /* NSArray+Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Sort.h"; sourceTree = "<group>"; };
 		A771A27A199AA987000CD174 /* NSArray+Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Sort.m"; sourceTree = "<group>"; };
-		A771A27D199AB790000CD174 /* RUSOCSearchIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCSearchIndex.h; sourceTree = "<group>"; };
-		A771A27E199AB790000CD174 /* RUSOCSearchIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RUSOCSearchIndex.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A771A280199ABD09000CD174 /* NSString+WordsInString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+WordsInString.h"; sourceTree = "<group>"; };
 		A771A281199ABD09000CD174 /* NSString+WordsInString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+WordsInString.m"; sourceTree = "<group>"; };
 		A7778D7219A4FEEF003BD8DE /* RowHeightCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowHeightCache.h; sourceTree = "<group>"; };
 		A7778D7319A4FEEF003BD8DE /* RowHeightCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RowHeightCache.m; sourceTree = "<group>"; };
-		A7778D7519A5201C003BD8DE /* RUSOCCourseHeaderDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCCourseHeaderDataSource.h; sourceTree = "<group>"; };
-		A7778D7619A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCCourseHeaderDataSource.m; sourceTree = "<group>"; };
 		A7778D7B19A54852003BD8DE /* RUInfoDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUInfoDataSource.h; sourceTree = "<group>"; };
 		A7778D7C19A54852003BD8DE /* RUInfoDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUInfoDataSource.m; sourceTree = "<group>"; };
 		A7778D8119A54897003BD8DE /* RUInfoTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUInfoTableSection.h; sourceTree = "<group>"; };
@@ -666,8 +617,6 @@
 		A7DD347519816F120078023A /* arc stop.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "arc stop.gpx"; sourceTree = "<group>"; };
 		A7DD347619816F120078023A /* hill center stop.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "hill center stop.gpx"; sourceTree = "<group>"; };
 		A7DD347719816F120078023A /* werblin parking lot.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "werblin parking lot.gpx"; sourceTree = "<group>"; };
-		A7DD34851981B5E80078023A /* RUSOCDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCDataSource.h; sourceTree = "<group>"; };
-		A7DD34861981B5E80078023A /* RUSOCDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCDataSource.m; sourceTree = "<group>"; };
 		A7DD34881981D1390078023A /* SearchDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchDataSource.h; sourceTree = "<group>"; };
 		A7DD348A1981D3CB0078023A /* PlacesBasicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacesBasicDataSource.h; sourceTree = "<group>"; };
 		A7DD348B1981D3CB0078023A /* PlacesBasicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacesBasicDataSource.m; sourceTree = "<group>"; };
@@ -720,8 +669,6 @@
 		A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewController.m; sourceTree = "<group>"; };
 		A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDataSource.h; sourceTree = "<group>"; };
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
-		A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSOCOptionsViewController.h; sourceTree = "<group>"; };
-		A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSOCOptionsViewController.m; sourceTree = "<group>"; };
 		B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionView.swift; sourceTree = "<group>"; };
 		B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDescriptionCell.swift; sourceTree = "<group>"; };
 		B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoDescriptionCell.xib; sourceTree = "<group>"; };
@@ -785,9 +732,7 @@
 		C475DB7C1E8C3EFB00F7A63D /* Schedulers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedulers.swift; sourceTree = "<group>"; };
 		C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCCourseViewController.swift; sourceTree = "<group>"; };
 		C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCSectionCell.swift; sourceTree = "<group>"; };
-		C49ED7751E7B092E00852023 /* SOCService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCService.swift; sourceTree = "<group>"; };
 		C49ED7771E7B17BF00852023 /* SOC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOC.swift; sourceTree = "<group>"; };
-		C49ED7791E7B198800852023 /* SOCAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCAPI.swift; sourceTree = "<group>"; };
 		C49ED77D1E7B249900852023 /* RUSOCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCViewController.swift; sourceTree = "<group>"; };
 		C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RUSOCStoryboard.storyboard; sourceTree = "<group>"; };
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
@@ -1066,17 +1011,6 @@
 		A72FFFAC1937C32000016C89 /* rusoc */ = {
 			isa = PBXGroup;
 			children = (
-				A771A27C199AB777000CD174 /* model */,
-				A72FFFB61937DCF500016C89 /* view */,
-				A7DD34841981B5D40078023A /* data source */,
-				A72FFFAD1937C3E100016C89 /* RUSOCViewController.h */,
-				A72FFFAE1937C3E100016C89 /* RUSOCViewController.m */,
-				A72FFFBD1937E6C800016C89 /* RUSOCCourseViewController.h */,
-				A72FFFBE1937E6C800016C89 /* RUSOCCourseViewController.m */,
-				A72FFFB31937D8E500016C89 /* RUSOCSubjectViewController.h */,
-				A72FFFB41937D8E500016C89 /* RUSOCSubjectViewController.m */,
-				A7FC32CE196EE684004BA160 /* RUSOCOptionsViewController.h */,
-				A7FC32CF196EE684004BA160 /* RUSOCOptionsViewController.m */,
 				C49ED77D1E7B249900852023 /* RUSOCViewController.swift */,
 				C42F4A951E81A0E600C59E68 /* RUSOCOptionsViewController.swift */,
 				C40AEDAD1E856E2F00F04499 /* ActionSheetDataSource.swift */,
@@ -1087,17 +1021,6 @@
 				C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */,
 			);
 			name = rusoc;
-			sourceTree = "<group>";
-		};
-		A72FFFB61937DCF500016C89 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				A72FFFBA1937DF9000016C89 /* RUSOCCourseCell.h */,
-				A72FFFBB1937DF9000016C89 /* RUSOCCourseCell.m */,
-				A7600E351950E752008DA667 /* RUSOCSectionCell.h */,
-				A7600E361950E752008DA667 /* RUSOCSectionCell.m */,
-			);
-			name = view;
 			sourceTree = "<group>";
 		};
 		A72FFFC01938DF0B00016C89 /* ExpandingTableView */ = {
@@ -1285,23 +1208,6 @@
 			name = ruinfo;
 			sourceTree = "<group>";
 		};
-		A771A27C199AB777000CD174 /* model */ = {
-			isa = PBXGroup;
-			children = (
-				A72FFFB71937DDDE00016C89 /* RUSOCCourseRow.h */,
-				A72FFFB81937DDDE00016C89 /* RUSOCCourseRow.m */,
-				A72CF0DC1951F5920024F950 /* RUSOCSectionRow.h */,
-				A72CF0DD1951F5920024F950 /* RUSOCSectionRow.m */,
-				A72FFFB01937C55F00016C89 /* RUSOCDataLoadingManager.h */,
-				A72FFFB11937C55F00016C89 /* RUSOCDataLoadingManager.m */,
-				A771A27D199AB790000CD174 /* RUSOCSearchIndex.h */,
-				A771A27E199AB790000CD174 /* RUSOCSearchIndex.m */,
-				04D0856A1B2798E90009E78F /* RUSOCSearchOperation.h */,
-				04D0856B1B2798E90009E78F /* RUSOCSearchOperation.m */,
-			);
-			name = model;
-			sourceTree = "<group>";
-		};
 		A7778D7119A4FD7F003BD8DE /* view controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1448,25 +1354,6 @@
 				A7EA4C55197D6C0300E972DD /* base data sources */,
 				A7EA4C48197D65C800E972DD /* state */,
 				A7778D7119A4FD7F003BD8DE /* view controllers */,
-			);
-			name = "data source";
-			sourceTree = "<group>";
-		};
-		A7DD34841981B5D40078023A /* data source */ = {
-			isa = PBXGroup;
-			children = (
-				A7DD34851981B5E80078023A /* RUSOCDataSource.h */,
-				A7DD34861981B5E80078023A /* RUSOCDataSource.m */,
-				A7241A461989743D00304436 /* RUSOCSubjectDataSource.h */,
-				A7241A471989743D00304436 /* RUSOCSubjectDataSource.m */,
-				A75D6AA7199A73D5009E94D3 /* RUSOCSearchDataSource.h */,
-				A75D6AA8199A73D5009E94D3 /* RUSOCSearchDataSource.m */,
-				A7177BAF199E80B70092126F /* RUSOCCourseDataSource.h */,
-				A7177BB0199E80B70092126F /* RUSOCCourseDataSource.m */,
-				A7177BB2199E86660092126F /* RUSOCCourseSectionsDataSource.h */,
-				A7177BB3199E86660092126F /* RUSOCCourseSectionsDataSource.m */,
-				A7778D7519A5201C003BD8DE /* RUSOCCourseHeaderDataSource.h */,
-				A7778D7619A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m */,
 			);
 			name = "data source";
 			sourceTree = "<group>";
@@ -1811,7 +1698,6 @@
 				B54DFB501E4B9E7B00755D2D /* TmdbAPI.swift */,
 				B5694BBE1E520CC100899ED0 /* ImageAPI.swift */,
 				C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */,
-				C49ED7791E7B198800852023 /* SOCAPI.swift */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -1838,7 +1724,6 @@
 			children = (
 				C41E66191E38E9A800562CCB /* RutgersService.swift */,
 				B54DFB4E1E4B9C2E00755D2D /* TmdbService.swift */,
-				C49ED7751E7B092E00852023 /* SOCService.swift */,
 			);
 			name = services;
 			sourceTree = "<group>";
@@ -2126,7 +2011,6 @@
 				A79BBE3318FF1085007136B0 /* RUReaderViewController.m in Sources */,
 				04A1EFF11A5C50A700DE0351 /* RUBusDataLoadingManager.m in Sources */,
 				A769930F1934E9C1008C64EE /* RURecCenterMeetingAreaTableViewCell.m in Sources */,
-				A7FC32D0196EE684004BA160 /* RUSOCOptionsViewController.m in Sources */,
 				621872CA1D340B9500E727E3 /* RUBusMessageCell.m in Sources */,
 				04DE78F21B6C13D700B06B6F /* RUUIWebViewController.m in Sources */,
 				A70C2BD3198BF498004F82D4 /* RULabel.m in Sources */,
@@ -2136,12 +2020,10 @@
 				A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */,
 				A7D4B64C19ABD3CC0087A8BC /* RULegalViewController.m in Sources */,
 				04A1EFD91A5C508300DE0351 /* RUPredictionsViewController.m in Sources */,
-				A72FFFBF1937E6C800016C89 /* RUSOCCourseViewController.m in Sources */,
 				A7EA4C41197D655D00E972DD /* DataSource.m in Sources */,
 				04A1EFFB1A5C50B700DE0351 /* RUBusStop.m in Sources */,
 				A74669031986D8F000A5EBE0 /* RUAppDelegate.m in Sources */,
 				A7C0373819B1287F00F5D962 /* UIApplication+StatusBarHeight.m in Sources */,
-				A72FFFBC1937DF9000016C89 /* RUSOCCourseCell.m in Sources */,
 				C46B0FCD1E60BB59006AB739 /* RUDiningHallTabBarController.swift in Sources */,
 				C262EFDC1883473E0035C8F5 /* RUMenuViewController.m in Sources */,
 				A7C92C9C19462BA300609549 /* RUPlace.m in Sources */,
@@ -2163,7 +2045,6 @@
 				04A1EFE91A5C509600DE0351 /* ActiveStopsDataSource.m in Sources */,
 				A7B970D21921603E0070A414 /* RUChannelManager.m in Sources */,
 				A7241A4E1989915A00304436 /* PlacesSearchDataSource.m in Sources */,
-				A72CF0DE1951F5920024F950 /* RUSOCSectionRow.m in Sources */,
 				A7EA4C53197D6BD800E972DD /* ComposedDataSource.m in Sources */,
 				B51D34781E5B406600F4BD1F /* ShowtimesCell.swift in Sources */,
 				A7EA3F3E197D8D4000D4BC9E /* UIView+LayoutSize.m in Sources */,
@@ -2173,7 +2054,6 @@
 				A771A27B199AA987000CD174 /* NSArray+Sort.m in Sources */,
 				04A1EFD71A5C508300DE0351 /* RUPredictionsHeaderRow.m in Sources */,
 				04C937DE1B31CB300055BC03 /* RUDataLoadingManager.m in Sources */,
-				A75D6AA9199A73D5009E94D3 /* RUSOCSearchDataSource.m in Sources */,
 				A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */,
 				A731C39C1940D8F900E9E7E0 /* RUMenuSectionHeaderView.m in Sources */,
 				04A656231C5967A80024B1F0 /* NSDictionary+Channel.m in Sources */,
@@ -2188,7 +2068,6 @@
 				B5870B8A1E44E32C00D51523 /* AgencyConfig.swift in Sources */,
 				0465D0811ADEF6B9001C30FE /* RUReaderResponseSerializer.m in Sources */,
 				A7D4B63919AB9D580087A8BC /* RUFeedbackDataSource.m in Sources */,
-				A72FFFAF1937C3E100016C89 /* RUSOCViewController.m in Sources */,
 				A7EA4C47197D65C000E972DD /* AAPLStateMachine.m in Sources */,
 				A769930D1934E9C1008C64EE /* RURecCenterHoursSection.m in Sources */,
 				A7C155F9198AB50E00CDCAE3 /* FAQDataSource.m in Sources */,
@@ -2197,7 +2076,6 @@
 				A7B8DB9219A65FE400EF1953 /* NSArray+LimitedToCount.m in Sources */,
 				C49ED77E1E7B249900852023 /* RUSOCViewController.swift in Sources */,
 				A7E8E13C192547190089F166 /* RURootController.m in Sources */,
-				A72FFFB51937D8E500016C89 /* RUSOCSubjectViewController.m in Sources */,
 				C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */,
 				A769930C1934E9C1008C64EE /* RURecCenterHoursHeaderTableViewCell.m in Sources */,
 				A7B2D998190EE7DF003ABEA3 /* TTTAddressFormatter.m in Sources */,
@@ -2205,8 +2083,6 @@
 				C42F4A9B1E844CA500C59E68 /* RxUIActionSheetDelegateProxy.swift in Sources */,
 				04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */,
 				042E7BC01C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m in Sources */,
-				A72FFFB21937C55F00016C89 /* RUSOCDataLoadingManager.m in Sources */,
-				A72FFFB91937DDDE00016C89 /* RUSOCCourseRow.m in Sources */,
 				A7EA4C58197D6C2900E972DD /* BasicDataSource.m in Sources */,
 				624042681D76085E009AC3D8 /* AthleticsCollectionViewController.swift in Sources */,
 				A7DD348F1981D3D90078023A /* PlacesDataSource.m in Sources */,
@@ -2216,7 +2092,6 @@
 				C46B0FD11E60CBE7006AB739 /* RUMealViewController.swift in Sources */,
 				A7B970CD19215F910070A414 /* RUNetworkManager.m in Sources */,
 				A7241A4519896FEF00304436 /* TupleDataSource.m in Sources */,
-				A7778D7719A5201C003BD8DE /* RUSOCCourseHeaderDataSource.m in Sources */,
 				A7C60D1F19C0DE580014C35A /* ALTableViewTextViewCell.m in Sources */,
 				046555F21C3C581D00CAF833 /* NSURL+RUAdditions.m in Sources */,
 				C49ED7781E7B17BF00852023 /* SOC.swift in Sources */,
@@ -2225,9 +2100,7 @@
 				C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */,
 				A777C2AD190AF0DA00F978D7 /* RUPlacesViewController.m in Sources */,
 				A7415781194B714200F396B5 /* RUMapsTableViewCell.m in Sources */,
-				A7600E371950E752008DA667 /* RUSOCSectionCell.m in Sources */,
 				A769932019352B43008C64EE /* RUReaderItem.m in Sources */,
-				A7177BB4199E86660092126F /* RUSOCCourseSectionsDataSource.m in Sources */,
 				A7D4B6E319ACD5F20087A8BC /* RUAnalyticsManager.m in Sources */,
 				A7D4B6E919AD0B370087A8BC /* NSAttributedString+FromHTML.m in Sources */,
 				A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */,
@@ -2258,12 +2131,10 @@
 				A72FFFC31938DF3700016C89 /* ExpandingTableViewController.m in Sources */,
 				C40AEDAE1E856E2F00F04499 /* ActionSheetDataSource.swift in Sources */,
 				A7C15600198ABA4600CDCAE3 /* StringDataSource.m in Sources */,
-				A7177BB1199E80B70092126F /* RUSOCCourseDataSource.m in Sources */,
 				0422C9841A69C3C100344828 /* RURecCenterDataSource.m in Sources */,
 				A7907CCB19A2997300711DCB /* AlertDataSource.m in Sources */,
 				C45EBA611E801B75008322CC /* Array+RUAdditions.swift in Sources */,
 				04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */,
-				A7DD34871981B5E80078023A /* RUSOCDataSource.m in Sources */,
 				62530D961D78789500BAB5E6 /* AthleticsCollectionViewCell.swift in Sources */,
 				04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */,
 				B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */,
@@ -2272,7 +2143,6 @@
 				04B2F3CA1D09D56E0035F96E /* RUActiveMenuItemDataSource.swift in Sources */,
 				C499E33E1E8AFBBC006B6978 /* RUSOCSectionCell.swift in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
-				A771A27F199AB790000CD174 /* RUSOCSearchIndex.m in Sources */,
 				A74668AC1983783300A5EBE0 /* UIMotionEffect+FloatingMotionEffect.m in Sources */,
 				B5694BC31E5232A200899ED0 /* TmdbCredits.swift in Sources */,
 				A70C2BE2198C2C60004F82D4 /* ALTableViewRightDetailCell.m in Sources */,
@@ -2297,10 +2167,8 @@
 				A70C2BE3198C2C60004F82D4 /* ALTableViewTextCell.m in Sources */,
 				04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */,
 				A79B5DE3199C23C900DAEFC1 /* CLLocation+Centroid.m in Sources */,
-				C49ED7761E7B092E00852023 /* SOCService.swift in Sources */,
 				A72F001C193A5D8A00016C89 /* RUUserInfoManager.m in Sources */,
 				A7DDA01719991E1C00F6C102 /* NSDictionary+ObjectsForKeys.m in Sources */,
-				A7241A481989743D00304436 /* RUSOCSubjectDataSource.m in Sources */,
 				04AF8B431A82B57400619AFC /* NSDate+EpochTime.m in Sources */,
 				0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */,
 				A7241A2D1988537100304436 /* CollectionViewController.m in Sources */,
@@ -2314,10 +2182,8 @@
 				621347741E04279600786570 /* MusicViewController.swift in Sources */,
 				A7EA4C46197D65C000E972DD /* AAPLContentLoading.m in Sources */,
 				621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */,
-				04D0856C1B2798E90009E78F /* RUSOCSearchOperation.m in Sources */,
 				A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */,
 				B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */,
-				C49ED77A1E7B198800852023 /* SOCAPI.swift in Sources */,
 				A7778D7419A4FEEF003BD8DE /* RowHeightCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
