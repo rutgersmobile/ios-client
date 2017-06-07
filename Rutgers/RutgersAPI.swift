@@ -17,8 +17,8 @@ class RutgersAPI {
     let provider : RxMoyaProvider<RutgersService>
 
     private init() {
-        self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-//        self.provider = RxMoyaProvider<RutgersService>()
+     //   self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
+        self.provider = RxMoyaProvider<RutgersService>()
     }
     
     public func getSOCInit() -> Observable<Init> {
@@ -35,8 +35,8 @@ class RutgersAPI {
             .mapUnboxObject(type: Course.self)
     }
     
-    public func getCourses(semester: Semester, campus: Campus, level: Level, course: Course) -> Observable<[Course]> {
-        return self.provider.request(.getCourses(semester: semester, campus: campus, level: level, course: course))
+    public func getCourses(semester: Semester, campus: Campus, level: Level, subject: Subject) -> Observable<[Course]> {
+        return self.provider.request(.getCourses(semester: semester, campus: campus, level: level, subject: subject))
             .mapUnboxArray(type: Course.self)
     }
     

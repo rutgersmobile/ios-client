@@ -12,7 +12,7 @@ import RxCocoa
 import RxDataSources
 
 class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
-    /*
+    
     let cellId = "RUSOCOptionsViewControllerId"
 
     static let SOCDataSemesterKey = "SOCDataSemesterKey"
@@ -113,23 +113,23 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
             })
             .addDisposableTo(disposeBag)
     }
-/*
+    
     static func defaultOptions(semester: Semester) -> SOCOptions {
         return SOCOptions(
             semester: storedSemester(semester: semester),
             campus: RUSOCOptionsViewController.storedCampus(),
             level: storedLevel()
         )
-    }*/
-/*
+    }
+    
     static func storedSemester(semester: Semester) -> Semester {
         let dictSemester = UserDefaults.standard
             .dictionary(forKey: RUSOCOptionsViewController.SOCDataSemesterKey)
         return dictSemester.flatMap {
             Semester.fromDict(dict: $0)
         } ?? semester
-    }*/
-/*
+    }
+    
     func semesterAction() -> Observable<SOCOptions> {
         let actionSheetDS = ActionSheetDataSource(
             data: self.semesters.map { semester in
@@ -149,7 +149,7 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
             )
         }
     }
-*/
+
     static func storedCampus() -> Campus {
         let stringCampus = UserDefaults.standard
             .string(forKey: RUSOCOptionsViewController.SOCDataCampusKey)
@@ -205,7 +205,7 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
                 level: level
             )
         }
-    }*/
+    }
 }
 
 struct SOCOptionsSection {

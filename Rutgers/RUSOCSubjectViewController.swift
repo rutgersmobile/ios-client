@@ -28,14 +28,14 @@ class RUSOCSubjectViewController : UITableViewController {
 
         me.subject = subject
         me.courses = courses
-
+        
         return me
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
-
+        
         Observable.of(courses)
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView.rx.items(
@@ -44,15 +44,12 @@ class RUSOCSubjectViewController : UITableViewController {
             )) { idx, model, cell in
                 cell.courseLabel.text = "\(model.courseNumber): \(model.title)"
                 cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
-
-                let openSectionCount = model.sections.filter {
-                    $0.openStatus
-                }.count
+                
                 cell.sectionsLabel.text =
-                    "\(openSectionCount) / \(model.sections.count)"
+                    "\(model.sectionCheck.open) / \(model.sectionCheck.total)"
             }
             .addDisposableTo(disposeBag)
-
+        /*
         self.tableView.rx.modelSelected(Course.self)
             .subscribe(onNext: { course in
                 let vc = RUSOCCourseViewController.instantiate(
@@ -63,6 +60,6 @@ class RUSOCSubjectViewController : UITableViewController {
                 self.navigationController?
                     .pushViewController(vc, animated: true)
             })
-            .addDisposableTo(disposeBag)
+            .addDisposableTo(disposeBag)*/
     }
 }

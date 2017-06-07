@@ -11,6 +11,7 @@ import RxSwift
 import RxDataSources
 
 class RUSOCCourseViewController: UITableViewController {
+    /*
     var course: Course!
 
     let cellId = "RUSOCSectionCellId"
@@ -95,7 +96,7 @@ class RUSOCCourseViewController: UITableViewController {
         self.tableView.dataSource = nil
 
         let dataSource = RxCourseDataSource()
-
+        
         dataSource.configureCell = { (
             ds: CourseDataSource,
             tv: UITableView,
@@ -131,7 +132,7 @@ class RUSOCCourseViewController: UITableViewController {
                 course.preReqNotes.map { .prereq($0) }
             ].filterMap { $0 }
         )
-
+        
         Observable.of(course.sections)
             .map { sections in CourseSection(
                 header: "Sections",
@@ -150,7 +151,7 @@ class RUSOCCourseViewController: UITableViewController {
             .addDisposableTo(disposeBag)
     }
 }
-
+     
 fileprivate extension MeetingTime {
     func timeFormatted() -> String? {
         return self.startTime.flatMap { start in
@@ -208,5 +209,5 @@ extension CourseSection: SectionModelType {
     init(original: CourseSection, items: [Item]) {
         self = original
         self.items = items
-    }
+    }*/
 }

@@ -133,7 +133,7 @@ struct Semester {
     let term: Int
 }
 
-/*
+
 extension Semester {
     func toDict() -> [String: Any] {
         return [
@@ -141,18 +141,18 @@ extension Semester {
             "term": self.term
         ]
     }
-  */
+    
     /*
     var previous: Semester {
         switch self.term {
         case .winter:
-            return Semester(year: self.year - 1, term: .fall)
+            return Semester(year: self.year - 1, term: 9)
         case .spring:
-            return Semester(year: self.year, term: .winter)
+            return Semester(year: self.year, term: 0)
         case .summer:
-            return Semester(year: self.year, term: .spring)
+            return Semester(year: self.year, term: 1)
         case .fall:
-            return Semester(year: self.year, term: .summer)
+            return Semester(year: self.year, term: 7)
         }
     }
 
@@ -164,27 +164,27 @@ extension Semester {
             semester = semester.previous
         }
         return semesters
-    }
+    }*/
 
     static func fromDict(dict: [String: Any]) -> Semester? {
         return (dict["year"] as? Int).flatMap { year in
             (dict["term"] as? Int).flatMap { intTerm in
                 Term(intTerm).map { term in
-                    Semester(year: year, term: term)
+                    Semester(year: year, term: term.asInt())
                 }
             }
         }
     }
- */
-//}
-/*
+ 
+}
+
 extension Semester: CustomStringConvertible {
     var description: String {
         return "\(self.term) \(self.year)"
     }
-}*/
+}
 
-/*
+
 enum Term {
     case winter
     case spring
@@ -221,7 +221,7 @@ extension Term {
         }
     }
 }
- */
+ 
 
 struct Course {
     let title: String
@@ -231,8 +231,13 @@ struct Course {
     let preReqNotes: String?
     let synopsisUrl: String?
     let credits: Float?
-    let sections: [Section]
+    let sectionCheck: SectionCheck
     let level: Level
+}
+
+struct SectionCheck {
+    let open: Int
+    let total: Int
 }
 
 struct Section {
@@ -280,7 +285,7 @@ struct TermDate {
 
 struct Subject {
     let subjectDescription: String
-    let code: String
+    let code: Int
 }
 
 enum SOCParseError: Error {
@@ -293,18 +298,23 @@ extension Semester: Unboxable {
         self.year = try unboxer.unbox(key: "year")
     }
 }
-
+extension SectionCheck: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.open = try unboxer.unbox(key: "open")
+        self.total = try unboxer.unbox(key: "total")
+    }
+}
 extension Course: Unboxable {
     init(unboxer: Unboxer) throws {
         self.title = try unboxer.unbox(key: "title")
         self.subject = try unboxer.unbox(key: "subject")
-        self.courseNumber = try unboxer.unbox(key: "courseNumber")
+        self.courseNumber = try unboxer.unbox(key: "number")
         self.courseDescription = try? unboxer.unbox(key: "courseDescription")
         self.preReqNotes = try? unboxer.unbox(key: "preReqNotes")
         self.synopsisUrl = try? unboxer.unbox(key: "synopsisUrl")
+        self.sectionCheck = try unboxer.unbox(keyPath: "sections")
         self.credits = try? unboxer.unbox(key: "credits")
-        self.sections = try unboxer.unbox(key: "sections")
-        let levelString = try unboxer.unbox(key: "level") as String
+                let levelString = try unboxer.unbox(key: "level") as String
         guard let level = Level.from(string: levelString) else {
             throw SOCParseError.invalidValueFormat(
                 message: "Couldn't parse level: \(levelString)"
@@ -370,7 +380,7 @@ extension TermDate: Unboxable {
 
 extension Subject: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.subjectDescription = try unboxer.unbox(key: "description")
-        self.code = try unboxer.unbox(key: "code")
+        self.subjectDescription = try unboxer.unbox(key: "subjectDescription")
+        self.code = try unboxer.unbox(key: "subject")
     }
 }

@@ -20,9 +20,8 @@ enum RutgersService {
     case getSOCInit
     case getSubjects(semester: Semester, campus: Campus, level: Level)
     case getCourse(semester: Semester, campus: Campus, level: Level, course: Course)
-    case getCourses(semester: Semester, campus: Campus, level: Level, course: Course)
+    case getCourses(semester: Semester, campus: Campus, level: Level, subject: Subject)
     case getSections(semester: Semester, campus: Campus, level: Level, course: Course)
-    
 }
 
 extension RutgersService : TargetType {
@@ -82,13 +81,13 @@ extension RutgersService : TargetType {
                 "subject": course.subject,
                 "course" : course.title
             ]
-        case .getCourses(let semester, let campus, let level, let course):
+        case .getCourses(let semester, let campus, let level, let subject):
             return [
                 "term" : semester.term,
                 "year" : semester.year,
                 "level" : level.description,
                 "campus" : campus.description,
-                "subject" : course.subject
+                "subject" : subject.code
             ]
         case .getSections(let semester, let campus, let level, let course):
             return [
