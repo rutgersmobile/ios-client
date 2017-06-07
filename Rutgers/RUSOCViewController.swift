@@ -91,18 +91,17 @@ class RUSOCViewController
         self.navigationItem
             .setRightBarButton(settingsButtonItem, animated: false)
         
-        /*
-         SOCAPI.instance.networkStatus
-         .subscribe(onNext: { [weak self] change in
-         switch change {
-         case .began:
-         self?.activityIndicator.startAnimating()
-         case .ended:
-         self?.activityIndicator.stopAnimating()
-         }
-         })
-         .addDisposableTo(disposeBag)
-         */
+        
+        RutgersAPI.sharedInstance.networkStatus
+            .subscribe(onNext: { [weak self] change in
+                switch change {
+                case .began:
+                    self?.activityIndicator.startAnimating()
+                case .ended:
+                    self?.activityIndicator.stopAnimating()
+                }
+            })
+            .addDisposableTo(disposeBag)
         
         RutgersAPI.sharedInstance.getSOCInit()
             .observeOn(MainScheduler.asyncInstance)
@@ -131,7 +130,7 @@ class RUSOCViewController
                 }).dispose()
                 
                 return socOptions.flatMap { options in
-                        return RutgersAPI.sharedInstance.getSubjects(semester: options.semester, campus: options.campus, level: options.level)
+                    return RutgersAPI.sharedInstance.getSubjects(semester: options.semester, campus: options.campus, level: options.level)
                     }
                     
                     .observeOn(MainScheduler.asyncInstance)
@@ -161,19 +160,26 @@ class RUSOCViewController
         
         self.tableView.rx.modelSelected(Subject.self)
             .subscribe(onNext: { subject in
-                print(subject)
-                RutgersAPI.sharedInstance.getCourses(semester: self.passOptions.semester, campus: self.passOptions.campus, level: self.passOptions.level, subject: subject).bind(onNext: { courseArr in
-                    self.courses = courseArr
-                    print(courseArr)
-                }).addDisposableTo(self.disposeBag)
                 
-                print(self.courses)
-                let vc = RUSOCSubjectViewController.instantiate(
-                    withStoryboard: self.storyboard!,
-                    subject: subject,
-                    courses: self.courses
-                )
-                self.navigationController?.pushViewController(vc, animated: true)
+                RutgersAPI.sharedInstance.getCourses(
+                    semester: self.passOptions.semester,
+                    campus: self.passOptions.campus,
+                    level: self.passOptions.level,
+                    subject: subject)
+                    .observeOn(MainScheduler.asyncInstance)
+                    .bind(onNext: { courseArr in
+                        
+                        let vc = RUSOCSubjectViewController.instantiate(
+                            withStoryboard: self.storyboard!,
+                            subject: subject,
+                            courses: courseArr,
+                            options: self.passOptions
+                        )
+                        
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    }).addDisposableTo(self.disposeBag)
+                
             }).addDisposableTo(self.disposeBag)
     }
 }

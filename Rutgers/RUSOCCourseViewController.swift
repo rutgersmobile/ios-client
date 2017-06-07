@@ -11,8 +11,8 @@ import RxSwift
 import RxDataSources
 
 class RUSOCCourseViewController: UITableViewController {
-    /*
     var course: Course!
+    var sections: [Section]!
 
     let cellId = "RUSOCSectionCellId"
     let defaultCellId = "RUSOCSectionDefaultCellId"
@@ -38,14 +38,16 @@ class RUSOCCourseViewController: UITableViewController {
 
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
-        course: Course
+        course: Course,
+        sections: [Section]
     ) -> RUSOCCourseViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCCourseViewController"
         ) as! RUSOCCourseViewController
 
         me.course = course
-
+        me.sections = sections
+        
         return me
     }
 
@@ -133,7 +135,7 @@ class RUSOCCourseViewController: UITableViewController {
             ].filterMap { $0 }
         )
         
-        Observable.of(course.sections)
+        Observable.of(self.sections)
             .map { sections in CourseSection(
                 header: "Sections",
                 items: sections.map { .section($0) }
@@ -209,5 +211,5 @@ extension CourseSection: SectionModelType {
     init(original: CourseSection, items: [Item]) {
         self = original
         self.items = items
-    }*/
+    }
 }

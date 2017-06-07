@@ -15,10 +15,24 @@ class RutgersAPI {
     static let sharedInstance = RutgersAPI()
 
     let provider : RxMoyaProvider<RutgersService>
-
+    
+    fileprivate let networkVariable: Variable<NetworkActivityChangeType>
+    
+    var networkStatus: Observable<NetworkActivityChangeType> {
+        get {
+            return networkVariable.asObservable()
+        }
+    }
+    
     private init() {
-     //   self.provider = RxMoyaProvider<RutgersService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        self.provider = RxMoyaProvider<RutgersService>()
+        let networkVariable = Variable(NetworkActivityChangeType.ended)
+        self.provider = RxMoyaProvider<RutgersService>(
+            plugins: [NetworkActivityPlugin { [weak networkVariable] change in
+                networkVariable?.value = change
+                }]
+        )
+        
+        self.networkVariable = networkVariable
     }
     
     public func getSOCInit() -> Observable<Init> {

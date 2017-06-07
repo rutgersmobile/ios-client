@@ -225,8 +225,8 @@ extension Term {
 
 struct Course {
     let title: String
-    let subject: String
-    let courseNumber: String
+    let subject: Int
+    let courseNumber: Int
     let courseDescription: String?
     let preReqNotes: String?
     let synopsisUrl: String?

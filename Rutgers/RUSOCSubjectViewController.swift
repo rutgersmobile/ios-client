@@ -12,26 +12,28 @@ import RxSwift
 class RUSOCSubjectViewController : UITableViewController {
     var subject: Subject!
     var courses: [Course]!
-
+    var options: SOCOptions!
+    
     let cellId = "RUSOCSubjectViewControllerId"
-
+    
     let disposeBag = DisposeBag()
-
+    
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
         subject: Subject,
-        courses: [Course]
-    ) -> RUSOCSubjectViewController {
+        courses: [Course],
+        options: SOCOptions
+        ) -> RUSOCSubjectViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCSubjectViewController"
-        ) as! RUSOCSubjectViewController
-
+            ) as! RUSOCSubjectViewController
+        
         me.subject = subject
         me.courses = courses
-        
+        me.options = options
         return me
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
@@ -46,20 +48,25 @@ class RUSOCSubjectViewController : UITableViewController {
                 cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
                 
                 cell.sectionsLabel.text =
-                    "\(model.sectionCheck.open) / \(model.sectionCheck.total)"
+                "\(model.sectionCheck.open) / \(model.sectionCheck.total)"
             }
             .addDisposableTo(disposeBag)
-        /*
+        
         self.tableView.rx.modelSelected(Course.self)
             .subscribe(onNext: { course in
-                let vc = RUSOCCourseViewController.instantiate(
-                    withStoryboard: self.storyboard!,
-                    course: course
-                )
-
-                self.navigationController?
-                    .pushViewController(vc, animated: true)
-            })
-            .addDisposableTo(disposeBag)*/
+                
+                
+                RutgersAPI.sharedInstance.getSections(semester: self.options.semester, campus: self.options.campus, level: self.options.level, course: course).observeOn(MainScheduler.asyncInstance).bind(onNext: { sections in
+                    print(sections)
+                    let vc = RUSOCCourseViewController.instantiate(
+                        withStoryboard: self.storyboard!,
+                        course: course,
+                        sections: sections
+                    )
+                    
+                    self.navigationController?
+                        .pushViewController(vc, animated: true)
+                }).dispose()
+            }).addDisposableTo(disposeBag)
     }
 }

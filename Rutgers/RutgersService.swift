@@ -96,7 +96,7 @@ extension RutgersService : TargetType {
                 "level" : level.description,
                 "campus" : campus.description,
                 "subject" : course.subject,
-                "course" : course.title
+                "course" : course.courseNumber
             ]
         default:
             return nil
