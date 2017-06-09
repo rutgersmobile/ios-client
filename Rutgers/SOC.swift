@@ -222,7 +222,6 @@ extension Term {
     }
 }
  
-
 struct Course {
     let title: String
     let subject: Int
@@ -243,7 +242,7 @@ struct SectionCheck {
 struct Section {
     let subtopic: String?
     let subtitle: String?
-    let index: String
+    let sectionIndex: String
     let number: String
     let examCode: String
     let printed: String
@@ -257,7 +256,8 @@ struct Section {
 }
 
 struct Instructor {
-    let name: String
+    let instructorName: String
+    let sectionId: Int
 }
 
 struct MeetingTime {
@@ -328,7 +328,7 @@ extension Section: Unboxable {
     init(unboxer: Unboxer) throws {
         self.subtopic = try? unboxer.unbox(key: "subtopic")
         self.subtitle = try? unboxer.unbox(key: "subtitle")
-        self.index = try unboxer.unbox(key: "index")
+        self.sectionIndex = try unboxer.unbox(key: "sectionIndex")
         self.number = try unboxer.unbox(key: "number")
         self.examCode = try unboxer.unbox(key: "examCode")
         self.printed = try unboxer.unbox(key: "printed")
@@ -345,7 +345,8 @@ extension Section: Unboxable {
 
 extension Instructor: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.name = try unboxer.unbox(key: "name")
+        self.instructorName = try unboxer.unbox(key: "instructorName")
+        self.sectionId = try unboxer.unbox(key: "sectionId")
     }
 }
 

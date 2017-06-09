@@ -55,8 +55,8 @@ class RUSOCCourseViewController: UITableViewController {
         cell: RUSOCSectionCell,
         section: Section
     ) -> RUSOCSectionCell {
-        cell.codeLabel.text = section.index
-        cell.instructorLabel.text = section.instructors.get(0)?.name
+        cell.codeLabel.text = section.sectionIndex
+        cell.instructorLabel.text = section.instructors.get(0)?.instructorName
         cell.dayLabel.text = section.meetingTimes.map { time in
             time.meetingDay
         }.filterMap { $0 }.joined(separator: "\n")

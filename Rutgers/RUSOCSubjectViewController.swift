@@ -55,9 +55,10 @@ class RUSOCSubjectViewController : UITableViewController {
         self.tableView.rx.modelSelected(Course.self)
             .subscribe(onNext: { course in
                 
-                
+                print("\(self.options.semester) \(self.options.campus) \(self.options.level) \(course)")
                 RutgersAPI.sharedInstance.getSections(semester: self.options.semester, campus: self.options.campus, level: self.options.level, course: course).observeOn(MainScheduler.asyncInstance).bind(onNext: { sections in
                     print(sections)
+                    
                     let vc = RUSOCCourseViewController.instantiate(
                         withStoryboard: self.storyboard!,
                         course: course,
@@ -66,7 +67,8 @@ class RUSOCSubjectViewController : UITableViewController {
                     
                     self.navigationController?
                         .pushViewController(vc, animated: true)
-                }).dispose()
+ 
+                }).addDisposableTo(self.disposeBag)
             }).addDisposableTo(disposeBag)
     }
 }
