@@ -2,7 +2,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'Rutgers' do
-    pod 'AFNetworking', "~> 2.0"
+    pod 'AFNetworking', "~> 3.0”
     pod 'XMLDictionary', "~> 1.0"
     pod 'MWFeedParser/NSString+HTML', "~> 1.0"
     pod 'TOWebViewController', "2.2.6"

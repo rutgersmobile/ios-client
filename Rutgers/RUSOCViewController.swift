@@ -134,7 +134,7 @@ class RUSOCViewController
             })
             .addDisposableTo(disposeBag)
         
-        RutgersAPI.sharedInstance.getSOCInit().map { initObj -> Observable<SOCOptions> in
+     RutgersAPI.sharedInstance.getSOCInit().map { initObj -> Observable<SOCOptions> in
             let currentSemester = initObj.semesters[0]
             
             let socOptionsSelected = settingsViewButton.rx.tap.flatMap
@@ -172,11 +172,12 @@ class RUSOCViewController
                         subjectArr.map{ subject in
                             SubjectSection(items: [SubjectItem(subject: subject)])
                         }
-                    }
-                }.bindTo
+                    }.asDriver(onErrorJustReturn: []).drive(self.tableView.rx.items(dataSource: dataSource)).addDisposableTo(self.disposeBag)
+                    }.asDriver(onErrorJustReturn: nil).drive().addDisposableTo(self.disposeBag)
             }
+        
         }
-                
+    
 }
                 /*
                 return socOptions.flatMap { options in
