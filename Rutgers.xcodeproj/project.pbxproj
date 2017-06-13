@@ -248,7 +248,6 @@
 		C40AEDAE1E856E2F00F04499 /* ActionSheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40AEDAD1E856E2F00F04499 /* ActionSheetDataSource.swift */; };
 		C40AEDB01E856F7700F04499 /* Observable+RUAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40AEDAF1E856F7700F04499 /* Observable+RUAdditions.swift */; };
 		C40AEDB21E899EB500F04499 /* RUSOCSubjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40AEDB11E899EB500F04499 /* RUSOCSubjectViewController.swift */; };
-		C40AEDB41E8AAC8300F04499 /* RUSOCSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40AEDB31E8AAC8300F04499 /* RUSOCSubjectCell.swift */; };
 		C41E661A1E38E9A800562CCB /* RutgersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E66191E38E9A800562CCB /* RutgersService.swift */; };
 		C42245FF1E5223F2001FD27B /* RUFoodMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42245FE1E5223F2001FD27B /* RUFoodMainViewController.swift */; };
 		C42F4A961E81A0E600C59E68 /* RUSOCOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42F4A951E81A0E600C59E68 /* RUSOCOptionsViewController.swift */; };
@@ -719,7 +718,6 @@
 		C40AEDAD1E856E2F00F04499 /* ActionSheetDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheetDataSource.swift; sourceTree = "<group>"; };
 		C40AEDAF1E856F7700F04499 /* Observable+RUAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+RUAdditions.swift"; sourceTree = "<group>"; };
 		C40AEDB11E899EB500F04499 /* RUSOCSubjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCSubjectViewController.swift; sourceTree = "<group>"; };
-		C40AEDB31E8AAC8300F04499 /* RUSOCSubjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCSubjectCell.swift; sourceTree = "<group>"; };
 		C41E66191E38E9A800562CCB /* RutgersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersService.swift; sourceTree = "<group>"; };
 		C42245FE1E5223F2001FD27B /* RUFoodMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUFoodMainViewController.swift; sourceTree = "<group>"; };
 		C42F4A951E81A0E600C59E68 /* RUSOCOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUSOCOptionsViewController.swift; sourceTree = "<group>"; };
@@ -1017,7 +1015,6 @@
 				C40AEDB11E899EB500F04499 /* RUSOCSubjectViewController.swift */,
 				C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */,
 				C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */,
-				C40AEDB31E8AAC8300F04499 /* RUSOCSubjectCell.swift */,
 				C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */,
 			);
 			name = rusoc;
@@ -1979,7 +1976,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				04FD97D61D14988300E9877D /* PlaceholderDataSource.m in Sources */,
-				C40AEDB41E8AAC8300F04499 /* RUSOCSubjectCell.swift in Sources */,
 				048506F51B6FED100064769D /* RUWKWebViewController.m in Sources */,
 				041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */,
 				A7F082F719AFA50B00BA554C /* ButtonDataSource.m in Sources */,

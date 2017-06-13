@@ -44,20 +44,19 @@ class RUSOCSubjectViewController : UITableViewController {
                 cellIdentifier: cellId,
                 cellType: RUSOCSubjectCell.self
             )) { idx, model, cell in
+                /*
                 cell.courseLabel.text = "\(model.courseNumber): \(model.title)"
                 cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
                 
                 cell.sectionsLabel.text =
-                "\(model.sectionCheck.open) / \(model.sectionCheck.total)"
+                "\(model.sectionCheck.open) / \(model.sectionCheck.total)"*/
             }
             .addDisposableTo(disposeBag)
         
         self.tableView.rx.modelSelected(Course.self)
             .subscribe(onNext: { course in
-                
-                print("\(self.options.semester) \(self.options.campus) \(self.options.level) \(course)")
+            
                 RutgersAPI.sharedInstance.getSections(semester: self.options.semester, campus: self.options.campus, level: self.options.level, course: course).observeOn(MainScheduler.asyncInstance).bind(onNext: { sections in
-                    print(sections)
                     
                     let vc = RUSOCCourseViewController.instantiate(
                         withStoryboard: self.storyboard!,

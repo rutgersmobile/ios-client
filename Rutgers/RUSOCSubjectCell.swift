@@ -8,8 +8,9 @@
 
 import Foundation
 
+/*
 class RUSOCSubjectCell: UITableViewCell {
     @IBOutlet weak var courseLabel: UILabel!
     @IBOutlet weak var creditsLabel: UILabel!
     @IBOutlet weak var sectionsLabel: UILabel!
-}
+}*/

@@ -176,9 +176,9 @@ final class RUCinemaCollectionViewController:
     }
     
     /*
-    Mainly described from before, but essentially just prevents viewDidLoad
-    from being an absolutely incomprehensible mess - used primarily to set up
-    how the cells will display data
+    Used to set up
+    how the cells will
+    display data
     */
     
     fileprivate func skinCollectionViewDataSource(

@@ -9,6 +9,12 @@
 import Foundation
 import RxSwift
 import RxSegue
+import RxDataSources
+
+class RUSOCSubjectCell: UITableViewCell {
+    @IBOutlet weak var subjectTitle: UILabel!
+    
+}
 
 class RUSOCViewController
     : UITableViewController
@@ -69,6 +75,24 @@ class RUSOCViewController
         return (vc, observable)
     }
     
+    fileprivate func skinTableViewDataSource(dataSource: RxTableViewSectionedReloadDataSource<SubjectSection>) {
+        
+        dataSource.configureCell = {
+            (dataSource: TableViewSectionedDataSource<SubjectSection>,
+             tableView: UITableView,
+             idxPath: IndexPath,
+             item: SubjectItem) in
+                let model = dataSource[idxPath]
+            
+            let cell: RUSOCSubjectCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: idxPath) as! RUSOCSubjectCell
+            
+            cell.subjectTitle.text = model.subject.subjectDescription
+            
+            return cell
+        }
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
@@ -81,6 +105,13 @@ class RUSOCViewController
         self.activityIndicator.center = self.view.center
         self.activityIndicator.hidesWhenStopped = true
         self.view.addSubview(self.activityIndicator)
+        
+        self.tableView?.dataSource = nil
+        
+        let dataSource = RxTableViewSectionedReloadDataSource<SubjectSection>()
+        
+        skinTableViewDataSource(dataSource: dataSource)
+ 
         
         let settingsViewButton = UIButton(
             frame: CGRect(x: 0, y: 0, width: 30, height: 30)
@@ -103,32 +134,51 @@ class RUSOCViewController
             })
             .addDisposableTo(disposeBag)
         
-        RutgersAPI.sharedInstance.getSOCInit()
-            .observeOn(MainScheduler.asyncInstance)
-            .flatMap { initObj -> Observable<[Subject]> in
-                let currentSemester = initObj.semesters[0]
+        RutgersAPI.sharedInstance.getSOCInit().map { initObj -> Observable<SOCOptions> in
+            let currentSemester = initObj.semesters[0]
+            
+            let socOptionsSelected = settingsViewButton.rx.tap.flatMap
+            { [unowned self] () -> Observable<SOCOptions> in
+                let (vc, options) = self.socOptions(semesters: initObj.semesters)
+                self.navigationController?
+                    .pushViewController(vc, animated: true)
+                return options
+            }
+            
+            let socOptions = Observable.of(
+                Observable.of(RUSOCOptionsViewController.defaultOptions(
+                    semester: currentSemester
+                )),
+                socOptionsSelected
+                ).merge()
+            
+            
+            
+            socOptions.bind(onNext: { options in
+                self.passOptions = options
+            }).dispose()
+            
+            return socOptions
+            
+            }.map { optionsObs in
                 
-                let socOptionsSelected = settingsViewButton.rx.tap.flatMap
-                { [unowned self] () -> Observable<SOCOptions> in
-                    let (vc, options) = self.socOptions(semesters: initObj.semesters)
-                    self.navigationController?
-                        .pushViewController(vc, animated: true)
-                    return options
-                }
+                optionsObs.map{ options in
+                RutgersAPI
+                    .sharedInstance
+                    .getSubjects(semester: options.semester,
+                                 campus: options.campus,
+                                 level: options.level)
+                    .map{ subjectArr in
+                        subjectArr.map{ subject in
+                            SubjectSection(items: [SubjectItem(subject: subject)])
+                        }
+                    }
+                }.bindTo
+            }
+        }
                 
-                let socOptions = Observable.of(
-                    Observable.of(RUSOCOptionsViewController.defaultOptions(
-                        semester: currentSemester
-                    )),
-                    socOptionsSelected
-                    ).merge()
-                
-                
-                
-                socOptions.bind(onNext: { options in
-                    self.passOptions = options
-                }).dispose()
-                
+}
+                /*
                 return socOptions.flatMap { options in
                     return RutgersAPI.sharedInstance.getSubjects(semester: options.semester, campus: options.campus, level: options.level)
                     }
@@ -149,15 +199,22 @@ class RUSOCViewController
                                     )
                                 }
                         }
-                }
-            }.do(onError: { print($0) })
-            .asDriver(onErrorJustReturn: [])
-            .drive(self.tableView.rx.items(cellIdentifier: self.cellId))
-            { idx, model, cell in
-                cell.textLabel?.text = model.subjectDescription
-                cell.detailTextLabel?.text = "\(model.code)"
-            }.addDisposableTo(self.disposeBag)
-        
+                }*/
+                
+                /*
+         
+                }*/
+            //}.asDriver(onErrorJustReturn: [])
+            //.drive(self.tableView.rx.items(dataSource: dataSource))
+            //.addDisposableTo(self.disposeBag)
+            //.drive(self.tableView.rx.items(cellIdentifier: self.cellId))
+           // { idx, model, cell in
+                
+                //cell.textLabel?.text = model.subjectDescription
+                //cell.detailTextLabel?.text = "\(model.code)"
+    //        }
+//            .addDisposableTo(self.disposeBag)
+        /*
         self.tableView.rx.modelSelected(Subject.self)
             .subscribe(onNext: { subject in
                 
@@ -180,7 +237,26 @@ class RUSOCViewController
                         
                     }).addDisposableTo(self.disposeBag)
                 
-            }).addDisposableTo(self.disposeBag)
+            }).addDisposableTo(self.disposeBag)*/
+    
+
+private struct SubjectSection {
+    var items: [SubjectItem]
+    
+    init(items: [SubjectItem]) {
+        self.items = items
+    }
+    
+}
+
+private struct SubjectItem {
+    let subject: Subject
+}
+
+extension SubjectSection: SectionModelType {
+    init(original: SubjectSection, items: [SubjectItem]) {
+        self = original
+        self.items = items
     }
 }
 
