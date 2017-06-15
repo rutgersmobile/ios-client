@@ -9,6 +9,13 @@
 import Foundation
 import RxSwift
 
+class RUSOCCourseCell: UITableViewCell {
+    @IBOutlet weak var courseLabel: UILabel!
+    @IBOutlet weak var creditsLabel: UILabel!
+    @IBOutlet weak var sectionsLabel: UILabel!
+    
+}
+
 class RUSOCSubjectViewController : UITableViewController {
     var subject: Subject!
     var courses: [Course]!
@@ -42,14 +49,14 @@ class RUSOCSubjectViewController : UITableViewController {
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView.rx.items(
                 cellIdentifier: cellId,
-                cellType: RUSOCSubjectCell.self
+                cellType: RUSOCCourseCell.self
             )) { idx, model, cell in
-                /*
+                
                 cell.courseLabel.text = "\(model.courseNumber): \(model.title)"
                 cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
                 
                 cell.sectionsLabel.text =
-                "\(model.sectionCheck.open) / \(model.sectionCheck.total)"*/
+                "\(model.sectionCheck.open) / \(model.sectionCheck.total)"
             }
             .addDisposableTo(disposeBag)
         

@@ -13,6 +13,8 @@ import RxDataSources
 
 class RUSOCSubjectCell: UITableViewCell {
     @IBOutlet weak var subjectTitle: UILabel!
+    @IBOutlet weak var schoolTitle: UILabel!
+    @IBOutlet weak var subjectCode: UILabel!
     
 }
 
@@ -81,12 +83,17 @@ class RUSOCViewController
             (dataSource: TableViewSectionedDataSource<SubjectSection>,
              tableView: UITableView,
              idxPath: IndexPath,
-             item: SubjectItem) in
-                let model = dataSource[idxPath]
+             item: SubjectItem)
+            
+            in
+            
+            let model = dataSource[idxPath]
             
             let cell: RUSOCSubjectCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: idxPath) as! RUSOCSubjectCell
             
             cell.subjectTitle.text = model.subject.subjectDescription
+            cell.schoolTitle.text = "School Name Goes Here"
+            cell.subjectCode.text = String(model.subject.code)
             
             return cell
         }
@@ -134,7 +141,7 @@ class RUSOCViewController
             })
             .addDisposableTo(disposeBag)
         
-     RutgersAPI.sharedInstance.getSOCInit().map { initObj -> Observable<SOCOptions> in
+     RutgersAPI.sharedInstance.getSOCInit().flatMap { initObj -> Observable<SOCOptions> in
             let currentSemester = initObj.semesters[0]
             
             let socOptionsSelected = settingsViewButton.rx.tap.flatMap
@@ -160,86 +167,71 @@ class RUSOCViewController
             
             return socOptions
             
-            }.map { optionsObs in
-                
-                optionsObs.map{ options in
-                RutgersAPI
+            }.flatMap { options -> Observable<[SubjectSection]> in
+                return RutgersAPI
                     .sharedInstance
                     .getSubjects(semester: options.semester,
                                  campus: options.campus,
                                  level: options.level)
                     .map{ subjectArr in
-                        subjectArr.map{ subject in
-                            SubjectSection(items: [SubjectItem(subject: subject)])
-                        }
-                    }.asDriver(onErrorJustReturn: []).drive(self.tableView.rx.items(dataSource: dataSource)).addDisposableTo(self.disposeBag)
-                    }.asDriver(onErrorJustReturn: nil).drive().addDisposableTo(self.disposeBag)
-            }
-        
-        }
-    
-}
-                /*
-                return socOptions.flatMap { options in
-                    return RutgersAPI.sharedInstance.getSubjects(semester: options.semester, campus: options.campus, level: options.level)
+                       [ SubjectSection(items: subjectArr.map {
+                                SubjectItem(subject: $0)
+                        })
+                        ]
                     }
-                    
-                    .observeOn(MainScheduler.asyncInstance)
-                    
-                    .flatMap { [unowned self] subjects in
-                        self.searchController.searchBar.rx.text.orEmpty
-                            .throttle(0.3, scheduler: MainScheduler.instance)
-                            .distinctUntilChanged()
-                            .map { search in
-                                subjects.filter { subject in
-                                    subject.subjectDescription
-                                        .lowercased()
-                                        .hasPrefix(
-                                            search.lowercased()
-                                                .trimmingCharacters(in: .whitespaces)
-                                    )
-                                }
-                        }
-                }*/
-                
-                /*
-         
-                }*/
-            //}.asDriver(onErrorJustReturn: [])
-            //.drive(self.tableView.rx.items(dataSource: dataSource))
-            //.addDisposableTo(self.disposeBag)
-            //.drive(self.tableView.rx.items(cellIdentifier: self.cellId))
-           // { idx, model, cell in
-                
-                //cell.textLabel?.text = model.subjectDescription
-                //cell.detailTextLabel?.text = "\(model.code)"
-    //        }
-//            .addDisposableTo(self.disposeBag)
-        /*
-        self.tableView.rx.modelSelected(Subject.self)
-            .subscribe(onNext: { subject in
-                
+        }
+        .asDriver(onErrorJustReturn: [])
+        .drive(self.tableView!.rx.items(dataSource: dataSource))
+        .addDisposableTo(self.disposeBag)
+        
+    
+
+        self.tableView.rx.modelSelected(SubjectItem.self)
+            .subscribe(onNext: { model in
+               print(self.passOptions)
+               print(model.subject.subjectDescription)
                 RutgersAPI.sharedInstance.getCourses(
                     semester: self.passOptions.semester,
                     campus: self.passOptions.campus,
                     level: self.passOptions.level,
-                    subject: subject)
+                    subject: model.subject)
                     .observeOn(MainScheduler.asyncInstance)
                     .bind(onNext: { courseArr in
                         
                         let vc = RUSOCSubjectViewController.instantiate(
                             withStoryboard: self.storyboard!,
-                            subject: subject,
+                            subject: model.subject,
                             courses: courseArr,
                             options: self.passOptions
                         )
                         
                         self.navigationController?.pushViewController(vc, animated: true)
-                        
-                    }).addDisposableTo(self.disposeBag)
-                
-            }).addDisposableTo(self.disposeBag)*/
-    
+                }).addDisposableTo(self.disposeBag)
+            }).addDisposableTo(self.disposeBag)
+        
+        /*
+         RutgersAPI.sharedInstance.getCourses(
+         semester: self.passOptions.semester,
+         campus: self.passOptions.campus,
+         level: self.passOptions.level,
+         subject: model)
+         .observeOn(MainScheduler.asyncInstance)
+         .bind(onNext: { courseArr in
+         
+         let vc = RUSOCSubjectViewController.instantiate(
+         withStoryboard: self.storyboard!,
+         subject: subject,
+         courses: courseArr,
+         options: self.passOptions
+         )
+         
+         self.navigationController?.pushViewController(vc, animated: true)
+         
+         }).addDisposableTo(self.disposeBag)
+         */
+    }
+}
+
 
 private struct SubjectSection {
     var items: [SubjectItem]
