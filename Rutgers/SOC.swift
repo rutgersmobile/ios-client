@@ -288,8 +288,20 @@ struct Subject {
     let code: Int
 }
 
+struct SearchResults {
+    let subjects: [Subject]
+    let courses: [Course]
+}
+
 enum SOCParseError: Error {
     case invalidValueFormat(message: String)
+}
+
+extension SearchResults: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.subjects = try unboxer.unbox(key: "subjects")
+        self.courses = try unboxer.unbox(key: "courses")
+    }
 }
 
 extension Semester: Unboxable {

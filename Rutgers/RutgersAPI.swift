@@ -29,7 +29,7 @@ class RutgersAPI {
         self.provider = RxMoyaProvider<RutgersService>(
             plugins: [NetworkActivityPlugin { [weak networkVariable] change in
                 networkVariable?.value = change
-                }]
+                }, NetworkLoggerPlugin(verbose: true)]
         )
         
         self.networkVariable = networkVariable
@@ -57,6 +57,11 @@ class RutgersAPI {
     public func getSections(semester: Semester, campus: Campus, level: Level, course: Course) -> Observable<[Section]> {
         return self.provider.request(.getSections(semester: semester, campus: campus, level: level, course: course))
             .mapUnboxArray(type: Section.self)
+    }
+    
+    public func getSearch(semester: Semester, campus: Campus, level: Level, query: String) -> Observable<SearchResults> {
+        return self.provider.request(.getSearch(semester: semester, campus: campus, level: level, query: query))
+            .mapUnboxObject(type: SearchResults.self)
     }
     
     public func getDiningHalls() -> Observable<[DiningHall]> {
