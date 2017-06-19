@@ -77,7 +77,8 @@ class RUSOCViewController
         return (vc, observable)
     }
     
-    fileprivate func skinTableViewDataSource(dataSource: RxTableViewSectionedReloadDataSource<SubjectSection>) {
+    fileprivate func skinTableViewDataSource(
+        dataSource: RxTableViewSectionedReloadDataSource<SubjectSection>) {
         
         dataSource.configureCell = {
             (dataSource: TableViewSectionedDataSource<SubjectSection>,
@@ -89,7 +90,9 @@ class RUSOCViewController
             
             let model = dataSource[idxPath]
             
-            let cell: RUSOCSubjectCell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: idxPath) as! RUSOCSubjectCell
+            let cell: RUSOCSubjectCell =
+                tableView.dequeueReusableCell(withIdentifier: self.cellId,
+                                              for: idxPath) as! RUSOCSubjectCell
             
             cell.subjectTitle.text = model.subject.subjectDescription
             cell.schoolTitle.text = "School Name Goes Here"
@@ -148,7 +151,8 @@ class RUSOCViewController
                     
                     let socOptionsSelected = settingsViewButton.rx.tap.flatMap
                     { [unowned self] () -> Observable<SOCOptions> in
-                        let (vc, options) = self.socOptions(semesters: initObj.semesters)
+                        let (vc, options) =
+                            self.socOptions(semesters: initObj.semesters)
                         self.navigationController?
                             .pushViewController(vc, animated: true)
                         return options
@@ -183,9 +187,15 @@ class RUSOCViewController
             .rx
             .text
             .changed
-            .debounce(RxTimeInterval.init(0.5), scheduler: MainScheduler.asyncInstance)
+            .debounce(RxTimeInterval.init(0.5),
+                      scheduler: MainScheduler.asyncInstance)
             .flatMap {text -> Observable<[SubjectSection]> in
-                return RutgersAPI.sharedInstance.getSearch(semester: self.passOptions.semester, campus: self.passOptions.campus, level: self.passOptions.level, query: self.searchController.searchBar.text!)
+                return RutgersAPI
+                    .sharedInstance
+                    .getSearch(semester: self.passOptions.semester,
+                               campus: self.passOptions.campus,
+                               level: self.passOptions.level,
+                               query: self.searchController.searchBar.text!)
                     .map {eventSubject in
                         [SubjectSection(
                             items: eventSubject.subjects.map {
@@ -202,26 +212,18 @@ class RUSOCViewController
             .addDisposableTo(self.disposeBag)
         
         self.tableView.rx.modelSelected(SubjectItem.self)
-            .flatMap { model -> Observable<([Course], SubjectItem)> in
-                return getOptions.flatMap{ options -> Observable<[Course]> in
-                    RutgersAPI
-                        .sharedInstance
-                        .getCourses(semester: options.semester,
-                                    campus: options.campus,
-                                    level: options.level,
-                                    subject: model.subject)
-                    }
-                    .map {($0, model)}
-            }.subscribe(onNext: { res in
-                let (courseArr, model) = res
+            .flatMap{ model -> Observable<(Subject,SOCOptions)> in
+                return getOptions.map{(model.subject, $0)}
+            }.subscribe(onNext: { deConn in
+                let (subject, options) = deConn
                 let vc = RUSOCSubjectViewController.instantiate(
                     withStoryboard: self.storyboard!,
-                    subject: model.subject,
-                    courses: courseArr,
-                    options: self.passOptions
+                    subject: subject,
+                    options: options
                 )
                 
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?
+                    .pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
     }
 }
