@@ -138,34 +138,33 @@ class RUSOCViewController
                 }
             })
             .addDisposableTo(disposeBag)
-        let initialLoad = RutgersAPI
-            .sharedInstance
-            .getSOCInit()
-            .flatMap { initObj -> Observable<SOCOptions> in
-                let currentSemester = initObj.semesters[0]
-                
-                let socOptionsSelected = settingsViewButton.rx.tap.flatMap
-                { [unowned self] () -> Observable<SOCOptions> in
-                    let (vc, options) = self.socOptions(semesters: initObj.semesters)
-                    self.navigationController?
-                        .pushViewController(vc, animated: true)
-                    return options
-                }
-                
-                let socOptions = Observable.of(
-                    Observable.of(RUSOCOptionsViewController.defaultOptions(
-                        semester: currentSemester
-                    )),
-                    socOptionsSelected
-                    ).merge()
-                
-                socOptions.bind(onNext: { options in
-                    self.passOptions = options
-                }).dispose()
-                
-                return socOptions
-                
-            }.flatMap { options -> Observable<[SubjectSection]> in
+        
+        let getOptions =
+            RutgersAPI
+                .sharedInstance
+                .getSOCInit()
+                .flatMap { initObj -> Observable<SOCOptions> in
+                    let currentSemester = initObj.semesters[0]
+                    
+                    let socOptionsSelected = settingsViewButton.rx.tap.flatMap
+                    { [unowned self] () -> Observable<SOCOptions> in
+                        let (vc, options) = self.socOptions(semesters: initObj.semesters)
+                        self.navigationController?
+                            .pushViewController(vc, animated: true)
+                        return options
+                    }
+                    
+                    let socOptions = Observable.of(
+                        Observable.of(RUSOCOptionsViewController.defaultOptions(
+                            semester: currentSemester
+                        )),
+                        socOptionsSelected
+                        ).merge()
+                    
+                    return socOptions}
+        
+        let initialLoad =
+            getOptions.flatMap { options -> Observable<[SubjectSection]> in
                 return RutgersAPI
                     .sharedInstance
                     .getSubjects(semester: options.semester,
@@ -178,7 +177,6 @@ class RUSOCViewController
                         ]
                 }
         }
-        
         
         let searchResults = self.searchController
             .searchBar
@@ -196,7 +194,7 @@ class RUSOCViewController
                             )
                         ]
                 }
-            }
+        }
         
         Observable.merge(initialLoad, searchResults)
             .asDriver(onErrorJustReturn: [])
@@ -204,26 +202,26 @@ class RUSOCViewController
             .addDisposableTo(self.disposeBag)
         
         self.tableView.rx.modelSelected(SubjectItem.self)
-            .subscribe(onNext: { model in
-                print(self.passOptions)
-                print(model.subject.subjectDescription)
-                RutgersAPI.sharedInstance.getCourses(
-                    semester: self.passOptions.semester,
-                    campus: self.passOptions.campus,
-                    level: self.passOptions.level,
-                    subject: model.subject)
-                    .observeOn(MainScheduler.asyncInstance)
-                    .bind(onNext: { courseArr in
-                        
-                        let vc = RUSOCSubjectViewController.instantiate(
-                            withStoryboard: self.storyboard!,
-                            subject: model.subject,
-                            courses: courseArr,
-                            options: self.passOptions
-                        )
-                        
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }).addDisposableTo(self.disposeBag)
+            .flatMap { model -> Observable<([Course], SubjectItem)> in
+                return getOptions.flatMap{ options -> Observable<[Course]> in
+                    RutgersAPI
+                        .sharedInstance
+                        .getCourses(semester: options.semester,
+                                    campus: options.campus,
+                                    level: options.level,
+                                    subject: model.subject)
+                    }
+                    .map {($0, model)}
+            }.subscribe(onNext: { res in
+                let (courseArr, model) = res
+                let vc = RUSOCSubjectViewController.instantiate(
+                    withStoryboard: self.storyboard!,
+                    subject: model.subject,
+                    courses: courseArr,
+                    options: self.passOptions
+                )
+                
+                self.navigationController?.pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
     }
 }
