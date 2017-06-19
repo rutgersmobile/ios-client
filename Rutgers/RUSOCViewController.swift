@@ -159,13 +159,17 @@ class RUSOCViewController
                     }
                     
                     let socOptions = Observable.of(
-                        Observable.of(RUSOCOptionsViewController.defaultOptions(
-                            semester: currentSemester
-                        )),
+                        Observable.of(
+                            RUSOCOptionsViewController
+                                .defaultOptions(
+                                    semester: currentSemester
+                            )
+                        ),
                         socOptionsSelected
                         ).merge()
                     
-                    return socOptions}
+                    return socOptions
+        }
         
         let initialLoad =
             getOptions.flatMap { options -> Observable<[SubjectSection]> in
@@ -181,6 +185,11 @@ class RUSOCViewController
                         ]
                 }
         }
+        
+        initialLoad
+            .asDriver(onErrorJustReturn: [])
+            .drive(self.tableView!.rx.items(dataSource: dataSource))
+            .addDisposableTo(self.disposeBag)
         
         let searchResults = self.searchController
             .searchBar
@@ -208,6 +217,16 @@ class RUSOCViewController
                         ]
                 }
         }
+        
+        /*
+        self.searchController.searchBar.rx.cancelButtonClicked.subscribe { event in
+            initialLoad
+                .asDriver(onErrorJustReturn: [])
+                .drive(self.tableView!.rx.items(dataSource: dataSource))
+                .addDisposableTo(self.disposeBag)
+        }.addDisposableTo(self.disposeBag)
+         */
+ 
         
         Observable.merge(initialLoad, searchResults)
             .asDriver(onErrorJustReturn: [])
