@@ -189,13 +189,16 @@ class RUSOCViewController
             .changed
             .debounce(RxTimeInterval.init(0.5),
                       scheduler: MainScheduler.asyncInstance)
-            .flatMap {text -> Observable<[SubjectSection]> in
+            .flatMap { text -> Observable<(String, SOCOptions)> in
+                return getOptions.map{(text!, $0)}
+            }.flatMap { deConn -> Observable<[SubjectSection]> in
+                let (text, options) = deConn
                 return RutgersAPI
                     .sharedInstance
-                    .getSearch(semester: self.passOptions.semester,
-                               campus: self.passOptions.campus,
-                               level: self.passOptions.level,
-                               query: self.searchController.searchBar.text!)
+                    .getSearch(semester: options.semester,
+                               campus: options.campus,
+                               level: options.level,
+                               query: text)
                     .map {eventSubject in
                         [SubjectSection(
                             items: eventSubject.subjects.map {
