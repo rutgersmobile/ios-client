@@ -204,21 +204,11 @@ class RUSOCViewController
             .addDisposableTo(self.disposeBag)
         
         self.tableView.rx.modelSelected(SubjectItem.self)
-            .flatMap { model -> Observable<([Course], SubjectItem)> in
-                print(self.passOptions)
-                print(model.subject.subjectDescription)
-                return RutgersAPI.sharedInstance.getCourses(
-                    semester: self.passOptions.semester,
-                    campus: self.passOptions.campus,
-                    level: self.passOptions.level,
-                    subject: model.subject
-                ).map { ($0, model) }
-            }.subscribe(onNext: { res in
-                let (courseArr, model) = res
+            .map { $0.subject }
+            .subscribe(onNext: { subject in
                 let vc = RUSOCSubjectViewController.instantiate(
                     withStoryboard: self.storyboard!,
-                    subject: model.subject,
-                    courses: courseArr,
+                    subject: subject,
                     options: self.passOptions
                 )
                 
