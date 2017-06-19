@@ -204,26 +204,25 @@ class RUSOCViewController
             .addDisposableTo(self.disposeBag)
         
         self.tableView.rx.modelSelected(SubjectItem.self)
-            .subscribe(onNext: { model in
+            .flatMap { model -> Observable<([Course], SubjectItem)> in
                 print(self.passOptions)
                 print(model.subject.subjectDescription)
-                RutgersAPI.sharedInstance.getCourses(
+                return RutgersAPI.sharedInstance.getCourses(
                     semester: self.passOptions.semester,
                     campus: self.passOptions.campus,
                     level: self.passOptions.level,
-                    subject: model.subject)
-                    .observeOn(MainScheduler.asyncInstance)
-                    .bind(onNext: { courseArr in
-                        
-                        let vc = RUSOCSubjectViewController.instantiate(
-                            withStoryboard: self.storyboard!,
-                            subject: model.subject,
-                            courses: courseArr,
-                            options: self.passOptions
-                        )
-                        
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }).addDisposableTo(self.disposeBag)
+                    subject: model.subject
+                ).map { ($0, model) }
+            }.subscribe(onNext: { res in
+                let (courseArr, model) = res
+                let vc = RUSOCSubjectViewController.instantiate(
+                    withStoryboard: self.storyboard!,
+                    subject: model.subject,
+                    courses: courseArr,
+                    options: self.passOptions
+                )
+                
+                self.navigationController?.pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
     }
 }

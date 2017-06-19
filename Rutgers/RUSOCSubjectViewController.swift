@@ -63,7 +63,8 @@ class RUSOCSubjectViewController : UITableViewController {
         self.tableView.rx.modelSelected(Course.self)
             .subscribe(onNext: { course in
             
-                RutgersAPI.sharedInstance.getSections(semester: self.options.semester, campus: self.options.campus, level: self.options.level, course: course).observeOn(MainScheduler.asyncInstance).bind(onNext: { sections in
+                RutgersAPI.sharedInstance
+                    .getSections(semester: self.options.semester, campus: self.options.campus, level: self.options.level, course: course).observeOn(MainScheduler.asyncInstance).bind(onNext: { sections in
                     
                     let vc = RUSOCCourseViewController.instantiate(
                         withStoryboard: self.storyboard!,
