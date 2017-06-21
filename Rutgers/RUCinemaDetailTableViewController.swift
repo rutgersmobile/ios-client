@@ -426,11 +426,10 @@ final class RUCinemaDetailTableViewController: UITableViewController {
     }
     
     /*
-     This method populates the scrollview with all the cast members' headshots 
+     Populates the scrollview with all the cast members' headshots
      of a given movie cast.  If a headshot (profilePath) is null, it breaks 
-     out of the loop and returns any/all available profile shots.  
-     ScrollViews are notoriously obnoxious to implement, but I found this 
-     method to be the most efficient. The constraints just for setting the 
+     out of the loop and returns any/all available profile shots.
+     The constraints just for setting the
      position of the scrollView are set in IB while everything else is 
      done here programatically.
      */
@@ -459,7 +458,6 @@ final class RUCinemaDetailTableViewController: UITableViewController {
         let imageHeight: CGFloat = 50
         var xPosition: CGFloat = 0
         var scrollViewContentSize: CGFloat = 0
- 
  
         let castPhotoAndNamesDict =
             castArray

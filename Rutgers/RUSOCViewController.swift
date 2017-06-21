@@ -78,16 +78,16 @@ class RUSOCViewController
     }
     
     fileprivate func skinTableViewDataSource(
-        dataSource: RxTableViewSectionedReloadDataSource<SubjectSection>) {
+        dataSource: RxTableViewSectionedReloadDataSource<MultiSection>) {
         
         dataSource.configureCell = {
-            (dataSource: TableViewSectionedDataSource<SubjectSection>,
+            (dataSource: TableViewSectionedDataSource<MultiSection>,
             tableView: UITableView,
             idxPath: IndexPath,
-            item: SubjectItem)
+            item: SOCSectionItem)
             
             in
-            
+            /*
             let model = dataSource[idxPath]
             
             let cell: RUSOCSubjectCell =
@@ -99,6 +99,33 @@ class RUSOCViewController
             cell.subjectCode.text = String(model.subject.code)
             
             return cell
+             */
+            
+            switch dataSource[idxPath] {
+            case let .SubjectItem(subject):
+                let cell: RUSOCSubjectCell =
+                    tableView.dequeueReusableCell(
+                        withIdentifier: self.cellId,
+                       for: idxPath) as! RUSOCSubjectCell
+                
+                cell.subjectTitle.text = subject.subjectDescription
+                cell.schoolTitle.text = "School Name Goes Here"
+                cell.subjectCode.text = String(subject.code)
+                
+                return cell
+            case let .CourseItem(course):
+                let cell: RUSOCCourseCell =
+                    tableView.dequeueReusableCell(
+                        withIdentifier: "RUSOCCourseCell",
+                        for: idxPath) as! RUSOCCourseCell
+                
+                cell.courseLabel.text = course.courseDescription
+                cell.creditsLabel.text = "\(course.credits ?? 3.0)"
+                cell.sectionsLabel.text = "\(course.sectionCheck)"
+                
+                return cell
+            }
+            
         }
         
     }
@@ -118,7 +145,7 @@ class RUSOCViewController
         
         self.tableView?.dataSource = nil
         
-        let dataSource = RxTableViewSectionedReloadDataSource<SubjectSection>()
+        let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
         
         skinTableViewDataSource(dataSource: dataSource)
         
@@ -173,19 +200,25 @@ class RUSOCViewController
         }.shareReplay(1)
         
         let initialLoad =
-            getOptions.flatMapLatest { options -> Observable<[SubjectSection]> in
-                return RutgersAPI
+            getOptions.flatMapLatest { options -> Observable<[MultiSection]> in
+                RutgersAPI
                     .sharedInstance
                     .getSubjects(semester: options.semester,
                                  campus: options.campus,
                                  level: options.level)
                     .map{ subjectArr in
-                        [SubjectSection(items: subjectArr.map {
-                            SubjectItem(subject: $0)
-                        })
-                        ]
+                        let sections: [MultiSection] =
+                            [.SubjectSection(title: "", items:
+                                subjectArr.map {
+                                    .SubjectItem(subject: $0)
+                                }
+                              )
+                            ]
+                        return sections
                 }
-        }
+                
+                }
+        
         
         let searchResults = getOptions.flatMapLatest { options in
             self.searchController
@@ -199,7 +232,7 @@ class RUSOCViewController
                 ).map {
                     ($0 ?? "", options)
                 }
-        }.flatMapLatest { deConn -> Observable<[SubjectSection]> in
+        }.flatMapLatest { deConn -> Observable<[MultiSection]> in
             let (text, options) = deConn
             
             if (text != "") {
@@ -211,12 +244,16 @@ class RUSOCViewController
                            query: text)
                 .map {eventSubject in
                     [
-                        SubjectSection (
-                            items: eventSubject
-                                .subjects.map {
-                                    SubjectItem(subject: $0)
-                                }
-                            )
+                        .SubjectSection (
+                            title: "Subjects",
+                            items: eventSubject.subjects.map {
+                                    .SubjectItem(subject: $0)
+                        }),
+                        .CourseSection(
+                            title: "Courses",
+                            items: eventSubject.courses.map {
+                            .CourseItem(course: $0)
+                        })
                     ]
                 }
             } else {
@@ -229,7 +266,7 @@ class RUSOCViewController
             .searchBar
             .rx
             .cancelButtonClicked
-            .flatMapLatest { event -> Observable<[SubjectSection]> in
+            .flatMapLatest { event -> Observable<[MultiSection]> in
                 return initialLoad
             }
         
@@ -238,11 +275,10 @@ class RUSOCViewController
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
         
+        /*
         getOptions.flatMapLatest { options in
-            self.tableView.rx.modelSelected(SubjectItem.self).map {
-                ($0.subject, options)
-            }
-        }.subscribe(onNext: { deConn in
+            self.tableView.rx.modelSelected(MultiSection.Item.self)
+            }.subscribe(onNext: { deConn in
             let (subject, options) = deConn
             let vc =
                 RUSOCSubjectViewController
@@ -255,13 +291,63 @@ class RUSOCViewController
             self.navigationController?
                 .pushViewController(vc, animated: true)
         }).addDisposableTo(self.disposeBag)
+    */
+        
+        getOptions
+            .flatMapLatest { options in
+                self.tableView
+                    .rx
+                    .modelSelected(MultiSection.Item.self)
+                    .map { item -> (Any, SOCOptions) in
+                        switch item {
+                        case .SubjectItem(subject: let subject):
+                            return (subject, options)
+                        case .CourseItem(course: let course):
+                            return (course, options)
+                        }
+                    }
+            }.subscribe(onNext: {
+                deConn in
+                
+                let (item, options) = deConn
+                
+                
+                switch item {
+                case is Subject:
+                    let vc =
+                        RUSOCSubjectViewController
+                            .instantiate(
+                                withStoryboard: self.storyboard!,
+                                subject: item as! Subject,
+                                options: options
+                    )
+                    
+                    self.navigationController?
+                        .pushViewController(vc, animated: true)
+                default:
+                    let vc =
+                        RUSOCCourseViewController
+                            .instantiate(
+                                withStoryboard: self.storyboard!,
+                                course: item as! Course,
+                                sections: []
+                        )
+                    
+                    self.navigationController?
+                        .pushViewController(vc, animated: true)
+                }
+                
+                
+                
+                }
+            ).addDisposableTo(self.disposeBag)
     }
 }
 
-/*
+
 private enum MultiSection {
-    case SubjectSection(title: String, items: [SubjectSection])
-    case CourseSection(title: String, items: [CourseSection])
+    case SubjectSection(title: String, items: [SOCSectionItem])
+    case CourseSection(title: String, items: [SOCSectionItem])
 }
 
 private enum SOCSectionItem {
@@ -280,17 +366,25 @@ extension MultiSection: SectionModelType {
         }
     }
     
-    init(original: MultiSection, items: [SOC0SectionItem]) {
+    var title: String {
+        switch self {
+        case .SubjectSection(title: let title, items: _):
+                return title
+        case .CourseSection(title: let title, items: _):
+                return title
+        }
+    }
+    
+    init(original: MultiSection, items: [SOCSectionItem]) {
         switch original {
-        case let .SubjectSection(title: "Subject", items: _):
+        case let .SubjectSection(title: title, items: _):
             self = .SubjectSection(title: title, items: items)
-        case let .CourseSection(title: "Courses", items: _):
+        case let .CourseSection(title: title, items: _):
             self = .CourseSection(title: title, items: items)
-            
         }
     }
 }
-*/
+/*
 private struct SubjectSection {
     var items: [SubjectItem]
     
@@ -310,4 +404,4 @@ extension SubjectSection: SectionModelType {
         self.items = items
     }
 }
-
+*/
