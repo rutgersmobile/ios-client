@@ -186,11 +186,6 @@ class RUSOCViewController
                 }
         }
         
-        initialLoad
-            .asDriver(onErrorJustReturn: [])
-            .drive(self.tableView!.rx.items(dataSource: dataSource))
-            .addDisposableTo(self.disposeBag)
-        
         let searchResults = self.searchController
             .searchBar
             .rx
@@ -202,6 +197,8 @@ class RUSOCViewController
                 return getOptions.map{(text!, $0)}
             }.flatMap { deConn -> Observable<[SubjectSection]> in
                 let (text, options) = deConn
+                
+                if (text != "") {
                 return RutgersAPI
                     .sharedInstance
                     .getSearch(semester: options.semester,
@@ -209,47 +206,53 @@ class RUSOCViewController
                                level: options.level,
                                query: text)
                     .map {eventSubject in
-                        [SubjectSection(
-                            items: eventSubject.subjects.map {
-                                SubjectItem(subject: $0)
-                            }
-                            )
+                        [
+                            SubjectSection (
+                                items: eventSubject
+                                    .subjects.map {
+                                        SubjectItem(subject: $0)
+                                    }
+                                )
                         ]
+                    }
+                } else {
+                    return initialLoad
                 }
         }
+        let cancelTapped =
+            self.searchController
+            .searchBar
+            .rx
+            .cancelButtonClicked
+            .flatMap { event -> Observable<[SubjectSection]> in
+                return initialLoad
+            }
         
-        /*
-        self.searchController.searchBar.rx.cancelButtonClicked.subscribe { event in
-            initialLoad
-                .asDriver(onErrorJustReturn: [])
-                .drive(self.tableView!.rx.items(dataSource: dataSource))
-                .addDisposableTo(self.disposeBag)
-        }.addDisposableTo(self.disposeBag)
-         */
- 
-        
-        Observable.merge(initialLoad, searchResults)
+        Observable.merge(initialLoad, searchResults, cancelTapped)
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
         
         self.tableView.rx.modelSelected(SubjectItem.self)
-            .flatMap{ model -> Observable<(Subject,SOCOptions)> in
+            .flatMap {model -> Observable<(Subject,SOCOptions)> in
                 return getOptions.map{(model.subject, $0)}
-            }.subscribe(onNext: { deConn in
-                let (subject, options) = deConn
-                let vc = RUSOCSubjectViewController.instantiate(
-                    withStoryboard: self.storyboard!,
-                    subject: subject,
-                    options: options
-                )
-                
-                self.navigationController?
-                    .pushViewController(vc, animated: true)
-            }).addDisposableTo(self.disposeBag)
+            }.subscribe(onNext:
+                { deConn in
+                    let (subject, options) = deConn
+                    let vc =
+                        RUSOCSubjectViewController
+                            .instantiate(
+                                withStoryboard: self.storyboard!,
+                                subject: subject,
+                                options: options
+                            )
+                    
+                    self.navigationController?
+                        .pushViewController(vc, animated: true)
+                }
+            ).addDisposableTo(self.disposeBag)
     }
 }
-
 
 private struct SubjectSection {
     var items: [SubjectItem]
