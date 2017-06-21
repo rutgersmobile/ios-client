@@ -146,15 +146,17 @@ class RUSOCViewController
             RutgersAPI
                 .sharedInstance
                 .getSOCInit()
-                .flatMap { initObj -> Observable<SOCOptions> in
+                .flatMapLatest { initObj -> Observable<SOCOptions> in
+                    
                     let currentSemester = initObj.semesters[0]
                     
-                    let socOptionsSelected = settingsViewButton.rx.tap.flatMap
-                    { [unowned self] () -> Observable<SOCOptions> in
+                    let socOptionsSelected = settingsViewButton.rx.tap.flatMapLatest
+                    {() -> Observable<SOCOptions> in
                         let (vc, options) =
                             self.socOptions(semesters: initObj.semesters)
                         self.navigationController?
                             .pushViewController(vc, animated: true)
+                        
                         return options
                     }
                     
@@ -162,17 +164,16 @@ class RUSOCViewController
                         Observable.of(
                             RUSOCOptionsViewController
                                 .defaultOptions(
-                                    semester: currentSemester
-                            )
+                                    semester: currentSemester)
                         ),
                         socOptionsSelected
                         ).merge()
                     
                     return socOptions
-        }
+        }.shareReplay(1)
         
         let initialLoad =
-            getOptions.flatMap { options -> Observable<[SubjectSection]> in
+            getOptions.flatMapLatest { options -> Observable<[SubjectSection]> in
                 return RutgersAPI
                     .sharedInstance
                     .getSubjects(semester: options.semester,
@@ -186,45 +187,49 @@ class RUSOCViewController
                 }
         }
         
-        let searchResults = self.searchController
-            .searchBar
-            .rx
-            .text
-            .changed
-            .debounce(RxTimeInterval.init(0.5),
-                      scheduler: MainScheduler.asyncInstance)
-            .flatMap { text -> Observable<(String, SOCOptions)> in
-                return getOptions.map{(text!, $0)}
-            }.flatMap { deConn -> Observable<[SubjectSection]> in
-                let (text, options) = deConn
-                
-                if (text != "") {
-                return RutgersAPI
-                    .sharedInstance
-                    .getSearch(semester: options.semester,
-                               campus: options.campus,
-                               level: options.level,
-                               query: text)
-                    .map {eventSubject in
-                        [
-                            SubjectSection (
-                                items: eventSubject
-                                    .subjects.map {
-                                        SubjectItem(subject: $0)
-                                    }
-                                )
-                        ]
-                    }
-                } else {
-                    return initialLoad
+        let searchResults = getOptions.flatMapLatest { options in
+            self.searchController
+                .searchBar
+                .rx
+                .text
+                .changed
+                .debounce(
+                    RxTimeInterval.init(0.5),
+                    scheduler: MainScheduler.asyncInstance
+                ).map {
+                    ($0 ?? "", options)
                 }
+        }.flatMapLatest { deConn -> Observable<[SubjectSection]> in
+            let (text, options) = deConn
+            
+            if (text != "") {
+            return RutgersAPI
+                .sharedInstance
+                .getSearch(semester: options.semester,
+                           campus: options.campus,
+                           level: options.level,
+                           query: text)
+                .map {eventSubject in
+                    [
+                        SubjectSection (
+                            items: eventSubject
+                                .subjects.map {
+                                    SubjectItem(subject: $0)
+                                }
+                            )
+                    ]
+                }
+            } else {
+                return initialLoad
+            }
         }
+        
         let cancelTapped =
             self.searchController
             .searchBar
             .rx
             .cancelButtonClicked
-            .flatMap { event -> Observable<[SubjectSection]> in
+            .flatMapLatest { event -> Observable<[SubjectSection]> in
                 return initialLoad
             }
         
@@ -233,27 +238,59 @@ class RUSOCViewController
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
         
-        self.tableView.rx.modelSelected(SubjectItem.self)
-            .flatMap {model -> Observable<(Subject,SOCOptions)> in
-                return getOptions.map{(model.subject, $0)}
-            }.subscribe(onNext:
-                { deConn in
-                    let (subject, options) = deConn
-                    let vc =
-                        RUSOCSubjectViewController
-                            .instantiate(
-                                withStoryboard: self.storyboard!,
-                                subject: subject,
-                                options: options
-                            )
-                    
-                    self.navigationController?
-                        .pushViewController(vc, animated: true)
-                }
-            ).addDisposableTo(self.disposeBag)
+        getOptions.flatMapLatest { options in
+            self.tableView.rx.modelSelected(SubjectItem.self).map {
+                ($0.subject, options)
+            }
+        }.subscribe(onNext: { deConn in
+            let (subject, options) = deConn
+            let vc =
+                RUSOCSubjectViewController
+                    .instantiate(
+                        withStoryboard: self.storyboard!,
+                        subject: subject,
+                        options: options
+                    )
+            
+            self.navigationController?
+                .pushViewController(vc, animated: true)
+        }).addDisposableTo(self.disposeBag)
     }
 }
 
+/*
+private enum MultiSection {
+    case SubjectSection(title: String, items: [SubjectSection])
+    case CourseSection(title: String, items: [CourseSection])
+}
+
+private enum SOCSectionItem {
+    case SubjectItem(subject: Subject)
+    case CourseItem(course: Course)
+}
+
+extension MultiSection: SectionModelType {
+    
+    var items: [SOCSectionItem] {
+        switch self {
+        case .SubjectSection(title: _, items: let items):
+            return items
+        case .CourseSection(title: _, items: let items):
+            return items
+        }
+    }
+    
+    init(original: MultiSection, items: [SOC0SectionItem]) {
+        switch original {
+        case let .SubjectSection(title: "Subject", items: _):
+            self = .SubjectSection(title: title, items: items)
+        case let .CourseSection(title: "Courses", items: _):
+            self = .CourseSection(title: title, items: items)
+            
+        }
+    }
+}
+*/
 private struct SubjectSection {
     var items: [SubjectItem]
     
