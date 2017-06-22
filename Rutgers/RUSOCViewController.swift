@@ -132,9 +132,15 @@ class RUSOCViewController
                         withIdentifier: "RUSOCCourseCell",
                         for: idxPath) as! RUSOCCourseCell
                 
-                cell.courseLabel.text = course.courseDescription
-                cell.creditsLabel.text = "\(course.credits ?? 3.0)"
-                cell.openSectionsCount.text = "\(course.sectionCheck)"
+                cell.courseLabel.text = course.title
+                cell.creditsLabel.text = "\(course.credits.map { Int($0) } ?? 0)"
+                cell.codeLabel.text = course.string
+                
+                cell.openSectionsBG.backgroundColor = course.sectionCheck.open > 0 ?
+                    RUSOCViewController.openColor : RUSOCViewController.closedColor
+                cell.openSectionsBG.layer.cornerRadius = 8.0
+                cell.openSectionsCount.text =
+                "\(course.sectionCheck.open)/\(course.sectionCheck.total)"
                 
                 return cell
             }
@@ -283,28 +289,12 @@ class RUSOCViewController
                 return initialLoad
             }
         
-        Observable.merge(initialLoad, searchResults, cancelTapped)
+        Observable.merge(initialLoad, searchResults, cancelTapped).do(onError: {error in
+            print(error)
+        })
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
-        
-        /*
-        getOptions.flatMapLatest { options in
-            self.tableView.rx.modelSelected(MultiSection.Item.self)
-            }.subscribe(onNext: { deConn in
-            let (subject, options) = deConn
-            let vc =
-                RUSOCSubjectViewController
-                    .instantiate(
-                        withStoryboard: self.storyboard!,
-                        subject: subject,
-                        options: options
-                    )
-            
-            self.navigationController?
-                .pushViewController(vc, animated: true)
-        }).addDisposableTo(self.disposeBag)
-    */
         
         getOptions
             .flatMapLatest { options in
