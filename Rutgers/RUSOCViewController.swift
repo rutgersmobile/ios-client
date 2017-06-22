@@ -134,7 +134,7 @@ class RUSOCViewController
                 
                 cell.courseLabel.text = course.courseDescription
                 cell.creditsLabel.text = "\(course.credits ?? 3.0)"
-                cell.sectionsLabel.text = "\(course.sectionCheck)"
+                cell.openSectionsCount.text = "\(course.sectionCheck)"
                 
                 return cell
             }
@@ -233,7 +233,7 @@ class RUSOCViewController
                 }
         
         
-        let searchResults = getOptions.flatMapLatest { options in
+        let searchResults = getOptions.flatMap { options in
             self.searchController
                 .searchBar
                 .rx
@@ -245,7 +245,7 @@ class RUSOCViewController
                 ).map {
                     ($0 ?? "", options)
                 }
-        }.flatMapLatest { deConn -> Observable<[MultiSection]> in
+        }.flatMap { deConn -> Observable<[MultiSection]> in
             let (text, options) = deConn
             
             if (text != "") {
@@ -342,8 +342,8 @@ class RUSOCViewController
                         RUSOCCourseViewController
                             .instantiate(
                                 withStoryboard: self.storyboard!,
-                                course: item as! Course,
-                                sections: []
+                                options: options,
+                                course: item as! Course
                         )
                     
                     self.navigationController?
