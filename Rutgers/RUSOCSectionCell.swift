@@ -9,9 +9,11 @@
 import Foundation
 
 class RUSOCSectionCell: UITableViewCell {
-    @IBOutlet weak var codeLabel: UILabel!
-    @IBOutlet weak var instructorLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var dayLabel: UILabel!
-    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var openColor: UIView!
+    @IBOutlet weak var sectionNumber: UILabel!
+    @IBOutlet weak var instructor: UILabel!
+    @IBOutlet weak var sectionIndex: UILabel!
+    @IBOutlet weak var time1: UILabel!
+    @IBOutlet weak var time2: UILabel!
+    @IBOutlet weak var time3: UILabel!
 }

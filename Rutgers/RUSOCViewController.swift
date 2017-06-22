@@ -23,6 +23,19 @@ class RUSOCViewController
     , RUChannelProtocol
 {
     var channel: [NSObject : AnyObject]!
+
+    static let openColor = UIColor(
+        red: 217/255,
+        green: 242/255,
+        blue: 213/255,
+        alpha: 1
+    )
+    static let closedColor = UIColor(
+        red: 243/255,
+        green: 181/255,
+        blue: 181/255,
+        alpha: 1
+    )
     
     let disposeBag = DisposeBag()
     let cellId = "RUSOCCellId"
