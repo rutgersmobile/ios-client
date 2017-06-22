@@ -45,6 +45,15 @@ class RUSOCCourseViewController: UITableViewController {
         return "\(meetingDay) \(startTime)-\(endTime)"
             .trimmingCharacters(in: .whitespaces)
     }
+    
+    func setupCellLayout<T>(cell: T) -> T {
+        let cell = cell as! UITableViewCell
+        cell.preservesSuperviewLayoutMargins = false
+        cell.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        return cell as! T
+    }
 
     func configureSectionCell(
         cell: RUSOCSectionCell,
@@ -74,7 +83,7 @@ class RUSOCCourseViewController: UITableViewController {
             ? RUSOCViewController.openColor
             : RUSOCViewController.closedColor
 
-        return cell
+        return self.setupCellLayout(cell: cell)
     }
 
     func configurePrereqCell(

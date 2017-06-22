@@ -38,7 +38,7 @@ class RUSOCSubjectViewController : UITableViewController {
         me.options = options
         return me
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
@@ -59,9 +59,12 @@ class RUSOCSubjectViewController : UITableViewController {
 
             cell.openSectionsBG.backgroundColor = model.sectionCheck.open > 0 ?
                 RUSOCViewController.openColor : RUSOCViewController.closedColor
-            cell.openSectionsBG.layer.cornerRadius = 8.0
             cell.openSectionsCount.text =
             "\(model.sectionCheck.open)/\(model.sectionCheck.total)"
+            
+            cell.preservesSuperviewLayoutMargins = false
+            cell.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
         .addDisposableTo(disposeBag)
 

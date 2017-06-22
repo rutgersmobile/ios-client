@@ -90,6 +90,15 @@ class RUSOCViewController
         return (vc, observable)
     }
     
+    func setupCellLayout<T>(cell: T) -> T {
+        let cell = cell as! UITableViewCell
+        cell.preservesSuperviewLayoutMargins = false
+        cell.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        return cell as! T
+    }
+    
     fileprivate func skinTableViewDataSource(
         dataSource: RxTableViewSectionedReloadDataSource<MultiSection>) {
         
@@ -100,19 +109,6 @@ class RUSOCViewController
             item: SOCSectionItem)
             
             in
-            /*
-            let model = dataSource[idxPath]
-            
-            let cell: RUSOCSubjectCell =
-                tableView.dequeueReusableCell(withIdentifier: self.cellId,
-                                              for: idxPath) as! RUSOCSubjectCell
-            
-            cell.subjectTitle.text = model.subject.subjectDescription
-            cell.schoolTitle.text = "School Name Goes Here"
-            cell.subjectCode.text = String(model.subject.code)
-            
-            return cell
-             */
             
             switch dataSource[idxPath] {
             case let .SubjectItem(subject):
@@ -125,7 +121,7 @@ class RUSOCViewController
                 cell.schoolTitle.text = "School Name Goes Here"
                 cell.subjectCode.text = String(subject.code)
                 
-                return cell
+                return self.setupCellLayout(cell: cell)
             case let .CourseItem(course):
                 let cell: RUSOCCourseCell =
                     tableView.dequeueReusableCell(
@@ -142,9 +138,15 @@ class RUSOCViewController
                 cell.openSectionsCount.text =
                 "\(course.sectionCheck.open)/\(course.sectionCheck.total)"
                 
-                return cell
+                return self.setupCellLayout(cell: cell)
             }
             
+        }
+        
+        dataSource.titleForHeaderInSection = { dataSource, index in
+            let section = dataSource[index]
+            
+            return section.title
         }
         
     }
@@ -163,6 +165,8 @@ class RUSOCViewController
         self.view.addSubview(self.activityIndicator)
         
         self.tableView?.dataSource = nil
+        
+        self.tableView.separatorInset = UIEdgeInsetsMake(0,0,0,0)
         
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
         

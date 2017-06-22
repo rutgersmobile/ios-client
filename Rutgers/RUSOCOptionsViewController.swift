@@ -45,7 +45,7 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
