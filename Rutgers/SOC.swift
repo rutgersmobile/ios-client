@@ -225,6 +225,7 @@ extension Term {
 struct Course {
     let title: String
     let subject: Int
+    let string: String
     let courseNumber: Int
     let courseDescription: String?
     let preReqNotes: String?
@@ -320,6 +321,7 @@ extension Course: Unboxable {
     init(unboxer: Unboxer) throws {
         self.title = try unboxer.unbox(key: "title")
         self.subject = try unboxer.unbox(key: "subject")
+        self.string = try unboxer.unbox(key: "string")
         self.courseNumber = try unboxer.unbox(key: "number")
         self.courseDescription = try? unboxer.unbox(key: "courseDescription")
         self.preReqNotes = try? unboxer.unbox(key: "preReqNotes")

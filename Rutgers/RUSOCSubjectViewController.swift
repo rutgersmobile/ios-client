@@ -12,7 +12,9 @@ import RxSwift
 class RUSOCCourseCell: UITableViewCell {
     @IBOutlet weak var courseLabel: UILabel!
     @IBOutlet weak var creditsLabel: UILabel!
-    @IBOutlet weak var sectionsLabel: UILabel!
+    @IBOutlet weak var codeLabel: UILabel!
+    @IBOutlet weak var openSectionsBG: UIView!
+    @IBOutlet weak var openSectionsCount: UILabel!
 }
 
 class RUSOCSubjectViewController : UITableViewController {
@@ -51,31 +53,28 @@ class RUSOCSubjectViewController : UITableViewController {
             cellIdentifier: cellId,
             cellType: RUSOCCourseCell.self
         )) { idx, model, cell in
-            cell.courseLabel.text = "\(model.courseNumber): \(model.title)"
+            cell.courseLabel.text = model.title
             cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
+            cell.codeLabel.text = model.string
 
-            cell.sectionsLabel.text =
-            "\(model.sectionCheck.open) / \(model.sectionCheck.total)"
+            cell.openSectionsBG.backgroundColor = model.sectionCheck.open > 0 ?
+                RUSOCViewController.openColor : RUSOCViewController.closedColor
+            cell.openSectionsBG.layer.cornerRadius = 8.0
+            cell.openSectionsCount.text =
+            "\(model.sectionCheck.open)/\(model.sectionCheck.total)"
         }
         .addDisposableTo(disposeBag)
 
-        self.tableView.rx.modelSelected(Course.self).flatMap { course in
-            RutgersAPI.sharedInstance.getSections(
-                semester: self.options.semester,
-                campus: self.options.campus,
-                level: self.options.level,
-                course: course
-            ).map { ($0, course) }
-        }.subscribe(onNext: { res in
-            let (sections, course) = res
-            let vc = RUSOCCourseViewController.instantiate(
-                withStoryboard: self.storyboard!,
-                course: course,
-                sections: sections
-            )
+        self.tableView.rx.modelSelected(Course.self)
+            .subscribe(onNext: { course in
+                let vc = RUSOCCourseViewController.instantiate(
+                    withStoryboard: self.storyboard!,
+                    options: self.options,
+                    course: course
+                )
 
-            self.navigationController?
-                .pushViewController(vc, animated: true)
-        }).addDisposableTo(disposeBag)
+                self.navigationController?
+                    .pushViewController(vc, animated: true)
+            }).addDisposableTo(disposeBag)
     }
 }
