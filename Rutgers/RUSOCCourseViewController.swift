@@ -45,15 +45,6 @@ class RUSOCCourseViewController: UITableViewController {
         return "\(meetingDay) \(startTime)-\(endTime)"
             .trimmingCharacters(in: .whitespaces)
     }
-    
-    func setupCellLayout<T>(cell: T) -> T {
-        let cell = cell as! UITableViewCell
-        cell.preservesSuperviewLayoutMargins = false
-        cell.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        return cell as! T
-    }
 
     func configureSectionCell(
         cell: RUSOCSectionCell,
@@ -82,8 +73,10 @@ class RUSOCCourseViewController: UITableViewController {
         cell.openColor.backgroundColor = section.openStatus
             ? RUSOCViewController.openColor
             : RUSOCViewController.closedColor
-
-        return self.setupCellLayout(cell: cell)
+        
+        cell.setupCellLayout()
+        
+        return cell
     }
 
     func configurePrereqCell(
@@ -127,19 +120,12 @@ class RUSOCCourseViewController: UITableViewController {
                     for: ip
                 )
                 return self.configurePrereqCell(cell: cell, prereq: prereq)
-            case .credits(let credits):
-                let cell = tv.dequeueReusableCell(
-                    withIdentifier: self.defaultCellId,
-                    for: ip
-                )
-                return self.configureCreditsCell(cell: cell, credits: credits)
             }
         }
-
-        let creditsSection = CourseSection(
+        
+        let preReqSection = CourseSection(
             header: "Info",
             items: [
-                course.credits.map { .credits($0) },
                 course.preReqNotes.map { .prereq($0) }
             ].filterMap { $0 }
         )
@@ -154,11 +140,12 @@ class RUSOCCourseViewController: UITableViewController {
             items: sections.map { .section($0) }
         )}
         .toArray()
+            
         .map { sections in
-            if creditsSection.items.count == 0 {
+            if preReqSection.items.count == 0 {
                 return sections
             } else {
-                return [creditsSection] + sections
+                return [preReqSection] + sections
             }
         }
         .asDriver(onErrorJustReturn: [])
@@ -215,7 +202,6 @@ struct CourseSection {
 enum CourseSectionItem {
     case section(Section)
     case prereq(String)
-    case credits(Float)
 }
 
 extension CourseSection: SectionModelType {

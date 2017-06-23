@@ -11,6 +11,14 @@ import RxSwift
 import RxSegue
 import RxDataSources
 
+public extension UITableViewCell {
+    func setupCellLayout() {
+        self.preservesSuperviewLayoutMargins = false
+        self.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+
 class RUSOCSubjectCell: UITableViewCell {
     @IBOutlet weak var subjectTitle: UILabel!
     @IBOutlet weak var schoolTitle: UILabel!
@@ -90,15 +98,6 @@ class RUSOCViewController
         return (vc, observable)
     }
     
-    func setupCellLayout<T>(cell: T) -> T {
-        let cell = cell as! UITableViewCell
-        cell.preservesSuperviewLayoutMargins = false
-        cell.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        return cell as! T
-    }
-    
     fileprivate func skinTableViewDataSource(
         dataSource: RxTableViewSectionedReloadDataSource<MultiSection>) {
         
@@ -120,8 +119,9 @@ class RUSOCViewController
                 cell.subjectTitle.text = subject.subjectDescription
                 cell.schoolTitle.text = "School Name Goes Here"
                 cell.subjectCode.text = String(subject.code)
+                cell.setupCellLayout()
                 
-                return self.setupCellLayout(cell: cell)
+                return cell
             case let .CourseItem(course):
                 let cell: RUSOCCourseCell =
                     tableView.dequeueReusableCell(
@@ -136,8 +136,9 @@ class RUSOCViewController
                     RUSOCViewController.openColor : RUSOCViewController.closedColor
                 cell.openSectionsCount.text =
                 "\(course.sectionCheck.open)/\(course.sectionCheck.total)"
+                cell.setupCellLayout()
                 
-                return self.setupCellLayout(cell: cell)
+                return cell
             }
             
         }
