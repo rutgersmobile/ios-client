@@ -11,6 +11,14 @@ import RxSwift
 import RxSegue
 import RxDataSources
 
+public extension UITableViewCell {
+    func setupCellLayout() {
+        self.preservesSuperviewLayoutMargins = false
+        self.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+
 class RUSOCSubjectCell: UITableViewCell {
     @IBOutlet weak var subjectTitle: UILabel!
     @IBOutlet weak var schoolTitle: UILabel!
@@ -25,16 +33,16 @@ class RUSOCViewController
     var channel: [NSObject : AnyObject]!
 
     static let openColor = UIColor(
-        red: 217/255,
-        green: 242/255,
-        blue: 213/255,
-        alpha: 1
+        red:0.70,
+        green:0.92,
+        blue:0.44,
+        alpha:1.0
     )
     static let closedColor = UIColor(
-        red: 243/255,
-        green: 181/255,
-        blue: 181/255,
-        alpha: 1
+       red:0.92,
+       green:0.44,
+       blue:0.30,
+       alpha:1.0
     )
     
     let disposeBag = DisposeBag()
@@ -100,19 +108,6 @@ class RUSOCViewController
             item: SOCSectionItem)
             
             in
-            /*
-            let model = dataSource[idxPath]
-            
-            let cell: RUSOCSubjectCell =
-                tableView.dequeueReusableCell(withIdentifier: self.cellId,
-                                              for: idxPath) as! RUSOCSubjectCell
-            
-            cell.subjectTitle.text = model.subject.subjectDescription
-            cell.schoolTitle.text = "School Name Goes Here"
-            cell.subjectCode.text = String(model.subject.code)
-            
-            return cell
-             */
             
             switch dataSource[idxPath] {
             case let .SubjectItem(subject):
@@ -124,6 +119,7 @@ class RUSOCViewController
                 cell.subjectTitle.text = subject.subjectDescription
                 cell.schoolTitle.text = "School Name Goes Here"
                 cell.subjectCode.text = String(subject.code)
+                cell.setupCellLayout()
                 
                 return cell
             case let .CourseItem(course):
@@ -138,13 +134,19 @@ class RUSOCViewController
                 
                 cell.openSectionsBG.backgroundColor = course.sectionCheck.open > 0 ?
                     RUSOCViewController.openColor : RUSOCViewController.closedColor
-                cell.openSectionsBG.layer.cornerRadius = 8.0
                 cell.openSectionsCount.text =
                 "\(course.sectionCheck.open)/\(course.sectionCheck.total)"
+                cell.setupCellLayout()
                 
                 return cell
             }
             
+        }
+        
+        dataSource.titleForHeaderInSection = { dataSource, index in
+            let section = dataSource[index]
+            
+            return section.title
         }
         
     }
@@ -163,6 +165,8 @@ class RUSOCViewController
         self.view.addSubview(self.activityIndicator)
         
         self.tableView?.dataSource = nil
+        
+        self.tableView.separatorInset = UIEdgeInsetsMake(0,0,0,0)
         
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
         

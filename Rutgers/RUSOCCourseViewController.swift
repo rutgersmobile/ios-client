@@ -73,7 +73,9 @@ class RUSOCCourseViewController: UITableViewController {
         cell.openColor.backgroundColor = section.openStatus
             ? RUSOCViewController.openColor
             : RUSOCViewController.closedColor
-
+        
+        cell.setupCellLayout()
+        
         return cell
     }
 
@@ -132,11 +134,10 @@ class RUSOCCourseViewController: UITableViewController {
                 return self.configurePrereqCell(cell: cell, prereq: notes)
             }
         }
-
-        let creditsSection = CourseSection(
+        
+        let preReqSection = CourseSection(
             header: "Info",
             items: [
-                course.credits.map { .credits($0) },
                 course.preReqNotes.map { .prereq($0) }
             ].filterMap { $0 }
         )
@@ -151,11 +152,12 @@ class RUSOCCourseViewController: UITableViewController {
             items: sections.map { .section($0) }
         )}
         .toArray()
+            
         .map { sections in
-            if creditsSection.items.count == 0 {
+            if preReqSection.items.count == 0 {
                 return sections
             } else {
-                return [creditsSection] + sections
+                return [preReqSection] + sections
             }
         }
         .asDriver(onErrorJustReturn: [])
