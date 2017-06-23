@@ -124,6 +124,12 @@ class RUSOCCourseViewController: UITableViewController {
                     for: ip
                 )
                 return self.configureCreditsCell(cell: cell, credits: credits)
+            case .notes(let notes):
+                let cell = tv.dequeueReusableCell(
+                    withIdentifier: self.defaultCellId,
+                    for: ip
+                )
+                return self.configurePrereqCell(cell: cell, prereq: notes)
             }
         }
 
@@ -155,6 +161,21 @@ class RUSOCCourseViewController: UITableViewController {
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
+    }
+
+    override func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        return (try? self.tableView.rx.model(at: indexPath))
+            .flatMap { (model: CourseSectionItem) -> CGFloat? in
+                switch model {
+                case .section(_):
+                    return 108.5
+                default:
+                    return nil
+                }
+            } ?? 44
     }
 }
 
@@ -206,6 +227,7 @@ struct CourseSection {
 enum CourseSectionItem {
     case section(Section)
     case prereq(String)
+    case notes(String)
     case credits(Float)
 }
 

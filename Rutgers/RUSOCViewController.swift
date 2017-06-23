@@ -238,7 +238,7 @@ class RUSOCViewController
                 
                 }
         
-        
+
         let searchResults = getOptions.flatMap { options in
             self.searchController
                 .searchBar
@@ -301,13 +301,8 @@ class RUSOCViewController
                 self.tableView
                     .rx
                     .modelSelected(MultiSection.Item.self)
-                    .map { item -> (Any, SOCOptions) in
-                        switch item {
-                        case .SubjectItem(subject: let subject):
-                            return (subject, options)
-                        case .CourseItem(course: let course):
-                            return (course, options)
-                        }
+                    .map { item -> (SOCSectionItem, SOCOptions) in
+                        (item, options)
                     }
             }.subscribe(onNext: {
                 deConn in
@@ -316,24 +311,24 @@ class RUSOCViewController
                 
                 
                 switch item {
-                case is Subject:
+                case .SubjectItem(subject: let subject):
                     let vc =
                         RUSOCSubjectViewController
                             .instantiate(
                                 withStoryboard: self.storyboard!,
-                                subject: item as! Subject,
+                                subject: subject,
                                 options: options
                     )
                     
                     self.navigationController?
                         .pushViewController(vc, animated: true)
-                default:
+                case .CourseItem(course: let course):
                     let vc =
                         RUSOCCourseViewController
                             .instantiate(
                                 withStoryboard: self.storyboard!,
                                 options: options,
-                                course: item as! Course
+                                course: course
                         )
                     
                     self.navigationController?
