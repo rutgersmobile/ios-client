@@ -25,16 +25,16 @@ class RUSOCViewController
     var channel: [NSObject : AnyObject]!
 
     static let openColor = UIColor(
-        red: 217/255,
-        green: 242/255,
-        blue: 213/255,
-        alpha: 1
+        red:0.70,
+        green:0.92,
+        blue:0.44,
+        alpha:1.0
     )
     static let closedColor = UIColor(
-        red: 243/255,
-        green: 181/255,
-        blue: 181/255,
-        alpha: 1
+       red:0.92,
+       green:0.44,
+       blue:0.30,
+       alpha:1.0
     )
     
     let disposeBag = DisposeBag()
@@ -134,7 +134,6 @@ class RUSOCViewController
                 
                 cell.openSectionsBG.backgroundColor = course.sectionCheck.open > 0 ?
                     RUSOCViewController.openColor : RUSOCViewController.closedColor
-                cell.openSectionsBG.layer.cornerRadius = 8.0
                 cell.openSectionsCount.text =
                 "\(course.sectionCheck.open)/\(course.sectionCheck.total)"
                 
