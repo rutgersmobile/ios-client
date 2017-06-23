@@ -237,7 +237,6 @@
 		B5F8CF0A1E7C651F008D8C23 /* ShowtimesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F8CF081E7C651F008D8C23 /* ShowtimesCollectionViewCell.swift */; };
 		B5F8CF0B1E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F8CF091E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib */; };
 		B5F8CF111E7C93F9008D8C23 /* ShowtimesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F8CF101E7C93F9008D8C23 /* ShowtimesCell.xib */; };
-		B5F9536F1EFD985A00C82D0E /* RUSOCSectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F9536E1EFD985A00C82D0E /* RUSOCSectionDetailViewController.swift */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -702,7 +701,6 @@
 		B5F8CF081E7C651F008D8C23 /* ShowtimesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5F8CF091E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCollectionViewCell.xib; sourceTree = "<group>"; };
 		B5F8CF101E7C93F9008D8C23 /* ShowtimesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCell.xib; sourceTree = "<group>"; };
-		B5F9536E1EFD985A00C82D0E /* RUSOCSectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RUSOCSectionDetailViewController.swift; path = ../../../Documents/RUSOCSectionDetailViewController.swift; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1018,7 +1016,6 @@
 				C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */,
 				C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */,
 				C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */,
-				B5F9536E1EFD985A00C82D0E /* RUSOCSectionDetailViewController.swift */,
 			);
 			name = rusoc;
 			sourceTree = "<group>";
@@ -2181,7 +2178,6 @@
 				621347741E04279600786570 /* MusicViewController.swift in Sources */,
 				A7EA4C46197D65C000E972DD /* AAPLContentLoading.m in Sources */,
 				621872CD1D35430500E727E3 /* RUBusPredictionsAndMessageDataSource.m in Sources */,
-				B5F9536F1EFD985A00C82D0E /* RUSOCSectionDetailViewController.swift in Sources */,
 				A72FFFC61938E16200016C89 /* ExpandingTableViewSection.m in Sources */,
 				B528E0071E3BE9CC00A9DE6C /* Sport.swift in Sources */,
 				A7778D7419A4FEEF003BD8DE /* RowHeightCache.m in Sources */,
