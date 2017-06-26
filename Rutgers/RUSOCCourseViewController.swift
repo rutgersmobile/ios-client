@@ -151,6 +151,8 @@ class RUSOCCourseViewController: UITableViewController {
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
+        
+        self.tableView.rx.modelSelected()
     }
 }
 
