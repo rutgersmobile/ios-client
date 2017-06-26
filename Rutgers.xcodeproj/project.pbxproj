@@ -221,6 +221,7 @@
 		B52D0FDC1E574A4300DBDF26 /* VideoRatingsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */; };
 		B535F3981E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */; };
 		B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */; };
+		B53865C21F01563B00C0DCBF /* RUSectionDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53865C11F01563B00C0DCBF /* RUSectionDetailTableViewController.swift */; };
 		B5432FF21E426C6D006F036A /* Motd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF11E426C6D006F036A /* Motd.swift */; };
 		B5432FF41E427244006F036A /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5432FF31E427244006F036A /* Channel.swift */; };
 		B54DFB4D1E4B970300755D2D /* TmdbData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54DFB4C1E4B970300755D2D /* TmdbData.swift */; };
@@ -683,6 +684,7 @@
 		B52D0FDA1E574A4300DBDF26 /* VideoRatingsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoRatingsCell.xib; sourceTree = "<group>"; };
 		B535F3961E48C00F000CCDCC /* RUCinemaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RUCinemaCollectionViewCell.swift; sourceTree = "<group>"; };
 		B535F3971E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RUCinemaCollectionViewCell.xib; sourceTree = "<group>"; };
+		B53865C11F01563B00C0DCBF /* RUSectionDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RUSectionDetailTableViewController.swift; sourceTree = "<group>"; };
 		B5432FF11E426C6D006F036A /* Motd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Motd.swift; sourceTree = "<group>"; };
 		B5432FF31E427244006F036A /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B54DFB4C1E4B970300755D2D /* TmdbData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TmdbData.swift; sourceTree = "<group>"; };
@@ -1016,6 +1018,7 @@
 				C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */,
 				C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */,
 				C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */,
+				B53865C11F01563B00C0DCBF /* RUSectionDetailTableViewController.swift */,
 			);
 			name = rusoc;
 			sourceTree = "<group>";
@@ -2080,6 +2083,7 @@
 				04AEDE3D19D349D900A20D1E /* RUSplashViewController.m in Sources */,
 				042E7BC01C9C7E4A0036EC58 /* RUFavoritesErrorViewController.m in Sources */,
 				A7EA4C58197D6C2900E972DD /* BasicDataSource.m in Sources */,
+				B53865C21F01563B00C0DCBF /* RUSectionDetailTableViewController.swift in Sources */,
 				624042681D76085E009AC3D8 /* AthleticsCollectionViewController.swift in Sources */,
 				A7DD348F1981D3D90078023A /* PlacesDataSource.m in Sources */,
 				A7EA3F48197DA60800D4BC9E /* ExpandingTableViewDataSource.m in Sources */,
