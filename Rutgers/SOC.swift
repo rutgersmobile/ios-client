@@ -225,6 +225,8 @@ extension Term {
 struct Course {
     let title: String
     let subject: Int
+    let notes: String
+    let subjectNotes: String
     let string: String
     let courseNumber: Int
     let courseDescription: String?
@@ -233,6 +235,27 @@ struct Course {
     let credits: Float?
     let sectionCheck: SectionCheck
     let level: Level
+    let coreCodes: [CoreCode]
+}
+
+struct CoreCode {
+    let code: String
+    let coreCode: String
+    let coreCodeDescription: String
+    let coreCodeReferenceId: String
+    let course: Int
+    let description: String
+    let effective: String
+    let id: String
+    let lastUpdated: Int
+    let offeringUnitCampus: String
+    let offeringUnitCode: String
+    let subject: Int
+    let supplement: String
+    let term: Int
+    let unit: String
+    let year: String
+    let courseId: Int
 }
 
 struct SectionCheck {
@@ -321,6 +344,8 @@ extension Course: Unboxable {
     init(unboxer: Unboxer) throws {
         self.title = try unboxer.unbox(key: "title")
         self.subject = try unboxer.unbox(key: "subject")
+        self.notes = try unboxer.unbox(key: "notes")
+        self.subjectNotes = try unboxer.unbox(key: "subjectNotes")
         self.string = try unboxer.unbox(key: "string")
         self.courseNumber = try unboxer.unbox(key: "number")
         self.courseDescription = try? unboxer.unbox(key: "courseDescription")
@@ -335,6 +360,29 @@ extension Course: Unboxable {
             )
         }
         self.level = level
+        self.coreCodes = try unboxer.unbox(key: "coreCodes")
+    }
+}
+
+extension CoreCode: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.code = try unboxer.unbox(key: "code")
+        self.coreCode = try unboxer.unbox(key: "coreCode")
+        self.coreCodeDescription = try unboxer.unbox(key: "coreCodeDescription")
+        self.coreCodeReferenceId = try unboxer.unbox(key: "coreCodeReferenceId")
+        self.course = try unboxer.unbox(key: "course")
+        self.description = try unboxer.unbox(key: "description")
+        self.effective = try unboxer.unbox(key: "effective")
+        self.id = try unboxer.unbox(key: "id")
+        self.lastUpdated = try unboxer.unbox(key: "lastUpdated")
+        self.offeringUnitCampus = try unboxer.unbox(key: "offeringUnitCampus")
+        self.offeringUnitCode = try unboxer.unbox(key: "offeringUnitCode")
+        self.subject = try unboxer.unbox(key: "subject")
+        self.supplement = try unboxer.unbox(key: "supplement")
+        self.term = try unboxer.unbox(key: "term")
+        self.unit = try unboxer.unbox(key: "unit")
+        self.year = try unboxer.unbox(key: "year")
+        self.courseId = try unboxer.unbox(key: "courseId")
     }
 }
 
