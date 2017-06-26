@@ -450,7 +450,7 @@
         <!--Section Detail Table View Controller-->
         <scene sceneID="CHc-K4-BXw">
             <objects>
-                <tableViewController id="ZOH-QN-R0y" customClass="RUSOCSectionDetailTableViewController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="RUSOCSectionDetailViewController" id="ZOH-QN-R0y" customClass="RUSOCSectionDetailTableViewController" customModule="Rutgers" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bQx-mq-uma">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

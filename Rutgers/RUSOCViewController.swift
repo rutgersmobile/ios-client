@@ -129,11 +129,14 @@ class RUSOCViewController
                         for: idxPath) as! RUSOCCourseCell
                 
                 cell.courseLabel.text = course.title
-                cell.creditsLabel.text = "\(course.credits.map { Int($0) } ?? 0)"
+                cell.creditsLabel.text =
+                "\(course.credits.map { Int($0) } ?? 0)"
                 cell.codeLabel.text = course.string
                 
-                cell.openSectionsBG.backgroundColor = course.sectionCheck.open > 0 ?
-                    RUSOCViewController.openColor : RUSOCViewController.closedColor
+                cell.openSectionsBG.backgroundColor =
+                    course.sectionCheck.open > 0 ?
+                    RUSOCViewController.openColor :
+                    RUSOCViewController.closedColor
                 cell.openSectionsCount.text =
                 "\(course.sectionCheck.open)/\(course.sectionCheck.total)"
                 cell.setupCellLayout()
@@ -200,8 +203,9 @@ class RUSOCViewController
                     
                     let currentSemester = initObj.semesters[0]
                     
-                    let socOptionsSelected = settingsViewButton.rx.tap.flatMapLatest
-                    {() -> Observable<SOCOptions> in
+                    let socOptionsSelected =
+                        settingsViewButton.rx.tap.flatMapLatest
+                            {() -> Observable<SOCOptions> in
                         let (vc, options) =
                             self.socOptions(semesters: initObj.semesters)
                         self.navigationController?
@@ -293,7 +297,8 @@ class RUSOCViewController
                 return initialLoad
             }
         
-        Observable.merge(initialLoad, searchResults, cancelTapped).do(onError: {error in
+        Observable.merge(initialLoad, searchResults, cancelTapped)
+            .do(onError: {error in
             print(error)
         })
             .asDriver(onErrorJustReturn: [])
@@ -305,15 +310,13 @@ class RUSOCViewController
                 self.tableView
                     .rx
                     .modelSelected(MultiSection.Item.self)
-                    .map { item -> (SOCSectionItem, SOCOptions) in
-                        (item, options)
+                    .map{item -> (MultiSection.Item, SOCOptions) in
+                            return (item, options)
                     }
             }.subscribe(onNext: {
                 deConn in
                 
                 let (item, options) = deConn
-                
-                
                 switch item {
                 case .SubjectItem(subject: let subject):
                     let vc =
@@ -333,19 +336,15 @@ class RUSOCViewController
                                 withStoryboard: self.storyboard!,
                                 options: options,
                                 course: course
-                        )
+                                
+                    )
                     
                     self.navigationController?
                         .pushViewController(vc, animated: true)
                 }
-                
-                
-                
-                }
-            ).addDisposableTo(self.disposeBag)
+            }).addDisposableTo(self.disposeBag)
     }
 }
-
 
 private enum MultiSection {
     case SubjectSection(title: String, items: [SOCSectionItem])
@@ -386,24 +385,3 @@ extension MultiSection: SectionModelType {
         }
     }
 }
-/*
-private struct SubjectSection {
-    var items: [SubjectItem]
-    
-    init(items: [SubjectItem]) {
-        self.items = items
-    }
-    
-}
-
-private struct SubjectItem {
-    let subject: Subject
-}
-
-extension SubjectSection: SectionModelType {
-    init(original: SubjectSection, items: [SubjectItem]) {
-        self = original
-        self.items = items
-    }
-}
-*/

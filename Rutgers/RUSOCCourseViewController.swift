@@ -163,6 +163,7 @@ class RUSOCCourseViewController: UITableViewController {
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
+        
     }
 
     override func tableView(
@@ -178,6 +179,29 @@ class RUSOCCourseViewController: UITableViewController {
                     return nil
                 }
             } ?? 44
+        
+        
+        self.tableView
+            .rx
+            .modelSelected(CourseSectionItem.self)
+            .subscribe(onNext:
+                { item in
+                    
+                    switch item {
+                    case .section(let section):
+                        let vc: RUSOCSectionDetailTableViewController =
+                        RUSOCSectionDetailTableViewController
+                        .instantiate(withStoryboard: self.storyboard!,
+                        section: section)
+    
+                        self.navigationController?
+                        .pushViewController(vc, animated: true)
+                    default:
+                        print("PreReqs")
+                    }
+            }
+        ).addDisposableTo(self.disposeBag)
+
     }
 }
 
