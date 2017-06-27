@@ -267,6 +267,7 @@
 		C4B1E1611E3BD101008DC388 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1601E3BD101008DC388 /* Food.swift */; };
 		C4B1E1631E3BD7FD008DC388 /* RutgersAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */; };
 		C4B1E1651E3BE9B1008DC388 /* Observable+Unbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */; };
+		C4C038591F02B2DA002A52AA /* UILabel+RUAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C038581F02B2DA002A52AA /* UILabel+RUAdditions.swift */; };
 		C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
 		C4D047041E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
 		C4D047051E53565A00A71268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4D047021E53565A00A71268 /* GoogleService-Info.plist */; };
@@ -738,6 +739,7 @@
 		C4B1E1601E3BD101008DC388 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		C4B1E1621E3BD7FD008DC388 /* RutgersAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RutgersAPI.swift; sourceTree = "<group>"; };
 		C4B1E1641E3BE9B1008DC388 /* Observable+Unbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Unbox.swift"; sourceTree = "<group>"; };
+		C4C038581F02B2DA002A52AA /* UILabel+RUAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+RUAdditions.swift"; sourceTree = "<group>"; };
 		C4D047021E53565A00A71268 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C4FF5AEC1EA906F800B62DC7 /* MusicViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MusicViewController.storyboard; sourceTree = "<group>"; };
 		FB2411D5A5F263522CA71AAB /* Pods-Rutgers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rutgers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1666,6 +1668,7 @@
 				C43D74381E64C4C6001993E2 /* Linkable.swift */,
 				C45EBA601E801B75008322CC /* Array+RUAdditions.swift */,
 				C40AEDAF1E856F7700F04499 /* Observable+RUAdditions.swift */,
+				C4C038581F02B2DA002A52AA /* UILabel+RUAdditions.swift */,
 			);
 			path = Rutgers;
 			sourceTree = "<group>";
@@ -2173,6 +2176,7 @@
 				0488F85C1B6C0A3500668E54 /* RUOSMDataLoadingManager.m in Sources */,
 				A7241A2D1988537100304436 /* CollectionViewController.m in Sources */,
 				B54DFB4F1E4B9C2E00755D2D /* TmdbService.swift in Sources */,
+				C4C038591F02B2DA002A52AA /* UILabel+RUAdditions.swift in Sources */,
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				04A1EFD81A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m in Sources */,
 				04A1EFFD1A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m in Sources */,

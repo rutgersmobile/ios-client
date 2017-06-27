@@ -40,9 +40,8 @@ class RUSOCCourseViewController: UITableViewController {
 
     func formatMeetingTime(time: MeetingTime) -> String {
         let meetingDay = time.meetingDay ?? ""
-        let startTime = time.startTime ?? ""
-        let endTime = time.endTime ?? ""
-        return "\(meetingDay) \(startTime)-\(endTime)"
+        let meetingTime = time.timeFormatted() ?? ""
+        return "\(meetingDay) \(meetingTime)"
             .trimmingCharacters(in: .whitespaces)
     }
 
@@ -83,7 +82,9 @@ class RUSOCCourseViewController: UITableViewController {
         cell: UITableViewCell,
         prereq: String
     ) -> UITableViewCell {
-        cell.textLabel?.text = prereq
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.font = UIFont(name: "Helvetica", size: 14)
+        cell.textLabel?.setHTMLFromString(text: prereq)
         return cell
     }
 
@@ -128,7 +129,7 @@ class RUSOCCourseViewController: UITableViewController {
                 return self.configurePrereqCell(cell: cell, prereq: notes)
             }
         }
-        
+
         let preReqSection = CourseSection(
             header: "Info",
             items: [
@@ -141,12 +142,11 @@ class RUSOCCourseViewController: UITableViewController {
             campus: options.campus,
             level: options.level,
             course: course
-        ).map { sections in CourseSection(
+        )
+        .map { sections in [CourseSection(
             header: "Sections",
             items: sections.map { .section($0) }
-        )}
-        .toArray()
-            
+        )]}
         .map { sections in
             if preReqSection.items.count == 0 {
                 return sections
@@ -157,28 +157,31 @@ class RUSOCCourseViewController: UITableViewController {
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
-        
+
         self.tableView
             .rx
             .modelSelected(CourseSectionItem.self)
-            .subscribe(onNext:
-                { item in
+            .subscribe(onNext: { item in
+                switch item {
+                case .section(let section):
+                    let vc = RUSOCSectionDetailTableViewController .instantiate(
+                        withStoryboard: self.storyboard!,
+                        section: section
+                    )
                     
-                    switch item {
-                    case .section(let section):
-                        let vc: RUSOCSectionDetailTableViewController =
-                            RUSOCSectionDetailTableViewController
-                                .instantiate(withStoryboard: self.storyboard!,
-                                             section: section)
-                        
-                        self.navigationController?
-                            .pushViewController(vc, animated: true)
-                    default:
-                        print("PreReqs")
-                    }
-            }
-            ).addDisposableTo(self.disposeBag)
-        
+                    self.navigationController?.pushViewController(
+                        vc, animated: true
+                    )
+                default: break
+                }
+            }).addDisposableTo(self.disposeBag)
+    }
+
+    override func tableView(
+        _ tableView: UITableView,
+        estimatedHeightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(
@@ -186,14 +189,14 @@ class RUSOCCourseViewController: UITableViewController {
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
         return (try? self.tableView.rx.model(at: indexPath))
-            .flatMap { (model: CourseSectionItem) -> CGFloat? in
+            .map { (model: CourseSectionItem) -> CGFloat in
                 switch model {
                 case .section(_):
                     return 108.5
                 default:
-                    return nil
+                    return UITableViewAutomaticDimension
                 }
-            } ?? 44
+            } ?? UITableViewAutomaticDimension
     }
 }
 
