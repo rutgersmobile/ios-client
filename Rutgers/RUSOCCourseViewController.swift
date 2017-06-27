@@ -120,12 +120,6 @@ class RUSOCCourseViewController: UITableViewController {
                     for: ip
                 )
                 return self.configurePrereqCell(cell: cell, prereq: prereq)
-            case .credits(let credits):
-                let cell = tv.dequeueReusableCell(
-                    withIdentifier: self.defaultCellId,
-                    for: ip
-                )
-                return self.configureCreditsCell(cell: cell, credits: credits)
             case .notes(let notes):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: self.defaultCellId,
@@ -164,6 +158,27 @@ class RUSOCCourseViewController: UITableViewController {
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
         
+        self.tableView
+            .rx
+            .modelSelected(CourseSectionItem.self)
+            .subscribe(onNext:
+                { item in
+                    
+                    switch item {
+                    case .section(let section):
+                        let vc: RUSOCSectionDetailTableViewController =
+                            RUSOCSectionDetailTableViewController
+                                .instantiate(withStoryboard: self.storyboard!,
+                                             section: section)
+                        
+                        self.navigationController?
+                            .pushViewController(vc, animated: true)
+                    default:
+                        print("PreReqs")
+                    }
+            }
+            ).addDisposableTo(self.disposeBag)
+        
     }
 
     override func tableView(
@@ -179,29 +194,6 @@ class RUSOCCourseViewController: UITableViewController {
                     return nil
                 }
             } ?? 44
-        
-        
-        self.tableView
-            .rx
-            .modelSelected(CourseSectionItem.self)
-            .subscribe(onNext:
-                { item in
-                    
-                    switch item {
-                    case .section(let section):
-                        let vc: RUSOCSectionDetailTableViewController =
-                        RUSOCSectionDetailTableViewController
-                        .instantiate(withStoryboard: self.storyboard!,
-                        section: section)
-    
-                        self.navigationController?
-                        .pushViewController(vc, animated: true)
-                    default:
-                        print("PreReqs")
-                    }
-            }
-        ).addDisposableTo(self.disposeBag)
-
     }
 }
 
@@ -254,7 +246,6 @@ enum CourseSectionItem {
     case section(Section)
     case prereq(String)
     case notes(String)
-    case credits(Float)
 }
 
 extension CourseSection: SectionModelType {
