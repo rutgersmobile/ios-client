@@ -61,8 +61,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     for: idxPath
                 )
                 
-                print(section)
-                cell.textLabel?.text = "Section notes go here"
+                cell.textLabel?.text = section.sectionNotes ?? "Nothing here"
                 
                 cell.setupCellLayout()
                 return cell
@@ -87,7 +86,21 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 case is MeetingTime:
                     let item = item as! MeetingTime
                     
-                    if let day = item.meetingDay {
+                    if var day = item.meetingDay {
+                        switch day {
+                        case "M":
+                            day = "Monday"
+                        case "T":
+                            day = "Tuesday"
+                        case "W":
+                            day = "Wednesday"
+                        case "TH":
+                            day = "Thursday"
+                        case "F":
+                            day = "Friday"
+                        default:
+                            day = "Saturday"
+                        }
                         cell.textLabel?.text = day
                     }
                     
@@ -124,7 +137,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             [
             .HeaderSection(
                 items: [.noteSectionItem(section: self.section),
-                        .sectionItem(section: self.section)]),
+                        .sectionItem(section: self.section),
+                        .defaultItem(item: self.section.instructors)
+                ]),
             .MeetingTimesSection(title: "Meeting Times",
                                  items:
                                     self.section
