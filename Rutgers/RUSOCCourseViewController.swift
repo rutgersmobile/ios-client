@@ -83,8 +83,17 @@ class RUSOCCourseViewController: UITableViewController {
         prereq: String
     ) -> UITableViewCell {
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.font = UIFont(name: "Helvetica", size: 14)
+        cell.textLabel?.font = UIFont(name: "Helvetica", size: 17)
         cell.textLabel?.setHTMLFromString(text: prereq)
+        return cell
+    }
+
+    func configureNotesCell(
+        cell: UITableViewCell,
+        notes: String
+    ) -> UITableViewCell {
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.text = notes
         return cell
     }
 
@@ -92,6 +101,7 @@ class RUSOCCourseViewController: UITableViewController {
         cell: UITableViewCell,
         credits: Float
     ) -> UITableViewCell {
+        cell.textLabel?.numberOfLines = 0
         cell.textLabel?.text = String(credits)
         return cell
     }
@@ -126,12 +136,32 @@ class RUSOCCourseViewController: UITableViewController {
                     withIdentifier: self.defaultCellId,
                     for: ip
                 )
-                return self.configurePrereqCell(cell: cell, prereq: notes)
+                return self.configureNotesCell(cell: cell, notes: notes)
             }
         }
 
+        dataSource.titleForHeaderInSection = { (ds, idx) in
+            ds.sectionModels[idx].header
+        }
+
+        let notesItems = [
+            self.course.subjectNotes,
+            self.course.notes
+        ].map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }.filter {
+            !$0.isEmpty
+        } + self.course.coreCodes.map {
+            "\($0.coreCode) \($0.coreCodeDescription)"
+        }
+
+        let notesSection = CourseSection(
+            header: "Notes",
+            items: notesItems.map { .notes($0) }
+        )
+
         let preReqSection = CourseSection(
-            header: "Info",
+            header: "PreReqs",
             items: [
                 course.preReqNotes.map { .prereq($0) }
             ].filterMap { $0 }
@@ -154,6 +184,7 @@ class RUSOCCourseViewController: UITableViewController {
                 return [preReqSection] + sections
             }
         }
+        .map { [notesSection] + $0 }
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
