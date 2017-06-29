@@ -109,7 +109,8 @@ class RUSOCCourseViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
-
+        self.tableView.tableFooterView = UIView()
+        
         let dataSource = RxCourseDataSource()
 
         dataSource.configureCell = { (
@@ -251,12 +252,12 @@ fileprivate extension MeetingTime {
     }
 }
 
-fileprivate extension String {
+public extension String {
     func meetTimeFormatted() -> String {
         if self.characters.count != 4 {
             return self
         }
-
+        
         let hourIndexE = self.index(self.startIndex, offsetBy: 1)
         let hour = self[self.startIndex...hourIndexE]
         let minuteIndexS = self.index(self.startIndex, offsetBy: 2)

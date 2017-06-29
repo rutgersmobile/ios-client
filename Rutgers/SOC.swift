@@ -255,7 +255,6 @@ struct CoreCode {
     let term: Int
     let unit: String
     let year: String
-    let courseId: Int
 }
 
 struct SectionCheck {
@@ -382,7 +381,6 @@ extension CoreCode: Unboxable {
         self.term = try unboxer.unbox(key: "term")
         self.unit = try unboxer.unbox(key: "unit")
         self.year = try unboxer.unbox(key: "year")
-        self.courseId = try unboxer.unbox(key: "courseId")
     }
 }
 

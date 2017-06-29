@@ -49,6 +49,7 @@ class RUSOCSubjectViewController : UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
+        self.tableView.tableFooterView = UIView()
 
         let dataSource = RxSubjectDataSource()
 

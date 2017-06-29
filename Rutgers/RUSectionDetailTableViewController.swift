@@ -11,14 +11,21 @@ import RxSwift
 import RxDataSources
 
 class RUSOCDetailCell: UITableViewCell {
+    @IBOutlet weak var leftLabel: UILabel!
+    @IBOutlet weak var rightLabel: UILabel!
     
 }
 
 class RUSOCLocationCell: UITableViewCell {
     
+    @IBOutlet weak var buildingTitle: UILabel!
+    @IBOutlet weak var buildingImage: UIImageView!
 }
 
 class RUSOCSectionDetailCell: UITableViewCell {
+    @IBOutlet weak var sectionLabel: UILabel!
+    @IBOutlet weak var openClosedDisplay: UIView!
+    
     
 }
 
@@ -26,6 +33,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     
     var section: Section!
     let disposeBag = DisposeBag()
+    var images: [UIImage?] = []
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
@@ -44,9 +52,23 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.tableView.dataSource = nil
+        self.tableView.layoutIfNeeded()
+        self.tableView.tableFooterView = UIView()
         
+        self.images =
+            self.section
+                .meetingTimes
+                .map {
+                    $0.buildingCode.flatMap{
+                        URL(string:
+                            "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/\($0).jpeg")}
+                        .flatMap{try? Data.init(contentsOf: $0)}
+                        .flatMap{UIImage.init(data: $0)}
+        }
         
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
+        
+        self.tableView.allowsSelection = false
         
         dataSource.configureCell = { (
             ds: TableViewSectionedDataSource<MultiSection>,
@@ -59,9 +81,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "notesCell",
                     for: idxPath
-                )
+                ) as! RUSOCDetailCell
                 
-                cell.textLabel?.text = section.sectionNotes ?? "Nothing here"
+                cell.leftLabel.text = section.sectionNotes
                 
                 cell.setupCellLayout()
                 return cell
@@ -69,10 +91,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "sectionCell",
                     for: idxPath
-                    )
+                    ) as! RUSOCSectionDetailCell
                 
-                cell.textLabel!.text = "Section \(section.number)"
+                cell.sectionLabel!.text = "Section \(section.number)"
+                cell.openClosedDisplay.backgroundColor = section.openStatus
+                    ? RUSOCViewController.openColor
+                    : RUSOCViewController.closedColor
                 
+                cell.openClosedDisplay.layer.cornerRadius = 0.8
                 
                 cell.setupCellLayout()
                 return cell
@@ -80,7 +106,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "defaultCell",
                     for: idxPath
-                )
+                ) as! RUSOCDetailCell
                 
                 switch item{
                 case is MeetingTime:
@@ -105,25 +131,29 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     }
                     
                     if let startTime = item.startTime {
-                        cell.detailTextLabel?.text = "\(startTime)-\(item.endTime!)"
+                        cell.rightLabel.text =
+                        "\(startTime.meetTimeFormatted())-\(item.endTime!.meetTimeFormatted())"
                     } else {
-                        cell.detailTextLabel?.text = ""
+                        cell.rightLabel.text = ""
                     }
-                    
+                case is Instructor:
+                    let item = item as! Instructor
+                    cell.leftLabel.text = "Instructor"
+                    cell.leftLabel.text = "\(item.instructorName)"
                 default:
-                    cell.textLabel?.text = "\(item)"
+                    cell.leftLabel.text = ""
                 }
                 cell.setupCellLayout()
                 return cell
-            case let .locationItem(section):
+            case let .locationItem(image):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "locationCell",
                     for: idxPath
-                )
+                ) as! RUSOCLocationCell
                 
-                cell.textLabel?.text = "\(section.sectionIndex)"
-                
+                cell.buildingImage.image = image.flatMap {$0}
                 cell.setupCellLayout()
+                
                 return cell
             }
             
@@ -133,22 +163,56 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             ds.sectionModels[idxPath].title
         }
         
+        let noteSectionItem: [SOCSectionDetailItem] = {
+            switch self.section.sectionNotes! {
+            case "":
+                return []
+            default:
+                 return [SOCSectionDetailItem.noteSectionItem(section: self.section)]
+            }
+        }()
+        
+        let meetingTimes: [SOCSectionDetailItem] = {
+            switch self.section.meetingTimes.isEmpty {
+            case true:
+                return []
+            default:
+                return self.section
+                    .meetingTimes
+                    .map{SOCSectionDetailItem.defaultItem(item:$0)}
+            }
+        }()
+        
+        let locationSection: [MultiSection] = {
+            
+            switch self.images[0] {
+            case nil:
+                return []
+            default:
+                return [MultiSection
+                        .LocationSection(
+                            title: "Locations",
+                            items:
+                            self.images
+                                .map {SOCSectionDetailItem
+                                      .locationItem(images: $0)}
+                                    )]
+            }
+        }()
+        
         let toDrive: [MultiSection] =
             [
             .HeaderSection(
-                items: [.noteSectionItem(section: self.section),
-                        .sectionItem(section: self.section),
-                        .defaultItem(item: self.section.instructors)
-                ]),
+                items: noteSectionItem + [.sectionItem(section: self.section)] +
+                        self.section
+                           .instructors
+                        .map {.defaultItem(item: $0)}
+            ),
             .MeetingTimesSection(title: "Meeting Times",
-                                 items:
-                                    self.section
-                                        .meetingTimes
-                                        .map{.defaultItem(item:$0)}),
-            .LocationSection(title: "Locations",
-                              items: [.locationItem(section: self.section)])
+                                 items: meetingTimes),
             
-            ]
+            
+            ] + locationSection
         
         Observable.just(toDrive)
             .asDriver(onErrorJustReturn: [])
@@ -168,7 +232,7 @@ private enum SOCSectionDetailItem {
     case noteSectionItem(section: Section)
     case sectionItem(section: Section)
     case defaultItem(item: Any)
-    case locationItem(section: Section)
+    case locationItem(images: UIImage?)
 }
 
 extension MultiSection: SectionModelType {
