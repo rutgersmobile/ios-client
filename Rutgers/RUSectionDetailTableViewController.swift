@@ -83,8 +83,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     for: idxPath
                 ) as! RUSOCDetailCell
                 
-                cell.leftLabel.text = section.sectionNotes
+                cell.leftLabel?.text = "Text goes heres"
                 
+                self.tableView.rowHeight = 300
                 cell.setupCellLayout()
                 return cell
             case let .sectionItem(section):
@@ -93,13 +94,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     for: idxPath
                     ) as! RUSOCSectionDetailCell
                 
-                cell.sectionLabel!.text = "Section \(section.number)"
+                cell.sectionLabel?.text = "Section \(section.number)"
                 cell.openClosedDisplay.backgroundColor = section.openStatus
                     ? RUSOCViewController.openColor
                     : RUSOCViewController.closedColor
                 
                 cell.openClosedDisplay.layer.cornerRadius = 0.8
                 
+                self.tableView.rowHeight = 50
                 cell.setupCellLayout()
                 return cell
             case let .defaultItem(item):
@@ -127,22 +129,24 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         default:
                             day = "Saturday"
                         }
-                        cell.textLabel?.text = day
+                        cell.leftLabel?.text = day
                     }
                     
                     if let startTime = item.startTime {
-                        cell.rightLabel.text =
+                        cell.rightLabel?.text =
                         "\(startTime.meetTimeFormatted())-\(item.endTime!.meetTimeFormatted())"
                     } else {
-                        cell.rightLabel.text = ""
+                        cell.rightLabel?.text = ""
                     }
                 case is Instructor:
                     let item = item as! Instructor
-                    cell.leftLabel.text = "Instructor"
-                    cell.leftLabel.text = "\(item.instructorName)"
+                    cell.leftLabel?.text = "Instructor"
+                    cell.rightLabel?.text = "\(item.instructorName)"
                 default:
-                    cell.leftLabel.text = ""
+                    cell.leftLabel?.text = ""
                 }
+                
+                self.tableView.rowHeight = 50
                 cell.setupCellLayout()
                 return cell
             case let .locationItem(image):
@@ -150,6 +154,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     withIdentifier: "locationCell",
                     for: idxPath
                 ) as! RUSOCLocationCell
+                
+                self.tableView.rowHeight = 220
                 
                 cell.buildingImage.image = image.flatMap {$0}
                 cell.setupCellLayout()
@@ -164,24 +170,32 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         }
         
         let noteSectionItem: [SOCSectionDetailItem] = {
-            switch self.section.sectionNotes! {
-            case "":
+            switch self.section.sectionNotes.flatMap({$0}) {
+            case nil:
                 return []
             default:
                  return [SOCSectionDetailItem.noteSectionItem(section: self.section)]
             }
         }()
         
-        let meetingTimes: [SOCSectionDetailItem] = {
-            switch self.section.meetingTimes.isEmpty {
-            case true:
+        let meetingSection: [MultiSection] = { () -> [MultiSection] in
+            
+            switch self.section.meetingTimes[0].endTime.flatMap({$0}) {
+            case nil:
                 return []
             default:
-                return self.section
-                    .meetingTimes
-                    .map{SOCSectionDetailItem.defaultItem(item:$0)}
+                return
+                    [MultiSection
+                        .MeetingTimesSection(
+                            title: "Meeting Times",
+                            items:
+                            self.section
+                                .meetingTimes
+                                .map {
+                                    SOCSectionDetailItem
+                                        .defaultItem(item:$0)})]
             }
-        }()
+            }()
         
         let locationSection: [MultiSection] = {
             
@@ -207,12 +221,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         self.section
                            .instructors
                         .map {.defaultItem(item: $0)}
-            ),
-            .MeetingTimesSection(title: "Meeting Times",
-                                 items: meetingTimes),
-            
-            
-            ] + locationSection
+            )
+            ] + meetingSection + locationSection
         
         Observable.just(toDrive)
             .asDriver(onErrorJustReturn: [])
