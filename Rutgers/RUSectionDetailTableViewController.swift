@@ -83,9 +83,11 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     for: idxPath
                 ) as! RUSOCDetailCell
                 
-                cell.leftLabel?.text = "Text goes heres"
+                cell.leftLabel?.text = section.sectionNotes
                 
-                self.tableView.rowHeight = 300
+                self.tableView.rowHeight = 50
+                
+                cell.backgroundColor = .lightGray
                 cell.setupCellLayout()
                 return cell
             case let .sectionItem(section):
@@ -170,11 +172,13 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         }
         
         let noteSectionItem: [SOCSectionDetailItem] = {
-            switch self.section.sectionNotes.flatMap({$0}) {
-            case nil:
+            switch self.section.sectionNotes.flatMap({$0.isEmpty}) {
+            case let boolVal where boolVal == true:
                 return []
             default:
-                 return [SOCSectionDetailItem.noteSectionItem(section: self.section)]
+                 return
+                    [SOCSectionDetailItem.noteSectionItem(section: self
+                                                                   .section)]
             }
         }()
         
