@@ -16,10 +16,23 @@ class RUSOCDetailCell: UITableViewCell {
     
 }
 
-class RUSOCLocationCell: UITableViewCell {
+class RUMeetingTimesAndLocationCell: UITableViewCell {
+    @IBOutlet weak var dayLabel: UILabel!
+    @IBOutlet weak var timesLabel: UILabel!
     
-    @IBOutlet weak var buildingTitle: UILabel!
-    @IBOutlet weak var buildingImage: UIImageView!
+    @IBOutlet weak var imageHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var locationImage: UIImageView!
+    
+    var isExpanded : Bool = false {
+        didSet {
+            if !isExpanded {
+                self.imageHeight.constant = 0.0
+            } else {
+                self.imageHeight.constant = 125.0
+            }
+        }
+    }
 }
 
 class RUSOCSectionDetailCell: UITableViewCell {
@@ -34,6 +47,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     var section: Section!
     let disposeBag = DisposeBag()
     var images: [UIImage?] = []
+    var expandedRows = Set<Int>()
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
@@ -54,7 +68,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         self.tableView.dataSource = nil
         self.tableView.layoutIfNeeded()
         self.tableView.tableFooterView = UIView()
-        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         self.images =
             self.section
                 .meetingTimes
@@ -68,7 +82,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
         
-        self.tableView.allowsSelection = false
+//        self.tableView.allowsSelection = false
         
         dataSource.configureCell = { (
             ds: TableViewSectionedDataSource<MultiSection>,
@@ -85,7 +99,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.leftLabel?.text = section.sectionNotes
                 
-                self.tableView.rowHeight = 50
+                //self.tableView.rowHeight = 50
                 
                 cell.backgroundColor = .lightGray
                 cell.setupCellLayout()
@@ -103,7 +117,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.openClosedDisplay.layer.cornerRadius = 0.8
                 
-                self.tableView.rowHeight = 50
+                //self.tableView.rowHeight = 50
                 cell.setupCellLayout()
                 return cell
             case let .defaultItem(item):
@@ -148,9 +162,46 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.leftLabel?.text = ""
                 }
                 
-                self.tableView.rowHeight = 50
                 cell.setupCellLayout()
                 return cell
+            case let .meetingTimesItem(item, image):
+                let cell = tv.dequeueReusableCell(
+                    withIdentifier: "meetingLocations", for: idxPath) as! RUMeetingTimesAndLocationCell
+                
+                if var day = item.meetingDay {
+                    switch day {
+                    case "M":
+                        day = "Monday"
+                    case "T":
+                        day = "Tuesday"
+                    case "W":
+                        day = "Wednesday"
+                    case "TH":
+                        day = "Thursday"
+                    case "F":
+                        day = "Friday"
+                    default:
+                        day = "Saturday"
+                    }
+                    cell.dayLabel?.text = day
+                }
+                
+                if let startTime = item.startTime {
+                    cell.timesLabel?.text =
+                    "\(startTime.meetTimeFormatted())-\(item.endTime!.meetTimeFormatted())"
+                } else {
+                    cell.timesLabel?.text = ""
+                }
+                
+                cell.locationImage.image = image.flatMap {$0}
+//                cell.locationImage.backgroundColor = .red
+                
+                cell.isExpanded = self.expandedRows.contains(idxPath.row)
+                
+                //cell.setupCellLayout()
+                
+                return cell
+                /*
             case let .locationItem(image):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "locationCell",
@@ -163,6 +214,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 cell.setupCellLayout()
                 
                 return cell
+             */
             }
             
         }
@@ -193,14 +245,17 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .MeetingTimesSection(
                             title: "Meeting Times",
                             items:
-                            self.section
-                                .meetingTimes
-                                .map {
-                                    SOCSectionDetailItem
-                                        .defaultItem(item:$0)})]
+                            self.section.meetingTimes.flatMap {meetings in
+                                self.images.flatMap {images in (meetings, images)}
+                                }.map { (meeting, image) in
+                                    SOCSectionDetailItem.meetingTimesItem(item: meeting, images: image)
+                            }
+                           )
+                ]
             }
             }()
-        
+            
+            /*
         let locationSection: [MultiSection] = {
             
             switch self.images[0] {
@@ -216,37 +271,85 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                                       .locationItem(images: $0)}
                                     )]
             }
-        }()
+        }()*/
         
         let toDrive: [MultiSection] =
             [
             .HeaderSection(
-                items: noteSectionItem + [.sectionItem(section: self.section)] +
+                items: noteSectionItem +
+                    [.sectionItem(section:
+                                  self.section)] +
                         self.section
                            .instructors
                         .map {.defaultItem(item: $0)}
             )
-            ] + meetingSection + locationSection
+            ] + meetingSection
+                //+ locationSection
         
         Observable.just(toDrive)
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
         }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 50
+        
     }
-
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(indexPath.row)
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? RUMeetingTimesAndLocationCell
+            
+            else { return }
+        
+        switch cell.isExpanded
+            
+        {
+            
+        case true:
+            
+            self.expandedRows.remove(indexPath.row)
+            
+        case false:
+            
+            self.expandedRows.insert(indexPath.row)
+            
+        }
+        
+        
+        
+        cell.isExpanded = !cell.isExpanded
+        
+        
+        
+        self.tableView.beginUpdates()
+        
+        self.tableView.endUpdates()
+        
+    }
+    }
+    
 
 private enum MultiSection {
     case HeaderSection(items: [SOCSectionDetailItem])
     case MeetingTimesSection(title: String, items: [SOCSectionDetailItem])
-    case LocationSection(title: String, items: [SOCSectionDetailItem])
+    //case LocationSection(title: String, items: [SOCSectionDetailItem])
 }
 
 private enum SOCSectionDetailItem {
     case noteSectionItem(section: Section)
     case sectionItem(section: Section)
     case defaultItem(item: Any)
-    case locationItem(images: UIImage?)
+    case meetingTimesItem(item: MeetingTime, images: UIImage?)
+    //case locationItem(images: UIImage?)
 }
 
 extension MultiSection: SectionModelType {
@@ -257,8 +360,9 @@ extension MultiSection: SectionModelType {
             return items
         case .MeetingTimesSection(title: _, items: let items):
             return items
+            /*
         case .LocationSection(title: _, items: let items):
-            return items
+            return items*/
         }
     }
     
@@ -268,8 +372,10 @@ extension MultiSection: SectionModelType {
             return ""
         case .MeetingTimesSection(title: let title, items: _):
             return title
+        /*
         case .LocationSection(title: let title, items: _):
             return title
+        */
         }
     }
     
@@ -279,8 +385,10 @@ extension MultiSection: SectionModelType {
             self = .HeaderSection(items: items)
         case let .MeetingTimesSection(title: title, items: _):
             self = .MeetingTimesSection(title: title, items: items)
+        /*
         case let .LocationSection(title: title, items: _):
             self = .LocationSection(title: title, items: items)
+ */
         }
     }
 }
