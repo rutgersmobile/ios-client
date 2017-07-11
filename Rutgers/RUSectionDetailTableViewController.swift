@@ -130,41 +130,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     for: idxPath
                 ) as! RUSOCDetailCell
                 
-                switch item{
-                case is MeetingTime:
-                    let item = item as! MeetingTime
-                    
-                    if var day = item.meetingDay {
-                        switch day {
-                        case "M":
-                            day = "Monday"
-                        case "T":
-                            day = "Tuesday"
-                        case "W":
-                            day = "Wednesday"
-                        case "TH":
-                            day = "Thursday"
-                        case "F":
-                            day = "Friday"
-                        default:
-                            day = "Saturday"
-                        }
-                        cell.leftLabel?.text = day
-                    }
-                    
-                    if let startTime = item.startTime {
-                        cell.rightLabel?.text =
-                        "\(startTime.meetTimeFormatted())-\(item.endTime!.meetTimeFormatted())"
-                    } else {
-                        cell.rightLabel?.text = ""
-                    }
-                case is Instructor:
-                    let item = item as! Instructor
-                    cell.leftLabel?.text = "Instructor"
-                    cell.rightLabel?.text = "\(item.instructorName)"
-                default:
-                    cell.leftLabel?.text = ""
-                }
+                let item = item as! Instructor
+                cell.leftLabel?.text = "Instructor"
+                cell.rightLabel?.text = "\(item.instructorName)"
                 
                 cell.setupCellLayout()
                 return cell
@@ -199,14 +167,10 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.timesLabel?.text = ""
                 }
                 
-                //cell.locationImage.image =
-//                cell.locationImage.backgroundColor = .red
-               
-                //cell.imageHeight.constant = cell.expanded ? 145 : 0
-                    let image =
-                            item.buildingCode
-                                .flatMap{
-                            URL(string:
+                let image =
+                        item.buildingCode
+                            .flatMap{
+                                URL(string:
                                 "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/\($0).jpeg")}
                             .flatMap{try? Data.init(contentsOf: $0)}
                             .flatMap{UIImage.init(data: $0)}
@@ -220,10 +184,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             
         }
         
-        /* -- This stopped working for some reason... --
         dataSource.titleForHeaderInSection = { (ds, idxPath) in
-            ds.sectionModels[idxPath].title
-        } */
+            //This needs to stay in order for the app to not crash
+            if idxPath != 0 {
+                return ds.sectionModels[idxPath].title
+            } else {
+                return ""
+            }
+        }
         
         let noteSectionItem: [SOCSectionDetailItem] = {
             switch self.section.sectionNotes.flatMap({$0.isEmpty}) {
@@ -237,7 +205,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         }()
         
         let meetingSection: [MultiSection] = { () -> [MultiSection] in
-            
             switch self.section.meetingTimes[0].endTime.flatMap({$0}) {
             case nil:
                 return []
@@ -249,7 +216,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                             items:
                             self.section.meetingTimes.flatMap { SOCSectionDetailItem.meetingTimesItem(item: $0)
                             }
-                           )
+                       )
                 ]
             }
             }()
@@ -319,7 +286,7 @@ extension MultiSection: SectionModelType {
         switch original {
         case let .HeaderSection(items: items):
             self = .HeaderSection(items: items)
-        case let .MeetingTimesSection(title: title, items: _):
+        case let .MeetingTimesSection(title: title, items: items):
             self = .MeetingTimesSection(title: title, items: items)
         }
     }
