@@ -63,7 +63,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     
     var section: Section!
     let disposeBag = DisposeBag()
-    var images: [UIImage?] = []
+    //var images: [UIImage?] = []
     
     
     static func instantiate(
@@ -86,20 +86,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.images =
-            self.section
-                .meetingTimes
-                .map {
-                    $0.buildingCode.flatMap{
-                        URL(string:
-                            "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/\($0).jpeg")}
-                        .flatMap{try? Data.init(contentsOf: $0)}
-                        .flatMap{UIImage.init(data: $0)}
-        }
-        
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
-        
-//        self.tableView.allowsSelection = false
         
         dataSource.configureCell = { (
             ds: TableViewSectionedDataSource<MultiSection>,
@@ -181,7 +168,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.setupCellLayout()
                 return cell
-            case let .meetingTimesItem(item, image):
+            case let .meetingTimesItem(item):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "meetingLocations", for: idxPath) as! RUMeetingTimesAndLocationCell
                 
@@ -216,9 +203,15 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 //                cell.locationImage.backgroundColor = .red
                
                 //cell.imageHeight.constant = cell.expanded ? 145 : 0
+                    let image =
+                            item.buildingCode
+                                .flatMap{
+                            URL(string:
+                                "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/\($0).jpeg")}
+                            .flatMap{try? Data.init(contentsOf: $0)}
+                            .flatMap{UIImage.init(data: $0)}
                 
-                
-                cell.locationImage.image = image.flatMap{$0}
+                cell.locationImage.image = image ?? UIImage(cgImage: #imageLiteral(resourceName: "Not_available").cgImage!) //NOT AVAILABLE IS A PLACEHOLDER! REPLACE IT!
                 
                 cell.setupCellLayout()
                 
@@ -227,10 +220,10 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             
         }
         
-        /*
+        /* -- This stopped working for some reason... --
         dataSource.titleForHeaderInSection = { (ds, idxPath) in
             ds.sectionModels[idxPath].title
-        }*/
+        } */
         
         let noteSectionItem: [SOCSectionDetailItem] = {
             switch self.section.sectionNotes.flatMap({$0.isEmpty}) {
@@ -254,10 +247,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .MeetingTimesSection(
                             title: "Meeting Times",
                             items:
-                            self.section.meetingTimes.flatMap {meetings in
-                                self.images.flatMap {images in (meetings, images)}
-                                }.map { (meeting, image) in
-                                    SOCSectionDetailItem.meetingTimesItem(item: meeting, images: image)
+                            self.section.meetingTimes.flatMap { SOCSectionDetailItem.meetingTimesItem(item: $0)
                             }
                            )
                 ]
@@ -302,7 +292,7 @@ private enum SOCSectionDetailItem {
     case noteSectionItem(section: Section)
     case sectionItem(section: Section)
     case defaultItem(item: Any)
-    case meetingTimesItem(item: MeetingTime, images: UIImage?)
+    case meetingTimesItem(item: MeetingTime)
 }
 
 extension MultiSection: SectionModelType {
