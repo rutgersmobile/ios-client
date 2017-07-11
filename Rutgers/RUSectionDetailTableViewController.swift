@@ -16,6 +16,21 @@ class RUSOCDetailCell: UITableViewCell {
     
 }
 
+/*
+class RUMeetingTimesAndLocationContent {
+    var day: String?
+    var times: String?
+    var image: UIImage?
+    var expanded: Bool
+    
+    init(day: String, times: String, image: UIImage) {
+        self.day = day
+        self.times = times
+        self.image = image
+        self.expanded = false
+    }
+}*/
+
 class RUMeetingTimesAndLocationCell: UITableViewCell {
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var timesLabel: UILabel!
@@ -24,15 +39,17 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
     
     @IBOutlet weak var locationImage: UIImageView!
     
-    var isExpanded : Bool = false {
+    var expanded: Bool = false
+    {
         didSet {
-            if !isExpanded {
+            if expanded == false {
                 self.imageHeight.constant = 0.0
             } else {
-                self.imageHeight.constant = 125.0
+                self.imageHeight.constant = 145.0
             }
         }
     }
+    
 }
 
 class RUSOCSectionDetailCell: UITableViewCell {
@@ -47,7 +64,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     var section: Section!
     let disposeBag = DisposeBag()
     var images: [UIImage?] = []
-    var expandedRows = Set<Int>()
+    
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
@@ -66,8 +83,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.tableView.dataSource = nil
-        self.tableView.layoutIfNeeded()
         self.tableView.tableFooterView = UIView()
+        self.tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.images =
             self.section
@@ -168,6 +185,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "meetingLocations", for: idxPath) as! RUMeetingTimesAndLocationCell
                 
+                
                 if var day = item.meetingDay {
                     switch day {
                     case "M":
@@ -186,6 +204,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.dayLabel?.text = day
                 }
                 
+                
                 if let startTime = item.startTime {
                     cell.timesLabel?.text =
                     "\(startTime.meetTimeFormatted())-\(item.endTime!.meetTimeFormatted())"
@@ -193,35 +212,25 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.timesLabel?.text = ""
                 }
                 
-                cell.locationImage.image = image.flatMap {$0}
+                //cell.locationImage.image =
 //                cell.locationImage.backgroundColor = .red
+               
+                //cell.imageHeight.constant = cell.expanded ? 145 : 0
                 
-                cell.isExpanded = self.expandedRows.contains(idxPath.row)
                 
-                //cell.setupCellLayout()
+                cell.locationImage.image = image.flatMap{$0}
                 
-                return cell
-                /*
-            case let .locationItem(image):
-                let cell = tv.dequeueReusableCell(
-                    withIdentifier: "locationCell",
-                    for: idxPath
-                ) as! RUSOCLocationCell
-                
-                self.tableView.rowHeight = 220
-                
-                cell.buildingImage.image = image.flatMap {$0}
                 cell.setupCellLayout()
                 
                 return cell
-             */
             }
             
         }
         
+        /*
         dataSource.titleForHeaderInSection = { (ds, idxPath) in
             ds.sectionModels[idxPath].title
-        }
+        }*/
         
         let noteSectionItem: [SOCSectionDetailItem] = {
             switch self.section.sectionNotes.flatMap({$0.isEmpty}) {
@@ -254,24 +263,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 ]
             }
             }()
-            
-            /*
-        let locationSection: [MultiSection] = {
-            
-            switch self.images[0] {
-            case nil:
-                return []
-            default:
-                return [MultiSection
-                        .LocationSection(
-                            title: "Locations",
-                            items:
-                            self.images
-                                .map {SOCSectionDetailItem
-                                      .locationItem(images: $0)}
-                                    )]
-            }
-        }()*/
         
         let toDrive: [MultiSection] =
             [
@@ -284,64 +275,27 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .map {.defaultItem(item: $0)}
             )
             ] + meetingSection
-                //+ locationSection
         
         Observable.just(toDrive)
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
-        }
-    
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return 50
-        
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
+        } //End of ViewDidLoad
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? RUMeetingTimesAndLocationCell else {return}
         
-        print(indexPath.row)
-        
-        guard let cell = tableView.cellForRow(at: indexPath) as? RUMeetingTimesAndLocationCell
-            
-            else { return }
-        
-        switch cell.isExpanded
-            
-        {
-            
-        case true:
-            
-            self.expandedRows.remove(indexPath.row)
-            
-        case false:
-            
-            self.expandedRows.insert(indexPath.row)
-            
-        }
-        
-        
-        
-        cell.isExpanded = !cell.isExpanded
-        
-        
+        cell.expanded = !cell.expanded
         
         self.tableView.beginUpdates()
-        
         self.tableView.endUpdates()
-        
     }
-    }
+} //End of class
     
 
 private enum MultiSection {
     case HeaderSection(items: [SOCSectionDetailItem])
     case MeetingTimesSection(title: String, items: [SOCSectionDetailItem])
-    //case LocationSection(title: String, items: [SOCSectionDetailItem])
 }
 
 private enum SOCSectionDetailItem {
@@ -349,7 +303,6 @@ private enum SOCSectionDetailItem {
     case sectionItem(section: Section)
     case defaultItem(item: Any)
     case meetingTimesItem(item: MeetingTime, images: UIImage?)
-    //case locationItem(images: UIImage?)
 }
 
 extension MultiSection: SectionModelType {
@@ -360,9 +313,6 @@ extension MultiSection: SectionModelType {
             return items
         case .MeetingTimesSection(title: _, items: let items):
             return items
-            /*
-        case .LocationSection(title: _, items: let items):
-            return items*/
         }
     }
     
@@ -372,10 +322,6 @@ extension MultiSection: SectionModelType {
             return ""
         case .MeetingTimesSection(title: let title, items: _):
             return title
-        /*
-        case .LocationSection(title: let title, items: _):
-            return title
-        */
         }
     }
     
@@ -385,10 +331,6 @@ extension MultiSection: SectionModelType {
             self = .HeaderSection(items: items)
         case let .MeetingTimesSection(title: title, items: _):
             self = .MeetingTimesSection(title: title, items: items)
-        /*
-        case let .LocationSection(title: title, items: _):
-            self = .LocationSection(title: title, items: items)
- */
         }
     }
 }
