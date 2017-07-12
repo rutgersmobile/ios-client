@@ -138,7 +138,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 return cell
             case let .meetingTimesItem(item):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: "meetingLocations", for: idxPath) as! RUMeetingTimesAndLocationCell
+                    withIdentifier: "meetingLocations",
+                    for: idxPath) as! RUMeetingTimesAndLocationCell
                 
                 
                 if var day = item.meetingDay {
@@ -159,23 +160,25 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.dayLabel?.text = day
                 }
                 
+                let startTime = item.startTime?.meetTimeFormatted() ?? ""
+                let endTime = item.endTime?.meetTimeFormatted() ?? ""
                 
-                if let startTime = item.startTime {
-                    cell.timesLabel?.text =
-                    "\(startTime.meetTimeFormatted())-\(item.endTime!.meetTimeFormatted())"
-                } else {
-                    cell.timesLabel?.text = ""
-                }
+                cell.timesLabel?.text = "\(startTime)-\(endTime)"
+                
+                let url =
+                "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
                 
                 let image =
-                        item.buildingCode
-                            .flatMap{
-                                URL(string:
-                                "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/\($0).jpeg")}
-                            .flatMap{try? Data.init(contentsOf: $0)}
-                            .flatMap{UIImage.init(data: $0)}
+                    item.buildingCode
+                        .flatMap{
+                            URL(string: url + "\($0).jpeg")
+                        }
+                        .flatMap{try? Data.init(contentsOf: $0)}
+                        .flatMap{UIImage.init(data: $0)}
                 
-                cell.locationImage.image = image ?? UIImage(cgImage: #imageLiteral(resourceName: "Not_available").cgImage!) //NOT AVAILABLE IS A PLACEHOLDER! REPLACE IT!
+                cell.locationImage.image =
+                                   image ??
+                                   UIImage(cgImage: #imageLiteral(resourceName: "Not_available").cgImage!) //PLACEHOLDER! REPLACE IT!
                 
                 cell.setupCellLayout()
                 
@@ -214,24 +217,32 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .MeetingTimesSection(
                             title: "Meeting Times",
                             items:
-                            self.section.meetingTimes.flatMap { SOCSectionDetailItem.meetingTimesItem(item: $0)
-                            }
+                            self.section
+                                .meetingTimes
+                                .flatMap { SOCSectionDetailItem
+                                           .meetingTimesItem(item: $0)
+                                         }
                        )
-                ]
+                    ]
             }
-            }()
+        }()
+        
+        let instructorSection: [MultiSection] = {
+           [MultiSection
+            .InstructorSection(title: "Instructors",
+                              items: self.section.instructors.map {
+                                SOCSectionDetailItem.defaultItem(item: $0)
+            })]
+        }()
         
         let toDrive: [MultiSection] =
             [
             .HeaderSection(
                 items: noteSectionItem +
                     [.sectionItem(section:
-                                  self.section)] +
-                        self.section
-                           .instructors
-                        .map {.defaultItem(item: $0)}
+                                  self.section)]
             )
-            ] + meetingSection
+            ] + instructorSection + meetingSection
         
         Observable.just(toDrive)
             .asDriver(onErrorJustReturn: [])
@@ -239,8 +250,13 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             .addDisposableTo(self.disposeBag)
         } //End of ViewDidLoad
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? RUMeetingTimesAndLocationCell else {return}
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
+        guard let cell =
+            tableView
+            .cellForRow(at: indexPath)
+                as? RUMeetingTimesAndLocationCell
+            else {return}
         
         cell.expanded = !cell.expanded
         
@@ -253,6 +269,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 private enum MultiSection {
     case HeaderSection(items: [SOCSectionDetailItem])
     case MeetingTimesSection(title: String, items: [SOCSectionDetailItem])
+    case InstructorSection(title: String, items: [SOCSectionDetailItem])
 }
 
 private enum SOCSectionDetailItem {
@@ -270,6 +287,8 @@ extension MultiSection: SectionModelType {
             return items
         case .MeetingTimesSection(title: _, items: let items):
             return items
+        case .InstructorSection(title: _, items: let items):
+            return items
         }
     }
     
@@ -279,6 +298,8 @@ extension MultiSection: SectionModelType {
             return ""
         case .MeetingTimesSection(title: let title, items: _):
             return title
+        case .InstructorSection(title: let title, items: _):
+            return title
         }
     }
     
@@ -286,8 +307,10 @@ extension MultiSection: SectionModelType {
         switch original {
         case let .HeaderSection(items: items):
             self = .HeaderSection(items: items)
-        case let .MeetingTimesSection(title: title, items: items):
+        case let .MeetingTimesSection(title: title, items: _):
             self = .MeetingTimesSection(title: title, items: items)
+        case let .InstructorSection(title: title, items: _):
+            self = .InstructorSection(title: title, items: items)
         }
     }
 }
