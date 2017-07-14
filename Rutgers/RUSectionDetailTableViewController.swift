@@ -16,26 +16,15 @@ class RUSOCDetailCell: UITableViewCell {
     
 }
 
-/*
-class RUMeetingTimesAndLocationContent {
-    var day: String?
-    var times: String?
-    var image: UIImage?
-    var expanded: Bool
-    
-    init(day: String, times: String, image: UIImage) {
-        self.day = day
-        self.times = times
-        self.image = image
-        self.expanded = false
-    }
-}*/
-
 class RUMeetingTimesAndLocationCell: UITableViewCell {
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var timesLabel: UILabel!
+    @IBOutlet weak var campusAbbrev: UILabel!
     
+    @IBOutlet weak var buildingCode: UILabel!
     @IBOutlet weak var imageHeight: NSLayoutConstraint!
+    @IBOutlet weak var buildingCodeHeight: NSLayoutConstraint!
+    @IBOutlet weak var campusAbbrevHeight: NSLayoutConstraint!
     
     @IBOutlet weak var locationImage: UIImageView!
     
@@ -44,8 +33,12 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
         didSet {
             if expanded == false {
                 self.imageHeight.constant = 0.0
+                self.buildingCodeHeight.constant = 0.0
+                self.campusAbbrevHeight.constant = 0.0
             } else {
                 self.imageHeight.constant = 145.0
+                self.buildingCodeHeight.constant = 20
+                self.campusAbbrevHeight.constant = 20
             }
         }
     }
@@ -63,8 +56,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     
     var section: Section!
     let disposeBag = DisposeBag()
-    //var images: [UIImage?] = []
-    
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
@@ -160,10 +151,31 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.dayLabel?.text = day
                 }
                 
+                //cell.buildingCode.text = item.buildingCode
+                
                 let startTime = item.startTime?.meetTimeFormatted() ?? ""
                 let endTime = item.endTime?.meetTimeFormatted() ?? ""
                 
+                cell.campusAbbrev.text = item.campusAbbrev
+                
                 cell.timesLabel?.text = "\(startTime)-\(endTime)"
+                
+                if let buildingCode = item.buildingCode {
+                RutgersAPI
+                    .sharedInstance
+                    .getBuilding(buildingCode: buildingCode)
+                    .subscribe(
+                        onNext: {building in
+                            print("********************SUCCESS**********************")
+                            cell.buildingCode.text = building.name
+                        }
+                    ).addDisposableTo(self.disposeBag)
+                } else {
+                    cell.buildingCode.text = "Not available"
+                }
+                
+                
+                
                 
                 let url =
                 "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
@@ -178,7 +190,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.locationImage.image =
                                    image ??
-                                   UIImage(cgImage: #imageLiteral(resourceName: "Not_available").cgImage!) //PLACEHOLDER! REPLACE IT!
+                                   UIImage(cgImage:
+                                    #imageLiteral(resourceName: "Not_available")
+                                        .cgImage!) //PLACEHOLDER! REPLACE IT!
                 
                 cell.setupCellLayout()
                 
@@ -228,11 +242,18 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         }()
         
         let instructorSection: [MultiSection] = {
-           [MultiSection
-            .InstructorSection(title: "Instructors",
+            switch self.section.instructors.isEmpty {
+            case let boolVal where boolVal == true:
+                return []
+            default:
+                return [MultiSection
+                        .InstructorSection(
+                              title: "Instructors",
                               items: self.section.instructors.map {
                                 SOCSectionDetailItem.defaultItem(item: $0)
-            })]
+                        })
+                ]
+            }
         }()
         
         let toDrive: [MultiSection] =

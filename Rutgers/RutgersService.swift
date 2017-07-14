@@ -18,6 +18,7 @@ enum RutgersService {
     case getNBAgency
     case getCinema
     case getSOCInit
+    case getBuilding(buildingCode: String)
     case getSubjects(semester: Semester, campus: Campus, level: Level)
     case getCourse(semester: Semester, campus: Campus, level: Level, course: Course)
     case getCourses(semester: Semester, campus: Campus, level: Level, subject: Subject)
@@ -58,6 +59,8 @@ extension RutgersService : TargetType {
             return "/sections.json"
         case .getSearch:
             return "/search.json"
+        case .getBuilding:
+            return "/building.json"
         }
     }
 
@@ -67,6 +70,8 @@ extension RutgersService : TargetType {
 
     var parameters: [String: Any]? {
         switch self {
+        case .getBuilding(let code):
+            return ["code" : code]
         case .getSubjects(let semester, let campus, let level):
             return [
                 "term" : semester.term,
@@ -123,7 +128,7 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding:
             return .request
         }
     }

@@ -128,6 +128,20 @@ extension Level {
     static let allValues: [Level] = [.u, .g]
 }
 
+/*
+"code": "HLL",
+"campus": "2",
+"name": "HILL CENTER",
+"id": "3752"
+*/
+
+struct Building {
+    let code: String
+    let campus: Int
+    let name: String
+    let id: String
+}
+
 struct Semester {
     let year: Int
     let term: Int
@@ -318,6 +332,15 @@ struct SearchResults {
 
 enum SOCParseError: Error {
     case invalidValueFormat(message: String)
+}
+
+extension Building: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.code = try unboxer.unbox(key: "code")
+        self.campus = try unboxer.unbox(key: "campus")
+        self.name = try unboxer.unbox(key: "name")
+        self.id = try unboxer.unbox(key: "id")
+    }
 }
 
 extension SearchResults: Unboxable {
