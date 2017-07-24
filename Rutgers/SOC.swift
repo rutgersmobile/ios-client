@@ -137,7 +137,7 @@ extension Level {
 
 struct Building {
     let code: String
-    let campus: Int
+    let campus: String
     let name: String
     let id: String
 }

@@ -132,7 +132,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.setupCellLayout()
                 return cell
-            case let .meetingTimesItem(item):
+            case let .meetingTimesItem(item, building):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "meetingLocations",
                     for: idxPath) as! RUMeetingTimesAndLocationCell
@@ -164,14 +164,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.timesLabel?.text = "\(startTime)-\(endTime)"
 
-                if let buildingCode = item.buildingCode {
-                    cell.buildingCode.text = item.buildingCode
-                    RutgersAPI
-                        .sharedInstance
-                        .getBuilding(buildingCode: buildingCode)
-                        .subscribe(onNext: {building in
-                            cell.buildingCode.text = building.name
-                        }).addDisposableTo(self.disposeBag)
+                if let _ = item.buildingCode {
+                    cell.buildingCode.text = building.name
                 } else {
                     cell.buildingCode.text = "Not available"
                 }
@@ -195,7 +189,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 cell.locationImage.image = image ??
                     defaultImage
                 
-                cell.locationImage.contentMode = UIViewContentMode.scaleAspectFit
+                cell.locationImage.contentMode = .scaleAspectFit
 
                 cell.setupCellLayout()
                 
@@ -213,15 +207,32 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 $0.isEmpty ? nil : [.noteSectionItem(section: self.section)]
             } ?? []
 
-        let meetingSection: [MultiSection] =
-            self.section.meetingTimes[0].endTime.map { _ in
-                [.MeetingTimesSection(
-                    title: "Meeting Times",
-                    items: self.section.meetingTimes.map {
-                        .meetingTimesItem(item: $0)
+        let meetingSectionO: Observable<[MultiSection]> =
+            Observable.from(self.section.meetingTimes)
+                .flatMap { meetingTime -> Observable<SOCSectionDetailItem> in
+                    let buildingO: () -> Observable<Building> = {
+                        if let buildingCode = meetingTime.buildingCode {
+                            return RutgersAPI.sharedInstance.getBuilding(
+                                buildingCode: buildingCode
+                            )
+                        } else {
+                            return Observable.just(Building(
+                                code: "",
+                                campus: meetingTime.campusAbbrev ?? "",
+                                name: "",
+                                id: ""
+                            ))
+                        }
                     }
-                )]
-            } ?? []
+
+                    return buildingO().map { building in
+                        .meetingTimesItem(item: meetingTime, building: building)
+                    }
+                }
+                .toArray()
+                .map {
+                    [.MeetingTimesSection( title: "Meeting Times", items: $0)]
+                }
 
         let instructorSection: [MultiSection] =
             self.section.instructors.isEmpty ? [] : [.InstructorSection(
@@ -232,11 +243,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         }
             )]
 
-        let toDrive: [MultiSection] =
-            [.HeaderSection(
-                items: noteSectionItem
-            )] + instructorSection + meetingSection
-
         self.tableView.rx.itemSelected.filterMap {
             self.tableView.cellForRow(at: $0) as? RUMeetingTimesAndLocationCell
         }.subscribe(onNext: { cell in
@@ -246,10 +252,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             self.tableView.endUpdates()
         }).addDisposableTo(disposeBag)
 
-        Observable.just(toDrive)
-            .asDriver(onErrorJustReturn: [])
-            .drive(self.tableView!.rx.items(dataSource: dataSource))
-            .addDisposableTo(self.disposeBag)
+        meetingSectionO.map { meetingSection in
+            [.HeaderSection(
+                items: noteSectionItem
+            )] + instructorSection + meetingSection
+        }
+        .asDriver(onErrorJustReturn: [])
+        .drive(self.tableView!.rx.items(dataSource: dataSource))
+        .addDisposableTo(self.disposeBag)
     } //End of ViewDidLoad
 
     override func tableView(
@@ -285,7 +295,7 @@ private enum SOCSectionDetailItem {
     case noteSectionItem(section: Section)
     case sectionItem(section: Section)
     case defaultItem(item: Any)
-    case meetingTimesItem(item: MeetingTime)
+    case meetingTimesItem(item: MeetingTime, building: Building)
 }
 
 extension MultiSection: SectionModelType {

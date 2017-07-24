@@ -164,8 +164,11 @@ class RUSOCCourseViewController: UITableViewController {
         let preReqSection = CourseSection(
             header: "PreReqs",
             items: [
-                course.preReqNotes.map { .prereq($0) }
+                course.preReqNotes
             ].filterMap { $0 }
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .map { .prereq($0) }
         )
 
         RutgersAPI.sharedInstance.getSections(
