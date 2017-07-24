@@ -22,11 +22,14 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var timesLabel: UILabel!
     @IBOutlet weak var campusAbbrev: UILabel!
+    @IBOutlet weak var roomNumber: UILabel!
     
     @IBOutlet weak var buildingCode: UILabel!
     @IBOutlet weak var imageHeight: NSLayoutConstraint!
     @IBOutlet weak var buildingCodeHeight: NSLayoutConstraint!
     @IBOutlet weak var campusAbbrevHeight: NSLayoutConstraint!
+
+    @IBOutlet weak var roomNumberHeight: NSLayoutConstraint!
     
     @IBOutlet weak var locationImage: UIImageView!
     
@@ -36,10 +39,12 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
                 self.imageHeight.constant = 0.0
                 self.buildingCodeHeight.constant = 0.0
                 self.campusAbbrevHeight.constant = 0.0
+                self.roomNumberHeight.constant = 0.0
             } else {
-                self.imageHeight.constant = 145.0
+                self.imageHeight.constant = 100.0
                 self.buildingCodeHeight.constant = 20
                 self.campusAbbrevHeight.constant = 20
+                self.roomNumberHeight.constant = 20
             }
         }
     }
@@ -48,6 +53,7 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
 class RUSOCSectionDetailCell: UITableViewCell {
     @IBOutlet weak var sectionLabel: UILabel!
     @IBOutlet weak var openClosedDisplay: UIView!
+    @IBOutlet weak var sectionNumber: UILabel!
 }
 
 class RUSOCSectionDetailTableViewController: UITableViewController {
@@ -109,6 +115,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.openClosedDisplay.layer.cornerRadius = 0.8
                 
+                cell.sectionNumber.text = "\(section.sectionIndex)"
+                
                 //self.tableView.rowHeight = 50
                 cell.setupCellLayout()
                 return cell
@@ -167,7 +175,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 } else {
                     cell.buildingCode.text = "Not available"
                 }
-
+                
+                cell.roomNumber.text = "Room " + item.roomNumber!
+                
                 let url =
                     "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
                 
@@ -179,8 +189,13 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .flatMap{try? Data(contentsOf: $0)}
                         .flatMap{UIImage(data: $0)}
 
+                let defaultImage = UIImage(named: "ic_panorama_3x")
+                
+                
                 cell.locationImage.image = image ??
-                    UIImage(cgImage: #imageLiteral(resourceName: "Not_available").cgImage!) //PLACEHOLDER! REPLACE IT!
+                    defaultImage
+                
+                cell.locationImage.contentMode = UIViewContentMode.scaleAspectFit
 
                 cell.setupCellLayout()
                 
@@ -210,15 +225,16 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 
         let instructorSection: [MultiSection] =
             self.section.instructors.isEmpty ? [] : [.InstructorSection(
-                title: "Instructors",
-                items: self.section.instructors.map {
-                    .defaultItem(item: $0)
-                }
+                title: "Detail",
+                items: [.sectionItem(section: self.section)] +
+                        self.section.instructors.map {
+                            .defaultItem(item: $0)
+                        }
             )]
 
         let toDrive: [MultiSection] =
             [.HeaderSection(
-                items: noteSectionItem + [.sectionItem(section: self.section)]
+                items: noteSectionItem
             )] + instructorSection + meetingSection
 
         self.tableView.rx.itemSelected.filterMap {
