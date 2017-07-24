@@ -23,7 +23,6 @@ class RUSOCSubjectCell: UITableViewCell {
     @IBOutlet weak var subjectTitle: UILabel!
     @IBOutlet weak var schoolTitle: UILabel!
     @IBOutlet weak var subjectCode: UILabel!
-    
 }
 
 /*
@@ -34,6 +33,11 @@ class RUSOCViewController
     , RUChannelProtocol
 {
     var channel: [NSObject : AnyObject]!
+
+    private typealias RxSOCViewControllerDataSource =
+        RxTableViewSectionedReloadDataSource<MultiSection>
+    private typealias SOCViewControllerDataSource =
+        TableViewSectionedDataSource<MultiSection>
 
     static let openColor = UIColor(
         red:0.70,
@@ -63,8 +67,7 @@ class RUSOCViewController
     }
     
     static func registerClass() {
-        RUChannelManager.sharedInstance()
-            .register(RUSOCViewController.self)
+        RUChannelManager.sharedInstance().register(RUSOCViewController.self)
     }
     
     static func getStoryBoard() -> UIStoryboard {
@@ -73,7 +76,7 @@ class RUSOCViewController
     
     static func channel(
         withConfiguration channelConfiguration: [AnyHashable : Any]!
-        ) -> Any! {
+    ) -> Any! {
         let storyboard = RUSOCViewController.getStoryBoard()
         let me = storyboard.instantiateInitialViewController()
             as! RUSOCViewController
@@ -86,10 +89,10 @@ class RUSOCViewController
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     func socOptions(
         semesters: [Semester]
-        ) -> (RUSOCOptionsViewController, Observable<SOCOptions>) {
+    ) -> (RUSOCOptionsViewController, Observable<SOCOptions>) {
         let vc = RUSOCOptionsViewController.instantiate(
             withStoryboard: RUSOCViewController.getStoryBoard(),
             semesters: semesters
@@ -100,28 +103,29 @@ class RUSOCViewController
         }
         return (vc, observable)
     }
-    
-    fileprivate func skinTableViewDataSource(
-        dataSource: RxTableViewSectionedReloadDataSource<MultiSection>) {
-        
-        dataSource.configureCell = {
-            (dataSource: TableViewSectionedDataSource<MultiSection>,
+
+    private func skinTableViewDataSource(
+        dataSource: RxSOCViewControllerDataSource
+    ) {
+        dataSource.configureCell = { (
+            dataSource: SOCViewControllerDataSource,
             tableView: UITableView,
             idxPath: IndexPath,
-            item: SOCSectionItem)
-            
-            in
-            
+            item: SOCSectionItem
+        ) in
             switch dataSource[idxPath] {
             case let .SubjectItem(subject):
-                let cell: RUSOCSubjectCell =
-                    tableView.dequeueReusableCell(
-                        withIdentifier: self.cellId,
-                       for: idxPath) as! RUSOCSubjectCell
+                let cell: RUSOCSubjectCell = tableView.dequeueReusableCell(
+                    withIdentifier: self.cellId,
+                    for: idxPath
+                ) as! RUSOCSubjectCell
                 
                 cell.subjectTitle.text = subject.subjectDescription
-                cell.schoolTitle.text = "School Name Goes Here"
-                cell.subjectCode.text = String(subject.code)
+                cell.schoolTitle.text = ""
+                cell.subjectCode.text = String(
+                    format: "%03d",
+                    arguments: [subject.code]
+                )
                 cell.setupCellLayout()
                 
                 return cell
@@ -146,17 +150,13 @@ class RUSOCViewController
                 
                 return cell
             }
-            
         }
-        
+
         dataSource.titleForHeaderInSection = { dataSource, index in
-            let section = dataSource[index]
-            
-            return section.title
+            return dataSource[index].title
         }
-        
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
@@ -175,7 +175,7 @@ class RUSOCViewController
         
         self.tableView.separatorInset = UIEdgeInsetsMake(0,0,0,0)
         
-        let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
+        let dataSource = RxSOCViewControllerDataSource()
         
         skinTableViewDataSource(dataSource: dataSource)
         
@@ -199,153 +199,112 @@ class RUSOCViewController
             })
             .addDisposableTo(disposeBag)
         
-        let getOptions =
-            RutgersAPI
-                .sharedInstance
-                .getSOCInit()
-                .flatMapLatest { initObj -> Observable<SOCOptions> in
+        let getOptions = RutgersAPI.sharedInstance
+            .getSOCInit()
+            .flatMapLatest { initObj -> Observable<SOCOptions> in
+                let currentSemester = initObj.semesters[0]
+                
+                let socOptionsSelected =
+                    settingsViewButton.rx.tap.flatMapLatest
+                        {() -> Observable<SOCOptions> in
+                    let (vc, options) =
+                        self.socOptions(semesters: initObj.semesters)
+                    self.navigationController?
+                        .pushViewController(vc, animated: true)
                     
-                    let currentSemester = initObj.semesters[0]
-                    
-                    let socOptionsSelected =
-                        settingsViewButton.rx.tap.flatMapLatest
-                            {() -> Observable<SOCOptions> in
-                        let (vc, options) =
-                            self.socOptions(semesters: initObj.semesters)
-                        self.navigationController?
-                            .pushViewController(vc, animated: true)
-                        
-                        return options
-                    }
-                    
-                    let socOptions = Observable.of(
-                        Observable.of(
-                            RUSOCOptionsViewController
-                                .defaultOptions(
-                                    semester: currentSemester)
-                        ),
-                        socOptionsSelected
-                        ).merge()
-                    
-                    return socOptions
-        }.shareReplay(1)
-        
-        let initialLoad =
-            getOptions.flatMapLatest { options -> Observable<[MultiSection]> in
-                RutgersAPI
-                    .sharedInstance
-                    .getSubjects(semester: options.semester,
-                                 campus: options.campus,
-                                 level: options.level)
-                    .map{ subjectArr in
-                        let sections: [MultiSection] =
-                            [.SubjectSection(title: "", items:
-                                subjectArr.map {
-                                    .SubjectItem(subject: $0)
-                                }
-                              )
-                            ]
-                        return sections
+                    return options
                 }
                 
-                }
+                let socOptions = Observable.of(
+                    Observable.of(RUSOCOptionsViewController.defaultOptions(
+                        semester: currentSemester
+                    )),
+                    socOptionsSelected
+                ).merge()
+                
+                return socOptions
+            }.shareReplay(1)
         
+        let initialLoad = getOptions.flatMapLatest { options in
+            RutgersAPI.sharedInstance
+                .getSubjects(
+                    semester: options.semester,
+                    campus: options.campus,
+                    level: options.level
+                ).map { subjectArr -> [MultiSection] in [
+                    .SubjectSection(title: "", items: subjectArr.map {
+                        .SubjectItem(subject: $0)
+                    })
+                ]}
+        }
 
         let searchResults = getOptions.flatMap { options in
-            self.searchController
-                .searchBar
-                .rx
-                .text
-                .changed
+            self.searchController.searchBar.rx.text.changed
                 .debounce(
                     RxTimeInterval.init(0.5),
                     scheduler: MainScheduler.asyncInstance
                 ).map {
-                    ($0 ?? "", options)
-                }
-        }.flatMap { deConn -> Observable<[MultiSection]> in
-            let (text, options) = deConn
-            
-            if (text != "") {
-            return RutgersAPI
-                .sharedInstance
-                .getSearch(semester: options.semester,
-                           campus: options.campus,
-                           level: options.level,
-                           query: text)
-                .map {eventSubject in
-                    [
-                        .SubjectSection (
-                            title: "Subjects",
-                            items: eventSubject.subjects.map {
+                    $0 ?? ""
+                }.flatMapLatest { search -> Observable<[MultiSection]> in
+                    if (search == "") {
+                        return initialLoad
+                    }
+
+                    return RutgersAPI.sharedInstance
+                        .getSearch(
+                            semester: options.semester,
+                            campus: options.campus,
+                            level: options.level,
+                            query: search
+                        ).map { eventSubject in [
+                            .SubjectSection(
+                                title: "Subjects",
+                                items: eventSubject.subjects.map {
                                     .SubjectItem(subject: $0)
-                        }),
-                        .CourseSection(
-                            title: "Courses",
-                            items: eventSubject.courses.map {
-                            .CourseItem(course: $0)
-                        })
-                    ]
+                                }
+                            ),
+                            .CourseSection(
+                                title: "Courses",
+                                items: eventSubject.courses.map {
+                                    .CourseItem(course: $0)
+                                }
+                            )
+                        ]}
                 }
-            } else {
-                return initialLoad
-            }
         }
-        
-        let cancelTapped =
-            self.searchController
-            .searchBar
-            .rx
+
+        let cancelTapped = self.searchController.searchBar.rx
             .cancelButtonClicked
-            .flatMapLatest { event -> Observable<[MultiSection]> in
-                return initialLoad
-            }
+            .flatMapLatest { _ in initialLoad }
         
         Observable.merge(initialLoad, searchResults, cancelTapped)
-            .do(onError: {error in
-            print(error)
-        })
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
         
         getOptions
             .flatMapLatest { options in
-                self.tableView
-                    .rx
+                self.tableView.rx
                     .modelSelected(MultiSection.Item.self)
-                    .map{item -> (MultiSection.Item, SOCOptions) in
-                            return (item, options)
-                    }
-            }.subscribe(onNext: {
-                deConn in
-                
-                let (item, options) = deConn
-                switch item {
-                case .SubjectItem(subject: let subject):
-                    let vc =
-                        RUSOCSubjectViewController
-                            .instantiate(
+                    .map { item -> UIViewController in
+                        switch item {
+                        case .SubjectItem(subject: let subject):
+                            return RUSOCSubjectViewController.instantiate(
                                 withStoryboard: self.storyboard!,
                                 subject: subject,
                                 options: options
-                    )
-                    
-                    self.navigationController?
-                        .pushViewController(vc, animated: true)
-                case .CourseItem(course: let course):
-                    let vc =
-                        RUSOCCourseViewController
-                            .instantiate(
+                            )
+                        case .CourseItem(course: let course):
+                            return RUSOCCourseViewController.instantiate(
                                 withStoryboard: self.storyboard!,
                                 options: options,
                                 course: course
-                                
-                    )
-                    
-                    self.navigationController?
-                        .pushViewController(vc, animated: true)
-                }
+                            )
+                        }
+                    }
+            }.subscribe(onNext: { vc in
+                self.navigationController?
+                    .pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
     }
 }

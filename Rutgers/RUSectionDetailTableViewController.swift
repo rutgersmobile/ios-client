@@ -13,7 +13,9 @@ import RxDataSources
 class RUSOCDetailCell: UITableViewCell {
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
-    
+}
+
+class RUSOCNotesCell: UITableViewCell {
 }
 
 class RUMeetingTimesAndLocationCell: UITableViewCell {
@@ -28,10 +30,9 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
     
     @IBOutlet weak var locationImage: UIImageView!
     
-    var expanded: Bool = false
-    {
+    var expanded: Bool = false {
         didSet {
-            if expanded == false {
+            if !expanded {
                 self.imageHeight.constant = 0.0
                 self.buildingCodeHeight.constant = 0.0
                 self.campusAbbrevHeight.constant = 0.0
@@ -42,18 +43,14 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
             }
         }
     }
-    
 }
 
 class RUSOCSectionDetailCell: UITableViewCell {
     @IBOutlet weak var sectionLabel: UILabel!
     @IBOutlet weak var openClosedDisplay: UIView!
-    
-    
 }
 
 class RUSOCSectionDetailTableViewController: UITableViewController {
-    
     var section: Section!
     let disposeBag = DisposeBag()
     
@@ -84,20 +81,20 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             tv: UITableView,
             idxPath: IndexPath,
             item: SOCSectionDetailItem
-            ) in
+        ) in
             switch dataSource[idxPath] {
             case let .noteSectionItem(section):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "notesCell",
                     for: idxPath
-                ) as! RUSOCDetailCell
-                
-                cell.leftLabel?.text = section.sectionNotes
-                
+                ) as! RUSOCNotesCell
+
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.text = section.sectionNotes
+
                 //self.tableView.rowHeight = 50
                 
-                cell.backgroundColor = .lightGray
-                cell.setupCellLayout()
+//                cell.setupCellLayout()
                 return cell
             case let .sectionItem(section):
                 let cell = tv.dequeueReusableCell(
@@ -132,7 +129,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     withIdentifier: "meetingLocations",
                     for: idxPath) as! RUMeetingTimesAndLocationCell
                 
-                
                 if var day = item.meetingDay {
                     switch day {
                     case "M":
@@ -159,133 +155,109 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 cell.campusAbbrev.text = item.campusAbbrev
                 
                 cell.timesLabel?.text = "\(startTime)-\(endTime)"
-                
+
                 if let buildingCode = item.buildingCode {
-                RutgersAPI
-                    .sharedInstance
-                    .getBuilding(buildingCode: buildingCode)
-                    .subscribe(
-                        onNext: {building in
-                            print("********************SUCCESS**********************")
+                    cell.buildingCode.text = item.buildingCode
+                    RutgersAPI
+                        .sharedInstance
+                        .getBuilding(buildingCode: buildingCode)
+                        .subscribe(onNext: {building in
                             cell.buildingCode.text = building.name
-                        }
-                    ).addDisposableTo(self.disposeBag)
+                        }).addDisposableTo(self.disposeBag)
                 } else {
                     cell.buildingCode.text = "Not available"
                 }
-                
-                
-                
-                
+
                 let url =
-                "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
+                    "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
                 
                 let image =
                     item.buildingCode
                         .flatMap{
                             URL(string: url + "\($0).jpeg")
                         }
-                        .flatMap{try? Data.init(contentsOf: $0)}
-                        .flatMap{UIImage.init(data: $0)}
-                
-                cell.locationImage.image =
-                                   image ??
-                                   UIImage(cgImage:
-                                    #imageLiteral(resourceName: "Not_available")
-                                        .cgImage!) //PLACEHOLDER! REPLACE IT!
-                
+                        .flatMap{try? Data(contentsOf: $0)}
+                        .flatMap{UIImage(data: $0)}
+
+                cell.locationImage.image = image ??
+                    UIImage(cgImage: #imageLiteral(resourceName: "Not_available").cgImage!) //PLACEHOLDER! REPLACE IT!
+
                 cell.setupCellLayout()
                 
                 return cell
             }
-            
         }
         
         dataSource.titleForHeaderInSection = { (ds, idxPath) in
             //This needs to stay in order for the app to not crash
-            if idxPath != 0 {
-                return ds.sectionModels[idxPath].title
-            } else {
-                return ""
-            }
+            ds.sectionModels[idxPath].title
         }
         
-        let noteSectionItem: [SOCSectionDetailItem] = {
-            switch self.section.sectionNotes.flatMap({$0.isEmpty}) {
-            case let boolVal where boolVal == true:
-                return []
-            default:
-                 return
-                    [SOCSectionDetailItem.noteSectionItem(section: self
-                                                                   .section)]
-            }
-        }()
-        
-        let meetingSection: [MultiSection] = { () -> [MultiSection] in
-            switch self.section.meetingTimes[0].endTime.flatMap({$0}) {
-            case nil:
-                return []
-            default:
-                return
-                    [MultiSection
-                        .MeetingTimesSection(
-                            title: "Meeting Times",
-                            items:
-                            self.section
-                                .meetingTimes
-                                .flatMap { SOCSectionDetailItem
-                                           .meetingTimesItem(item: $0)
-                                         }
-                       )
-                    ]
-            }
-        }()
-        
-        let instructorSection: [MultiSection] = {
-            switch self.section.instructors.isEmpty {
-            case let boolVal where boolVal == true:
-                return []
-            default:
-                return [MultiSection
-                        .InstructorSection(
-                              title: "Instructors",
-                              items: self.section.instructors.map {
-                                SOCSectionDetailItem.defaultItem(item: $0)
-                        })
-                ]
-            }
-        }()
-        
+        let noteSectionItem: [SOCSectionDetailItem] =
+            self.section.sectionNotes.flatMap {
+                $0.isEmpty ? nil : [.noteSectionItem(section: self.section)]
+            } ?? []
+
+        let meetingSection: [MultiSection] =
+            self.section.meetingTimes[0].endTime.map { _ in
+                [.MeetingTimesSection(
+                    title: "Meeting Times",
+                    items: self.section.meetingTimes.map {
+                        .meetingTimesItem(item: $0)
+                    }
+                )]
+            } ?? []
+
+        let instructorSection: [MultiSection] =
+            self.section.instructors.isEmpty ? [] : [.InstructorSection(
+                title: "Instructors",
+                items: self.section.instructors.map {
+                    .defaultItem(item: $0)
+                }
+            )]
+
         let toDrive: [MultiSection] =
-            [
-            .HeaderSection(
-                items: noteSectionItem +
-                    [.sectionItem(section:
-                                  self.section)]
-            )
-            ] + instructorSection + meetingSection
-        
+            [.HeaderSection(
+                items: noteSectionItem + [.sectionItem(section: self.section)]
+            )] + instructorSection + meetingSection
+
+        self.tableView.rx.itemSelected.filterMap {
+            self.tableView.cellForRow(at: $0) as? RUMeetingTimesAndLocationCell
+        }.subscribe(onNext: { cell in
+            cell.expanded = !cell.expanded
+
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }).addDisposableTo(disposeBag)
+
         Observable.just(toDrive)
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
-        } //End of ViewDidLoad
-    
-    override func tableView(_ tableView: UITableView,
-                            didSelectRowAt indexPath: IndexPath) {
-        guard let cell =
-            tableView
-            .cellForRow(at: indexPath)
-                as? RUMeetingTimesAndLocationCell
-            else {return}
-        
-        cell.expanded = !cell.expanded
-        
-        self.tableView.beginUpdates()
-        self.tableView.endUpdates()
+    } //End of ViewDidLoad
+
+    override func tableView(
+        _ tableView: UITableView,
+        estimatedHeightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
+    override func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
+        return (try? self.tableView.rx.model(at: indexPath))
+            .map { (model: SOCSectionDetailItem) -> CGFloat in
+                switch model {
+                case .meetingTimesItem(_):
+                    return UITableViewAutomaticDimension
+                default:
+                    return UITableViewAutomaticDimension
+                }
+            } ?? UITableViewAutomaticDimension
     }
 } //End of class
-    
 
 private enum MultiSection {
     case HeaderSection(items: [SOCSectionDetailItem])
@@ -316,7 +288,7 @@ extension MultiSection: SectionModelType {
     var title: String {
         switch self {
         case .HeaderSection(items: _):
-            return ""
+            return "Notes"
         case .MeetingTimesSection(title: let title, items: _):
             return title
         case .InstructorSection(title: let title, items: _):
