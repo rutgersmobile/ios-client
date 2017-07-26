@@ -157,6 +157,14 @@ class RUSOCViewController
         }
     }
 
+    override func sharingUrl() -> URL? {
+        return NSURL.rutgersUrl(withPathComponents: ["soc", "asdfasdf"])
+    }
+
+    static func viewControllers(withPathComponents pathComponents: [Any]!, destinationTitle title: String!) -> [Any]! {
+        return []
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
@@ -306,6 +314,8 @@ class RUSOCViewController
                 self.navigationController?
                     .pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
+
+        setupShareButton()
     }
 }
 
