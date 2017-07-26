@@ -199,9 +199,22 @@ class RUSOCCourseViewController: UITableViewController {
             .subscribe(onNext: { item in
                 switch item {
                 case .section(let section):
+                    
+                    let notesItems = [
+                        self.course.subjectNotes,
+                        self.course.notes
+                        ].map {
+                            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+                        }.filter {
+                            !$0.isEmpty
+                        } + self.course.coreCodes.map {
+                            "\($0.coreCode) \($0.coreCodeDescription)"
+                    }
+                    
                     let vc = RUSOCSectionDetailTableViewController .instantiate(
                         withStoryboard: self.storyboard!,
-                        section: section
+                        section: section,
+                        notes: notesItems
                     )
                     
                     self.navigationController?.pushViewController(

@@ -59,15 +59,18 @@ class RUSOCSectionDetailCell: UITableViewCell {
 class RUSOCSectionDetailTableViewController: UITableViewController {
     var section: Section!
     let disposeBag = DisposeBag()
+    var notes: [String]!
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
-        section: Section
+        section: Section,
+        notes: [String]
         ) -> RUSOCSectionDetailTableViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCSectionDetailViewController"
             ) as! RUSOCSectionDetailTableViewController
         
+        me.notes = notes
         me.section = section
         
         return me
@@ -89,18 +92,16 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             item: SOCSectionDetailItem
         ) in
             switch dataSource[idxPath] {
-            case let .noteSectionItem(section):
+            case let .noteSectionItem(notes):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "notesCell",
                     for: idxPath
                 ) as! RUSOCNotesCell
 
                 cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.text = section.sectionNotes
-
-                //self.tableView.rowHeight = 50
-                
-//                cell.setupCellLayout()
+                cell.textLabel?.text = notes
+            
+                cell.setupCellLayout()
                 return cell
             case let .sectionItem(section):
                 let cell = tv.dequeueReusableCell(
@@ -117,16 +118,15 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.sectionNumber.text = "\(section.sectionIndex)"
                 
-                //self.tableView.rowHeight = 50
+               
                 cell.setupCellLayout()
                 return cell
-            case let .defaultItem(item):
+            case let .instructorItem(item):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "defaultCell",
                     for: idxPath
                 ) as! RUSOCDetailCell
                 
-                let item = item as! Instructor
                 cell.leftLabel?.text = "Instructor"
                 cell.rightLabel?.text = "\(item.instructorName)"
                 
@@ -170,7 +170,11 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.buildingCode.text = "Not available"
                 }
                 
-                cell.roomNumber.text = "Room " + item.roomNumber!
+                if let roomNumber = item.roomNumber {
+                    cell.roomNumber.text = "Room " + roomNumber
+                } else {
+                    cell.roomNumber.text = ""
+                }
                 
                 let url =
                     "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
@@ -202,11 +206,18 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             ds.sectionModels[idxPath].title
         }
         
-        let noteSectionItem: [SOCSectionDetailItem] =
+        var noteSectionItem: [SOCSectionDetailItem] =
             self.section.sectionNotes.flatMap {
-                $0.isEmpty ? nil : [.noteSectionItem(section: self.section)]
+                $0.isEmpty ? nil : [.noteSectionItem(notes: $0)]
             } ?? []
-
+        
+        let selfNotes: [SOCSectionDetailItem] =
+            self.notes.map {
+                .noteSectionItem(notes: $0)
+            }
+        
+        noteSectionItem.append(contentsOf: selfNotes)
+        
         let meetingSectionO: Observable<[MultiSection]> =
             Observable.from(self.section.meetingTimes)
                 .flatMap { meetingTime -> Observable<SOCSectionDetailItem> in
@@ -239,7 +250,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 title: "Detail",
                 items: [.sectionItem(section: self.section)] +
                         self.section.instructors.map {
-                            .defaultItem(item: $0)
+                            .instructorItem(item: $0)
                         }
             )]
 
@@ -292,9 +303,9 @@ private enum MultiSection {
 }
 
 private enum SOCSectionDetailItem {
-    case noteSectionItem(section: Section)
+    case noteSectionItem(notes: String)
     case sectionItem(section: Section)
-    case defaultItem(item: Any)
+    case instructorItem(item: Instructor)
     case meetingTimesItem(item: MeetingTime, building: Building)
 }
 
