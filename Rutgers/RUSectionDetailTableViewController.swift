@@ -158,8 +158,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.dayLabel?.text = day
                 }
                 
-                //cell.buildingCode.text = item.buildingCode
-                
                 let startTime = item.startTime?.meetTimeFormatted() ?? ""
                 let endTime = item.endTime?.meetTimeFormatted() ?? ""
                 
@@ -192,6 +190,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 
                 let defaultImage = UIImage(named: "ic_panorama_3x")
                 
+                cell.accessoryType = .disclosureIndicator
                 
                 cell.locationImage.image = image ??
                     defaultImage
@@ -270,6 +269,12 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             self.tableView.cellForRow(at: $0) as? RUMeetingTimesAndLocationCell
         }.subscribe(onNext: { cell in
             cell.expanded = !cell.expanded
+            
+            if !cell.expanded {
+                cell.accessoryType = .disclosureIndicator
+            } else {
+                cell.accessoryType = .none
+            }
 
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
