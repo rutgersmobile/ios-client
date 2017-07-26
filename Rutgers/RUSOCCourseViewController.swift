@@ -200,6 +200,11 @@ class RUSOCCourseViewController: UITableViewController {
                 switch item {
                 case .section(let section):
                     
+                
+                   let preReqItems = [self.course.preReqNotes].filterMap { $0 }
+                            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                            .filter { !$0.isEmpty }
+                   
                     let notesItems = [
                         self.course.subjectNotes,
                         self.course.notes
@@ -214,7 +219,8 @@ class RUSOCCourseViewController: UITableViewController {
                     let vc = RUSOCSectionDetailTableViewController .instantiate(
                         withStoryboard: self.storyboard!,
                         section: section,
-                        notes: notesItems
+                        notes: notesItems,
+                        preReq: preReqItems
                     )
                     
                     self.navigationController?.pushViewController(

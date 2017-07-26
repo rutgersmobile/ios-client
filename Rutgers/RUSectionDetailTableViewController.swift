@@ -60,16 +60,19 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     var section: Section!
     let disposeBag = DisposeBag()
     var notes: [String]!
+    var preReqItems: [String]!
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
         section: Section,
-        notes: [String]
+        notes: [String],
+        preReq: [String]
         ) -> RUSOCSectionDetailTableViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCSectionDetailViewController"
             ) as! RUSOCSectionDetailTableViewController
         
+        me.preReqItems = preReq
         me.notes = notes
         me.section = section
         
@@ -218,6 +221,15 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         noteSectionItem.append(contentsOf: selfNotes)
         
+        let preReqSectionItem: [SOCSectionDetailItem] =
+            self.preReqItems.map {
+                .noteSectionItem(notes: $0)
+        }
+        
+        let preReqSection: [MultiSection] =
+            [.PreReqSection(items: preReqSectionItem)]
+        
+        
         let meetingSectionO: Observable<[MultiSection]> =
             Observable.from(self.section.meetingTimes)
                 .flatMap { meetingTime -> Observable<SOCSectionDetailItem> in
@@ -266,7 +278,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         meetingSectionO.map { meetingSection in
             [.HeaderSection(
                 items: noteSectionItem
-            )] + instructorSection + meetingSection
+                )] + preReqSection + instructorSection + meetingSection
         }
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView!.rx.items(dataSource: dataSource))
@@ -298,6 +310,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 
 private enum MultiSection {
     case HeaderSection(items: [SOCSectionDetailItem])
+    case PreReqSection(items: [SOCSectionDetailItem])
     case MeetingTimesSection(title: String, items: [SOCSectionDetailItem])
     case InstructorSection(title: String, items: [SOCSectionDetailItem])
 }
@@ -315,6 +328,8 @@ extension MultiSection: SectionModelType {
         switch self {
         case .HeaderSection(items: let items):
             return items
+        case .PreReqSection(items: let items):
+            return items
         case .MeetingTimesSection(title: _, items: let items):
             return items
         case .InstructorSection(title: _, items: let items):
@@ -326,6 +341,8 @@ extension MultiSection: SectionModelType {
         switch self {
         case .HeaderSection(items: _):
             return "Notes"
+        case .PreReqSection(items: _):
+            return "PreReqs"
         case .MeetingTimesSection(title: let title, items: _):
             return title
         case .InstructorSection(title: let title, items: _):
@@ -337,6 +354,8 @@ extension MultiSection: SectionModelType {
         switch original {
         case let .HeaderSection(items: items):
             self = .HeaderSection(items: items)
+        case let .PreReqSection(items: items):
+            self = .PreReqSection(items: items)
         case let .MeetingTimesSection(title: title, items: _):
             self = .MeetingTimesSection(title: title, items: items)
         case let .InstructorSection(title: title, items: _):
