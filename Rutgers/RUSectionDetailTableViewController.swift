@@ -255,14 +255,21 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 .map {
                     [.MeetingTimesSection( title: "Meeting Times", items: $0)]
                 }
+        
+        let sectionItem: [SOCSectionDetailItem] =
+            [.sectionItem(section: self.section)]
+        
+        let detailSectionItems: [SOCSectionDetailItem] =
+            self.section.instructors.isEmpty ? sectionItem :
+            sectionItem +
+            self.section.instructors.map {
+                .instructorItem(item: $0)
+            }
 
         let instructorSection: [MultiSection] =
-            self.section.instructors.isEmpty ? [] : [.InstructorSection(
+             [.InstructorSection(
                 title: "Detail",
-                items: [.sectionItem(section: self.section)] +
-                        self.section.instructors.map {
-                            .instructorItem(item: $0)
-                        }
+                items: detailSectionItems
             )]
 
         self.tableView.rx.itemSelected.filterMap {
