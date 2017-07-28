@@ -156,11 +156,85 @@ class RUSOCViewController
             return dataSource[index].title
         }
     }
+    
+    override func sharingUrl() -> URL? {
+        return NSURL.rutgersUrl(withPathComponents: ["soc"])
+    }
+    
+    func viewControllers(withPathComponents pathComponents: [String]!, destinationTitle title: String!) -> [Any]! {
+        
+        var semester: String!
+        var campus: String!
+        var level: String!
+        var subjectCode: String!
+        
+        let courseNumber: String!
+        
+        let numberFormat : NumberFormatter = NumberFormatter.init()
+        
+        var codes: [String] = []
+        
+        for component in pathComponents {
+            let upper: String = component.uppercased()
+            
+            if (upper == "NB" || upper == "CM" || upper == "NK" || upper == "ONLINE") {
+                campus = upper
+            }
+            
+            else if (upper == "U" || upper == "G") {
+                level = upper
+            }
+            
+            else {
+                let code: Int? = numberFormat.number(from: upper) as? Int
+                
+                if code != nil {
+                    codes.append(upper)
+                } else {
+                    print("error!")
+                    return []
+                }
+            }
+        }
+        
+        let semesterCode = codes.filter {$0.characters.count > 3}
+        semester = semesterCode[0]
+        
+        
+        var courseSemesterCodes = codes.filter {$0.characters.count < 4}
+        
+        subjectCode = courseSemesterCodes.remove(at: 0)
+        courseNumber = courseSemesterCodes.remove(at: 0)
+        
+        if courseSemesterCodes.count > 0 {
+            print("error! Extra elements in array!")
+        }
+        
+        if campus == nil {
+            campus = "NB"
+        }
+        
+        if semester == nil {
+            print("error!")
+        }
+        
+        //if subjectCode == nil {
+            let vc = RUSOCViewController.initialize()
+            return [vc]
+        //}
+        
+        
+        
+        
+        return nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
+        
+        setupShareButton()
         
         self.searchController.dimsBackgroundDuringPresentation = false
         self.definesPresentationContext = true
@@ -185,9 +259,10 @@ class RUSOCViewController
         settingsViewButton.setBackgroundImage(#imageLiteral(resourceName: "gear"), for: .normal)
         
         let settingsButtonItem = UIBarButtonItem(customView: settingsViewButton)
-        self.navigationItem
-            .setRightBarButton(settingsButtonItem, animated: false)
         
+        /*self.navigationItem
+            .setRightBarButton(settingsButtonItem, animated: false)
+        */
         RutgersAPI.sharedInstance.networkStatus
             .subscribe(onNext: { [weak self] change in
                 switch change {
