@@ -161,14 +161,15 @@ class RUSOCViewController
         return NSURL.rutgersUrl(withPathComponents: ["soc"])
     }
     
-    func viewControllers(withPathComponents pathComponents: [String]!, destinationTitle title: String!) -> [Any]! {
+    static func viewControllers(withPathComponents pathComponents: [String]!, destinationTitle: String!) -> [Any]! {
         
-        var semester: String!
-        var campus: String!
-        var level: String!
-        var subjectCode: String!
+        var semester: String?
+        var campus: String?
+        var level: String?
+        var subjectCode: String?
+        var title: String?
         
-        let courseNumber: String!
+        let courseNumber: String?
         
         let numberFormat : NumberFormatter = NumberFormatter.init()
         
@@ -197,17 +198,19 @@ class RUSOCViewController
             }
         }
         
+        if codes.count > 0 {
         let semesterCode = codes.filter {$0.characters.count > 3}
-        semester = semesterCode[0]
+            semester = semesterCode[0]
         
         
-        var courseSemesterCodes = codes.filter {$0.characters.count < 4}
+            var courseSemesterCodes = codes.filter {$0.characters.count < 4}
         
-        subjectCode = courseSemesterCodes.remove(at: 0)
-        courseNumber = courseSemesterCodes.remove(at: 0)
-        
-        if courseSemesterCodes.count > 0 {
-            print("error! Extra elements in array!")
+            subjectCode = courseSemesterCodes.remove(at: 0)
+            courseNumber = courseSemesterCodes.remove(at: 0)
+            
+            if courseSemesterCodes.count > 0 {
+                print("error! Extra elements in array!")
+            }
         }
         
         if campus == nil {
@@ -218,15 +221,22 @@ class RUSOCViewController
             print("error!")
         }
         
-        //if subjectCode == nil {
+        if let _ = subjectCode {
+            
+        } else {
             let vc = RUSOCViewController.initialize()
             return [vc]
-        //}
+        }
         
+        if title == nil {
+            title = ""
+        }
         
+        //if courseNumber != nil {
+            
+       // }
         
-        
-        return nil
+        return []
     }
 
     override func viewDidLoad() {
@@ -260,9 +270,9 @@ class RUSOCViewController
         
         let settingsButtonItem = UIBarButtonItem(customView: settingsViewButton)
         
-        /*self.navigationItem
+        self.navigationItem
             .setRightBarButton(settingsButtonItem, animated: false)
-        */
+        
         RutgersAPI.sharedInstance.networkStatus
             .subscribe(onNext: { [weak self] change in
                 switch change {
@@ -381,6 +391,8 @@ class RUSOCViewController
                 self.navigationController?
                     .pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
+
+        setupShareButton()
     }
 }
 
