@@ -213,17 +213,6 @@ class RUSOCCourseViewController: UITableViewController {
                         "\($0.coreCode) \($0.coreCodeDescription)"
                     }
                     
-//                    let notesItems = [
-//                        self.course.subjectNotes,
-//                        self.course.notes
-//                        ].map {
-//                            $0.trimmingCharacters(in: .whitespacesAndNewlines)
-//                        }.filter {
-//                            !$0.isEmpty
-//                        } + self.course.coreCodes.map {
-//                            "\($0.coreCode) \($0.coreCodeDescription)"
-//                    }
-                    
                     let vc = RUSOCSectionDetailTableViewController .instantiate(
                         withStoryboard: self.storyboard!,
                         section: section,

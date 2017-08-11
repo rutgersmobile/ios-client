@@ -189,67 +189,38 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
         } ?? []
         
-        let subjectSection: [MultiSection] = {
-            if subjectNotesItem.isEmpty {
-                return []
-            }else {
-                return [.NoteSection(title: "Subject Notes", items: subjectNotesItem)]
-            }
-        }()
-        
+        let subjectSection: [MultiSection] =
+            subjectNotesItem.isEmpty ? [] :
+            [.NoteSection(title: "Subject Notes", items: subjectNotesItem)]
         
         let courseNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["courseNotes"]?.flatMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
         } ?? []
         
-        let courseSection: [MultiSection] = {
-            if courseNotesItem.isEmpty {
-                return []
-            }else {
-                return [.NoteSection(title: "Course Notes", items: courseNotesItem)]
-            }
-        }()
-        
-//        let sectionNotesItem: [SOCSectionDetailItem] =
-//            self.section.sectionNotes.flatMap {
-//                $0.isEmpty ? nil : [.noteSectionItem(notes: $0)]
-//            } ?? []
-//        
-//        let sectionNotesSection: [MultiSection] = {
-//            if sectionNotesItem.isEmpty {
-//               return []
-//            } else {
-//                return [.NoteSection(title: "Section Notes", items: sectionNotesItem)]
-//            }
-//        }()
+        let courseSection: [MultiSection] =
+            courseNotesItem.isEmpty ? [] :
+            [.NoteSection(title: "Course Notes", items: courseNotesItem)]
         
         let coreCodesNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["coreCodes"]?.flatMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
-                } ?? []
+            } ?? []
         
-        let coreCodesSection: [MultiSection] = {
-        if coreCodesNotesItem.isEmpty {
-            return []
-        } else {
-            return [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]}
-        }()
+        let coreCodesSection: [MultiSection] =
+            coreCodesNotesItem.isEmpty ? [] :
+            [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]
         
         let preReqSectionItem: [SOCSectionDetailItem] =
             self.noteDictionary["preReqs"]?.flatMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
             } ?? []
         
-        let preReqSection: [MultiSection] = {
-            if preReqSectionItem.isEmpty {
-                return [] }
-            else {
-                return [.PreReqSection(items: preReqSectionItem)]
-            }
-        }()
-        
-        let meetingSectionO: Observable<[MultiSection]> =
+        let preReqSection: [MultiSection] =
+            preReqSectionItem.isEmpty ? [] :
+            [.PreReqSection(items: preReqSectionItem)]
+    
+        let meetingSection: Observable<[MultiSection]> =
             Observable.from(self.section.meetingTimes)
                 .flatMap { meetingTime -> Observable<SOCSectionDetailItem> in
                     let buildingO: () -> Observable<Building> = {
@@ -295,15 +266,13 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         let sectionArray: [MultiSection] =
             subjectSection +
             courseSection +
-//            sectionNotesSection +
             preReqSection +
             coreCodesSection +
             instructorSection
         
-        meetingSectionO.map { meetingSection in
-             sectionArray + meetingSection
-        }
-        .asDriver(onErrorJustReturn: [])
+        meetingSection.map { meetingSection in
+            sectionArray + meetingSection
+        }.asDriver(onErrorJustReturn: [])
         .drive(self.tableView!.rx.items(dataSource: dataSource))
         .addDisposableTo(self.disposeBag)
     } //End of ViewDidLoad
