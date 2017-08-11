@@ -21,7 +21,7 @@ public extension UITableViewCell {
 
 class RUSOCSubjectCell: UITableViewCell {
     @IBOutlet weak var subjectTitle: UILabel!
-    @IBOutlet weak var schoolTitle: UILabel!
+//    @IBOutlet weak var schoolTitle: UILabel!
     @IBOutlet weak var subjectCode: UILabel!
 }
 
@@ -121,7 +121,7 @@ class RUSOCViewController
                 ) as! RUSOCSubjectCell
                 
                 cell.subjectTitle.text = subject.subjectDescription
-                cell.schoolTitle.text = ""
+   
                 cell.subjectCode.text = String(
                     format: "%03d",
                     arguments: [subject.code]

@@ -200,27 +200,34 @@ class RUSOCCourseViewController: UITableViewController {
                 switch item {
                 case .section(let section):
                     
+                   var noteDictionary = Dictionary<String, [String]>()
                 
                    let preReqItems = [self.course.preReqNotes].filterMap { $0 }
                             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                             .filter { !$0.isEmpty }
                    
-                    let notesItems = [
-                        self.course.subjectNotes,
-                        self.course.notes
-                        ].map {
-                            $0.trimmingCharacters(in: .whitespacesAndNewlines)
-                        }.filter {
-                            !$0.isEmpty
-                        } + self.course.coreCodes.map {
-                            "\($0.coreCode) \($0.coreCodeDescription)"
+                    noteDictionary["preReqs"] = preReqItems
+                    noteDictionary["subjectNotes"] = [self.course.subjectNotes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
+                    noteDictionary["courseNotes"] = [self.course.notes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
+                    noteDictionary["coreCodes"] = self.course.coreCodes.map {
+                        "\($0.coreCode) \($0.coreCodeDescription)"
                     }
+                    
+//                    let notesItems = [
+//                        self.course.subjectNotes,
+//                        self.course.notes
+//                        ].map {
+//                            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+//                        }.filter {
+//                            !$0.isEmpty
+//                        } + self.course.coreCodes.map {
+//                            "\($0.coreCode) \($0.coreCodeDescription)"
+//                    }
                     
                     let vc = RUSOCSectionDetailTableViewController .instantiate(
                         withStoryboard: self.storyboard!,
                         section: section,
-                        notes: notesItems,
-                        preReq: preReqItems
+                        notes: noteDictionary
                     )
                     
                     self.navigationController?.pushViewController(

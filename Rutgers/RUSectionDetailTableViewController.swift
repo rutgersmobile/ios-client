@@ -25,29 +25,9 @@ class RUMeetingTimesAndLocationCell: UITableViewCell {
     @IBOutlet weak var roomNumber: UILabel!
     
     @IBOutlet weak var buildingCode: UILabel!
-    @IBOutlet weak var imageHeight: NSLayoutConstraint!
-    @IBOutlet weak var buildingCodeHeight: NSLayoutConstraint!
-    @IBOutlet weak var campusAbbrevHeight: NSLayoutConstraint!
-
-    @IBOutlet weak var roomNumberHeight: NSLayoutConstraint!
     
     @IBOutlet weak var locationImage: UIImageView!
     
-    var expanded: Bool = false {
-        didSet {
-            if !expanded {
-                self.imageHeight.constant = 0.0
-                self.buildingCodeHeight.constant = 0.0
-                self.campusAbbrevHeight.constant = 0.0
-                self.roomNumberHeight.constant = 0.0
-            } else {
-                self.imageHeight.constant = 100.0
-                self.buildingCodeHeight.constant = 20
-                self.campusAbbrevHeight.constant = 20
-                self.roomNumberHeight.constant = 20
-            }
-        }
-    }
 }
 
 class RUSOCSectionDetailCell: UITableViewCell {
@@ -59,21 +39,18 @@ class RUSOCSectionDetailCell: UITableViewCell {
 class RUSOCSectionDetailTableViewController: UITableViewController {
     var section: Section!
     let disposeBag = DisposeBag()
-    var notes: [String]!
-    var preReqItems: [String]!
+    var noteDictionary: [String: [String]]!
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
         section: Section,
-        notes: [String],
-        preReq: [String]
+        notes: [String : [String]]
         ) -> RUSOCSectionDetailTableViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCSectionDetailViewController"
             ) as! RUSOCSectionDetailTableViewController
         
-        me.preReqItems = preReq
-        me.notes = notes
+        me.noteDictionary = notes
         me.section = section
         
         return me
@@ -189,8 +166,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .flatMap{UIImage(data: $0)}
 
                 let defaultImage = UIImage(named: "ic_panorama_3x")
-                
-                cell.accessoryType = .disclosureIndicator
+            
                 
                 cell.locationImage.image = image ??
                     defaultImage
@@ -208,26 +184,70 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             ds.sectionModels[idxPath].title
         }
         
-        var noteSectionItem: [SOCSectionDetailItem] =
-            self.section.sectionNotes.flatMap {
-                $0.isEmpty ? nil : [.noteSectionItem(notes: $0)]
-            } ?? []
+        let subjectNotesItem: [SOCSectionDetailItem] =
+            self.noteDictionary["subjectNotes"]?.flatMap {
+                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+        } ?? []
         
-        let selfNotes: [SOCSectionDetailItem] =
-            self.notes.map {
-                .noteSectionItem(notes: $0)
+        let subjectSection: [MultiSection] = {
+            if subjectNotesItem.isEmpty {
+                return []
+            }else {
+                return [.NoteSection(title: "Subject Notes", items: subjectNotesItem)]
             }
+        }()
         
-        noteSectionItem.append(contentsOf: selfNotes)
+        
+        let courseNotesItem: [SOCSectionDetailItem] =
+            self.noteDictionary["courseNotes"]?.flatMap {
+                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+        } ?? []
+        
+        let courseSection: [MultiSection] = {
+            if courseNotesItem.isEmpty {
+                return []
+            }else {
+                return [.NoteSection(title: "Course Notes", items: courseNotesItem)]
+            }
+        }()
+        
+//        let sectionNotesItem: [SOCSectionDetailItem] =
+//            self.section.sectionNotes.flatMap {
+//                $0.isEmpty ? nil : [.noteSectionItem(notes: $0)]
+//            } ?? []
+//        
+//        let sectionNotesSection: [MultiSection] = {
+//            if sectionNotesItem.isEmpty {
+//               return []
+//            } else {
+//                return [.NoteSection(title: "Section Notes", items: sectionNotesItem)]
+//            }
+//        }()
+        
+        let coreCodesNotesItem: [SOCSectionDetailItem] =
+            self.noteDictionary["coreCodes"]?.flatMap {
+                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+                } ?? []
+        
+        let coreCodesSection: [MultiSection] = {
+        if coreCodesNotesItem.isEmpty {
+            return []
+        } else {
+            return [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]}
+        }()
         
         let preReqSectionItem: [SOCSectionDetailItem] =
-            self.preReqItems.map {
-                .noteSectionItem(notes: $0)
-        }
+            self.noteDictionary["preReqs"]?.flatMap {
+                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+            } ?? []
         
-        let preReqSection: [MultiSection] =
-            [.PreReqSection(items: preReqSectionItem)]
-        
+        let preReqSection: [MultiSection] = {
+            if preReqSectionItem.isEmpty {
+                return [] }
+            else {
+                return [.PreReqSection(items: preReqSectionItem)]
+            }
+        }()
         
         let meetingSectionO: Observable<[MultiSection]> =
             Observable.from(self.section.meetingTimes)
@@ -271,26 +291,17 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 title: "Detail",
                 items: detailSectionItems
             )]
-
-        self.tableView.rx.itemSelected.filterMap {
-            self.tableView.cellForRow(at: $0) as? RUMeetingTimesAndLocationCell
-        }.subscribe(onNext: { cell in
-            cell.expanded = !cell.expanded
-            
-            if !cell.expanded {
-                cell.accessoryType = .disclosureIndicator
-            } else {
-                cell.accessoryType = .none
-            }
-
-            self.tableView.beginUpdates()
-            self.tableView.endUpdates()
-        }).addDisposableTo(disposeBag)
-
+        
+        let sectionArray: [MultiSection] =
+            subjectSection +
+            courseSection +
+//            sectionNotesSection +
+            preReqSection +
+            coreCodesSection +
+            instructorSection
+        
         meetingSectionO.map { meetingSection in
-            [.HeaderSection(
-                items: noteSectionItem
-                )] + preReqSection + instructorSection + meetingSection
+             sectionArray + meetingSection
         }
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView!.rx.items(dataSource: dataSource))
@@ -321,7 +332,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 } //End of class
 
 private enum MultiSection {
-    case HeaderSection(items: [SOCSectionDetailItem])
+    case NoteSection(title: String, items: [SOCSectionDetailItem])
     case PreReqSection(items: [SOCSectionDetailItem])
     case MeetingTimesSection(title: String, items: [SOCSectionDetailItem])
     case InstructorSection(title: String, items: [SOCSectionDetailItem])
@@ -338,7 +349,7 @@ extension MultiSection: SectionModelType {
     
     var items: [SOCSectionDetailItem] {
         switch self {
-        case .HeaderSection(items: let items):
+        case .NoteSection(title: _, items: let items):
             return items
         case .PreReqSection(items: let items):
             return items
@@ -351,8 +362,8 @@ extension MultiSection: SectionModelType {
     
     var title: String {
         switch self {
-        case .HeaderSection(items: _):
-            return "Notes"
+        case .NoteSection(title: let title, items: _):
+            return title
         case .PreReqSection(items: _):
             return "PreReqs"
         case .MeetingTimesSection(title: let title, items: _):
@@ -364,8 +375,8 @@ extension MultiSection: SectionModelType {
     
     init(original: MultiSection, items: [SOCSectionDetailItem]) {
         switch original {
-        case let .HeaderSection(items: items):
-            self = .HeaderSection(items: items)
+        case let .NoteSection(title: title, items: items):
+            self = .NoteSection(title: title, items: items)
         case let .PreReqSection(items: items):
             self = .PreReqSection(items: items)
         case let .MeetingTimesSection(title: title, items: _):
