@@ -275,7 +275,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         }.asDriver(onErrorJustReturn: [])
         .drive(self.tableView!.rx.items(dataSource: dataSource))
         .addDisposableTo(self.disposeBag)
-    } //End of ViewDidLoad
+    } //End of ViewDidLoa
 
     override func tableView(
         _ tableView: UITableView,
