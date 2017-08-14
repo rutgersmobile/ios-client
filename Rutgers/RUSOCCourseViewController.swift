@@ -147,23 +147,55 @@ class RUSOCCourseViewController: UITableViewController {
             ds.sectionModels[idx].header
         }
 
-        let notesItems = [
-            self.course.subjectNotes,
-            self.course.notes
-        ].map {
-            $0.trimmingCharacters(in: .whitespacesAndNewlines)
-        }.filter {
-            !$0.isEmpty
-        } + self.course.coreCodes.map {
+//        let notesItems = [
+//            self.course.subjectNotes,
+//            self.course.notes
+//        ].map {
+//            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+//        }.filter {
+//            !$0.isEmpty
+//        } +
+        
+        let subjectNotes = [self.course.subjectNotes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        
+        let subjectNotesSection =
+            subjectNotes.isEmpty || subjectNotes.get(0) == "" ? [] : [
+            CourseSection(
+                header: "Subject Notes",
+                items: subjectNotes.map { .notes($0) }
+            )]
+        
+        let courseNotes = [self.course.notes]
+            .map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        
+        let courseNotesSection =
+            courseNotes.isEmpty || courseNotes.get(0) == "" ? [] : [
+            CourseSection(
+                header: "Course Notes",
+                items: courseNotes.map { .notes($0)}
+            )]
+        
+        let coreCodes = self.course.coreCodes.map {
             "\($0.coreCode) \($0.coreCodeDescription)"
         }
+        
+        let coreCodesSection =
+            coreCodes.isEmpty ? [] :
+            [CourseSection(
+                header: "Core Codes",
+                items: coreCodes.map {.notes($0)})]
+        
+        
+//        let notesSection = CourseSection(
+//            header: "Notes",
+//            items: notesItems.map { .notes($0) }
+//        )
 
-        let notesSection = CourseSection(
-            header: "Notes",
-            items: notesItems.map { .notes($0) }
-        )
-
-        let preReqSection = CourseSection(
+     
+        
+        let preReqSection =
+            (course.preReqNotes?.isEmpty)! ? [] : [
+            CourseSection(
             header: "PreReqs",
             items: [
                 course.preReqNotes
@@ -171,7 +203,9 @@ class RUSOCCourseViewController: UITableViewController {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
             .map { .prereq($0) }
-        )
+                )]
+        
+        let sectionArray: [CourseSection] = subjectNotesSection + courseNotesSection + coreCodesSection + preReqSection
 
         RutgersAPI.sharedInstance.getSections(
             semester: options.semester,
@@ -183,14 +217,14 @@ class RUSOCCourseViewController: UITableViewController {
             header: "Sections",
             items: sections.map { .section($0) }
         )]}
-        .map { sections in
-            if preReqSection.items.count == 0 {
-                return sections
-            } else {
-                return [preReqSection] + sections
-            }
-        }
-        .map { [notesSection] + $0 }
+//        .map { sections in
+//            if preReqSection.items.count == 0 {
+//                return sections
+//            } else {
+//                return [preReqSection] + sections
+//            }
+//        }
+        .map { sectionArray + $0 }
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
