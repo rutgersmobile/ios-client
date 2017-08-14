@@ -269,7 +269,7 @@ class RUSOCViewController
         settingsViewButton.setBackgroundImage(#imageLiteral(resourceName: "gear"), for: .normal)
         
         let settingsButtonItem = UIBarButtonItem(customView: settingsViewButton)
-        
+       
         self.navigationItem
             .setRightBarButton(settingsButtonItem, animated: false)
         

@@ -34,7 +34,7 @@ class RUSOCCourseViewController: UITableViewController {
 
         me.options = options
         me.course = course
-
+        
         return me
     }
 
@@ -50,7 +50,8 @@ class RUSOCCourseViewController: UITableViewController {
         section: Section
     ) -> RUSOCSectionCell {
         cell.sectionNumber.text = section.number
-        cell.sectionIndex.text = section.sectionIndex
+        cell.sectionIndex.text = String(format: "%05d", Int(section.sectionIndex)!)
+//                section.sectionIndex
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
         if let time1 = section.meetingTimes.get(0) {
@@ -110,6 +111,7 @@ class RUSOCCourseViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
+        self.navigationItem.title = self.course.title
         
         let dataSource = RxCourseDataSource()
 
@@ -250,7 +252,7 @@ class RUSOCCourseViewController: UITableViewController {
     }
 }
 
-fileprivate extension MeetingTime {
+extension MeetingTime {
     func timeFormatted() -> String? {
         return self.startTime.flatMap { start in
             self.endTime.flatMap { end in

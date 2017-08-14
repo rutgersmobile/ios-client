@@ -50,6 +50,7 @@ class RUSOCSubjectViewController : UITableViewController {
         super.viewDidLoad()
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
+        self.navigationItem.title = self.subject.subjectDescription
 
         let dataSource = RxSubjectDataSource()
 

@@ -59,6 +59,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.title = "Section \(self.section.number)"
+
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 50
@@ -96,7 +98,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.openClosedDisplay.layer.cornerRadius = 0.8
                 
-                cell.sectionNumber.text = "\(section.sectionIndex)"
+                cell.sectionNumber.text = String(format: "%05d",
+                                                 Int(section.sectionIndex)!)
                 
                
                 cell.setupCellLayout()
@@ -135,12 +138,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.dayLabel?.text = day
                 }
                 
-                let startTime = item.startTime?.meetTimeFormatted() ?? ""
-                let endTime = item.endTime?.meetTimeFormatted() ?? ""
-                
                 cell.campusAbbrev.text = item.campusAbbrev
                 
-                cell.timesLabel?.text = "\(startTime)-\(endTime)"
+                cell.timesLabel?.text = item.timeFormatted() ?? ""
 
                 if let _ = item.buildingCode {
                     cell.buildingCode.text = building.name
@@ -184,10 +184,12 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             ds.sectionModels[idxPath].title
         }
         
+        //A bunch of ternary operators ahead
         let subjectNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["subjectNotes"]?.flatMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
-        } ?? []
+        } ?? [] // nil coalescing operator - essentially if the
+                // result from the closure is [nil], return an empty array
         
         let subjectSection: [MultiSection] =
             subjectNotesItem.isEmpty ? [] :
@@ -259,7 +261,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
 
         let instructorSection: [MultiSection] =
              [.InstructorSection(
-                title: "Detail",
+                title: "Details",
                 items: detailSectionItems
             )]
         
