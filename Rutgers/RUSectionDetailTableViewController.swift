@@ -115,6 +115,19 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 
                 cell.setupCellLayout()
                 return cell
+                
+            case let .preReqSectionItem(preReqNotes):
+                let cell =
+                    tv.dequeueReusableCell(withIdentifier: "notesCell",
+                                           for: idxPath) as! RUSOCNotesCell
+                
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.font = UIFont(name: "Helvetica", size: 17)
+                cell.textLabel?.setHTMLFromString(text: preReqNotes)
+                
+                
+                cell.setupCellLayout()
+                return cell
             case let .meetingTimesItem(item, building):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: "meetingLocations",
@@ -211,16 +224,16 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         let coreCodesSection: [MultiSection] =
             coreCodesNotesItem.isEmpty ? [] :
-            [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]
+                [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]
         
-        let preReqSectionItem: [SOCSectionDetailItem] =
+        let preReqSectionItems: [SOCSectionDetailItem] =
             self.noteDictionary["preReqs"]?.flatMap {
-                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+                $0.isEmpty ? nil : .preReqSectionItem(notes: $0)
             } ?? []
         
         let preReqSection: [MultiSection] =
-            preReqSectionItem.isEmpty ? [] :
-            [.PreReqSection(items: preReqSectionItem)]
+            preReqSectionItems.isEmpty ? [] :
+            [.PreReqSection(items: preReqSectionItems)]
     
         let meetingSection: Observable<[MultiSection]> =
             Observable.from(self.section.meetingTimes)
@@ -311,6 +324,7 @@ private enum MultiSection {
 
 private enum SOCSectionDetailItem {
     case noteSectionItem(notes: String)
+    case preReqSectionItem(notes: String)
     case sectionItem(section: Section)
     case instructorItem(item: Instructor)
     case meetingTimesItem(item: MeetingTime, building: Building)

@@ -51,7 +51,6 @@ class RUSOCCourseViewController: UITableViewController {
     ) -> RUSOCSectionCell {
         cell.sectionNumber.text = section.number
         cell.sectionIndex.text = String(format: "%05d", Int(section.sectionIndex)!)
-//                section.sectionIndex
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
         if let time1 = section.meetingTimes.get(0) {
@@ -146,15 +145,6 @@ class RUSOCCourseViewController: UITableViewController {
         dataSource.titleForHeaderInSection = { (ds, idx) in
             ds.sectionModels[idx].header
         }
-
-//        let notesItems = [
-//            self.course.subjectNotes,
-//            self.course.notes
-//        ].map {
-//            $0.trimmingCharacters(in: .whitespacesAndNewlines)
-//        }.filter {
-//            !$0.isEmpty
-//        } +
         
         let subjectNotes = [self.course.subjectNotes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
         
@@ -185,14 +175,6 @@ class RUSOCCourseViewController: UITableViewController {
                 header: "Core Codes",
                 items: coreCodes.map {.notes($0)})]
         
-        
-//        let notesSection = CourseSection(
-//            header: "Notes",
-//            items: notesItems.map { .notes($0) }
-//        )
-
-     
-        
         let preReqSection =
             (course.preReqNotes?.isEmpty)! ? [] : [
             CourseSection(
@@ -217,13 +199,6 @@ class RUSOCCourseViewController: UITableViewController {
             header: "Sections",
             items: sections.map { .section($0) }
         )]}
-//        .map { sections in
-//            if preReqSection.items.count == 0 {
-//                return sections
-//            } else {
-//                return [preReqSection] + sections
-//            }
-//        }
         .map { sectionArray + $0 }
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
@@ -239,8 +214,7 @@ class RUSOCCourseViewController: UITableViewController {
                    var noteDictionary = Dictionary<String, [String]>()
                 
                    let preReqItems = [self.course.preReqNotes].filterMap { $0 }
-                            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                            .filter { !$0.isEmpty }
+                            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
                    
                     noteDictionary["preReqs"] = preReqItems
                     noteDictionary["subjectNotes"] = [self.course.subjectNotes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
