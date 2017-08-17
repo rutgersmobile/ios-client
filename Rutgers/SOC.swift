@@ -159,7 +159,7 @@ extension Semester {
     /*
     var previous: Semester {
         switch self.term {
-        case .winter:
+        case 7:
             return Semester(year: self.year - 1, term: 9)
         case .spring:
             return Semester(year: self.year, term: 0)
@@ -168,8 +168,23 @@ extension Semester {
         case .fall:
             return Semester(year: self.year, term: 7)
         }
+    }*/
+    
+    var title: String {
+        switch self.term {
+        case 9:
+            return "Fall"
+        case 7:
+            return "Summer"
+        case 1:
+            return "Spring"
+        default:
+            return "Winter"
+        }
+        
     }
-
+    
+    /*
     func previousSemesters(number: Int) -> [Semester] {
         var semester = self
         var semesters: [Semester] = []
@@ -194,7 +209,7 @@ extension Semester {
 
 extension Semester: CustomStringConvertible {
     var description: String {
-        return "\(self.term) \(self.year)"
+        return "\(self.title) \(self.year)"
     }
 }
 
@@ -239,6 +254,7 @@ extension Term {
 struct Course {
     let title: String
     let subject: Int
+    let expandedTitle: String
     let notes: String
     let subjectNotes: String
     let string: String
@@ -366,6 +382,7 @@ extension Course: Unboxable {
     init(unboxer: Unboxer) throws {
         self.title = try unboxer.unbox(key: "title")
         self.subject = try unboxer.unbox(key: "subject")
+        self.expandedTitle = try unboxer.unbox(key: "expandedTitle")
         self.notes = try unboxer.unbox(key: "notes")
         self.subjectNotes = try unboxer.unbox(key: "subjectNotes")
         self.string = try unboxer.unbox(key: "string")

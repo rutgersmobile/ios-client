@@ -238,6 +238,7 @@
 		B5F8CF0A1E7C651F008D8C23 /* ShowtimesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F8CF081E7C651F008D8C23 /* ShowtimesCollectionViewCell.swift */; };
 		B5F8CF0B1E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F8CF091E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib */; };
 		B5F8CF111E7C93F9008D8C23 /* ShowtimesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F8CF101E7C93F9008D8C23 /* ShowtimesCell.xib */; };
+		BD0F6F221F44B673000A6529 /* SOCHelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F6F211F44B673000A6529 /* SOCHelperFunctions.swift */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -704,6 +705,7 @@
 		B5F8CF081E7C651F008D8C23 /* ShowtimesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5F8CF091E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCollectionViewCell.xib; sourceTree = "<group>"; };
 		B5F8CF101E7C93F9008D8C23 /* ShowtimesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCell.xib; sourceTree = "<group>"; };
+		BD0F6F211F44B673000A6529 /* SOCHelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCHelperFunctions.swift; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1018,6 +1020,7 @@
 				C40AEDAD1E856E2F00F04499 /* ActionSheetDataSource.swift */,
 				C40AEDB11E899EB500F04499 /* RUSOCSubjectViewController.swift */,
 				C499E33B1E8AE3FF006B6978 /* RUSOCCourseViewController.swift */,
+				BD0F6F211F44B673000A6529 /* SOCHelperFunctions.swift */,
 				C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */,
 				C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */,
 				B53865C11F01563B00C0DCBF /* RUSectionDetailTableViewController.swift */,
@@ -1989,6 +1992,7 @@
 				A7241A3B1989583500304436 /* DataTuple.m in Sources */,
 				049425021B3A07B500BE570C /* RUSplitViewController.m in Sources */,
 				621E60391D9D9F8300BAF3B7 /* RUDebug.m in Sources */,
+				BD0F6F221F44B673000A6529 /* SOCHelperFunctions.swift in Sources */,
 				B51D34741E5B404F00F4BD1F /* InfoCastCell.swift in Sources */,
 				A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */,
 				B54DFB511E4B9E7B00755D2D /* TmdbAPI.swift in Sources */,

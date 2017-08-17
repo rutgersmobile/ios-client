@@ -310,6 +310,11 @@ class RUSOCViewController
                 return socOptions
             }.shareReplay(1)
         
+            //THIS IS INCORRECT - BUT WORKS FOR NOW
+            getOptions.subscribe(onNext: {
+                self.navigationItem.title = "\($0.semester) \($0.level.title) \($0.campus)"
+            }).addDisposableTo(self.disposeBag)
+        
         let initialLoad = getOptions.flatMapLatest { options in
             RutgersAPI.sharedInstance
                 .getSubjects(
@@ -357,7 +362,7 @@ class RUSOCViewController
                         ]}
                 }
         }
-
+      
         let cancelTapped = self.searchController.searchBar.rx
             .cancelButtonClicked
             .flatMapLatest { _ in initialLoad }

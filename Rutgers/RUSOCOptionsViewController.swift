@@ -70,11 +70,11 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
                     let semester = RUSOCOptionsViewController.storedSemester(
                         semester: self.semesters[0]
                     )
-                    return "\(semester)"
+                    return semester.description
                 case .campus:
-                    return "\(RUSOCOptionsViewController.storedCampus())"
+                    return RUSOCOptionsViewController.storedCampus().title
                 case .level:
-                    return "\(RUSOCOptionsViewController.storedLevel())"
+                    return RUSOCOptionsViewController.storedLevel().title
                 }
             }()
 
@@ -134,7 +134,8 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate {
     func semesterAction() -> Observable<SOCOptions> {
         let actionSheetDS = ActionSheetDataSource(
             data: self.semesters.map { semester in
-                ActionSheetModel(title: semester.description, datum: semester)
+                ActionSheetModel(title: semester.description,
+                                 datum: semester)
             }
         )
         actionSheetDS.actionSheet.show(in: self.tableView)

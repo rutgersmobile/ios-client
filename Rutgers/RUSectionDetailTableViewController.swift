@@ -148,6 +148,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     default:
                         day = "Saturday"
                     }
+                    
                     cell.dayLabel?.text = day
                 }
                 
@@ -178,13 +179,11 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                         .flatMap{try? Data(contentsOf: $0)}
                         .flatMap{UIImage(data: $0)}
 
-                let defaultImage = UIImage(named: "ic_panorama_3x")
-            
+                let defaultImage = UIImage(named: "image-not-found")
                 
-                cell.locationImage.image = image ??
-                    defaultImage
+                cell.locationImage.image = image ?? defaultImage
                 
-                cell.locationImage.contentMode = .scaleAspectFit
+                cell.locationImage.contentMode = .scaleToFill
 
                 cell.setupCellLayout()
                 
@@ -235,32 +234,17 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             preReqSectionItems.isEmpty ? [] :
             [.PreReqSection(items: preReqSectionItems)]
     
-        let meetingSection: Observable<[MultiSection]> =
-            Observable.from(self.section.meetingTimes)
-                .flatMap { meetingTime -> Observable<SOCSectionDetailItem> in
-                    let buildingO: () -> Observable<Building> = {
-                        if let buildingCode = meetingTime.buildingCode {
-                            return RutgersAPI.sharedInstance.getBuilding(
-                                buildingCode: buildingCode
-                            )
-                        } else {
-                            return Observable.just(Building(
-                                code: "",
-                                campus: meetingTime.campusAbbrev ?? "",
-                                name: "",
-                                id: ""
-                            ))
-                        }
-                    }
-
-                    return buildingO().map { building in
+        let meetingSection: Observable<[MultiSection]> = {
+                    return SOCHelperFunctions.getBuildings(meetingTimes:
+                        self.section.meetingTimes)
+                        .map { (meetingTime, building) in
                         .meetingTimesItem(item: meetingTime, building: building)
-                    }
                 }
                 .toArray()
                 .map {
                     [.MeetingTimesSection( title: "Meeting Times", items: $0)]
-                }
+            }
+        } ()
         
         let sectionItem: [SOCSectionDetailItem] =
             [.sectionItem(section: self.section)]
@@ -290,7 +274,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         }.asDriver(onErrorJustReturn: [])
         .drive(self.tableView!.rx.items(dataSource: dataSource))
         .addDisposableTo(self.disposeBag)
-    } //End of ViewDidLoa
+    } //End of ViewDidLoad
 
     override func tableView(
         _ tableView: UITableView,

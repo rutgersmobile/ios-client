@@ -66,7 +66,7 @@ class RUSOCSubjectViewController : UITableViewController {
                     withIdentifier: self.cellId,
                     for: ip
                 ) as! RUSOCCourseCell
-                cell.courseLabel.text = model.title
+                cell.courseLabel.text = model.expandedTitle == "" ? model.title : model.expandedTitle //make extension for this
                 cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
                 cell.codeLabel.text = model.string
 
@@ -138,7 +138,7 @@ class RUSOCSubjectViewController : UITableViewController {
                         .pushViewController(vc, animated: true)
                 default: break
                 }
-            }).addDisposableTo(disposeBag)
+            }).addDisposableTo(self.disposeBag)
     }
 
     override func tableView(

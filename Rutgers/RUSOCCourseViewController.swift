@@ -49,24 +49,31 @@ class RUSOCCourseViewController: UITableViewController {
         cell: RUSOCSectionCell,
         section: Section
     ) -> RUSOCSectionCell {
+        
         cell.sectionNumber.text = section.number
         cell.sectionIndex.text = String(format: "%05d", Int(section.sectionIndex)!)
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
         if let time1 = section.meetingTimes.get(0) {
             cell.time1.text = formatMeetingTime(time: time1)
+            cell.buildingRoom1.text = ""
         } else {
             cell.time1.text = ""
+            cell.buildingRoom1.text = ""
         }
         if let time2 = section.meetingTimes.get(1) {
             cell.time2.text = formatMeetingTime(time: time2)
+            cell.buildingRoom2.text = time2.roomNumber
         } else {
             cell.time2.text = ""
+            cell.buildingRoom2.text = ""
         }
         if let time3 = section.meetingTimes.get(2) {
             cell.time3.text = formatMeetingTime(time: time3)
+            cell.buildingRoom3.text = time3.roomNumber
         } else {
             cell.time3.text = ""
+            cell.buildingRoom3.text = ""
         }
 
         cell.openColor.backgroundColor = section.openStatus
@@ -110,7 +117,7 @@ class RUSOCCourseViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
-        self.navigationItem.title = self.course.title
+        self.navigationItem.title = self.course.expandedTitle == "" ? self.course.title : self.course.expandedTitle
         
         let dataSource = RxCourseDataSource()
 
@@ -189,21 +196,49 @@ class RUSOCCourseViewController: UITableViewController {
         
         let sectionArray: [CourseSection] = subjectNotesSection + courseNotesSection + coreCodesSection + preReqSection
 
+        
+        
         RutgersAPI.sharedInstance.getSections(
             semester: options.semester,
             campus: options.campus,
             level: options.level,
             course: course
-        )
-        .map { sections in [CourseSection(
-            header: "Sections",
-            items: sections.map { .section($0) }
-        )]}
-        .map { sectionArray + $0 }
-        .asDriver(onErrorJustReturn: [])
-        .drive(self.tableView.rx.items(dataSource: dataSource))
-        .addDisposableTo(disposeBag)
-
+            ).map { sections in [CourseSection(
+                    header: "Sections",
+                    items: sections.map { .section($0) }
+            )]}.map { sectionArray + $0 }
+            .asDriver(onErrorJustReturn: [])
+            .drive(self.tableView.rx.items(dataSource: dataSource))
+            .addDisposableTo(disposeBag)
+        
+        
+//        let meetingSection: Observable<[MultiSection]> = {
+//            return SOCHelperFunctions.getBuildings(meetingTimes:
+//                self.section.meetingTimes)
+//                .map { (meetingTime, building) in
+//                    .meetingTimesItem(item: meetingTime, building: building)
+            //            }
+//            .toArray()
+//            .map {
+//                [.MeetingTimesSection( title: "Meeting Times", items: $0)]
+//        }
+        
+        /*
+        
+        let timesAndBuildings: Observable<[CourseSectionItem]> = {
+            return RutgersAPI.sharedInstance.getSections(
+                    semester: options.semester,
+                    campus: options.campus,
+                    level: options.level,
+                    course: course
+                )
+        }()
+        */
+//
+//        print(timesAndBuildings)
+        
+        
+        
         self.tableView
             .rx
             .modelSelected(CourseSectionItem.self)

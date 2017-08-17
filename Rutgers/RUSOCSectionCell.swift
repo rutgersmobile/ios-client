@@ -14,6 +14,9 @@ class RUSOCSectionCell: UITableViewCell {
     @IBOutlet weak var instructor: UILabel!
     @IBOutlet weak var sectionIndex: UILabel!
     @IBOutlet weak var time1: UILabel!
+    @IBOutlet weak var buildingRoom1: UILabel!
     @IBOutlet weak var time2: UILabel!
+    @IBOutlet weak var buildingRoom2: UILabel!
     @IBOutlet weak var time3: UILabel!
+    @IBOutlet weak var buildingRoom3: UILabel!
 }
