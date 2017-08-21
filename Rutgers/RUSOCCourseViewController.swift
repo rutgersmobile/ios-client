@@ -47,30 +47,57 @@ class RUSOCCourseViewController: UITableViewController {
 
     func configureSectionCell(
         cell: RUSOCSectionCell,
-        section: Section
+        section: Section,
+        meetingTimes: [MeetingTime],
+        buildings: [Observable<Building>]
     ) -> RUSOCSectionCell {
         
         cell.sectionNumber.text = section.number
         cell.sectionIndex.text = String(format: "%05d", Int(section.sectionIndex)!)
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
-        if let time1 = section.meetingTimes.get(0) {
+        if let time1 = meetingTimes.get(0) {
             cell.time1.text = formatMeetingTime(time: time1)
-            cell.buildingRoom1.text = ""
+            cell.buildingRoom1.text =
+                (time1.buildingCode ?? "N/A") + "-" + (time1.roomNumber ?? "N/A")
+            
+            if let campusAbbrev = time1.campusAbbrev {
+                cell.campusCode1.text = campusAbbrev
+                cell.campusCode1.backgroundColor = campusColor.from(string:
+                    campusAbbrev.lowercased()).color
+            } else {
+                cell.campusCode1.text = " "
+            }
         } else {
             cell.time1.text = ""
             cell.buildingRoom1.text = ""
         }
-        if let time2 = section.meetingTimes.get(1) {
+        if let time2 = meetingTimes.get(1) {
             cell.time2.text = formatMeetingTime(time: time2)
-            cell.buildingRoom2.text = time2.roomNumber
+            cell.buildingRoom2.text =
+                (time2.buildingCode ?? "N/A") + "-" + (time2.roomNumber ?? "N/A")
+            if let campusAbbrev = time2.campusAbbrev {
+                cell.campusCode2.text = campusAbbrev
+                cell.campusCode2.backgroundColor = campusColor.from(string:
+                    campusAbbrev.lowercased()).color
+            } else {
+                cell.campusCode2.text = " "
+            }
         } else {
             cell.time2.text = ""
             cell.buildingRoom2.text = ""
         }
-        if let time3 = section.meetingTimes.get(2) {
+        if let time3 = meetingTimes.get(2) {
             cell.time3.text = formatMeetingTime(time: time3)
-            cell.buildingRoom3.text = time3.roomNumber
+            cell.buildingRoom3.text =
+                (time3.buildingCode ?? "N/A") + "-" + (time3.roomNumber ?? "N/A")
+            if let campusAbbrev = time3.campusAbbrev {
+                cell.campusCode3.text = campusAbbrev
+                cell.campusCode3.backgroundColor = campusColor.from(string:
+                    campusAbbrev.lowercased()).color
+            } else {
+                cell.campusCode3.text = " "
+            }
         } else {
             cell.time3.text = ""
             cell.buildingRoom3.text = ""
@@ -133,7 +160,19 @@ class RUSOCCourseViewController: UITableViewController {
                     withIdentifier: self.cellId,
                     for: ip
                 ) as! RUSOCSectionCell
-                return self.configureSectionCell(cell: cell, section: section)
+                
+                
+                
+                return self.configureSectionCell(cell: cell, section: section,
+                                                 meetingTimes: section.meetingTimes,
+                                                 buildings:
+                                                    section.meetingTimes
+                                                    .map {return RutgersAPI
+                                                        .sharedInstance
+                                                        .getBuilding(
+                                                            buildingCode:
+                                                            $0.buildingCode ?? "")
+                                                    })
             case .prereq(let prereq):
                 let cell = tv.dequeueReusableCell(
                     withIdentifier: self.defaultCellId,
@@ -210,33 +249,6 @@ class RUSOCCourseViewController: UITableViewController {
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView.rx.items(dataSource: dataSource))
             .addDisposableTo(disposeBag)
-        
-        
-//        let meetingSection: Observable<[MultiSection]> = {
-//            return SOCHelperFunctions.getBuildings(meetingTimes:
-//                self.section.meetingTimes)
-//                .map { (meetingTime, building) in
-//                    .meetingTimesItem(item: meetingTime, building: building)
-            //            }
-//            .toArray()
-//            .map {
-//                [.MeetingTimesSection( title: "Meeting Times", items: $0)]
-//        }
-        
-        /*
-        
-        let timesAndBuildings: Observable<[CourseSectionItem]> = {
-            return RutgersAPI.sharedInstance.getSections(
-                    semester: options.semester,
-                    campus: options.campus,
-                    level: options.level,
-                    course: course
-                )
-        }()
-        */
-//
-//        print(timesAndBuildings)
-        
         
         
         self.tableView
