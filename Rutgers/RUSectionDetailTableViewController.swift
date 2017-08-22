@@ -62,7 +62,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "\(self.course.courseNumber) \(self.course.title)"
+        self.navigationItem.title =  self.course.string + " \(self.course.title)"
 
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
