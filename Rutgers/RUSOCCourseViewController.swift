@@ -41,10 +41,40 @@ class RUSOCCourseViewController: UITableViewController {
     func formatMeetingTime(time: MeetingTime) -> String {
         let meetingDay = time.meetingDay ?? ""
         let meetingTime = time.timeFormatted() ?? ""
-        return "\(meetingDay) \(meetingTime)"
+        let returnString = meetingDay + " " + meetingTime
+        return returnString == " " ? "TBD" : returnString
             .trimmingCharacters(in: .whitespaces)
     }
-
+    
+    
+    func formatRoomAndBuilding(time: MeetingTime) -> String {
+    
+        let building = time.buildingCode ?? ""
+        let room = time.roomNumber ?? ""
+        let returnString = building + " " + room
+        
+        return returnString
+    }
+    
+    func formatCampus(time: MeetingTime) -> String {
+        return time.campusAbbrev ?? ""
+    }
+    
+    func setCampusAbbrevLabel(campusAbbrev: String?,
+                              cellLabel: UILabel) -> UILabel {
+        
+        if let campusAbbrev = campusAbbrev {
+        cellLabel.text = campusAbbrev
+        cellLabel.backgroundColor = CampusColor.from(string:
+            campusAbbrev.lowercased()
+            ).color
+        } else {
+            cellLabel.text = ""
+        }
+        
+        return cellLabel
+    }
+    
     func configureSectionCell(
         cell: RUSOCSectionCell,
         section: Section,
@@ -53,51 +83,40 @@ class RUSOCCourseViewController: UITableViewController {
     ) -> RUSOCSectionCell {
         
         cell.sectionNumber.text = section.number
-        cell.sectionIndex.text = String(format: "%05d", Int(section.sectionIndex)!)
+        cell.sectionIndex.text = String(format: "%05d",
+                                        Int(section.sectionIndex)!)
+        
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
         if let time1 = meetingTimes.get(0) {
             cell.time1.text = formatMeetingTime(time: time1)
-            cell.buildingRoom1.text =
-                (time1.buildingCode ?? "N/A") + "-" + (time1.roomNumber ?? "N/A")
+            cell.buildingRoom1.text = formatRoomAndBuilding(time: time1)
             
-            if let campusAbbrev = time1.campusAbbrev {
-                cell.campusCode1.text = campusAbbrev
-                cell.campusCode1.backgroundColor = CampusColor.from(string:
-                    campusAbbrev.lowercased()).color
-            } else {
-                cell.campusCode1.text = " "
-            }
+            cell.campusCode1 = setCampusAbbrevLabel(
+                                 campusAbbrev: time1.campusAbbrev,
+                                 cellLabel: cell.campusCode1)
         } else {
             cell.time1.text = ""
             cell.buildingRoom1.text = ""
         }
         if let time2 = meetingTimes.get(1) {
             cell.time2.text = formatMeetingTime(time: time2)
-            cell.buildingRoom2.text =
-                (time2.buildingCode ?? "N/A") + "-" + (time2.roomNumber ?? "N/A")
-            if let campusAbbrev = time2.campusAbbrev {
-                cell.campusCode2.text = campusAbbrev
-                cell.campusCode2.backgroundColor = CampusColor.from(string:
-                    campusAbbrev.lowercased()).color
-            } else {
-                cell.campusCode2.text = " "
-            }
+            cell.buildingRoom2.text = formatRoomAndBuilding(time: time2)
+            
+            cell.campusCode2 = setCampusAbbrevLabel(
+                                    campusAbbrev: time2.campusAbbrev,
+                                    cellLabel: cell.campusCode2)
         } else {
             cell.time2.text = ""
             cell.buildingRoom2.text = ""
         }
         if let time3 = meetingTimes.get(2) {
             cell.time3.text = formatMeetingTime(time: time3)
-            cell.buildingRoom3.text =
-                (time3.buildingCode ?? "N/A") + "-" + (time3.roomNumber ?? "N/A")
-            if let campusAbbrev = time3.campusAbbrev {
-                cell.campusCode3.text = campusAbbrev
-                cell.campusCode3.backgroundColor = CampusColor.from(string:
-                    campusAbbrev.lowercased()).color
-            } else {
-                cell.campusCode3.text = " "
-            }
+            cell.buildingRoom3.text = formatRoomAndBuilding(time: time3)
+            
+            cell.campusCode3 = setCampusAbbrevLabel(
+                                    campusAbbrev: time3.campusAbbrev,
+                                    cellLabel: cell.campusCode3)
         } else {
             cell.time3.text = ""
             cell.buildingRoom3.text = ""
@@ -144,7 +163,9 @@ class RUSOCCourseViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
-        self.navigationItem.title = self.course.expandedTitle == "" ? self.course.title : self.course.expandedTitle
+        self.navigationItem.title =
+            self.course.expandedTitle == "" ? self.course.title :
+                                              self.course.expandedTitle
         
         let dataSource = RxCourseDataSource()
 
@@ -163,15 +184,18 @@ class RUSOCCourseViewController: UITableViewController {
                 
                 
                 
-                return self.configureSectionCell(cell: cell, section: section,
-                                                 meetingTimes: section.meetingTimes,
+                return self.configureSectionCell(cell: cell,
+                                                 section: section,
+                                                 meetingTimes:
+                                                    section.meetingTimes,
                                                  buildings:
                                                     section.meetingTimes
                                                     .map {return RutgersAPI
                                                         .sharedInstance
                                                         .getBuilding(
                                                             buildingCode:
-                                                            $0.buildingCode ?? "")
+                                                            $0.buildingCode
+                                                                ?? "")
                                                     })
             case .prereq(let prereq):
                 let cell = tv.dequeueReusableCell(
@@ -192,7 +216,8 @@ class RUSOCCourseViewController: UITableViewController {
             ds.sectionModels[idx].header
         }
         
-        let subjectNotes = [self.course.subjectNotes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
+        let subjectNotes = [self.course.subjectNotes].map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)}
         
         let subjectNotesSection =
             subjectNotes.isEmpty || subjectNotes.get(0) == "" ? [] : [
@@ -260,17 +285,23 @@ class RUSOCCourseViewController: UITableViewController {
                     
                    var noteDictionary = Dictionary<String, [String]>()
                 
-                   let preReqItems = [self.course.preReqNotes].filterMap { $0 }
-                            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+                   let preReqItems = [self.course.preReqNotes]
+                            .filterMap { $0 }
+                            .map { $0.trimmingCharacters(in:
+                                .whitespacesAndNewlines)}
                    
                     noteDictionary["preReqs"] = preReqItems
-                    noteDictionary["subjectNotes"] = [self.course.subjectNotes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
-                    noteDictionary["courseNotes"] = [self.course.notes].map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
+                    noteDictionary["subjectNotes"] = [self.course.subjectNotes]
+                        .map {$0.trimmingCharacters(in:
+                            .whitespacesAndNewlines)}
+                    noteDictionary["courseNotes"] = [self.course.notes]
+                        .map {$0.trimmingCharacters(in:
+                            .whitespacesAndNewlines)}
                     noteDictionary["coreCodes"] = self.course.coreCodes.map {
                         "\($0.coreCode) \($0.coreCodeDescription)"
                     }
                     
-                    let vc = RUSOCSectionDetailTableViewController .instantiate(
+                    let vc = RUSOCSectionDetailTableViewController.instantiate(
                         withStoryboard: self.storyboard!,
                         section: section,
                         course: self.course,

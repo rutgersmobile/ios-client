@@ -169,7 +169,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 if let _ = item.buildingCode {
                     cell.buildingCode.text = building.name
                 } else {
-                    cell.buildingCode.text = "Not available"
+                    cell.buildingCode.text = "TBD"
                 }
                 
                 if let roomNumber = item.roomNumber {
