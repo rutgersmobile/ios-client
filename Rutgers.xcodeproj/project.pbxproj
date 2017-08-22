@@ -239,6 +239,7 @@
 		B5F8CF0B1E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F8CF091E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib */; };
 		B5F8CF111E7C93F9008D8C23 /* ShowtimesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F8CF101E7C93F9008D8C23 /* ShowtimesCell.xib */; };
 		BD0F6F221F44B673000A6529 /* SOCHelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F6F211F44B673000A6529 /* SOCHelperFunctions.swift */; };
+		BDAA5AB81F4C892A009BF12B /* CampusColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAA5AB71F4C892A009BF12B /* CampusColor.swift */; };
 		C262EFAC188345D10035C8F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAB188345D10035C8F5 /* Foundation.framework */; };
 		C262EFAE188345D10035C8F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAD188345D10035C8F5 /* CoreGraphics.framework */; };
 		C262EFB0188345D10035C8F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C262EFAF188345D10035C8F5 /* UIKit.framework */; };
@@ -706,6 +707,7 @@
 		B5F8CF091E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCollectionViewCell.xib; sourceTree = "<group>"; };
 		B5F8CF101E7C93F9008D8C23 /* ShowtimesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowtimesCell.xib; sourceTree = "<group>"; };
 		BD0F6F211F44B673000A6529 /* SOCHelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOCHelperFunctions.swift; sourceTree = "<group>"; };
+		BDAA5AB71F4C892A009BF12B /* CampusColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CampusColor.swift; sourceTree = "<group>"; };
 		C262EFA8188345D10035C8F5 /* Rutgers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rutgers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262EFAB188345D10035C8F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C262EFAD188345D10035C8F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1024,6 +1026,7 @@
 				C49ED77F1E7C642D00852023 /* RUSOCStoryboard.storyboard */,
 				C499E33D1E8AFBBC006B6978 /* RUSOCSectionCell.swift */,
 				B53865C11F01563B00C0DCBF /* RUSectionDetailTableViewController.swift */,
+				BDAA5AB71F4C892A009BF12B /* CampusColor.swift */,
 			);
 			name = rusoc;
 			sourceTree = "<group>";
@@ -2148,6 +2151,7 @@
 				622AFBCD1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m in Sources */,
 				B51D347C1E5B40A900F4BD1F /* GeneralPurposeCell.swift in Sources */,
 				04B2F3CA1D09D56E0035F96E /* RUActiveMenuItemDataSource.swift in Sources */,
+				BDAA5AB81F4C892A009BF12B /* CampusColor.swift in Sources */,
 				C499E33E1E8AFBBC006B6978 /* RUSOCSectionCell.swift in Sources */,
 				A7EA4C4E197D68D200E972DD /* AAPLPlaceholderView.m in Sources */,
 				A74668AC1983783300A5EBE0 /* UIMotionEffect+FloatingMotionEffect.m in Sources */,

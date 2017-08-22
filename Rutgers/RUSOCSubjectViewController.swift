@@ -67,7 +67,8 @@ class RUSOCSubjectViewController : UITableViewController {
                     for: ip
                 ) as! RUSOCCourseCell
                 cell.courseLabel.text = model.expandedTitle == "" ? model.title : model.expandedTitle //make extension for this
-                cell.creditsLabel.text = "\(model.credits.map { Int($0) } ?? 0)"
+                let credits = model.credits.map {$0} ?? 0.0
+                cell.creditsLabel.text = credits == 0.0 ? "BA" : "\(credits)"
                 cell.codeLabel.text = model.string
 
                 cell.openSectionsBG.backgroundColor =

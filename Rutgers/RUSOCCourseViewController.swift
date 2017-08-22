@@ -63,7 +63,7 @@ class RUSOCCourseViewController: UITableViewController {
             
             if let campusAbbrev = time1.campusAbbrev {
                 cell.campusCode1.text = campusAbbrev
-                cell.campusCode1.backgroundColor = campusColor.from(string:
+                cell.campusCode1.backgroundColor = CampusColor.from(string:
                     campusAbbrev.lowercased()).color
             } else {
                 cell.campusCode1.text = " "
@@ -78,7 +78,7 @@ class RUSOCCourseViewController: UITableViewController {
                 (time2.buildingCode ?? "N/A") + "-" + (time2.roomNumber ?? "N/A")
             if let campusAbbrev = time2.campusAbbrev {
                 cell.campusCode2.text = campusAbbrev
-                cell.campusCode2.backgroundColor = campusColor.from(string:
+                cell.campusCode2.backgroundColor = CampusColor.from(string:
                     campusAbbrev.lowercased()).color
             } else {
                 cell.campusCode2.text = " "
@@ -93,7 +93,7 @@ class RUSOCCourseViewController: UITableViewController {
                 (time3.buildingCode ?? "N/A") + "-" + (time3.roomNumber ?? "N/A")
             if let campusAbbrev = time3.campusAbbrev {
                 cell.campusCode3.text = campusAbbrev
-                cell.campusCode3.backgroundColor = campusColor.from(string:
+                cell.campusCode3.backgroundColor = CampusColor.from(string:
                     campusAbbrev.lowercased()).color
             } else {
                 cell.campusCode3.text = " "
@@ -136,7 +136,7 @@ class RUSOCCourseViewController: UITableViewController {
         credits: Float
     ) -> UITableViewCell {
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = String(credits)
+        cell.textLabel?.text = "\(credits).0"
         return cell
     }
 
@@ -273,6 +273,7 @@ class RUSOCCourseViewController: UITableViewController {
                     let vc = RUSOCSectionDetailTableViewController .instantiate(
                         withStoryboard: self.storyboard!,
                         section: section,
+                        course: self.course,
                         notes: noteDictionary
                     )
                     
