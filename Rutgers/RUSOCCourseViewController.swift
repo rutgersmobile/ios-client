@@ -53,7 +53,7 @@ class RUSOCCourseViewController: UITableViewController {
         let room = time.roomNumber ?? ""
         let returnString = building + " " + room
         
-        return returnString
+        return returnString == " " ? "TBD" : returnString
     }
     
     func formatCampus(time: MeetingTime) -> String {

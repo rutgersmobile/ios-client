@@ -25,8 +25,8 @@
     UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(goLeft:)];
     rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     
-    [self addGestureRecognizer:leftSwipe];
-    [self addGestureRecognizer:rightSwipe];
+    [self addGestureRecognizer: leftSwipe];
+    [self addGestureRecognizer: rightSwipe];
 }
 
 - (IBAction)goLeft:(id)sender {
