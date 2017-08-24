@@ -65,18 +65,20 @@ class RutgersAPI {
                    .mapUnboxArray(type: Subject.self)
     }
     
-    public func getCourse(semester: Semester,
-                          campus: Campus,
-                          level: Level,
-                          course: Course) -> Observable<Course> {
-        return self.provider
-                   .request(
-                        .getCourse(semester: semester,
-                                   campus: campus,
-                                   level: level,
-                                   course: course)
-                         )
-                   .mapUnboxObject(type: Course.self)
+    public func getCourse(
+        semester: Semester,
+        campus: Campus,
+        level: Level,
+        subject: Int,
+        course: Int
+    ) -> Observable<Course> {
+        return self.provider.request(.getCourse(
+            semester: semester,
+            campus: campus,
+            level: level,
+            subject: subject,
+            course: course)
+        ).mapUnboxObject(type: Course.self)
     }
     
     public func getCourses(semester: Semester,

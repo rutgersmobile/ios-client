@@ -11,8 +11,10 @@ import RxSwift
 import RxDataSources
 
 class RUSOCCourseViewController: UITableViewController {
-    var course: Course!
+    var course: Course?
     var options: SOCOptions!
+    var subjectCode: Int?
+    var courseCode: Int?
 
     let cellId = "RUSOCSectionCellId"
     let defaultCellId = "RUSOCSectionDefaultCellId"
@@ -34,8 +36,38 @@ class RUSOCCourseViewController: UITableViewController {
 
         me.options = options
         me.course = course
-        
+
         return me
+    }
+
+    static func instantiate(
+        withStoryboard storyboard: UIStoryboard,
+        options: SOCOptions,
+        subjectCode: Int,
+        courseCode: Int
+    ) -> RUSOCCourseViewController {
+        let me = storyboard.instantiateViewController(
+            withIdentifier: "RUSOCCourseViewController"
+        ) as! RUSOCCourseViewController
+
+        me.options = options
+        me.subjectCode = subjectCode
+        me.courseCode = courseCode
+
+        return me
+    }
+
+    override func sharingUrl() -> URL? {
+        return course.flatMap { realCourse in
+             NSURL.rutgersUrl(withPathComponents: [
+                "soc",
+                "\(options.semester.term)",
+                "\(options.semester.year)",
+                "\(options.level)",
+                "\(realCourse.subject)",
+                "\(realCourse.courseNumber)"
+            ])
+        }
     }
 
     func formatMeetingTime(time: MeetingTime) -> String {
@@ -45,24 +77,24 @@ class RUSOCCourseViewController: UITableViewController {
         return returnString == " " ? "TBD" : returnString
             .trimmingCharacters(in: .whitespaces)
     }
-    
-    
+
+
     func formatRoomAndBuilding(time: MeetingTime) -> String {
-    
+
         let building = time.buildingCode ?? ""
         let room = time.roomNumber ?? ""
         let returnString = building + " " + room
-        
+
         return returnString == " " ? "TBD" : returnString
     }
-    
+
     func formatCampus(time: MeetingTime) -> String {
         return time.campusAbbrev ?? ""
     }
-    
+
     func setCampusAbbrevLabel(campusAbbrev: String?,
                               cellLabel: UILabel) -> UILabel {
-        
+
         if let campusAbbrev = campusAbbrev {
         cellLabel.text = campusAbbrev
         cellLabel.backgroundColor = CampusColor.from(string:
@@ -71,27 +103,27 @@ class RUSOCCourseViewController: UITableViewController {
         } else {
             cellLabel.text = ""
         }
-        
+
         return cellLabel
     }
-    
+
     func configureSectionCell(
         cell: RUSOCSectionCell,
         section: Section,
         meetingTimes: [MeetingTime],
         buildings: [Observable<Building>]
     ) -> RUSOCSectionCell {
-        
+
         cell.sectionNumber.text = section.number
         cell.sectionIndex.text = String(format: "%05d",
                                         Int(section.sectionIndex)!)
-        
+
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
         if let time1 = meetingTimes.get(0) {
             cell.time1.text = formatMeetingTime(time: time1)
             cell.buildingRoom1.text = formatRoomAndBuilding(time: time1)
-            
+
             cell.campusCode1 = setCampusAbbrevLabel(
                                  campusAbbrev: time1.campusAbbrev,
                                  cellLabel: cell.campusCode1)
@@ -102,7 +134,7 @@ class RUSOCCourseViewController: UITableViewController {
         if let time2 = meetingTimes.get(1) {
             cell.time2.text = formatMeetingTime(time: time2)
             cell.buildingRoom2.text = formatRoomAndBuilding(time: time2)
-            
+
             cell.campusCode2 = setCampusAbbrevLabel(
                                     campusAbbrev: time2.campusAbbrev,
                                     cellLabel: cell.campusCode2)
@@ -113,7 +145,7 @@ class RUSOCCourseViewController: UITableViewController {
         if let time3 = meetingTimes.get(2) {
             cell.time3.text = formatMeetingTime(time: time3)
             cell.buildingRoom3.text = formatRoomAndBuilding(time: time3)
-            
+
             cell.campusCode3 = setCampusAbbrevLabel(
                                     campusAbbrev: time3.campusAbbrev,
                                     cellLabel: cell.campusCode3)
@@ -125,9 +157,9 @@ class RUSOCCourseViewController: UITableViewController {
         cell.openColor.backgroundColor = section.openStatus
             ? RUSOCViewController.openColor
             : RUSOCViewController.closedColor
-        
+
         cell.setupCellLayout()
-        
+
         return cell
     }
 
@@ -163,10 +195,12 @@ class RUSOCCourseViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
-        self.navigationItem.title =
-            self.course.expandedTitle == "" ? self.course.title :
-                                              self.course.expandedTitle
-        
+        if let realCourse = self.course {
+            self.navigationItem.title = realCourse.expandedTitle == ""
+                ? realCourse.title
+                : realCourse.expandedTitle
+        }
+
         let dataSource = RxCourseDataSource()
 
         dataSource.configureCell = { (
@@ -181,9 +215,9 @@ class RUSOCCourseViewController: UITableViewController {
                     withIdentifier: self.cellId,
                     for: ip
                 ) as! RUSOCSectionCell
-                
-                
-                
+
+
+
                 return self.configureSectionCell(cell: cell,
                                                  section: section,
                                                  meetingTimes:
@@ -215,105 +249,116 @@ class RUSOCCourseViewController: UITableViewController {
         dataSource.titleForHeaderInSection = { (ds, idx) in
             ds.sectionModels[idx].header
         }
-        
-        let subjectNotes = [self.course.subjectNotes].map {
-            $0.trimmingCharacters(in: .whitespacesAndNewlines)}
-        
+
+        let courseO = getCourse().shareReplay(1)
+        courseO.flatMap { realCourse -> Observable<[CourseSection]> in
+            let sectionArray = self.makeSectionArray(course: self.course!)
+
+            return RutgersAPI.sharedInstance.getSections(
+                semester: self.options.semester,
+                campus: self.options.campus,
+                level: self.options.level,
+                course: self.course!
+            ).map { sections in [CourseSection(
+                        header: "Sections",
+                        items: sections.map { .section($0) }
+            )]}.map { sectionArray + $0 }
+        }
+        .asDriver(onErrorJustReturn: [])
+        .drive(self.tableView.rx.items(dataSource: dataSource))
+        .addDisposableTo(disposeBag)
+
+        courseO.flatMap { realCourse -> Observable<(Section, [String: [String]])> in
+            self.tableView.rx.modelSelected(CourseSectionItem.self).filterMap { model -> Section? in
+                switch model {
+                case .section(let section):
+                    return section
+                default:
+                    return nil
+                }
+            }.map { section in
+               var noteDictionary = Dictionary<String, [String]>()
+
+               let preReqItems = [realCourse.preReqNotes].filterMap { $0 }
+                        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
+
+                noteDictionary["preReqs"] = preReqItems
+                noteDictionary["subjectNotes"] = [realCourse.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)]
+                noteDictionary["courseNotes"] = [realCourse.notes.trimmingCharacters(in: .whitespacesAndNewlines)]
+                noteDictionary["coreCodes"] = realCourse.coreCodes.map {
+                    "\($0.coreCode) \($0.coreCodeDescription)"
+                }
+
+                return (section, noteDictionary)
+            }
+        }
+        .subscribe(onNext: { rets in
+            let (section, noteDictionary) = rets
+            let vc = RUSOCSectionDetailTableViewController .instantiate(
+                withStoryboard: self.storyboard!,
+                section: section,
+                notes: noteDictionary
+            )
+            self.navigationController?.pushViewController(
+                vc, animated: true
+            )
+        }).addDisposableTo(self.disposeBag)
+    }
+
+    func getCourse() -> Observable<Course> {
+        return self.course.map { Observable.just($0) } ??
+            RutgersAPI.sharedInstance.getCourse(
+                semester: options.semester,
+                campus: options.campus,
+                level: options.level,
+                subject: subjectCode!,
+                course: courseCode!
+            )
+    }
+
+    func makeSectionArray(course: Course) -> [CourseSection] {
+        let subjectNotes = [course.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)]
+
         let subjectNotesSection =
             subjectNotes.isEmpty || subjectNotes.get(0) == "" ? [] : [
             CourseSection(
                 header: "Subject Notes",
                 items: subjectNotes.map { .notes($0) }
             )]
-        
-        let courseNotes = [self.course.notes]
-            .map {$0.trimmingCharacters(in: .whitespacesAndNewlines)}
-        
+
+        let courseNotes = [course.notes.trimmingCharacters(in: .whitespacesAndNewlines)]
+
         let courseNotesSection =
             courseNotes.isEmpty || courseNotes.get(0) == "" ? [] : [
             CourseSection(
                 header: "Course Notes",
                 items: courseNotes.map { .notes($0)}
             )]
-        
-        let coreCodes = self.course.coreCodes.map {
+
+        let coreCodes = course.coreCodes.map {
             "\($0.coreCode) \($0.coreCodeDescription)"
         }
-        
+
         let coreCodesSection =
             coreCodes.isEmpty ? [] :
             [CourseSection(
                 header: "Core Codes",
                 items: coreCodes.map {.notes($0)})]
-        
+
         let preReqSection =
             (course.preReqNotes?.isEmpty)! ? [] : [
-            CourseSection(
-            header: "PreReqs",
-            items: [
-                course.preReqNotes
-            ].filterMap { $0 }
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-            .map { .prereq($0) }
-                )]
-        
-        let sectionArray: [CourseSection] = subjectNotesSection + courseNotesSection + coreCodesSection + preReqSection
+                CourseSection(
+                    header: "PreReqs",
+                    items: [
+                        course.preReqNotes
+                    ].filterMap { $0 }
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
+                    .map { .prereq($0) }
+                )
+            ]
 
-        
-        
-        RutgersAPI.sharedInstance.getSections(
-            semester: options.semester,
-            campus: options.campus,
-            level: options.level,
-            course: course
-            ).map { sections in [CourseSection(
-                    header: "Sections",
-                    items: sections.map { .section($0) }
-            )]}.map { sectionArray + $0 }
-            .asDriver(onErrorJustReturn: [])
-            .drive(self.tableView.rx.items(dataSource: dataSource))
-            .addDisposableTo(disposeBag)
-        
-        
-        self.tableView
-            .rx
-            .modelSelected(CourseSectionItem.self)
-            .subscribe(onNext: { item in
-                switch item {
-                case .section(let section):
-                    
-                   var noteDictionary = Dictionary<String, [String]>()
-                
-                   let preReqItems = [self.course.preReqNotes]
-                            .filterMap { $0 }
-                            .map { $0.trimmingCharacters(in:
-                                .whitespacesAndNewlines)}
-                   
-                    noteDictionary["preReqs"] = preReqItems
-                    noteDictionary["subjectNotes"] = [self.course.subjectNotes]
-                        .map {$0.trimmingCharacters(in:
-                            .whitespacesAndNewlines)}
-                    noteDictionary["courseNotes"] = [self.course.notes]
-                        .map {$0.trimmingCharacters(in:
-                            .whitespacesAndNewlines)}
-                    noteDictionary["coreCodes"] = self.course.coreCodes.map {
-                        "\($0.coreCode) \($0.coreCodeDescription)"
-                    }
-                    
-                    let vc = RUSOCSectionDetailTableViewController.instantiate(
-                        withStoryboard: self.storyboard!,
-                        section: section,
-                        course: self.course,
-                        notes: noteDictionary
-                    )
-                    
-                    self.navigationController?.pushViewController(
-                        vc, animated: true
-                    )
-                default: break
-                }
-            }).addDisposableTo(self.disposeBag)
+        return subjectNotesSection + courseNotesSection + coreCodesSection + preReqSection
     }
 
     override func tableView(
@@ -364,7 +409,7 @@ public extension String {
         if self.characters.count != 4 {
             return self
         }
-        
+
         let hourIndexE = self.index(self.startIndex, offsetBy: 1)
         let hour = self[self.startIndex...hourIndexE]
         let minuteIndexS = self.index(self.startIndex, offsetBy: 2)

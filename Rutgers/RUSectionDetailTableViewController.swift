@@ -59,6 +59,17 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         return me
     }
 
+    override func sharingUrl() -> URL? {
+        return NSURL.rutgersUrl(withPathComponents: [
+            "soc",
+//            "\(options.semester.term)",
+//            "\(options.semester.year)",
+//            "\(options.level)",
+//            "\(course.subject)",
+//            "\(course.courseNumber)"
+        ])
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
