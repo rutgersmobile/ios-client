@@ -52,6 +52,8 @@ class RUSOCSubjectViewController : UITableViewController {
             "\(options.semester.term)",
             "\(options.semester.year)",
             "\(options.level)",
+            "\(options.campus.description)",
+            subject.subjectDescription,
             "\(subject.code)"
         ])
     }
@@ -63,6 +65,8 @@ class RUSOCSubjectViewController : UITableViewController {
         self.navigationItem.title = self.subject.subjectDescription
 
         let dataSource = RxSubjectDataSource()
+        
+        setupShareButton()
 
         dataSource.configureCell = { (
             ds: SubjectDataSource,

@@ -437,20 +437,21 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
     NSString *urlString = [url.absoluteString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
     /*
       eg :
-     converts rutgers://knights/news/baseball/
-     into rutgers knighits news baseball
+     converts http://[RUTGERS SERVER]/link/FUBAR/BAZ
+     into link FUBAR BAZ
      */
     for (NSString *component in urlString.pathComponents) {
         NSString *normalizedComponent = [component rutgersStringEscape];
         [components addObject:normalizedComponent];
     }
-  //  [components removeObjectAtIndex:0]; // remove the http part
-   // [components removeObjectAtIndex:0]; // remove the rumobile.rutgers.edu link
+    
     [components removeObjectAtIndex:0]; // remove the link part
     
+    //FUBAR
     NSString *handle = components.firstObject;
     [components removeObjectAtIndex:0];
     
+    //Pass in FUBAR
     NSString *viewTag = [[self channelWithHandle:handle] channelView];
     id class = [self classForViewTag:viewTag];
    

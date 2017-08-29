@@ -239,4 +239,5 @@ struct SOCOptions {
     let semester: Semester
     let campus: Campus
     let level: Level
+    
 }

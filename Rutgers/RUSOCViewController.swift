@@ -158,84 +158,68 @@ class RUSOCViewController
     }
     
     override func sharingUrl() -> URL? {
-        return NSURL.rutgersUrl(withPathComponents: ["soc"])
+        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yyyy"
+        
+        let result = dateFormatter.string(from: date)
+        
+       let defOptions = RUSOCOptionsViewController
+                        .defaultOptions(semester: Semester(year: Int(result)!,
+                                                           term: 9))
+
+        
+        
+       return NSURL.rutgersUrl(withPathComponents:
+            ["soc", "\(defOptions.semester.term)",
+                    "\(defOptions.semester.year)",
+                    defOptions.level.title,
+                    defOptions.campus.description]
+            )
+        
     }
     
     static func viewControllers(withPathComponents pathComponents: [String]!, destinationTitle: String!) -> [Any]! {
+    
+        let storyboard = RUSOCViewController.getStoryBoard()
         
-        var semester: String?
-        var campus: String?
-        var level: String?
-        var subjectCode: String?
-        var title: String?
+        let options = pathComponents.count >= 4 ? SOCOptions(
+            semester:
+            Semester(year: Int(pathComponents.get(1)!)!,
+            term: Int(pathComponents.get(0)!)!
+            ),
+            campus:
+            Campus.from(string: pathComponents.get(3)!)!,
+            level:
+            Level.from(string: pathComponents.get(2)!)!
+        ) : nil
         
-        let courseNumber: String?
         
-        let numberFormat : NumberFormatter = NumberFormatter.init()
+        let subject = pathComponents.count == 6 ? Subject(subjectDescription: pathComponents.get(4)!,
+            code: Int(pathComponents.get(5)!)!
+        ) : nil
         
-        var codes: [String] = []
-        
-        for component in pathComponents {
-            let upper: String = component.uppercased()
+        switch pathComponents.count {
+        case 4:
+            let vc = storyboard.instantiateInitialViewController()
+                as! RUSOCViewController
             
-            if (upper == "NB" || upper == "CM" || upper == "NK" || upper == "ONLINE") {
-                campus = upper
-            }
-            
-            else if (upper == "U" || upper == "G") {
-                level = upper
-            }
-            
-            else {
-                let code: Int? = numberFormat.number(from: upper) as? Int
-                
-                if code != nil {
-                    codes.append(upper)
-                } else {
-                    print("error!")
-                    return []
-                }
-            }
-        }
-        
-        if codes.count > 0 {
-        let semesterCode = codes.filter {$0.characters.count > 3}
-            semester = semesterCode[0]
-        
-        
-            var courseSemesterCodes = codes.filter {$0.characters.count < 4}
-        
-            subjectCode = courseSemesterCodes.remove(at: 0)
-            courseNumber = courseSemesterCodes.remove(at: 0)
-            
-            if courseSemesterCodes.count > 0 {
-                print("error! Extra elements in array!")
-            }
-        }
-        
-        if campus == nil {
-            campus = "NB"
-        }
-        
-        if semester == nil {
-            print("error!")
-        }
-        
-        if let _ = subjectCode {
-            
-        } else {
-            let vc = RUSOCViewController.initialize()
             return [vc]
-        }
-        
-        if title == nil {
-            title = ""
-        }
-        
-        //if courseNumber != nil {
+        case 6:
+            let vc = RUSOCSubjectViewController
+                .instantiate(withStoryboard: storyboard,
+                             subject: subject!,
+                             options: options!)
+            return [vc]
+        case 7:
+            let vc = RUSOCCourseViewController.instantiate(withStoryboard: storyboard, options: options!, subjectCode: subject!.code, courseCode: Int(pathComponents.last!)!)
             
-       // }
-        
+            return [vc]
+        default:
+            print("return detail SOC")
+        }
         return []
     }
 

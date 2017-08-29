@@ -68,7 +68,9 @@
     and returns them as a url
  */
 +(NSURL *)buildDynamicSharingURL:(UINavigationController*)navigationController channel:(NSDictionary*)channel {
+    
     NSMutableArray *pathComponents = [NSMutableArray array];
+    
     for (id viewController in navigationController.viewControllers) {
         if ([viewController respondsToSelector:@selector(channel)]) {
             NSDictionary *channel = [viewController channel];
@@ -80,7 +82,7 @@
             }
         }
     }
-    return [NSURL rutgersUrlWithPathComponents:pathComponents];
+    return [NSURL rutgersUrlWithPathComponents: pathComponents];
 }
 
 

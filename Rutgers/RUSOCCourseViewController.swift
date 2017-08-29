@@ -64,6 +64,7 @@ class RUSOCCourseViewController: UITableViewController {
                 "\(options.semester.term)",
                 "\(options.semester.year)",
                 "\(options.level)",
+                "\(options.campus)",
                 "\(realCourse.subject)",
                 "\(realCourse.courseNumber)"
             ])
@@ -202,6 +203,8 @@ class RUSOCCourseViewController: UITableViewController {
         }
 
         let dataSource = RxCourseDataSource()
+        
+        setupShareButton()
 
         dataSource.configureCell = { (
             ds: CourseDataSource,
@@ -297,6 +300,7 @@ class RUSOCCourseViewController: UITableViewController {
             let vc = RUSOCSectionDetailTableViewController .instantiate(
                 withStoryboard: self.storyboard!,
                 section: section,
+                course: self.course!,
                 notes: noteDictionary
             )
             self.navigationController?.pushViewController(

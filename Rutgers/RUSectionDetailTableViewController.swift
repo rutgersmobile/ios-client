@@ -73,7 +73,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title =  self.course.string + " \(self.course.title)"
+        self.navigationItem.title =  self.course.string + ":" + self.section.number + " \(self.course.title)"
 
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
@@ -255,9 +255,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             preReqSectionItems.isEmpty ? [] :
             [.PreReqSection(items: preReqSectionItems)]
     
-        let meetingSection: Observable<[MultiSection]> = {
+        let meetingSection: Observable<[MultiSection]> = {[weak self] in
                     return SOCHelperFunctions.getBuildings(meetingTimes:
-                        self.section.meetingTimes)
+                        self!.section.meetingTimes)
                         .map { (meetingTime, building) in
                         .meetingTimesItem(item: meetingTime, building: building)
                 }
