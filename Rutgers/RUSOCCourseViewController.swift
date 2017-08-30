@@ -65,6 +65,7 @@ class RUSOCCourseViewController: UITableViewController {
                 "\(options.semester.year)",
                 "\(options.level)",
                 "\(options.campus)",
+                "\(realCourse.credits)",
                 "\(realCourse.subject)",
                 "\(realCourse.courseNumber)"
             ])
@@ -118,7 +119,7 @@ class RUSOCCourseViewController: UITableViewController {
         cell.sectionNumber.text = section.number
         cell.sectionIndex.text = String(format: "%05d",
                                         Int(section.sectionIndex)!)
-
+        
         cell.instructor.text = section.instructors.get(0)?.instructorName
 
         if let time1 = meetingTimes.get(0) {
@@ -255,13 +256,17 @@ class RUSOCCourseViewController: UITableViewController {
 
         let courseO = getCourse().shareReplay(1)
         courseO.flatMap { realCourse -> Observable<[CourseSection]> in
-            let sectionArray = self.makeSectionArray(course: self.course!)
-
+            let sectionArray = self.makeSectionArray(course: realCourse)
+            
+            if self.course == nil {
+                self.course = realCourse
+            }
+            
             return RutgersAPI.sharedInstance.getSections(
                 semester: self.options.semester,
                 campus: self.options.campus,
                 level: self.options.level,
-                course: self.course!
+                course: realCourse
             ).map { sections in [CourseSection(
                         header: "Sections",
                         items: sections.map { .section($0) }
@@ -300,7 +305,11 @@ class RUSOCCourseViewController: UITableViewController {
             let vc = RUSOCSectionDetailTableViewController .instantiate(
                 withStoryboard: self.storyboard!,
                 section: section,
-                course: self.course!,
+                courseTitle: self.course!.title,
+                courseString: self.course!.string,
+                courseNumber: self.course!.courseNumber,
+                sectionIndex: section.number,
+                options: self.options,
                 notes: noteDictionary
             )
             self.navigationController?.pushViewController(

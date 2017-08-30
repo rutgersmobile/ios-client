@@ -263,6 +263,7 @@ struct Course {
     let preReqNotes: String?
     let synopsisUrl: String?
     let credits: Float?
+    let creditsObject : CreditsObject
     let sectionCheck: SectionCheck
     let level: Level
     let coreCodes: [CoreCode]
@@ -285,6 +286,11 @@ struct CoreCode {
     let term: Int
     let unit: String
     let year: String
+}
+
+struct CreditsObject {
+    let code: String
+    let description : String
 }
 
 struct SectionCheck {
@@ -398,8 +404,16 @@ extension Course: Unboxable {
                 message: "Couldn't parse level: \(levelString)"
             )
         }
+        self.creditsObject = try unboxer.unbox(key: "creditsObject")
         self.level = level
         self.coreCodes = try unboxer.unbox(key: "coreCodes")
+    }
+}
+
+extension CreditsObject: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.code = try unboxer.unbox(key: "code")
+        self.description = try unboxer.unbox(key: "description")
     }
 }
 

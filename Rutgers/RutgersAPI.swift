@@ -109,6 +109,21 @@ class RutgersAPI {
             .mapUnboxArray(type: Section.self)
     }
     
+    public func getSection(semester: Semester,
+                           campus: Campus,
+                           level: Level,
+                           course: Course,
+                           sectionIndex: String) -> Observable<Section> {
+        return self.provider
+            .request(
+                .getSection(semester: semester,
+                            campus: campus,
+                            level: level,
+                            course: course,
+                            sectionIndex: sectionIndex)
+            ).mapUnboxObject(type: Section.self)
+    }
+    
     public func getSearch(semester: Semester,
                           campus: Campus,
                           level: Level,

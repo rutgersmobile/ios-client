@@ -196,7 +196,6 @@ class RUSOCViewController
             Level.from(string: pathComponents.get(2)!)!
         ) : nil
         
-        
         let subject = pathComponents.count == 6 ? Subject(subjectDescription: pathComponents.get(4)!,
             code: Int(pathComponents.get(5)!)!
         ) : nil
@@ -214,7 +213,11 @@ class RUSOCViewController
                              options: options!)
             return [vc]
         case 7:
-            let vc = RUSOCCourseViewController.instantiate(withStoryboard: storyboard, options: options!, subjectCode: subject!.code, courseCode: Int(pathComponents.last!)!)
+            let vc = RUSOCCourseViewController
+                .instantiate(withStoryboard: storyboard,
+                             options: options!,
+                             subjectCode: Int(pathComponents.get(5)!)!,
+                             courseCode: Int(pathComponents.last!)!)
             
             return [vc]
         default:

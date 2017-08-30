@@ -38,21 +38,33 @@ class RUSOCSectionDetailCell: UITableViewCell {
 
 class RUSOCSectionDetailTableViewController: UITableViewController {
     var section: Section!
-    var course: Course!
+    var courseTitle: String!
+    var courseString: String!
+    var courseNumber: Int!
+    var sectionIndex: String!
+    var options: SOCOptions!
     let disposeBag = DisposeBag()
     var noteDictionary: [String: [String]]!
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
         section: Section,
-        course: Course,
+        courseTitle: String,
+        courseString: String,
+        courseNumber: Int,
+        sectionIndex: String,
+        options: SOCOptions,
         notes: [String : [String]]
         ) -> RUSOCSectionDetailTableViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCSectionDetailViewController"
             ) as! RUSOCSectionDetailTableViewController
         
-        me.course = course
+        me.courseTitle = courseTitle
+        me.courseString = courseString
+        me.courseNumber = courseNumber
+        me.sectionIndex = sectionIndex
+        me.options = options
         me.noteDictionary = notes
         me.section = section
         
@@ -62,18 +74,21 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
     override func sharingUrl() -> URL? {
         return NSURL.rutgersUrl(withPathComponents: [
             "soc",
-//            "\(options.semester.term)",
-//            "\(options.semester.year)",
-//            "\(options.level)",
-//            "\(course.subject)",
-//            "\(course.courseNumber)"
+            "\(options.semester.term)",
+            "\(options.semester.year)",
+            "\(options.level)",
+            "\(options.campus)",
+            "\(courseNumber)",
+            courseTitle,
+            courseString,
+            sectionIndex
         ])
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title =  self.course.string + ":" + self.section.number + " \(self.course.title)"
+        self.navigationItem.title =  self.courseString + ":" + self.section.number + self.courseTitle
 
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()

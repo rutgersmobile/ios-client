@@ -23,6 +23,7 @@ enum RutgersService {
     case getCourse(semester: Semester, campus: Campus, level: Level, subject: Int, course: Int)
     case getCourses(semester: Semester, campus: Campus, level: Level, subject: Subject)
     case getSections(semester: Semester, campus: Campus, level: Level, course: Course)
+    case getSection(semester: Semester, campus: Campus, level: Level, course: Course, sectionIndex: String)
     case getSearch(semester: Semester, campus: Campus, level: Level, query: String)
 }
 
@@ -56,6 +57,8 @@ extension RutgersService : TargetType {
         case .getCourses:
             return "/courses.json"
         case .getSections:
+            return "/sections.json"
+        case .getSection:
             return "/sections.json"
         case .getSearch:
             return "/search.json"
@@ -105,6 +108,16 @@ extension RutgersService : TargetType {
                 "subject" : course.subject,
                 "course" : course.courseNumber
             ]
+        case .getSection(let semester, let campus, let level, let course, let sectionIndex):
+            return [
+                "term" : semester.term,
+                "year" : semester.year,
+                "level" : level.description,
+                "campus" : campus.description,
+                "subject" : course.subject,
+                "course" : course.courseNumber,
+                "section:" : sectionIndex
+            ]
         case .getSearch(let semester, let campus, let level, let query):
             return [
                 "term" : semester.term,
@@ -128,7 +141,7 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding, .getSection:
             return .request
         }
     }
