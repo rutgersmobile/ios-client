@@ -36,6 +36,8 @@ class RUSOCCourseViewController: UITableViewController {
 
         me.options = options
         me.course = course
+        me.subjectCode = course.subject
+        me.courseCode = course.courseNumber
 
         return me
     }
@@ -304,11 +306,11 @@ class RUSOCCourseViewController: UITableViewController {
             let (section, noteDictionary) = rets
             let vc = RUSOCSectionDetailTableViewController .instantiate(
                 withStoryboard: self.storyboard!,
-                section: section,
+                subjectNumber: self.subjectCode!,
                 courseTitle: self.course!.title,
                 courseString: self.course!.string,
                 courseNumber: self.course!.courseNumber,
-                sectionIndex: section.number,
+                sectionNumber: Int(section.number) ?? 0,
                 options: self.options,
                 notes: noteDictionary
             )

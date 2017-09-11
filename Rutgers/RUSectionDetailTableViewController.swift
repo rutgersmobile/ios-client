@@ -37,22 +37,25 @@ class RUSOCSectionDetailCell: UITableViewCell {
 }
 
 class RUSOCSectionDetailTableViewController: UITableViewController {
-    var section: Section!
+    //var section: Section!
     var courseTitle: String!
     var courseString: String!
     var courseNumber: Int!
-    var sectionIndex: String!
+    var subjectNumber: Int!
+    var sectionNumber: Int!
+    //var section: Section!
     var options: SOCOptions!
     let disposeBag = DisposeBag()
     var noteDictionary: [String: [String]]!
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
-        section: Section,
+        //section: Section,
+        subjectNumber: Int,
         courseTitle: String,
         courseString: String,
         courseNumber: Int,
-        sectionIndex: String,
+        sectionNumber: Int,
         options: SOCOptions,
         notes: [String : [String]]
         ) -> RUSOCSectionDetailTableViewController {
@@ -60,13 +63,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             withIdentifier: "RUSOCSectionDetailViewController"
             ) as! RUSOCSectionDetailTableViewController
         
+        me.subjectNumber = subjectNumber
         me.courseTitle = courseTitle
         me.courseString = courseString
         me.courseNumber = courseNumber
-        me.sectionIndex = sectionIndex
+        me.sectionNumber = sectionNumber
         me.options = options
         me.noteDictionary = notes
-        me.section = section
+//        me.section = section
         
         return me
     }
@@ -81,20 +85,36 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             "\(courseNumber)",
             courseTitle,
             courseString,
-            sectionIndex
+            "\(sectionNumber!)"
         ])
+    }
+    
+    func getSection() -> Observable<[Section]> {
+        return RutgersAPI
+            .sharedInstance
+            .getSection(semester: options.semester,
+                        campus: options.campus,
+                        level: options.level,
+                        subjectNumber: subjectNumber!,
+                        courseNumber: courseNumber,
+                        sectionNumber: sectionNumber!)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title =  self.courseString + ":" + self.section.number + self.courseTitle
+        self.navigationItem.title =
+            self.courseString + ":" +
+            String(format: "%02d", self.sectionNumber!) +
+            " " + self.courseTitle
 
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
+        
+        setupShareButton()
         
         dataSource.configureCell = { (
             ds: TableViewSectionedDataSource<MultiSection>,
@@ -188,8 +208,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 }
                 cell.campusAbbrev.textAlignment = .center
                 
-              
-                
                 cell.timesLabel?.text = item.timeFormatted() ?? ""
 
                 if let _ = item.buildingCode {
@@ -232,6 +250,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             ds.sectionModels[idxPath].title
         }
         
+        let sectionO = getSection()
+        
+        sectionO
+            .subscribe(onNext: {section in
+            print(
+                "***********************SECTION***********************\n\(section)"
+                )}).addDisposableTo(self.disposeBag)
+        
         //A bunch of ternary operators ahead
         let subjectNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["subjectNotes"]?.flatMap {
@@ -270,46 +296,45 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             preReqSectionItems.isEmpty ? [] :
             [.PreReqSection(items: preReqSectionItems)]
     
-        let meetingSection: Observable<[MultiSection]> = {[weak self] in
-                    return SOCHelperFunctions.getBuildings(meetingTimes:
-                        self!.section.meetingTimes)
-                        .map { (meetingTime, building) in
-                        .meetingTimesItem(item: meetingTime, building: building)
-                }
-                .toArray()
-                .map {
-                    [.MeetingTimesSection( title: "Meeting Times", items: $0)]
-            }
-        } ()
-        
+        /*
         let sectionItem: [SOCSectionDetailItem] =
             [.sectionItem(section: self.section)]
         
         let detailSectionItems: [SOCSectionDetailItem] =
             self.section.instructors.isEmpty ? sectionItem :
-            sectionItem +
-            self.section.instructors.map {
-                .instructorItem(item: $0)
-            }
-
+                sectionItem +
+                self.section.instructors.map {
+                    .instructorItem(item: $0)
+        }
+ 
+        
         let instructorSection: [MultiSection] =
-             [.InstructorSection(
+            [.InstructorSection(
                 title: "Details",
                 items: detailSectionItems
-            )]
+                )]
+        */
         
         let sectionArray: [MultiSection] =
             subjectSection +
-            courseSection +
-            preReqSection +
-            coreCodesSection +
-            instructorSection
+                courseSection +
+                preReqSection +
+                coreCodesSection
+//                + instructorSection
         
-        meetingSection.map { meetingSection in
-            sectionArray + meetingSection
-        }.asDriver(onErrorJustReturn: [])
-        .drive(self.tableView!.rx.items(dataSource: dataSource))
-        .addDisposableTo(self.disposeBag)
+        sectionO.flatMap {realSections -> Observable<[MultiSection]> in
+            return SOCHelperFunctions
+                .getBuildings(meetingTimes: realSections[0].meetingTimes)
+                .map {(meetingTime, building) in
+                    .meetingTimesItem(item: meetingTime, building: building)
+                }
+                .toArray()
+                .map {
+                    [.MeetingTimesSection(title: "Meeting Times", items: $0)]
+                }.map {sectionArray + $0}
+            }.asDriver(onErrorJustReturn: [])
+            .drive(self.tableView!.rx.items(dataSource: dataSource))
+            .addDisposableTo(self.disposeBag)
     } //End of ViewDidLoad
 
     override func tableView(
@@ -334,6 +359,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             } ?? UITableViewAutomaticDimension
     }
 } //End of class
+
+
+
 
 private enum MultiSection {
     case NoteSection(title: String, items: [SOCSectionDetailItem])
