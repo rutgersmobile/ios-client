@@ -320,9 +320,25 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 courseSection +
                 preReqSection +
                 coreCodesSection
-//                + instructorSection
+
         
         sectionO.flatMap {realSections -> Observable<[MultiSection]> in
+            let sectionItem: [SOCSectionDetailItem] =
+                [.sectionItem(section: realSections[0])]
+            
+            let detailSectionItems: [SOCSectionDetailItem] =
+                realSections[0].instructors.isEmpty ? sectionItem :
+                    sectionItem +
+                    realSections[0].instructors.map {
+                        .instructorItem(item: $0)
+            }
+            
+            let instructorSection: [MultiSection] =
+                [.InstructorSection(
+                    title: "Details",
+                    items: detailSectionItems
+                    )]
+            
             return SOCHelperFunctions
                 .getBuildings(meetingTimes: realSections[0].meetingTimes)
                 .map {(meetingTime, building) in
@@ -331,7 +347,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 .toArray()
                 .map {
                     [.MeetingTimesSection(title: "Meeting Times", items: $0)]
-                }.map {sectionArray + $0}
+                }.map {sectionArray + instructorSection + $0}
             }.asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
