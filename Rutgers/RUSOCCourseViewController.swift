@@ -293,7 +293,9 @@ class RUSOCCourseViewController: UITableViewController {
                         .map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
 
                 noteDictionary["preReqs"] = preReqItems
-                noteDictionary["subjectNotes"] = [realCourse.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)]
+                noteDictionary["subjectNotes"] =
+                    [realCourse.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines),
+                     (realCourse.unitNotes?.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ""]
                 noteDictionary["courseNotes"] = [realCourse.notes.trimmingCharacters(in: .whitespacesAndNewlines)]
                 noteDictionary["coreCodes"] = realCourse.coreCodes.map {
                     "\($0.coreCode) \($0.coreCodeDescription)"
@@ -332,7 +334,12 @@ class RUSOCCourseViewController: UITableViewController {
     }
 
     func makeSectionArray(course: Course) -> [CourseSection] {
-        let subjectNotes = [course.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)]
+        var subjectNotes = [course.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)]
+        
+        if let unitNotes = course.unitNotes {
+            let appendVal = unitNotes.trimmingCharacters(in: .whitespacesAndNewlines)
+            appendVal != "" ? subjectNotes.append(appendVal) : print("Nothing to add")
+        }
 
         let subjectNotesSection =
             subjectNotes.isEmpty || subjectNotes.get(0) == "" ? [] : [

@@ -262,6 +262,7 @@ struct Course {
     let courseDescription: String?
     let preReqNotes: String?
     let synopsisUrl: String?
+    let unitNotes: String?
     let credits: Float?
     let creditsObject : CreditsObject
     let sectionCheck: SectionCheck
@@ -394,6 +395,7 @@ extension Course: Unboxable {
         self.string = try unboxer.unbox(key: "string")
         self.courseNumber = try unboxer.unbox(key: "number")
         self.courseDescription = try? unboxer.unbox(key: "courseDescription")
+        self.unitNotes = try? unboxer.unbox(key: "unitNotes")
         self.preReqNotes = try? unboxer.unbox(key: "preReqNotes")
         self.synopsisUrl = try? unboxer.unbox(key: "synopsisUrl")
         self.sectionCheck = try unboxer.unbox(keyPath: "sections")
