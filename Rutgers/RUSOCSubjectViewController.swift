@@ -80,7 +80,7 @@ class RUSOCSubjectViewController : UITableViewController {
                     withIdentifier: self.cellId,
                     for: ip
                 ) as! RUSOCCourseCell
-                cell.courseLabel.text = model.expandedTitle == "" ? model.title : model.expandedTitle //make extension for this
+                cell.courseLabel.text = model.expandedTitle != nil && model.expandedTitle != "" ? model.expandedTitle : model.title //make extension for this
                 let credits = model.credits.map {$0} ?? 0.0
                 cell.creditsLabel.text = credits == 0.0 ? "BA" : "\(credits)"
                 cell.codeLabel.text = model.string
@@ -120,8 +120,8 @@ class RUSOCSubjectViewController : UITableViewController {
         ).map { courses in
             
             let subjectNotes = Array(Set(courses.map {
-                $0.subjectNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-            })).filter { !$0.isEmpty && $0 != ""}
+            $0.subjectNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            })).filter {!$0.isEmpty}
             
             let unitNotes = Array(Set(courses.map {
                 $0.unitNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""

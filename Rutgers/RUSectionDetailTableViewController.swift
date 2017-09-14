@@ -37,21 +37,20 @@ class RUSOCSectionDetailCell: UITableViewCell {
 }
 
 class RUSOCSectionDetailTableViewController: UITableViewController {
-    //var section: Section!
     var courseTitle: String!
     var courseString: String!
     var courseNumber: Int!
+    var section: Section!
     var subjectNumber: Int!
     var sectionNumber: Int!
-    //var section: Section!
     var options: SOCOptions!
     let disposeBag = DisposeBag()
     var noteDictionary: [String: [String]]!
     
     static func instantiate(
         withStoryboard storyboard: UIStoryboard,
-        //section: Section,
         subjectNumber: Int,
+        section: Section,
         courseTitle: String,
         courseString: String,
         courseNumber: Int,
@@ -70,7 +69,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         me.sectionNumber = sectionNumber
         me.options = options
         me.noteDictionary = notes
-//        me.section = section
+        me.section = section
         
         return me
     }
@@ -114,7 +113,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
         
-        setupShareButton()
+       // setupShareButton()
         
         dataSource.configureCell = { (
             ds: TableViewSectionedDataSource<MultiSection>,
@@ -250,6 +249,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             ds.sectionModels[idxPath].title
         }
         
+        
+        /*
         let sectionO = getSection()
         
         sectionO
@@ -257,7 +258,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             print(
                 "***********************SECTION***********************\n\(section)"
                 )}).addDisposableTo(self.disposeBag)
-        
+        */
+ 
         //A bunch of ternary operators ahead
         let subjectNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["subjectNotes"]?.flatMap {
@@ -322,14 +324,14 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 coreCodesSection
 
         
-        sectionO.flatMap {realSections -> Observable<[MultiSection]> in
+        //sectionO.flatMap {realSections -> Observable<[MultiSection]> in
             let sectionItem: [SOCSectionDetailItem] =
-                [.sectionItem(section: realSections[0])]
+                [.sectionItem(section: self.section)]
             
             let detailSectionItems: [SOCSectionDetailItem] =
-                realSections[0].instructors.isEmpty ? sectionItem :
+                self.section.instructors.isEmpty ? sectionItem :
                     sectionItem +
-                    realSections[0].instructors.map {
+                    self.section.instructors.map {
                         .instructorItem(item: $0)
             }
             
@@ -340,7 +342,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     )]
             
             return SOCHelperFunctions
-                .getBuildings(meetingTimes: realSections[0].meetingTimes)
+                .getBuildings(meetingTimes: self.section.meetingTimes)
                 .map {(meetingTime, building) in
                     .meetingTimesItem(item: meetingTime, building: building)
                 }
@@ -348,7 +350,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 .map {
                     [.MeetingTimesSection(title: "Meeting Times", items: $0)]
                 }.map {sectionArray + instructorSection + $0}
-            }.asDriver(onErrorJustReturn: [])
+            .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
     } //End of ViewDidLoad

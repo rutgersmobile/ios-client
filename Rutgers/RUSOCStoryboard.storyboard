@@ -231,13 +231,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credits: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z8X-5F-fKY">
-                                            <rect key="frame" x="147" y="50.5" width="54" height="16"/>
+                                            <rect key="frame" x="147" y="50" width="54" height="16"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Msw-K3-PD4">
-                                            <rect key="frame" x="203.5" y="50.5" width="33" height="16"/>
+                                            <rect key="frame" x="203.5" y="50" width="33" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -278,14 +278,14 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d23-Cj-cWw">
-                                            <rect key="frame" x="94" y="50" width="33" height="16"/>
+                                            <rect key="frame" x="94" y="49.5" width="33" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ng8-vY-HeA">
-                                            <rect key="frame" x="94" y="31" width="171" height="16"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                            <rect key="frame" x="94" y="32" width="240" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -302,7 +302,7 @@
                                         <constraint firstItem="Msw-K3-PD4" firstAttribute="leading" secondItem="z8X-5F-fKY" secondAttribute="trailing" constant="2.5" id="cUG-ng-K1J"/>
                                         <constraint firstItem="d23-Cj-cWw" firstAttribute="leading" secondItem="AS2-di-Msj" secondAttribute="trailing" constant="8" id="hkX-Hh-lcZ"/>
                                         <constraint firstItem="AS2-di-Msj" firstAttribute="height" secondItem="bgR-W8-Owa" secondAttribute="height" id="iNa-BL-K2D"/>
-                                        <constraint firstItem="Ng8-vY-HeA" firstAttribute="width" secondItem="bgR-W8-Owa" secondAttribute="width" multiplier="0.5" id="lI5-MY-q5o"/>
+                                        <constraint firstItem="Ng8-vY-HeA" firstAttribute="width" secondItem="bgR-W8-Owa" secondAttribute="width" multiplier="0.7" id="lI5-MY-q5o"/>
                                         <constraint firstItem="Ng8-vY-HeA" firstAttribute="leading" secondItem="AS2-di-Msj" secondAttribute="trailing" constant="8" id="yN6-GM-ZNL"/>
                                     </constraints>
                                 </tableViewCellContentView>

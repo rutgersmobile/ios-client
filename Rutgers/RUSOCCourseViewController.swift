@@ -67,9 +67,9 @@ class RUSOCCourseViewController: UITableViewController {
                 "\(options.semester.year)",
                 "\(options.level)",
                 "\(options.campus)",
-                "\(realCourse.credits!)",
-                "\(realCourse.subject)",
-                "\(realCourse.courseNumber)"
+                "\(realCourse.credits ?? 0.0)",
+                "\(realCourse.subject!)",
+                "\(realCourse.courseNumber!)"
             ])
         }
     }
@@ -89,7 +89,7 @@ class RUSOCCourseViewController: UITableViewController {
         let room = time.roomNumber ?? ""
         let returnString = building + " Rm. " + room
 
-        return returnString == " " ? "TBD" : returnString
+        return returnString == " " || returnString == " Rm. " ? "TBD" : returnString
     }
 
     func formatCampus(time: MeetingTime) -> String {
@@ -200,9 +200,7 @@ class RUSOCCourseViewController: UITableViewController {
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
         if let realCourse = self.course {
-            self.navigationItem.title = realCourse.expandedTitle == ""
-                ? realCourse.title
-                : realCourse.expandedTitle
+            self.navigationItem.title = realCourse.expandedTitle != nil && realCourse.expandedTitle != "" ? realCourse.expandedTitle : realCourse.title
         }
 
         let dataSource = RxCourseDataSource()
@@ -309,9 +307,10 @@ class RUSOCCourseViewController: UITableViewController {
             let vc = RUSOCSectionDetailTableViewController .instantiate(
                 withStoryboard: self.storyboard!,
                 subjectNumber: self.subjectCode!,
-                courseTitle: self.course!.title,
-                courseString: self.course!.string,
-                courseNumber: self.course!.courseNumber,
+                section: section,
+                courseTitle: self.course!.title!,
+                courseString: self.course!.string!,
+                courseNumber: self.course!.courseNumber!,
                 sectionNumber: Int(section.number) ?? 0,
                 options: self.options,
                 notes: noteDictionary
@@ -366,8 +365,10 @@ class RUSOCCourseViewController: UITableViewController {
             [CourseSection(
                 header: "Core Codes",
                 items: coreCodes.map {.notes($0)})]
-
+        
+       
         let preReqSection =
+            self.options.level.title == "u" ?
             (course.preReqNotes?.isEmpty)! ? [] : [
                 CourseSection(
                     header: "PreReqs",
@@ -378,9 +379,12 @@ class RUSOCCourseViewController: UITableViewController {
                     .filter { !$0.isEmpty }
                     .map { .prereq($0) }
                 )
-            ]
+        ] : []
 
-        return subjectNotesSection + courseNotesSection + coreCodesSection + preReqSection
+        let returnSection = self.options.level.description == "U" ? subjectNotesSection + courseNotesSection + coreCodesSection + preReqSection
+        : subjectNotesSection + courseNotesSection
+        
+        return returnSection
     }
 
     override func tableView(
