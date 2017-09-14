@@ -82,7 +82,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             "\(options.semester.year)",
             "\(options.level)",
             "\(options.campus)",
-            "\(courseNumber)",
+            "\(courseNumber!)",
             courseTitle,
             courseString,
             "\(sectionNumber!)"

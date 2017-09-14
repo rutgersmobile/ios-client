@@ -255,8 +255,8 @@ struct Course {
     let title: String
     let subject: Int
     let expandedTitle: String
-    let notes: String
-    let subjectNotes: String
+    let notes: String?
+    let subjectNotes: String?
     let string: String
     let courseNumber: Int
     let courseDescription: String?
@@ -390,8 +390,8 @@ extension Course: Unboxable {
         self.title = try unboxer.unbox(key: "title")
         self.subject = try unboxer.unbox(key: "subject")
         self.expandedTitle = try unboxer.unbox(key: "expandedTitle")
-        self.notes = try unboxer.unbox(key: "notes")
-        self.subjectNotes = try unboxer.unbox(key: "subjectNotes")
+        self.notes = try? unboxer.unbox(key: "notes")
+        self.subjectNotes = try? unboxer.unbox(key: "subjectNotes")
         self.string = try unboxer.unbox(key: "string")
         self.courseNumber = try unboxer.unbox(key: "number")
         self.courseDescription = try? unboxer.unbox(key: "courseDescription")

@@ -120,8 +120,8 @@ class RUSOCSubjectViewController : UITableViewController {
         ).map { courses in
             
             let subjectNotes = Array(Set(courses.map {
-                $0.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)
-            })).filter { !$0.isEmpty }
+                $0.subjectNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            })).filter { !$0.isEmpty && $0 != ""}
             
             let unitNotes = Array(Set(courses.map {
                 $0.unitNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""

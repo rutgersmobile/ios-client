@@ -67,7 +67,7 @@ class RUSOCCourseViewController: UITableViewController {
                 "\(options.semester.year)",
                 "\(options.level)",
                 "\(options.campus)",
-                "\(realCourse.credits)",
+                "\(realCourse.credits!)",
                 "\(realCourse.subject)",
                 "\(realCourse.courseNumber)"
             ])
@@ -87,7 +87,7 @@ class RUSOCCourseViewController: UITableViewController {
 
         let building = time.buildingCode ?? ""
         let room = time.roomNumber ?? ""
-        let returnString = building + " " + room
+        let returnString = building + " Rm. " + room
 
         return returnString == " " ? "TBD" : returnString
     }
@@ -118,7 +118,7 @@ class RUSOCCourseViewController: UITableViewController {
         buildings: [Observable<Building>]
     ) -> RUSOCSectionCell {
 
-        cell.sectionNumber.text = section.number
+        cell.sectionNumber.text = "Section " + "\(section.number)"
         cell.sectionIndex.text = String(format: "%05d",
                                         Int(section.sectionIndex)!)
         
@@ -294,9 +294,9 @@ class RUSOCCourseViewController: UITableViewController {
 
                 noteDictionary["preReqs"] = preReqItems
                 noteDictionary["subjectNotes"] =
-                    [realCourse.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines),
+                    [realCourse.subjectNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "",
                      (realCourse.unitNotes?.trimmingCharacters(in: .whitespacesAndNewlines)) ?? ""]
-                noteDictionary["courseNotes"] = [realCourse.notes.trimmingCharacters(in: .whitespacesAndNewlines)]
+                noteDictionary["courseNotes"] = [realCourse.notes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
                 noteDictionary["coreCodes"] = realCourse.coreCodes.map {
                     "\($0.coreCode) \($0.coreCodeDescription)"
                 }
@@ -334,7 +334,7 @@ class RUSOCCourseViewController: UITableViewController {
     }
 
     func makeSectionArray(course: Course) -> [CourseSection] {
-        var subjectNotes = [course.subjectNotes.trimmingCharacters(in: .whitespacesAndNewlines)]
+        var subjectNotes = [course.subjectNotes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
         
         if let unitNotes = course.unitNotes {
             let appendVal = unitNotes.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -348,7 +348,7 @@ class RUSOCCourseViewController: UITableViewController {
                 items: subjectNotes.map { .notes($0) }
             )]
 
-        let courseNotes = [course.notes.trimmingCharacters(in: .whitespacesAndNewlines)]
+        let courseNotes = [course.notes?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
 
         let courseNotesSection =
             courseNotes.isEmpty || courseNotes.get(0) == "" ? [] : [
