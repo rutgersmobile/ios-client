@@ -310,9 +310,10 @@ struct Section {
     let sectionNotes: String?
     let sessionDates: String?
     let sessionDatePrintIndicator: String?
+    let commentsText: String?
     let campusCode: String
     let instructors: [Instructor]
-    let meetingTimes: [MeetingTime]
+    var meetingTimes: [MeetingTime]
 }
 
 struct Instructor {
@@ -329,6 +330,30 @@ struct MeetingTime {
     let campusAbbrev: String?
     let buildingCode: String?
     let roomNumber: String?
+}
+
+extension MeetingTime {
+
+    func asInt() -> Int {
+        if let meetingDay = self.meetingDay {
+            switch meetingDay {
+            case "M":
+                return 0
+            case "T":
+                return 1
+            case "W":
+                return 2
+            case "TH":
+                return 3
+            case "F":
+                return 4
+            default:
+                return 5
+            }
+        } else {
+            return 0
+        }
+    }
 }
 
 struct Init {
@@ -456,6 +481,7 @@ extension Section: Unboxable {
         self.campusCode = try unboxer.unbox(key: "campusCode")
         self.instructors = try unboxer.unbox(key: "instructors")
         self.meetingTimes = try unboxer.unbox(key: "meetingTimes")
+        self.commentsText = try? unboxer.unbox(key: "commentsText")
     }
 }
 
