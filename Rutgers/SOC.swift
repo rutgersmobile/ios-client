@@ -128,13 +128,6 @@ extension Level {
     static let allValues: [Level] = [.u, .g]
 }
 
-/*
-"code": "HLL",
-"campus": "2",
-"name": "HILL CENTER",
-"id": "3752"
-*/
-
 struct Building {
     let code: String
     let campus: String
