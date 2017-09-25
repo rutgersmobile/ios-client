@@ -148,16 +148,17 @@ class RUSOCSubjectViewController : UITableViewController {
         .addDisposableTo(disposeBag)
 
         self.tableView.rx.modelSelected(SOCSubjectItem.self)
-            .subscribe(onNext: { item in
+            .subscribe(onNext: {[weak self] item in
                 switch (item) {
                 case .course(let course):
+                   
                     let vc = RUSOCCourseViewController.instantiate(
-                        withStoryboard: self.storyboard!,
-                        options: self.options,
+                        withStoryboard: self!.storyboard!,
+                        options: self!.options,
                         course: course
                     )
-
-                    self.navigationController?
+                    
+                    self!.navigationController?
                         .pushViewController(vc, animated: true)
                 default: break
                 }

@@ -107,7 +107,7 @@ class RUSOCViewController
     private func skinTableViewDataSource(
         dataSource: RxSOCViewControllerDataSource
     ) {
-        dataSource.configureCell = { (
+        dataSource.configureCell = {[unowned self] (
             dataSource: SOCViewControllerDataSource,
             tableView: UITableView,
             idxPath: IndexPath,
@@ -273,7 +273,7 @@ class RUSOCViewController
         
         let getOptions = RutgersAPI.sharedInstance
             .getSOCInit()
-            .flatMapLatest { initObj -> Observable<SOCOptions> in
+            .flatMapLatest { [unowned self] initObj -> Observable<SOCOptions> in
                 let currentSemester = initObj.semesters[0]
                 
                 let socOptionsSelected =
@@ -298,7 +298,7 @@ class RUSOCViewController
             }.shareReplay(1)
         
             //THIS IS INCORRECT - BUT WORKS FOR NOW
-            getOptions.subscribe(onNext: {
+            getOptions.subscribe(onNext: {[unowned self] in
                 self.navigationItem.title = "\($0.semester) \($0.level.title) \($0.campus)"
             }).addDisposableTo(self.disposeBag)
         
@@ -360,7 +360,7 @@ class RUSOCViewController
             .addDisposableTo(self.disposeBag)
         
         getOptions
-            .flatMapLatest { options in
+            .flatMapLatest {[unowned self] options in
                 self.tableView.rx
                     .modelSelected(MultiSection.Item.self)
                     .map { item -> UIViewController in

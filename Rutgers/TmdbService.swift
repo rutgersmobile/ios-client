@@ -17,7 +17,6 @@ enum TmdbService {
 
 extension TmdbService : TargetType {
     
-    
     var baseURL: URL {
         return URL(string: "https://api.themoviedb.org/3/movie")!
     }

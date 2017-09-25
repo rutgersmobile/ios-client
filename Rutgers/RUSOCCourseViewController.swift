@@ -16,33 +16,6 @@ enum MeetingCodes {
     case byArrangement
 }
 
-/*
-extension MeetingCodes {
-    init(meetingCode: String) {
-        switch meetingCode {
-        case "91":
-        self = .hybrid
-        case "90"
-        self = .online
-        case "19"
-        self = .byArrangement
-        }
-    }
-    
-    func meetingString() -> String {
-        switch self {
-        case .hybrid:
-            return "Hybrid Course"
-        case .online:
-            return "Online"
-        case .byArrangement:
-            return "By Arrangement"
-        }
-    }
-
-}
-*/
-
 class RUSOCCourseViewController: UITableViewController {
     var course: Course?
     var options: SOCOptions!
@@ -325,7 +298,7 @@ class RUSOCCourseViewController: UITableViewController {
         
         setupShareButton()
 
-        dataSource.configureCell = { (
+        dataSource.configureCell = { [unowned self] (
             ds: CourseDataSource,
             tv: UITableView,
             ip: IndexPath,
@@ -392,7 +365,7 @@ class RUSOCCourseViewController: UITableViewController {
         }
 
         let courseO = getCourse().shareReplay(1)
-        courseO.flatMap { realCourse -> Observable<[CourseSection]> in
+        courseO.flatMap {[unowned self] realCourse -> Observable<[CourseSection]> in
             let sectionArray = self.makeSectionArray(course: realCourse)
             
             if self.course == nil {
@@ -420,7 +393,7 @@ class RUSOCCourseViewController: UITableViewController {
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
 
-        courseO.flatMap { realCourse -> Observable<(Section, [String: [String]])> in
+        courseO.flatMap {[unowned self] realCourse -> Observable<(Section, [String: [String]])> in
             self.tableView.rx.modelSelected(
                 CourseSectionItem.self).filterMap { model -> Section? in
                 switch model {
@@ -454,7 +427,7 @@ class RUSOCCourseViewController: UITableViewController {
                 return (section, noteDictionary)
             }
         }
-        .subscribe(onNext: { rets in
+        .subscribe(onNext: {[unowned self] rets in
             let (section, noteDictionary) = rets
             let vc = RUSOCSectionDetailTableViewController.instantiate(
                 withStoryboard: self.storyboard!,

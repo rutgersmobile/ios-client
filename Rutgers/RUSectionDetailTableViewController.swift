@@ -347,7 +347,17 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         _ tableView: UITableView,
         estimatedHeightForRowAt indexPath: IndexPath
         ) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return (try? self.tableView.rx.model(at: indexPath))
+            .map { (model: SOCSectionDetailItem) -> CGFloat in
+                switch model {
+                case .noteSectionItem(notes: _):
+                    return UITableViewAutomaticDimension
+                case .meetingTimesItem(_):
+                    return 180
+                default:
+                    return 44
+                }
+            } ?? UITableViewAutomaticDimension
     }
     
     override func tableView(
@@ -357,10 +367,12 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         return (try? self.tableView.rx.model(at: indexPath))
             .map { (model: SOCSectionDetailItem) -> CGFloat in
                 switch model {
+                case .noteSectionItem(notes: _):
+                    return UITableViewAutomaticDimension
                 case .meetingTimesItem(_):
-                    return UITableViewAutomaticDimension
+                    return 180
                 default:
-                    return UITableViewAutomaticDimension
+                    return 44
                 }
             } ?? UITableViewAutomaticDimension
     }
