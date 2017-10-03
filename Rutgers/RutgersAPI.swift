@@ -52,89 +52,54 @@ class RutgersAPI {
                .mapUnboxObject(type: Building.self)
     }
     
-    public func getSubjects(semester: Semester,
-                            campus: Campus,
-                            level: Level)
+    public func getSubjects(options: SOCOptions)
         -> Observable<[Subject]> {
         return self.provider
                    .request(
-                        .getSubjects(semester: semester,
-                                     campus: campus,
-                                     level: level)
+                    .getSubjects(options: options)
                     )
                    .mapUnboxArray(type: Subject.self)
     }
     
     public func getCourse(
-        semester: Semester,
-        campus: Campus,
-        level: Level,
-        subject: Int,
-        course: Int
+        options: SOCOptions,
+        subjectCode: Int,
+        courseNumber: Int
     ) -> Observable<Course> {
         return self.provider.request(.getCourse(
-            semester: semester,
-            campus: campus,
-            level: level,
-            subject: subject,
-            course: course)
+            options: options,
+            subjectCode: subjectCode,
+            courseNumber: courseNumber)
         ).mapUnboxObject(type: Course.self)
     }
     
-    public func getCourses(semester: Semester,
-                           campus: Campus,
-                           level: Level,
-                           subject: Subject)-> Observable<[Course]> {
+    public func getCourses(options: SOCOptions,
+                           subjectCode: Int)-> Observable<[Course]> {
         return self.provider
                    .request(
-                        .getCourses(semester: semester,
-                                    campus: campus,
-                                    level: level,
-                                    subject: subject)
+                    .getCourses(options: options,
+                                subjectCode: subjectCode)
                         )
                    .mapUnboxArray(type: Course.self)
     }
     
-    public func getSections(semester: Semester,
-                            campus: Campus,
-                            level: Level,
-                            course: Course) -> Observable<[Section]> {
+    public func getSections(options: SOCOptions,
+                            subjectNumber: Int,
+                            courseNumber: Int) -> Observable<[Section]> {
         return self.provider
             .request(
-                .getSections(semester: semester,
-                             campus: campus,
-                             level: level,
-                             course: course)
+                .getSections(options: options,
+                subjectNumber: subjectNumber,
+                courseNumber: courseNumber)
                 )
             .mapUnboxArray(type: Section.self)
     }
     
-    public func getSection(semester: Semester,
-                           campus: Campus,
-                           level: Level,
-                           subjectNumber: Int,
-                           courseNumber: Int,
-                           sectionNumber: Int) -> Observable<[Section]> {
-        return self.provider
-                .request(
-                .getSection(semester: semester,
-                            campus: campus,
-                            level: level,
-                            subjectNumber: subjectNumber,
-                            courseNumber: courseNumber,
-                            sectionNumber: sectionNumber)
-                ).mapUnboxArray(type: Section.self)
-    }
-    
-    public func getSearch(semester: Semester,
-                          campus: Campus,
-                          level: Level,
+    public func getSearch(options: SOCOptions,
                           query: String) -> Observable<SearchResults> {
         return self.provider
             .request(
-                .getSearch(semester: semester,
-                           campus: campus,
-                           level: level,
+                .getSearch(options: options,
                            query: query)
                 )
             .mapUnboxObject(type: SearchResults.self)

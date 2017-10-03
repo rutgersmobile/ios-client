@@ -81,23 +81,21 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             "\(options.semester.year)",
             "\(options.level)",
             "\(options.campus)",
+            "\(subjectNumber)",
             "\(courseNumber!)",
-            courseTitle,
-            courseString,
             "\(sectionNumber!)"
             ])
     }
     
+    /*
     func getSection() -> Observable<[Section]> {
         return RutgersAPI
             .sharedInstance
-            .getSection(semester: options.semester,
-                        campus: options.campus,
-                        level: options.level,
+            .getSection(options: options,
                         subjectNumber: subjectNumber!,
                         courseNumber: courseNumber,
                         sectionNumber: sectionNumber!)
-    }
+    }*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -221,23 +219,27 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     cell.roomNumber.text = ""
                 }
                 
-                let url =
-                "http://rumobile-gis-prod-asb.ei.rutgers.edu/buildings/"
+                let url = RUNetworkManager.baseURL()
                 
+                
+             
+                DispatchQueue.global(qos: .background).async {
                 let image =
                     item.buildingCode
                         .flatMap{
-                            URL(string: url + "\($0).jpeg")
+                            let urlString = String.init(describing: url) + "\($0).jpeg"
+                            return URL(string: urlString)
                         }
                         .flatMap{try? Data(contentsOf: $0)}
                         .flatMap{UIImage(data: $0)}
                 
-                let defaultImage = UIImage(named: "image-not-found")
+                    DispatchQueue.main.async {
+                    
+                        let defaultImage = UIImage(named: "image-not-found")
                 
-                cell.locationImage.image = image ?? defaultImage
-                
-                cell.locationImage.contentMode = .scaleToFill
-                
+                        cell.locationImage.image = image ?? defaultImage
+                    }
+                }
                 cell.setupCellLayout()
                 
                 return cell
@@ -335,7 +337,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             }
             .toArray()
             .map {
-                [.MeetingTimesSection(title: "Meeting Times", items: $0)]
+                    [.MeetingTimesSection(title: "Meeting Times", items: $0)]
+                
             }.map {sectionArray + instructorSection + $0}
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
@@ -432,5 +435,31 @@ extension MultiSection: SectionModelType {
         case let .InstructorSection(title: title, items: _):
             self = .InstructorSection(title: title, items: items)
         }
+    }
+}
+
+extension UIImageView {
+    func downloadedFrom(url: URL, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() { () -> Void in
+                self.image = image
+            }
+            }.resume()
+    }
+    
+    func setDefault() {
+        self.image = UIImage(named: "image-not-found")
+    }
+    
+    func downloadedFrom(link: String, contentMode mode: UIViewContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloadedFrom(url: url, contentMode: mode)
     }
 }

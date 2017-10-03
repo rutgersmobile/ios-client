@@ -11,6 +11,7 @@ import RxSwift
 import RxDataSources
 
 class RUSOCCourseCell: UITableViewCell {
+    @IBOutlet weak var openClosedLabel: UILabel!
     @IBOutlet weak var courseLabel: UILabel!
     @IBOutlet weak var creditsLabel: UILabel!
     @IBOutlet weak var codeLabel: UILabel!
@@ -53,7 +54,6 @@ class RUSOCSubjectViewController : UITableViewController {
             "\(options.semester.year)",
             "\(options.level)",
             "\(options.campus.description)",
-            subject.subjectDescription,
             "\(subject.code)"
         ])
     }
@@ -66,7 +66,7 @@ class RUSOCSubjectViewController : UITableViewController {
 
         let dataSource = RxSubjectDataSource()
         
-        setupShareButton()
+        self.setupShareButton()
 
         dataSource.configureCell = { (
             ds: SubjectDataSource,
@@ -84,11 +84,16 @@ class RUSOCSubjectViewController : UITableViewController {
                 let credits = model.credits.map {$0} ?? 0.0
                 cell.creditsLabel.text = credits == 0.0 ? "BA" : "\(credits)"
                 cell.codeLabel.text = model.string
-
-                cell.openSectionsBG.backgroundColor =
-                    model.sectionCheck.open > 0
-                        ? RUSOCViewController.openColor
-                        : RUSOCViewController.closedColor
+                
+                let checkColor: UIColor = model.sectionCheck.open > 0
+                    ? RUSOCViewController.openColor
+                    : RUSOCViewController.closedColor
+                
+                cell.openClosedLabel.text = model.sectionCheck.open > 0 ? "Open" : "Closed"
+                
+                cell.openSectionsBG.backgroundColor = checkColor
+                
+                cell.backgroundColor = checkColor.withAlphaComponent(0.2)
 
                 cell.openSectionsCount.text =
                 "\(model.sectionCheck.open)/\(model.sectionCheck.total)"
@@ -113,10 +118,8 @@ class RUSOCSubjectViewController : UITableViewController {
         }
 
         RutgersAPI.sharedInstance.getCourses(
-            semester: options.semester,
-            campus: options.campus,
-            level: options.level,
-            subject: subject
+            options: options,
+            subjectCode: subject.code
         ).map { courses in
             
             let subjectNotes = Array(Set(courses.map {

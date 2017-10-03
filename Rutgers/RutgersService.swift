@@ -19,19 +19,16 @@ enum RutgersService {
     case getCinema
     case getSOCInit
     case getBuilding(buildingCode: String)
-    case getSubjects(semester: Semester, campus: Campus, level: Level)
-    case getCourse(semester: Semester, campus: Campus, level: Level, subject: Int, course: Int)
-    case getCourses(semester: Semester, campus: Campus, level: Level, subject: Subject)
-    case getSections(semester: Semester, campus: Campus, level: Level, course: Course)
-    case getSection(semester: Semester, campus: Campus, level: Level, subjectNumber: Int, courseNumber: Int, sectionNumber: Int)
-    case getSearch(semester: Semester, campus: Campus, level: Level, query: String)
+    case getSubjects(options: SOCOptions)
+    case getCourse(options: SOCOptions, subjectCode: Int, courseNumber: Int)
+    case getCourses(options: SOCOptions, subjectCode: Int)
+    case getSections(options: SOCOptions, subjectNumber: Int, courseNumber: Int)
+    case getSearch(options: SOCOptions, query: String)
 }
 
 extension RutgersService : TargetType {
     var baseURL: URL {
         return RUNetworkManager.baseURL()
-      //return URL(string: "https://doxa.rutgers.edu/mobile-mattro/3")!
-      //return URL(string: "https://doxa.rutgers.edu/mobile/3")!
     }
 
     var path: String {
@@ -58,8 +55,6 @@ extension RutgersService : TargetType {
             return "/courses.json"
         case .getSections:
             return "/sections.json"
-        case .getSection:
-            return "/sections.json"
         case .getSearch:
             return "/search.json"
         case .getBuilding:
@@ -75,55 +70,45 @@ extension RutgersService : TargetType {
         switch self {
         case .getBuilding(let code):
             return ["code" : code]
-        case .getSubjects(let semester, let campus, let level):
+        case .getSubjects(let options):
             return [
-                "term" : semester.term,
-                "year" : semester.year,
-                "level" : level.description,
-                "campus" : campus.description
+                "term" : options.semester.term,
+                "year" : options.semester.year,
+                "level" : options.level.description,
+                "campus" : options.campus.description
                 ]
-        case .getCourse(let semester, let campus, let level, let subject, let course):
+        case .getCourse(let options, let subjectCode, let courseNumber):
             return [
-                "term" : semester.term,
-                "year" : semester.year,
-                "level" : level.description,
-                "campus" : campus.description,
-                "subject": subject,
-                "course" : course
+                "term" : options.semester.term,
+                "year" : options.semester.year,
+                "level" : options.level.description,
+                "campus" : options.campus.description,
+                "subject": subjectCode,
+                "course" : courseNumber
             ]
-        case .getCourses(let semester, let campus, let level, let subject):
+        case .getCourses(let options, let subjectCode):
             return [
-                "term" : semester.term,
-                "year" : semester.year,
-                "level" : level.description,
-                "campus" : campus.description,
-                "subject" : subject.code
+                "term" : options.semester.term,
+                "year" : options.semester.year,
+                "level" : options.level.description,
+                "campus" : options.campus.description,
+                "subject" : subjectCode
             ]
-        case .getSections(let semester, let campus, let level, let course):
+        case .getSections(let options, let subjectNumber, let courseNumber):
             return [
-                "term" : semester.term,
-                "year" : semester.year,
-                "level" : level.description,
-                "campus" : campus.description,
-                "subject" : course.subject,
-                "course" : course.courseNumber
-            ]
-        case .getSection(let semester, let campus, let level, let subjectNumber, let courseNumber, let sectionNumber):
-            return [
-                "term" : semester.term,
-                "year" : semester.year,
-                "level" : level.description,
-                "campus" : campus.description,
+                "term" : options.semester.term,
+                "year" : options.semester.year,
+                "level" : options.level.description,
+                "campus" : options.campus.description,
                 "subject" : subjectNumber,
-                "course" : courseNumber,
-                "section" : sectionNumber
+                "course" : courseNumber
             ]
-        case .getSearch(let semester, let campus, let level, let query):
+        case .getSearch(let options, let query):
             return [
-                "term" : semester.term,
-                "year" : semester.year,
-                "level" : level.description,
-                "campus" : campus.description,
+                "term" : options.semester.term,
+                "year" : options.semester.year,
+                "level" : options.level.description,
+                "campus" : options.campus.description,
                 "q" : query
             ]
         default:
@@ -141,7 +126,7 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding, .getSection:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding:
             return .request
         }
     }

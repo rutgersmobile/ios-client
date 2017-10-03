@@ -20,7 +20,7 @@ class RUSOCCourseViewController: UITableViewController {
     var course: Course?
     var options: SOCOptions!
     var subjectCode: Int?
-    var courseCode: Int?
+    var courseNumber: Int?
 
     let cellId = "RUSOCSectionCellId"
     let cellExtraId = "RUSOCSectionCellExtraId"
@@ -44,7 +44,7 @@ class RUSOCCourseViewController: UITableViewController {
         me.options = options
         me.course = course
         me.subjectCode = course.subject
-        me.courseCode = course.courseNumber
+        me.courseNumber = course.courseNumber
 
         return me
     }
@@ -53,7 +53,7 @@ class RUSOCCourseViewController: UITableViewController {
         withStoryboard storyboard: UIStoryboard,
         options: SOCOptions,
         subjectCode: Int,
-        courseCode: Int
+        courseNumber: Int
     ) -> RUSOCCourseViewController {
         let me = storyboard.instantiateViewController(
             withIdentifier: "RUSOCCourseViewController"
@@ -61,7 +61,7 @@ class RUSOCCourseViewController: UITableViewController {
 
         me.options = options
         me.subjectCode = subjectCode
-        me.courseCode = courseCode
+        me.courseNumber = courseNumber
 
         return me
     }
@@ -74,7 +74,6 @@ class RUSOCCourseViewController: UITableViewController {
                 "\(options.semester.year)",
                 "\(options.level)",
                 "\(options.campus)",
-                "\(realCourse.credits ?? 0.0)",
                 "\(realCourse.subject!)",
                 "\(realCourse.courseNumber!)"
             ])
@@ -175,10 +174,15 @@ class RUSOCCourseViewController: UITableViewController {
             cell.buildingRoom3.text = ""
         }
         
-        cell.openColor.backgroundColor = section.openStatus
+        let setColor: UIColor = section.openStatus
             ? RUSOCViewController.openColor
             : RUSOCViewController.closedColor
         
+        cell.openColor.backgroundColor = setColor
+        
+        cell.backgroundColor = setColor.withAlphaComponent(0.2)
+        
+        cell.openClosedLabel.text = section.openStatus ? "Open" : "Closed"
         cell.setupCellLayout()
         
         return cell
@@ -297,23 +301,28 @@ class RUSOCCourseViewController: UITableViewController {
         let dataSource = RxCourseDataSource()
         
         setupShareButton()
-
-        dataSource.configureCell = { [unowned self] (
+        weak var weakSelf = self
+        dataSource.configureCell = { [weak self] (
             ds: CourseDataSource,
             tv: UITableView,
             ip: IndexPath,
             item: CourseSectionItem
         ) in
+        
+            guard let strongSelf = weakSelf else {
+                return UITableViewCell()
+            }
+            
             switch item {
             case .section(let section):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: self.cellId,
+                    withIdentifier: strongSelf.cellId,
                     for: ip
                 ) as! RUSOCSectionCell
                 
                 let sortedMeetingTimes = section.meetingTimes.sorted{$0.asInt() < $1.asInt()}
 
-                return self.configureSectionCell(cell: cell,
+                return strongSelf.configureSectionCell(cell: cell,
                                                  section: section,
                                                  meetingTimes:
                                                     sortedMeetingTimes,
@@ -328,11 +337,11 @@ class RUSOCCourseViewController: UITableViewController {
                                                     })
             case .sectionExtra(let section):
                 let cell = tv.dequeueReusableCell(withIdentifier:
-                    self.cellExtraId, for: ip) as! RUSOCSectionCellExtra
+                    strongSelf.cellExtraId, for: ip) as! RUSOCSectionCellExtra
                 
                 let sortedMeetingTimes = section.meetingTimes.sorted{$0.asInt() < $1.asInt()}
                 
-                return self.configureSectionCell(cell: cell,
+                return strongSelf.configureSectionCell(cell: cell,
                                                  section: section,
                                                  meetingTimes:
                                                  sortedMeetingTimes,
@@ -347,16 +356,16 @@ class RUSOCCourseViewController: UITableViewController {
                                                 })
             case .prereq(let prereq):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: self.defaultCellId,
+                    withIdentifier: strongSelf.defaultCellId,
                     for: ip
                 )
-                return self.configurePrereqCell(cell: cell, prereq: prereq)
+                return strongSelf.configurePrereqCell(cell: cell, prereq: prereq)
             case .notes(let notes):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: self.defaultCellId,
+                    withIdentifier: strongSelf.defaultCellId,
                     for: ip
                 )
-                return self.configureNotesCell(cell: cell, notes: notes)
+                return strongSelf.configureNotesCell(cell: cell, notes: notes)
             }
         }
 
@@ -366,6 +375,7 @@ class RUSOCCourseViewController: UITableViewController {
 
         let courseO = getCourse().shareReplay(1)
         courseO.flatMap {[unowned self] realCourse -> Observable<[CourseSection]> in
+            
             let sectionArray = self.makeSectionArray(course: realCourse)
             
             if self.course == nil {
@@ -373,10 +383,9 @@ class RUSOCCourseViewController: UITableViewController {
             }
             
             return RutgersAPI.sharedInstance.getSections(
-                semester: self.options.semester,
-                campus: self.options.campus,
-                level: self.options.level,
-                course: realCourse
+                options: self.options,
+                subjectNumber: realCourse.subject!,
+                courseNumber: realCourse.courseNumber!
             ).map { sections in [CourseSection(
                         header: "Sections",
                         items: sections.map {
@@ -387,13 +396,14 @@ class RUSOCCourseViewController: UITableViewController {
                                 return CourseSectionItem.sectionExtra($0)
                             }
                 }
-            )]}.map { sectionArray + $0 }
+                )]}.map { sectionArray + $0 }
         }
         .asDriver(onErrorJustReturn: [])
         .drive(self.tableView.rx.items(dataSource: dataSource))
         .addDisposableTo(disposeBag)
 
         courseO.flatMap {[unowned self] realCourse -> Observable<(Section, [String: [String]])> in
+           
             self.tableView.rx.modelSelected(
                 CourseSectionItem.self).filterMap { model -> Section? in
                 switch model {
@@ -428,6 +438,7 @@ class RUSOCCourseViewController: UITableViewController {
             }
         }
         .subscribe(onNext: {[unowned self] rets in
+         
             let (section, noteDictionary) = rets
             let vc = RUSOCSectionDetailTableViewController.instantiate(
                 withStoryboard: self.storyboard!,
@@ -449,11 +460,9 @@ class RUSOCCourseViewController: UITableViewController {
     func getCourse() -> Observable<Course> {
         return self.course.map { Observable.just($0) } ??
             RutgersAPI.sharedInstance.getCourse(
-                semester: options.semester,
-                campus: options.campus,
-                level: options.level,
-                subject: subjectCode!,
-                course: courseCode!
+                options: self.options,
+                subjectCode: subjectCode!,
+                courseNumber: courseNumber!
             )
     }
 

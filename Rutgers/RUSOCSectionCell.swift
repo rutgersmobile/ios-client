@@ -22,6 +22,7 @@ class RUSOCSectionCell: UITableViewCell {
     @IBOutlet weak var campusCode1: UILabel!
     @IBOutlet weak var campusCode2: UILabel!
     @IBOutlet weak var campusCode3: UILabel!
+    @IBOutlet weak var openClosedLabel: UILabel!
 }
 
 class RUSOCSectionCellExtra: UITableViewCell {
@@ -44,4 +45,5 @@ class RUSOCSectionCellExtra: UITableViewCell {
     @IBOutlet weak var campusCode3: UILabel!
     @IBOutlet weak var campusCode4: UILabel!
     @IBOutlet weak var campusCode5: UILabel!
+    @IBOutlet weak var openClosedLabel: UILabel!
 }

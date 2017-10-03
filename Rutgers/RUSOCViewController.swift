@@ -184,6 +184,7 @@ class RUSOCViewController
     static func viewControllers(withPathComponents pathComponents: [String]!, destinationTitle: String!) -> [Any]! {
     
         let storyboard = RUSOCViewController.getStoryBoard()
+        let disposeBag = DisposeBag()
         
         let options = pathComponents.count >= 4 ? SOCOptions(
             semester:
@@ -196,7 +197,7 @@ class RUSOCViewController
             Level.from(string: pathComponents.get(2)!)!
         ) : nil
         
-        let subject = pathComponents.count == 6 ? Subject(subjectDescription: pathComponents.get(4)!,
+        let subject = pathComponents.count == 5 ? Subject(subjectDescription: pathComponents.get(4)!,
             code: Int(pathComponents.get(5)!)!
         ) : nil
         
@@ -206,20 +207,30 @@ class RUSOCViewController
                 as! RUSOCViewController
             
             return [vc]
-        case 6:
+        case 5:
+            RutgersAPI.sharedInstance
+                .getCourses(options: options!,
+                            subjectCode: Int(pathComponents.get(5)!)!)
+                .subscribe(onNext: {courses in
+                    print(courses)
+                }).addDisposableTo(disposeBag)
+            
             let vc = RUSOCSubjectViewController
                 .instantiate(withStoryboard: storyboard,
                              subject: subject!,
                              options: options!)
             return [vc]
-        case 7:
+        case 6:
+            print("Something")
+            /*
             let vc = RUSOCCourseViewController
                 .instantiate(withStoryboard: storyboard,
                              options: options!,
                              subjectCode: Int(pathComponents.get(5)!)!,
-                             courseCode: Int(pathComponents.last!)!)
+                             courseNumber: Int(pathComponents.last!)!)
+             */
             
-            return [vc]
+            //return [vc]
         default:
             print("return detail SOC")
         }
@@ -305,9 +316,7 @@ class RUSOCViewController
         let initialLoad = getOptions.flatMapLatest { options in
             RutgersAPI.sharedInstance
                 .getSubjects(
-                    semester: options.semester,
-                    campus: options.campus,
-                    level: options.level
+                options: options
                 ).map { subjectArr -> [MultiSection] in [
                     .SubjectSection(title: "", items: subjectArr.map {
                         .SubjectItem(subject: $0)
@@ -329,9 +338,7 @@ class RUSOCViewController
 
                     return RutgersAPI.sharedInstance
                         .getSearch(
-                            semester: options.semester,
-                            campus: options.campus,
-                            level: options.level,
+                            options: options,
                             query: search
                         ).map { eventSubject in [
                             .SubjectSection(
