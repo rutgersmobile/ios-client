@@ -213,6 +213,7 @@ class RUSOCViewController
                             subjectCode: Int(pathComponents.get(5)!)!)
                 .subscribe(onNext: {courses in
                     print(courses)
+                    
                 }).addDisposableTo(disposeBag)
             
             let vc = RUSOCSubjectViewController
