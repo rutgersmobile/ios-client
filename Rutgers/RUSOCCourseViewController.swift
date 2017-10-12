@@ -300,7 +300,8 @@ class RUSOCCourseViewController: UITableViewController {
 
         let dataSource = RxCourseDataSource()
         
-        setupShareButton()
+//        setupShareButton()
+        
         weak var weakSelf = self
         dataSource.configureCell = { [weak self] (
             ds: CourseDataSource,

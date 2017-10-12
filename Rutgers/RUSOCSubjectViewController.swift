@@ -66,7 +66,7 @@ class RUSOCSubjectViewController : UITableViewController {
 
         let dataSource = RxSubjectDataSource()
         
-        self.setupShareButton()
+//        self.setupShareButton()
 
         dataSource.configureCell = { (
             ds: SubjectDataSource,

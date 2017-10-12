@@ -181,7 +181,8 @@ class RUSOCViewController
         
     }
     
-    static func viewControllers(withPathComponents pathComponents: [String]!, destinationTitle: String!) -> [Any]! {
+    static func viewControllers(withPathComponents pathComponents: [String]!,
+                                destinationTitle: String!) -> [Any]! {
     
         let storyboard = RUSOCViewController.getStoryBoard()
         let disposeBag = DisposeBag()
@@ -197,7 +198,8 @@ class RUSOCViewController
             Level.from(string: pathComponents.get(2)!)!
         ) : nil
         
-        let subject = pathComponents.count == 5 ? Subject(subjectDescription: pathComponents.get(4)!,
+        let subject = pathComponents.count == 5 ? Subject(subjectDescription:
+            pathComponents.get(4)!,
             code: Int(pathComponents.get(5)!)!
         ) : nil
         
@@ -243,7 +245,7 @@ class RUSOCViewController
         self.tableView.dataSource = nil
         self.tableView.tableFooterView = UIView()
         
-        setupShareButton()
+        //setupShareButton()
         
         self.searchController.dimsBackgroundDuringPresentation = false
         self.definesPresentationContext = true
