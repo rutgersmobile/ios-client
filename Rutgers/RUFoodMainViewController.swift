@@ -62,7 +62,7 @@ class RUFoodMainViewController
 
         let dataSource = RxDiningHallDataSource()
 
-        dataSource.configureCell = { [unowned self] (
+        dataSource.configureCell = { (
             ds: DiningHallDataSource,
             tv: UITableView,
             ip: IndexPath,

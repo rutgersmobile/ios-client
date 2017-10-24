@@ -44,7 +44,7 @@ class RUMealViewController: UITableViewController {
 
         let dataSource = RxMealDataSource()
 
-        dataSource.configureCell = { [unowned self] (
+        dataSource.configureCell = { (
             ds: MealDataSource,
             tv: UITableView,
             ip: IndexPath,
