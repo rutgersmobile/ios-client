@@ -50,6 +50,7 @@
         diskCapacity:100 * 1024 * 1024
         diskPath:nil
     ];
+    
     [NSURLCache setSharedURLCache:sharedCache];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;  // the circular spining icon ..
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];

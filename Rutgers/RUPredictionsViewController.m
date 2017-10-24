@@ -104,7 +104,6 @@
                                RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
                                if (dataSource.responseTitle == nil) {
                                    self.title = @"Bus";
-                                   
                                } else {
                                    self.title = dataSource.responseTitle;
                                }

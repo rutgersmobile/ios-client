@@ -128,6 +128,13 @@ extension Level {
     static let allValues: [Level] = [.u, .g]
 }
 
+struct Building {
+    let code: String
+    let campus: String
+    let name: String
+    let id: String
+}
+
 struct Semester {
     let year: Int
     let term: Int
@@ -145,7 +152,7 @@ extension Semester {
     /*
     var previous: Semester {
         switch self.term {
-        case .winter:
+        case 7:
             return Semester(year: self.year - 1, term: 9)
         case .spring:
             return Semester(year: self.year, term: 0)
@@ -154,8 +161,23 @@ extension Semester {
         case .fall:
             return Semester(year: self.year, term: 7)
         }
+    }*/
+    
+    var title: String {
+        switch self.term {
+        case 9:
+            return "Fall"
+        case 7:
+            return "Summer"
+        case 1:
+            return "Spring"
+        default:
+            return "Winter"
+        }
+        
     }
-
+    
+    /*
     func previousSemesters(number: Int) -> [Semester] {
         var semester = self
         var semesters: [Semester] = []
@@ -180,7 +202,7 @@ extension Semester {
 
 extension Semester: CustomStringConvertible {
     var description: String {
-        return "\(self.term) \(self.year)"
+        return "\(self.title) \(self.year)"
     }
 }
 
@@ -223,15 +245,46 @@ extension Term {
 }
  
 struct Course {
-    let title: String
-    let subject: Int
-    let courseNumber: Int
+    let title: String?
+    let subject: Int?
+    let expandedTitle: String?
+    let notes: String?
+    let subjectNotes: String?
+    let string: String?
+    let courseNumber: Int?
     let courseDescription: String?
     let preReqNotes: String?
     let synopsisUrl: String?
+    let unitNotes: String?
     let credits: Float?
+    let creditsObject : CreditsObject
     let sectionCheck: SectionCheck
     let level: Level
+    let coreCodes: [CoreCode]
+}
+
+struct CoreCode {
+    let code: String
+    let coreCode: String
+    let coreCodeDescription: String
+    let coreCodeReferenceId: String
+    let course: Int
+    let description: String
+    let effective: String
+    let id: String
+    let lastUpdated: Int
+    let offeringUnitCampus: String
+    let offeringUnitCode: String
+    let subject: Int
+    let supplement: String
+    let term: Int
+    let unit: String
+    let year: String
+}
+
+struct CreditsObject {
+    let code: String
+    let description : String
 }
 
 struct SectionCheck {
@@ -250,9 +303,10 @@ struct Section {
     let sectionNotes: String?
     let sessionDates: String?
     let sessionDatePrintIndicator: String?
+    let commentsText: String?
     let campusCode: String
     let instructors: [Instructor]
-    let meetingTimes: [MeetingTime]
+    var meetingTimes: [MeetingTime]
 }
 
 struct Instructor {
@@ -269,6 +323,30 @@ struct MeetingTime {
     let campusAbbrev: String?
     let buildingCode: String?
     let roomNumber: String?
+}
+
+extension MeetingTime {
+
+    func asInt() -> Int {
+        if let meetingDay = self.meetingDay {
+            switch meetingDay {
+            case "M":
+                return 0
+            case "T":
+                return 1
+            case "W":
+                return 2
+            case "TH":
+                return 3
+            case "F":
+                return 4
+            default:
+                return 5
+            }
+        } else {
+            return 0
+        }
+    }
 }
 
 struct Init {
@@ -297,6 +375,15 @@ enum SOCParseError: Error {
     case invalidValueFormat(message: String)
 }
 
+extension Building: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.code = try unboxer.unbox(key: "code")
+        self.campus = try unboxer.unbox(key: "campus")
+        self.name = try unboxer.unbox(key: "name")
+        self.id = try unboxer.unbox(key: "id")
+    }
+}
+
 extension SearchResults: Unboxable {
     init(unboxer: Unboxer) throws {
         self.subjects = try unboxer.unbox(key: "subjects")
@@ -318,10 +405,15 @@ extension SectionCheck: Unboxable {
 }
 extension Course: Unboxable {
     init(unboxer: Unboxer) throws {
-        self.title = try unboxer.unbox(key: "title")
-        self.subject = try unboxer.unbox(key: "subject")
-        self.courseNumber = try unboxer.unbox(key: "number")
+        self.title = try? unboxer.unbox(key: "title")
+        self.subject = try? unboxer.unbox(key: "subject")
+        self.expandedTitle = try? unboxer.unbox(key: "expandedTitle")
+        self.notes = try? unboxer.unbox(key: "notes")
+        self.subjectNotes = try? unboxer.unbox(key: "subjectNotes")
+        self.string = try? unboxer.unbox(key: "string")
+        self.courseNumber = try? unboxer.unbox(key: "number")
         self.courseDescription = try? unboxer.unbox(key: "courseDescription")
+        self.unitNotes = try? unboxer.unbox(key: "unitNotes")
         self.preReqNotes = try? unboxer.unbox(key: "preReqNotes")
         self.synopsisUrl = try? unboxer.unbox(key: "synopsisUrl")
         self.sectionCheck = try unboxer.unbox(keyPath: "sections")
@@ -332,7 +424,37 @@ extension Course: Unboxable {
                 message: "Couldn't parse level: \(levelString)"
             )
         }
+        self.creditsObject = try unboxer.unbox(key: "creditsObject")
         self.level = level
+        self.coreCodes = try unboxer.unbox(key: "coreCodes")
+    }
+}
+
+extension CreditsObject: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.code = try unboxer.unbox(key: "code")
+        self.description = try unboxer.unbox(key: "description")
+    }
+}
+
+extension CoreCode: Unboxable {
+    init(unboxer: Unboxer) throws {
+        self.code = try unboxer.unbox(key: "code")
+        self.coreCode = try unboxer.unbox(key: "coreCode")
+        self.coreCodeDescription = try unboxer.unbox(key: "coreCodeDescription")
+        self.coreCodeReferenceId = try unboxer.unbox(key: "coreCodeReferenceId")
+        self.course = try unboxer.unbox(key: "course")
+        self.description = try unboxer.unbox(key: "description")
+        self.effective = try unboxer.unbox(key: "effective")
+        self.id = try unboxer.unbox(key: "id")
+        self.lastUpdated = try unboxer.unbox(key: "lastUpdated")
+        self.offeringUnitCampus = try unboxer.unbox(key: "offeringUnitCampus")
+        self.offeringUnitCode = try unboxer.unbox(key: "offeringUnitCode")
+        self.subject = try unboxer.unbox(key: "subject")
+        self.supplement = try unboxer.unbox(key: "supplement")
+        self.term = try unboxer.unbox(key: "term")
+        self.unit = try unboxer.unbox(key: "unit")
+        self.year = try unboxer.unbox(key: "year")
     }
 }
 
@@ -352,6 +474,7 @@ extension Section: Unboxable {
         self.campusCode = try unboxer.unbox(key: "campusCode")
         self.instructors = try unboxer.unbox(key: "instructors")
         self.meetingTimes = try unboxer.unbox(key: "meetingTimes")
+        self.commentsText = try? unboxer.unbox(key: "commentsText")
     }
 }
 

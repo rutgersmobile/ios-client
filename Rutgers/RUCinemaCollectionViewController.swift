@@ -45,7 +45,6 @@ final class RUCinemaCollectionViewController:
         )
     }
     
-    //Defines init
     init(channel: [NSObject : AnyObject]) {
         self.channel = channel
         super.init(collectionViewLayout: .init())

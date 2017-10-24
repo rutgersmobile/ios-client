@@ -24,18 +24,30 @@ extension UIViewController: Linkable {
 
     func setupShareButton() {
         if let _ = self.sharingUrl() {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            let newButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .action,
                 target: self,
                 action: #selector(actionButtonTapped)
             )
+
+            if let rightBarButtonItem = self.navigationItem.rightBarButtonItem {
+                self.navigationItem.rightBarButtonItems =
+                    [newButtonItem, rightBarButtonItem]
+            } else if let rightBarButtonItems =
+                self.navigationItem.rightBarButtonItems
+            {
+                self.navigationItem.rightBarButtonItems =
+                    [newButtonItem] + rightBarButtonItems
+            } else {
+                self.navigationItem.rightBarButtonItem = newButtonItem
+            }
         }
     }
 
     func actionButtonTapped() {
         if let url = self.sharingUrl() {
             let favoriteActivity = RUFavoriteActivity(
-                title: self.sharingTitle()!
+                title: self.sharingTitle() ?? ""
             )
 
             let activityVC = UIActivityViewController(

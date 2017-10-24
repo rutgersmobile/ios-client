@@ -20,6 +20,7 @@ struct Game {
     let away : Team
     let location : String
     let isEvent : Bool
+    let start: Start
 }
 
 struct Team {
@@ -48,6 +49,7 @@ extension Game: Unboxable {
         self.away = try unboxer.unbox(key: "away")
         self.location = try unboxer.unbox(key: "location")
         self.isEvent = try unboxer.unbox(key: "isEvent")
+        self.start = try unboxer.unbox(key: "start")
     }
 }
 
