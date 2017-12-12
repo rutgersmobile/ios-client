@@ -41,7 +41,7 @@
             baseUrl = @"http://localhost/";
             break;
         case AlphaMode:
-            baseUrl = @"http://nstanlee.rutgers.edu";
+            baseUrl = @"http://nstanlee.rutgers.edu/4/";
 //            baseUrl = @"http://rumobile-gis-prod-asb.ei.rutgers.edu";
             break;
         case BetaMode:
