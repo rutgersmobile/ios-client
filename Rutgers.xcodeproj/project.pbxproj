@@ -11,7 +11,6 @@
 		0417829F1B7BD61400FE75AD /* RUBusPrediction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0417829E1B7BD61400FE75AD /* RUBusPrediction.m */; };
 		041782A21B7BDC7F00FE75AD /* RUBusArrival.m in Sources */ = {isa = PBXBuildFile; fileRef = 041782A11B7BDC7F00FE75AD /* RUBusArrival.m */; };
 		041AE339193D2E32002ED85C /* RUAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 041AE338193D2E32002ED85C /* RUAppearance.m */; };
-		04203AF71B15147E005A7099 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = 04203AF61B15147E005A7099 /* ordered_content.json */; };
 		0422C9891A69C95500344828 /* MiniMapDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0422C9881A69C95500344828 /* MiniMapDataSource.m */; };
 		042C302B1A7974E10034F89E /* LegalDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 042C302A1A7974E10034F89E /* LegalDataSource.m */; };
 		042C302E1A7977AA0034F89E /* legal in Resources */ = {isa = PBXBuildFile; fileRef = 042C302D1A7977AA0034F89E /* legal */; };
@@ -198,6 +197,7 @@
 		A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */; };
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
+		AFB97E5F202BB66100F75330 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = AFB97E5E202BB66100F75330 /* ordered_content.json */; };
 		B5184DBD1E816C3500E64254 /* ShowtimesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */; };
 		B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */; };
 		B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */; };
@@ -307,7 +307,6 @@
 		041782A11B7BDC7F00FE75AD /* RUBusArrival.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusArrival.m; sourceTree = "<group>"; };
 		041AE337193D2E32002ED85C /* RUAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppearance.h; sourceTree = "<group>"; };
 		041AE338193D2E32002ED85C /* RUAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppearance.m; sourceTree = "<group>"; };
-		04203AF61B15147E005A7099 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ordered_content.json; sourceTree = "<group>"; };
 		0422C9871A69C95500344828 /* MiniMapDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMapDataSource.h; sourceTree = "<group>"; };
 		0422C9881A69C95500344828 /* MiniMapDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MiniMapDataSource.m; sourceTree = "<group>"; };
 		042C30291A7974E10034F89E /* LegalDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegalDataSource.h; sourceTree = "<group>"; };
@@ -648,6 +647,7 @@
 		A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewController.m; sourceTree = "<group>"; };
 		A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDataSource.h; sourceTree = "<group>"; };
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
+		AFB97E5E202BB66100F75330 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ordered_content.json; path = ../../../Desktop/ordered_content.json; sourceTree = "<group>"; };
 		B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionView.swift; sourceTree = "<group>"; };
 		B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDescriptionCell.swift; sourceTree = "<group>"; };
 		B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoDescriptionCell.xib; sourceTree = "<group>"; };
@@ -1244,7 +1244,7 @@
 				A7B970CE192160180070A414 /* rureader */,
 				A7E8E1341924846F0089F166 /* rutext */,
 				A7E8E13919249FEB0089F166 /* ruwebview */,
-				04203AF61B15147E005A7099 /* ordered_content.json */,
+				AFB97E5E202BB66100F75330 /* ordered_content.json */,
 				622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */,
 				622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */,
 			);
@@ -1827,13 +1827,13 @@
 				C262EFB6188345D10035C8F5 /* InfoPlist.strings in Resources */,
 				B535F3991E48C00F000CCDCC /* RUCinemaCollectionViewCell.xib in Resources */,
 				B51D347D1E5B40A900F4BD1F /* GeneralPurposeCell.xib in Resources */,
-				04203AF71B15147E005A7099 /* ordered_content.json in Resources */,
 				04AEDE3A19D32FC000A20D1E /* rutgerslogo@2x.png in Resources */,
 				C4D047031E53565A00A71268 /* GoogleService-Info.plist in Resources */,
 				C4004EB61E525CA500A5FEDD /* RUFoodStoryboard.storyboard in Resources */,
 				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
 				629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */,
 				B5F8CF0B1E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib in Resources */,
+				AFB97E5F202BB66100F75330 /* ordered_content.json in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
@@ -1850,13 +1850,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Rutgers-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		17D319ABBBF33B5AA50442EF /* [CP] Embed Pods Frameworks */ = {
@@ -1865,9 +1868,50 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Rutgers/Pods-Rutgers-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/HexColors/HexColors.framework",
+				"${BUILT_PRODUCTS_DIR}/MMDrawerController/MMDrawerController.framework",
+				"${BUILT_PRODUCTS_DIR}/MSWeakTimer/MSWeakTimer.framework",
+				"${BUILT_PRODUCTS_DIR}/MWFeedParser/MWFeedParser.framework",
+				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
+				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSegue/RxSegue.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/TOWebViewController/TOWebViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/Unbox/Unbox.framework",
+				"${BUILT_PRODUCTS_DIR}/XMLDictionary/XMLDictionary.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HexColors.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MMDrawerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSWeakTimer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MWFeedParser.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSegue.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOWebViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

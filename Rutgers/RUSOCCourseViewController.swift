@@ -302,7 +302,6 @@ class RUSOCCourseViewController: UITableViewController {
         
 //        setupShareButton()
         
-        weak var weakSelf = self
         dataSource.configureCell = { [weak self] (
             ds: CourseDataSource,
             tv: UITableView,
@@ -310,20 +309,20 @@ class RUSOCCourseViewController: UITableViewController {
             item: CourseSectionItem
         ) in
         
-            guard let strongSelf = weakSelf else {
+            guard let `self` = self else {
                 return UITableViewCell()
             }
             
             switch item {
             case .section(let section):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: strongSelf.cellId,
+                    withIdentifier: self.cellId,
                     for: ip
                 ) as! RUSOCSectionCell
                 
                 let sortedMeetingTimes = section.meetingTimes.sorted{$0.asInt() < $1.asInt()}
 
-                return strongSelf.configureSectionCell(cell: cell,
+                return self.configureSectionCell(cell: cell,
                                                  section: section,
                                                  meetingTimes:
                                                     sortedMeetingTimes,
@@ -338,11 +337,11 @@ class RUSOCCourseViewController: UITableViewController {
                                                     })
             case .sectionExtra(let section):
                 let cell = tv.dequeueReusableCell(withIdentifier:
-                    strongSelf.cellExtraId, for: ip) as! RUSOCSectionCellExtra
+                    self.cellExtraId, for: ip) as! RUSOCSectionCellExtra
                 
                 let sortedMeetingTimes = section.meetingTimes.sorted{$0.asInt() < $1.asInt()}
                 
-                return strongSelf.configureSectionCell(cell: cell,
+                return self.configureSectionCell(cell: cell,
                                                  section: section,
                                                  meetingTimes:
                                                  sortedMeetingTimes,
@@ -357,16 +356,16 @@ class RUSOCCourseViewController: UITableViewController {
                                                 })
             case .prereq(let prereq):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: strongSelf.defaultCellId,
+                    withIdentifier: self.defaultCellId,
                     for: ip
                 )
-                return strongSelf.configurePrereqCell(cell: cell, prereq: prereq)
+                return self.configurePrereqCell(cell: cell, prereq: prereq)
             case .notes(let notes):
                 let cell = tv.dequeueReusableCell(
-                    withIdentifier: strongSelf.defaultCellId,
+                    withIdentifier: self.defaultCellId,
                     for: ip
                 )
-                return strongSelf.configureNotesCell(cell: cell, notes: notes)
+                return self.configureNotesCell(cell: cell, notes: notes)
             }
         }
 
@@ -375,7 +374,11 @@ class RUSOCCourseViewController: UITableViewController {
         }
 
         let courseO = getCourse().shareReplay(1)
-        courseO.flatMap {[unowned self] realCourse -> Observable<[CourseSection]> in
+        courseO.flatMap {[weak self] realCourse -> Observable<[CourseSection]> in
+            
+            guard let `self` = self else {
+                return Observable.empty()
+            }
             
             let sectionArray = self.makeSectionArray(course: realCourse)
             
@@ -404,7 +407,7 @@ class RUSOCCourseViewController: UITableViewController {
         .addDisposableTo(disposeBag)
 
         courseO.flatMap {[unowned self] realCourse -> Observable<(Section, [String: [String]])> in
-           
+            
             self.tableView.rx.modelSelected(
                 CourseSectionItem.self).filterMap { model -> Section? in
                 switch model {
@@ -438,8 +441,12 @@ class RUSOCCourseViewController: UITableViewController {
                 return (section, noteDictionary)
             }
         }
-        .subscribe(onNext: {[unowned self] rets in
-         
+        .subscribe(onNext: {[weak self] rets in
+            
+            guard let `self` = self else {
+                return
+            }
+            
             let (section, noteDictionary) = rets
             let vc = RUSOCSectionDetailTableViewController.instantiate(
                 withStoryboard: self.storyboard!,
@@ -504,7 +511,6 @@ class RUSOCCourseViewController: UITableViewController {
             [CourseSection(
                 header: "Core Codes",
                 items: coreCodes.map {.notes($0)})]
-        
        
         let preReqItems: [CourseSectionItem] = {
             return course.preReqNotes.flatMap{
@@ -569,10 +575,10 @@ extension MeetingTime {
         }
     }
 }
-
+// What a mess
 public extension String {
     func meetTimeFormatted() -> String {
-        if self.characters.count != 4 {
+        if self.count != 4 {
             return self
         }
 

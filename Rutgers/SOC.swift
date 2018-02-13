@@ -296,6 +296,7 @@ struct Section {
     let subtopic: String?
     let subtitle: String?
     let sectionIndex: String
+    let sectionEligibility: String?
     let number: String
     let examCode: String
     let printed: String
@@ -475,6 +476,7 @@ extension Section: Unboxable {
         self.instructors = try unboxer.unbox(key: "instructors")
         self.meetingTimes = try unboxer.unbox(key: "meetingTimes")
         self.commentsText = try? unboxer.unbox(key: "commentsText")
+        self.sectionEligibility = try? unboxer.unbox(key: "sectionEligibility")
     }
 }
 

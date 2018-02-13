@@ -109,6 +109,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         self.tableView.tableFooterView = UIView()
         self.tableView.estimatedRowHeight = 50
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        if let sectionEligibility = section.sectionEligibility {
+            self.noteDictionary["sectionEligibility"] = [sectionEligibility]
+        }
         let dataSource = RxTableViewSectionedReloadDataSource<MultiSection>()
         
         // setupShareButton()
@@ -256,7 +259,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             self.noteDictionary["subjectNotes"]?.flatMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
                 } ?? [] // nil coalescing operator - essentially if the
-        // result from the closure is [nil], return an empty array
+        // result from the closure is nil, return an empty array
         
         let subjectSection: [MultiSection] =
             subjectNotesItem.isEmpty ? [] :
@@ -280,6 +283,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             coreCodesNotesItem.isEmpty ? [] :
                 [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]
         
+
         let preReqSectionItems: [SOCSectionDetailItem] =
             self.noteDictionary["preReqs"]?.flatMap {
                 $0.isEmpty ? nil : .preReqSectionItem(notes: $0)
@@ -288,6 +292,13 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         let preReqSection: [MultiSection] =
             preReqSectionItems.isEmpty ? [] :
                 [.PreReqSection(items: preReqSectionItems)]
+        
+        let sectionEligibilityItem: [SOCSectionDetailItem] = self.noteDictionary["sectionEligibility"]?.flatMap{
+                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+            } ?? []
+        let sectionEligibility: [MultiSection] = sectionEligibilityItem.isEmpty ? [] :
+        [.NoteSection(title: "Section Eligibility", items: sectionEligibilityItem)]
+        
         
         let sectionNotesItem: [SOCSectionDetailItem] = {
             return self.section.sectionNotes.flatMap{
@@ -310,6 +321,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 courseSection +
                 preReqSection +
                 coreCodesSection +
+                sectionEligibility +
                 sectionNotesSection
         
         let sectionItem: [SOCSectionDetailItem] =
