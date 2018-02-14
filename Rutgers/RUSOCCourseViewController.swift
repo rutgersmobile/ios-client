@@ -424,7 +424,8 @@ class RUSOCCourseViewController: UITableViewController {
                let preReqItems = [realCourse.preReqNotes].filterMap { $0 }
                         .map { $0.trimmingCharacters(in:
                             .whitespacesAndNewlines)}
-
+                
+                noteDictionary["courseTitle"] = [(realCourse.expandedTitle != nil && realCourse.expandedTitle != "" ? realCourse.expandedTitle : realCourse.title)!]
                 noteDictionary["preReqs"] = preReqItems
                 noteDictionary["subjectNotes"] =
                     [realCourse.subjectNotes?.trimmingCharacters(in:
@@ -484,7 +485,11 @@ class RUSOCCourseViewController: UITableViewController {
             appendVal != "" ? subjectNotes.append(appendVal)
                 : print("Nothing to add")
         }
-
+        
+        var courseTitleSection: [CourseSection] = []
+        if let course = self.course {
+            courseTitleSection = [CourseSection(header: "Course Title", items: [(course.expandedTitle != nil && course.expandedTitle != "" ? course.expandedTitle : course.title)!].map {.notes($0)})]
+        }
         let subjectNotesSection =
             subjectNotes.isEmpty || subjectNotes.get(0) == "" ? [] : [
             CourseSection(
@@ -524,7 +529,7 @@ class RUSOCCourseViewController: UITableViewController {
                                         items: preReqItems)]
 
         let returnSection =
-            subjectNotesSection + courseNotesSection +
+            courseTitleSection + subjectNotesSection + courseNotesSection +
             coreCodesSection + preReqSection
      
         

@@ -68,12 +68,15 @@ class RUSOCSubjectViewController : UITableViewController {
         
 //        self.setupShareButton()
 
-        dataSource.configureCell = { (
+        dataSource.configureCell = {[weak self] (
             ds: SubjectDataSource,
             tv: UITableView,
             ip: IndexPath,
             item: SOCSubjectItem
         ) in
+            
+            guard let `self` = self else {return UITableViewCell()}
+            
             let cell: UITableViewCell = { switch (item) {
             case .course(let model):
                 let cell = tv.dequeueReusableCell(
@@ -131,6 +134,7 @@ class RUSOCSubjectViewController : UITableViewController {
             })).filter { !$0.isEmpty }
             
             let notes = subjectNotes + unitNotes
+            let subjectTitle = SOCSubjectSection(header: "Subject Title", items: [self.subject.subjectDescription].map{.note($0)})
             
             let notesSection = SOCSubjectSection(
                 header: "Subject Notes",
@@ -143,7 +147,7 @@ class RUSOCSubjectViewController : UITableViewController {
             if (notesSection.items.isEmpty) {
                 return [courses]
             } else {
-                return [notesSection, courses]
+                return [subjectTitle, notesSection, courses]
             }
         }
         .asDriver(onErrorJustReturn: [])
@@ -152,17 +156,19 @@ class RUSOCSubjectViewController : UITableViewController {
 
         self.tableView.rx.modelSelected(SOCSubjectItem.self)
             .subscribe(onNext: {[weak self] item in
+                guard let `self` = self else {return}
+                
                 switch (item) {
                 case .course(let course):
                    
                     let vc = RUSOCCourseViewController.instantiate(
-                        withStoryboard: self!.storyboard!,
-                        options: self!.options,
+                        withStoryboard: self.storyboard!,
+                        options: self.options,
                         course: course
                     )
                     
-                    self!.navigationController?
-                        .pushViewController(vc, animated: true)
+                    self.navigationController?
+                         .pushViewController(vc, animated: true)
                 default: break
                 }
             }).addDisposableTo(self.disposeBag)

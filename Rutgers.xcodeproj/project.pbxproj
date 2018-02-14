@@ -197,7 +197,7 @@
 		A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */; };
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
-		AFB97E5F202BB66100F75330 /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = AFB97E5E202BB66100F75330 /* ordered_content.json */; };
+		AFCF17522034DA0100A2922D /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = AFCF17512034DA0000A2922D /* ordered_content.json */; };
 		B5184DBD1E816C3500E64254 /* ShowtimesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */; };
 		B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */; };
 		B51D34711E5B403400F4BD1F /* InfoDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */; };
@@ -647,7 +647,7 @@
 		A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewController.m; sourceTree = "<group>"; };
 		A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDataSource.h; sourceTree = "<group>"; };
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
-		AFB97E5E202BB66100F75330 /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ordered_content.json; path = ../../../Desktop/ordered_content.json; sourceTree = "<group>"; };
+		AFCF17512034DA0000A2922D /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ordered_content.json; path = Rutgers/ordered_content.json; sourceTree = "<group>"; };
 		B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionView.swift; sourceTree = "<group>"; };
 		B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDescriptionCell.swift; sourceTree = "<group>"; };
 		B51D346F1E5B403400F4BD1F /* InfoDescriptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoDescriptionCell.xib; sourceTree = "<group>"; };
@@ -1244,7 +1244,6 @@
 				A7B970CE192160180070A414 /* rureader */,
 				A7E8E1341924846F0089F166 /* rutext */,
 				A7E8E13919249FEB0089F166 /* ruwebview */,
-				AFB97E5E202BB66100F75330 /* ordered_content.json */,
 				622AFBCB1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.h */,
 				622AFBCC1D6E1E0D00ED4A9D /* RUSwiftClassesLoader.m */,
 			);
@@ -1523,6 +1522,7 @@
 			isa = PBXGroup;
 			children = (
 				6254D2811D2329220005A31C /* README.txt */,
+				AFCF17512034DA0000A2922D /* ordered_content.json */,
 				C262EFB1188345D10035C8F5 /* Rutgers */,
 				049A4CE11B4AFC890006D1FA /* Rutgers Tests */,
 				047D06DC1BE16DB600DFEAA3 /* RutgersUITests */,
@@ -1833,7 +1833,7 @@
 				622AFBE01D6F5B2000ED4A9D /* DynamicCollectionViewCell.xib in Resources */,
 				629F85281D907FD300A0D6D3 /* DynamicCollectionViewController.xib in Resources */,
 				B5F8CF0B1E7C651F008D8C23 /* ShowtimesCollectionViewCell.xib in Resources */,
-				AFB97E5F202BB66100F75330 /* ordered_content.json in Resources */,
+				AFCF17522034DA0100A2922D /* ordered_content.json in Resources */,
 				C262EFBE188345D10035C8F5 /* Images.xcassets in Resources */,
 				047C2EF21A646FCC00B172E5 /* RUInfo.json in Resources */,
 				A7DD347919816F120078023A /* hill center stop.gpx in Resources */,
