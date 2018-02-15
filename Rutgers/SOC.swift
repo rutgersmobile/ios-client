@@ -261,6 +261,7 @@ struct Course {
     let sectionCheck: SectionCheck
     let level: Level
     let coreCodes: [CoreCode]
+    let supplementCode: String
 }
 
 struct CoreCode {
@@ -428,6 +429,7 @@ extension Course: Unboxable {
         self.creditsObject = try unboxer.unbox(key: "creditsObject")
         self.level = level
         self.coreCodes = try unboxer.unbox(key: "coreCodes")
+        self.supplementCode = try unboxer.unbox(key: "supplementCode")
     }
 }
 

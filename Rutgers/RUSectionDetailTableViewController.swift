@@ -86,17 +86,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             "\(sectionNumber!)"
             ])
     }
-    
-    /*
-    func getSection() -> Observable<[Section]> {
-        return RutgersAPI
-            .sharedInstance
-            .getSection(options: options,
-                        subjectNumber: subjectNumber!,
-                        courseNumber: courseNumber,
-                        sectionNumber: sectionNumber!)
-    }*/
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

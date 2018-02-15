@@ -386,11 +386,23 @@ class RUSOCCourseViewController: UITableViewController {
                 self.course = realCourse
             }
             
-            return RutgersAPI.sharedInstance.getSections(
-                options: self.options,
-                subjectNumber: realCourse.subject!,
-                courseNumber: realCourse.courseNumber!
-            ).map { sections in [CourseSection(
+            
+            let sections: Observable<[Section]> = realCourse.supplementCode == "" ?
+                RutgersAPI
+                    .sharedInstance
+                    .getSections(
+                        options: self.options,
+                        subjectNumber: realCourse.subject!,
+                        courseNumber: realCourse.courseNumber!)
+                :
+                RutgersAPI
+                    .sharedInstance
+                    .getSectionWith(supplementCode: realCourse.supplementCode,
+                                    options: self.options,
+                                    subjectNumber: realCourse.subject!,
+                                    courseNumber: realCourse.courseNumber!)
+            return sections.map { sections in
+                [CourseSection(
                         header: "Sections",
                         items: sections.map {
                             switch $0.meetingTimes.count {

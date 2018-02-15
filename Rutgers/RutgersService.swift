@@ -24,6 +24,7 @@ enum RutgersService {
     case getCourses(options: SOCOptions, subjectCode: Int)
     case getSections(options: SOCOptions, subjectNumber: Int, courseNumber: Int)
     case getSearch(options: SOCOptions, query: String)
+    case getSectionWith(supplementCode: String, options: SOCOptions, subjectCode: Int, courseNumber: Int)
 }
 
 extension RutgersService : TargetType {
@@ -54,6 +55,8 @@ extension RutgersService : TargetType {
         case .getCourses:
             return "/courses.json"
         case .getSections:
+            return "/sections.json"
+        case .getSectionWith:
             return "/sections.json"
         case .getSearch:
             return "/search.json"
@@ -103,6 +106,16 @@ extension RutgersService : TargetType {
                 "subject" : subjectNumber,
                 "course" : courseNumber
             ]
+        case .getSectionWith(let supplementCode, let options, let subjectNumber, let courseNumber):
+            return [
+                "term" : options.semester.term,
+                "year" : options.semester.year,
+                "level" : options.level.description,
+                "campus" : options.campus.description,
+                "subject" : subjectNumber,
+                "course" : courseNumber,
+                "supplementCode" : supplementCode
+            ]
         case .getSearch(let options, let query):
             return [
                 "term" : options.semester.term,
@@ -126,7 +139,7 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding, .getSectionWith:
             return .request
         }
     }
