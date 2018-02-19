@@ -243,7 +243,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             //This needs to stay in order for the app to not crash
             ds.sectionModels[idxPath].title
         }
-        
+         
         //A bunch of ternary operators ahead
         let subjectNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["subjectNotes"]?.flatMap {
@@ -253,7 +253,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         let subjectSection: [MultiSection] =
             subjectNotesItem.isEmpty ? [] :
-                [.NoteSection(title: "Subject Notes", items: subjectNotesItem)]
+                [.NoteSection(title: "Subject Notes",
+                              items: subjectNotesItem)]
         
         let courseNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["courseNotes"]?.flatMap {
@@ -262,7 +263,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         let courseSection: [MultiSection] =
             courseNotesItem.isEmpty ? [] :
-                [.NoteSection(title: "Course Notes", items: courseNotesItem)]
+                [.NoteSection(title: "Course Notes",
+                              items: courseNotesItem)]
         
         let coreCodesNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["coreCodes"]?.flatMap {
@@ -271,7 +273,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         let coreCodesSection: [MultiSection] =
             coreCodesNotesItem.isEmpty ? [] :
-                [.NoteSection(title: "Core Codes", items: coreCodesNotesItem)]
+                [.NoteSection(title: "Core Codes",
+                              items: coreCodesNotesItem)]
         
 
         let preReqSectionItems: [SOCSectionDetailItem] =
@@ -286,19 +289,42 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         let sectionEligibilityItem: [SOCSectionDetailItem] = self.noteDictionary["sectionEligibility"]?.flatMap{
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
             } ?? []
-        let sectionEligibility: [MultiSection] = sectionEligibilityItem.isEmpty ? [] :
-        [.NoteSection(title: "Section Eligibility", items: sectionEligibilityItem)]
+        let sectionEligibility: [MultiSection] =
+            sectionEligibilityItem.isEmpty ? [] :
+            [.NoteSection(title: "Section Eligibility",
+                          items: sectionEligibilityItem)]
         
+        
+        let sectionSubtitle: [SOCSectionDetailItem] =
+            self.section.subtitle.flatMap {
+                $0.isEmpty ? nil : [.noteSectionItem(notes: $0)]
+            } ?? []
+        
+        let subtitleSection: [MultiSection] =
+            sectionSubtitle.isEmpty ? [] :
+                [.NoteSection(title: "Subtitle",
+                              items: sectionSubtitle)]
+        
+        let supplementItem: [SOCSectionDetailItem] =
+            self.noteDictionary["supplementCode"]?.flatMap {
+                $0.isEmpty ? nil : .noteSectionItem(notes: $0)
+        } ?? []
+        
+        let supplementSection: [MultiSection] = supplementItem.isEmpty ? [] : [.NoteSection(title: "Supplement Code", items: supplementItem)]
         
         let sectionNotesItem: [SOCSectionDetailItem] = {
             return self.section.sectionNotes.flatMap{
-                $0 != "" ? [.noteSectionItem(notes: "Section \(section.number) notes: " + $0)] : []
+                $0 != "" ?
+                    [.noteSectionItem(notes:
+                        "Section \(section.number) notes: " + $0)] : []
             }
         }() ?? []
         
         let commentsText: [SOCSectionDetailItem] = {
             return self.section.commentsText.flatMap {
-                $0 != "" ? [.noteSectionItem(notes: "Section \(section.number) comments: " + $0)] : []
+                $0 != "" ?
+                    [.noteSectionItem(notes:
+                        "Section \(section.number) comments: " + $0)] : []
             }
         }() ?? []
         
@@ -312,6 +338,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 preReqSection +
                 coreCodesSection +
                 sectionEligibility +
+                subtitleSection +
+                supplementSection +
                 sectionNotesSection
         
         let sectionItem: [SOCSectionDetailItem] =
@@ -330,7 +358,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 items: detailSectionItems
                 )]
         
-        let sortedMeetingTimes = self.section.meetingTimes.sorted{$0.asInt() < $1.asInt()}
+        let sortedMeetingTimes =
+            self.section.meetingTimes.sorted{$0.asInt() < $1.asInt()}
         
         return SOCHelperFunctions
             .getBuildings(meetingTimes: sortedMeetingTimes)
@@ -339,8 +368,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             }
             .toArray()
             .map {
-                    [.MeetingTimesSection(title: "Meeting Times", items: $0)]
-                
+                [.MeetingTimesSection(title: "Meeting Times", items: $0)]
             }.map {sectionArray + instructorSection + $0}
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))

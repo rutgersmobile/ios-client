@@ -439,6 +439,7 @@ class RUSOCCourseViewController: UITableViewController {
                 
                 noteDictionary["courseTitle"] = [(realCourse.expandedTitle != nil && realCourse.expandedTitle != "" ? realCourse.expandedTitle : realCourse.title)!]
                 noteDictionary["preReqs"] = preReqItems
+                noteDictionary["supplementCode"] = realCourse.supplementCode != "" ? [realCourse.supplementCode] : []
                 noteDictionary["subjectNotes"] =
                     [realCourse.subjectNotes?.trimmingCharacters(in:
                         .whitespacesAndNewlines) ?? "",
