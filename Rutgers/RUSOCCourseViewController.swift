@@ -139,7 +139,12 @@ class RUSOCCourseViewController: UITableViewController {
                                         Int(section.sectionIndex)!)
         
         cell.instructor.text = section.instructors.get(0)?.instructorName
-        
+        if let subtitle = section.subtitle {
+            cell.subTitleLabel.text = subtitle
+            cell.subHeight.constant = subtitle != "" ? 20.5 : 0.0
+            
+            cell.layoutIfNeeded()
+        }
         if let time1 = meetingTimes.get(0) {
             cell.time1.text = formatMeetingTime(time: time1)
             cell.buildingRoom1.text = formatRoomAndBuilding(time: time1)
@@ -564,7 +569,7 @@ class RUSOCCourseViewController: UITableViewController {
             .map { (model: CourseSectionItem) -> CGFloat in
                 switch model {
                 case .section(_):
-                    return 108.5
+                    return 150
                 case .sectionExtra(_):
                     return 178.5
                 default:

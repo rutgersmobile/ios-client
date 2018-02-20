@@ -9,6 +9,7 @@
 import Foundation
 
 class RUSOCSectionCell: UITableViewCell {
+    @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var openColor: UIView!
     @IBOutlet weak var sectionNumber: UILabel!
     @IBOutlet weak var instructor: UILabel!
@@ -23,6 +24,16 @@ class RUSOCSectionCell: UITableViewCell {
     @IBOutlet weak var campusCode2: UILabel!
     @IBOutlet weak var campusCode3: UILabel!
     @IBOutlet weak var openClosedLabel: UILabel!
+    @IBOutlet weak var subHeight: NSLayoutConstraint!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        subHeight.constant = 0
+    }
+    
+    override func setNeedsUpdateConstraints() {
+        super.updateConstraints()
+    }
 }
 
 class RUSOCSectionCellExtra: UITableViewCell {
