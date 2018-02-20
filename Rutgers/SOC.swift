@@ -307,6 +307,8 @@ struct Section {
     let sessionDatePrintIndicator: String?
     let commentsText: String?
     let campusCode: String
+    let openToText: String?
+    let specialPermission: String?
     let instructors: [Instructor]
     var meetingTimes: [MeetingTime]
 }
@@ -479,6 +481,8 @@ extension Section: Unboxable {
         self.meetingTimes = try unboxer.unbox(key: "meetingTimes")
         self.commentsText = try? unboxer.unbox(key: "commentsText")
         self.sectionEligibility = try? unboxer.unbox(key: "sectionEligibility")
+        self.openToText = try? unboxer.unbox(key: "openToText")
+        self.specialPermission = try? unboxer.unbox(key: "specialPermissionAddCodeDescription")
     }
 }
 

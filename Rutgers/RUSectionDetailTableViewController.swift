@@ -159,7 +159,6 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 let cell =
                     tv.dequeueReusableCell(withIdentifier: "notesCell",
                                            for: idxPath) as! RUSOCNotesCell
-                
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.font = UIFont(name: "Helvetica", size: 17)
                 cell.textLabel?.setHTMLFromString(text: preReqNotes)
@@ -286,6 +285,16 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             preReqSectionItems.isEmpty ? [] :
                 [.PreReqSection(items: preReqSectionItems)]
         
+        let openToItem: [SOCSectionDetailItem] =
+            section.openToText.flatMap{$0.isEmpty ? nil : [.noteSectionItem(notes: $0)]} ?? []
+        
+        let openToSection: [MultiSection] = openToItem.isEmpty ? [] :
+            [.NoteSection(title: "Open To", items: openToItem)]
+        
+        let specialPermissionItem: [SOCSectionDetailItem] = section.specialPermission.flatMap{$0.isEmpty ? nil : [.noteSectionItem(notes: $0)]} ?? []
+        
+        let specialPermissionSection: [MultiSection] = specialPermissionItem.isEmpty ? [] : [.NoteSection(title: "Special Permission", items: specialPermissionItem)]
+        
         let sectionEligibilityItem: [SOCSectionDetailItem] = self.noteDictionary["sectionEligibility"]?.flatMap{
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
             } ?? []
@@ -332,6 +341,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         sectionNotesItem.isEmpty && commentsText.isEmpty ? [] :
         [.NoteSection(title: "Section Notes", items: sectionNotesItem + commentsText)]
         
+        let supplements = supplementSection + specialPermissionSection + openToSection
+        
         let sectionArray: [MultiSection] =
                 subjectSection +
                 courseSection +
@@ -339,7 +350,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 coreCodesSection +
                 sectionEligibility +
                 subtitleSection +
-                supplementSection +
+                supplements +
                 sectionNotesSection
         
         let sectionItem: [SOCSectionDetailItem] =
@@ -385,6 +396,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 switch model {
                 case .noteSectionItem(notes: _):
                     return UITableViewAutomaticDimension
+                case .preReqSectionItem(notes: _):
+                    return UITableViewAutomaticDimension
                 case .meetingTimesItem(_):
                     return 180
                 default:
@@ -401,6 +414,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             .map { (model: SOCSectionDetailItem) -> CGFloat in
                 switch model {
                 case .noteSectionItem(notes: _):
+                    return UITableViewAutomaticDimension
+                case .preReqSectionItem(notes: _):
                     return UITableViewAutomaticDimension
                 case .meetingTimesItem(_):
                     return 180
