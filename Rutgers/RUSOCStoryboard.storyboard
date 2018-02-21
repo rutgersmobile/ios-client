@@ -290,12 +290,26 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Supplement Code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cO9-ko-q5L">
+                                            <rect key="frame" x="94" y="67" width="112" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NF4-pu-Rn4">
+                                            <rect key="frame" x="211" y="67.5" width="31" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="NF4-pu-Rn4" firstAttribute="centerY" secondItem="cO9-ko-q5L" secondAttribute="centerY" id="0ez-b2-YKF"/>
                                         <constraint firstItem="d23-Cj-cWw" firstAttribute="top" secondItem="Ng8-vY-HeA" secondAttribute="bottom" constant="3" id="0gv-vO-wQ8"/>
                                         <constraint firstItem="AS2-di-Msj" firstAttribute="top" secondItem="bgR-W8-Owa" secondAttribute="top" id="1KT-UH-Xkb"/>
                                         <constraint firstItem="Ng8-vY-HeA" firstAttribute="centerY" secondItem="AS2-di-Msj" secondAttribute="centerY" multiplier="0.75" id="2Kt-eO-0mo"/>
                                         <constraint firstItem="Msw-K3-PD4" firstAttribute="centerY" secondItem="z8X-5F-fKY" secondAttribute="centerY" id="7ud-dR-rzZ"/>
+                                        <constraint firstItem="NF4-pu-Rn4" firstAttribute="leading" secondItem="cO9-ko-q5L" secondAttribute="trailing" constant="5" id="Esh-nS-xCX"/>
                                         <constraint firstItem="z8X-5F-fKY" firstAttribute="centerY" secondItem="d23-Cj-cWw" secondAttribute="centerY" id="M3p-ns-zLY"/>
                                         <constraint firstItem="AS2-di-Msj" firstAttribute="leading" secondItem="bgR-W8-Owa" secondAttribute="leading" id="Q9h-es-HpM"/>
                                         <constraint firstItem="z8X-5F-fKY" firstAttribute="leading" secondItem="d23-Cj-cWw" secondAttribute="trailing" constant="20" id="TXg-dI-qDe"/>
@@ -304,6 +318,8 @@
                                         <constraint firstItem="d23-Cj-cWw" firstAttribute="leading" secondItem="AS2-di-Msj" secondAttribute="trailing" constant="8" id="hkX-Hh-lcZ"/>
                                         <constraint firstItem="AS2-di-Msj" firstAttribute="height" secondItem="bgR-W8-Owa" secondAttribute="height" id="iNa-BL-K2D"/>
                                         <constraint firstItem="Ng8-vY-HeA" firstAttribute="width" secondItem="bgR-W8-Owa" secondAttribute="width" multiplier="0.7" id="lI5-MY-q5o"/>
+                                        <constraint firstItem="cO9-ko-q5L" firstAttribute="leading" secondItem="d23-Cj-cWw" secondAttribute="leading" id="xv3-i8-6iH"/>
+                                        <constraint firstItem="cO9-ko-q5L" firstAttribute="top" secondItem="d23-Cj-cWw" secondAttribute="bottom" constant="2.5" id="xwe-24-BZD"/>
                                         <constraint firstItem="Ng8-vY-HeA" firstAttribute="leading" secondItem="AS2-di-Msj" secondAttribute="trailing" constant="8" id="yN6-GM-ZNL"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -314,6 +330,8 @@
                                     <outlet property="openClosedLabel" destination="8HM-tq-uku" id="fer-41-P3c"/>
                                     <outlet property="openSectionsBG" destination="012-Nm-qGy" id="a4R-jV-SdN"/>
                                     <outlet property="openSectionsCount" destination="8Cg-lS-MRq" id="WwE-6U-BTg"/>
+                                    <outlet property="supplementCodeDescription" destination="NF4-pu-Rn4" id="NRX-iu-ExQ"/>
+                                    <outlet property="supplementCodeHeader" destination="cO9-ko-q5L" id="wIb-Dm-KpV"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NoteCellId" id="bVm-tN-eYd">

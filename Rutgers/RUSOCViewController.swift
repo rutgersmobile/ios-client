@@ -371,6 +371,7 @@ class RUSOCViewController
         
         getOptions
             .flatMapLatest {[unowned self] options in
+            
                 self.tableView.rx
                     .modelSelected(MultiSection.Item.self)
                     .map { item -> UIViewController in

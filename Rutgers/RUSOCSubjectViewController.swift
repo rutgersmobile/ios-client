@@ -17,6 +17,8 @@ class RUSOCCourseCell: UITableViewCell {
     @IBOutlet weak var codeLabel: UILabel!
     @IBOutlet weak var openSectionsBG: UIView!
     @IBOutlet weak var openSectionsCount: UILabel!
+    @IBOutlet weak var supplementCodeHeader: UILabel!
+    @IBOutlet weak var supplementCodeDescription: UILabel!
 }
 
 class RUSOCSubjectViewController : UITableViewController {
@@ -91,6 +93,10 @@ class RUSOCSubjectViewController : UITableViewController {
                 let checkColor: UIColor = model.sectionCheck.open > 0
                     ? RUSOCViewController.openColor
                     : RUSOCViewController.closedColor
+                
+                cell.supplementCodeHeader.isHidden = model.supplementCode != "" ? false : true
+                cell.supplementCodeDescription.isHidden = model.supplementCode != "" ? false : true
+                cell.supplementCodeDescription.text = model.supplementCode != "" ? model.supplementCode : ""
                 
                 cell.openClosedLabel.text = model.sectionCheck.open > 0 ? "Open" : "Closed"
                 

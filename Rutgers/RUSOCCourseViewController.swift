@@ -391,7 +391,6 @@ class RUSOCCourseViewController: UITableViewController {
                 self.course = realCourse
             }
             
-            
             let sections: Observable<[Section]> = realCourse.supplementCode == "" ?
                 RutgersAPI
                     .sharedInstance
@@ -508,6 +507,9 @@ class RUSOCCourseViewController: UITableViewController {
         if let course = self.course {
             courseTitleSection = [CourseSection(header: "Course Title", items: [(course.expandedTitle != nil && course.expandedTitle != "" ? course.expandedTitle : course.title)!].map {.notes($0)})]
         }
+        
+        let supplementCode: [CourseSection] = course.supplementCode != "" ? [CourseSection(header: "Supplement Code", items: [course.supplementCode].map{.notes($0)})] : []
+        
         let subjectNotesSection =
             subjectNotes.isEmpty || subjectNotes.get(0) == "" ? [] : [
             CourseSection(
@@ -548,7 +550,7 @@ class RUSOCCourseViewController: UITableViewController {
 
         let returnSection =
             courseTitleSection + subjectNotesSection + courseNotesSection +
-            coreCodesSection + preReqSection
+            coreCodesSection + preReqSection + supplementCode
      
         
         return returnSection
