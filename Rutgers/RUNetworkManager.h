@@ -7,14 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AFNetworking.h>
+#import <AFNetworking/AFNetworking.h>
 
 @interface RUNetworkManager : NSObject
 +(AFHTTPSessionManager *)backgroundSessionManager;
 +(AFHTTPSessionManager *)sessionManager;
 +(AFHTTPSessionManager *)readerSessionManager;
 +(NSURL *)baseURL;
-
-
-+(AFHTTPSessionManager *)exceptionSessionManager;
 @end

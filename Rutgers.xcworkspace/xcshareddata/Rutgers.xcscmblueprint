@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6" : 0,
+    "EA8F75CE8F3D5A27591056CAF4228BD9654CB136" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8E655BCC-0AA8-4DC5-ACFE-E87E8E39F361",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6" : "ios-client\/",
+    "EA8F75CE8F3D5A27591056CAF4228BD9654CB136" : "Rutgers\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Rutgers",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Rutgers.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rutgersmobile\/ios-client.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8DF9AA8BEBC9E0DB20E633DC178399D961FE15B6"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "phab.rutgers.edu:diffusion\/ICST\/ios-client-swift-test.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "EA8F75CE8F3D5A27591056CAF4228BD9654CB136"
+    }
+  ]
+}

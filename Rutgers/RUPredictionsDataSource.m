@@ -14,20 +14,24 @@
 
 #import "RUPredictionsHeaderRow.h"
 #import "RUPredictionsBodyRow.h"
+#import "RUBusPrediction.h"
 #import "DataSource_Private.h"
 
 #import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusRoute.h"
+#import "RUBusArrival.h"
+#import "RUBusPrediction.h"
 
 #import "TextViewDataSource.h"
 
 
 /*
-    This class obtains the prediction using the rubusdataloading manager
-    This class and another class containing the messages will be placed in a composed data source and that will be displayed..
-
+ This class obtains the prediction using the rubusdataloading manager
+ This class and another class containing the messages will be placed in a composed data source and that will be displayed..
+ 
  */
 @interface RUPredictionsDataSource ()
+
 @end
 
 @implementation RUPredictionsDataSource
@@ -40,110 +44,62 @@
     {
         self.item = item;
         self.noContentTitle = @"No predictions available";
-       
+        self.busNumber = @"";
     }
     return self;
 }
 
-
-/*
-
-    NO LONGER NEED : DATA LOADED IN ANOTHER CLASS AND PASSED ALONG
--(void)loadContent
+-(instancetype)initWithItem:(id)item busNumber: (NSString*) busNumber
 {
-    [self loadContentWithBlock:^
-     (AAPLLoading *loading)
+    self = [self initWithItem: item];
+    
+    if (self)
     {
-        
-        void (^getPredictions)(id item) = ^(id item)
-        {
-            
-            [[RUBusDataLoadingManager sharedInstance] getPredictionsForItem:item completion:^
-                (NSArray *predictions, NSError *error)
-                {
-                    if (!loading.current) // state chanage <?>
-                    {
-                        [loading ignore];
-                        return;
-                    }
-                    
-                    if (!error)
-                    {
-                        if (predictions.count) // If content was loaded
-                        {
-                            [loading updateWithContent:^(typeof(self) me)
-                            {
-                                [me updateSectionsForResponse:predictions]; // add the obtained prediction to self (data source)
-                            }];
-                        }
-                        else
-                        {
-                            [loading updateWithNoContent:^(typeof(self) me)
-                            {
-                                [me updateSectionsForResponse:nil];
-                            }];
-                        }
-                        
-                    }
-                    else
-                    {
-                        [loading doneWithError:error];
-                    }
-                }
-             ];
-        };
-        
-        
-        if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] || [self.item isKindOfClass:[RUBusRoute class]])
-        {
-            getPredictions(self.item);
-        }
-        else if ([self.item isKindOfClass:[NSArray class]] && [self.item count] >= 2)
-        {
-            [
-             [RUBusDataLoadingManager sharedInstance] getSerializedItemWithName:self.item[1] type:self.item[0] completion:^
-                (id item, NSError *error)
-                {
-                    if (item)
-                    {
-                        self.item = item;
-                        getPredictions(item);
-                    }
-                    else
-                    {
-                        [loading doneWithError:error];
-                    }
-                }
-             ];
-        }
-        else
-        {
-            [loading doneWithError:nil];
-        }
-    }];
+        self.item = item;
+        self.noContentTitle = @"No predictions available";
+        self.busNumber = busNumber;
+    }
+    return self;
 }
 
-*/
-
-
-
 /*
-    Add the objects which were recieved in the data request to the data source
+ Add the objects which were recieved in the data request to the data source
  
  */
+
 -(void)updateSectionsForResponse:(NSArray *)response
 {
     NSMutableArray *sections = [NSMutableArray array];
     
     for (RUBusPrediction *prediction in response)
     {
+        if (![self.busNumber isEqualToString: @""]) {
+            NSMutableArray* newArrivals = [[NSMutableArray alloc] init];
+            
+            for (RUBusArrival *arrival in prediction.arrivals) {
+                
+                if ([arrival.vehicle isEqualToString:self.busNumber]) {
+                    [newArrivals addObject:arrival];
+                }
+            }
+            
+            prediction.arrivals = newArrivals;
+            
+        }
+        
         [sections addObject:[[RUPredictionsExpandingSection alloc] initWithPredictions:prediction forItem:self.item]];
     }
-
+    
     [self restoreExpansionStateFromCurrentSectionsToNewSections:sections];
     
     self.sections = sections;
+    
 }
+
+
+
+
+
 
 -(void)restoreExpansionStateFromCurrentSectionsToNewSections:(NSArray *)newSections
 {
@@ -161,15 +117,27 @@
     }
     
     /*
-        This is done when say a section is removed or added . Or refresed and we want to save which of the sections the user has expanded and expand them again , if they are present  in the new state
+     This is done when say a section is removed or added . Or refresed and we want to save which of the sections the user has expanded and expand them again , if they are present  in the new state
      */
 }
+
 
 -(void)registerReusableViewsWithTableView:(UITableView *)tableView
 {
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[RUPredictionsBodyTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsBodyTableViewCell class])];
     [tableView registerClass:[RUPredictionsHeaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUPredictionsHeaderTableViewCell class])];
+    
+    
 }
+
+-(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    
+    [super configureCell:cell forRowAtIndexPath:indexPath];
+}
+
+
 
 @end

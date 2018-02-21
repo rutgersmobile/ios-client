@@ -8,30 +8,30 @@
 
 import Foundation
 
-public class RUMenuDataSource: ComposedDataSource {
+open class RUMenuDataSource: ComposedDataSource {
     let activeMenuItemsDataSource: RUMenuBasicDataSource
     
     override init() {
         activeMenuItemsDataSource = RUMenuBasicDataSource()
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: MenuItemManagerDidChangeActiveMenuItemsKey, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: ChannelManagerDidUpdateChannelsKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: NSNotification.Name(rawValue: MenuItemManagerDidChangeActiveMenuItemsKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(RUMenuDataSource.setNeedsLoadContent), name: NSNotification.Name(rawValue: ChannelManagerDidUpdateChannelsKey), object: nil)
 
         activeMenuItemsDataSource.items = RUMenuItemManager.sharedManager.menuItems
         
         let otherItemsDataSource = RUMenuBasicDataSource()
         otherItemsDataSource.items = RUChannelManager.sharedInstance().otherChannels
         
-        addDataSource(activeMenuItemsDataSource)
-        addDataSource(otherItemsDataSource)
+        add(activeMenuItemsDataSource)
+        add(otherItemsDataSource)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    override public func loadContent() {
+    override open func loadContent() {
         super.loadContent()
         activeMenuItemsDataSource.items = RUMenuItemManager.sharedManager.menuItems
     }

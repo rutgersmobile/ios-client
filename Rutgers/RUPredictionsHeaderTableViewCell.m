@@ -8,7 +8,7 @@
 
 #import "RUPredictionsHeaderTableViewCell.h"
 #import "RULabel.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "UIFont+DynamicType.h"
 
 @interface RUPredictionsHeaderTableViewCell ()
@@ -36,6 +36,7 @@
     self.titleLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleHeadline];
     self.directionLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
     self.timeLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
+    
 }
 
 -(void)initializeConstraints{
@@ -44,9 +45,11 @@
     [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeBottom];
    
     self.directionConstraint = [self.directionLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsetsSmall];
-  
+    
     [self.directionLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:kLabelHorizontalInsets];
     [self.directionLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:kLabelHorizontalInsets];
+    
+    
     
     [self.timeLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.directionLabel withOffset:kLabelVerticalInsetsSmall];
     [self.timeLabel autoPinEdgesToSuperviewEdgesWithInsets:standardInsets excludingEdge:ALEdgeTop];

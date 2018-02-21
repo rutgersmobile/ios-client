@@ -7,7 +7,7 @@
 //
 
 #import "UIColor+RutgersColors.h"
-#import <HexColors.h>
+#import "HexColors.h"
 
 /*
     Category to hard code color functionality

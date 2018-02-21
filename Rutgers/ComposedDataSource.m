@@ -13,6 +13,7 @@
     But is that being used to display anything ? 
         What is the use of composed data source ? 
     May be is it used to display items in a table view ?
+    Seems as if ComposedDataSource is the constructed version of the DataSource delegate. This class is used as an aggregate object to hold all available data sources - used globally to access relevant data. 
  
  */
 
@@ -86,8 +87,7 @@
 -(void)removeAllDataSources
 {
     NSIndexSet *sections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfSections)];
-    for (DataSource *dataSource in self.dataSources)
-    {
+    for (DataSource *dataSource in self.dataSources) {
         dataSource.delegate = nil;
     }
     [self.dataSources removeAllObjects];
@@ -101,30 +101,20 @@
     if the previous number of section is more than the current number of sections , then we remove the previous sections
     else if we have more sections , then we add the new sections and refresh the old sections . Why is this done , why is the previous section not being removed ?
  */
--(void)setDataSources:(NSMutableArray *)dataSources
-{
+-(void)setDataSources:(NSMutableArray *)dataSources{
     NSInteger oldNumberOfSections = [self numberOfSections];
     _dataSources = dataSources;
-    
-    for (DataSource *dataSource in dataSources)
-    {
+    for (DataSource *dataSource in dataSources) {
         dataSource.delegate = self;
     }
-    
     NSInteger newNumberOfSections = [self numberOfSections];
-    
-    if (oldNumberOfSections > newNumberOfSections)
-    {
+    if (oldNumberOfSections > newNumberOfSections) {
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
         [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(newNumberOfSections, oldNumberOfSections - newNumberOfSections)]];
-    }
-    if (newNumberOfSections > oldNumberOfSections)
-    {
+    } if (newNumberOfSections > oldNumberOfSections) {
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
         [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(oldNumberOfSections, newNumberOfSections - oldNumberOfSections)]];
-    }
-    else
-    {
+    } else {
         [self notifySectionsRefreshed:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
     }
 }
@@ -135,12 +125,10 @@
  
  */
 #pragma mark - Composed Data Source Implementation
--(NSInteger)numberOfSections
-{
+-(NSInteger)numberOfSections{
     if (self.showingPlaceholder) return 1;
     NSInteger numberOfSections = 0;
-    for (DataSource *dataSource in self.dataSources)
-    {
+    for (DataSource *dataSource in self.dataSources) {
         numberOfSections += dataSource.numberOfSections;
     }
     return numberOfSections;
@@ -203,8 +191,7 @@
 
 
 #pragma mark - Table View Data Source
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.showingPlaceholder) return [super tableView:tableView cellForRowAtIndexPath:indexPath];  // ???? Place Holder seems to be the error message that is displayed?
     NSInteger globalSection = indexPath.section;
     DataSource *dataSource = [self dataSourceForGlobalSection:globalSection];   // Create data source from
@@ -212,16 +199,14 @@
     return [dataSource tableView:tableView cellForRowAtIndexPath:localIndexPath];
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (self.showingPlaceholder) return nil;
     DataSource *dataSource = [self dataSourceForGlobalSection:section];
     NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];
     return [dataSource tableView:tableView titleForHeaderInSection:localSection];
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
+-(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
     if (self.showingPlaceholder) return nil;
     DataSource *dataSource = [self dataSourceForGlobalSection:section];
     NSInteger localSection = [self localSectionInDataSource:dataSource forGlobalSection:section];

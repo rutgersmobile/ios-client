@@ -9,6 +9,8 @@
 #import "BasicDataSource.h"
 #import "DataSource_Private.h"
 #import "NSArray+LimitedToCount.h"
+#import "RUDefines.h"
+
 
 /*
     What is the differnce between the DataSource and Basic Data source
@@ -49,7 +51,10 @@
 
 -(NSInteger)numberOfItems
 {
-    if(DEV) NSLog(@" # items = %lu",(unsigned long)[_items count]);
+    if(DEV)
+    {
+        NSLog(@" # items = %lu",(unsigned long)[_items count]);
+    }
     return [_items count];
 }
 

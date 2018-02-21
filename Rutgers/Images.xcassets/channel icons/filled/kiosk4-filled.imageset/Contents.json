@@ -2,12 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "kiosk.pdf"
+      "filename" : "kiosk-filled.pdf"
     }
   ],
   "info" : {
     "version" : 1,
-    "author" : "xcode",
-    "template-rendering-intent" : "template"
+    "author" : "xcode"
   }
 }

@@ -12,6 +12,7 @@
 #import "DataSource_Private.h"
 
 @interface ExpandingTableViewDataSource ()
+
 @end
 
 @implementation ExpandingTableViewDataSource
@@ -44,6 +45,8 @@
 {
     ExpandingTableViewSection *expandingSection = [self sectionAtIndex:section];
     expandingSection.expanded = !expandingSection.expanded;
+    self.isExpanded = expandingSection.expanded;
+    
 }
 
 @end

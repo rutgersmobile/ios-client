@@ -20,7 +20,6 @@
 #import "AAPLPlaceholderView.h"
 #import "NSObject+KVOBlock.h"
 #import "UIView+LayoutSize.h"
-#import <libkern/OSAtomic.h>
 #import "ALTableViewAbstractCell.h"
 #import "RowHeightCache.h"
 #import "AAPLPlaceholderView.h"
@@ -410,7 +409,7 @@
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSNumber *cachedHeight = [self.rowHeightCache cachedHeightForRowAtIndexPath:indexPath]; // the estimiated height is obtained from craeting the cell , applying constrains and then reading the cell's height
-
+    
     if (cachedHeight)
         return [cachedHeight doubleValue];
     
@@ -633,12 +632,12 @@
     // Call the provided block to actually do the load
     block(loading); // block is actually a fuction pointer which takes AAPLLoading as its input
                     // the block might use the loading pointer to change the state based on the content loading state , wether completed , or on going etc..
-    /*
-  if(self.whenLoadedBlock)
-    {
-        self.whenLoadedBlock();
-    }
-*/
+
+    // I'm commenting this out because reasons
+//    if(self.whenLoadedBlock)
+//    {
+//        self.whenLoadedBlock();
+//    }
 }
 
 /*
@@ -915,7 +914,9 @@
 
 /*
     Notify the sub classes about the section relaod data ????
+ 
  */
+
 - (void)notifyDidReloadDataWithDirection:(DataSourceAnimationDirection)direction{
     ASSERT_MAIN_THREAD;
 

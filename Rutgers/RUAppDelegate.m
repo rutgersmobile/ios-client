@@ -18,12 +18,14 @@
 #import "XMLDictionary.h"
 #import "RUMOTDManager.h"
 #import "RURootController.h"
-#import <AFNetworking.h>
-#import <AFNetworkActivityIndicatorManager.h>
-#import <PureLayout.h>
+#import "AFNetworking.h"
+#import "AFNetworkActivityIndicatorManager.h"
+#import "PureLayout.h"
 #import "RUAppearance.h"
 #import "RUAnalyticsManager.h"
 #import "RUUserInfoManager.h"
+
+@import Firebase;
 
 @interface RUAppDelegate () <UITabBarControllerDelegate>
 @property (nonatomic) RUUserInfoManager *userInfoManager;
@@ -40,14 +42,21 @@
     Starting point for the app
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    // Get a Global Exception Handler and use it to write exception to disk and on startup send to server
+{    
     NSSetUncaughtExceptionHandler(&handleUncaughtException);
+
+    NSURLCache* sharedCache = [[NSURLCache alloc]
+        initWithMemoryCapacity:2 * 1024 * 1024
+        diskCapacity:100 * 1024 * 1024
+        diskPath:nil
+    ];
     
+    [NSURLCache setSharedURLCache:sharedCache];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;  // the circular spining icon ..
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
-    
+
     [application setStatusBarHidden:YES];
+    [FIRApp configure];
     
         // set up apperance
     [RUAppearance applyAppearance];
@@ -58,51 +67,32 @@
     [self initializeDrawer];
    
     self.userInfoManager = [[RUUserInfoManager alloc] init];
-    [self.userInfoManager getUserInfoIfNeededWithCompletion:^
-    {
+    [self.userInfoManager getUserInfoIfNeededWithCompletion:^{
         [[RUAnalyticsManager sharedManager] queueEventForApplicationLaunch];
         [self.rootController openDrawerIfNeeded];
     }];
     
     [[RUMOTDManager sharedManager] showMOTD];
-    
-   
-    if([[NSUserDefaults standardUserDefaults] objectForKey:CrashKey] != nil) // we crashed previously 
-    {
-        NSArray * item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
-        [[RUAnalyticsManager sharedManager] postExceptionEvents:[item copy]];
-       
-        // Remove the item , now that it has been send 
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
-        
-    }
-    NSSetUncaughtExceptionHandler(&handleUncaughtException);
 
+    NSArray* item = [[NSUserDefaults standardUserDefaults] objectForKey:CrashKey];
+    if (item != nil) {
+        [[RUAnalyticsManager sharedManager] postAnalyticsEvents:[item copy]];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
+    }
+    
     return YES;
 }
 
-
-void handleUncaughtException(NSException *exception)
-{
-    // save the exception + previous channels queue to use send on startup 
+void handleUncaughtException(NSException* exception) {
+    // Add exception to analytics and rethrow
     [[RUAnalyticsManager sharedManager] saveException:exception];
-
-    if(DEV) NSLog(@"Exception - %@",[exception description]);
-    
-    exit(EXIT_FAILURE);
+    NSLog(@"%@", exception);
+    @throw exception;
 }
-
 
 /* This is the entry point for application deep links from the ios system */
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     [self.rootController openURL:url];
-   
-    
-    if(GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"openURL"];
-    }
-    
        return YES;
 }
 
@@ -160,7 +150,7 @@ void handleUncaughtException(NSException *exception)
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 

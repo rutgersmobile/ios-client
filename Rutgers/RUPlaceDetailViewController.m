@@ -14,7 +14,7 @@
 #import "RUPlace.h"
 #import "NSURL+RUAdditions.h"
 #import "Rutgers-Swift.h"
-#import "RUAnalyticsManager.h"
+
 static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to decide whether to show the pop up warning about maps not working well enough on ios 9.0 , 9.1 and 9.2
 
 @interface RUPlaceDetailViewController ()
@@ -115,26 +115,11 @@ static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to 
 }
 
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self.dataSource itemAtIndexPath:indexPath];
-    if ([item isKindOfClass:[RUPlace class]])
-    {
-        
-        if (GRANULAR_ANALYTICS_NEEDED)
-        {
-            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"MapsViewController"];
-        }
-        
+    if ([item isKindOfClass:[RUPlace class]]) {
         [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:item] animated:YES];
-    }
-    else if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]])
-    {
-        
-        if (GRANULAR_ANALYTICS_NEEDED)
-        {
-            [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:@"RUPredictionsViewController"];
-        }
+    } else if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
         [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
-    
+
     static func channelHandle() -> String!
     {
        return "edit";
@@ -24,33 +24,18 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
  */
     static func registerClass()
     {
-         var onceToken : dispatch_once_t = 0;
-        dispatch_once(&onceToken)
-        {
-            RUChannelManager.sharedInstance().registerClass(RUEditMenuItemsViewController.self)
-        }
+            RUChannelManager.sharedInstance().register(RUEditMenuItemsViewController.self)
     }
 
-    //   // register the channel with j
-    //   override class func initialize()
-    //   {
-    //       var onceToken : dispatch_once_t = 0;
-    //       dispatch_once(&onceToken)
-    //       {
-    //           RUChannelManager.sharedInstance().registerClass(RUEditMenuItemsViewController.self)
-    //       }
-    //   }
-       
-    static func channelWithConfiguration(channelConfiguration: [NSObject : AnyObject]!) -> AnyObject!
-    {
-        return RUEditMenuItemsViewController(style: .Grouped);
+    public static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any! {
+        return RUEditMenuItemsViewController(style: .grouped);
     }
-    
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
-        tableView.editing = true
+
+        tableView.isEditing = true
         title = "Edit Channels"
         
         tableView.allowsSelectionDuringEditing = false ;
@@ -60,26 +45,26 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
        
         // Set the background image for the edit channels
         let imageView = UIImageView(image: UIImage(named: "bg"))
-        imageView.contentMode = .ScaleToFill
+        imageView.contentMode = .scaleToFill
         tableView.backgroundView = imageView
-        tableView.separatorColor = UIColor.clearColor()
+        tableView.separatorColor = UIColor.clear
         
-       
+
         // Add edit button :: No need for the edit button as the view controller opens in the edit mode and the changes are saved ..
       //  self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
     }
-    
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if indexPath.section == 0 {
-            return .Delete
+            return .delete
         } else {
-            return .Insert
+            return .insert
         }
     }
-    
-    override func tableView(tableView: UITableView, titleForDeleteConfirmationButtonForRowAtIndexPath indexPath: NSIndexPath) -> String? {
-        let item = dataSource.itemAtIndexPath(indexPath)
+
+    override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        let item = dataSource.item(at: indexPath as IndexPath!)
         if item is RUFavorite {
             return "Delete"
         } else {
@@ -87,10 +72,10 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         }
     }
     
-    override func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
-        let item = dataSource.itemAtIndexPath(sourceIndexPath)
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        let item = dataSource.item(at: sourceIndexPath as IndexPath!)
         if item is RUFavorite && proposedDestinationIndexPath.section == 1 {
-            return NSIndexPath(forRow: dataSource.numberOfItemsInSection(0) - 1, inSection: 0)
+            return IndexPath(row: dataSource.numberOfItems(inSection: 0) - 1, section: 0)
         } else {
             return proposedDestinationIndexPath
         }
@@ -100,13 +85,13 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
    //        return nil;
    //    }
         
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath)
-        let item = self.dataSource .itemAtIndexPath(indexPath)
+        let item = self.dataSource .item(at: indexPath as IndexPath!) as AnyObject
         
         if item is RUFavorite
         {
-            print(item.url!!.absoluteString)
+            //print(item.url!!.absoluteString)
         }
         else
         {
@@ -117,7 +102,7 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
         }
     }
     
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool
+    internal func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool
     {
         return true
     }

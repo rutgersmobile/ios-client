@@ -12,9 +12,13 @@
     <q> Seems to be used for displaying the bus predictions beneath the route ?
  */
 
-@interface RUPredictionsDataSource : ExpandingTableViewDataSource
+@interface RUPredictionsDataSource : ExpandingTableViewDataSource <UIGestureRecognizerDelegate>
+
+@property (nonatomic) NSString* busNumber;
+
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithItem:(id)item NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithItem:(id)item busNumber: (NSString*) busNumber;
 
 -(void)updateSectionsForResponse:(NSArray *)response;
 

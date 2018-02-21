@@ -13,6 +13,7 @@
 
 #import "DynamicDataSource.h"
 #import "RUReaderDataSource.h"
+#import "RUReaderItem.h"
 
 #import "RUMenuTableViewCell.h"
 #import "AAPLPlaceholderView.h"
@@ -22,4 +23,8 @@
 
 #import "NSDictionary+Channel.h"
 
-#import "RUDefines.h"
+#import "RUNetworkManager.h"
+#import "RUFavoriteActivity.h"
+
+#import "RUUIWebViewController.h"
+#import "RUWKWebViewController.h"

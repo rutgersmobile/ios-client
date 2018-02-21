@@ -7,12 +7,10 @@
 //
 
 /*
-            Set up the initial Table View Contoller On Tapping the Bus Icon
-            On tapping Cell Segues into predictions page
- 
-        To Do :     
-            Convert this into a map
- 
+ Set up the initial Table View Contoller On Tapping the Bus Icon
+ On tapping Cell Segues into predictions page
+ To Do :
+ Convert this into a map
  */
 
 #import "RUBusViewController.h"
@@ -22,9 +20,15 @@
 #import "RUPredictionsViewController.h"
 #import "TableViewController_Private.h"
 #import "RUChannelManager.h"
+
+
 #import "RURootController.h"
-#import <SWRevealViewController.h>
-#import "RUAnalyticsManager.h"
+#import "RUDebug.h"
+
+
+
+#import "SWRevealViewController.h"
+#import "Rutgers-Swift.h"
 
 
 @interface RUBusViewController () <UIGestureRecognizerDelegate>
@@ -44,8 +48,8 @@
 
 
 /*
-    Descript :
-    Since each of the View Controller are Handled by a Generic Channel , this functions allows us to set up specific Configurations for a particular View Controller...
+ Descript :
+ Since each of the View Controller are Handled by a Generic Channel , this functions allows us to set up specific Configurations for a particular View Controller...
  */
 +(instancetype)channelWithConfiguration:(NSDictionary *)channel
 {
@@ -61,39 +65,22 @@
     self.searchDataSource = [[BusSearchDataSource alloc] init];
     self.searchBar.placeholder = @"Search All Routes and Stops";
     
-   // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
+    // create require failure relationship between the swipe gesture and the pan gesture which will open the slide menu
     self.leftSwipe.delegate = self;
     self.rightSwipe.delegate = self;
     
- //  [NSException raise:@"Invalid foo value" format:@"foo of "];
-    
- 
-    if(DEV)
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(36 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0) , ^
-        {
-          /*  @throw [NSException exceptionWithName:NSGenericException
-                                           reason:@"Test uncaught exception handling"
-                                         userInfo:nil];     
-           */
-            [NSException raise:NSInternalInconsistencyException format:@"Error Testing"];
-        });
-    }
-  
+    RUDebug * debug = [[RUDebug alloc ] init];
+    [debug dumpView:self.navigationController.view atIndent:0];
+
 }
-/*
-    //Execute the pan gesture to open the drawer if the swip gesture has failed
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+
+-(void)openMapWithRoutes // show the map in a different view controller
 {
-    BOOL result = NO ;
-   
-    if(  (gestureRecognizer == self.leftSwipe || gestureRecognizer == self.rightSwipe) && [otherGestureRecognizer class] == [SWRevealViewControllerPanGestureRecognizer class])
-    {
-        result = YES;
-    }
-    return result;
+    MapsViewController* vc =  [[MapsViewController alloc] init];
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
-*/
+
 
 
 
@@ -106,7 +93,7 @@
 
 //And stops the timer
 /*
-    View is being update / but with what <q>
+ View is being update / but with what <q>
  */
 -(void)viewWillDisappear:(BOOL)animated{
     [(RUBusDataSource *)self.dataSource stopUpdates];
@@ -118,20 +105,11 @@
 {
     
     id item = [[self dataSourceForTableView:tableView] itemAtIndexPath:indexPath];
+    
     // Create a view using the item. Ie. Present the view with the bu stops and their timiings
-    if (GRANULAR_ANALYTICS_NEEDED)
-    {
-        [[RUAnalyticsManager sharedManager] queueClassStrForExceptReporting:NSStringFromClass( [item class])];
-    }
     [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES]; // move to the next view controller
 }
 
-/*
-    Descript : 
-        Part of the Channel ? 
- 
- 
- */
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
     RUPredictionsViewController *viewController = [[RUPredictionsViewController alloc] initWithSerializedItem:pathComponents title:destinationTitle];
     return @[viewController];

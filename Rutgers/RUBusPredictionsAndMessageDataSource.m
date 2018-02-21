@@ -21,9 +21,13 @@
 
 @interface RUBusPredictionsAndMessageDataSource()
 
+
+ 
 @property (nonatomic) RUPredictionsDataSource * busPredictionsDS;
 @property (nonatomic) RUBusMessagesDataSource * busMessagesDS;
 
+ 
+ 
 -(void)getTitleFromInternetResponse:(NSArray  *)prediction;
 
 @end
@@ -41,7 +45,24 @@
         
         [self addDataSource:self.busMessagesDS];
         [self addDataSource:self.busPredictionsDS];
+    
     }
+    return self;
+}
+
+
+- (instancetype)initWithItem:(id)item busNumber: (NSString*)busNumber {
+    self = [super init];
+    
+    if (self) {
+        self.item = item;
+        self.busMessagesDS = [[RUBusMessagesDataSource alloc]initWithItem:item];
+        self.busPredictionsDS = [[RUPredictionsDataSource alloc] initWithItem:item busNumber:busNumber];
+        
+        [self addDataSource:self.busMessagesDS];
+        [self addDataSource:self.busPredictionsDS];
+    }
+
     return self;
 }
 
@@ -57,11 +78,12 @@
    else
     {
         [self.busPredictionsDS toggleExpansionForSection: section - 1];
+        
     }
 }
 
 /*
-    Load the content and pass it to the prediction and messgaes data source
+    Load the content and pass it to the prediction and messages data source
  
  */
 -(void)loadContent
@@ -125,8 +147,6 @@
                       // makes ui changes: Shows the network error cell : Has to be done on the main thread
                       dispatch_sync(dispatch_get_main_queue(),^
                      {
-                         
-                         NSAssert([NSThread isMainThread], @"Method called using a thread other than main!");
                          [self.busPredictionsDS loadContentWithBlock:^(AAPLLoading *loading)
                          {
                              [loading doneWithError:error];

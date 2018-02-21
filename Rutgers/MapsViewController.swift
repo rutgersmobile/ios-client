@@ -14,7 +14,7 @@ protocol MapViewDelegate {
     
 }
 
-typealias Annotation = protocol<MKAnnotation>
+typealias Annotation = MKAnnotation
 
 protocol MapView {
     var showsUserLocation: Bool { get set }
@@ -27,7 +27,6 @@ protocol MapView {
     //func showAnnotationsWrapper(annotations: [Annotation], animated: Bool)
    
     func showCoordinate(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, animated: Bool)
-    func setVisibleMapRect(mapRect: MKMapRect, animated: Bool)
 }
 
 
@@ -46,28 +45,28 @@ extension MKMapView: MapView {
     }
     
     func showCoordinate(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance, animated: Bool) {
-        let camera = MKMapCamera(lookingAtCenterCoordinate: coordinate, fromEyeCoordinate: coordinate, eyeAltitude: altitude)
+        let camera = MKMapCamera(lookingAtCenter: coordinate, fromEyeCoordinate: coordinate, eyeAltitude: altitude)
         setCamera(camera, animated: animated)
     }
-    
+
     func showAnnotationsWrapper(annotations: [Annotation], animated: Bool) {
         showAnnotations(annotations, animated: animated)
     }
 }
 
 
-public class MapsViewController: UIViewController {
-    public static let defaultMapRect = MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)
+open class MapsViewController: UIViewController {
+    open static let defaultMapRect = MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)
     
     var mapView: MapView!
-    public var place: RUPlace?
+    open var place: RUPlace?
     
     public init(place: RUPlace) {
         self.place = place
         super.init(nibName: nil, bundle: nil)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -75,7 +74,7 @@ public class MapsViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
-    override public func loadView() {
+    override open func loadView() {
         super.loadView()
         
         let bounds = view.bounds
@@ -90,40 +89,40 @@ public class MapsViewController: UIViewController {
         
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        view.opaque = true
+        view.isOpaque = true
 
         navigationItem.rightBarButtonItem = mapView.userTrackingBarButtonItem
-        loadPlace(false)
+        loadPlace(animated: false)
     }
     
     func loadPlace(animated: Bool) {
         title = place?.title
         
-        zoomToPlace(animated)
+        zoomToPlace(animated: animated)
     }
     
     func zoomToPlace(animated: Bool) {
         guard let place = place else { return }
-        mapView.addAnnotationWrapper(place)
-        mapView.showCoordinate(place.coordinate, altitude: 850, animated: animated)
+        mapView.addAnnotationWrapper(annotation: place)
+        mapView.showCoordinate(coordinate: place.coordinate, altitude: 850, animated: animated)
     }
 }
 
-public class EmbeddedMapsViewController: MapsViewController {
-    override public func viewDidLoad() {
+open class EmbeddedMapsViewController: MapsViewController {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        view.userInteractionEnabled = false
+        view.isUserInteractionEnabled = false
     }
     
-    override public var place: RUPlace? {
+    override open var place: RUPlace? {
         didSet {
             if let place = oldValue {
-                mapView.removeAnnotationWrapper(place)
+                mapView.removeAnnotationWrapper(annotation: place)
             }
             
-            zoomToPlace(false)
+            zoomToPlace(animated: false)
         }
     }
 }

@@ -39,6 +39,7 @@
 
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
+        
         return NSStringFromClass([RUPredictionsHeaderTableViewCell class]);
     }
     return NSStringFromClass([RUPredictionsBodyTableViewCell class]);
@@ -46,30 +47,41 @@
 
 -(void)configureCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     id item = [self itemAtIndexPath:indexPath];
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0)
+    {
         RUPredictionsHeaderRow *row = item;
         RUPredictionsHeaderTableViewCell *headerCell = cell;
+
+    
         
         headerCell.titleLabel.text = [row title];
         headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
-        if ([row active]) {
+        if ([row active])
+        {
             headerCell.titleLabel.textColor = [UIColor blackColor];
             headerCell.directionLabel.textColor = [UIColor blackColor];
             headerCell.timeLabel.textColor = [row timeLabelColor];
-        } else {
+        }
+        else
+        {
             headerCell.titleLabel.textColor = [UIColor grayColor];
             headerCell.directionLabel.textColor = [UIColor grayColor];
             headerCell.timeLabel.textColor = [UIColor grayColor];
         }
-    } else {
+    }
+    else
+    {
         RUPredictionsBodyRow *row = item;
         RUPredictionsBodyTableViewCell *bodyCell = cell;
 
         bodyCell.minutesLabel.text = row.minutesString;
         bodyCell.descriptionLabel.text = row.descriptionString;
         bodyCell.timeLabel.text = row.timeString;
+       
     }
+    
     [super configureCell:cell forRowAtIndexPath:indexPath];
+    
 }
 @end

@@ -38,17 +38,18 @@
     switch (runMode)
     {
         case LocalDevMode:
-            [NSException raise:NSInvalidArgumentException format:@"LocalDevMode Not Defined"];
+            baseUrl = @"http://localhost/";
             break;
         case AlphaMode:
-            //baseUrl = @"http://192.168.160.226/~richton/mobile/";
-            baseUrl = @"http://localhost:8000/mobile/";
+            baseUrl = @"http://nstanlee.rutgers.edu/4/";
+//            baseUrl = @"http://rumobile-gis-prod-asb.ei.rutgers.edu";
             break;
         case BetaMode:
             baseUrl = @"https://doxa.rutgers.edu/mobile/";
             break;
         case ProductionMode:
             baseUrl = @"https://rumobile.rutgers.edu/";
+            break;
         default:
             break;
     }
@@ -57,7 +58,9 @@
     baseUrl = [baseUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"Base URL : %@ " , baseUrl);
     
-    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]];
+//    return [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/",baseUrl,api]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@",baseUrl]];
+
 }
 
 /*
@@ -90,7 +93,6 @@
         // set up at networking with the base url
         backgroundSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
        
-        
         // provide serializer to the manager : Which gives us inforamtion on how to parse the response object
         // json and xml parsers
         backgroundSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
@@ -130,34 +132,5 @@
     });
     return sessionManager;
 }
-
-
-/*
- 
-    Exception Manager
-    Send the message in a high priority queue
- 
- */
-+(AFHTTPSessionManager *)exceptionSessionManager
-{
-    static AFHTTPSessionManager *exceptSessionManager = nil;
-    
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^
-                  {
-                      // set up at networking with the base url
-                      exceptSessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseURL]];
-                      
-                      exceptSessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-                      // provide serializer to the manager : Which gives us inforamtion on how to parse the response object
-                      // json and xml parsers
-                      exceptSessionManager.responseSerializer = [RUResponseSerializer compoundResponseSerializer];
-                      
-                  });
-    
-    return exceptSessionManager;
-}
-
 
 @end

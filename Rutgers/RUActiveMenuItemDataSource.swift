@@ -9,34 +9,34 @@
 import Foundation
 
 class RUMenuBasicDataSource: BasicDataSource {
-    override func registerReusableViewsWithTableView(tableView: UITableView!) {
-        super.registerReusableViewsWithTableView(tableView)
-        tableView.registerClass(RUMenuTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(RUMenuTableViewCell.self))
+    override func registerReusableViews(with tableView: UITableView!) {
+        super.registerReusableViews(with: tableView)
+        tableView.register(RUMenuTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(RUMenuTableViewCell.self))
     }
 
-    override func reuseIdentifierForRowAtIndexPath(indexPath: NSIndexPath!) -> String! {
+    override func reuseIdentifierForRow(at indexPath: IndexPath!) -> String! {
         return NSStringFromClass(RUMenuTableViewCell.self)
     }
     
-    override func configureCell(cell: AnyObject!, forRowAtIndexPath indexPath: NSIndexPath!) {
-        let item = itemAtIndexPath(indexPath)
+    override func configureCell(_ cell: Any!, forRowAt indexPath: IndexPath!) {
+        let indexItem = item(at: indexPath)
         let menuCell = cell as! RUMenuTableViewCell
-        
+
         //warning move this into the cell
-        switch item {
+        switch indexItem {
         case let favorite as RUFavorite:
-            if let handle = favorite.channelHandle, channel = RUChannelManager.sharedInstance().channelWithHandle(handle) {
-                menuCell.setupForChannel(channel)
+            if let handle = favorite.channelHandle, let channel = RUChannelManager.sharedInstance().channel(withHandle: handle) {
+                menuCell.setup(forChannel: channel)
                 menuCell.channelTitleLabel.text = favorite.title
             }
         case let channel as [NSObject : AnyObject]:
-            menuCell.setupForChannel(channel)
+            menuCell.setup(forChannel: channel)
         default: return
         }
     }
     
-    override func configurePlaceholderCell(cell: ALPlaceholderCell!) {
+    override func configurePlaceholderCell(_ cell: ALPlaceholderCell!) {
         super.configurePlaceholderCell(cell)
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.clear
     }
 }

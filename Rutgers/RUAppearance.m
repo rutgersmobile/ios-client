@@ -20,11 +20,11 @@
 +(void)applyAppearance{
     //global appearance, nothing right now
   
-    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    /*
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     [self applyAppearanceToNavigationBar:[UINavigationBar appearance]];
     [self applyAppearanceToToolbar:[UIToolbar appearance]];
-    [self applyAppearanceToTabBar:[UITabBar appearance]];*/
+    [self applyAppearanceToTabBar:[UITabBar appearance]];
 }
 
 +(void)applyAppearanceToNavigationController:(UINavigationController *)navigationController{

@@ -7,9 +7,9 @@
 //
 
 #import "RUReaderItem.h"
-#import <NSString+HTML.h>
+#import "NSString+HTML.h"
 #import "RUReaderTableViewCell.h"
-#import <XMLDictionary.h>
+#import "XMLDictionary.h"
 
 @interface RUReaderItem ()
 @property (nonatomic) NSDictionary *item;
@@ -87,7 +87,8 @@
         }
         
         if (!imageUrl) imageUrl = [item[@"media:thumbnail"] firstObject][@"_url"];
-        if (!imageUrl) imageUrl = [item[@"media:content"] firstObject][@"_url"];
+        if (!imageUrl) imageUrl = [item[@"media:content"] firstObject][@"_url"]; 
+        
         
         _imageURL = [NSURL URLWithString:imageUrl];
         _url = [item[@"link"] firstObject];
@@ -123,9 +124,10 @@
     if (self)
     {
         self.item = game;
-        _title = game[@"description"];
-
-        // Ensuring compatability with the new server changes
+       
+        // The data and location string works in case of both events and non events
+        
+        // Ensuring compatability with the api 2 server changes
         // get a num prepresentation of the time tag which determines whether a time is present or not
         NSNumber * timePresent =(NSNumber *)game[@"start"][@"time"];
 
@@ -150,6 +152,122 @@
         _dateString = [NSString stringWithFormat:@"%@, %@", dateString, timeString];
 
         _descriptionText = game[@"location"];
+       
+        
+        _title = game[@"description"];
+       
+       // TODO : If the game is an event, is there no score ?
+        
+        
+        if([ game[@"isEvent"] integerValue] == 1) // if the game is an event, then the formating for the text is different and there is no home away team etc
+        {
+            _imagePresent = false ; // NO images are present
+            _isEvent = true;
+            return self;
+            
+        }
+
+        _isEvent = false;
+        
+        // get the title from the description by manipulating it and overwirting the _title
+       
+        // title is of the form Rutgers at Bucknell (L, 2 - 0)
+         
+        NSMutableCharacterSet * skippedChars = [NSMutableCharacterSet whitespaceCharacterSet]; // skip white spaces
+        [skippedChars formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
+        [skippedChars formUnionWithCharacterSet:[NSCharacterSet symbolCharacterSet]];
+        NSScanner * scanner = [NSScanner scannerWithString:_title];
+        [scanner setCharactersToBeSkipped:skippedChars];
+        NSString * otherSchoolName , * vsOrAtStr ;
+       
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&otherSchoolName]; // store the rutgers name
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&vsOrAtStr]; // store the vs or at
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&otherSchoolName]; // rewrite with the other name
+     
+        NSString * didRuWin ;
+        [scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&didRuWin]; // letter for W or L
+   
+        if([didRuWin isEqualToString:@"W"])
+        {
+            _ruWin = true;
+        }
+        else
+        {
+            _ruWin = false ;
+        }
+        
+        
+        if([vsOrAtStr isEqualToString:@"at"])
+        {
+                vsOrAtStr = @"@"; // convert the at to @
+        }
+
+        NSString* osn = [game[@"home"][@"code"] isEqualToString:@"rutu"] ? game[@"away"][@"name"] : game[@"home"][@"name"];
+        
+         //  title now of the form  @ Bucknell
+        _title = [ NSString stringWithFormat:@"%@ %@", vsOrAtStr , osn];
+        
+        
+        
+
+        
+        // get the image url ..
+        NSString * imageBaseUrl = @"http://grfx.cstv.com/graphics/school-logos/" ;
+       
+        /*
+            The image we always show is that of the team oposing rutgers . Irrespective of which is home or away.
+            So get the codes from home and away .. Throw out the one which is rutu ( Rutgers code ) 
+            and make the imageBaseUrl point to the other school
+          */
+       
+        NSString * awayCode = game[@"away"][@"code"];
+        NSString * homeCode = game[@"home"][@"code"];
+        
+        NSString * rutgersCode = @"rutu" ;
+        NSString * requiredCode  ; // reguired to get an image of school logo .
+
+        if (game[@"away"][@"score"] == nil || game[@"home"][@"score"] == nil) {
+            _nilScores = true;
+        } else {
+            _nilScores = false;
+        }
+       
+        if( [awayCode isEqualToString:rutgersCode]) // if rutgers is away , then the other school is at home and we display that icon
+        {
+            requiredCode = homeCode ;
+            _isRuHome = false ;
+            // get ru score from away and other score from home
+            _ruScore = [game[@"away"][@"score"] intValue];
+            _otherScore = [game[@"home"][@"score"] intValue];
+        }
+        else
+        {
+            requiredCode = awayCode ;
+            _isRuHome = true ;
+            // get ru score from home
+            _ruScore = [game[@"home"][@"score"] intValue];
+            _otherScore = [game[@"away"][@"score"] intValue];
+        }
+    
+       
+       
+        if( ! [requiredCode isEqualToString:@""])
+        {
+        
+            // Add the -lg.png to the end of the code to get the iamge name
+            requiredCode = [requiredCode stringByAppendingString:@"-lg.png"] ;
+            imageBaseUrl =  [imageBaseUrl stringByAppendingString: requiredCode ] ;
+          
+            _imageURL = [NSURL URLWithString:imageBaseUrl ];
+            _imagePresent = true;
+        }
+        else
+        {
+            _imagePresent = false;
+        }
+        
+       
+        
     }
     return self;
 }

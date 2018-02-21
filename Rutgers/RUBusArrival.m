@@ -14,6 +14,7 @@
     if (self) {
         _minutes = [dictionary[@"_minutes"] integerValue];
         _seconds = [dictionary[@"_seconds"] integerValue];
+        _vehicle = dictionary[@"_vehicle"];
     }
     return self;
 }

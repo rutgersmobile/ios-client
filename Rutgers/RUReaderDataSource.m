@@ -10,7 +10,7 @@
 #import "RUReaderTableViewCell.h"
 #import "RUReaderItem.h"
 #import "DataSource_Private.h"
-#import <UIKit+AFNetworking.h>
+#import "UIKit+AFNetworking.h"
 #import "RUNetworkManager.h"
 
 @interface RUReaderDataSource ()
@@ -35,14 +35,14 @@
                 return;
             }
             
-            if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                
-                
+            if ([responseObject isKindOfClass:[NSDictionary class]])
+            {
                 NSDictionary *channel = [responseObject[@"channel"] firstObject];
                 NSArray *parsedResponse;
                 if (responseObject[@"entry"] != nil) {
                     parsedResponse = [self parseAtomResponse:responseObject[@"entry"]];
-                } else if(responseObject[@"games"]!=nil)
+                }
+                else if(responseObject[@"games"]!=nil)
                 {
                     parsedResponse = [self parseGameResponse:responseObject[@"games"]];
                 }
@@ -54,7 +54,9 @@
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = parsedResponse;
                 }];
-            } else {
+            }
+            else
+            {
                 [loading updateWithContent:^(typeof(self) me) {
                     me.items = nil;
                 }];
@@ -64,6 +66,57 @@
         }];
     }];
 }
+
+
+
+
+/*
+ Load the content without the state machine . Update the values and do the completeion block
+ No error handling for now , but more complex features will be added...
+ */
+-(void)loadContentWithAnyBlock:(void(^)(void)) completionBlock
+{
+
+    [[RUNetworkManager sessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject)
+     {
+         if ([responseObject isKindOfClass:[NSDictionary class]])
+         {
+                NSDictionary *channel = [responseObject[@"channel"] firstObject];
+                NSArray *parsedResponse;
+                if (responseObject[@"entry"] != nil) {
+                    parsedResponse = [self parseAtomResponse:responseObject[@"entry"]];
+                }
+                else if(responseObject[@"games"]!=nil)
+                {
+                    parsedResponse = [self parseGameResponse:responseObject[@"games"]];
+                }
+                else
+                {
+                    parsedResponse = [self parseResponse:channel[@"item"]];
+                }
+            
+             self.items = parsedResponse ;
+             
+         }
+         else
+         {
+             //Clear the items
+             self.items = nil;
+         }
+         
+         completionBlock();
+     }
+                failure:^(NSURLSessionDataTask * task, NSError * error)
+     {
+         self.items = nil ;
+            completionBlock();
+     }];
+    
+    // run the completion block
+}
+
+
+
 
 -(NSArray *)parseAtomResponse:(NSArray *)response {
     NSMutableArray* parsedItems = [NSMutableArray array];
@@ -94,7 +147,8 @@
     return parsedItems;
 }
 
--(void)registerReusableViewsWithTableView:(UITableView *)tableView{
+-(void)registerReusableViewsWithTableView:(UITableView *)tableView
+{
     [super registerReusableViewsWithTableView:tableView];
     [tableView registerClass:[RUReaderTableViewCell class] forCellReuseIdentifier:NSStringFromClass([RUReaderTableViewCell class])];
 }
@@ -114,11 +168,12 @@
     cell.imageDisplayView.backgroundColor = [UIColor grayColor];
     
     cell.imageDisplayView.image = nil;
+    
+    [cell.imageDisplayView setContentMode:UIViewContentModeScaleAspectFill];
+    
     [cell.imageDisplayView setImageWithURL:row.imageURL];
     
     cell.descriptionLabel.text = row.descriptionText;
-  //  cell.accessoryType = row.url ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    
 }
-
-
 @end

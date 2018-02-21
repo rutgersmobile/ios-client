@@ -9,7 +9,7 @@
 #import "RUPredictionsHeaderRow.h"
 #import "RUBusRoute.h"
 #import "RUBusMultipleStopsForSingleLocation.h"
-#import <HexColors.h>
+#import "HexColors.h"
 #import "RUPredictionsHeaderTableViewCell.h"
 
 #import "RUBusPrediction.h"
@@ -32,6 +32,7 @@
 
 -(NSString *)title{
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
+        
         return self.predictions.stopTitle;
     } else {
         return self.predictions.routeTitle;

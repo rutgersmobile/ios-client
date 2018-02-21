@@ -16,37 +16,37 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     
     var resultTitle: String?
     var result: [NSObject: AnyObject]?
-    var error: ErrorType?
-    
+    var error: Error?
+
     var loading: AAPLLoading?
     
     init(handle: String, pathComponents: [String]) {
         print(handle)
         self.handle = handle
         self.remainingPathComponents = pathComponents
-        let currentChannel = RUChannelManager.sharedInstance().channelWithHandle(handle)
+        let currentChannel = RUChannelManager.sharedInstance().channel(withHandle: handle)
         currentDataSource = DynamicDataSource(channel: currentChannel)
     }
     
     override func loadContent() {
-        loadContentWithBlock { loading in
+        self.loadContent { loading in
             self.loading = loading
             self.startIteration()
         }
     }
-    
+
     func startIteration() {
         currentDataSource.delegate = self
         currentDataSource.loadContent()
     }
     
     func finishWithDataSource(dataSource: DynamicDataSource) {
-        self.result = dataSource.channel
+        self.result = dataSource.channel as [NSObject : AnyObject]?
         self.loading?.done()
         self.loading = nil
     }
     
-    func finishWithError(error: ErrorType?) {
+    func finishWithError(error: Error?) {
         if error is DynamicFavoriteError {
             self.errorTitle = "Favorites Error"
             self.errorMessage = "Your favorite could not be loaded"
@@ -61,12 +61,12 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     
    // Point of error
     
-    func dataSource(dataSource: DataSource!, didLoadContentWithError error: NSError!) {
+    func dataSource(_ dataSource: DataSource!, didLoadContentWithError error: Error!) {
         do {
-            try findMatchingSubItemInDataSource(dataSource)
+            try findMatchingSubItemInDataSource(dataSource: dataSource)
             print("working !!")
         } catch {
-            finishWithError(error)
+            finishWithError(error: error)
             print("error")
         }
     }
@@ -74,10 +74,10 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     func findMatchingSubItemInDataSource(dataSource: DataSource) throws {
         if let dataSource = dataSource as? BasicDataSource {
             let nextComponent = remainingPathComponents.removeFirst()
-            guard let channel = dataSource.subitemMatchingPathComponent(nextComponent)
+            guard let channel: [NSObject : AnyObject] = dataSource.subitemMatchingPathComponent(pathComponent: nextComponent) as [NSObject : AnyObject]?
                 else { throw DynamicFavoriteError.InvalidPathComponent }
 
-            if let actualChannel = channel["channel"] as? [NSObject: AnyObject] {
+            if let actualChannel = channel["channel" as NSObject] as? [NSObject: AnyObject] {
                 currentDataSource = DynamicDataSource(channel: actualChannel)
             } else {
                 currentDataSource = DynamicDataSource(channel: channel)
@@ -85,7 +85,7 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
             
 
             if remainingPathComponents.count == 0 {
-                finishWithDataSource(currentDataSource)
+                finishWithDataSource(dataSource: currentDataSource)
             } else {
                 startIteration()
             }
@@ -107,7 +107,7 @@ extension BasicDataSource {
     }
 }
 
-public enum DynamicFavoriteError: ErrorType {
+public enum DynamicFavoriteError: Error {
     case InvalidPathComponent
     case InvalidPath
 }

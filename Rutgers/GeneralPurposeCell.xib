@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="general" rowHeight="86" id="Aeu-4N-hey" customClass="GeneralPurposeCell" customModule="Rutgers" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="386" height="86"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Aeu-4N-hey" id="Nk5-oW-5La">
+                <rect key="frame" x="0.0" y="0.0" width="386" height="85.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWY-PU-gTh">
+                        <rect key="frame" x="6" y="32" width="193" height="21"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUv-aB-Xqh">
+                        <rect key="frame" x="183" y="36" width="197" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="kUv-aB-Xqh" firstAttribute="centerY" secondItem="Nk5-oW-5La" secondAttribute="centerY" id="6p2-D6-EYa"/>
+                    <constraint firstAttribute="trailing" secondItem="kUv-aB-Xqh" secondAttribute="trailing" constant="15" id="Mge-k7-kGm"/>
+                    <constraint firstItem="WWY-PU-gTh" firstAttribute="width" secondItem="Nk5-oW-5La" secondAttribute="width" multiplier="0.5" id="XL3-tt-BNP"/>
+                    <constraint firstItem="kUv-aB-Xqh" firstAttribute="width" secondItem="WWY-PU-gTh" secondAttribute="width" id="Yvr-pq-2cn"/>
+                    <constraint firstItem="WWY-PU-gTh" firstAttribute="leading" secondItem="Nk5-oW-5La" secondAttribute="leading" constant="15" id="dyd-uZ-m5o"/>
+                    <constraint firstItem="WWY-PU-gTh" firstAttribute="centerY" secondItem="Nk5-oW-5La" secondAttribute="centerY" id="uTp-Jr-C1e"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="dataLabel" destination="kUv-aB-Xqh" id="QgA-BQ-Fmn"/>
+                <outlet property="titleLabel" destination="WWY-PU-gTh" id="v1n-Sd-dhw"/>
+            </connections>
+            <point key="canvasLocation" x="278" y="-264"/>
+        </tableViewCell>
+    </objects>
+</document>

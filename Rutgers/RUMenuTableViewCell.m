@@ -8,7 +8,7 @@
 
 #import "RUMenuTableViewCell.h" 
 #import "RULabel.h"
-#import <PureLayout.h>
+#import "PureLayout.h"
 #import "NSDictionary+Channel.h"
 #import "UIFont+DynamicType.h"
 #import "UIColor+RutgersColors.h"

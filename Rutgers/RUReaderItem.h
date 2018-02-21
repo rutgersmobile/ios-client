@@ -23,4 +23,14 @@
 @property (nonatomic, readonly) NSURL *imageURL;
 @property (nonatomic, readonly) NSString *url;
 @property (nonatomic, readonly) NSString *descriptionText;
+
+#warning TODO : Poor design create specialized sub class for game item , rather than adding it on to this generic item
+
+@property (readonly) int ruScore;
+@property (readonly) int otherScore;
+@property (readonly) bool isRuHome; // determine is ru is home , then display the ru score first , else otherwise
+@property (readonly) bool ruWin;
+@property (readonly) bool imagePresent;
+@property (readonly) bool isEvent;
+@property (readonly) bool nilScores;
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "RUPlacesDataLoadingManager.h"
-#import <AFNetworking.h>
+#import "AFNetworking.h"
 #import "RULocationManager.h"
 #import "RUPlace.h"
 #import "NSDictionary+ObjectsForKeys.h"
@@ -54,7 +54,7 @@ static NSString *const PlacesRecentPlacesKey = @"PlacesRecentPlacesKey";
 
 -(void)load{
     [self willBeginLoad];
-    [[RUNetworkManager sessionManager] GET:@"places.txt" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:@"places.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             [self parsePlaces:responseObject];
             [self didEndLoad:YES withError:nil];

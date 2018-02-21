@@ -7,37 +7,44 @@
 //
 
 #import "RUPredictionsBodyRow.h"
-#import "RUPredictionsBodyTableViewCell.h"
 #import "NSDate+EpochTime.h"
 #import "RUBusPrediction.h"
 #import "RUBusArrival.h"
 
-@interface RUPredictionsBodyRow ()
-@property (nonatomic) NSArray *predictionTimes;
-@property (nonatomic) NSString *minutesString;
-@property (nonatomic) NSString *descriptionString;
-@property (nonatomic) NSString *timeString;
-@end
+/***
+ 
+ Displays output for expanded cells withing the RUBusPredictionVC
+ 
+ ***/
+
 
 @implementation RUPredictionsBodyRow
 -(instancetype)initWithPredictions:(RUBusPrediction *)predictions{
     self = [super init];
+    
     if (self) {
         self.predictionTimes = predictions.arrivals;
+        self.stop = predictions.stopTitle;
+        self.precdictionsSaved = predictions;
     }
     return self;
 }
 
 -(void)setPredictionTimes:(NSArray *)predictionTimes{
+    
     _predictionTimes = predictionTimes;
     
     NSMutableString *minutesString = [NSMutableString new];
     NSMutableString *descriptionString = [NSMutableString new];
     NSMutableString *timeString = [NSMutableString new];
+    NSMutableString *busTimeString = [NSMutableString new];
+    NSMutableArray *vehicleArray = [NSMutableArray new];
     
     [self.predictionTimes enumerateObjectsUsingBlock:^(RUBusArrival *arrivals, NSUInteger idx, BOOL *stop) {
         NSInteger minutes = arrivals.minutes;
         NSInteger seconds = arrivals.seconds;
+        NSString *vehicle = arrivals.vehicle;
+        
         
         NSDate *date = [NSDate dateWithTimeIntervalSinceNow:seconds];
         
@@ -59,12 +66,20 @@
             }
         }
         [timeString appendString:[self formatDate:date]];
+        
+        [vehicleArray addObject:vehicle];
+        
     }];
 
     self.minutesString = minutesString;
     self.descriptionString = descriptionString;
     self.timeString = timeString;
+    self.vehicleArray = vehicleArray;
+    self.busTimeString = busTimeString;
+    
 }
+
+
 
 -(NSString *)formatDate:(NSDate *)date{
     static NSDateFormatter *dateFormatter = nil;
