@@ -412,7 +412,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0h1-bI-Zat">
-                                                    <rect key="frame" x="15" y="42" width="135" height="17"/>
+                                                    <rect key="frame" x="15" y="42" width="130" height="17"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="17" id="6NH-Eb-Oku"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -437,7 +440,7 @@
                                                 <constraint firstItem="0h1-bI-Zat" firstAttribute="top" secondItem="f7P-Sp-QEc" secondAttribute="bottom" constant="12.5" id="iqC-w9-GIy"/>
                                                 <constraint firstItem="3Hl-ir-43g" firstAttribute="centerY" secondItem="0iy-q3-am2" secondAttribute="centerY" id="q8a-N8-taX"/>
                                                 <constraint firstItem="0iy-q3-am2" firstAttribute="top" secondItem="0h1-bI-Zat" secondAttribute="bottom" constant="12.5" id="rHu-7C-8aP"/>
-                                                <constraint firstAttribute="trailing" secondItem="0h1-bI-Zat" secondAttribute="trailing" id="z1x-mz-K9P"/>
+                                                <constraint firstAttribute="trailing" secondItem="0h1-bI-Zat" secondAttribute="trailing" constant="5" id="z1x-mz-K9P"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TXb-0O-bpa">
@@ -508,16 +511,15 @@
                                     <constraints>
                                         <constraint firstItem="fwY-nZ-qwN" firstAttribute="top" secondItem="fFy-Xr-1YV" secondAttribute="top" constant="5" id="0GH-Mv-EO9"/>
                                         <constraint firstItem="fwY-nZ-qwN" firstAttribute="leading" secondItem="fFy-Xr-1YV" secondAttribute="trailing" constant="5" id="4os-pq-YpA"/>
+                                        <constraint firstItem="kFQ-bi-fHs" firstAttribute="leading" secondItem="ZhO-x9-Ziu" secondAttribute="trailing" constant="5" id="7c4-Oe-qnj"/>
                                         <constraint firstItem="8Hn-hS-cwL" firstAttribute="top" secondItem="uWL-Nj-TYe" secondAttribute="bottom" constant="2" id="7yJ-ut-hOH"/>
                                         <constraint firstItem="R26-R4-88l" firstAttribute="centerX" secondItem="ZhO-x9-Ziu" secondAttribute="centerX" id="9hJ-7f-3ai"/>
                                         <constraint firstItem="TXb-0O-bpa" firstAttribute="leading" secondItem="2Kn-Wm-asX" secondAttribute="leadingMargin" constant="-9" id="BWc-ZC-MRJ"/>
-                                        <constraint firstItem="kFQ-bi-fHs" firstAttribute="centerX" secondItem="uWL-Nj-TYe" secondAttribute="centerX" id="Ec8-J3-Stf"/>
                                         <constraint firstItem="ZhO-x9-Ziu" firstAttribute="centerX" secondItem="GrB-d7-3xe" secondAttribute="centerX" id="Fd3-fA-ghK"/>
                                         <constraint firstItem="kFQ-bi-fHs" firstAttribute="top" secondItem="8Hn-hS-cwL" secondAttribute="bottom" constant="1" id="IhF-dr-a6g"/>
                                         <constraint firstItem="fFy-Xr-1YV" firstAttribute="leading" secondItem="TXb-0O-bpa" secondAttribute="trailing" id="L5C-61-SY1"/>
                                         <constraint firstItem="vlo-Ll-Qdz" firstAttribute="leading" secondItem="fFy-Xr-1YV" secondAttribute="trailing" constant="5" id="RNf-Vc-TG0"/>
                                         <constraint firstItem="R26-R4-88l" firstAttribute="top" secondItem="vlo-Ll-Qdz" secondAttribute="bottom" constant="0.25" id="TSg-hh-6uR"/>
-                                        <constraint firstItem="bwz-1T-gT0" firstAttribute="centerX" secondItem="kFQ-bi-fHs" secondAttribute="centerX" id="V6W-r4-wXY"/>
                                         <constraint firstItem="r0D-Tu-kLx" firstAttribute="top" secondItem="2Kn-Wm-asX" secondAttribute="top" id="VC5-xF-FuO"/>
                                         <constraint firstItem="ZhO-x9-Ziu" firstAttribute="top" secondItem="8Hn-hS-cwL" secondAttribute="bottom" constant="0.25" id="X0u-fB-uCU"/>
                                         <constraint firstItem="bwz-1T-gT0" firstAttribute="top" secondItem="vlo-Ll-Qdz" secondAttribute="bottom" constant="1" id="bqb-i0-1bx"/>
@@ -533,6 +535,7 @@
                                         <constraint firstItem="uWL-Nj-TYe" firstAttribute="top" secondItem="fwY-nZ-qwN" secondAttribute="bottom" constant="1" id="wtL-G0-7Oj"/>
                                         <constraint firstItem="uWL-Nj-TYe" firstAttribute="leading" secondItem="GrB-d7-3xe" secondAttribute="trailing" constant="5" id="wzL-Tq-eIo"/>
                                         <constraint firstAttribute="bottom" secondItem="fFy-Xr-1YV" secondAttribute="bottom" id="xmQ-HB-jqg"/>
+                                        <constraint firstItem="bwz-1T-gT0" firstAttribute="leading" secondItem="R26-R4-88l" secondAttribute="trailing" constant="5" id="ygI-hq-J2d"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -543,6 +546,7 @@
                                     <outlet property="campusCode2" destination="ZhO-x9-Ziu" id="Hun-7c-xfl"/>
                                     <outlet property="campusCode3" destination="R26-R4-88l" id="kdL-vY-sKp"/>
                                     <outlet property="instructor" destination="0h1-bI-Zat" id="FMP-mW-mqG"/>
+                                    <outlet property="instructorHeight" destination="6NH-Eb-Oku" id="iNj-xM-fgV"/>
                                     <outlet property="openClosedLabel" destination="3Hl-ir-43g" id="W5M-dy-sJB"/>
                                     <outlet property="openColor" destination="TXb-0O-bpa" id="oAy-8Q-bXJ"/>
                                     <outlet property="sectionIndex" destination="0iy-q3-am2" id="fdS-3Q-kAX"/>

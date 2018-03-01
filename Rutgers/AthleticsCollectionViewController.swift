@@ -191,6 +191,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
         
         // get the url to visit
         let atheleticsUrl = "sports/\(self.channel["data"]!).json"
+        
         self.dataSource = RUReaderDataSource.init(url: atheleticsUrl)
         
         self.dataSource.loadContent

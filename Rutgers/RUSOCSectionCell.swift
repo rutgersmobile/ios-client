@@ -9,6 +9,7 @@
 import Foundation
 
 class RUSOCSectionCell: UITableViewCell {
+    @IBOutlet weak var instructorHeight: NSLayoutConstraint!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var openColor: UIView!
     @IBOutlet weak var sectionNumber: UILabel!
