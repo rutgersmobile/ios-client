@@ -138,7 +138,9 @@ class RUSOCCourseViewController: UITableViewController {
         cell.sectionIndex.text = String(format: "%05d",
                                         Int(section.sectionIndex)!)
         
-        cell.instructor.text = section.instructors.count > 1 ? (section.instructors.get(0)?.instructorName)! + "\n" + "et al." : section.instructors.get(0)?.instructorName
+        cell.instructor.text = section.instructors.count > 1 ?
+            (section.instructors.get(0)?.instructorName)! + "\n" + "et al." :
+             section.instructors.get(0)?.instructorName
         
         cell.instructorHeight.constant = section.instructors.count > 1 ? 34 : 17
         cell.instructor.numberOfLines = section.instructors.count > 1 ? 3 : 0

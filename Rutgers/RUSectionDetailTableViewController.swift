@@ -21,12 +21,8 @@ class RUSOCNotesCell: UITableViewCell {
 class RUMeetingTimesAndLocationCell: UITableViewCell {
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var timesLabel: UILabel!
-    @IBOutlet weak var campusAbbrev: UILabel!
-    @IBOutlet weak var roomNumber: UILabel!
-    
-    @IBOutlet weak var buildingCode: UILabel!
-    
-    @IBOutlet weak var locationImage: UIImageView!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var roomLabel: UILabel!
     
 }
 
@@ -188,50 +184,21 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     }
                     
                     cell.dayLabel?.text = day
+                } else {
+                    cell.dayLabel?.text = "By Arrangement"
                 }
                 
                 if let campusAbbrev = item.campusAbbrev {
-                    cell.campusAbbrev.text = campusAbbrev
-                    cell.campusAbbrev.backgroundColor =
+                    cell.backgroundColor =
                         CampusColor.from(string: campusAbbrev.lowercased()).color
                 }
-                cell.campusAbbrev.textAlignment = .center
+                
                 
                 cell.timesLabel?.text = item.timeFormatted() ?? ""
+
+                cell.locationLabel?.text =  building.name
+                cell.roomLabel?.text = (item.roomNumber ?? "" == "" ? "" : "Rm. " + item.roomNumber!) + " " + ((item.campusAbbrev ?? "") == "" ? "" : "(" + item.campusAbbrev! + ")")
                 
-                if let _ = item.buildingCode {
-                    cell.buildingCode.text = building.name
-                } else {
-                    cell.buildingCode.text = "By Arrangement"
-                }
-                
-                if let roomNumber = item.roomNumber {
-                    cell.roomNumber.text = "Room " + roomNumber
-                } else {
-                    cell.roomNumber.text = ""
-                }
-                
-                let url = RUNetworkManager.baseURL()
-                
-                
-             
-                DispatchQueue.global(qos: .background).async {
-                let image =
-                    item.buildingCode
-                        .flatMap{
-                            let urlString = String.init(describing: url) + "\($0).jpeg"
-                            return URL(string: urlString)
-                        }
-                        .flatMap{try? Data(contentsOf: $0)}
-                        .flatMap{UIImage(data: $0)}
-                
-                    DispatchQueue.main.async {
-                    
-                        let defaultImage = UIImage(named: "image-not-found")
-                
-                        cell.locationImage.image = image ?? defaultImage
-                    }
-                }
                 cell.setupCellLayout()
                 
                 return cell
@@ -398,10 +365,10 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     return UITableViewAutomaticDimension
                 case .preReqSectionItem(notes: _):
                     return UITableViewAutomaticDimension
-                case .meetingTimesItem(_):
-                    return 180
+                case .meetingTimesItem(item: _, building: _):
+                    return 60
                 default:
-                    return 44
+                    return UITableViewAutomaticDimension
                 }
             } ?? UITableViewAutomaticDimension
     }
@@ -417,10 +384,10 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                     return UITableViewAutomaticDimension
                 case .preReqSectionItem(notes: _):
                     return UITableViewAutomaticDimension
-                case .meetingTimesItem(_):
-                    return 180
+                case .meetingTimesItem(item: _, building: _):
+                    return 60
                 default:
-                    return 44
+                    return UITableViewAutomaticDimension
                 }
             } ?? UITableViewAutomaticDimension
     }
