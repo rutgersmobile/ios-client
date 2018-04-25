@@ -185,6 +185,12 @@ class RUSOCCourseViewController: UITableViewController {
             cell.buildingRoom3.text = ""
         }
         
+        if let sessDates = section.sessionDates {
+            cell.sessionDates.text = sessDates
+        } else {
+            cell.sessionDates.isHidden = true
+        }
+        
         let setColor: UIColor = section.openStatus
             ? RUSOCViewController.openColor
             : RUSOCViewController.closedColor
@@ -262,6 +268,12 @@ class RUSOCCourseViewController: UITableViewController {
         } else {
             cell.time5.text = ""
             cell.buildingRoom5.text = ""
+        }
+        
+        if let sessDates = section.sessionDates {
+            cell.sessionDates.text = sessDates
+        } else {
+            cell.sessionDates.isHidden = true
         }
         
         cell.openColor.backgroundColor = section.openStatus
@@ -429,7 +441,7 @@ class RUSOCCourseViewController: UITableViewController {
         .addDisposableTo(disposeBag)
 
         courseO.flatMap {[unowned self] realCourse -> Observable<(Section, [String: [String]])> in
-            
+
             self.tableView.rx.modelSelected(
                 CourseSectionItem.self).filterMap { model -> Section? in
                 switch model {

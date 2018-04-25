@@ -25,6 +25,7 @@ class RUSOCSectionCell: UITableViewCell {
     @IBOutlet weak var campusCode2: UILabel!
     @IBOutlet weak var campusCode3: UILabel!
     @IBOutlet weak var openClosedLabel: UILabel!
+    @IBOutlet weak var sessionDates: UILabel!
     @IBOutlet weak var subHeight: NSLayoutConstraint!
     
     override func layoutSubviews() {
@@ -58,4 +59,5 @@ class RUSOCSectionCellExtra: UITableViewCell {
     @IBOutlet weak var campusCode4: UILabel!
     @IBOutlet weak var campusCode5: UILabel!
     @IBOutlet weak var openClosedLabel: UILabel!
+    @IBOutlet weak var sessionDates: UILabel!
 }

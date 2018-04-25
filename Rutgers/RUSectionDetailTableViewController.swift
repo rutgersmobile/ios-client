@@ -209,7 +209,11 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             //This needs to stay in order for the app to not crash
             ds.sectionModels[idxPath].title
         }
-         
+        
+//        let sessionDatesItem: [SOCSectionDetailItem] = [.noteSectionItem(notes: section.sessionDates ?? "")]
+        
+        
+        
         //A bunch of ternary operators ahead
         let subjectNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["subjectNotes"]?.flatMap {
@@ -231,6 +235,9 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             courseNotesItem.isEmpty ? [] :
                 [.NoteSection(title: "Course Notes",
                               items: courseNotesItem)]
+        let sessionDateItem: [SOCSectionDetailItem] = self.section.sessionDates.flatMap {$0.isEmpty ? nil : [.noteSectionItem(notes: $0)]} ?? []
+        
+        let sessionSection: [MultiSection] = sessionDateItem.isEmpty ? [] : [.NoteSection(title: "Session Dates", items: sessionDateItem)]
         
         let coreCodesNotesItem: [SOCSectionDetailItem] =
             self.noteDictionary["coreCodes"]?.flatMap {
@@ -313,12 +320,17 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         let sectionArray: [MultiSection] =
                 subjectSection +
                 courseSection +
-                preReqSection +
-                coreCodesSection +
-                sectionEligibility +
-                subtitleSection +
-                supplements +
-                sectionNotesSection
+                sessionSection +
+                preReqSection
+        
+        let otherSectionArray: [MultiSection] =
+            coreCodesSection +
+            sectionEligibility +
+            subtitleSection +
+            supplements +
+            sectionNotesSection
+        
+        let returnArray: [MultiSection] = sectionArray + otherSectionArray
         
         let sectionItem: [SOCSectionDetailItem] =
             [.sectionItem(section: self.section)]
@@ -347,7 +359,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             .toArray()
             .map {
                 [.MeetingTimesSection(title: "Meeting Times", items: $0)]
-            }.map {sectionArray + instructorSection + $0}
+            }.map {returnArray + instructorSection + $0}
             .asDriver(onErrorJustReturn: [])
             .drive(self.tableView!.rx.items(dataSource: dataSource))
             .addDisposableTo(self.disposeBag)
