@@ -87,8 +87,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.navigationItem.title =
-            self.courseString + ":" +
-            String(format: "%02d", self.sectionNumber!) +
+            self.courseString + ":" + self.section.number +
             " " + self.courseTitle
         
         self.tableView.dataSource = nil

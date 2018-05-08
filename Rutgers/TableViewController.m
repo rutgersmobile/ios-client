@@ -244,8 +244,6 @@
         Will ios accpet http ?
         > Use Uinversal Links in ios 9
         > ios < 9  : We will a server redirect
-     */
-    /*
         change http://rutgers://bus/route/weekend%201/ to
         http://rumobile.rutgers.edu/bus/route/weekend%201/
      */
