@@ -287,6 +287,15 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 [.NoteSection(title: "Subtitle",
                               items: sectionSubtitle)]
         
+        let classSubtopic: [SOCSectionDetailItem] =
+            self.section.subtopic.flatMap {
+                $0.isEmpty ? nil : [.noteSectionItem(notes: $0)]
+            } ?? []
+        
+        let classSectionSubtopic: [MultiSection] =
+        classSubtopic.isEmpty ? [] :
+        [.NoteSection(title: "Sub Topic", items: classSubtopic)]
+        
         let supplementItem: [SOCSectionDetailItem] =
             self.noteDictionary["supplementCode"]?.flatMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
@@ -320,7 +329,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
                 subjectSection +
                 courseSection +
                 sessionSection +
-                preReqSection
+                preReqSection +
+                classSectionSubtopic
         
         let otherSectionArray: [MultiSection] =
             coreCodesSection +

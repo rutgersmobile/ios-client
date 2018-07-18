@@ -163,7 +163,7 @@ open class RUMenuItemManager: NSObject {
                     return nil
                 }
                 let channelHandles = contentChannels.flatMap { $0.channelHandle }
-                let validHandle = { handle in
+                let validHandle: (String) -> Bool = { handle in
                     channelHandles.contains { $0 == handle }
                 }
                 let defaults = dictDefaults.filter {
