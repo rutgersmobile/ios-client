@@ -32,10 +32,8 @@
     {
         [RUEditMenuItemsViewController registerClass];
         [DynamicCollectionViewController registerClass];
-   
         [AthleticsCollectionViewController registerClass];
         [MusicViewController registerClass];
-
         [RUCinemaCollectionViewController registerClass];
         [RUFoodMainViewController registerClass];
         [RUSOCViewController registerClass];

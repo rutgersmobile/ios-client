@@ -213,7 +213,7 @@ extension DynamicCollectionViewController
             channel = item ;
         }
        
-        let vc : UIViewController = RUChannelManager.sharedInstance().viewController(forChannel: channel as! [NSObject : AnyObject]!)
+        let vc : UIViewController = RUChannelManager.sharedInstance().viewController(forChannel: channel as! [NSObject : AnyObject]?)
        
         if( ((channel! as AnyObject).channelTitle == nil) && (item.channelTitle != nil))
         {

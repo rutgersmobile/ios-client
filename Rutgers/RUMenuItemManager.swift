@@ -73,7 +73,10 @@ extension RUFavorite {
     public convenience init?(dictionary: NSDictionary) {
         guard let title = dictionary["title"] as? String,
             let urlString = dictionary["url"] as? String,
-            let url = URL(string: urlString) else { return nil }
+            let url = URL(string: urlString) else {
+                print("Cannot favorite.  Dictionary passed in does noes not contain 'title' or 'url' or both.  Check to make sure it is correct")
+                return nil
+        }
         
         self.init(title: title, url: url as NSURL)
     }

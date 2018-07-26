@@ -54,7 +54,7 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
         }
         
         self.error = error
-        self.loading?.doneWithError(error as? NSError)
+        self.loading?.doneWithError(error as NSError?)
         self.loading = nil
     }
    

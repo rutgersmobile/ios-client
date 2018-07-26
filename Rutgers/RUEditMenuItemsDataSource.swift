@@ -63,9 +63,11 @@ class RUEditMenuItemsDataSource: DataSource, UITableViewDelegate {
         return NSStringFromClass(RUMenuTableViewCell.self)
     }
     
-    override func configureCell(_ cell: Any!, forRowAt indexPath: IndexPath!) {
-        let indexItem = item(at: indexPath as IndexPath!)
-        let menuCell = cell as! RUMenuTableViewCell
+    override func configureCell(_ cell: Any, forRowAt indexPath: IndexPath) {
+        let indexItem = item(at: indexPath)
+        guard let menuCell = cell as? RUMenuTableViewCell else {
+            fatalError("Issue loading RuMenuTableViewCell, check to make sure items are correct")
+        }
         
         //warning move this into the cell
         switch indexItem {

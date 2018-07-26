@@ -294,7 +294,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         
         let classSectionSubtopic: [MultiSection] =
         classSubtopic.isEmpty ? [] :
-        [.NoteSection(title: "Sub Topic", items: classSubtopic)]
+        [.NoteSection(title: "Description", items: classSubtopic)]
         
         let supplementItem: [SOCSectionDetailItem] =
             self.noteDictionary["supplementCode"]?.flatMap {
@@ -306,22 +306,23 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
         let sectionNotesItem: [SOCSectionDetailItem] = {
             return self.section.sectionNotes.flatMap{
                 $0 != "" ?
-                    [.noteSectionItem(notes:
-                        "Section \(section.number) notes: " + $0)] : []
+                    [.noteSectionItem(notes: $0)] : []
             }
         }() ?? []
         
         let commentsText: [SOCSectionDetailItem] = {
             return self.section.commentsText.flatMap {
                 $0 != "" ?
-                    [.noteSectionItem(notes:
-                        "Section \(section.number) comments: " + $0)] : []
+                    [.noteSectionItem(notes: $0)] : []
             }
         }() ?? []
         
         let sectionNotesSection: [MultiSection] =
-        sectionNotesItem.isEmpty && commentsText.isEmpty ? [] :
-        [.NoteSection(title: "Section Notes", items: sectionNotesItem + commentsText)]
+        sectionNotesItem.isEmpty ? [] :
+        [.NoteSection(title: "Section Notes", items: sectionNotesItem)]
+        
+        let commentsTextSection: [MultiSection] =
+        commentsText.isEmpty ? [] : [.NoteSection(title: "Comments", items: commentsText)]
         
         let supplements = supplementSection + specialPermissionSection + openToSection
         
@@ -337,7 +338,8 @@ class RUSOCSectionDetailTableViewController: UITableViewController {
             sectionEligibility +
             subtitleSection +
             supplements +
-            sectionNotesSection
+            sectionNotesSection +
+            commentsTextSection
         
         let returnArray: [MultiSection] = sectionArray + otherSectionArray
         

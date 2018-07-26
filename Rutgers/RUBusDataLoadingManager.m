@@ -82,7 +82,7 @@ NSString * const newarkAgency = @"rutgers-newark";
 /*
     This searches through different agencies
  */
--(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void (^)(NSArray *stops, NSError *error))handler
+-(void) fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void (^)(NSArray *stops, NSError *error))handler
 {
     dispatch_group_t group = dispatch_group_create();
 
