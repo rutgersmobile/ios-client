@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxSegue
 import RxDataSources
+import LifetimeTracker
 
 public extension UITableViewCell {
     func setupCellLayout() {
@@ -30,8 +31,10 @@ class RUSOCSubjectCell: UITableViewCell {
  */
 class RUSOCViewController
     : UITableViewController
-    , RUChannelProtocol
+    , RUChannelProtocol,
+    LifetimeTrackable
 {
+    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "VC")
     var channel: [NSObject : AnyObject]!
 
     private typealias RxSOCViewControllerDataSource =
@@ -77,14 +80,16 @@ class RUSOCViewController
     static func channel(
         withConfiguration channelConfiguration: [AnyHashable : Any]!
     ) -> Any! {
+        
         let storyboard = RUSOCViewController.getStoryBoard()
         let me = storyboard.instantiateInitialViewController()
             as! RUSOCViewController
         
         me.channel = channelConfiguration as [NSObject : AnyObject]
-        
+        me.trackLifetime()
         return me
     }
+ 
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -180,8 +185,8 @@ class RUSOCViewController
             )
         
     }
-    
-    static func viewControllers(withPathComponents pathComponents: [String]!,
+    /*
+    private static func viewControllers(withPathComponents pathComponents: [String]!,
                                 destinationTitle: String!) -> [Any]! {
     
         let storyboard = RUSOCViewController.getStoryBoard()
@@ -238,7 +243,7 @@ class RUSOCViewController
             print("return detail SOC")
         }
         return []
-    }
+    } */
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -327,7 +332,7 @@ class RUSOCViewController
                 ]}
         }
 
-        let searchResults = getOptions.flatMap { options in
+        let searchResults = getOptions.flatMap {[unowned self] options in
             self.searchController.searchBar.rx.text.changed
                 .debounce(
                     RxTimeInterval.init(0.5),
@@ -390,12 +395,16 @@ class RUSOCViewController
                             )
                         }
                     }
-            }.subscribe(onNext: { vc in
+            }.subscribe(onNext: {[unowned self] vc in
                 self.navigationController?
                     .pushViewController(vc, animated: true)
             }).addDisposableTo(self.disposeBag)
 
-        setupShareButton()
+        //setupShareButton()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
     }
 }
 

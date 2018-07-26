@@ -24,6 +24,7 @@
 #import "RUAppearance.h"
 #import "RUAnalyticsManager.h"
 #import "RUUserInfoManager.h"
+@import LifetimeTracker;
 
 @import Firebase;
 
@@ -79,6 +80,16 @@
         [[RUAnalyticsManager sharedManager] postAnalyticsEvents:[item copy]];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:CrashKey];
     }
+    /* Comment this back in to see lifecycles of viewControllers that implement
+     trackLifetime.  See LifetimeTracker on github for more info.
+     
+    LifetimeTrackerDashboardIntegration *dashboardIntegration = [LifetimeTrackerDashboardIntegration new];
+    [dashboardIntegration setAlwaysVisible];
+    [dashboardIntegration useBarStyle];
+    [LifetimeTracker setupOnUpdate:^(NSDictionary<NSString *,EntriesGroup *> * groups) {
+        [dashboardIntegration refreshUIWithTrackedGroups: groups];
+    }];
+     */
     
     return YES;
 }
