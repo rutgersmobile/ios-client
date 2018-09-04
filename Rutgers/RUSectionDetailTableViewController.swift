@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 import RxDataSources
-//import LifetimeTracker
+import LifetimeTracker
 
 class RUSOCDetailCell: UITableViewCell {
     @IBOutlet weak var leftLabel: UILabel!
@@ -33,10 +33,8 @@ class RUSOCSectionDetailCell: UITableViewCell {
     @IBOutlet weak var sectionNumber: UILabel!
 }
 
-class RUSOCSectionDetailTableViewController: UITableViewController
-//                                             , LifetimeTrackable
-    {
-//    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
+class RUSOCSectionDetailTableViewController: UITableViewController, LifetimeTrackable {
+    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     var courseTitle: String!
     var courseString: String!
     var courseNumber: Int!
@@ -70,7 +68,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
         me.options = options
         me.noteDictionary = notes
         me.section = section
-//        me.trackLifetime()
+        me.trackLifetime()
         return me
     }
     

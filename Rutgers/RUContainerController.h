@@ -28,7 +28,7 @@
 
 
 +(id<RUContainerController>)containerWithContainedViewController:(UIViewController *)containedViewController drawerViewController:(UIViewController *)drawerViewController;
--(void)setDrawerShouldOpenBlock:(BOOL(^)(void))block;
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block;
 @property (nonatomic) UIViewController *containedViewController; // the front view controller that holds the drawer
 -(void)closeDrawer;
 -(void)openDrawer;

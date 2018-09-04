@@ -19,7 +19,6 @@
 #define MIN_SEARCH_DELAY 0.3
 #define MAX_SEARCH_DELAY 0.8
 
-#warning UISearchDisplayController needs to be replaced with UISearchController, although this might not matter since we're scrapping this code
 /*
     Generic table view controller that displays the data for all the different source
     Set the data source : Sub class the TVC .

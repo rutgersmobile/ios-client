@@ -87,11 +87,9 @@
 {
     return YES;
 }
-/*
 -(BOOL)shouldAutomaticallyForwardRotationMethods
 {
     return YES;
 }
- */
 
 @end

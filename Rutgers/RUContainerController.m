@@ -46,7 +46,7 @@
 -(void)closeDrawer{
     
 }
--(void)setDrawerShouldOpenBlock:(BOOL(^)(void))block{
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
     
 }
 
@@ -96,7 +96,7 @@
 -(void)closeDrawer{
     [self setFrontViewPosition:FrontViewPositionLeft animated:YES];
 }
--(void)setDrawerShouldOpenBlock:(BOOL(^)(void))block{
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
 
 }
 
@@ -174,7 +174,7 @@
 
 
 
--(void)setDrawerShouldOpenBlock:(BOOL(^)(void))block{
+-(void)setDrawerShouldOpenBlock:(BOOL(^)())block{
     [self setGestureShouldRecognizeTouchBlock:^BOOL(MMDrawerController *drawerController, UIGestureRecognizer *gesture, UITouch *touch) {
         UIViewController *centerViewController = drawerController.centerViewController;
         if ([touch.view isDescendantOfView:centerViewController.navigationController.navigationBar]) return YES;

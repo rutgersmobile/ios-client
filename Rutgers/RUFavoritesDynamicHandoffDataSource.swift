@@ -96,11 +96,11 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
 
 extension BasicDataSource {
     func subitemMatchingPathComponent(pathComponent: String) -> [NSObject: AnyObject]? {
-        for case let subItem as [NSObject : AnyObject] in items {
-            guard let title = (subItem as NSDictionary).channelTitle else { continue }
+        for case let subItem as NSDictionary in items {
+            guard let title = subItem.channelTitle else { continue }
             let normalizedTitle = (title as NSString).rutgersStringEscape()
             if normalizedTitle == pathComponent {
-                return subItem
+                return subItem as [NSObject : AnyObject]
             }
         }
         return nil
