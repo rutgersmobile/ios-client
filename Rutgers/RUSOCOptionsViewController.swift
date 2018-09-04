@@ -10,10 +10,13 @@ import Foundation
 import RxSwift
 import RxCocoa
 import RxDataSources
-import LifetimeTracker
+//import LifetimeTracker
 
-class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate, LifetimeTrackable {
-    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
+class RUSOCOptionsViewController: UITableViewController
+                                  , UIActionSheetDelegate
+//                                  , LifetimeTrackable
+    {
+//    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     
     
     let cellId = "RUSOCOptionsViewControllerId"
@@ -41,7 +44,7 @@ class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate, 
         ) as! RUSOCOptionsViewController
 
         me.semesters = semesters
-        me.trackLifetime()
+//        me.trackLifetime()
         return me
     }
 

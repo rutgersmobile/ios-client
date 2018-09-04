@@ -9,7 +9,7 @@
 import Foundation
 import RxSwift
 import RxDataSources
-import LifetimeTracker
+//import LifetimeTracker
 
 enum MeetingCodes {
     case hybrid
@@ -17,8 +17,10 @@ enum MeetingCodes {
     case byArrangement
 }
 
-class RUSOCCourseViewController: UITableViewController, LifetimeTrackable {
-    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
+class RUSOCCourseViewController: UITableViewController
+//                                 , LifetimeTrackable
+    {
+//    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     var course: Course?
     var options: SOCOptions!
     var subjectCode: Int?
@@ -47,7 +49,7 @@ class RUSOCCourseViewController: UITableViewController, LifetimeTrackable {
         me.course = course
         me.subjectCode = course.subject
         me.courseNumber = course.courseNumber
-        me.trackLifetime()
+//        me.trackLifetime()
         return me
     }
 

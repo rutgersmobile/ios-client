@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxSegue
 import RxDataSources
-import LifetimeTracker
+//import LifetimeTracker
 
 public extension UITableViewCell {
     func setupCellLayout() {
@@ -31,10 +31,10 @@ class RUSOCSubjectCell: UITableViewCell {
  */
 class RUSOCViewController
     : UITableViewController
-    , RUChannelProtocol,
-    LifetimeTrackable
+    , RUChannelProtocol
+//    , LifetimeTrackable
 {
-    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
+//    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     var channel: [NSObject : AnyObject]!
 
     private typealias RxSOCViewControllerDataSource =
@@ -86,7 +86,7 @@ class RUSOCViewController
             as! RUSOCViewController
         
         me.channel = channelConfiguration as [NSObject : AnyObject]
-        me.trackLifetime()
+//        me.trackLifetime()
         return me
     }
  
