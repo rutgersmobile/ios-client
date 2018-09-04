@@ -230,7 +230,7 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     }
    
    
-    func orientationChanged()
+    @objc func orientationChanged()
     {
         print("rotate")
         collectionView?.collectionViewLayout.invalidateLayout()

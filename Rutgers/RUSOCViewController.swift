@@ -31,8 +31,8 @@ class RUSOCSubjectCell: UITableViewCell {
  */
 class RUSOCViewController
     : UITableViewController
-    , RUChannelProtocol,
-    LifetimeTrackable
+    , RUChannelProtocol
+    , LifetimeTrackable
 {
     static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     var channel: [NSObject : AnyObject]!

@@ -83,13 +83,14 @@
     /* Comment this back in to see lifecycles of viewControllers that implement
      trackLifetime.  See LifetimeTracker on github for more info.
     */
+    /*
     LifetimeTrackerDashboardIntegration *dashboardIntegration = [LifetimeTrackerDashboardIntegration new];
     [dashboardIntegration setAlwaysVisible];
     [dashboardIntegration useBarStyle];
     [LifetimeTracker setupOnUpdate:^(NSDictionary<NSString *,EntriesGroup *> * groups) {
         [dashboardIntegration refreshUIWithTrackedGroups: groups];
     }];
-    
+    */
     
     return YES;
 }

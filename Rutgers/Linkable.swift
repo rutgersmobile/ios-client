@@ -44,7 +44,7 @@ extension UIViewController: Linkable {
         }
     }
 
-    func actionButtonTapped() {
+    @objc func actionButtonTapped() {
         if let url = self.sharingUrl() {
             let favoriteActivity = RUFavoriteActivity(
                 title: self.sharingTitle() ?? ""

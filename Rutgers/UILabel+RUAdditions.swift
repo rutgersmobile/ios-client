@@ -26,7 +26,7 @@ extension UILabel {
                 let attrStr = try NSAttributedString(
                     data: modifiedFontData!,
                     options: [
-                        NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
+                        .documentType: NSAttributedString.DocumentType.html
                     ],
                     documentAttributes: nil
                 )

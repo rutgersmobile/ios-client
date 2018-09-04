@@ -26,7 +26,7 @@ static MKMapRect RutgersNewBrunswickMapRect = {78691175.381219566, 101107765.147
 -(void)get{
     NSString *base = @"http://api.openstreetmap.org/api/0.6/";
     
-    [[RUNetworkManager sessionManager] GET:[base stringByAppendingString:@"map"] parameters:[self parametersFromMapRect:RutgersNewBrunswickMapRect] success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] GET:[base stringByAppendingString:@"map"] parameters:[self parametersFromMapRect:RutgersNewBrunswickMapRect] progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSArray *ways = [responseObject[@"way"] subarrayWithRange:NSMakeRange(0, 100)];
         NSMutableString *wayString = [NSMutableString string];
         NSInteger number = ways.count;
@@ -34,7 +34,7 @@ static MKMapRect RutgersNewBrunswickMapRect = {78691175.381219566, 101107765.147
             [wayString appendString:obj[@"_id"]];
             if (idx != number - 1) [wayString appendString:@","];
         }];
-        [[RUNetworkManager sessionManager] GET:[base stringByAppendingString:@"ways"] parameters:@{@"ways" : wayString} success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:[base stringByAppendingString:@"ways"] parameters:@{@"ways" : wayString} progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             

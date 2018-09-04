@@ -286,7 +286,7 @@ static NSString *const kAnalyticsManagerFirstLaunchKey = @"kAnalyticsManagerFirs
     // Convert the event array into Json
     AFHTTPRequestSerializer *oldSerializer = [RUNetworkManager backgroundSessionManager].requestSerializer;
     [RUNetworkManager backgroundSessionManager].requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:events success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager backgroundSessionManager] POST:@"analytics.php" parameters:events progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         NSLog(@"Analytics sent successfully");
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive) {

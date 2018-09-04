@@ -250,7 +250,7 @@ NSString *const ChannelManagerDidUpdateChannelsKey = @"ChannelManagerDidUpdateCh
 {
     [self willBeginLoad];
     [
-         [RUNetworkManager sessionManager] GET:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"] parameters:nil
+     [RUNetworkManager sessionManager] GET:[ChannelManagerJsonFileName stringByAppendingPathExtension:@"json"] parameters:nil progress:nil
      
         success:
          ^(NSURLSessionDataTask *task, id responseObject) // pass in a block for success

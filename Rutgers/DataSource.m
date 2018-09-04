@@ -747,7 +747,7 @@
             NSInteger oldNumberOfSections = self.numberOfSections;
             NSInteger oldNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];
             
-            _showingPlaceholder = showingPlaceholder;
+            self->_showingPlaceholder = showingPlaceholder;
             
             NSInteger newNumberOfSections = self.numberOfSections;
             NSInteger newNumberOfItemsInFirstSection = [self numberOfItemsInSection:0];

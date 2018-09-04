@@ -24,6 +24,7 @@ struct SOCHelperFunctions {
                                 return Observable.just((meetingTime, building))
                         }
                     } else {
+                        /*
                         return Observable.just(
                             meetingTime,
                             Building(
@@ -31,6 +32,16 @@ struct SOCHelperFunctions {
                                 campus: meetingTime.campusAbbrev ?? "",
                                 name: "",
                                 id: ""
+                            )
+                        )*/
+                        return Observable.just(
+                            (meetingTime,
+                             Building(
+                                code: "",
+                                campus: meetingTime.campusAbbrev ?? "",
+                                name: "",
+                                id: ""
+                            )
                             )
                         )
                     }

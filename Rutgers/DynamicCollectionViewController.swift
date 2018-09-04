@@ -309,7 +309,7 @@ extension DynamicCollectionViewController
         style.firstLineHeadIndent = 5
         cell.title.attributedText = NSAttributedString(
             string: item.channelTitle,
-            attributes: [NSParagraphStyleAttributeName: style]
+            attributes: [NSAttributedStringKey.paragraphStyle: style]
         )
         
         // even if no image name is present, show a default image, to prevent the ugly UI

@@ -90,7 +90,7 @@ extension RUFavorite {
 }
 
 extension RUFavorite {
-    public var channelHandle: String? {
+    @objc public var channelHandle: String? {
         /*
         let handle : String = url.absoluteString.stringByReplacingOccurrencesOfString("http://rumobile.rutgers.edu/link/", withString: "");
         var arr = handle.componentsSeparatedByString("/");

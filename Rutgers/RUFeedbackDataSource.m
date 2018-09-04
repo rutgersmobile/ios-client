@@ -201,7 +201,7 @@
         url = @"https://doxa.rutgers.edu/mobile/1/feedback.php";
     }*/
     
-    [[RUNetworkManager sessionManager] POST:url parameters:feedback success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[RUNetworkManager sessionManager] POST:url parameters:feedback progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.feedbackDelegate formSendSucceeded];
         });

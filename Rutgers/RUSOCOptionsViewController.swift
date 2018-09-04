@@ -12,7 +12,10 @@ import RxCocoa
 import RxDataSources
 import LifetimeTracker
 
-class RUSOCOptionsViewController: UITableViewController, UIActionSheetDelegate, LifetimeTrackable {
+class RUSOCOptionsViewController: UITableViewController
+                                 , UIActionSheetDelegate
+                                 , LifetimeTrackable
+    {
     static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     
     

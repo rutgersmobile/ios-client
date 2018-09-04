@@ -39,7 +39,7 @@
 -(void)showMOTD
 {
     
-    [[RUNetworkManager sessionManager] GET:@"motd.txt" parameters:nil
+    [[RUNetworkManager sessionManager] GET:@"motd.txt" parameters:nil progress:nil
      
          success:^
      (NSURLSessionDataTask *task, id responseObject)

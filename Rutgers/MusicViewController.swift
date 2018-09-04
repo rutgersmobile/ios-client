@@ -128,7 +128,7 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
         }
     }
 
-    func applicationWillEnterForeground() {
+    @objc func applicationWillEnterForeground() {
         recreateIfStopped()
         setupAudioSession()
         setPlayingState()

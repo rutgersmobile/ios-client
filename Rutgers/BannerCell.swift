@@ -258,7 +258,7 @@ class BannerCell : UICollectionViewCell , UIScrollViewDelegate
     }
     
    
-    func changePage(sender: AnyObject) -> ()
+    @objc func changePage(sender: AnyObject) -> ()
     {
         let x  = CGFloat(pageControl!.currentPage) * scrollView!.frame.size.width
         scrollView!.setContentOffset(CGPoint(x:x, y:0), animated: true)

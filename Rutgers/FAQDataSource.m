@@ -50,7 +50,7 @@
     
     [self loadContentWithBlock:^(AAPLLoading *loading) {
         
-        [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager sessionManager] GET:[self.channel channelURL] parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
                 //If we have started another load, we should ignore this one
                 [loading ignore];

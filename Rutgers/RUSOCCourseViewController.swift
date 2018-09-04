@@ -17,7 +17,9 @@ enum MeetingCodes {
     case byArrangement
 }
 
-class RUSOCCourseViewController: UITableViewController, LifetimeTrackable {
+class RUSOCCourseViewController: UITableViewController
+                                 , LifetimeTrackable
+    {
     static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     var course: Course?
     var options: SOCOptions!

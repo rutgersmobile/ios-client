@@ -651,7 +651,7 @@
         if (complete && isNotRedirect)
             [self finishLoadProgress];
         
-        _url = self.webView.URL;
+        self->_url = self.webView.URL;
     }];
     
 }

@@ -22,7 +22,9 @@ class RUSOCCourseCell: UITableViewCell {
     @IBOutlet weak var supplementCodeDescription: UILabel!
 }
 
-class RUSOCSubjectViewController : UITableViewController, LifetimeTrackable {
+class RUSOCSubjectViewController : UITableViewController
+                                   , LifetimeTrackable
+    {
     static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     
     var subject: Subject!
