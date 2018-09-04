@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RxDataSources
+import LifetimeTracker
 
 class RUSOCCourseCell: UITableViewCell {
     @IBOutlet weak var openClosedLabel: UILabel!
@@ -21,7 +22,9 @@ class RUSOCCourseCell: UITableViewCell {
     @IBOutlet weak var supplementCodeDescription: UILabel!
 }
 
-class RUSOCSubjectViewController : UITableViewController {
+class RUSOCSubjectViewController : UITableViewController, LifetimeTrackable {
+    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
+    
     var subject: Subject!
     var options: SOCOptions!
 
@@ -46,6 +49,7 @@ class RUSOCSubjectViewController : UITableViewController {
 
         me.subject = subject
         me.options = options
+        me.trackLifetime()
         return me
     }
 
@@ -129,7 +133,7 @@ class RUSOCSubjectViewController : UITableViewController {
         RutgersAPI.sharedInstance.getCourses(
             options: options,
             subjectCode: subject.code
-        ).map { courses in
+        ).map {[unowned self] courses in
             
             let subjectNotes = Array(Set(courses.map {
                 $0.subjectNotes?

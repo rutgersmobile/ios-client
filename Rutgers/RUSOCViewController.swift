@@ -34,7 +34,7 @@ class RUSOCViewController
     , RUChannelProtocol,
     LifetimeTrackable
 {
-    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "VC")
+    static var lifetimeConfiguration = LifetimeConfiguration(maxCount: 1, groupName: "SOC")
     var channel: [NSObject : AnyObject]!
 
     private typealias RxSOCViewControllerDataSource =

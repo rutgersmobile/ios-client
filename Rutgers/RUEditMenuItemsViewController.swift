@@ -64,7 +64,7 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
     }
 
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        let item = dataSource.item(at: indexPath as IndexPath!)
+        let item = dataSource.item(at: indexPath)
         if item is RUFavorite {
             return "Delete"
         } else {
@@ -73,21 +73,17 @@ class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
     }
     
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-        let item = dataSource.item(at: sourceIndexPath as IndexPath!)
+        let item = dataSource.item(at: sourceIndexPath)
         if item is RUFavorite && proposedDestinationIndexPath.section == 1 {
             return IndexPath(row: dataSource.numberOfItems(inSection: 0) - 1, section: 0)
         } else {
             return proposedDestinationIndexPath
         }
     }
-   
-   //    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-   //        return nil;
-   //    }
         
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath)
-        let item = self.dataSource .item(at: indexPath as IndexPath!) as AnyObject
+        let item = self.dataSource .item(at: indexPath) as AnyObject
         
         if item is RUFavorite
         {

@@ -19,7 +19,6 @@
 
 #import "RUDefines.h"
 
-
 /*
     Some bus information is hosted in the servers..
         
@@ -128,7 +127,7 @@
     return (!(self.activeLoading || self.activeFinishedLoading) || [[NSDate date] timeIntervalSinceDate:self.lastActiveTaskDate] > 45);
 }
 /*
-    Before the active is loaded the agency is loaded , and if there are no errors then the active is laoded..
+Before the active is loaded the agency is loaded , and if there are no errors then the active is laoded..
  */
 -(void)performWhenActiveLoaded:(void(^)(NSError *error))handler
 {
@@ -188,6 +187,22 @@
     {
         handler(self.activeRoutes, error);
     }];
+}
+
+#pragma mark - nextBus to transloc transition
+
+-(void)getArrivalEstimates {
+    NSDictionary *headers = @{@"X-Mashape-Key": @"DDSqpO2YdRmshz4jCexFtUaR8dmAp1QDGP8jsnD0V9SZ4tEwoy", @"Accept": @"application/json"};
+  /*  UNIUrlConnection *asyncConnection = [[UNIRest get:^(UNISimpleRequest *request) {
+        [request setUrl:@"https://transloc-api-1-2.p.mashape.com/arrival-estimates.json?agencies=1323"];
+        [request setHeaders:headers];
+    }] asJsonAsync:^(UNIHTTPJsonResponse *response, NSError *error) {
+        NSInteger code = response.code;
+        NSDictionary *responseHeaders = response.headers;
+        UNIJsonNode *body = response.body;
+        NSData *rawBody = response.rawBody;
+    }]; */
+    
 }
 
 
@@ -292,7 +307,7 @@
     
     [
      [RUNetworkManager sessionManager]
-        GET:URLS[self.agency] parameters:nil // URLS contain the names of the files which contains the data that is used
+     GET:URLS[self.agency] parameters:nil progress:nil // URLS contain the names of the files which contains the data that is used
             success:^
                 (NSURLSessionDataTask *task, id responseObject)
                 {
@@ -335,7 +350,7 @@
     
     [
      [RUNetworkManager sessionManager]
-        GET:ACTIVE_URLS[self.agency] parameters:nil
+     GET:ACTIVE_URLS[self.agency] parameters:nil progress:nil
             success:^
                 (NSURLSessionDataTask *task, id responseObject)
                 {
@@ -377,7 +392,6 @@
     No need for @"&stops=%@|null|%@" , @"&stops=%@|%@" will do.
  
  */
-#warning make sure the format change is not causing problems
 
 #pragma mark - predictions for multi stops
 static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
@@ -409,7 +423,7 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
          
      
      */
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://webservices.nextbus.com/service/publicXMLFeed?a=rutgers&command=predictionsForMultiStops"];
+    NSMutableString *urlString = [NSMutableString stringWithString:@"http://webservices.nextbus.com/service/publicJSONFeed?a=rutgers&command=predictionsForMultiStops"];
 
     if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]])
     {
@@ -506,7 +520,7 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
         RUBusRoute *route = [[RUBusRoute alloc] initWithDictionary:routes[routeTag]];
         route.agency = self.agency;
         route.tag = routeTag;
-        routesByTag[routeTag] = route;
+        routesByTag[routeTag] = route; //routes added by key: routeTag here
     }
     
     //pulls stops out of response json
@@ -544,7 +558,9 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
         [stopsForTitle addStopsObject:stop];
     }
     
+    
     //looping over the route objects we have just made
+    
     for (NSString *routeTag in routesByTag)
     {
         RUBusRoute *route = routesByTag[routeTag];
@@ -560,7 +576,8 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
         }
     }
     
-    self.stops = stopsByTitle; // collections of stops : ( multiple stops correcpsonsing to single location is stored as a single stop
+    
+    self.stops = stopsByTitle; // collections of stops : ( multiple stops corresponding to single location is stored as a single stop
     self.routes = routesByTag;
 }
 /*

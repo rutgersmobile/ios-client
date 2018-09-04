@@ -16,18 +16,18 @@
     if (self)
     {
         //Fill up fields from the dictionary
-        _routeTag = dictionary[@"_routeTag"];
-        _stopTag = dictionary[@"_stopTag"];
+        _routeTag = dictionary[@"routeTag"];
+        _stopTag = dictionary[@"stopTag"];
         
-        _routeTitle = dictionary[@"_routeTitle"];
-        _stopTitle = dictionary[@"_stopTitle"];
+        _routeTitle = dictionary[@"routeTitle"];
+        _stopTitle = dictionary[@"stopTitle"];
         
         //Check if there is a direction
-        NSDictionary *direction = [dictionary[@"direction"] firstObject];
+        NSDictionary *direction = dictionary[@"direction"];
         if (direction)
         {
             //Get its title
-            _directionTitle = direction[@"_title"];
+            _directionTitle = direction[@"title"];
             
             //Parse the arrivals
             NSMutableArray *arrivals = [NSMutableArray array];
@@ -40,7 +40,7 @@
         else
         {
             //Otherwise the direciton title is in this field
-            _directionTitle = dictionary[@"_dirTitleBecauseNoPredictions"];
+            _directionTitle = dictionary[@"dirTitleBecauseNoPredictions"];
         }
         
        // Check if message exit : if so add them to array ..
@@ -48,7 +48,7 @@
         
         for (NSDictionary * message in dictionary[@"message"]) // if not tag then the message will be nil
         {
-            [messages addObject:message[@"_text"]]; // there are two tags text and priority . We ignore the priority.
+            [messages addObject:message[@"text"]]; // there are two tags text and priority . We ignore the priority.
         }
         
         _messages = messages;

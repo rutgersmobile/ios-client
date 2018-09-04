@@ -30,7 +30,7 @@ static inline NSComparisonResult compare(NSInteger int1, NSInteger int2)
     return NSOrderedSame;
 };
 
-extern BOOL iPad();
+extern BOOL iPad(void);
 
 static NSString *const gittag = @"4.3-DEV";
 
@@ -62,9 +62,9 @@ typedef NS_ENUM(NSUInteger, RunMode)
 
 static RunMode const runMode = AlphaMode;
 
-extern BOOL isBeta();
+extern BOOL isBeta(void);
 
-extern NSString * betaModeString();
+extern NSString * betaModeString(void);
 
 #endif /* RUDefines_h */
 

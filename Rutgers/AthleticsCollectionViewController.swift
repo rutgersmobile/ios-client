@@ -156,12 +156,12 @@ class AthleticsCollectionViewController: UICollectionViewController ,UICollectio
     
     static func channel(withConfiguration channelConfiguration: [AnyHashable : Any]!) -> Any! {
         //   let layout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        return AthleticsCollectionViewController(channel: channelConfiguration as [NSObject : AnyObject]!) // load the view for the controller from the nib file
+        return AthleticsCollectionViewController(channel: channelConfiguration as [NSObject : AnyObject]) // load the view for the controller from the nib file
     }
    
     init(channel : [NSObject : AnyObject]!)
     {
-        self.channel = channel as NSDictionary! ;
+        self.channel = channel as NSDictionary
         super.init(nibName: "AthleticsCollectionViewController", bundle: Bundle.main)
     }
     

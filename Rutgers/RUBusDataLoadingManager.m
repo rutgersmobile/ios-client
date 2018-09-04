@@ -126,8 +126,9 @@ NSString * const newarkAgency = @"rutgers-newark";
         NSLog(@"%@" , urlTest);
     }
     
+    NSString *url = [self urlStringForItem:item];
     
-    [[RUNetworkManager sessionManager] GET:[self urlStringForItem:item] parameters:nil
+    [[RUNetworkManager sessionManager] GET:url parameters:nil progress:nil
         success:^
             (NSURLSessionDataTask *task, id responseObject)
             {
@@ -165,7 +166,6 @@ NSString * const newarkAgency = @"rutgers-newark";
                                     descritpors sorts the array by looking at a key in the dictionary
                          */
                     [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-                    
                 }
                 else if ([item isKindOfClass:[RUBusRoute class]]) // sort the predictions in a route using the
                 {
@@ -195,7 +195,7 @@ NSString * const newarkAgency = @"rutgers-newark";
 -(NSString *)urlStringForItem:(id)item
 {
     NSString *agency = [item agency];
-    return [self.agencyManagers[agency] urlStringForItem:item];
+    return [self.agencyManagers[agency] urlStringForItem:item]; //calls urlStringForItem result from RuBusDataAgencyManager
 }
 
 #pragma mark - search

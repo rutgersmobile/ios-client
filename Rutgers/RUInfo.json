@@ -11,7 +11,7 @@
                 "text" : "Call RU-Info (732-445-INFO)",
                 "number" : "732-445-INFO"
               }
-             ],
+             ]
  },
                                     
  {
@@ -49,7 +49,7 @@
               {
                 "type" : "emailButton",
                 "text" : "Email Colonel Henry",
-                "email" : "colhenry@rci.rutgers.edu",
+                "email" : "colhenry@rci.rutgers.edu"
               }
              ],
     "footer" : "colhenry@rci.rutgers.edu"

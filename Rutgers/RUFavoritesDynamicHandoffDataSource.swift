@@ -61,7 +61,7 @@ class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     
    // Point of error
     
-    func dataSource(_ dataSource: DataSource!, didLoadContentWithError error: Error!) {
+    func dataSource(_ dataSource: DataSource, didLoadContentWithError error: Error!) {
         do {
             try findMatchingSubItemInDataSource(dataSource: dataSource)
             print("working !!")
@@ -100,7 +100,7 @@ extension BasicDataSource {
             guard let title = subItem.channelTitle else { continue }
             let normalizedTitle = (title as NSString).rutgersStringEscape()
             if normalizedTitle == pathComponent {
-                return subItem as? [NSObject: AnyObject]
+                return subItem as [NSObject : AnyObject]
             }
         }
         return nil

@@ -12,9 +12,9 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
-        _minutes = [dictionary[@"_minutes"] integerValue];
-        _seconds = [dictionary[@"_seconds"] integerValue];
-        _vehicle = dictionary[@"_vehicle"];
+        _minutes = [dictionary[@"minutes"] integerValue];
+        _seconds = [dictionary[@"seconds"] integerValue];
+        _vehicle = dictionary[@"vehicle"];
     }
     return self;
 }
