@@ -11,6 +11,7 @@ import RxSwift
 import RxDataSources
 import RxSegue
 
+@objcMembers
 class RUFoodMainViewController
     : UITableViewController
     , RUChannelProtocol

@@ -29,6 +29,7 @@ class RUSOCSubjectCell: UITableViewCell {
 /*
  This is a mess - needs refactoring
  */
+@objcMembers
 class RUSOCViewController
     : UITableViewController
     , RUChannelProtocol

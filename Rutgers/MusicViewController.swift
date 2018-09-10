@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 
+@objcMembers
 class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverControllerDelegate
 {
 
@@ -198,14 +199,14 @@ class MusicViewController: UIViewController , RUChannelProtocol, UIPopoverContro
     
     func openWebView(url: NSURL) {
         if #available(iOS 8.0, *) {
-            if let vc = RUWKWebViewController(url: url as URL!) {
+            if let vc = RUWKWebViewController(url: url as URL) {
                 vc.showPageTitles = false
                 vc.hideWebViewBoundaries = true
                 vc.showUrlWhileLoading = false
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         } else {
-            if let vc = RUUIWebViewController(url: url as URL!) {
+            if let vc = RUUIWebViewController(url: url as URL) {
                 vc.showPageTitles = false
                 vc.hideWebViewBoundaries = true
                 vc.showUrlWhileLoading = false

@@ -28,7 +28,7 @@
 
 -(void)loadContent{
     [self loadContentWithBlock:^(AAPLLoading *loading) {
-        [[RUNetworkManager readerSessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [[RUNetworkManager readerSessionManager] GET:self.url parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
             if (!loading.current) {
                 //If we have started another load, we should ignore this one
                 [loading ignore];
@@ -77,7 +77,7 @@
 -(void)loadContentWithAnyBlock:(void(^)(void)) completionBlock
 {
 
-    [[RUNetworkManager sessionManager] GET:self.url parameters:nil success:^(NSURLSessionDataTask *task, id responseObject)
+    [[RUNetworkManager sessionManager] GET:self.url parameters:nil progress:nil success:^(NSURLSessionDataTask *task, id responseObject)
      {
          if ([responseObject isKindOfClass:[NSDictionary class]])
          {

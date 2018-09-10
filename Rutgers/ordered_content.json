@@ -29,7 +29,8 @@
  {
  "handle": "sakai",
  "title": "Sakai",
- "url": "https://sakai.rutgers.edu/mobile",
+ //"url": "https://sakai.rutgers.edu/mobile",`
+ "url" : "https://sakai.rutgers.edu/portal/login"
  "view": "www",
  "icon": "sakai4"
  },

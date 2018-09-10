@@ -13,6 +13,7 @@ import Foundation
 import Alamofire
 import RxSegue
 
+@objcMembers
 final class RUCinemaCollectionViewController:
     UICollectionViewController,
     RUChannelProtocol {
@@ -227,12 +228,12 @@ final class RUCinemaCollectionViewController:
                     offsetBy: 4
                 )
             
-            let currentYear = tmdbMovie.releaseDate!.substring(to: index!)
+            let currentYear = tmdbMovie.releaseDate?[index!...]
             
             cell.descriptionLabel.textColor = .white
             cell.tagsLabel.text = genreString
             cell.descriptionLabel.text = tmdbMovie.overview
-            cell.label.text = "\(tmdbMovie.title!) (\(currentYear))"
+            cell.label.text = "\(tmdbMovie.title!) (\(String(describing: currentYear)))"
             cell.movieId = Int(tmdbMovie.id!)
             
             return cell

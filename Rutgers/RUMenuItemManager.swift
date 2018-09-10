@@ -40,13 +40,13 @@ struct VisibleObject {
         }
     }
 }
-
+@objcMembers
 open class RUFavorite: NSObject
 {
     open let title: String
     open let url: URL
     
-    public init(title: String, url: NSURL)
+    @objc public init(title: String, url: NSURL)
     {
         self.title = title
         self.url = url as URL
@@ -103,6 +103,7 @@ extension RUFavorite {
 private let MenuItemManagerActiveMenuItemsKey = "MenuItemManagerFavoritesKey"
 public let MenuItemManagerDidChangeActiveMenuItemsKey = "MenuItemManagerDidChangeActiveMenuItemsKey"
 
+@objcMembers
 open class RUMenuItemManager: NSObject {
     static let sharedManager = RUMenuItemManager()
     
@@ -165,7 +166,7 @@ open class RUMenuItemManager: NSObject {
                     }
                     return nil
                 }
-                let channelHandles = contentChannels.flatMap { $0.channelHandle }
+                let channelHandles = contentChannels.compactMap { $0.channelHandle }
                 let validHandle: (String) -> Bool = { handle in
                     channelHandles.contains { $0 == handle }
                 }
@@ -234,13 +235,13 @@ open class RUMenuItemManager: NSObject {
     }
 
     private func serializeNew(objects: [AnyObject], visible: Bool) -> [VisibleObject] {
-        return objects.flatMap(serializedItem).map {
+        return objects.compactMap(serializedItem).map {
             VisibleObject(visible: visible, object: $0)
         }
     }
 
     private func deserializeOld(objects: [VisibleObject]) -> [AnyObject] {
-        return objects.map { $0.object }.flatMap(fullItem)
+        return objects.map { $0.object }.compactMap(fullItem)
     }
 
     // Use this to atomically set both visible and hidden items at once.

@@ -54,7 +54,7 @@ extension MKMapView: MapView {
     }
 }
 
-
+@objcMembers
 open class MapsViewController: UIViewController {
     open static let defaultMapRect = MKMapRectMake(78609409.062235206, 100781568.35516316, 393216.0887889266, 462848.10451197624)
     

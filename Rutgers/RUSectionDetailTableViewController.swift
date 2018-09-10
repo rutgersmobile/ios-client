@@ -219,7 +219,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
         
         //A bunch of ternary operators ahead
         let subjectNotesItem: [SOCSectionDetailItem] =
-            self.noteDictionary["subjectNotes"]?.flatMap {
+            self.noteDictionary["subjectNotes"]?.compactMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
                 } ?? [] // nil coalescing operator - essentially if the
         // result from the closure is nil, return an empty array
@@ -230,7 +230,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
                               items: subjectNotesItem)]
         
         let courseNotesItem: [SOCSectionDetailItem] =
-            self.noteDictionary["courseNotes"]?.flatMap {
+            self.noteDictionary["courseNotes"]?.compactMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
                 } ?? []
         
@@ -243,7 +243,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
         let sessionSection: [MultiSection] = sessionDateItem.isEmpty ? [] : [.NoteSection(title: "Session Dates", items: sessionDateItem)]
         
         let coreCodesNotesItem: [SOCSectionDetailItem] =
-            self.noteDictionary["coreCodes"]?.flatMap {
+            self.noteDictionary["coreCodes"]?.compactMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
                 } ?? []
         
@@ -254,7 +254,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
         
 
         let preReqSectionItems: [SOCSectionDetailItem] =
-            self.noteDictionary["preReqs"]?.flatMap {
+            self.noteDictionary["preReqs"]?.compactMap {
                 $0.isEmpty ? nil : .preReqSectionItem(notes: $0)
                 } ?? []
         
@@ -272,7 +272,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
         
         let specialPermissionSection: [MultiSection] = specialPermissionItem.isEmpty ? [] : [.NoteSection(title: "Special Permission", items: specialPermissionItem)]
         
-        let sectionEligibilityItem: [SOCSectionDetailItem] = self.noteDictionary["sectionEligibility"]?.flatMap{
+        let sectionEligibilityItem: [SOCSectionDetailItem] = self.noteDictionary["sectionEligibility"]?.compactMap{
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
             } ?? []
         let sectionEligibility: [MultiSection] =
@@ -301,7 +301,7 @@ class RUSOCSectionDetailTableViewController: UITableViewController
         [.NoteSection(title: "Description", items: classSubtopic)]
         
         let supplementItem: [SOCSectionDetailItem] =
-            self.noteDictionary["supplementCode"]?.flatMap {
+            self.noteDictionary["supplementCode"]?.compactMap {
                 $0.isEmpty ? nil : .noteSectionItem(notes: $0)
         } ?? []
         

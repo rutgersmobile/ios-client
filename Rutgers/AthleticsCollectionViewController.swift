@@ -136,7 +136,7 @@ extension  RUReaderDataSource : UICollectionViewDelegate
     
 }
 
-
+@objcMembers
 class AthleticsCollectionViewController: UICollectionViewController ,UICollectionViewDelegateFlowLayout ,RUChannelProtocol
 {
     var dataSource : RUReaderDataSource! = nil

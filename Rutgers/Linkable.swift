@@ -13,7 +13,7 @@ protocol Linkable {
     func sharingTitle() -> String?
 }
 
-extension UIViewController: Linkable {
+@objc extension UIViewController: Linkable {
     internal func sharingUrl() -> URL? {
         return nil
     }

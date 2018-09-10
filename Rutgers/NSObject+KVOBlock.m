@@ -91,8 +91,8 @@ static void * const AAPLObserverTrampolineContext = @"AAPLObserverTrampolineCont
         // Make sure we don't remove ourself before addObserver: completes
         if (_options & NSKeyValueObservingOptionInitial) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_observee removeObserver:self forKeyPath:_keyPath];
-                _observee = nil;
+                [self->_observee removeObserver:self forKeyPath:self->_keyPath];
+                self->_observee = nil;
             });
         }
         else {

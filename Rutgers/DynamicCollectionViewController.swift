@@ -16,6 +16,7 @@ private let bannerElement = "banner"
  */
 
 // initialization and view setup
+@objcMembers
 class DynamicCollectionViewController: UICollectionViewController, RUChannelProtocol
 {
     var dataSource : DynamicDataSource! = nil

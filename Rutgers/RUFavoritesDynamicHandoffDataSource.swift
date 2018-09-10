@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objcMembers
 class RUFavoritesDynamicHandoffDataSource: DataSource, DataSourceDelegate {
     var remainingPathComponents: [String]
     let handle: String

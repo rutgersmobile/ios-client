@@ -8,6 +8,7 @@
 
 import Foundation
 
+@objcMembers
 class RUEditMenuItemsViewController: TableViewController , RUChannelProtocol {
 
     static func channelHandle() -> String!
