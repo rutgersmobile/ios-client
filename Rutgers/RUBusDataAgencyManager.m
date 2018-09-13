@@ -192,28 +192,36 @@ Before the active is loaded the agency is loaded , and if there are no errors th
 #pragma mark - nextBus to transloc transition
 
 -(void)getArrivalEstimates {
-    AFHTTPSessionManager*  manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField: @"Accept"];
-    [manager.requestSerializer setValue:@"DDSqpO2YdRmshz4jCexFtUaR8dmAp1QDGP8jsnD0V9SZ4tEwoy" forHTTPHeaderField:@"X-Mashape-Key"];
-    [manager GET: @"https://transloc-api-1-2.p.mashape.com/arrival-estimates.json?agencies=1323" parameters:nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        // great this works
-        // just need to parse the data
+    [[self generateManager] GET: @"https://transloc-api-1-2.p.mashape.com/arrival-estimates.json?agencies=1323" parameters:nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+
         NSLog(@"success!");
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure!");
     }];
-   // NSDictionary *headers = @{@"X-Mashape-Key": @"DDSqpO2YdRmshz4jCexFtUaR8dmAp1QDGP8jsnD0V9SZ4tEwoy", @"Accept": @"application/json"};
-  /*  UNIUrlConnection *asyncConnection = [[UNIRest get:^(UNISimpleRequest *request) {
-        [request setUrl:@"https://transloc-api-1-2.p.mashape.com/arrival-estimates.json?agencies=1323"];
-        [request setHeaders:headers];
-    }] asJsonAsync:^(UNIHTTPJsonResponse *response, NSError *error) {
-        NSInteger code = response.code;
-        NSDictionary *responseHeaders = response.headers;
-        UNIJsonNode *body = response.body;
-        NSData *rawBody = response.rawBody;
-    }]; */
-    
+}
+
+-(void)getRoutes {
+    [[self generateManager] GET:@"https://transloc-api-1-2.p.mashape.com/routes.json?agencies=1323" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"success!");
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure!");
+    }];
+}
+
+-(void)getStops {
+    [[self generateManager] GET:@"https://transloc-api-1-2.p.mashape.com/stops.json?agencies=1323" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"success!");
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Failrue!");
+    }];
+}
+
+-(AFHTTPSessionManager*)generateManager {
+    AFHTTPSessionManager*  manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField: @"Accept"];
+    [manager.requestSerializer setValue:@"DDSqpO2YdRmshz4jCexFtUaR8dmAp1QDGP8jsnD0V9SZ4tEwoy" forHTTPHeaderField:@"X-Mashape-Key"];
+    return manager;
 }
 
 
@@ -227,7 +235,7 @@ Before the active is loaded the agency is loaded , and if there are no errors th
  */
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler
 {
-    [self getArrivalEstimates];
+    [self getStops];
     if (!location)
     {
         handler(@[],nil);
@@ -263,9 +271,7 @@ Before the active is loaded the agency is loaded , and if there are no errors th
                         return NSOrderedSame;
                 }
         ];
-            
         handler(sortedNearbyStops, error);
-
     }];
 }
 
