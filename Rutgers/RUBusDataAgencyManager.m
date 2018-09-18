@@ -191,8 +191,25 @@ Before the active is loaded the agency is loaded , and if there are no errors th
 
 #pragma mark - nextBus to transloc transition
 
+typedef enum {
+    arrivals,
+    routes,
+    stops
+} requestArgument;
+
+
+-(NSString*)baseURL {
+    return @"https://transloc-api-1-2.p.mashape.com/";
+}
+
+-(NSString*)buildURLStringWith:(NSString*)argument {
+    NSString* endpointAndAgency = [argument stringByAppendingString:@"?agencies=1323"];
+    return [[self baseURL] stringByAppendingString:endpointAndAgency];
+}
+
 -(void)getArrivalEstimates {
-    [[self generateManager] GET: @"https://transloc-api-1-2.p.mashape.com/arrival-estimates.json?agencies=1323" parameters:nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//    NSString* url = [self buildURLStringWith:@"arrival-estimates.json"];
+    [[self generateManager] GET: [self buildURLStringWith:@"arrival-estimates.json"] parameters:nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
         NSLog(@"success!");
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -235,7 +252,7 @@ Before the active is loaded the agency is loaded , and if there are no errors th
  */
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler
 {
-    [self getStops];
+    [self getArrivalEstimates];
     if (!location)
     {
         handler(@[],nil);
