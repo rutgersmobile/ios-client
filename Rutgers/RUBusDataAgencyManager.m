@@ -189,60 +189,6 @@ Before the active is loaded the agency is loaded , and if there are no errors th
     }];
 }
 
-#pragma mark - nextBus to transloc transition
-
-typedef enum {
-    arrivals,
-    routes,
-    stops
-} requestArgument;
-
-
--(NSString*)baseURL {
-    return @"https://transloc-api-1-2.p.mashape.com/";
-}
-
--(NSString*)buildURLStringWith:(NSString*)argument {
-    NSString* endpointAndAgency = [argument stringByAppendingString:@"?agencies=1323"];
-    return [[self baseURL] stringByAppendingString:endpointAndAgency];
-}
-
--(void)getArrivalEstimates {
-//    NSString* url = [self buildURLStringWith:@"arrival-estimates.json"];
-    [[self generateManager] GET: [self buildURLStringWith:@"arrival-estimates.json"] parameters:nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-        NSLog(@"success!");
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure!");
-    }];
-}
-
--(void)getRoutes {
-    [[self generateManager] GET:@"https://transloc-api-1-2.p.mashape.com/routes.json?agencies=1323" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success!");
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure!");
-    }];
-}
-
--(void)getStops {
-    [[self generateManager] GET:@"https://transloc-api-1-2.p.mashape.com/stops.json?agencies=1323" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success!");
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"Failrue!");
-    }];
-}
-
--(AFHTTPSessionManager*)generateManager {
-    AFHTTPSessionManager*  manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField: @"Accept"];
-    [manager.requestSerializer setValue:@"DDSqpO2YdRmshz4jCexFtUaR8dmAp1QDGP8jsnD0V9SZ4tEwoy" forHTTPHeaderField:@"X-Mashape-Key"];
-    return manager;
-}
-
-
-
 #pragma mark - nearby api
 
 /*
@@ -252,7 +198,6 @@ typedef enum {
  */
 -(void)fetchActiveStopsNearbyLocation:(CLLocation *)location completion:(void(^)(NSArray *stops, NSError *error))handler
 {
-    [self getArrivalEstimates];
     if (!location)
     {
         handler(@[],nil);
@@ -371,7 +316,35 @@ typedef enum {
      ];
     
 }
+#pragma mark transloc methods
 
+-(NSString*)baseURL {
+    return @"https://transloc-api-1-2.p.mashape.com/";
+}
+
+-(NSString*)buildURLStringWith:(NSString*)argument {
+    return [[self baseURL] stringByAppendingString:argument];
+}
+
+-(NSDictionary*)buildParameters{
+    return @{@"agencies": @"1323"};
+}
+//Add completion handlers here and add to dispatch group
+-(void)getRoutes {
+    [[RUNetworkManager transLocSessionManager] GET:[self buildURLStringWith: @"routes.json"] parameters:[self buildParameters] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"success!");
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure!");
+    }];
+}
+
+-(void)getStops {
+    [[RUNetworkManager transLocSessionManager] GET:[self buildURLStringWith: @"stops"] parameters:[self buildParameters] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"success!");
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"Failure!");
+    }];
+}
 /*
     The active stops are cached in the rutgers server and this function obtains the data from them
  */
@@ -382,7 +355,6 @@ typedef enum {
     self.activeLoading = YES;
     self.activeFinishedLoading = NO;
     self.activeLoadingError = nil;
-    
     [
      [RUNetworkManager sessionManager]
      GET:ACTIVE_URLS[self.agency] parameters:nil progress:nil

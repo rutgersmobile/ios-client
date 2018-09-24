@@ -198,6 +198,26 @@ NSString * const newarkAgency = @"rutgers-newark";
     return [self.agencyManagers[agency] urlStringForItem:item]; //calls urlStringForItem result from RuBusDataAgencyManager
 }
 
+#pragma mark - nextBus to transloc transition
+
+
+/*
+-(void)getArrivalEstimates {
+    //    NSString* url = [self buildURLStringWith:@"arrival-estimates.json"];
+    [[self generateManager] GET: [self buildURLStringWith:@"arrivale-estimates.json"] parameters:[self buildParameters] progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSLog(@"Success!  Response object is a dictionary!");
+            
+        } else {
+            NSLog(@"Network request successful, cannot parse dictionary though");
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure!");
+    }];
+}
+*/
+
+
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -259,8 +279,7 @@ NSString * const newarkAgency = @"rutgers-newark";
 }
 
 /*
-    WHAT DOES THIS DO ?
- 
+    Called when you access a favorited menu item, I'm guessing it deconstructs a deep link and returns the proper viewController
  */
 -(void)getSerializedItemWithName:(NSString *)name type:(NSString *)type completion:(void (^)(id item, NSError *error))handler
 {

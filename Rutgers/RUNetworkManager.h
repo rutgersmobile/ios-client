@@ -12,6 +12,7 @@
 @interface RUNetworkManager : NSObject
 +(AFHTTPSessionManager *)backgroundSessionManager;
 +(AFHTTPSessionManager *)sessionManager;
++(AFHTTPSessionManager*)transLocSessionManager;
 +(AFHTTPSessionManager *)readerSessionManager;
 +(NSURL *)baseURL;
 @end
