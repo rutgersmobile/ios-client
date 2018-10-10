@@ -23,17 +23,15 @@
     
     if (self)
     {
+        _routes = dictionary[@"routes"] != nil ? dictionary[@"routes"] : [[NSArray alloc] init];
+        _title = dictionary[@"name"] != nil ? dictionary[@"name"] : @"";
         
-        self.routes = @[]; // filled up in the parseConfig method
-        self.title = dictionary[@"title"];
+        CLLocationDegrees lat = dictionary[@"location"][@"lat"] != nil ? [dictionary[@"location"][@"lat"] doubleValue] : 0.0;
+        CLLocationDegrees lon = dictionary[@"location"][@"lng"] != nil ? [dictionary[@"location"][@"lng"] doubleValue] : 0.0;
         
-        CLLocationDegrees lat = [dictionary[@"lat"] doubleValue];
-        CLLocationDegrees lon = [dictionary[@"lon"] doubleValue];
-        
-        self.location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
-        self.stopId = [dictionary[@"stopId"] integerValue];
-        
-     //   NSLog(@" stop : %@", self.title);
+        _location = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
+        _stopId = dictionary[@"stop_id"] != nil ? [dictionary[@"stop_id"] integerValue] : 0;
+        _active = !_routes.count ? NO : YES;
     }
     
     return self;

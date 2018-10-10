@@ -14,5 +14,8 @@
 +(AFHTTPSessionManager *)sessionManager;
 +(AFHTTPSessionManager*)transLocSessionManager;
 +(AFHTTPSessionManager *)readerSessionManager;
++(NSString*)transLocBaseURL;
++(NSString*)buildURLStringWith:(NSString*)argument;
++(NSDictionary*)buildParameters: (NSString*) agencyLocation;
 +(NSURL *)baseURL;
 @end

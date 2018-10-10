@@ -21,9 +21,12 @@
     
     if (self)
     {
-      
-        _title = dictionary[@"title"];
+        //_title = dictionary[@"title"];
+        //_stops = dictionary[@"stops"];
+        _title = dictionary[@"long_name"];
         _stops = dictionary[@"stops"];
+        _active = [dictionary[@"is_active"] boolValue];
+        _route_id = dictionary[@"route_id"];
     }
     return self;
 }

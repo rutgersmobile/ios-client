@@ -16,6 +16,7 @@
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, readonly) NSArray *directions;
 @property (nonatomic, readonly) NSArray *stops;
+@property (nonatomic, readonly) NSString *route_id;
 
 @property (nonatomic) NSString *tag;
 @property (nonatomic) BOOL active;

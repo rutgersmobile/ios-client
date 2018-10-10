@@ -201,10 +201,10 @@ NSString * const newarkAgency = @"rutgers-newark";
 #pragma mark - nextBus to transloc transition
 
 
-/*
+
 -(void)getArrivalEstimates {
     //    NSString* url = [self buildURLStringWith:@"arrival-estimates.json"];
-    [[self generateManager] GET: [self buildURLStringWith:@"arrivale-estimates.json"] parameters:[self buildParameters] progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[RUNetworkManager transLocSessionManager] GET: [RUNetworkManager buildURLStringWith:@"arrivale-estimates.json"] parameters:[RUNetworkManager buildParameters: @""] progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSLog(@"Success!  Response object is a dictionary!");
             
@@ -215,7 +215,7 @@ NSString * const newarkAgency = @"rutgers-newark";
         NSLog(@"failure!");
     }];
 }
-*/
+
 
 
 #pragma mark - search

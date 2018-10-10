@@ -30,6 +30,7 @@
  */
 #define URLS @{newBrunswickAgency: @"nb-route-config.json", newarkAgency: @"nwk-route-config.json"}
 #define ACTIVE_URLS @{newBrunswickAgency: @"nb-active-stops.json", newarkAgency: @"nwk-active-stops.json"}
+#define GEO_AREA_WITH_AGENCY @{newBrunswickAgency: @"40.470131,-74.485073|40.549613,-74.416323", newarkAgency: @"40.693134,-74.201145|40.764811,-74.145012"}
 
 @interface RUBusDataAgencyManager ()
 @property NSString *agency;
@@ -102,11 +103,12 @@
     return !(self.agencyLoading || self.agencyFinishedLoading);
 }
 
+#pragma mark - needs to be uncommented
 -(void)performWhenAgencyLoaded:(void(^)(NSError *error))handler
 {
     if ([self agencyConfigNeedsLoad])
     {
-        [self loadAgencyConfig];
+        //[self loadAgencyConfig];
     }
   
     // After all the blocks in the agencyGroup has been excuted , this block will be executed. // read doca for dispatch_group_notify
@@ -141,7 +143,9 @@ Before the active is loaded the agency is loaded , and if there are no errors th
         {
             if ([self activeStopsAndRoutesNeedLoad])
             {
-                [self loadActiveStopsAndRoutes];
+               // [self loadActiveStopsAndRoutes];
+                [self getRoutes];
+                [self getStops];
             }
             
             dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
@@ -270,54 +274,7 @@ Before the active is loaded the agency is loaded , and if there are no errors th
         handler(routes,stops,error);
     }];
 }
-
-#pragma mark - api requests
-
-/*
-    Load information about the agency from the rutgers servers
-    we use the session Manager from the network manager to get this information
- */
--(void)loadAgencyConfig
-{
-    dispatch_group_enter(self.agencyGroup); // the following part is done asynchronusly. speficies a block of work to be done asynchronously
-    
-    self.agencyLoading = YES;
-    self.agencyFinishedLoading = NO;
-    self.agencyLoadingError = nil;
-    
-    [
-     [RUNetworkManager sessionManager]
-     GET:URLS[self.agency] parameters:nil progress:nil // URLS contain the names of the files which contains the data that is used
-            success:^
-                (NSURLSessionDataTask *task, id responseObject)
-                {
-                    if ([responseObject isKindOfClass:[NSDictionary class]])
-                    {
-                        [self parseRouteConfig:responseObject]; // parse the json object // the serialization is done by the session manager's compound serailizer
-                         self.agencyFinishedLoading = YES;
-                    }
-                    else
-                    {
-                        self.agencyFinishedLoading = NO;
-                    }
-                    self.agencyLoadingError = nil;
-                    self.agencyLoading = NO;
-                    
-                    dispatch_group_leave(self.agencyGroup);
-                }
-            failure:^
-                (NSURLSessionDataTask *task, NSError *error)
-                {
-                    self.agencyLoading = NO;
-                    self.agencyFinishedLoading = NO;
-                    self.agencyLoadingError = error;
-                    dispatch_group_leave(self.agencyGroup);
-                }
-     ];
-    
-}
 #pragma mark transloc methods
-
 -(NSString*)baseURL {
     return @"https://transloc-api-1-2.p.mashape.com/";
 }
@@ -326,25 +283,139 @@ Before the active is loaded the agency is loaded , and if there are no errors th
     return [[self baseURL] stringByAppendingString:argument];
 }
 
--(NSDictionary*)buildParameters{
-    return @{@"agencies": @"1323"};
+-(NSDictionary*)buildParameters: (NSString*) agencyLocation{
+    return @{@"agencies": @"1323", @"geo_area": agencyLocation};
 }
 //Add completion handlers here and add to dispatch group
 -(void)getRoutes {
-    [[RUNetworkManager transLocSessionManager] GET:[self buildURLStringWith: @"routes.json"] parameters:[self buildParameters] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success!");
+    dispatch_group_enter(self.activeGroup);
+    
+    self.activeLoading = YES;
+    self.activeFinishedLoading = NO;
+    self.activeLoadingError = nil;
+    [[RUNetworkManager transLocSessionManager] GET:[RUNetworkManager buildURLStringWith: @"routes.json"] parameters:[RUNetworkManager buildParameters: GEO_AREA_WITH_AGENCY[self.agency]] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+           // [self parseActiveStopsAndRoutes:responseObject];
+            [self parseRoutes:responseObject[@"data"][@"1323"]];
+            self.activeFinishedLoading = YES;
+            self.lastActiveTaskDate = [NSDate date];
+        }
+        else
+        {
+            self.activeFinishedLoading = NO;
+        }
+        // set state of loading task
+        self.activeLoading = NO;
+        self.activeLoadingError = nil;
+        dispatch_group_leave(self.activeGroup);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure!");
+        self.activeLoading = NO;
+        self.activeFinishedLoading = NO;
+        self.activeLoadingError = error;
+        dispatch_group_leave(self.activeGroup);
     }];
 }
 
 -(void)getStops {
-    [[RUNetworkManager transLocSessionManager] GET:[self buildURLStringWith: @"stops"] parameters:[self buildParameters] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success!");
+    dispatch_group_enter(self.activeGroup);
+    
+    self.activeLoading = YES;
+    self.activeFinishedLoading = NO;
+    self.activeLoadingError = nil;
+    [[RUNetworkManager transLocSessionManager] GET:[RUNetworkManager buildURLStringWith: @"stops.json"] parameters:[RUNetworkManager buildParameters: GEO_AREA_WITH_AGENCY[self.agency]] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            [self parseStops: responseObject[@"data"]];
+            //[self parseActiveStopsAndRoutes:responseObject];
+            self.activeFinishedLoading = YES;
+            self.lastActiveTaskDate = [NSDate date];
+        }
+        else
+        {
+            self.activeFinishedLoading = NO;
+        }
+        dispatch_group_leave(self.activeGroup);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"Failure!");
+        self.activeLoading = NO;
+        self.activeFinishedLoading = NO;
+        self.activeLoadingError = error;
+        dispatch_group_leave(self.activeGroup);
     }];
 }
+
+-(void)parseStops:(NSArray*)stopArray {
+    NSMutableArray* mutableStopArray = [NSMutableArray array];
+    for (NSDictionary* stop in stopArray) {
+        NSDictionary* stopTemp = stop;
+        RUBusStop* stopObj = [[RUBusStop alloc] initWithDictionary:stopTemp];
+        if ([stopObj active]) {
+            [mutableStopArray addObject:stopObj];
+        }
+        //NSLog(@"%@", [stopObj title]);
+    }
+    
+    self.activeStops = mutableStopArray;
+}
+
+-(void)parseRoutes:(NSArray*)routeArray {
+    NSMutableArray* mutableRouteArray = [NSMutableArray array];
+    for (NSDictionary* route in routeArray) {
+        NSDictionary* routeTemp = route;
+        RUBusRoute* routeObj = [[RUBusRoute alloc] initWithDictionary:routeTemp];
+        if ([routeObj active]) {
+        //NSLog(@"%@", [routeObj title]);
+            [mutableRouteArray addObject:routeObj];
+        }
+    }
+    
+    self.activeRoutes = mutableRouteArray;
+}
+
+/*
+ Load information about the agency from the rutgers servers
+ we use the session Manager from the network manager to get this information
+ */
+-(void)loadAgencyConfig
+{
+    dispatch_group_enter(self.agencyGroup); // the following part is done asynchronusly. speficies a block of work to be done asynchronously
+    
+    self.agencyLoading = YES;
+    self.agencyFinishedLoading = NO;
+    self.agencyLoadingError = nil;
+   //Need to pass coordinates for newark/newbrunswick
+    [
+     [RUNetworkManager sessionManager]
+     GET:URLS[self.agency] parameters:nil progress:nil // URLS contain the names of the files which contains the data that is used
+     success:^
+     (NSURLSessionDataTask *task, id responseObject)
+     {
+         if ([responseObject isKindOfClass:[NSDictionary class]])
+         {
+             [self parseRouteConfig:responseObject]; // parse the json object // the serialization is done by the session manager's compound serailizer
+             self.agencyFinishedLoading = YES;
+         }
+         else
+         {
+             self.agencyFinishedLoading = NO;
+         }
+         self.agencyLoadingError = nil;
+         self.agencyLoading = NO;
+         
+         dispatch_group_leave(self.agencyGroup);
+     }
+     failure:^
+     (NSURLSessionDataTask *task, NSError *error)
+     {
+         self.agencyLoading = NO;
+         self.agencyFinishedLoading = NO;
+         self.agencyLoadingError = error;
+         dispatch_group_leave(self.agencyGroup);
+     }
+     ];
+    
+}
+
 /*
     The active stops are cached in the rutgers server and this function obtains the data from them
  */
@@ -376,7 +447,6 @@ Before the active is loaded the agency is loaded , and if there are no errors th
                     self.activeLoadingError = nil;
                     
                     dispatch_group_leave(self.activeGroup);
-                    
                 }
             failure:^
                 (NSURLSessionDataTask *task, NSError *error)
@@ -392,75 +462,6 @@ Before the active is loaded the agency is loaded , and if there are no errors th
     ];
     
 }
-
-/*
-    Format change according to https://www.nextbus.com/xmlFeedDocs/NextBusXMLFeed.pdf
- 
-    No need for @"&stops=%@|null|%@" , @"&stops=%@|%@" will do.
- 
- */
-
-#pragma mark - predictions for multi stops
-static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
-
-/*
-    The Url for obtain data from next bus api
-    
-    We use the predictionsForMultiStops command from next bus to obtain the information ..
- 
-    Uses a particular format and we add the stops and routes to it.
- 
-    Called By BusDataLoadingManager
- 
-    In the next bus api , this commnad is called , predictionForMultiStops
- 
-    DIfferent prediction for Routes and Multi Stops
- 
- */
--(NSString *)urlStringForItem:(id)item
-{
-   
-    if(DEV)
-    {
-        NSMutableString * urlTestString = [NSMutableString stringWithString:@"http://webservices.nextbus.com/service/publicXMLFeed?command=predictionsForMultiStops&a=sf-muni&stops=N|6997&stops=N|3909"];
-        return  [urlTestString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    }
-    /*
-        TESTING
-         
-     
-     */
-    NSMutableString *urlString = [NSMutableString stringWithString:@"http://webservices.nextbus.com/service/publicJSONFeed?a=rutgers&command=predictionsForMultiStops"];
-
-    if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]])
-    {
-        RUBusMultipleStopsForSingleLocation *multiStop = item;
-        NSArray *stops = multiStop.stops;
-
-        for (RUBusStop *stop in stops)
-        {
-            for (NSString *routeTag in stop.routes)
-            {
-                [urlString appendFormat:formatForNextBusMultiStopPrediction,routeTag,stop.tag];
-            }
-        }
-        
-    }
-    else if([item isKindOfClass:[RUBusRoute class]])
-    {
-        RUBusRoute *route = item;
-        for (NSString *stopTag in route.stops)
-        {
-            [urlString appendFormat:formatForNextBusMultiStopPrediction ,route.tag,stopTag];
-        }
-    }
-    
-    NSLog(@"URL : %@" , urlString);
-    
-    return [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-}
-
 
 #pragma mark - api response parsing
 
@@ -597,7 +598,7 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
 {
     NSSet *activeRouteTags = [NSSet setWithArray:[activeConfig[@"routes"] valueForKey:@"tag"]];
     NSMutableArray *activeRoutes = [NSMutableArray array];
-    
+   //Redundant since we have an is active tag
     for (RUBusRoute *route in self.routes.allValues) // the agency has to be build and all its stops and routes stored before this function can be called
     {
         BOOL active = [activeRouteTags containsObject:route.tag]; // check if the route is active
@@ -607,7 +608,9 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
             [activeRoutes addObject:route];
         }
     }
-    
+   /* Will put all stops in a dictionary to then call for a given route
+    E.g: 4000880: [Stop Object] {title: College ave, routes: blah blah, position: lat/long}
+    */
     NSSet *activeStopTitles = [NSSet setWithArray:[activeConfig[@"stops"] valueForKey:@"title"]];
     NSMutableArray *activeStops = [NSMutableArray array];
 
@@ -620,9 +623,8 @@ static NSString *const formatForNextBusMultiStopPrediction = @"&stops=%@|%@";
             [activeStops addObject:stop];
         }
     }
-    
+   //Same, but sort by different key path
     self.activeRoutes = [activeRoutes sortByKeyPath:@"title"];
-
     self.activeStops = [activeStops sortByKeyPath:@"title"];
 }
 

@@ -118,10 +118,23 @@
     return sessionManager;
 }
 
++(NSString*)transLocBaseURL {
+    return @"https://transloc-api-1-2.p.mashape.com/";
+}
+
++(NSString*)buildURLStringWith:(NSString*)argument {
+    return [[self transLocBaseURL] stringByAppendingString:argument];
+}
+
++(NSDictionary*)buildParameters: (NSString*) agencyLocation{
+    return @{@"agencies": @"1323", @"geo_area": agencyLocation};
+}
+
 +(AFHTTPSessionManager*)transLocSessionManager {
-    AFHTTPSessionManager*  manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    static AFHTTPSessionManager*  manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        manager = [[AFHTTPSessionManager alloc]initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField: @"Accept"];
         [manager.requestSerializer setValue:@"DDSqpO2YdRmshz4jCexFtUaR8dmAp1QDGP8jsnD0V9SZ4tEwoy" forHTTPHeaderField:@"X-Mashape-Key"];
