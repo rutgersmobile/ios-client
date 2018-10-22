@@ -15,45 +15,22 @@
     self = [super init];
     if (self)
     {
-        //Fill up fields from the dictionary
-        _routeTag = dictionary[@"routeTag"];
-        _stopTag = dictionary[@"stopTag"];
+        _messages = [[NSMutableArray alloc] init];
+        _active = YES;
+        _routeTitle = @"ROUTE TITLE NOT SET";
+        _stopTitle = @"TITLE NOT SET";
+        _stop_id = dictionary[@"stop_id"];
+        NSMutableArray* mutableArrivals = [[NSMutableArray alloc] init];
         
-        _routeTitle = dictionary[@"routeTitle"];
-        _stopTitle = dictionary[@"stopTitle"];
-        
-        //Check if there is a direction
-        NSDictionary *direction = dictionary[@"direction"];
-        if (direction)
-        {
-            //Get its title
-            _directionTitle = direction[@"title"];
-            
-            //Parse the arrivals
-            NSMutableArray *arrivals = [NSMutableArray array];
-            for (NSDictionary *arrival in direction[@"prediction"]) // go through each prediction .. In XML objects with same name are mapped to a dictionary
-            {
-                [arrivals addObject:[[RUBusArrival alloc] initWithDictionary:arrival]];
-            }
-            _arrivals = arrivals;
+        for (NSDictionary *arrival in dictionary[@"arrivals"]) {
+            [mutableArrivals addObject:[[RUBusArrival alloc] initWithDictionary:arrival]];
         }
-        else
-        {
-            //Otherwise the direciton title is in this field
-            _directionTitle = dictionary[@"dirTitleBecauseNoPredictions"];
-        }
-        
-       // Check if message exit : if so add them to array ..
-        NSMutableArray * messages = [NSMutableArray array];
-        
-        for (NSDictionary * message in dictionary[@"message"]) // if not tag then the message will be nil
-        {
-            [messages addObject:message[@"text"]]; // there are two tags text and priority . We ignore the priority.
-        }
-        
-        _messages = messages;
-        
-        if(DEV) NSLog(@"%@",_messages);
+        [mutableArrivals sortUsingComparator:^NSComparisonResult(id a, id b) {
+            NSDate* first = [(RUBusArrival*)a savedDate];
+            NSDate* second = [(RUBusArrival*)b savedDate];
+            return [first compare:second];
+        }];
+        _arrivals = mutableArrivals;
     }
     return self;
 }

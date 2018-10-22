@@ -27,6 +27,7 @@
         _stops = dictionary[@"stops"];
         _active = [dictionary[@"is_active"] boolValue];
         _route_id = dictionary[@"route_id"];
+        _agency = nil;
     }
     return self;
 }

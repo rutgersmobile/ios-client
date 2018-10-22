@@ -123,7 +123,7 @@
 }
 
 +(NSString*)buildURLStringWith:(NSString*)argument {
-    return [[self transLocBaseURL] stringByAppendingString:argument];
+    return [[self transLocBaseURL] stringByAppendingString: argument];
 }
 
 +(NSDictionary*)buildParameters: (NSString*) agencyLocation{

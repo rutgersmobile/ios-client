@@ -24,7 +24,7 @@
     
     if (self) {
         self.predictionTimes = predictions.arrivals;
-        self.stop = predictions.stopTitle;
+        self.stop = predictions.stop_id;
         self.precdictionsSaved = predictions;
     }
     return self;

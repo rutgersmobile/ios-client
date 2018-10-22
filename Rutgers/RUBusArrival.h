@@ -15,5 +15,7 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 @property (nonatomic, readonly) NSInteger minutes;
 @property (nonatomic, readonly) NSInteger seconds;
+@property (nonatomic, readonly) NSDate* savedDate;
+@property (nonatomic, readonly) NSString* route_id;
 @property (nonatomic, readonly) NSString* vehicle;
 @end

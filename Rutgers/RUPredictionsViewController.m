@@ -69,6 +69,7 @@
     }
     return self;
 }
+#warning Uncomment lines to make sure functionality is the same
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,11 +79,9 @@
      as stop -> has an additional line containing the bus route that will come by that stop
      route does not have this and hence is it smaller in size
      */
-    
     //Set the estimated row height to help the tableview
     self.tableView.rowHeight = [self.item isKindOfClass:[RUBusRoute class]] ? 70.0 : 96.0;
     self.tableView.estimatedRowHeight = self.tableView.rowHeight;
-    
     //All of the content loading happens in the data source
     
     /*
@@ -110,7 +109,7 @@
                            });
         }
     }];
-    
+ 
     /* Maps button to be implemented.  Currently does not do anything */
     
     /*
@@ -123,9 +122,9 @@
     
     // [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , mapsButton , nil]];
     
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , nil]];
+//    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , nil]];
     
-    self.pullsToRefresh = YES;
+    //self.pullsToRefresh = YES;
 }
 
 /*
@@ -139,7 +138,7 @@
 /*
  the self.item is set by the init , and can either represent the route or a stop and based on that
  */
-
+#warning Change return so it works with transloc update
 -(NSURL *)sharingURL
 {
     NSString *type;
@@ -157,16 +156,18 @@
         identifier = self.item[1];
     }
     if (!type) return nil;
-    return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, identifier]]; // eg rut../bus/route/f
+   // return [NSURL rutgersUrlWithPathComponents:@[@"bus", type, identifier]]; // eg rut../bus/route/f
+    return nil;
 }
 
 //This causes an update timer to start upon the Predictions View controller appearing
+#warning Set timer needs to be updated so it doesn't crash
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     // Sets up a timer that repeatedly calls setNeeds... on the data source .
     // What determine what information the data source will request ????? <q>
-    self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+  //  self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
     
 }
 

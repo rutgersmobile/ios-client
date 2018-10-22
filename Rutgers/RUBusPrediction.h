@@ -14,15 +14,10 @@
  */
 @interface RUBusPrediction : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
-@property (nonatomic, readonly) NSString *stopTag;
-@property (nonatomic, readonly) NSString *routeTag;
-
-@property (nonatomic, readonly) NSString *directionTitle;
-@property (nonatomic, readonly) NSString *stopTitle;
-@property (nonatomic, readonly) NSString *routeTitle;
-
-@property (nonatomic, readonly) BOOL active;
-@property (nonatomic) NSArray *arrivals;
-
-@property (nonatomic , readonly) NSArray * messages ;
+@property (nonatomic) BOOL active;
+@property (nonatomic) NSString* routeTitle;
+@property (nonatomic) NSString* stopTitle;
+@property (nonatomic , readonly) NSString* stop_id;
+@property (nonatomic) NSArray* messages;
+@property (nonatomic) NSArray* arrivals;
 @end

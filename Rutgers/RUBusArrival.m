@@ -12,9 +12,27 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
-        _minutes = [dictionary[@"minutes"] integerValue];
-        _seconds = [dictionary[@"seconds"] integerValue];
-        _vehicle = dictionary[@"vehicle"];
+        _route_id = dictionary[@"route_id"];
+        _vehicle = dictionary[@"vehicle_id"];
+        NSString* arrivalDateString = dictionary[@"arrival_at"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss-hh:ss"];
+        NSDate *date = [dateFormatter dateFromString:arrivalDateString];
+        _savedDate = date;
+
+        
+        NSDateFormatter* minutesFormatter = [[NSDateFormatter alloc] init];
+        [minutesFormatter setDateFormat:@"m"];
+        
+        NSDateFormatter* secondsFormatter = [[NSDateFormatter alloc] init];
+        [secondsFormatter setDateFormat:@"s"];
+        
+        NSString* minutesString = [minutesFormatter stringFromDate:date];
+        NSString* secondsString = [secondsFormatter stringFromDate:date];
+        
+        _minutes = [minutesString integerValue];
+        _seconds = [secondsString integerValue];
+        
     }
     return self;
 }

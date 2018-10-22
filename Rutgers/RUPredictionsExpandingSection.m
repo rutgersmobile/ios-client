@@ -28,7 +28,7 @@
         self.headerRow = [[RUPredictionsHeaderRow alloc] initWithPredictions:predictions forItem:item];
         self.bodyRow = [[RUPredictionsBodyRow alloc] initWithPredictions:predictions];
         self.items = @[self.headerRow, self.bodyRow];
-        self.identifier = [NSString stringWithFormat:@"%@%@",predictions.stopTag, predictions.routeTag];
+        self.identifier = [NSString stringWithFormat:@"%@",predictions.stop_id];
     }
     return self;
 }
@@ -55,7 +55,7 @@
     
         
         headerCell.titleLabel.text = [row title];
-        headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
+     //   headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
         if ([row active])
         {

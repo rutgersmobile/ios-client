@@ -127,75 +127,49 @@ NSString * const newarkAgency = @"rutgers-newark";
     }
     
     NSString *url = [self urlStringForItem:item];
-    
-    [[RUNetworkManager sessionManager] GET:url parameters:nil progress:nil
-        success:^
-            (NSURLSessionDataTask *task, id responseObject)
-            {
-            
-                if (![responseObject isKindOfClass:[NSDictionary class]]) // error : unable to serialize the object
-                {
-                    handler(nil,nil );
-                    return;
-                }
-                
-                id predictions = responseObject[@"predictions"]; // we get the prediction for each stop and we just display if for each site
-                    // This contains prediction for stops in the route. The stops are requested using the api
-                
-                
-                if(DEV) NSLog(@"%@",predictions);
-                NSMutableArray *parsedPredictions = [NSMutableArray array];
-               
-                // create prediction objects
-                for (NSDictionary *predictionDictionary in predictions) // obtain prediction for each stop
-                {
-                    RUBusPrediction *prediction = [[RUBusPrediction alloc] initWithDictionary:predictionDictionary];
-
-                    
-                    [parsedPredictions addObject:prediction];
-                }
-                
-                if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]])
-                {
-                    [parsedPredictions filterUsingPredicate:[NSPredicate predicateWithFormat:@"active == %@",@YES]];
-                    
-                    //[parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"active" ascending:NO],[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-                    
-                    /*
-                                Sort the result using multiple descritpors ..
-                                    descritpors sorts the array by looking at a key in the dictionary
-                         */
-                    [parsedPredictions sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"routeTitle" ascending:YES],[NSSortDescriptor sortDescriptorWithKey:@"directionTitle" ascending:YES]]];
-                }
-                else if ([item isKindOfClass:[RUBusRoute class]]) // sort the predictions in a route using the
-                {
-                    RUBusRoute *route = item;
-                    [parsedPredictions sortUsingComparator:^
-                        NSComparisonResult(RUBusPrediction *obj1, RUBusPrediction *obj2)
-                        {
-                            NSInteger indexOne = [route.stops indexOfObject:obj1.stopTag];
-                            NSInteger indexTwo = [route.stops indexOfObject:obj2.stopTag];
-                            return compare(indexOne, indexTwo);
-                        }
-                     ];
-                }
-                
-                handler(parsedPredictions,nil);
-                
-        
+    RUBusRoute* tempRoute = nil;
+    RUBusDataAgencyManager* tempAgency = nil;
+    if ([item isKindOfClass:[RUBusRoute class]]) {
+        tempRoute = (RUBusRoute*)item;
+        tempAgency = self.agencyManagers[tempRoute.agency];
+    }
+    [[RUNetworkManager transLocSessionManager] GET: url parameters: nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary* predictions = responseObject[@"data"];
+            NSMutableArray *parsedPredictions = [NSMutableArray array];
+            for (NSDictionary* predictionItem in predictions) {
+                RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
+                predictionObj.routeTitle = tempRoute.title;
+                predictionObj.stopTitle = tempAgency.stops[predictionObj.stop_id].title;
+                [parsedPredictions addObject:predictionObj];
+                //Use agency property from item to get title for predictionObj
             }
-        failure:^
-            (NSURLSessionDataTask *task, NSError *error)
-            {
-                handler(nil,error);
-            }
-     ];
+            handler(parsedPredictions, nil);
+        } else {
+            NSLog(@"Network request successful, cannot parse dictionary");
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        handler(nil, error);
+    }];
 }
 
 -(NSString *)urlStringForItem:(id)item
 {
-    NSString *agency = [item agency];
-    return [self.agencyManagers[agency] urlStringForItem:item]; //calls urlStringForItem result from RuBusDataAgencyManager
+    NSMutableString* urlBase = [[RUNetworkManager buildURLStringWith:@"arrival-estimates.json"] mutableCopy];
+    [urlBase appendString:@"?agencies=1323&"];
+    if ([item isKindOfClass:[RUBusRoute class]]) {
+        RUBusRoute* route = (RUBusRoute*)item;
+        NSMutableString* updatedUrl = [[urlBase stringByAppendingFormat:@"routes=%@&stops=", route.route_id] mutableCopy];
+        
+        for (NSString* stopId in route.stops) {
+            [updatedUrl appendFormat:@"%@,", stopId];
+        }
+        return updatedUrl;
+    } else {
+        RUBusStop* stop = (RUBusStop*)item;
+        NSString* stopId = [NSString stringWithFormat:@"%ld", (long) stop.stopId];
+        return [urlBase stringByAppendingFormat:@"stops=%@", stopId];
+    }
 }
 
 #pragma mark - nextBus to transloc transition
@@ -204,12 +178,12 @@ NSString * const newarkAgency = @"rutgers-newark";
 
 -(void)getArrivalEstimates {
     //    NSString* url = [self buildURLStringWith:@"arrival-estimates.json"];
-    [[RUNetworkManager transLocSessionManager] GET: [RUNetworkManager buildURLStringWith:@"arrivale-estimates.json"] parameters:[RUNetworkManager buildParameters: @""] progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [[RUNetworkManager transLocSessionManager] GET: [RUNetworkManager buildURLStringWith:@"arrival-estimates.json"] parameters:[RUNetworkManager buildParameters: @""] progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSLog(@"Success!  Response object is a dictionary!");
             
         } else {
-            NSLog(@"Network request successful, cannot parse dictionary though");
+            NSLog(@"Network request successful, cannot parse dictionary");
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure!");
@@ -221,6 +195,7 @@ NSString * const newarkAgency = @"rutgers-newark";
 #pragma mark - search
 -(void)queryStopsAndRoutesWithString:(NSString *)query completion:(void (^)(NSArray *routes, NSArray *stops, NSError *error))handler{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
         
         dispatch_group_t group = dispatch_group_create();
         

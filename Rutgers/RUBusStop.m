@@ -32,6 +32,7 @@
         _location = [[CLLocation alloc] initWithLatitude:lat longitude: lon];
         _stopId = dictionary[@"stop_id"] != nil ? [dictionary[@"stop_id"] integerValue] : 0;
         _active = !_routes.count ? NO : YES;
+        _agency = nil;
     }
     
     return self;

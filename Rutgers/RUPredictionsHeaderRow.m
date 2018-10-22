@@ -38,11 +38,12 @@
         return self.predictions.routeTitle;
     }
 }
-
+/*
 -(NSString *)directionTitle{
     if ([self.item isKindOfClass:[RUBusRoute class]]) return nil;
     return self.predictions.directionTitle;
 }
+ */
 
 -(NSString *)arrivalTimeDescription{
     if (!self.predictions.active) return @"No predictions available.";

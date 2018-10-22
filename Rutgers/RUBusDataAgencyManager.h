@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUBusRoute.h"
+#import "RUBusStop.h"
 #import <MapKit/MapKit.h>
 
 
@@ -27,4 +29,7 @@
 -(void)performWhenAgencyLoaded:(void(^)(NSError *error))handler;
 
 -(id)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type;
+
+@property (nonatomic) NSDictionary<NSString *, RUBusRoute *>* routes;
+@property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
 @end
