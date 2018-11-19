@@ -31,5 +31,6 @@
 -(id)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type;
 
 @property (nonatomic) NSDictionary<NSString *, RUBusRoute *>* routes;
-@property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
+@property NSDictionary<NSString *, RUBusMultipleStopsForSingleLocation *>* stops;
+//@property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
 @end

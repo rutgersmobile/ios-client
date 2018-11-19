@@ -51,11 +51,9 @@
     {
         RUPredictionsHeaderRow *row = item;
         RUPredictionsHeaderTableViewCell *headerCell = cell;
-
-    
         
         headerCell.titleLabel.text = [row title];
-     //   headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
+        //headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
         if ([row active])
         {

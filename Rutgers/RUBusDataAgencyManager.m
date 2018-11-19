@@ -57,7 +57,7 @@
  Map between a the route nameas and the route objects
  also for stops
  */
-//@property NSDictionary<NSString *, RUBusMultipleStopsForSingleLocation *>* stops; // Multi stop is just an array of stops
+ // Multi stop is just an array of stops
 /*
  Looks at all the active stops based on information from the RU server and selects all the active routes + stops from all the routes and stops and stores them
  
