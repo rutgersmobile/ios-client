@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RUBusRoute.h"
+#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusStop.h"
 #import <MapKit/MapKit.h>
 

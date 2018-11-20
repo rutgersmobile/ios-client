@@ -359,7 +359,7 @@
                 }
             }
             if (isTrue) {
-                [mutableStopArray addObject:stopObj];
+                //[mutableStopArray addObject:stopObj];
                 NSString* stopId = [NSString stringWithFormat:@"%ld", (long) stopObj.stopId];
                 [mutableStopDictionary setValue:stopObj forKey: stopId];
             }
