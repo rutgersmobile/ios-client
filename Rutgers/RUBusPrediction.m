@@ -35,6 +35,25 @@
     return self;
 }
 
+-(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray {
+    self = [super init];
+    if (self) {
+        _messages = [[NSMutableArray alloc] init];
+        _active = YES;
+        _routeTitle = @"ROUTE TITLE NOT SET";
+        _stopTitle = @"TITLE NOT SET";
+        _stop_id = stopId;
+        NSMutableArray* mutableCopy = [[NSMutableArray alloc] initWithArray:arrivalArray];
+        [mutableCopy sortUsingComparator:^NSComparisonResult(id a, id b) {
+            NSDate* first = [(RUBusArrival*)a savedDate];
+            NSDate* second = [(RUBusArrival*)b savedDate];
+            return [first compare:second];
+        }];
+        _arrivals = mutableCopy;
+    }
+    return self;
+}
+
 /**
  *  Whether the prediction is active
  *

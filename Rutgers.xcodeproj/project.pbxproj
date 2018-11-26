@@ -48,7 +48,6 @@
 		04A1EFFA1A5C50B700DE0351 /* RUBusRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF31A5C50B700DE0351 /* RUBusRoute.m */; };
 		04A1EFFB1A5C50B700DE0351 /* RUBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF51A5C50B700DE0351 /* RUBusStop.m */; };
 		04A1EFFC1A5C50B700DE0351 /* RUBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF71A5C50B700DE0351 /* RUBusViewController.m */; };
-		04A1EFFD1A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFF91A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m */; };
 		04A1F0001A5C50C200DE0351 /* RUBusDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */; };
 		04A1F0031A5C50D400DE0351 /* NearbyActiveStopsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A1F0021A5C50D400DE0351 /* NearbyActiveStopsDataSource.m */; };
 		04A655F21C485D880024B1F0 /* RUFavoriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A655F11C485D880024B1F0 /* RUFavoriteActivity.m */; };
@@ -376,8 +375,6 @@
 		04A1EFF51A5C50B700DE0351 /* RUBusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusStop.m; sourceTree = "<group>"; };
 		04A1EFF61A5C50B700DE0351 /* RUBusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusViewController.h; sourceTree = "<group>"; };
 		04A1EFF71A5C50B700DE0351 /* RUBusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusViewController.m; sourceTree = "<group>"; };
-		04A1EFF81A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusMultipleStopsForSingleLocation.h; sourceTree = "<group>"; };
-		04A1EFF91A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusMultipleStopsForSingleLocation.m; sourceTree = "<group>"; };
 		04A1EFFE1A5C50C200DE0351 /* RUBusDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUBusDataSource.h; sourceTree = "<group>"; };
 		04A1EFFF1A5C50C200DE0351 /* RUBusDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUBusDataSource.m; sourceTree = "<group>"; };
 		04A1F0011A5C50D400DE0351 /* NearbyActiveStopsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyActiveStopsDataSource.h; sourceTree = "<group>"; };
@@ -897,8 +894,6 @@
 				04A1EFF31A5C50B700DE0351 /* RUBusRoute.m */,
 				04A1EFF41A5C50B700DE0351 /* RUBusStop.h */,
 				04A1EFF51A5C50B700DE0351 /* RUBusStop.m */,
-				04A1EFF81A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.h */,
-				04A1EFF91A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m */,
 			);
 			name = objects;
 			sourceTree = "<group>";
@@ -2136,7 +2131,6 @@
 				C4C038591F02B2DA002A52AA /* UILabel+RUAdditions.swift in Sources */,
 				A7B3F7AC1953527A00458B19 /* UIColor+Utilities.m in Sources */,
 				04A1EFD81A5C508300DE0351 /* RUPredictionsHeaderTableViewCell.m in Sources */,
-				04A1EFFD1A5C50B700DE0351 /* RUBusMultipleStopsForSingleLocation.m in Sources */,
 				04B3D6581B98C8B7006D0BF6 /* SwitchDataSource.m in Sources */,
 				A7EA4C54197D6BD800E972DD /* SegmentedDataSource.m in Sources */,
 				B5432FF41E427244006F036A /* Channel.swift in Sources */,

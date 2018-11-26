@@ -10,8 +10,8 @@
 #import "RUPredictionsViewController.h"
 #import "RUPlacesViewController.h"
 #import "RUPlaceDetailDataSource.h"
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUPlace.h"
+#import "RUBusStop.h"
 #import "NSURL+RUAdditions.h"
 #import "Rutgers-Swift.h"
 
@@ -119,7 +119,8 @@ static NSString *const PlacesMapPopupKey = @"PlacesMapPopupKey"; // Key used to 
     id item = [self.dataSource itemAtIndexPath:indexPath];
     if ([item isKindOfClass:[RUPlace class]]) {
         [self.navigationController pushViewController:[[MapsViewController alloc] initWithPlace:item] animated:YES];
-    } else if ([item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
+        //Mark: Used to be RUBusMultiStop
+    } else if ([item isKindOfClass:[RUBusStop class]]) {
         [self.navigationController pushViewController:[[RUPredictionsViewController alloc] initWithItem:item] animated:YES];
     }
 }

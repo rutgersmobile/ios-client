@@ -14,6 +14,7 @@
  */
 @interface RUBusPrediction : NSObject
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
+-(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray;
 @property (nonatomic) BOOL active;
 @property (nonatomic) NSString* routeTitle;
 @property (nonatomic) NSString* stopTitle;

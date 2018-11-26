@@ -10,8 +10,7 @@
 #import "RUPredictionsDataSource.h"
 #import "RUBusDataLoadingManager.h"
 #import "RUBusMessagesDataSource.h"
-
-#import "RUBusMultipleStopsForSingleLocation.h"
+#import "RUBusStop.h"
 #import "RUBusRoute.h"
 #import "RUBusPrediction.h"
 
@@ -160,8 +159,8 @@
               ];
          };
          
-         
-         if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] || [self.item isKindOfClass:[RUBusRoute class]])
+        //Mark: Used to be RUBusMultiStop
+         if ([self.item isKindOfClass:[RUBusStop class]] || [self.item isKindOfClass:[RUBusRoute class]])
          {
              getPredictions(self.item);
          }
@@ -201,7 +200,8 @@
  */
 -(void)getTitleFromInternetResponse:(NSArray  *)prediction
 {
-    if([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) // if prediction for a stop , then get title from stopTitle of RUBusPredictiosn
+    //Mark: Used to be RUBusMultiStop
+    if([self.item isKindOfClass:[RUBusStop class]]) // if prediction for a stop , then get title from stopTitle of RUBusPredictiosn
     {
         self.responseTitle = ((RUBusPrediction *)prediction[0]).stopTitle; // the stop title will be the same for all items of the stop prediction
     }

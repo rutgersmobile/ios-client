@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "RUBusRoute.h"
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusStop.h"
 #import <MapKit/MapKit.h>
 
@@ -32,6 +31,7 @@
 -(id)reconstituteSerializedItemWithName:(NSString *)name type:(NSString *)type;
 
 @property (nonatomic) NSDictionary<NSString *, RUBusRoute *>* routes;
-@property NSDictionary<NSString *, RUBusMultipleStopsForSingleLocation *>* stops;
+//Mark: Used to be String, RUBUsMultiStops
+@property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
 //@property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
 @end

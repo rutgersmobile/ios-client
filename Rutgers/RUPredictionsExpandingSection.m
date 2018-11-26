@@ -12,7 +12,6 @@
 #import "DataSource_Private.h"
 #import "RUPredictionsHeaderTableViewCell.h"
 #import "RUPredictionsBodyTableViewCell.h"
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusPrediction.h"
 
 @interface RUPredictionsExpandingSection ()

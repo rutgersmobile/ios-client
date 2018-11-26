@@ -10,10 +10,10 @@
 #import "RUBusDataAgencyManager.h"
 #import "RUBusStop.h"
 #import "RUBusRoute.h"
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusPrediction.h"
 #import "RUNetworkManager.h"
 #import "RUDefines.h"
+#import "RUBusArrival.h"
 
 NSString * const newBrunswickAgency = @"rutgers";
 NSString * const newarkAgency = @"rutgers-newark";
@@ -128,21 +128,52 @@ NSString * const newarkAgency = @"rutgers-newark";
     
     NSString *url = [self urlStringForItem:item];
     RUBusRoute* tempRoute = nil;
+    RUBusStop* tempStop = nil;
     RUBusDataAgencyManager* tempAgency = nil;
     if ([item isKindOfClass:[RUBusRoute class]]) {
         tempRoute = (RUBusRoute*)item;
         tempAgency = self.agencyManagers[tempRoute.agency];
+    } else {
+        tempStop = (RUBusStop*)item;
+        tempAgency = self.agencyManagers[tempStop.agency];
     }
     [[RUNetworkManager transLocSessionManager] GET: url parameters: nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary* predictions = responseObject[@"data"];
             NSMutableArray *parsedPredictions = [NSMutableArray array];
             for (NSDictionary* predictionItem in predictions) {
-                RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
-                predictionObj.routeTitle = tempRoute.title;
-                predictionObj.stopTitle = tempAgency.stops[predictionObj.stop_id].title;
-                [parsedPredictions addObject:predictionObj];
-                //Use agency property from item to get title for predictionObj
+                if ([item isKindOfClass:[RUBusRoute class]]) {
+                    RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
+                    predictionObj.routeTitle = tempRoute.title;
+                    predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
+                    [parsedPredictions addObject:predictionObj];
+                } else {
+                    NSArray* arrivalArray = [predictions valueForKey:@"arrivals"][0];
+                    NSMutableDictionary* tempDict = [[NSMutableDictionary alloc] init];
+                    for (NSDictionary* arrival in arrivalArray) {
+                        NSString* routeId = (NSString*)[arrival valueForKey:@"route_id"];
+                        int i = 0;
+                        NSMutableArray* tempArrivalArray = [NSMutableArray array];
+                        while (i < arrivalArray.count) {
+                            NSDictionary* arrivalTemp = arrivalArray[i];
+                            if (routeId == [arrivalTemp valueForKey:@"route_id"]) {
+                                RUBusArrival* arrivalObj = [[RUBusArrival alloc] initWithDictionary:arrivalTemp];
+                                [tempArrivalArray addObject:arrivalObj];
+                            }
+                            i++;
+                        }
+                        if ([tempDict objectForKey:routeId] == nil) {
+                            [tempDict setObject:tempArrivalArray forKey:routeId];
+                        }
+                    }
+                    for (NSString* key in [tempDict allKeys]) {
+                        NSLog(@"%@", [tempDict objectForKey:key]);
+                        RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithArrivalArray:key arrivalArray:[tempDict objectForKey:key]];
+                        predictionObj.stopTitle = tempStop.title;
+                        predictionObj.routeTitle = tempAgency.routes[key].title;
+                        [parsedPredictions addObject:predictionObj];
+                    }
+                }
             }
             handler(parsedPredictions, nil);
         } else {

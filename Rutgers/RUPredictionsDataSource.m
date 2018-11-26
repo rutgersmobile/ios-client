@@ -17,7 +17,6 @@
 #import "RUBusPrediction.h"
 #import "DataSource_Private.h"
 
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "RUBusRoute.h"
 #import "RUBusArrival.h"
 #import "RUBusPrediction.h"

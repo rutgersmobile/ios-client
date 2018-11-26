@@ -11,7 +11,6 @@
 #import "RULocationManager.h"
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "NSArray+Sort.h"
 #import "NSPredicate+SearchPredicate.h"
 #import "RUNetworkManager.h"
@@ -214,7 +213,8 @@
          [
           [self.stops.allValues filteredArrayUsingPredicate: // filter the array such that only stops which are active and within the NERBY_DISTANCE macro are left in the array
            [NSPredicate predicateWithBlock:^
-            BOOL(RUBusMultipleStopsForSingleLocation  *stop, NSDictionary *bindings) // self.stops is a an arry of  multiBusStop : So the array is passed into this block
+            //Mark: Used to be RUBusMultiStop
+            BOOL(RUBusStop *stop, NSDictionary *bindings) // self.stops is a an arry of  multiBusStop : So the array is passed into this block
             {
                 // the distance to stop caculate the least distance to one of the stops in the multi stops array
                 return (stop.active && [self distanceOfStop:stop fromLocation:location] < NEARBY_DISTANCE); // binding dict is done store predicate , not used here.
@@ -223,7 +223,8 @@
            ] // first filter the array . Then sort the array
           
           sortedArrayUsingComparator:^  // sort the array with filtered results so that the stop closer to the location is placed higher <?>
-          NSComparisonResult(RUBusMultipleStopsForSingleLocation *stopOne, RUBusMultipleStopsForSingleLocation *stopTwo)
+          //Mark: Used to be RUBusMultiStop
+          NSComparisonResult(RUBusStop *stopOne, RUBusStop *stopTwo)
           {
               CLLocationDistance distanceOne = [self distanceOfStop:stopOne fromLocation:location];
               CLLocationDistance distanceTwo = [self distanceOfStop:stopTwo fromLocation:location];
@@ -243,17 +244,16 @@
 /*
  poor naming : multiStop has multipe stops in it and the distance of stop finds the distance of the closest stop in the multi stop array ..
  */
--(CLLocationDistance)distanceOfStop:(RUBusMultipleStopsForSingleLocation *)multiStop fromLocation:(CLLocation *)location
+//Mark: Used to be RUBusMultiStop
+-(CLLocationDistance)distanceOfStop:(RUBusStop*) multiStop fromLocation:(CLLocation *)location
 {
     CLLocationDistance minDistance = -1;
-    for (RUBusStop *stop in multiStop.stops)
-    {
-        CLLocationDistance distance = [stop.location distanceFromLocation:location];
+        NSLog(@"%@", multiStop.location);
+        CLLocationDistance distance = [multiStop.location distanceFromLocation:location];
         if (minDistance == -1 || distance < minDistance)
         {
             minDistance = distance;
         }
-    }
     return minDistance;
 }
 
@@ -344,7 +344,7 @@
 
 -(void)parseStops:(NSArray*)stopArray :(NSString*) agency {
     NSMutableArray* mutableStopArray = [NSMutableArray array];
-    NSMutableDictionary* mutableStopDictionary = [NSMutableDictionary dictionary];
+    NSMutableDictionary* mutableStopDictionary = [[NSMutableDictionary alloc] init];
     for (NSDictionary* stop in stopArray) {
         NSDictionary* stopTemp = stop;
         RUBusStop* stopObj = [[RUBusStop alloc] initWithDictionary:stopTemp];
@@ -359,13 +359,13 @@
                 }
             }
             if (isTrue) {
-                //[mutableStopArray addObject:stopObj];
+                [mutableStopArray addObject:stopObj];
                 NSString* stopId = [NSString stringWithFormat:@"%ld", (long) stopObj.stopId];
-                [mutableStopDictionary setValue:stopObj forKey: stopId];
+                mutableStopDictionary[stopId] = stopObj;
             }
         }
     }
-    self.stops = mutableStopDictionary;
+    self.stops = (NSDictionary<NSString*, RUBusStop*>*)mutableStopDictionary;
     self.activeStops = mutableStopArray;
 }
 
@@ -373,6 +373,9 @@
     NSMutableArray* mutableRouteArray = [NSMutableArray array];
     NSMutableDictionary* mutableRouteDictionary = [NSMutableDictionary dictionary];
     for (NSDictionary* route in routeArray) {
+        if (([[route objectForKey:@"long_name"] isEqual: @"Route All Campuses"]) || (route[@"is_active"] == false)) {
+            continue;
+        }
         NSDictionary* routeTemp = route;
         RUBusRoute* routeObj = [[RUBusRoute alloc] initWithDictionary:routeTemp];
         routeObj.agency = agency;
@@ -390,7 +393,8 @@
     name = name.stringByRemovingPercentEncoding;
     if ([type isEqualToString:@"stop"])
     {
-        for (RUBusMultipleStopsForSingleLocation *stop in self.stops.allValues)
+        //Mark: Used to be RUBusMultiStop
+        for (RUBusStop *stop in self.stops.allValues)
         {
             if ([stop.title.lowercaseString isEqualToString:[name lowercaseString]]) // both values are converted to lower case string before comparison.
             {

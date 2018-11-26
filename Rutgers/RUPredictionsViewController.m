@@ -9,7 +9,6 @@
 #import "RUPredictionsViewController.h"
 #import "RUPredictionsDataSource.h"
 #import "RUBusRoute.h"
-#import "RUBusMultipleStopsForSingleLocation.h"
 #import "TableViewController_Private.h"
 #import "MSWeakTimer.h"
 #import "NSURL+RUAdditions.h"
@@ -23,6 +22,7 @@
 #import "RUPredictionsDataSource.h"
 #import "RUPredictionsBodyTableViewCell.h"
 #import "RUBusNumberButton.h"
+#import "RUBusStop.h"
 #import <Foundation/Foundation.h>
 
 
@@ -146,7 +146,8 @@
     if ([self.item isKindOfClass:[RUBusRoute class]]) {
         type = @"route";
         identifier = [(RUBusRoute*)self.item tag];
-    } else if ([self.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]]) {
+        //Mark: Used to be RUBusMultiStop
+    } else if ([self.item isKindOfClass:[RUBusStop class]]) {
         type = @"stop";
         identifier = [self.item title];
     }
