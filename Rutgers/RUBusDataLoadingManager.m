@@ -152,15 +152,15 @@ NSString * const newarkAgency = @"rutgers-newark";
                     if ([item isKindOfClass:[RUBusRoute class]]) {
                         RUBusRoute* cast = (RUBusRoute*)item;
                         for (RUBusVehicle* vehicle in tempAgency.vehicles[cast.route_id]) {
-                                if (noDataPrediction.vehicle == nil && vehicle.doesHaveArrivals == NO) {
+                               // if (vehicle.doesHaveArrivals == NO) {
                                     noDataPrediction.vehicle = vehicle;
-                                }
+                                //}
                         }
-                        double distance = -1000000;
+                        double distance = 1000000;
                         RUBusStop* savedStop = [RUBusStop alloc];
                         for (RUBusStop* stop in tempAgency.stops.allValues) {
                             double distanceTemp = [stop.location distanceFromLocation:noDataPrediction.vehicle.location];
-                            if (distance == -1000000 || distance > distanceTemp) {
+                            if (distance > distanceTemp) {
                                 distance = distanceTemp;
                                 savedStop = stop;
                             }
