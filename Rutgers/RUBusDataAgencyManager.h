@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RUBusRoute.h"
 #import "RUBusStop.h"
+#import "RUBusVehicle.h"
 #import <MapKit/MapKit.h>
 
 
@@ -33,5 +34,6 @@
 @property (nonatomic) NSDictionary<NSString *, RUBusRoute *>* routes;
 //Mark: Used to be String, RUBUsMultiStops
 @property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
+@property (nonatomic) NSDictionary<NSString *, NSArray*>* vehicles;
 //@property (nonatomic) NSDictionary<NSString *, RUBusStop *>* stops;
 @end

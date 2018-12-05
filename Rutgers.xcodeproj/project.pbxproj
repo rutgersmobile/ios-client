@@ -196,6 +196,7 @@
 		A7F902A219A7C4E400FD3054 /* TextFieldDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A119A7C4E400FD3054 /* TextFieldDataSource.m */; };
 		A7F902A519A7C79700FD3054 /* DynamicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */; };
 		A7F902A919A7C91B00FD3054 /* DynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */; };
+		AF97622B21B71E7B0011749B /* RUBusVehicle.m in Sources */ = {isa = PBXBuildFile; fileRef = AF97622A21B71E7B0011749B /* RUBusVehicle.m */; };
 		AFCF17522034DA0100A2922D /* ordered_content.json in Resources */ = {isa = PBXBuildFile; fileRef = AFCF17512034DA0000A2922D /* ordered_content.json */; };
 		B5184DBD1E816C3500E64254 /* ShowtimesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */; };
 		B51D34701E5B403400F4BD1F /* InfoDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */; };
@@ -644,6 +645,8 @@
 		A7F902A419A7C79700FD3054 /* DynamicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewController.m; sourceTree = "<group>"; };
 		A7F902A719A7C91B00FD3054 /* DynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDataSource.h; sourceTree = "<group>"; };
 		A7F902A819A7C91B00FD3054 /* DynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDataSource.m; sourceTree = "<group>"; };
+		AF97622921B71E7B0011749B /* RUBusVehicle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUBusVehicle.h; sourceTree = "<group>"; };
+		AF97622A21B71E7B0011749B /* RUBusVehicle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RUBusVehicle.m; sourceTree = "<group>"; };
 		AFCF17512034DA0000A2922D /* ordered_content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ordered_content.json; path = Rutgers/ordered_content.json; sourceTree = "<group>"; };
 		B5184DBC1E816C3500E64254 /* ShowtimesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowtimesCollectionView.swift; sourceTree = "<group>"; };
 		B51D346E1E5B403400F4BD1F /* InfoDescriptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoDescriptionCell.swift; sourceTree = "<group>"; };
@@ -894,6 +897,8 @@
 				04A1EFF31A5C50B700DE0351 /* RUBusRoute.m */,
 				04A1EFF41A5C50B700DE0351 /* RUBusStop.h */,
 				04A1EFF51A5C50B700DE0351 /* RUBusStop.m */,
+				AF97622921B71E7B0011749B /* RUBusVehicle.h */,
+				AF97622A21B71E7B0011749B /* RUBusVehicle.m */,
 			);
 			name = objects;
 			sourceTree = "<group>";
@@ -1979,6 +1984,7 @@
 				A73F657E193E544600E26449 /* RUMenuTableViewCell.m in Sources */,
 				A7D4B64C19ABD3CC0087A8BC /* RULegalViewController.m in Sources */,
 				04A1EFD91A5C508300DE0351 /* RUPredictionsViewController.m in Sources */,
+				AF97622B21B71E7B0011749B /* RUBusVehicle.m in Sources */,
 				A7EA4C41197D655D00E972DD /* DataSource.m in Sources */,
 				04A1EFFB1A5C50B700DE0351 /* RUBusStop.m in Sources */,
 				A74669031986D8F000A5EBE0 /* RUAppDelegate.m in Sources */,

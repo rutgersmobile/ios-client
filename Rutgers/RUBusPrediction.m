@@ -17,6 +17,7 @@
     {
         _messages = [[NSMutableArray alloc] init];
         _active = YES;
+        _tempActive = YES;
         _routeTitle = @"ROUTE TITLE NOT SET";
         _stopTitle = @"TITLE NOT SET";
         _stop_id = dictionary[@"stop_id"];

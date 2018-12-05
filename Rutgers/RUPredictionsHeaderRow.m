@@ -10,7 +10,6 @@
 #import "RUBusRoute.h"
 #import "HexColors.h"
 #import "RUPredictionsHeaderTableViewCell.h"
-
 #import "RUBusPrediction.h"
 #import "RUBusArrival.h"
 
@@ -45,8 +44,12 @@
  */
 
 -(NSString *)arrivalTimeDescription{
-    if (!self.predictions.active) return @"No predictions available.";
-  
+    if (!self.predictions.tempActive) {
+        return [NSString stringWithFormat: @"Bus Temporarily Offline at %@", self.predictions.vehicle.nearbyStop.title];
+    }
+
+    if (!self.predictions.active) return @"No Predictions Available";
+
     NSArray *arrivals = self.predictions.arrivals;
     
     NSMutableString *string = [[NSMutableString alloc] initWithString:@"Arriving in "];

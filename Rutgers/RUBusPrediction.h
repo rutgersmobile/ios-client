@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUBusVehicle.h"
 
 /**
  The bus prediction object holds the predictions for a singlular route and stop combination.
@@ -16,9 +17,11 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 -(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray;
 @property (nonatomic) BOOL active;
+@property (nonatomic) BOOL tempActive;
 @property (nonatomic) NSString* routeTitle;
 @property (nonatomic) NSString* stopTitle;
 @property (nonatomic , readonly) NSString* stop_id;
 @property (nonatomic) NSArray* messages;
 @property (nonatomic) NSArray* arrivals;
+@property (nonatomic) RUBusVehicle* vehicle;
 @end

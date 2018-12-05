@@ -144,6 +144,7 @@
                  // [self loadActiveStopsAndRoutes];
                  [self getRoutes];
                  [self getStops];
+                 [self getVehicles];
              }
              
              dispatch_group_notify(self.activeGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
@@ -340,6 +341,59 @@
         self.activeLoadingError = error;
         dispatch_group_leave(self.activeGroup);
     }];
+}
+
+-(void)getVehicles {
+    dispatch_group_enter(self.activeGroup);
+    
+    self.activeLoading = YES;
+    self.activeFinishedLoading = NO;
+    self.activeLoadingError = nil;
+    
+    [[RUNetworkManager transLocSessionManager] GET: [RUNetworkManager buildURLStringWith: @"vehicles.json"] parameters:[RUNetworkManager buildParameters: GEO_AREA_WITH_AGENCY[self.agency]] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@", responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]])
+        {
+            NSDictionary* data = responseObject[@"data"][@"1323"];
+            NSMutableDictionary* mutableVehicles = [[NSMutableDictionary alloc] init];
+            NSMutableArray* vehicleArray = [[NSMutableArray alloc] init];
+            NSString* routeId = nil;
+            for (NSDictionary* item in data) {
+                RUBusVehicle* tempVehicle = [[RUBusVehicle alloc] initWithDictionary:item];
+                if (routeId == nil || routeId != tempVehicle.routeId) {
+                    if (routeId == nil) {
+                        routeId = tempVehicle.routeId;
+                        [vehicleArray addObject:tempVehicle];
+                        continue;
+                    } else {
+                        [mutableVehicles setObject:vehicleArray forKey:routeId];
+                        [vehicleArray removeAllObjects];
+                        [vehicleArray addObject:tempVehicle];
+                        routeId = tempVehicle.routeId;
+                    }
+                } else {
+                    [vehicleArray addObject:tempVehicle];
+                }
+                
+            }
+            //NSLog(@"%@", data);
+            self.activeFinishedLoading = YES;
+            self.lastActiveTaskDate = [NSDate date];
+            self.vehicles = mutableVehicles;
+        }
+        else
+        {
+            self.activeFinishedLoading = NO;
+        }
+        
+        dispatch_group_leave(self.activeGroup);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        self.activeLoading = NO;
+        self.activeFinishedLoading = NO;
+        self.activeLoadingError = error;
+        dispatch_group_leave(self.activeGroup);
+    }];
+    
 }
 
 -(void)parseStops:(NSArray*)stopArray :(NSString*) agency {

@@ -42,7 +42,7 @@
     if (self)
     {
         self.item = item;
-        self.noContentTitle = @"No predictions available";
+        self.noContentTitle = @"Bus Temporarily Offline";
         self.busNumber = @"";
     }
     return self;
@@ -55,7 +55,7 @@
     if (self)
     {
         self.item = item;
-        self.noContentTitle = @"No predictions available";
+        self.noContentTitle = @"Bus Temporarily Offline";
         self.busNumber = busNumber;
     }
     return self;
