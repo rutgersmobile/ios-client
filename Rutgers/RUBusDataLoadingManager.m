@@ -156,11 +156,11 @@ NSString * const newarkAgency = @"rutgers-newark";
                                     noDataPrediction.vehicle = vehicle;
                                 }
                         }
-                        double distance = -1;
+                        double distance = -1000000;
                         RUBusStop* savedStop = [RUBusStop alloc];
                         for (RUBusStop* stop in tempAgency.stops.allValues) {
                             double distanceTemp = [stop.location distanceFromLocation:noDataPrediction.vehicle.location];
-                            if (distance == -1 || distance > distanceTemp) {
+                            if (distance == -1000000 || distance > distanceTemp) {
                                 distance = distanceTemp;
                                 savedStop = stop;
                             }
@@ -175,6 +175,7 @@ NSString * const newarkAgency = @"rutgers-newark";
                 for (NSDictionary* predictionItem in predictions) {
                     if ([item isKindOfClass:[RUBusRoute class]]) {
                         RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
+                        predictionObj.tempActive = YES;
                         predictionObj.routeTitle = tempRoute.title;
                         predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
                         [parsedPredictions addObject:predictionObj];
@@ -200,13 +201,14 @@ NSString * const newarkAgency = @"rutgers-newark";
                         for (NSString* key in [tempDict allKeys]) {
                             NSLog(@"%@", [tempDict objectForKey:key]);
                             RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithArrivalArray:key arrivalArray:[tempDict objectForKey:key]];
+                            predictionObj.tempActive = YES;
                             predictionObj.stopTitle = tempStop.title;
                             predictionObj.routeTitle = tempAgency.routes[key].title;
                             [parsedPredictions addObject:predictionObj];
                         }
                     }
                 }
-           // }
+            //}
             handler(parsedPredictions, nil);
         } else {
             NSLog(@"Network request successful, cannot parse dictionary");

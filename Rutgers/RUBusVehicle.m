@@ -13,8 +13,8 @@
 -(instancetype)initWithDictionary: (NSDictionary*)response {
     self = [super init];
     if (self) {
-        NSArray* arrivalArray = (NSArray*)response[@"arrival_estimates"];
-        _doesHaveArrivals = [arrivalArray count] > 0 ? YES : NO;
+        _arrivals = (NSArray*)response[@"arrival_estimates"];
+        _doesHaveArrivals = [_arrivals count] > 0 ? YES : NO;
         NSDictionary* locationDict = response[@"location"];
         CLLocation* locObj = [[CLLocation alloc] initWithLatitude:[locationDict[@"lat"] doubleValue] longitude:[locationDict[@"lng"] doubleValue]];
         _location = locObj;

@@ -44,7 +44,7 @@
  */
 
 -(NSString *)arrivalTimeDescription{
-    if (!self.predictions.tempActive) {
+    if (self.predictions.tempActive == NO) {
         return [NSString stringWithFormat: @"Bus Temporarily Offline at %@", self.predictions.vehicle.nearbyStop.title];
     }
 

@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RUBusVehicle : NSObject
 -(instancetype)init NS_UNAVAILABLE;
 -(instancetype)initWithDictionary: (NSDictionary*) response NS_DESIGNATED_INITIALIZER;
+@property (nonatomic) NSArray* arrivals;
 @property (nonatomic) BOOL doesHaveArrivals;
 @property (nonatomic) CLLocation* location;
 @property (nonatomic) BOOL trackingStatus;
