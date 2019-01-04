@@ -29,7 +29,7 @@
  */
 #define URLS @{newBrunswickAgency: @"nb-route-config.json", newarkAgency: @"nwk-route-config.json"}
 #define ACTIVE_URLS @{newBrunswickAgency: @"nb-active-stops.json", newarkAgency: @"nwk-active-stops.json"}
-#define GEO_AREA_WITH_AGENCY @{newBrunswickAgency: @"40.470131,-74.485073|40.549613,-74.416323", newarkAgency: @"40.693134,-74.201145|40.764811,-74.145012"}
+#define GEO_AREA_WITH_AGENCY @{newBrunswickAgency: @"40.470131,-74.485073|40.549613,-74.416323", newarkAgency: @"40.693134,-74.201145|40.804811,-74.145012"}
 
 @interface RUBusDataAgencyManager ()
 @property NSString *agency;
@@ -56,7 +56,7 @@
  Map between a the route nameas and the route objects
  also for stops
  */
- // Multi stop is just an array of stops
+// Multi stop is just an array of stops
 /*
  Looks at all the active stops based on information from the RU server and selects all the active routes + stops from all the routes and stops and stores them
  
@@ -164,7 +164,7 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
-         handler([[self.stops allValues] sortByKeyPath:@"title"], error);
+             handler([[self.stops allValues] sortByKeyPath:@"title"], error);
      }];
 }
 
@@ -172,6 +172,7 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
+         [self setActive];
          handler([[self.routes allValues] sortByKeyPath:@"title"], error);
      }];
 }
@@ -180,7 +181,7 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
-         handler(self.activeStops, error);
+             handler(self.activeStops, error);
      }];
 }
 
@@ -188,6 +189,7 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
+         [self setActive];
          handler(self.activeRoutes, error);
      }];
 }
@@ -249,12 +251,12 @@
 -(CLLocationDistance)distanceOfStop:(RUBusStop*) multiStop fromLocation:(CLLocation *)location
 {
     CLLocationDistance minDistance = -1;
-        NSLog(@"%@", multiStop.location);
-        CLLocationDistance distance = [multiStop.location distanceFromLocation:location];
-        if (minDistance == -1 || distance < minDistance)
-        {
-            minDistance = distance;
-        }
+    NSLog(@"%@", multiStop.location);
+    CLLocationDistance distance = [multiStop.location distanceFromLocation:location];
+    if (minDistance == -1 || distance < minDistance)
+    {
+        minDistance = distance;
+    }
     return minDistance;
 }
 
@@ -268,6 +270,7 @@
     
     [self performWhenAgencyLoaded:^(NSError *error)
      {
+         //[self setActive];
          NSPredicate *predicate = [NSPredicate predicateForQuery:query keyPath:@"title"];
          NSArray *routes = [self.routes.allValues filteredArrayUsingPredicate:predicate];
          NSArray *stops = [self.stops.allValues filteredArrayUsingPredicate:predicate];
@@ -288,6 +291,7 @@
 }
 //Add completion handlers here and add to dispatch group
 #warning handle dictionary not parsing, some failure
+//Fix this
 -(void)getRoutes {
     dispatch_group_enter(self.activeGroup);
     
@@ -316,7 +320,7 @@
         dispatch_group_leave(self.activeGroup);
     }];
 }
-
+//Redo this
 -(void)getStops {
     dispatch_group_enter(self.activeGroup);
     
@@ -343,6 +347,7 @@
     }];
 }
 
+//This needs to be reset too, this is not working as intended
 -(void)getVehicles {
     dispatch_group_enter(self.activeGroup);
     
@@ -351,13 +356,14 @@
     self.activeLoadingError = nil;
     
     [[RUNetworkManager transLocSessionManager] GET: [RUNetworkManager buildURLStringWith: @"vehicles.json"] parameters:[RUNetworkManager buildParameters: GEO_AREA_WITH_AGENCY[self.agency]] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@", responseObject);
+        //NSLog(@"%@", responseObject);
         if ([responseObject isKindOfClass:[NSDictionary class]])
         {
             NSDictionary* data = responseObject[@"data"][@"1323"];
             NSMutableDictionary* mutableVehicles = [[NSMutableDictionary alloc] init];
             NSMutableArray* vehicleArray = [[NSMutableArray alloc] init];
             NSString* routeId = nil;
+          
             for (NSDictionary* item in data) {
                 RUBusVehicle* tempVehicle = [[RUBusVehicle alloc] initWithDictionary:item];
                 if (routeId == nil || routeId != tempVehicle.routeId) {
@@ -371,7 +377,8 @@
                         [vehicleArray addObject:tempVehicle];
                         routeId = tempVehicle.routeId;
                     }
-                } else {
+                }
+                else {
                     [vehicleArray addObject:tempVehicle];
                 }
                 
@@ -396,6 +403,24 @@
     
 }
 
+-(void)setActive {
+    NSMutableArray* activeArr = [[NSMutableArray alloc] init];
+    
+    for (NSString* key in self.routes.allKeys) {
+        RUBusRoute* temp = self.routes[key];
+        for (NSString* routeId in self.vehicles.allKeys) {
+            if (routeId == key) {
+                temp.active = YES;
+                [activeArr addObject:temp];
+                break;
+            } else {
+                temp.active = NO;
+            }
+        }
+    }
+    self.activeRoutes = activeArr;
+}
+
 -(void)parseStops:(NSArray*)stopArray :(NSString*) agency {
     NSMutableArray* mutableStopArray = [NSMutableArray array];
     NSMutableDictionary* mutableStopDictionary = [[NSMutableDictionary alloc] init];
@@ -403,7 +428,8 @@
         NSDictionary* stopTemp = stop;
         RUBusStop* stopObj = [[RUBusStop alloc] initWithDictionary:stopTemp];
         stopObj.agency = agency;
-        if ([stopObj active]) {
+        //if ([stopObj active]) {
+            /*
             BOOL isTrue = NO;
             for (NSString* routeId in stopObj.routes) {
                 RUBusRoute* checkIfActive = self.routes[routeId];
@@ -413,11 +439,11 @@
                 }
             }
             if (isTrue) {
+             */
                 [mutableStopArray addObject:stopObj];
                 NSString* stopId = [NSString stringWithFormat:@"%ld", (long) stopObj.stopId];
                 mutableStopDictionary[stopId] = stopObj;
-            }
-        }
+        //}
     }
     self.stops = (NSDictionary<NSString*, RUBusStop*>*)mutableStopDictionary;
     self.activeStops = mutableStopArray;

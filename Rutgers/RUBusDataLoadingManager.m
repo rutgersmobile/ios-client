@@ -53,6 +53,13 @@ NSString * const newarkAgency = @"rutgers-newark";
                                 newBrunswickAgency : [RUBusDataAgencyManager managerForAgency:newBrunswickAgency],
                                 newarkAgency : [RUBusDataAgencyManager managerForAgency:newarkAgency]
                                 };
+      /* richton
+        self.agencyManagers = @{
+                                newarkAgency : [RUBusDataAgencyManager managerForAgency:newarkAgency],
+                                newBrunswickAgency : [RUBusDataAgencyManager managerForAgency:newBrunswickAgency]
+                                };
+       */
+
         
     }
     return self;
