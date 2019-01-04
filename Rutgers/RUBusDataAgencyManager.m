@@ -383,6 +383,9 @@
                 }
                 
             }
+            if (vehicleArray.count > 0) {
+                [mutableVehicles setObject:vehicleArray forKey:routeId];
+            }
             //NSLog(@"%@", data);
             self.activeFinishedLoading = YES;
             self.lastActiveTaskDate = [NSDate date];
