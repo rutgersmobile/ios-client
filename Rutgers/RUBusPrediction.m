@@ -29,7 +29,11 @@
         [mutableArrivals sortUsingComparator:^NSComparisonResult(id a, id b) {
             NSDate* first = [(RUBusArrival*)a savedDate];
             NSDate* second = [(RUBusArrival*)b savedDate];
-            return [first compare:second];
+            if (first.timeIntervalSinceNow > second.timeIntervalSinceNow) {
+                return (NSComparisonResult)NSOrderedDescending;
+            } else {
+                return (NSComparisonResult)NSOrderedAscending;
+            }
         }];
         _arrivals = mutableArrivals;
     }

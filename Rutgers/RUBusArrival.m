@@ -15,23 +15,16 @@
         _route_id = dictionary[@"route_id"];
         _vehicle = dictionary[@"vehicle_id"];
         NSString* arrivalDateString = dictionary[@"arrival_at"];
+        NSString* truncateDate = [arrivalDateString substringToIndex: [arrivalDateString length] - 6];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss-hh:ss"];
-        NSDate *date = [dateFormatter dateFromString:arrivalDateString];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
+        NSDate *date = [dateFormatter dateFromString:truncateDate];
         _savedDate = date;
-
         
-        NSDateFormatter* minutesFormatter = [[NSDateFormatter alloc] init];
-        [minutesFormatter setDateFormat:@"m"];
+        NSTimeInterval diff = [date timeIntervalSinceNow];
         
-        NSDateFormatter* secondsFormatter = [[NSDateFormatter alloc] init];
-        [secondsFormatter setDateFormat:@"s"];
-        
-        NSString* minutesString = [minutesFormatter stringFromDate:date];
-        NSString* secondsString = [secondsFormatter stringFromDate:date];
-        
-        _minutes = [minutesString integerValue];
-        _seconds = [secondsString integerValue];
+        _minutes = diff/60;
+        _seconds = diff;
         
     }
     return self;

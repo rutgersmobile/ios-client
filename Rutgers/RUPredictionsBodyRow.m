@@ -42,7 +42,7 @@
     
     [self.predictionTimes enumerateObjectsUsingBlock:^(RUBusArrival *arrivals, NSUInteger idx, BOOL *stop) {
         NSInteger minutes = arrivals.minutes;
-        NSInteger seconds = arrivals.seconds;
+        NSInteger seconds = minutes/0.016667;
         NSString *vehicle = arrivals.vehicle;
         
         

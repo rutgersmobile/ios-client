@@ -119,7 +119,7 @@
                                
                                // update the messages
                                [self.busMessagesDS addMessagesForPrediction:predictions]; // add the obtained prediction to self (data source)
-                               if( [self.busMessagesDS isMessageAvaliable])
+                              if( [self.busMessagesDS isMessageAvaliable])
                                {
                                    [self.busMessagesDS updateContent];
                                }
