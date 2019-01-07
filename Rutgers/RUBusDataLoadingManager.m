@@ -179,11 +179,28 @@ NSString * const newarkAgency = @"rutgers-newark";
             // if (parsedPredictions == nil) {
             for (NSDictionary* predictionItem in predictions) {
                 if ([item isKindOfClass:[RUBusRoute class]]) {
+                    RUBusRoute* cast = (RUBusRoute*)item;
+                    for (int i = 0; i < [cast.stops count]; i++) {
+                        [parsedPredictions addObject:[NSNull null]];
+                    }
                     RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
                     predictionObj.tempActive = YES;
                     predictionObj.routeTitle = tempRoute.title;
                     predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
-                    [parsedPredictions addObject:predictionObj];
+                    int index = 0;
+                    for (NSString* stopId in cast.stops) {
+                        if (predictionObj.stop_id == stopId) {
+                            NSLog(@"%@ %@ %d", predictionObj.stop_id, predictionObj.stopTitle, index);
+                            break;
+                        }
+                        index++;
+                    }
+                    if ([[parsedPredictions objectAtIndex:index] isEqual:[NSNull null]]) {
+                        [parsedPredictions replaceObjectAtIndex:index withObject:predictionObj];
+                    } else {
+                        NSLog(@"Error inserting into array!  Address this!");
+                    }
+                    //[parsedPredictions addObject:predictionObj];
                 } else {
                     NSArray* arrivalArray = [predictions valueForKey:@"arrivals"][0];
                     NSMutableDictionary* tempDict = [[NSMutableDictionary alloc] init];
@@ -226,7 +243,19 @@ NSString * const newarkAgency = @"rutgers-newark";
                 }
             }];*/
             //}
-            handler(parsedPredictions, nil);
+            NSMutableArray* sortedStopsArray = [[NSMutableArray alloc] init];
+            
+            int i = 0;
+            int j = 0;
+            while (i < [parsedPredictions count]) {
+                if (![parsedPredictions[i] isEqual:[NSNull null]]) {
+                    NSLog(@"Inserting %@ at %d", ((RUBusPrediction*)parsedPredictions[i]).stopTitle, j);
+                    [sortedStopsArray insertObject:parsedPredictions[i] atIndex:j];
+                    j++;
+                }
+                i++;
+            }
+            handler(sortedStopsArray, nil);
         } else {
             NSLog(@"Network request successful, cannot parse dictionary");
         }
