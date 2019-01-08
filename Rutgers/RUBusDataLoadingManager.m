@@ -162,16 +162,18 @@ NSString * const newarkAgency = @"rutgers-newark";
                         noDataPrediction.vehicle = vehicle;
                         //}
                     }
+                    CLLocationManager* mngr = [[CLLocationManager alloc] init];
+                    [mngr setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];
+                    
                     double distance = 1000000;
                     RUBusStop* savedStop = [RUBusStop alloc];
                     for (RUBusStop* stop in tempAgency.stops.allValues) {
-                        double distanceTemp = [stop.location distanceFromLocation:noDataPrediction.vehicle.location];
+                        double distanceTemp = [noDataPrediction.vehicle.location distanceFromLocation:stop.location];
                         if (distance > distanceTemp) {
                             distance = distanceTemp;
                             savedStop = stop;
                         }
                     }
-                    
                     noDataPrediction.vehicle.nearbyStop = savedStop;
                 }
                 [parsedPredictions addObject:noDataPrediction];

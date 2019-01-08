@@ -16,7 +16,9 @@
         _arrivals = (NSArray*)response[@"arrival_estimates"];
         _doesHaveArrivals = [_arrivals count] > 0 ? YES : NO;
         NSDictionary* locationDict = response[@"location"];
-        CLLocation* locObj = [[CLLocation alloc] initWithLatitude:[locationDict[@"lat"] doubleValue] longitude:[locationDict[@"lng"] doubleValue]];
+        CLLocationDegrees lat = locationDict[@"lat"] != nil ? [locationDict[@"lat"] doubleValue] : 0.0;
+        CLLocationDegrees lon = locationDict[@"lng"] != nil ? [locationDict[@"lng"] doubleValue] : 0.0;
+        CLLocation* locObj = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
         _location = locObj;
         _nearbyStop = [RUBusStop alloc];
         _routeId = response[@"route_id"];

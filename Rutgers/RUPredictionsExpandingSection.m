@@ -52,6 +52,7 @@
         RUPredictionsHeaderTableViewCell *headerCell = cell;
         
         headerCell.titleLabel.text = [row title];
+        headerCell.userInteractionEnabled = [row active];
         //headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
         if ([row active])
