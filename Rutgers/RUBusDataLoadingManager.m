@@ -158,9 +158,10 @@ NSString * const newarkAgency = @"rutgers-newark";
                 if ([item isKindOfClass:[RUBusRoute class]]) {
                     RUBusRoute* cast = (RUBusRoute*)item;
                     for (RUBusVehicle* vehicle in tempAgency.vehicles[cast.route_id]) {
-                        // if (vehicle.doesHaveArrivals == NO) {
+                        if (vehicle.doesHaveArrivals == NO) {
                         noDataPrediction.vehicle = vehicle;
-                        //}
+                            break;
+                        }
                     }
                     CLLocationManager* mngr = [[CLLocationManager alloc] init];
                     [mngr setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];

@@ -124,7 +124,7 @@
     
 //    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects:self.shareButton  , nil]];
     
-    //self.pullsToRefresh = YES;
+    self.pullsToRefresh = YES;
 }
 
 /*
@@ -168,7 +168,7 @@
     
     // Sets up a timer that repeatedly calls setNeeds... on the data source .
     // What determine what information the data source will request ????? <q>
-  //  self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
+   self.timer = [MSWeakTimer scheduledTimerWithTimeInterval:PREDICTION_TIMER_INTERVAL target:self.dataSource selector:@selector(setNeedsLoadContent) userInfo:nil repeats:YES dispatchQueue:dispatch_get_main_queue()];
     
 }
 
