@@ -42,7 +42,7 @@
     
     [self.predictionTimes enumerateObjectsUsingBlock:^(RUBusArrival *arrivals, NSUInteger idx, BOOL *stop) {
         NSInteger minutes = arrivals.minutes;
-        NSInteger seconds = minutes/0.016667;
+        NSInteger seconds = minutes*60;
         NSString *vehicle = arrivals.vehicle;
         
         
@@ -55,6 +55,7 @@
         }
         
         if (minutes == 0) {
+            //[descriptionString appendString:@"Arriving soon"];
             [minutesString appendFormat:@"%ld",(long)seconds];
             [descriptionString appendString:@"seconds at"];
         } else {

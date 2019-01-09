@@ -181,7 +181,8 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
-             handler(self.activeStops, error);
+         handler([self.activeStops sortByKeyPath:@"title"], error);
+             //handler(self.activeStops, error);
      }];
 }
 
@@ -190,7 +191,8 @@
     [self performWhenActiveLoaded:^(NSError *error)
      {
          [self setActive];
-         handler(self.activeRoutes, error);
+         handler([self.activeRoutes sortByKeyPath:@"title"], error);
+         //handler(self.activeRoutes, error);
      }];
 }
 
@@ -363,7 +365,7 @@
             NSMutableDictionary* mutableVehicles = [[NSMutableDictionary alloc] init];
             NSMutableArray* vehicleArray = [[NSMutableArray alloc] init];
             NSString* routeId = nil;
-          
+          //I think this is wrong
             for (NSDictionary* item in data) {
                 RUBusVehicle* tempVehicle = [[RUBusVehicle alloc] initWithDictionary:item];
                 if (routeId == nil || routeId != tempVehicle.routeId) {

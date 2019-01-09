@@ -14,11 +14,13 @@
     self = [super init];
     if (self) {
         _arrivals = (NSArray*)response[@"arrival_estimates"];
-        _doesHaveArrivals = [_arrivals count] > 0 ? YES : NO;
+        _doesHaveArrivals = [(NSArray*)response[@"arrival_estimates"] count] == 0 ? NO : YES;
         NSDictionary* locationDict = response[@"location"];
         CLLocationDegrees lat = locationDict[@"lat"] != nil ? [locationDict[@"lat"] doubleValue] : 0.0;
         CLLocationDegrees lon = locationDict[@"lng"] != nil ? [locationDict[@"lng"] doubleValue] : 0.0;
         CLLocation* locObj = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+        NSNumber* passLoad = response[@"passenger_load"];
+        _passengerLoad = [passLoad isEqual: [NSNull null]] ? -1 : [passLoad intValue];
         _location = locObj;
         _nearbyStop = [RUBusStop alloc];
         _routeId = response[@"route_id"];
