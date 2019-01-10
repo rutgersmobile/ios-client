@@ -41,14 +41,15 @@
             baseUrl = @"http://localhost/";
             break;
         case AlphaMode:
-            baseUrl = @"http://nstanlee.rutgers.edu/4";
+           // baseUrl = @"https://rumobile.rutgers.edu/3";
+           baseUrl = @"http://nstanlee.rutgers.edu/4";
             //            baseUrl = @"http://rumobile-gis-prod-asb.ei.rutgers.edu";
             break;
         case BetaMode:
             baseUrl = @"https://doxa.rutgers.edu/mobile/";
             break;
         case ProductionMode:
-            baseUrl = @"https://rumobile.rutgers.edu/";
+            baseUrl = @"https://rumobile.rutgers.edu/3";
             break;
         default:
             break;
