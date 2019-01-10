@@ -34,7 +34,7 @@ class RutgersAPI {
         
         self.networkVariable = networkVariable
     }
-    
+    /*
     public func getSOCInit() -> Observable<Init> {
         return self.provider
                    .request(
@@ -108,6 +108,7 @@ class RutgersAPI {
                 )
             .mapUnboxObject(type: SearchResults.self)
     }
+ */
     
     public func getDiningHalls() -> Observable<[DiningHall]> {
         return self.provider.request(.getDiningHalls)

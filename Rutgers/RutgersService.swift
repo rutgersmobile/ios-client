@@ -17,14 +17,16 @@ enum RutgersService {
     case getChannel
     case getNBAgency
     case getCinema
-    case getSOCInit
+   // case getSOCInit
     case getBuilding(buildingCode: String)
+    /*
     case getSubjects(options: SOCOptions)
     case getCourse(options: SOCOptions, subjectCode: Int, courseNumber: Int)
     case getCourses(options: SOCOptions, subjectCode: Int)
     case getSections(options: SOCOptions, subjectNumber: Int, courseNumber: Int)
     case getSearch(options: SOCOptions, query: String)
     case getSectionWith(supplementCode: String, options: SOCOptions, subjectCode: Int, courseNumber: Int)
+     */
 }
 
 extension RutgersService : TargetType {
@@ -46,7 +48,9 @@ extension RutgersService : TargetType {
             return "/rutgersrouteconfig.txt"
         case .getCinema:
             return "/rutgers-cinema.txt"
-        case .getSOCInit:
+        case .getBuilding:
+            return "/building.json"
+      /*  case .getSOCInit:
             return "/init.json"
         case .getSubjects:
             return "/subjects.json"
@@ -60,8 +64,8 @@ extension RutgersService : TargetType {
             return "/sections.json"
         case .getSearch:
             return "/search.json"
-        case .getBuilding:
-            return "/building.json"
+        
+             */
         }
     }
 
@@ -73,6 +77,7 @@ extension RutgersService : TargetType {
         switch self {
         case .getBuilding(let code):
             return ["code" : code]
+            /*
         case .getSubjects(let options):
             return [
                 "term" : options.semester.term,
@@ -124,6 +129,7 @@ extension RutgersService : TargetType {
                 "campus" : options.campus.description,
                 "q" : query
             ]
+ */
         default:
             return nil
         }
@@ -139,7 +145,9 @@ extension RutgersService : TargetType {
 
     var task: Task {
         switch self {
-        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema, .getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getBuilding, .getSectionWith:
+        case .getDiningHalls, .getGames, .getMotd, .getChannel, .getNBAgency, .getCinema,
+             /*.getSOCInit, .getSubjects, .getCourse, .getCourses, .getSections, .getSearch, .getSectionWith
+         */ .getBuilding:
             return .request
         }
     }
