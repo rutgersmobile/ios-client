@@ -368,7 +368,7 @@
           //I think this is wrong
             for (NSDictionary* item in data) {
                 RUBusVehicle* tempVehicle = [[RUBusVehicle alloc] initWithDictionary:item];
-                if (routeId == nil || routeId != tempVehicle.routeId) {
+                if (routeId == nil || ![routeId isEqualToString: tempVehicle.routeId]) {
                     if (routeId == nil) {
                         routeId = tempVehicle.routeId;
                         [vehicleArray addObject:tempVehicle];
@@ -414,7 +414,7 @@
     for (NSString* key in self.routes.allKeys) {
         RUBusRoute* temp = self.routes[key];
         for (NSString* routeId in self.vehicles.allKeys) {
-            if (routeId == key) {
+            if ([routeId isEqualToString: key]) {
                 temp.active = YES;
                 [activeArr addObject:temp];
                 break;

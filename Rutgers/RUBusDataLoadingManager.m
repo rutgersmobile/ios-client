@@ -192,7 +192,7 @@ NSString * const newarkAgency = @"rutgers-newark";
                     predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
                     int index = 0;
                     for (NSString* stopId in cast.stops) {
-                        if (predictionObj.stop_id == stopId) {
+                        if ([predictionObj.stop_id caseInsensitiveCompare: stopId] == NSOrderedSame) {
                             NSLog(@"%@ %@ %d", predictionObj.stop_id, predictionObj.stopTitle, index);
                             break;
                         }

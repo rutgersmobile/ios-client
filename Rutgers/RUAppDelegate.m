@@ -24,7 +24,6 @@
 #import "RUAppearance.h"
 #import "RUAnalyticsManager.h"
 #import "RUUserInfoManager.h"
-@import LifetimeTracker;
 
 @import Firebase;
 
