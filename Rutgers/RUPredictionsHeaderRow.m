@@ -50,7 +50,7 @@
             return @"Bus Offline";
         }
         //return [NSString stringWithFormat: @"Bus Temporarily Offline at %@", self.predictions.vehicle.nearbyStop.title];
-        return @"Bus On Brake";
+        return @"Bus Reporting as Stopped, Predictions Currently Unavailable";
     }
 
     if (!self.predictions.active) return @"No Predictions Available";
