@@ -363,30 +363,20 @@
         {
             NSDictionary* data = responseObject[@"data"][@"1323"];
             NSMutableDictionary* mutableVehicles = [[NSMutableDictionary alloc] init];
-            NSMutableArray* vehicleArray = [[NSMutableArray alloc] init];
-            NSString* routeId = nil;
-          //I think this is wrong
+         
+            NSMutableArray* vehicles = [[NSMutableArray alloc] init];
+            NSMutableSet* routeIds = [[NSMutableSet alloc] init];
             for (NSDictionary* item in data) {
                 RUBusVehicle* tempVehicle = [[RUBusVehicle alloc] initWithDictionary:item];
-                if (routeId == nil || ![routeId isEqualToString: tempVehicle.routeId]) {
-                    if (routeId == nil) {
-                        routeId = tempVehicle.routeId;
-                        [vehicleArray addObject:tempVehicle];
-                        continue;
-                    } else {
-                        [mutableVehicles setObject:vehicleArray forKey:routeId];
-                        [vehicleArray removeAllObjects];
-                        [vehicleArray addObject:tempVehicle];
-                        routeId = tempVehicle.routeId;
-                    }
-                }
-                else {
-                    [vehicleArray addObject:tempVehicle];
-                }
-                
+                [vehicles addObject:tempVehicle];
+                [routeIds addObject:tempVehicle.routeId];
             }
-            if (vehicleArray.count > 0) {
-                [mutableVehicles setObject:vehicleArray forKey:routeId];
+            for (NSString* route in routeIds) {
+                NSArray* filterTemp = [vehicles filteredArrayUsingPredicate: [NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+                    RUBusVehicle* cast = (RUBusVehicle*)evaluatedObject;
+                    return [cast.routeId isEqualToString:route];
+                }]];
+                [mutableVehicles setObject:filterTemp forKey:route];
             }
             //NSLog(@"%@", data);
             self.activeFinishedLoading = YES;

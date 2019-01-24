@@ -17,7 +17,7 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 -(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray;
 @property (nonatomic) BOOL active;
-@property (nonatomic) BOOL tempActive;
+@property (nonatomic) BOOL stopActive;
 @property (nonatomic) NSString* routeTitle;
 @property (nonatomic) NSString* stopTitle;
 @property (nonatomic , readonly) NSString* stop_id;

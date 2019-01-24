@@ -118,13 +118,13 @@
                                [self.busPredictionsDS endLoadingWithState:AAPLLoadStateContentLoaded error:nil update:nil];
                                
                                // update the messages
-                               [self.busMessagesDS addMessagesForPrediction:predictions]; // add the obtained prediction to self (data source)
-                              if( [self.busMessagesDS isMessageAvaliable])
-                               {
-                                   [self.busMessagesDS updateContent];
-                               }
+                              // [self.busMessagesDS addMessagesForPrediction:predictions]; // add the obtained prediction to self (data source)
+                              //if( [self.busMessagesDS isMessageAvaliable])
+                               //{
+                                //   [self.busMessagesDS updateContent];
+                               //}
                                
-                               [self getTitleFromInternetResponse:predictions];
+                               //[self getTitleFromInternetResponse:predictions];
                                
                                
                            }];

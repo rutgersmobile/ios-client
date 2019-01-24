@@ -52,10 +52,10 @@
         RUPredictionsHeaderTableViewCell *headerCell = cell;
         
         headerCell.titleLabel.text = [row title];
-        headerCell.userInteractionEnabled = [row active];
+        headerCell.userInteractionEnabled = [row active] && [row hasArrivals];
         //headerCell.directionLabel.text = [row.item isKindOfClass:[RUBusMultipleStopsForSingleLocation class]] ? [row directionTitle] : nil;
         headerCell.timeLabel.text = [row arrivalTimeDescription];
-        if ([row active])
+        if ([row active] && [row hasArrivals])
         {
             headerCell.titleLabel.textColor = [UIColor blackColor];
             headerCell.directionLabel.textColor = [UIColor blackColor];

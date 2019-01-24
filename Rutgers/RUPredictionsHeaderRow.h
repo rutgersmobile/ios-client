@@ -16,5 +16,6 @@
 @property (nonatomic, readonly, copy) NSString *title;
 //@property (nonatomic, readonly, copy) NSString *directionTitle;
 @property (nonatomic, readonly, copy) NSString *arrivalTimeDescription;
+@property (nonatomic, readonly) BOOL hasArrivals;
 @property (nonatomic, readonly, copy) UIColor *timeLabelColor;
 @end

@@ -16,8 +16,8 @@
     if (self)
     {
         _messages = [[NSMutableArray alloc] init];
-        _active = YES;
-        _tempActive = YES;
+        _active = NO;
+        _stopActive = NO;
         _routeTitle = @"ROUTE TITLE NOT SET";
         _stopTitle = @"TITLE NOT SET";
         _stop_id = dictionary[@"stop_id"];
@@ -58,14 +58,15 @@
     }
     return self;
 }
-
 /**
  *  Whether the prediction is active
  *
  *  @return Yes if there are some number of arrivals, no otherwise
  */
+/*
 -(BOOL)active
 {
     return self.arrivals.count > 0;
 }
+*/
 @end

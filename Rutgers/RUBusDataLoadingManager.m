@@ -149,37 +149,25 @@ NSString * const newarkAgency = @"rutgers-newark";
         NSDictionary* predictions = responseObject[@"data"];
         
         NSMutableArray *parsedPredictions = [NSMutableArray array];
+        
         if ([predictions isKindOfClass:[NSArray class]]) {
             NSArray* predictionsCheck = (NSArray*)predictions;
             
             if ([predictionsCheck count] == 0) {
                 RUBusPrediction* noDataPrediction = [[RUBusPrediction alloc] init];
-                noDataPrediction.tempActive = NO;
-                if ([item isKindOfClass:[RUBusRoute class]]) {
-                    RUBusRoute* cast = (RUBusRoute*)item;
-                    for (RUBusVehicle* vehicle in tempAgency.vehicles[cast.route_id]) {
-                        if (vehicle.passengerLoad == -1) {
-                            noDataPrediction.vehicle = vehicle;
-                            break;
-                        }
+                if (tempRoute != nil) {
+                    if (tempAgency.vehicles[tempRoute.route_id] != nil) {
+                        noDataPrediction.active = YES;
+                    } else if (tempAgency.vehicles[tempRoute.route_id] == nil){
+                        noDataPrediction.active = NO;
                     }
-                    CLLocationManager* mngr = [[CLLocationManager alloc] init];
-                    [mngr setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];
-                    
-                    double distance = 1000000;
-                    RUBusStop* savedStop = [RUBusStop alloc];
-                    for (RUBusStop* stop in tempAgency.stops.allValues) {
-                        double distanceTemp = [noDataPrediction.vehicle.location distanceFromLocation:stop.location];
-                        if (distance > distanceTemp) {
-                            distance = distanceTemp;
-                            savedStop = stop;
-                        }
-                    }
-                    noDataPrediction.vehicle.nearbyStop = savedStop;
+                } else if (tempStop != nil) {
+                    noDataPrediction.stopActive = NO;
                 }
                 [parsedPredictions addObject:noDataPrediction];
+                handler(parsedPredictions, nil);
             }
-            // if (parsedPredictions == nil) {
+            else {
             for (NSDictionary* predictionItem in predictions) {
                 if ([item isKindOfClass:[RUBusRoute class]]) {
                     RUBusRoute* cast = (RUBusRoute*)item;
@@ -187,7 +175,6 @@ NSString * const newarkAgency = @"rutgers-newark";
                         [parsedPredictions addObject:[NSNull null]];
                     }
                     RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
-                    predictionObj.tempActive = YES;
                     predictionObj.routeTitle = tempRoute.title;
                     predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
                     int index = 0;
@@ -203,7 +190,6 @@ NSString * const newarkAgency = @"rutgers-newark";
                     } else {
                         NSLog(@"Error inserting into array!  Address this!");
                     }
-                    //[parsedPredictions addObject:predictionObj];
                 } else {
                     NSArray* arrivalArray = [predictions valueForKey:@"arrivals"][0];
                     NSMutableDictionary* tempDict = [[NSMutableDictionary alloc] init];
@@ -226,39 +212,30 @@ NSString * const newarkAgency = @"rutgers-newark";
                     for (NSString* key in [tempDict allKeys]) {
                         NSLog(@"%@", [tempDict objectForKey:key]);
                         RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithArrivalArray:key arrivalArray:[tempDict objectForKey:key]];
-                        predictionObj.tempActive = YES;
+                        predictionObj.active = YES;
                         predictionObj.stopTitle = tempStop.title;
                         predictionObj.routeTitle = tempAgency.routes[key].title;
                         [parsedPredictions addObject:predictionObj];
                     }
                 }
             }
-            /*
-            [parsedPredictions sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                RUBusPrediction* temp1 = (RUBusPrediction*)obj1;
-                RUBusPrediction* temp2 = (RUBusPrediction*)obj2;
-                NSDate* first = [(RUBusArrival*)temp1.arrivals[0] savedDate];
-                NSDate* second = [(RUBusArrival*)temp2.arrivals[0] savedDate];
-                if (first.timeIntervalSinceNow > second.timeIntervalSinceNow) {
-                    return (NSComparisonResult)NSOrderedDescending;
-                } else {
-                    return (NSComparisonResult)NSOrderedAscending;
-                }
-            }];*/
-            //}
+       
             NSMutableArray* sortedStopsArray = [[NSMutableArray alloc] init];
             
             int i = 0;
             int j = 0;
             while (i < [parsedPredictions count]) {
                 if (![parsedPredictions[i] isEqual:[NSNull null]]) {
-                    NSLog(@"Inserting %@ at %d", ((RUBusPrediction*)parsedPredictions[i]).stopTitle, j);
-                    [sortedStopsArray insertObject:parsedPredictions[i] atIndex:j];
+                    //NSLog(@"Inserting %@ at %d", ((RUBusPrediction*)parsedPredictions[i]).stopTitle, j);
+                    RUBusPrediction* cast = parsedPredictions[i];
+                    cast.active = YES;
+                    [sortedStopsArray insertObject:cast atIndex:j];
                     j++;
                 }
                 i++;
             }
             handler(sortedStopsArray, nil);
+            }
         } else {
             NSLog(@"Network request successful, cannot parse dictionary");
         }

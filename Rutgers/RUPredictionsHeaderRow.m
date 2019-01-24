@@ -41,15 +41,14 @@
     if ([self.item isKindOfClass:[RUBusRoute class]]) return nil;
     return self.predictions.directionTitle;
 }
- */
+*/
+ 
 
 -(NSString *)arrivalTimeDescription{
-    if (self.predictions.tempActive == NO) {
-        if (self.predictions.vehicle.nearbyStop.title == NULL) {
-            self.predictions.active = NO;
-            return @"Bus Offline";
-        }
+    if (self.predictions.active == NO) {
+        return @"Bus Offline";
         //return [NSString stringWithFormat: @"Bus Temporarily Offline at %@", self.predictions.vehicle.nearbyStop.title];
+    } else if ([self active] == YES && self.predictions.arrivals == nil) {
         return @"Bus Reporting as Stopped, Predictions Currently Unavailable";
     }
 
@@ -94,6 +93,10 @@
 
 -(BOOL)active{
     return self.predictions.active;
+}
+
+-(BOOL)hasArrivals {
+    return self.predictions.arrivals;
 }
 
 -(UIColor *)timeLabelColor{
