@@ -46,8 +46,10 @@
 
 -(NSString *)arrivalTimeDescription{
     if (self.predictions.active == NO) {
+        if (self.predictions.active == NO && self.predictions.arrivals != nil) {
+            return @"No Predictions Available";
+        }
         return @"Bus Offline";
-        //return [NSString stringWithFormat: @"Bus Temporarily Offline at %@", self.predictions.vehicle.nearbyStop.title];
     } else if ([self active] == YES && self.predictions.arrivals == nil) {
         return @"Bus Reporting as Stopped, Predictions Currently Unavailable";
     }
@@ -87,7 +89,10 @@
         if (idx == 2) *stop = YES;
     }];
     
-    
+    if ([string isEqualToString: @"Arriving in "]) {
+        self.predictions.active = NO;
+        return @"No predictions available";
+    }
     return string;
 }
 

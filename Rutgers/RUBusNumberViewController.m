@@ -111,15 +111,8 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
-                               if (dataSource.responseTitle == nil) {
-                                   self.title = @"Bus";
-                                   
-                               } else {
-                                   
-                                   NSString* formattedTitle = [[NSString alloc] initWithFormat:@"%@ - %@", dataSource.responseTitle, self.busNumber];
-                                   self.title = formattedTitle;
-                               }
+                                NSString* formattedTitle = [[NSString alloc] initWithFormat:@"%@ - %@", self.title, self.busNumber];
+                                self.title = formattedTitle;
                            });
         }
     }];
