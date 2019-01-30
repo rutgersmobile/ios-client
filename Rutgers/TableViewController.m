@@ -766,9 +766,10 @@
     if (update)
     {
         update();
+        [tableView endUpdates];
     }
     
-    [tableView endUpdates];
+    
     
     if (complete)
     {
