@@ -14,7 +14,7 @@
  Also holds any message associated with a stop and route:w
  */
 @interface RUBusPrediction : NSObject
--(instancetype)initWithDictionary:(NSDictionary *)dictionary;
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary vehicleArray: (NSDictionary*)vehicleArray;
 -(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray;
 @property (nonatomic) BOOL active;
 @property (nonatomic) BOOL stopActive;

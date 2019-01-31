@@ -25,7 +25,9 @@
         _nearbyStop = [RUBusStop alloc];
         _routeId = response[@"route_id"];
         _trackingStatus = response[@"tracking_status"];
+        //_vehicleId = response[@"vehicle_id"];
         _vehicleId = response[@"vehicle_id"];
+        _callName = response[@"call_name"];
     }
     return self;
 }

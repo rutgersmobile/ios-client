@@ -174,7 +174,7 @@ NSString * const newarkAgency = @"rutgers-newark";
                     for (int i = 0; i < [cast.stops count]; i++) {
                         [parsedPredictions addObject:[NSNull null]];
                     }
-                    RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem];
+                    RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem vehicleArray: tempAgency.vehicles];
                     predictionObj.routeTitle = tempRoute.title;
                     predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
                     int index = 0;
@@ -210,7 +210,6 @@ NSString * const newarkAgency = @"rutgers-newark";
                         }
                     }
                     for (NSString* key in [tempDict allKeys]) {
-                        NSLog(@"%@", [tempDict objectForKey:key]);
                         RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithArrivalArray:key arrivalArray:[tempDict objectForKey:key]];
                         predictionObj.active = YES;
                         predictionObj.stopTitle = tempStop.title;

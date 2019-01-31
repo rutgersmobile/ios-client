@@ -9,7 +9,7 @@
 #import "RUBusArrival.h"
 
 @implementation RUBusArrival
--(instancetype)initWithDictionary:(NSDictionary *)dictionary{
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];
     if (self) {
         _route_id = dictionary[@"route_id"];

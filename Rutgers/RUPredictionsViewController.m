@@ -22,6 +22,7 @@
 #import "RUPredictionsDataSource.h"
 #import "RUPredictionsBodyTableViewCell.h"
 #import "RUBusNumberButton.h"
+#import "RUBusVehicle.h"
 #import "RUBusStop.h"
 #import <Foundation/Foundation.h>
 

@@ -11,7 +11,7 @@
 #import "RUDefines.h"
 
 @implementation RUBusPrediction
--(instancetype)initWithDictionary:(NSDictionary *)dictionary{
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary vehicleArray: (NSDictionary*)vehicleArray {
     self = [super init];
     if (self)
     {
@@ -24,7 +24,14 @@
         NSMutableArray* mutableArrivals = [[NSMutableArray alloc] init];
         
         for (NSDictionary *arrival in dictionary[@"arrivals"]) {
-            [mutableArrivals addObject:[[RUBusArrival alloc] initWithDictionary:arrival]];
+            RUBusArrival* arrivalObj = [[RUBusArrival alloc] initWithDictionary:arrival];
+            for (RUBusVehicle* vehicle in vehicleArray[arrivalObj.route_id]) {
+                if ([arrivalObj.vehicle isEqualToString: vehicle.vehicleId]) {
+                    arrivalObj.vehicle = vehicle.callName;
+                    break;
+                }
+            }
+            [mutableArrivals addObject: arrivalObj];
         }
         [mutableArrivals sortUsingComparator:^NSComparisonResult(id a, id b) {
             NSDate* first = [(RUBusArrival*)a savedDate];
@@ -58,15 +65,4 @@
     }
     return self;
 }
-/**
- *  Whether the prediction is active
- *
- *  @return Yes if there are some number of arrivals, no otherwise
- */
-/*
--(BOOL)active
-{
-    return self.arrivals.count > 0;
-}
-*/
 @end

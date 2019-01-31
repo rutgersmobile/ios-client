@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSString* vehicleId;
 @property (nonatomic) NSString* routeId;
 @property (nonatomic) RUBusStop* nearbyStop;
+@property (nonatomic) NSString* callName;
 @end
 
 NS_ASSUME_NONNULL_END
