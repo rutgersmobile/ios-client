@@ -102,13 +102,14 @@
                            {
                                RUBusPredictionsAndMessageDataSource* dataSource = (RUBusPredictionsAndMessageDataSource*)self.dataSource;
                                if (dataSource.responseTitle == nil) {
-                                 //  self.title = @"Bus";
+                                   //  self.title = @"Bus";
                                } else {
                                    self.title = dataSource.responseTitle;
                                }
                            });
         }
     }];
+   
  
     /* Maps button to be implemented.  Currently does not do anything */
     
@@ -126,7 +127,6 @@
     
     self.pullsToRefresh = YES;
 }
-
 /*
  Open the Bus maps View Controller
  */

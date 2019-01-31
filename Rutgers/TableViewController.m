@@ -179,15 +179,17 @@
 -(void)invalidateCachedHeightsForTableView:(UITableView *)tableView
 {
     [[self dataSourceForTableView:tableView] invalidateCachedHeights];
+    /*
     if (tableView.window) // if a window is already present ?
     {
         [tableView beginUpdates];
         [tableView endUpdates];
     }
-    else
+    else if (tableView.window == NULL)
     {
+     */
         [tableView reloadData];
-    }
+    //}
 }
 
 /*
