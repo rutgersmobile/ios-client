@@ -54,7 +54,7 @@
         return @"Bus Reporting as Stopped, Predictions Currently Unavailable";
     }
 
-    if (!self.predictions.active) return @"No Predictions Available";
+    //if (!self.predictions.active) return @"No Predictions Available";
 
     NSArray *arrivals = self.predictions.arrivals;
     
