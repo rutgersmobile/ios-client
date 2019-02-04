@@ -101,7 +101,7 @@
 }
 
 -(BOOL)hasArrivals {
-    return self.predictions.arrivals;
+    return self.predictions.arrivals != nil;
 }
 
 -(UIColor *)timeLabelColor{
