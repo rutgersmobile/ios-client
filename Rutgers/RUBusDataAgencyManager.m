@@ -400,19 +400,18 @@
 
 -(void)setActive {
     NSMutableArray* activeArr = [[NSMutableArray alloc] init];
-    static dispatch_once_t onceToken;
     for (NSString* key in self.routes.allKeys) {
         RUBusRoute* temp = self.routes[key];
         for (NSString* routeId in self.vehicles.allKeys) {
             if ([routeId isEqualToString: key]) {
-                dispatch_once(&onceToken, ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
                     temp.active = YES;
                 });
                 [activeArr addObject:temp];
                 break;
             } else {
-                dispatch_once(&onceToken, ^{
-                    temp.active = YES;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    temp.active = NO;
                 });
             }
         }
