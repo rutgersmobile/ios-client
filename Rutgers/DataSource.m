@@ -565,10 +565,13 @@
     [self notifyBatchUpdate:^{
         if (update)
             update();
+    } complete:^{
+        NSLog(@"Complete");
+        
+        self.loadingComplete = YES;
     }];
     
-    self.loadingComplete = YES;
-    
+
     if (self.whenLoadedBlock)
     {
         self.whenLoadedBlock();
@@ -766,6 +769,8 @@
                 [self notifySectionsInserted:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newNumberOfSections)]];
                 [self notifySectionsRemoved:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, oldNumberOfSections)]];
             }
+        } complete:^{
+            NSLog(@"Complete");
         }];
     }
 }
@@ -925,11 +930,12 @@
         [delegate dataSourceDidReloadData:self direction:direction];
     }
 }
-
+/*
 - (void)notifyBatchUpdate:(dispatch_block_t)update
 {
     [self notifyBatchUpdate:update complete:nil];
 }
+ */
 
 /*
     The block is executed either by the subclass or by the data source itself
@@ -949,8 +955,7 @@
         // execute the block wiith the data source class
         if (update) {
             update();
-        }
-        if (complete) {
+        }else if (complete) {
             complete();
         }
     }

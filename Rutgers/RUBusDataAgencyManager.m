@@ -400,16 +400,20 @@
 
 -(void)setActive {
     NSMutableArray* activeArr = [[NSMutableArray alloc] init];
-    
+    static dispatch_once_t onceToken;
     for (NSString* key in self.routes.allKeys) {
         RUBusRoute* temp = self.routes[key];
         for (NSString* routeId in self.vehicles.allKeys) {
             if ([routeId isEqualToString: key]) {
-                temp.active = YES;
+                dispatch_once(&onceToken, ^{
+                    temp.active = YES;
+                });
                 [activeArr addObject:temp];
                 break;
             } else {
-                temp.active = NO;
+                dispatch_once(&onceToken, ^{
+                    temp.active = YES;
+                });
             }
         }
     }
@@ -448,9 +452,6 @@
     NSMutableArray* mutableRouteArray = [NSMutableArray array];
     NSMutableDictionary* mutableRouteDictionary = [NSMutableDictionary dictionary];
     for (NSDictionary* route in routeArray) {
-        if (([[route objectForKey:@"long_name"] isEqual: @"Route All Campuses"]) || (route[@"is_active"] == false)) {
-            continue;
-        }
         NSDictionary* routeTemp = route;
         RUBusRoute* routeObj = [[RUBusRoute alloc] initWithDictionary:routeTemp];
         routeObj.agency = agency;

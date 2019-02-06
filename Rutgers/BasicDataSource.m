@@ -165,6 +165,8 @@
             NSIndexPath *toIndexPath = toMovedIndexPaths[i];
             [self notifyItemMovedFromIndexPath:fromIndexPath toIndexPath:toIndexPath];
         }
+    } complete:^{
+        NSLog(@"Complete");
     }];
 }
 

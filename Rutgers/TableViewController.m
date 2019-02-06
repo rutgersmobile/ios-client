@@ -760,21 +760,15 @@
 {
     UITableView *tableView = [self tableViewForDataSource:dataSource];
     
-    [tableView beginUpdates];
-   
     /*
         Make all the changes to the table view
      */
     if (update)
     {
+        [tableView beginUpdates];
         update();
         [tableView endUpdates];
-    }
-    
-    
-    
-    if (complete)
-    {
+    } else if (complete) {
         complete();
     }
 }

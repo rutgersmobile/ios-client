@@ -56,7 +56,7 @@
 - (void)notifyDidReloadData;
 - (void)notifyDidReloadDataWithDirection:(DataSourceAnimationDirection)direction;
 
-- (void)notifyBatchUpdate:(dispatch_block_t)update;
+//- (void)notifyBatchUpdate:(dispatch_block_t)update;
 - (void)notifyBatchUpdate:(dispatch_block_t)update complete:(dispatch_block_t)complete;
 
 - (void)notifyWillLoadContent;

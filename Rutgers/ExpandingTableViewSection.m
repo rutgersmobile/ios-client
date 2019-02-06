@@ -34,11 +34,15 @@
         [self notifyBatchUpdate:^{
             [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, oldCount) inSection:0]];
             [self notifyItemsInsertedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(oldCount, newCount-oldCount) inSection:0]];
+        } complete:^{
+            NSLog(@"Complete");
         }];
     } else {
         [self notifyBatchUpdate:^{
             [self notifyItemsRefreshedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(0, newCount) inSection:0]];
             [self notifyItemsRemovedAtIndexPaths:[NSIndexPath indexPathsForRange:NSMakeRange(newCount, oldCount-newCount) inSection:0]];
+        } complete:^{
+            NSLog(@"Complete");
         }];
     }
     
