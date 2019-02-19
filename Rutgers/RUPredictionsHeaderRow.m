@@ -72,7 +72,7 @@
         
         NSInteger minutes = arrival.minutes;
         
-        if (minutes == 0) {
+        if (minutes <= 0) {
             [string appendString:@"<1"];
         } else {
             [string appendFormat:@"%ld",(long)minutes];
