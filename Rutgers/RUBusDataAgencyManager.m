@@ -104,11 +104,6 @@
 #pragma mark - needs to be uncommented
 -(void)performWhenAgencyLoaded:(void(^)(NSError *error))handler
 {
-    if ([self agencyConfigNeedsLoad])
-    {
-        //[self loadAgencyConfig];
-    }
-    
     // After all the blocks in the agencyGroup has been excuted , this block will be executed. // read doca for dispatch_group_notify
     dispatch_group_notify(self.agencyGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0),^
                           {
@@ -141,7 +136,6 @@
          {
              if ([self activeStopsAndRoutesNeedLoad])
              {
-                 // [self loadActiveStopsAndRoutes];
                  [self getRoutes];
                  [self getStops];
                  [self getVehicles];
@@ -172,7 +166,6 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
-         [self setActive];
          handler([[self.routes allValues] sortByKeyPath:@"title"], error);
      }];
 }
@@ -182,7 +175,6 @@
     [self performWhenActiveLoaded:^(NSError *error)
      {
          handler([self.activeStops sortByKeyPath:@"title"], error);
-             //handler(self.activeStops, error);
      }];
 }
 
@@ -190,9 +182,7 @@
 {
     [self performWhenActiveLoaded:^(NSError *error)
      {
-         [self setActive];
-         handler([self.activeRoutes sortByKeyPath:@"title"], error);
-         //handler(self.activeRoutes, error);
+         handler([[self setActive] sortByKeyPath:@"title"], error);
      }];
 }
 
@@ -358,7 +348,6 @@
     self.activeLoadingError = nil;
     
     [[RUNetworkManager transLocSessionManager] GET: [RUNetworkManager buildURLStringWith: @"vehicles.json"] parameters:[RUNetworkManager buildParameters: GEO_AREA_WITH_AGENCY[self.agency]] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //NSLog(@"%@", responseObject);
         if ([responseObject isKindOfClass:[NSDictionary class]])
         {
             NSDictionary* data = responseObject[@"data"][@"1323"];
@@ -378,7 +367,6 @@
                 }]];
                 [mutableVehicles setObject:filterTemp forKey:route];
             }
-            //NSLog(@"%@", data);
             self.activeFinishedLoading = YES;
             self.lastActiveTaskDate = [NSDate date];
             self.vehicles = mutableVehicles;
@@ -395,28 +383,23 @@
         self.activeLoadingError = error;
         dispatch_group_leave(self.activeGroup);
     }];
-    
 }
 
--(void)setActive {
+-(NSArray*)setActive {
     NSMutableArray* activeArr = [[NSMutableArray alloc] init];
     for (NSString* key in self.routes.allKeys) {
         RUBusRoute* temp = self.routes[key];
         for (NSString* routeId in self.vehicles.allKeys) {
             if ([routeId isEqualToString: key]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    temp.active = YES;
-                });
+                temp.active = YES;
                 [activeArr addObject:temp];
                 break;
             } else {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    temp.active = NO;
-                });
+               temp.active = NO;
             }
         }
     }
-    self.activeRoutes = activeArr;
+    return activeArr;
 }
 
 -(void)parseStops:(NSArray*)stopArray :(NSString*) agency {
@@ -426,22 +409,9 @@
         NSDictionary* stopTemp = stop;
         RUBusStop* stopObj = [[RUBusStop alloc] initWithDictionary:stopTemp];
         stopObj.agency = agency;
-        //if ([stopObj active]) {
-            /*
-            BOOL isTrue = NO;
-            for (NSString* routeId in stopObj.routes) {
-                RUBusRoute* checkIfActive = self.routes[routeId];
-                if (checkIfActive.active) {
-                    isTrue = YES;
-                    break;
-                }
-            }
-            if (isTrue) {
-             */
-                [mutableStopArray addObject:stopObj];
-                NSString* stopId = [NSString stringWithFormat:@"%ld", (long) stopObj.stopId];
-                mutableStopDictionary[stopId] = stopObj;
-        //}
+        [mutableStopArray addObject:stopObj];
+        NSString* stopId = [NSString stringWithFormat:@"%ld", (long) stopObj.stopId];
+        mutableStopDictionary[stopId] = stopObj;
     }
     self.stops = (NSDictionary<NSString*, RUBusStop*>*)mutableStopDictionary;
     self.activeStops = mutableStopArray;

@@ -11,7 +11,7 @@
 #import "RUDefines.h"
 
 @implementation RUBusPrediction
--(instancetype)initWithDictionary:(NSDictionary *)dictionary vehicleArray: (NSDictionary*)vehicleArray {
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary vehicleArray: (NSDictionary*)vehicleArray generatedOn: (NSDate*)date{
     self = [super init];
     if (self)
     {
@@ -24,7 +24,7 @@
         NSMutableArray* mutableArrivals = [[NSMutableArray alloc] init];
         
         for (NSDictionary *arrival in dictionary[@"arrivals"]) {
-            RUBusArrival* arrivalObj = [[RUBusArrival alloc] initWithDictionary:arrival];
+            RUBusArrival* arrivalObj = [[RUBusArrival alloc] initWithDictionary:arrival generatedOn:date];
             for (RUBusVehicle* vehicle in vehicleArray[arrivalObj.route_id]) {
                 if ([arrivalObj.vehicle isEqualToString: vehicle.vehicleId]) {
                     arrivalObj.vehicle = vehicle.callName;
@@ -47,7 +47,7 @@
     return self;
 }
 
--(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray {
+-(instancetype)initWithArrivalArray:(NSString*)stopId arrivalArray:(NSArray*)arrivalArray generatedOn:(NSDate*)date{
     self = [super init];
     if (self) {
         _messages = [[NSMutableArray alloc] init];

@@ -12,7 +12,7 @@
  The bus arrival holds the minutes and seconds for an arrival inside a prediction object
  */
 @interface RUBusArrival : NSObject
--(instancetype)initWithDictionary:(NSDictionary *)dictionary;
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary generatedOn:(NSDate*)genDate;
 @property (nonatomic, readonly) NSInteger minutes;
 @property (nonatomic, readonly) NSInteger seconds;
 @property (nonatomic, readonly) NSDate* savedDate;

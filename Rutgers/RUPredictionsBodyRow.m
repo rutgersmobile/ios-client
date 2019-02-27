@@ -46,7 +46,7 @@
         NSString *vehicle = arrivals.vehicle;
         
         
-        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:arrivals.minutes*60];
+       // NSDate *date = [NSDate dateWithTimeIntervalSinceNow:arrivals.minutes*60];
         
         if (idx != 0) {
             [minutesString appendString:@"\n"];
@@ -66,7 +66,7 @@
                 [descriptionString appendString:@"minutes at"];
             }
         }
-        [timeString appendString:[self formatDate:date]];
+        [timeString appendString:[self formatDate:arrivals.savedDate]];
         
         [vehicleArray addObject:vehicle];
         

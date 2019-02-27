@@ -218,7 +218,7 @@
                 if (arrivals.seconds == 1) {
                     [predictionTimes addObject:[NSString stringWithFormat:@"%li second", arrivals.seconds]];
                 } else {
-                    [predictionTimes addObject:[NSString stringWithFormat:@"%li seconds", arrivals.seconds]];
+                    [predictionTimes addObject:[NSString stringWithFormat:@"%li seconds", arrivals.seconds <= 0 ? 0 : arrivals.seconds]];
                 }
             } else {
                 if (arrivals.minutes == 1) {
@@ -272,11 +272,11 @@
     
     //Since the expanding cells are in indexPath.row(1) and we only act on the expanding cells, this assures us that nothing will be displayed in the headerRows
     if (indexPath.row == 1) {
-        
+        if ([self.item isKindOfClass:[RUBusRoute class]]) {
         RUBusNumberButton *busPinButton = [RUBusNumberButton buttonWithType:UIButtonTypeCustom];
         [busPinButton setFrame:CGRectMake(10, 5, 55, 55)];
         
-         UIImage *image = [[UIImage imageNamed:@"bus_pin"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *image = [[UIImage imageNamed:@"bus_pin"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         
         
         
@@ -300,6 +300,7 @@
         cell.accessoryView = busPinButton;
         
         cell.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        }
     }
     
 }

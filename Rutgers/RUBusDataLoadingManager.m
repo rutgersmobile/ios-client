@@ -147,7 +147,9 @@ NSString * const newarkAgency = @"rutgers-newark";
     }
     [[RUNetworkManager transLocSessionManager] GET: url parameters: nil progress: nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary* predictions = responseObject[@"data"];
-        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZZ"];
+        NSDate *date = [dateFormatter dateFromString:responseObject[@"generated_on"]];
         NSMutableArray *parsedPredictions = [NSMutableArray array];
         
         if ([predictions isKindOfClass:[NSArray class]]) {
@@ -174,7 +176,7 @@ NSString * const newarkAgency = @"rutgers-newark";
                     for (int i = 0; i < [cast.stops count]; i++) {
                         [parsedPredictions addObject:[NSNull null]];
                     }
-                    RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem vehicleArray: tempAgency.vehicles];
+                    RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithDictionary:predictionItem vehicleArray: tempAgency.vehicles generatedOn:date];
                     predictionObj.routeTitle = tempRoute.title;
                     predictionObj.stopTitle = ((RUBusStop*)tempAgency.stops[predictionObj.stop_id]).title;
                     int index = 0;
@@ -200,7 +202,8 @@ NSString * const newarkAgency = @"rutgers-newark";
                         while (i < arrivalArray.count) {
                             NSDictionary* arrivalTemp = arrivalArray[i];
                             if (routeId == [arrivalTemp valueForKey:@"route_id"]) {
-                                RUBusArrival* arrivalObj = [[RUBusArrival alloc] initWithDictionary:arrivalTemp];
+                                //Need to customize this
+                                RUBusArrival* arrivalObj = [[RUBusArrival alloc] initWithDictionary:arrivalTemp generatedOn: date];
                                 [tempArrivalArray addObject:arrivalObj];
                             }
                             i++;
@@ -210,7 +213,7 @@ NSString * const newarkAgency = @"rutgers-newark";
                         }
                     }
                     for (NSString* key in [tempDict allKeys]) {
-                        RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithArrivalArray:key arrivalArray:[tempDict objectForKey:key]];
+                        RUBusPrediction* predictionObj = [[RUBusPrediction alloc] initWithArrivalArray:key arrivalArray:[tempDict objectForKey:key] generatedOn:date];
                         predictionObj.active = YES;
                         predictionObj.stopTitle = tempStop.title;
                         predictionObj.routeTitle = tempAgency.routes[key].title;
@@ -225,7 +228,6 @@ NSString * const newarkAgency = @"rutgers-newark";
             int j = 0;
             while (i < [parsedPredictions count]) {
                 if (![parsedPredictions[i] isEqual:[NSNull null]]) {
-                    //NSLog(@"Inserting %@ at %d", ((RUBusPrediction*)parsedPredictions[i]).stopTitle, j);
                     RUBusPrediction* cast = parsedPredictions[i];
                     cast.active = YES;
                     [sortedStopsArray insertObject:cast atIndex:j];
