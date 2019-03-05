@@ -111,7 +111,7 @@
 }
 
 +(NSArray *)viewControllersWithPathComponents:(NSArray *)pathComponents destinationTitle:(NSString *)destinationTitle {
-    RUPredictionsViewController *viewController = [[RUPredictionsViewController alloc] initWithSerializedItem:pathComponents title:destinationTitle];
+    RUBusViewController* viewController = [[RUBusViewController alloc] init];
     return @[viewController];
 }
 
