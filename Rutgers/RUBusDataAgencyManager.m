@@ -424,10 +424,8 @@
         NSDictionary* routeTemp = route;
         RUBusRoute* routeObj = [[RUBusRoute alloc] initWithDictionary:routeTemp];
         routeObj.agency = agency;
-        if ([routeObj active]) {
-            [mutableRouteArray addObject:routeObj];
-            [mutableRouteDictionary setValue:routeObj forKey:routeObj.route_id];
-        }
+        [mutableRouteArray addObject:routeObj];
+        [mutableRouteDictionary setValue:routeObj forKey:routeObj.route_id];
     }
     self.routes = mutableRouteDictionary;
     self.activeRoutes = mutableRouteArray;
