@@ -14,7 +14,8 @@
  
  */
 #import <UIKit/UIKit.h>
+#import "TTTAttributedLabel.h"
 
-@interface RULabel : UILabel
+@interface RULabel : TTTAttributedLabel
 @property (nonatomic) BOOL ignoresPreferredLayoutWidth;
 @end

@@ -12,9 +12,11 @@
 #import "FAQSectionDataSource.h"
 #import "RUNetworkManager.h"
 #import "NSDictionary+Channel.h"
+#import "TTTAttributedLabel.h"
 
 @interface FAQDataSource ()
 @property NSDictionary *channel;
+@property (weak) id <TTTAttributedLabelDelegate> linkDelegate;
 @end
 
 @implementation FAQDataSource
@@ -36,10 +38,18 @@
     return self;
 }
 
+-(instancetype)initWithChannel:(NSDictionary *)channel linkDelegate:(id<TTTAttributedLabelDelegate>)delegate{
+    if (self) {
+        self = [self initWithChannel:channel];
+        self.linkDelegate = delegate;
+    }
+    return self;
+}
+
 -(void)updateWithItems:(NSArray *)items{
     NSMutableArray *sections = [NSMutableArray array];
     for (NSDictionary *item in items) {
-        [sections addObject:[[FAQSectionDataSource alloc] initWithItem:item]];
+        [sections addObject:[[FAQSectionDataSource alloc] initWithItem:item linkDelegate:self.linkDelegate]];
     }
     self.sections = sections;
 }

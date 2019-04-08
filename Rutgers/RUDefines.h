@@ -60,7 +60,9 @@ typedef NS_ENUM(NSUInteger, RunMode)
 
 //warning change to BetaMode to enable networking
 
-static RunMode const runMode = ProductionMode;
+// static RunMode const runMode = ProductionMode;
+
+static RunMode const runMode = LocalDevMode;
 
 extern BOOL isBeta(void);
 

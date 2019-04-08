@@ -11,8 +11,10 @@
 #import "FAQDataSource.h"
 #import "RUChannelManager.h"
 #import "NSDictionary+Channel.h"
+#import "TTTAttributedLabel.h"
+#import "RUWebViewController.h"
 
-@interface FAQViewController ()
+@interface FAQViewController<TTTAttributedLabelDelegate> ()
 @property NSDictionary *channel;
 @end
 
@@ -39,7 +41,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.dataSource = [[FAQDataSource alloc] initWithChannel:self.channel];
+    //self.dataSource = [[FAQDataSource alloc] initWithChannel:self.channel];
+    self.dataSource = [[FAQDataSource alloc] initWithChannel:self.channel linkDelegate:self];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -74,6 +77,19 @@
 -(void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender{
     if (action != @selector(copy:)) return;
     [UIPasteboard generalPasteboard].string = [[self.dataSource itemAtIndexPath:indexPath] description];
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label
+   didSelectLinkWithURL:(NSURL *)url {
+    NSLog(@"Link is %@", url);
+    if ([[url absoluteString] rangeOfString:@"tel"].location == NSNotFound) {
+        RUWebViewController* vc = [[RUWebViewController alloc] initWithURL:url];
+        [self.navigationController pushViewController:vc animated:false];
+    } else {
+       // NSString* urlString = [[url absoluteString] stringByReplacingOccurrencesOfString:@"tel:" withString:""];
+        [[UIApplication sharedApplication] openURL:url];
+        NSLog(@"This is a phone number");
+    }
 }
 
 @end

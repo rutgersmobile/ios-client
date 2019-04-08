@@ -8,10 +8,11 @@
 
 #import "ExpandingTableViewController.h"
 #import "RUChannelProtocol.h"
+#import "TTTAttributedLabel.h"
 
 /**
  This view controller shows faq style question answer information
  */
-@interface FAQViewController : ExpandingTableViewController <RUChannelProtocol>
+@interface FAQViewController<TTTAttributedLabelDelegate> : ExpandingTableViewController <RUChannelProtocol>
 -(instancetype)initWithChannel:(NSDictionary *)channel;
 @end

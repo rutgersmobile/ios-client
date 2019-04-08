@@ -10,16 +10,27 @@
 #import "RULabel.h"
 #import "PureLayout.h"
 #import "UIFont+DynamicType.h"
+#import "Rutgers-Swift.h"
+#import "RUWebViewController.h"
+#import "RURootController.h"
+#import "FAQViewController.h"
 
-@interface ALTableViewTextCell ()
-@property (strong, nonatomic) IBOutlet UILabel *realTextLabel;
+@interface ALTableViewTextCell()
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *realTextLabel;
 @property (nonatomic) NSLayoutConstraint *rightConstraint;
 @end
 
 @implementation ALTableViewTextCell
 
--(UILabel *)textLabel{
+-(TTTAttributedLabel*)label{
     return self.realTextLabel;
+}
+
+-(void)didMoveToSuperview {
+    if (self) {
+        [super didMoveToSuperview];
+    }
+    
 }
 
 -(void)initializeSubviews{

@@ -20,4 +20,6 @@ target 'Rutgers' do
     pod 'RxDataSources', '~> 1.0'
     pod 'RxSegue'
     pod 'Firebase/Core'
+    pod 'TSMarkdownParser'
+    pod 'TTTAttributedLabel'
 end

@@ -11,8 +11,11 @@
 #import "DataSource_Private.h"
 #import "NSDictionary+Channel.h"
 #import "UIFont+DynamicType.h"
+#import "TSMarkdownParser.h"
+#import "TTTAttributedLabel.h"
 
 @interface FAQSectionDataSource ()
+@property (weak) id <TTTAttributedLabelDelegate> linkDelegate;
 @end
 
 @implementation FAQSectionDataSource
@@ -35,6 +38,14 @@
     return self;
 }
 
+-(instancetype)initWithItem:(NSDictionary *)item linkDelegate:(id<TTTAttributedLabelDelegate>)delegate {
+    if (self) {
+        self = [self initWithItem:item];
+        _linkDelegate = delegate;
+    }
+    return self;
+}
+
 -(NSString *)reuseIdentifierForRowAtIndexPath:(NSIndexPath *)indexPath{
     return NSStringFromClass([ALTableViewTextCell class]);
 }
@@ -48,29 +59,33 @@
     
     if ([itemForIndex isKindOfClass:[NSString class]]) {
         //If just text
-        stringForIndex = itemForIndex;
+        NSAttributedString* attrString = [[TSMarkdownParser standardParser] attributedStringFromMarkdown:itemForIndex];
+       // stringForIndex = itemForIndex;
         cell.accessoryType = UITableViewCellAccessoryNone;
-        
+        cell.label.delegate = self.linkDelegate;
+        [cell.label setText:attrString];
+
     } else if ([itemForIndex isKindOfClass:[NSDictionary class]]) {
         //If this will segue to another view
         stringForIndex = [itemForIndex channelTitle];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.label.text = stringForIndex;
     }
     
-    cell.textLabel.text = stringForIndex;
+    //cell.textLabel.text = stringForIndex;
     
     if (indexPath.row == 0){
         //The top 'header' row is stylized in one way
         cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
         if (self.expanded) {
-            cell.textLabel.textColor = cell.tintColor;
+            cell.label.textColor = cell.tintColor;
         } else {
-            cell.textLabel.textColor = [UIColor blackColor];
+            cell.label.textColor = [UIColor blackColor];
         }
     } else {
         //And the answer in another
-        cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
-        cell.textLabel.textColor = [UIColor blackColor];
+        cell.label.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
+        cell.label.textColor = [UIColor blackColor];
     }
     
 }
