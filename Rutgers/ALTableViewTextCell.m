@@ -16,13 +16,15 @@
 #import "FAQViewController.h"
 
 @interface ALTableViewTextCell()
+
 @property (strong, nonatomic) IBOutlet TTTAttributedLabel *realTextLabel;
+//@property (strong, nonatomic) IBOutlet UILabel *realTextLabel;
 @property (nonatomic) NSLayoutConstraint *rightConstraint;
 @end
 
 @implementation ALTableViewTextCell
 
--(TTTAttributedLabel*)label{
+-(TTTAttributedLabel*)textLabel{
     return self.realTextLabel;
 }
 
@@ -53,4 +55,5 @@
     [super updateConstraints];
     self.rightConstraint.constant = (self.accessoryType != UITableViewCellAccessoryNone) ? -34 : -kLabelHorizontalInsets;
 }
+
 @end

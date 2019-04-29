@@ -10,6 +10,12 @@
 #import "TTTAttributedLabel.h"
 #import <Rutgers-Swift.h>
 
+/*
 @interface ALTableViewTextCell: ALTableViewAbstractCell
--(TTTAttributedLabel *)label;
+@end
+ */
+
+@interface ALTableViewTextCell: ALTableViewAbstractCell
+
+-(TTTAttributedLabel*)textLabel;
 @end

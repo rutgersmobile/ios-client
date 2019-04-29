@@ -62,14 +62,17 @@
         NSAttributedString* attrString = [[TSMarkdownParser standardParser] attributedStringFromMarkdown:itemForIndex];
        // stringForIndex = itemForIndex;
         cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.label.delegate = self.linkDelegate;
-        [cell.label setText:attrString];
-
+        cell.textLabel.delegate = self.linkDelegate;
+        [cell.textLabel setText:attrString afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            return mutableAttributedString;
+        }];
+        //[cell.textLabel setText:attrString];
     } else if ([itemForIndex isKindOfClass:[NSDictionary class]]) {
         //If this will segue to another view
         stringForIndex = [itemForIndex channelTitle];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.label.text = stringForIndex;
+        cell.textLabel.text = stringForIndex;
+        //cell.label.text = stringForIndex;
     }
     
     //cell.textLabel.text = stringForIndex;
@@ -77,15 +80,6 @@
     if (indexPath.row == 0){
         //The top 'header' row is stylized in one way
         cell.textLabel.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
-        if (self.expanded) {
-            cell.label.textColor = cell.tintColor;
-        } else {
-            cell.label.textColor = [UIColor blackColor];
-        }
-    } else {
-        //And the answer in another
-        cell.label.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleSubheadline];
-        cell.label.textColor = [UIColor blackColor];
     }
     
 }

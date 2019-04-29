@@ -9,11 +9,13 @@
 #import "RUTextViewController.h"
 #import "ALTableViewTextCell.h"
 #import "NSString+HTML.h"
+#import "UIFont+DynamicType.h"
 #import "NSAttributedString+FromHTML.h"
 #import "PureLayout.h"
 #import "RUChannelManager.h"
+#import "TSMarkdownParser.h"
 
-@interface RUTextViewController ()
+@interface RUTextViewController () <UITextViewDelegate>
 @property (nonatomic) NSString *data;
 @property (nonatomic) BOOL centersText;
 @end
@@ -42,9 +44,11 @@
 -(void)loadView{
     [super loadView];
     self.textView = [UITextView newAutoLayoutView];
+    self.textView.delegate = self;
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.editable = NO;
-    self.textView.selectable = NO;
+    self.textView.selectable = YES;
+    self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
     self.textView.textContainerInset = UIEdgeInsetsMake(kLabelVerticalInsets, kLabelHorizontalInsetsSmall, kLabelVerticalInsets, kLabelHorizontalInsetsSmall);
     self.textView.alwaysBounceVertical = YES;
     
@@ -62,11 +66,18 @@
     self.textView.contentOffset = CGPointMake(0, self.textView.contentInset.top);
 }
 
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
+    RUWKWebViewController* vc = [[RUWKWebViewController alloc] initWithURL:URL];
+    [[self navigationController] pushViewController:vc animated:false];
+    return false;
+}
 /**
  *  Makes formatted string with current text settings and puts it in the text field
  */
 -(void)loadText{
-    NSMutableAttributedString *attributedText = [NSMutableAttributedString attributedStringFromHTMLString:[self.data stringWithNewLinesAsBRs] preferedTextStyle:UIFontTextStyleBody];
+    NSAttributedString* parsedText = [[TSMarkdownParser standardParser] attributedStringFromMarkdown:self.data];
+    NSMutableAttributedString* attributedText = [parsedText copy];
+    //NSMutableAttributedString *attributedText = [NSMutableAttributedString attributedStringFromHTMLString:[self.data stringWithNewLinesAsBRs] preferedTextStyle:UIFontTextStyleBody];
     if (self.centersText) {
         [attributedText enumerateAttributesInRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
             NSMutableParagraphStyle *paragraphStyle = [attrs[NSParagraphStyleAttributeName] mutableCopy];
@@ -75,8 +86,10 @@
         }];
     }
     
+    self.textView.font = [UIFont ruPreferredFontForTextStyle:UIFontTextStyleBody];
     self.textView.attributedText = attributedText;
 }
+
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
