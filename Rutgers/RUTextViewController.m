@@ -28,7 +28,7 @@
     [[RUChannelManager sharedInstance] registerClass:[self class]];
 }
 
-+(instancetype)channelWithConfiguration:(NSDictionary *)channel{
++(instancetype)channelWithConfiguration:(NSDictionary *)channel {
     return [[RUTextViewController alloc] initWithChannel:channel];
 }
 
@@ -67,8 +67,13 @@
 }
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
-    RUWKWebViewController* vc = [[RUWKWebViewController alloc] initWithURL:URL];
-    [[self navigationController] pushViewController:vc animated:false];
+    if ([[[URL absoluteString] lowercaseString] hasPrefix:@"tel:"]) {
+        NSLog(@"Opening telephone link");
+        [[UIApplication sharedApplication] openURL:URL];
+    } else {
+        RUWKWebViewController* vc = [[RUWKWebViewController alloc] initWithURL:URL];
+        [[self navigationController] pushViewController:vc animated:false];
+    }
     return false;
 }
 /**

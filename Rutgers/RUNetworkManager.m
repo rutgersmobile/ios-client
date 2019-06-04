@@ -46,7 +46,7 @@
             //            baseUrl = @"http://rumobile-gis-prod-asb.ei.rutgers.edu";
             break;
         case BetaMode:
-            baseUrl = @"https://doxa.rutgers.edu/mobile/";
+            baseUrl = @"https://doxa.rutgers.edu/mobile/4";
             break;
         case ProductionMode:
             baseUrl = @"https://rumobile.rutgers.edu/3";

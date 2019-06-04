@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, RunMode)
 
 // static RunMode const runMode = ProductionMode;
 
-static RunMode const runMode = LocalDevMode;
+static RunMode const runMode = BetaMode;
 
 extern BOOL isBeta(void);
 
