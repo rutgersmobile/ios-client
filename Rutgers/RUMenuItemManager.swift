@@ -43,8 +43,8 @@ struct VisibleObject {
 @objcMembers
 open class RUFavorite: NSObject
 {
-    open let title: String
-    open let url: URL
+    public let title: String
+    public let url: URL
     
     @objc public init(title: String, url: NSURL)
     {
