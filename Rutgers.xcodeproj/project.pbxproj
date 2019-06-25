@@ -1839,7 +1839,7 @@
 						TestTargetID = C262EFA7188345D10035C8F5;
 					};
 					C262EFA7188345D10035C8F5 = {
-						DevelopmentTeam = Q844VW9UW4;
+						DevelopmentTeam = E5335P94A9;
 						LastSwiftMigration = 0940;
 					};
 				};
@@ -2475,7 +2475,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Q844VW9UW4;
+				DEVELOPMENT_TEAM = E5335P94A9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -2513,7 +2513,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Q844VW9UW4;
+				DEVELOPMENT_TEAM = E5335P94A9;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

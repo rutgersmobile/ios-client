@@ -23,7 +23,7 @@
 }
 
 -(UIFont *)fontByScalingPointSize:(CGFloat)scalingRatio{
-    return [self fontWithSize:self.fontDescriptor.pointSize*scalingRatio];
+   return [self fontWithSize:self.fontDescriptor.pointSize*scalingRatio];
 }
 
 +(UIFont *)ruPreferredFontForTextStyle:(NSString *)style symbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits{

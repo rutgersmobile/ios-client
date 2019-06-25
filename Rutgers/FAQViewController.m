@@ -86,9 +86,7 @@
         RUWebViewController* vc = [[RUWebViewController alloc] initWithURL:url];
         [self.navigationController pushViewController:vc animated:false];
     } else {
-       // NSString* urlString = [[url absoluteString] stringByReplacingOccurrencesOfString:@"tel:" withString:""];
         [[UIApplication sharedApplication] openURL:url];
-        NSLog(@"This is a phone number");
     }
 }
 

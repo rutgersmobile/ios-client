@@ -68,8 +68,9 @@
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
     if ([[[URL absoluteString] lowercaseString] hasPrefix:@"tel:"]) {
-        NSLog(@"Opening telephone link");
         [[UIApplication sharedApplication] openURL:URL];
+    } else if ([[[URL absoluteString] lowercaseString] hasPrefix:@"sms:"]){
+         [[UIApplication sharedApplication] openURL:URL];
     } else {
         RUWKWebViewController* vc = [[RUWKWebViewController alloc] initWithURL:URL];
         [[self navigationController] pushViewController:vc animated:false];
